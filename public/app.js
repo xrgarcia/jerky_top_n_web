@@ -885,7 +885,8 @@ document.addEventListener('DOMContentLoaded', function() {
             // Insert product with push-down behavior
             insertProductWithPushDown(targetRank, draggedProduct.data);
             
-            // Check if we need to add more slots
+            // Check if we need to add more slots - use rank-specific check first, then general check
+            checkAndAddMoreSlotsForRank(targetRank);
             checkAndAddMoreSlots();
             
             // Trigger auto-save
@@ -951,12 +952,19 @@ document.addEventListener('DOMContentLoaded', function() {
         fillSlot(rankingSlots[targetRank - 1], targetRank, productData);
         
         // Push existing items down by one position
+        let highestPushedRank = targetRank;
         itemsToPushDown.forEach((item, index) => {
             const newRank = targetRank + 1 + index;
             if (newRank <= rankingSlots.length) {
                 fillSlot(rankingSlots[newRank - 1], newRank, item.data);
+                highestPushedRank = Math.max(highestPushedRank, newRank);
             }
         });
+        
+        // Check if any pushed items landed in high-numbered slots that need expansion
+        if (itemsToPushDown.length > 0) {
+            checkAndAddMoreSlotsForRank(highestPushedRank);
+        }
         
         console.log(`📦 Inserted product at rank ${targetRank}, pushed ${itemsToPushDown.length} items down`);
     }
@@ -1010,13 +1018,43 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function checkAndAddMoreSlots() {
-        // Check if the 10th slot is filled
-        const tenthSlot = rankingSlots[9]; // 0-indexed
-        if (tenthSlot && tenthSlot.classList.contains('filled')) {
-            // Check if we haven't already added extra slots
-            if (rankingSlots.length === 10) {
-                addMoreRankingSlots(3); // Add 3 more slots (total 13)
+        // Count all filled slots to determine if we need expansion
+        let filledSlots = 0;
+        let highestFilledRank = 0;
+        
+        // Scan all slots to find filled ones and highest rank
+        for (let i = 0; i < rankingSlots.length; i++) {
+            if (rankingSlots[i].classList.contains('filled')) {
+                filledSlots++;
+                highestFilledRank = Math.max(highestFilledRank, i + 1); // Convert to 1-indexed
             }
+        }
+        
+        const totalSlots = rankingSlots.length;
+        
+        // Trigger infinite expansion when:
+        // 1. We have at least 10 filled slots (initial threshold met)
+        // 2. AND we've filled at least 80% of available slots
+        // 3. AND the highest filled rank is close to the total slots
+        const expansionThreshold = Math.max(10, Math.floor(totalSlots * 0.8));
+        const isNearCapacity = highestFilledRank >= totalSlots - 2;
+        
+        if (filledSlots >= expansionThreshold && isNearCapacity) {
+            const slotsToAdd = 5; // Add 5 more slots each time for better UX
+            addMoreRankingSlots(slotsToAdd);
+            console.log(`♾️ Infinite expansion triggered! Filled ${filledSlots}/${totalSlots} slots, highest rank: ${highestFilledRank}, added ${slotsToAdd} more slots`);
+        }
+    }
+
+    // Enhanced function to check expansion based on specific rank being filled
+    function checkAndAddMoreSlotsForRank(rank) {
+        const totalSlots = rankingSlots.length;
+        
+        // If we just filled one of the last 2 slots and we have at least 10 rankings, expand
+        if (rank >= totalSlots - 1 && totalSlots >= 10) {
+            const slotsToAdd = 5;
+            addMoreRankingSlots(slotsToAdd);
+            console.log(`♾️ Infinite expansion: Rank ${rank} filled (near end of ${totalSlots} slots), added ${slotsToAdd} more slots`);
         }
     }
 
