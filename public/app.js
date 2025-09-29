@@ -457,29 +457,27 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok && data.rankings && data.rankings.length > 0) {
                 console.log(`✅ Loaded ${data.rankings.length} saved rankings`);
                 
-                // Populate ranking slots with saved rankings
-                data.rankings.forEach(ranking => {
-                    const slot = document.querySelector(`[data-rank="${ranking.ranking}"]`);
-                    if (slot) {
-                        fillSlot(slot, ranking.ranking, ranking.productData);
-                    }
-                });
-                
-                // Generate additional slots if needed
+                // First, ensure we have enough slots for all saved rankings
                 const maxRank = Math.max(...data.rankings.map(r => r.ranking));
                 if (maxRank >= 10) {
                     const slotsNeeded = maxRank + 3; // Add 3 more slots beyond highest rank
                     if (slotsNeeded > rankingSlots.length) {
-                        generateRankingSlots(slotsNeeded);
-                        // Re-populate after generating new slots
-                        data.rankings.forEach(ranking => {
-                            const slot = document.querySelector(`[data-rank="${ranking.ranking}"]`);
-                            if (slot) {
-                                fillSlot(slot, ranking.ranking, ranking.productData);
-                            }
-                        });
+                        // Add additional slots BEFORE filling rankings
+                        const additionalSlotsNeeded = slotsNeeded - rankingSlots.length;
+                        addMoreRankingSlots(additionalSlotsNeeded);
+                        console.log(`📈 Pre-expanded slots to ${rankingSlots.length} to accommodate rank ${maxRank}`);
                     }
                 }
+                
+                // Now populate ALL ranking slots with saved rankings (all slots exist)
+                data.rankings.forEach(ranking => {
+                    const slot = document.querySelector(`[data-rank="${ranking.ranking}"]`);
+                    if (slot) {
+                        fillSlot(slot, ranking.ranking, ranking.productData);
+                    } else {
+                        console.error(`❌ Slot ${ranking.ranking} not found after expansion!`);
+                    }
+                });
             } else {
                 console.log('📝 No saved rankings found, starting fresh');
             }
@@ -957,9 +955,39 @@ document.addEventListener('DOMContentLoaded', function() {
         if (tenthSlot && tenthSlot.classList.contains('filled')) {
             // Check if we haven't already added extra slots
             if (rankingSlots.length === 10) {
-                generateRankingSlots(13); // Add 3 more slots (total 13)
+                addMoreRankingSlots(3); // Add 3 more slots (total 13)
             }
         }
+    }
+
+    // Add additional ranking slots without clearing existing ones
+    function addMoreRankingSlots(count) {
+        const slotsContainer = document.getElementById('rankingSlots');
+        if (!slotsContainer) return;
+
+        const currentSlotCount = rankingSlots.length;
+        console.log(`📈 Adding ${count} more slots to existing ${currentSlotCount} slots`);
+
+        for (let i = 1; i <= count; i++) {
+            const newSlotNumber = currentSlotCount + i;
+            const slot = document.createElement('div');
+            slot.className = 'ranking-slot';
+            slot.dataset.rank = newSlotNumber;
+            slot.innerHTML = `
+                <div class="slot-number">${newSlotNumber}</div>
+                <div class="slot-placeholder">Drop a product here to rank #${newSlotNumber}</div>
+            `;
+            
+            // Add drag and drop event listeners
+            slot.addEventListener('dragover', handleDragOver);
+            slot.addEventListener('drop', handleDrop);
+            slot.addEventListener('dragleave', handleDragLeave);
+            
+            slotsContainer.appendChild(slot);
+            rankingSlots.push(slot);
+        }
+
+        console.log(`✅ Total ranking slots: ${rankingSlots.length}`);
     }
 
     // Auto-save functionality
