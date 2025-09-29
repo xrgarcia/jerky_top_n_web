@@ -583,8 +583,84 @@ app.get('/api/customer/status', async (req, res) => {
 });
 
 // Shopify Products API endpoints
-// Helper function to fetch all products from Shopify with cursor-based pagination
-async function fetchAllShopifyProducts() {
+
+// 30-minute product cache
+const productCache = {
+  data: null,
+  timestamp: null,
+  isLoading: false,
+  isStale: false,
+  TTL: 30 * 60 * 1000 // 30 minutes in milliseconds
+};
+
+// Check if cache is valid (within 30-minute TTL)
+function isCacheValid() {
+  if (!productCache.data || !productCache.timestamp) {
+    return false;
+  }
+  const now = Date.now();
+  const cacheAge = now - productCache.timestamp;
+  return cacheAge < productCache.TTL && !productCache.isStale;
+}
+
+// Get cache age in minutes for logging
+function getCacheAgeMinutes() {
+  if (!productCache.timestamp) return 0;
+  return Math.floor((Date.now() - productCache.timestamp) / (60 * 1000));
+}
+
+// Start background cache rehydration
+async function startCacheRehydration() {
+  if (productCache.isLoading) {
+    console.log('🔄 Cache rehydration already in progress, skipping duplicate request');
+    return;
+  }
+  
+  console.log('🔄 Starting background cache rehydration...');
+  productCache.isLoading = true;
+  
+  try {
+    const freshProducts = await fetchProductsFromShopify();
+    
+    // Update cache with fresh data and mark as not stale
+    productCache.data = freshProducts;
+    productCache.timestamp = Date.now();
+    productCache.isStale = false;
+    productCache.isLoading = false;
+    
+    // Schedule next automatic invalidation
+    scheduleNextCacheInvalidation();
+    
+    console.log(`✅ Cache rehydrated with ${freshProducts.length} products, next invalidation scheduled`);
+  } catch (error) {
+    console.error('❌ Cache rehydration failed:', error);
+    productCache.isLoading = false;
+    // Keep existing cache data (even if stale) for fallback
+    console.log(`⚠️ Keeping stale cache as fallback after rehydration failure`);
+  }
+}
+
+// Set up automatic cache invalidation timer
+function scheduleNextCacheInvalidation() {
+  // Clear any existing timer
+  if (productCache.invalidationTimer) {
+    clearTimeout(productCache.invalidationTimer);
+  }
+  
+  // Schedule invalidation in 30 minutes
+  productCache.invalidationTimer = setTimeout(() => {
+    console.log('⏰ Cache TTL expired (30 minutes), marking as stale');
+    // Mark cache as stale but keep data for fallback
+    productCache.isStale = true;
+    // Start background rehydration immediately
+    startCacheRehydration();
+  }, productCache.TTL);
+  
+  console.log(`⏰ Next cache invalidation scheduled in 30 minutes`);
+}
+
+// Helper function to fetch all products from Shopify with cursor-based pagination (actual API calls)
+async function fetchProductsFromShopify() {
   let allProducts = [];
   let pageInfo = null;
   const limit = 250; // Shopify's max per request
@@ -642,6 +718,81 @@ async function fetchAllShopifyProducts() {
   
   console.log(`🛍️ Total products fetched from Shopify: ${allProducts.length}`);
   return allProducts;
+}
+
+// Main function to get products (checks cache first, then fetches if needed)
+async function fetchAllShopifyProducts() {
+  // Check if cache is valid and return cached data
+  if (isCacheValid()) {
+    const cacheAge = getCacheAgeMinutes();
+    console.log(`💾 Cache HIT: Returning ${productCache.data.length} products from cache (age: ${cacheAge} minutes)`);
+    return productCache.data;
+  }
+  
+  // Cache miss or expired - need to fetch fresh data
+  const cacheAge = getCacheAgeMinutes();
+  const cacheStatus = !productCache.data ? 'No cached data' : 
+                      productCache.isStale ? `Cache stale (age: ${cacheAge} minutes)` : 
+                      `Cache expired (age: ${cacheAge} minutes)`;
+  console.log(`🚫 Cache MISS: ${cacheStatus}`);
+  
+  // If cache is currently being loaded by another request, wait for it
+  if (productCache.isLoading) {
+    console.log('⏳ Another request is already loading products, waiting...');
+    // Wait for the loading to complete (with timeout)
+    let attempts = 0;
+    while (productCache.isLoading && attempts < 30) { // Max 30 seconds wait
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      attempts++;
+    }
+    
+    // If loading completed successfully, return cached data
+    if (isCacheValid()) {
+      console.log(`✅ Waited for cache load, returning ${productCache.data.length} products`);
+      return productCache.data;
+    }
+    
+    // If still stale/invalid after waiting, use stale cache as fallback
+    if (productCache.data) {
+      const cacheAge = getCacheAgeMinutes();
+      console.log(`⚠️ Load timed out, using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
+      return productCache.data;
+    }
+  }
+  
+  // Start loading fresh data
+  console.log('🔄 Fetching fresh products from Shopify API...');
+  productCache.isLoading = true;
+  
+  try {
+    const freshProducts = await fetchProductsFromShopify();
+    
+    // Update cache with fresh data and mark as not stale
+    productCache.data = freshProducts;
+    productCache.timestamp = Date.now();
+    productCache.isStale = false;
+    productCache.isLoading = false;
+    
+    // Schedule automatic invalidation in 30 minutes
+    scheduleNextCacheInvalidation();
+    
+    console.log(`✅ Cache UPDATED: Loaded ${freshProducts.length} products, valid for 30 minutes`);
+    return freshProducts;
+    
+  } catch (error) {
+    productCache.isLoading = false;
+    console.error('❌ Failed to fetch products from Shopify:', error);
+    
+    // If we have stale cache data, return it as fallback
+    if (productCache.data) {
+      const cacheAge = getCacheAgeMinutes();
+      console.log(`⚠️ Using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
+      return productCache.data;
+    }
+    
+    // No cache data available, re-throw error
+    throw error;
+  }
 }
 
 // Helper function to parse Shopify's Link header for pagination
