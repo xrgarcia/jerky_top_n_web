@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerky Top N Web - Premium Jerky Rankings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Green Announcement Banner -->
+    <div class="announcement-banner">
+        <span class="announcement-icon">🏆</span>
+        <span class="announcement-text">TAKE OUR QUIZ, GET FREE JERKY</span>
+        <button class="announcement-btn">TAKE THE QUIZ</button>
+    </div>
+
+    <!-- Dark Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="logo">
+                <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_150x.png?v=1678208718&t=20250928" alt="Jerky.com Logo" class="logo-img" loading="eager">
+            </div>
+            
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-page="home">HOME</a>
+                <a href="#" class="nav-link" data-page="rank">RANK A PRODUCT</a>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="search-container">
+                    <input type="text" placeholder="Search for jerky" class="search-input">
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="user-actions">
+                    <span class="login-link" id="loginBtn" style="display: inline;">LOG IN</span>
+                    <div class="user-profile" id="userProfile" style="display: none;">
+                        <span class="user-name" id="userName"></span>
+                        <span class="logout-link" id="logoutBtn">LOGOUT</span>
+                    </div>
+                    <span class="cart-link">🛒 CART</span>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-banner">
+                <h1 class="hero-title">#1 Jerky Ranking Site</h1>
+                <p class="hero-subtitle">Discover and rank the best jerky products</p>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-content" id="mainContent">
+        <!-- Home Page Content -->
+        <div class="page-content" id="homePage">
+            <section class="welcome-section">
+                <h2>Find the Perfect Jerky For You!</h2>
+                <p>A Selection You Must See to Believe</p>
+                
+                <div class="featured-stats">
+                    <div class="stat-item">
+                        <strong>#1 JERKY SITE IN THE WORLD</strong>
+                    </div>
+                    <div class="stat-separator">|</div>
+                    <div class="stat-item">
+                        <strong>PROUDLY BASED IN OKLAHOMA CITY SINCE 2008</strong>
+                    </div>
+                </div>
+                
+                <div class="cta-buttons">
+                    <button class="cta-btn primary" onclick="showRankPage()">Start Ranking Jerky</button>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Rank Product Page Content -->
+        <div class="page-content" id="rankPage" style="display: none;">
+            <section class="page-header">
+                <h2>Rank Your Favorite Jerky Products</h2>
+                <p>Drag jerky products from the search results to your ranking slots</p>
+            </section>
+            
+            <!-- Split Screen Layout -->
+            <div class="ranking-container">
+                <!-- Left Side: Ranking Slots -->
+                <div class="ranking-panel">
+                    <div class="panel-header">
+                        <h3>🏆 Your Rankings</h3>
+                        <div class="center-status">
+                            <div id="statusIndicator" class="status-indicator"></div>
+                        </div>
+                        <button id="clearRankingBtn" class="clear-btn">Clear All</button>
+                    </div>
+                    <div class="ranking-slots" id="rankingSlots">
+                        <!-- Ranking slots will be generated dynamically -->
+                    </div>
+                </div>
+                
+                <!-- Right Side: Product Search -->
+                <div class="search-panel">
+                    <div class="panel-header">
+                        <h3>🔍 Search Products</h3>
+                        <div class="search-controls">
+                            <input type="text" id="productSearch" placeholder="Search jerky products..." class="search-input-field">
+                            <button id="searchBtn" class="search-btn-field">Search</button>
+                        </div>
+                    </div>
+                    <div class="product-results" id="productResults">
+                        <div id="productLoading" class="loading" style="display: none;">Loading products...</div>
+                        <div id="productList" class="product-list"></div>
+                        <div id="loadMoreBtn" class="load-more" style="display: none;">Load More Products</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
