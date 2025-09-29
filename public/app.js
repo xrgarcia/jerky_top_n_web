@@ -435,10 +435,70 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('rankingSlots')) {
             generateRankingSlots(10); // Start with 10 slots
             showRankingLoadStatus(); // Show loading indicator
-            await loadUserRankings(); // Load user's saved rankings first
-            hideRankingLoadStatus(); // Hide loading indicator
-            loadProducts(); // Load initial products
+            
+            // Load rankings and products simultaneously for better performance
+            console.log('🚀 Loading rankings and products in parallel...');
+            try {
+                await Promise.all([
+                    loadUserRankings(), // Load user's saved rankings
+                    loadProductsForInitialLoad() // Load initial products (modified for parallel loading)
+                ]);
+                console.log('✅ Both rankings and products loaded successfully');
+            } catch (error) {
+                console.error('❌ Error during parallel loading:', error);
+            } finally {
+                hideRankingLoadStatus(); // Hide loading indicator only after both complete
+            }
+            
             setupEventListeners();
+        }
+    }
+
+    // Special version of loadProducts for initial parallel loading (no duplicate loading indicators)
+    async function loadProductsForInitialLoad() {
+        if (isLoading) {
+            console.log('⏳ Products already loading, skipping duplicate call');
+            return;
+        }
+
+        const productList = document.getElementById('productList');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        
+        if (!productList) return;
+
+        // Reset state for initial load
+        currentPage = 1;
+        hasMoreProducts = true;
+        productList.innerHTML = '';
+
+        isLoading = true;
+        // Don't show productLoading indicator - using unified ranking load status instead
+
+        try {
+            const response = await fetch(`/api/products/search?query=&page=${currentPage}&limit=20`);
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to load products');
+            }
+
+            currentProducts = data.products;
+            displayProducts();
+            hasMoreProducts = data.hasMore;
+            
+            if (hasMoreProducts) {
+                loadMoreBtn.style.display = 'block';
+                currentPage++;
+            }
+
+            console.log(`✅ Loaded ${data.products.length} products (total: ${currentProducts.length})`);
+
+        } catch (error) {
+            console.error('Error loading products:', error);
+            productList.innerHTML = '<div style="color: #dc3545; text-align: center; padding: 20px;">Error loading products. Please try again.</div>';
+        } finally {
+            isLoading = false;
+            // Don't hide productLoading here - managed by unified indicator
         }
     }
 
