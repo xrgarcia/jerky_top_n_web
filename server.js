@@ -830,16 +830,27 @@ app.get('/api/products/search', async (req, res) => {
     // Fetch ALL products from Shopify (with pagination)
     let products = await fetchAllShopifyProducts();
     
-    // If we have a search query, filter products client-side for partial title matches
+    // If we have a search query, filter products with intelligent multi-word search
     if (query && query.trim()) {
       const searchTerm = query.trim().toLowerCase();
-      products = products.filter(product => 
-        product.title.toLowerCase().includes(searchTerm) ||
-        product.vendor.toLowerCase().includes(searchTerm) ||
-        product.product_type.toLowerCase().includes(searchTerm) ||
-        (product.tags && product.tags.toLowerCase().includes(searchTerm))
-      );
-      console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
+      
+      // Split search query into individual words
+      const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+      
+      products = products.filter(product => {
+        // Combine all searchable fields into one string
+        const searchableText = [
+          product.title,
+          product.vendor,
+          product.product_type,
+          product.tags || ''
+        ].join(' ').toLowerCase();
+        
+        // Check if ALL search words exist in the searchable text (in any order)
+        return searchWords.every(word => searchableText.includes(word));
+      });
+      
+      console.log(`🔍 Filtered to ${products.length} products matching all words in "${query}"`);
     }
     
     console.log(`✅ Found ${products.length} products`);
