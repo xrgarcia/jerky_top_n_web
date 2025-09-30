@@ -835,12 +835,11 @@ app.get('/api/products/all', async (req, res) => {
     const rankingCounts = {};
     if (storage) {
       try {
-        // Query to count rankings per product
-        const { sql } = await import('drizzle-orm');
+        const { db } = require('./server/db.js');
         const { productRankings } = require('./shared/schema.js');
-        const { count } = await import('drizzle-orm');
+        const { count } = require('drizzle-orm');
         
-        const results = await storage.db
+        const results = await db
           .select({
             shopifyProductId: productRankings.shopifyProductId,
             count: count()
@@ -1515,6 +1514,11 @@ app.get('/api/jerky/top/:n', (req, res) => {
 // Main route
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
+
+// Products page route
+app.get('/products', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'products.html'));
 });
 
 // Periodic cleanup of expired sessions (every hour)

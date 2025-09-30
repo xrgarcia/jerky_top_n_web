@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - Jerky Rankings</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="header-content">
+      <h1>🥩 Jerky Rankings</h1>
+      <nav>
+        <a href="/">HOME</a>
+        <a href="/products" class="active">PRODUCTS</a>
+        <a href="#" id="logout-link">LOG OUT</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="products-page">
+    <div class="products-header">
+      <h2>Browse our complete jerky catalog</h2>
+      <div class="search-container">
+        <input 
+          type="text" 
+          id="product-search" 
+          placeholder="Search for jerky products..."
+          autocomplete="off"
+        >
+        <div id="search-results" class="search-results"></div>
+      </div>
+    </div>
+
+    <div id="products-grid" class="products-grid">
+      <div class="loading">Loading products...</div>
+    </div>
+  </main>
+
+  <script src="products.js"></script>
+</body>
+</html>
