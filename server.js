@@ -821,6 +821,89 @@ function parseLinkHeader(linkHeader) {
   return links;
 }
 
+// Get all products with their ranking counts
+app.get('/api/products/all', async (req, res) => {
+  try {
+    const { query = '' } = req.query;
+    
+    console.log(`🛍️ Fetching all products with ranking counts, query: "${query}"`);
+    
+    // Fetch all products from Shopify
+    let products = await fetchAllShopifyProducts();
+    
+    // Get ranking counts for all products from database
+    const rankingCounts = {};
+    if (storage) {
+      try {
+        // Query to count rankings per product
+        const { sql } = await import('drizzle-orm');
+        const { productRankings } = require('./shared/schema.js');
+        const { count } = await import('drizzle-orm');
+        
+        const results = await storage.db
+          .select({
+            shopifyProductId: productRankings.shopifyProductId,
+            count: count()
+          })
+          .from(productRankings)
+          .groupBy(productRankings.shopifyProductId);
+        
+        // Convert to map for easy lookup
+        results.forEach(row => {
+          rankingCounts[row.shopifyProductId] = parseInt(row.count);
+        });
+        
+        console.log(`📊 Found ranking counts for ${Object.keys(rankingCounts).length} products`);
+      } catch (error) {
+        console.error('Error fetching ranking counts:', error);
+        // Continue without ranking counts
+      }
+    }
+    
+    // Apply search filter if query provided
+    if (query && query.trim()) {
+      const searchTerm = query.trim().toLowerCase();
+      const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+      
+      products = products.filter(product => {
+        const searchableText = [
+          product.title,
+          product.vendor,
+          product.product_type,
+          product.tags || ''
+        ].join(' ').toLowerCase();
+        
+        return searchWords.every(word => searchableText.includes(word));
+      });
+      
+      console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
+    }
+    
+    // Transform products with ranking counts
+    const transformedProducts = products.map(product => ({
+      id: product.id.toString(),
+      title: product.title,
+      handle: product.handle,
+      vendor: product.vendor,
+      productType: product.product_type,
+      tags: product.tags,
+      image: product.images?.[0]?.src || null,
+      price: product.variants?.[0]?.price || '0.00',
+      compareAtPrice: product.variants?.[0]?.compare_at_price || null,
+      rankingCount: rankingCounts[product.id.toString()] || 0
+    }));
+    
+    res.json({ 
+      products: transformedProducts,
+      total: transformedProducts.length
+    });
+    
+  } catch (error) {
+    console.error('Error fetching products with rankings:', error);
+    res.status(500).json({ error: 'Failed to fetch products' });
+  }
+});
+
 app.get('/api/products/search', async (req, res) => {
   try {
     const { query = '', limit = 20, page = 1 } = req.query;

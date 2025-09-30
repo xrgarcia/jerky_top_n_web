@@ -23,6 +23,7 @@
             
             <div class="nav-links">
                 <a href="#" class="nav-link active" data-page="home">HOME</a>
+                <a href="#" class="nav-link" data-page="products">PRODUCTS</a>
                 <a href="#" class="nav-link" data-page="rank">RANK A PRODUCT</a>
             </div>
             
@@ -114,6 +115,26 @@
                         <div id="loadMoreBtn" class="load-more" style="display: none;">Load More Products</div>
                     </div>
                 </div>
+            </div>
+        </div>
+        
+        <!-- Products Page Content -->
+        <div class="page-content" id="productsPage" style="display: none;">
+            <section class="page-header">
+                <h2>All Products</h2>
+                <p>Browse our complete jerky catalog with ranking statistics</p>
+            </section>
+            
+            <div class="products-page-container">
+                <!-- Search Box -->
+                <div class="products-search-section">
+                    <input type="text" id="productsSearchInput" placeholder="Search products..." class="products-search-input">
+                    <div id="productsSearchResults" class="products-search-results" style="display: none;"></div>
+                </div>
+                
+                <!-- Products Grid -->
+                <div id="productsLoading" class="loading" style="display: none;">Loading products...</div>
+                <div id="productsGrid" class="products-grid"></div>
             </div>
         </div>
     </main>

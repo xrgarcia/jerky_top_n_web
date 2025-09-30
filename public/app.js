@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-link');
     const homePage = document.getElementById('homePage');
     const rankPage = document.getElementById('rankPage');
+    const productsPage = document.getElementById('productsPage');
 
     let currentJerkyData = [];
     let userRanking = [];
@@ -58,12 +59,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Hide all pages
         if (homePage) homePage.style.display = 'none';
         if (rankPage) rankPage.style.display = 'none';
+        if (productsPage) productsPage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
             homePage.style.display = 'block';
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
+        } else if (page === 'products' && productsPage) {
+            productsPage.style.display = 'block';
+            // Load products when page is shown
+            loadAllProducts();
         }
         
         // Update active nav link
@@ -1572,5 +1578,166 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         return stars;
+    }
+
+    // ========================================
+    // Products Page Functionality
+    // ========================================
+    
+    let allProductsData = [];
+    let searchTimeout = null;
+    
+    async function loadAllProducts(query = '') {
+        const productsLoading = document.getElementById('productsLoading');
+        const productsGrid = document.getElementById('productsGrid');
+        
+        if (!productsGrid) return;
+        
+        productsLoading.style.display = 'block';
+        
+        try {
+            const url = `/api/products/all${query ? `?query=${encodeURIComponent(query)}` : ''}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to load products');
+            }
+            
+            allProductsData = data.products;
+            displayProductsGrid(allProductsData);
+            
+            console.log(`✅ Loaded ${allProductsData.length} products with ranking counts`);
+        } catch (error) {
+            console.error('Error loading products:', error);
+            productsGrid.innerHTML = '<div style="color: #dc3545; text-align: center; padding: 40px;">Error loading products. Please try again.</div>';
+        } finally {
+            productsLoading.style.display = 'none';
+        }
+    }
+    
+    function displayProductsGrid(products) {
+        const productsGrid = document.getElementById('productsGrid');
+        if (!productsGrid) return;
+        
+        if (products.length === 0) {
+            productsGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No products found</div>';
+            return;
+        }
+        
+        productsGrid.innerHTML = products.map(product => {
+            const rankingBadgeClass = product.rankingCount === 0 ? 'ranking-badge zero' : 'ranking-badge';
+            const rankingText = product.rankingCount === 0 
+                ? '0 rankings' 
+                : `${product.rankingCount} ranking${product.rankingCount === 1 ? '' : 's'}`;
+            
+            return `
+                <div class="product-card">
+                    <div class="product-card-image-container">
+                        ${product.image 
+                            ? `<img src="${product.image}" alt="${product.title}" class="product-card-image">` 
+                            : '<div class="product-card-image" style="background: #f0f0f0;"></div>'}
+                        <div class="${rankingBadgeClass}">
+                            <span>🏆</span>
+                            <span>${rankingText}</span>
+                        </div>
+                    </div>
+                    <div class="product-card-content">
+                        <div class="product-card-title">${product.title}</div>
+                        <div class="product-card-vendor">${product.vendor || 'Unknown Brand'}</div>
+                        <div class="product-card-price">$${product.price}</div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // Products page search with type-ahead
+    const productsSearchInput = document.getElementById('productsSearchInput');
+    const productsSearchResults = document.getElementById('productsSearchResults');
+    
+    if (productsSearchInput) {
+        productsSearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            // Clear previous timeout
+            if (searchTimeout) {
+                clearTimeout(searchTimeout);
+            }
+            
+            // Hide search results if less than 3 characters
+            if (query.length < 3) {
+                productsSearchResults.style.display = 'none';
+                productsSearchResults.innerHTML = '';
+                
+                // Show all products when search is cleared
+                if (query.length === 0) {
+                    displayProductsGrid(allProductsData);
+                }
+                return;
+            }
+            
+            // Debounce search - wait 300ms after user stops typing
+            searchTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/products/all?query=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Search failed');
+                    }
+                    
+                    const searchResults = data.products.slice(0, 8); // Show top 8 results
+                    
+                    if (searchResults.length === 0) {
+                        productsSearchResults.innerHTML = '<div style="padding: 16px; text-align: center; color: #666;">No products found</div>';
+                        productsSearchResults.style.display = 'block';
+                    } else {
+                        productsSearchResults.innerHTML = searchResults.map(product => `
+                            <div class="search-result-item" data-product-id="${product.id}">
+                                ${product.image 
+                                    ? `<img src="${product.image}" alt="${product.title}" class="search-result-image">` 
+                                    : '<div class="search-result-image" style="background: #f0f0f0;"></div>'}
+                                <div class="search-result-info">
+                                    <div class="search-result-title">${product.title}</div>
+                                    <div class="search-result-vendor">${product.vendor || 'Unknown Brand'}</div>
+                                </div>
+                            </div>
+                        `).join('');
+                        productsSearchResults.style.display = 'block';
+                        
+                        // Add click handlers to search results
+                        productsSearchResults.querySelectorAll('.search-result-item').forEach(item => {
+                            item.addEventListener('click', () => {
+                                const productId = item.dataset.productId;
+                                const product = searchResults.find(p => p.id === productId);
+                                if (product) {
+                                    // Update search input with selected product
+                                    productsSearchInput.value = product.title;
+                                    productsSearchResults.style.display = 'none';
+                                    
+                                    // Show only the selected product
+                                    displayProductsGrid([product]);
+                                }
+                            });
+                        });
+                    }
+                    
+                    // Also update the main grid with search results
+                    displayProductsGrid(data.products);
+                } catch (error) {
+                    console.error('Search error:', error);
+                    productsSearchResults.innerHTML = '<div style="padding: 16px; text-align: center; color: #dc3545;">Search failed</div>';
+                    productsSearchResults.style.display = 'block';
+                }
+            }, 300);
+        });
+        
+        // Hide search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!productsSearchInput.contains(e.target) && !productsSearchResults.contains(e.target)) {
+                productsSearchResults.style.display = 'none';
+            }
+        });
     }
 });
