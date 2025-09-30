@@ -1,0 +1,29 @@
+Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar73%3A:1 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+VM346 eruda.js:2  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/session/validate 404 (Not Found)
+window.fetch @ VM346 eruda.js:2
+apply @ VM347 injected.js:278
+validateSession @ VM348 products.js:16
+init @ VM348 products.js:8Understand this error
+VM346 eruda.js:2 Error loading products: TypeError: Failed to fetch
+    at window.fetch (VM346 eruda.js:2:218642)
+    at Object.apply (VM347 injected.js:278:39)
+    at loadProducts (VM348 products.js:31:28)
+    at HTMLDocument.init (VM348 products.js:9:9)
+Mt.forEach.n.<computed> @ VM346 eruda.js:2
+loadProducts @ VM348 products.js:38
+await in loadProducts
+init @ VM348 products.js:9Understand this error
+Console.js:61 ✅ 90-day customer session validated: Ray Garcia

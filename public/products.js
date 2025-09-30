@@ -13,15 +13,23 @@ async function init() {
 
 async function validateSession() {
   try {
-    const response = await fetch('/api/session/validate');
+    const response = await fetch('/api/customer/status', {
+      credentials: 'same-origin'
+    });
     if (!response.ok) {
+      console.error('Session check failed with status:', response.status);
       window.location.href = '/';
       return;
     }
     const data = await response.json();
-    console.log('✅ 90-day customer session validated:', data.user.displayName);
+    if (!data.authenticated) {
+      console.error('User not authenticated');
+      window.location.href = '/';
+      return;
+    }
+    console.log('✅ Products page - session validated:', data.customer.displayName);
   } catch (error) {
-    console.error('❌ Session validation failed:', error);
+    console.error('❌ Session validation error:', error);
     window.location.href = '/';
   }
 }
