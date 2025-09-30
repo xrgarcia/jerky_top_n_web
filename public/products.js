@@ -5,10 +5,37 @@ let searchTimeout = null;
 const PRODUCTS_PER_PAGE = 30;
 
 async function init() {
-  await validateSession();
+  const sessionData = await validateSession();
+  if (sessionData) {
+    updateUserProfile(sessionData.customer);
+  }
   await loadProducts();
   setupEventListeners();
   setupInfiniteScroll();
+  setupLogout();
+}
+
+function updateUserProfile(customer) {
+  const userName = document.getElementById('userName');
+  if (userName && customer) {
+    userName.textContent = customer.displayName || customer.email || 'User';
+  }
+}
+
+function setupLogout() {
+  const logoutBtn = document.getElementById('logoutBtn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await fetch('/api/customer/logout', { method: 'POST' });
+        window.location.href = '/';
+      } catch (error) {
+        console.error('Logout error:', error);
+        window.location.href = '/';
+      }
+    });
+  }
 }
 
 async function validateSession() {
@@ -19,18 +46,20 @@ async function validateSession() {
     if (!response.ok) {
       console.error('Session check failed with status:', response.status);
       window.location.href = '/';
-      return;
+      return null;
     }
     const data = await response.json();
     if (!data.authenticated) {
       console.error('User not authenticated');
       window.location.href = '/';
-      return;
+      return null;
     }
     console.log('✅ Products page - session validated:', data.customer.displayName);
+    return data;
   } catch (error) {
     console.error('❌ Session validation error:', error);
     window.location.href = '/';
+    return null;
   }
 }
 

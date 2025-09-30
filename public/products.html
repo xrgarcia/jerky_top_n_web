@@ -7,16 +7,51 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <div class="header-content">
-      <h1>🥩 Jerky Rankings</h1>
-      <nav>
-        <a href="/">HOME</a>
-        <a href="/products" class="active">PRODUCTS</a>
-        <a href="#" id="logout-link">LOG OUT</a>
-      </nav>
+  <!-- Green Announcement Banner -->
+  <div class="announcement-banner">
+    <span class="announcement-icon">🏆</span>
+    <span class="announcement-text">TAKE OUR QUIZ, GET FREE JERKY</span>
+    <button class="announcement-btn">TAKE THE QUIZ</button>
+  </div>
+
+  <!-- Dark Navigation Bar -->
+  <nav class="main-nav">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_150x.png?v=1678208718&t=20250928" alt="Jerky.com Logo" class="logo-img" loading="eager">
+      </div>
+      
+      <div class="nav-links">
+        <a href="/" class="nav-link">HOME</a>
+        <a href="/products" class="nav-link active">PRODUCTS</a>
+        <a href="/" class="nav-link">RANK A PRODUCT</a>
+      </div>
+      
+      <div class="nav-actions">
+        <div class="search-container">
+          <input type="text" placeholder="Search for jerky" class="search-input">
+          <button class="search-btn">🔍</button>
+        </div>
+        <div class="user-actions">
+          <div class="user-profile" id="userProfile">
+            <span class="user-name" id="userName"></span>
+            <span class="logout-link" id="logoutBtn">LOGOUT</span>
+          </div>
+          <span class="cart-link">🛒 CART</span>
+        </div>
+      </div>
     </div>
-  </header>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-banner">
+        <h1 class="hero-title">#1 Jerky Ranking Site</h1>
+        <p class="hero-subtitle">Discover and rank the best jerky products</p>
+      </div>
+    </div>
+  </section>
 
   <main class="products-page">
     <div class="products-header">
@@ -37,6 +72,6 @@
     </div>
   </main>
 
-  <script src="products.js?v=5"></script>
+  <script src="products.js?v=6"></script>
 </body>
 </html>
