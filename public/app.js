@@ -712,7 +712,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
         if (clearRankingBtn) {
-            clearRankingBtn.addEventListener('click', clearAllRankings);
+            clearRankingBtn.addEventListener('click', showClearModal);
+        }
+
+        // Modal event listeners
+        const cancelClearBtn = document.getElementById('cancelClearBtn');
+        const confirmClearBtn = document.getElementById('confirmClearBtn');
+        const clearModal = document.getElementById('clearModal');
+
+        if (cancelClearBtn) {
+            cancelClearBtn.addEventListener('click', hideClearModal);
+        }
+
+        if (confirmClearBtn) {
+            confirmClearBtn.addEventListener('click', clearAllRankings);
+        }
+
+        // Close modal when clicking outside of it
+        if (clearModal) {
+            clearModal.addEventListener('click', (e) => {
+                if (e.target === clearModal) {
+                    hideClearModal();
+                }
+            });
         }
     }
 
@@ -1269,61 +1291,72 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function showClearModal() {
+        const modal = document.getElementById('clearModal');
+        modal.classList.add('show');
+    }
+
+    function hideClearModal() {
+        const modal = document.getElementById('clearModal');
+        modal.classList.remove('show');
+    }
+
     async function clearAllRankings() {
-        if (confirm('Are you sure you want to clear all rankings?')) {
-            // Clear all filled slots directly without triggering individual auto-saves
-            rankingSlots.forEach((slot) => {
-                if (slot.classList.contains('filled')) {
-                    slot.classList.remove('filled');
-                    const rank = parseInt(slot.dataset.rank);
-                    slot.innerHTML = `
-                        <div class="slot-number">${rank}</div>
-                        <div class="slot-placeholder">Drop a product here to rank #${rank}</div>
-                    `;
-                    delete slot.dataset.productData;
-                    
-                    // Remove drag listeners
-                    slot.draggable = false;
-                    slot.removeEventListener('dragstart', handleSlotDragStart);
-                    slot.removeEventListener('dragend', handleSlotDragEnd);
-                }
+        // Hide the modal first
+        hideClearModal();
+        
+        // Clear all filled slots directly without triggering individual auto-saves
+        rankingSlots.forEach((slot) => {
+            if (slot.classList.contains('filled')) {
+                slot.classList.remove('filled');
+                const rank = parseInt(slot.dataset.rank);
+                slot.innerHTML = `
+                    <div class="slot-number">${rank}</div>
+                    <div class="slot-placeholder">Drop a product here to rank #${rank}</div>
+                `;
+                delete slot.dataset.productData;
+                
+                // Remove drag listeners
+                slot.draggable = false;
+                slot.removeEventListener('dragstart', handleSlotDragStart);
+                slot.removeEventListener('dragend', handleSlotDragEnd);
+            }
+        });
+        
+        // Reset to 10 slots
+        generateRankingSlots(10);
+        
+        // Immediately save empty rankings array to database
+        console.log('🗑️ Cleared all rankings, saving empty state to database...');
+        try {
+            const sessionId = localStorage.getItem('customerSessionId');
+            if (!sessionId) {
+                console.error('❌ No session ID, cannot clear database');
+                return;
+            }
+            
+            updateAutoSaveStatus('saving', 'Clearing...');
+            
+            const response = await fetch('/api/rankings/products', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    sessionId: sessionId,
+                    rankingListId: 'default',
+                    rankings: [] // Send empty array to clear all rankings
+                })
             });
             
-            // Reset to 10 slots
-            generateRankingSlots(10);
-            
-            // Immediately save empty rankings array to database
-            console.log('🗑️ Cleared all rankings, saving empty state to database...');
-            try {
-                const sessionId = localStorage.getItem('customerSessionId');
-                if (!sessionId) {
-                    console.error('❌ No session ID, cannot clear database');
-                    return;
-                }
-                
-                updateAutoSaveStatus('saving', 'Clearing...');
-                
-                const response = await fetch('/api/rankings/products', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        sessionId: sessionId,
-                        rankingListId: 'default',
-                        rankings: [] // Send empty array to clear all rankings
-                    })
-                });
-                
-                if (response.ok) {
-                    console.log('✅ Successfully cleared all rankings from database');
-                    updateAutoSaveStatus('saved', '✓ All rankings cleared');
-                } else {
-                    console.error('❌ Failed to clear rankings from database');
-                    updateAutoSaveStatus('error', 'Clear failed');
-                }
-            } catch (error) {
-                console.error('❌ Error clearing rankings:', error);
+            if (response.ok) {
+                console.log('✅ Successfully cleared all rankings from database');
+                updateAutoSaveStatus('saved', '✓ All rankings cleared');
+            } else {
+                console.error('❌ Failed to clear rankings from database');
                 updateAutoSaveStatus('error', 'Clear failed');
             }
+        } catch (error) {
+            console.error('❌ Error clearing rankings:', error);
+            updateAutoSaveStatus('error', 'Clear failed');
         }
     }
 
