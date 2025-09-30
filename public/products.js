@@ -65,16 +65,16 @@ function displayProducts(reset = false) {
   
   const productsHTML = productsToShow.map(product => `
     <div class="product-card">
-      <div class="product-image">
-        ${product.image ? `<img src="${product.image}" alt="${product.title}">` : '<div class="no-image">No image</div>'}
+      <div class="product-card-image-container">
+        ${product.image ? `<img src="${product.image}" alt="${product.title}" class="product-card-image">` : '<div class="no-image">No image</div>'}
         <div class="ranking-badge ${product.rankingCount > 0 ? 'has-rankings' : ''}">
           🏆 ${product.rankingCount} ranking${product.rankingCount !== 1 ? 's' : ''}
         </div>
       </div>
-      <div class="product-info">
-        <h3>${product.title}</h3>
-        <p class="vendor">${product.vendor}</p>
-        <p class="price">$${product.price}</p>
+      <div class="product-card-content">
+        <h3 class="product-card-title">${product.title}</h3>
+        <p class="product-card-vendor">${product.vendor}</p>
+        <p class="product-card-price">$${product.price}</p>
       </div>
     </div>
   `).join('');
