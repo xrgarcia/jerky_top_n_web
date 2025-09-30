@@ -22,6 +22,11 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-09-30: Fixed ranking count bug in products page API endpoint (was using undefined storage.db, now imports db directly)
+- 2025-09-30: Created products page with grid layout, search functionality, and ranking count badges
+- 2025-09-30: Implemented intelligent multi-word search that matches products regardless of word order
+- 2025-09-30: Fixed database persistence for clear all operations
+- 2025-09-30: Replaced browser confirm dialogs with custom modal for clear all operations
 - 2025-09-28: Initial project setup from empty GitHub repository
 - 2025-09-28: Implemented jerky.com-inspired theme with blue/purple color scheme
 - 2025-09-28: Added interactive ranking functionality with drag-and-drop
