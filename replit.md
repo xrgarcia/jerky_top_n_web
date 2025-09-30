@@ -22,6 +22,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-09-30: Improved products page UX - removed dropdown, added infinite scroll with 30-product pagination
+- 2025-09-30: Verified 30-minute cache system working correctly (cache-first with Shopify API fallback)
 - 2025-09-30: Fixed ranking count bug in products page API endpoint (was using undefined storage.db, now imports db directly)
 - 2025-09-30: Created products page with grid layout, search functionality, and ranking count badges
 - 2025-09-30: Implemented intelligent multi-word search that matches products regardless of word order
