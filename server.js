@@ -912,7 +912,7 @@ app.get('/api/products/all', async (req, res) => {
       }
       
       // Fire-and-forget logging
-      storage.logProductSearch(searchTerm, resultCount, userId).catch(err => {
+      storage.logProductSearch(searchTerm, resultCount, userId, 'products').catch(err => {
         console.error('Failed to log search:', err);
       });
     }
@@ -995,7 +995,7 @@ app.get('/api/products/search', async (req, res) => {
       }
       
       // Fire-and-forget logging
-      storage.logProductSearch(searchTerm, resultCount, userId).catch(err => {
+      storage.logProductSearch(searchTerm, resultCount, userId, 'product_rankings').catch(err => {
         console.error('Failed to log search:', err);
       });
     }

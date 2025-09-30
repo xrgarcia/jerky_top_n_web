@@ -69,6 +69,7 @@ const userProductSearches = pgTable('user_product_searches', {
   userId: integer('user_id').references(() => users.id), // Nullable for anonymous searches
   searchTerm: text('search_term').notNull(),
   resultCount: integer('result_count').notNull(),
+  pageName: text('page_name').notNull(), // 'product_rankings' or 'products'
   searchedAt: timestamp('searched_at').defaultNow(),
 });
 

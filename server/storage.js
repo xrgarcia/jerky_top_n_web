@@ -194,12 +194,13 @@ class DatabaseStorage {
       .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)));
   }
 
-  async logProductSearch(searchTerm, resultCount, userId = null) {
+  async logProductSearch(searchTerm, resultCount, userId = null, pageName) {
     try {
       await db.insert(userProductSearches).values({
         userId,
         searchTerm,
         resultCount,
+        pageName,
       });
     } catch (error) {
       // Silently fail - don't interrupt the search experience
