@@ -1269,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function clearAllRankings() {
+    async function clearAllRankings() {
         if (confirm('Are you sure you want to clear all rankings?')) {
             // Clear all filled slots directly without triggering individual auto-saves
             rankingSlots.forEach((slot) => {
@@ -1292,9 +1292,38 @@ document.addEventListener('DOMContentLoaded', function() {
             // Reset to 10 slots
             generateRankingSlots(10);
             
-            // Trigger a single auto-save to persist the cleared state to the database
-            console.log('🗑️ Cleared all rankings, saving to database...');
-            scheduleAutoSave();
+            // Immediately save empty rankings array to database
+            console.log('🗑️ Cleared all rankings, saving empty state to database...');
+            try {
+                const sessionId = localStorage.getItem('customerSessionId');
+                if (!sessionId) {
+                    console.error('❌ No session ID, cannot clear database');
+                    return;
+                }
+                
+                updateAutoSaveStatus('saving', 'Clearing...');
+                
+                const response = await fetch('/api/rankings/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId: sessionId,
+                        rankingListId: 'default',
+                        rankings: [] // Send empty array to clear all rankings
+                    })
+                });
+                
+                if (response.ok) {
+                    console.log('✅ Successfully cleared all rankings from database');
+                    updateAutoSaveStatus('saved', '✓ All rankings cleared');
+                } else {
+                    console.error('❌ Failed to clear rankings from database');
+                    updateAutoSaveStatus('error', 'Clear failed');
+                }
+            } catch (error) {
+                console.error('❌ Error clearing rankings:', error);
+                updateAutoSaveStatus('error', 'Clear failed');
+            }
         }
     }
 
