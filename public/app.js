@@ -546,6 +546,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         console.error(`❌ Slot ${ranking.ranking} not found after expansion!`);
                     }
                 });
+                
+                // Refresh product display to filter out already-ranked products
+                displayProducts();
             } else {
                 console.log('📝 No saved rankings found, starting fresh');
             }
@@ -642,7 +645,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
         productList.innerHTML = '';
 
-        currentProducts.forEach(product => {
+        // Get IDs of products that are already ranked
+        const rankedProductIds = new Set(
+            rankingSlots
+                .filter(slot => slot.classList.contains('filled'))
+                .map(slot => {
+                    const productData = JSON.parse(slot.dataset.productData);
+                    return productData.id;
+                })
+        );
+
+        // Filter out products that are already ranked
+        const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
+
+        unrankedProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
             productCard.draggable = true;
@@ -915,6 +931,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Insert product with push-down behavior
             insertProductWithPushDown(targetRank, draggedProduct.data);
             
+            // Refresh product display to hide the ranked product
+            displayProducts();
+            
             // Check if we need to add more slots - use rank-specific check first, then general check
             checkAndAddMoreSlotsForRank(targetRank);
             checkAndAddMoreSlots();
@@ -1042,6 +1061,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         console.log(`🗑️ Removed rank ${rank}, moved ${itemsToMoveUp.length} items up`);
+        
+        // Refresh product display to show removed product again
+        displayProducts();
         
         // Trigger auto-save
         scheduleAutoSave();
@@ -1333,6 +1355,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Reset to 10 slots
         generateRankingSlots(10);
+        
+        // Refresh product display to show all products again
+        displayProducts();
         
         // Immediately save empty rankings array to database
         console.log('🗑️ Cleared all rankings, saving empty state to database...');
