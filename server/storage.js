@@ -1,4 +1,4 @@
-const { users, sessions, rankings, magicLinks, productRankings } = require('../shared/schema.js');
+const { users, sessions, rankings, magicLinks, productRankings, userProductSearches } = require('../shared/schema.js');
 const { db } = require('./db.js');
 const { eq, lt } = require('drizzle-orm');
 const crypto = require('crypto');
@@ -192,6 +192,19 @@ class DatabaseStorage {
     const { and } = require('drizzle-orm');
     await db.delete(productRankings)
       .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)));
+  }
+
+  async logProductSearch(searchTerm, resultCount, userId = null) {
+    try {
+      await db.insert(userProductSearches).values({
+        userId,
+        searchTerm,
+        resultCount,
+      });
+    } catch (error) {
+      // Silently fail - don't interrupt the search experience
+      console.error('Error logging product search:', error);
+    }
   }
 }
 

@@ -892,6 +892,31 @@ app.get('/api/products/all', async (req, res) => {
       rankingCount: rankingCounts[product.id.toString()] || 0
     }));
     
+    // Log search asynchronously (non-blocking)
+    if (query && query.trim() && storage) {
+      const searchTerm = query.trim();
+      const resultCount = transformedProducts.length;
+      
+      // Try to get userId from session
+      let userId = null;
+      try {
+        const sessionId = req.cookies.session_id || req.query.sessionId;
+        if (sessionId) {
+          const session = await storage.getSession(sessionId);
+          if (session) {
+            userId = session.userId;
+          }
+        }
+      } catch (err) {
+        // Continue without userId
+      }
+      
+      // Fire-and-forget logging
+      storage.logProductSearch(searchTerm, resultCount, userId).catch(err => {
+        console.error('Failed to log search:', err);
+      });
+    }
+    
     res.json({ 
       products: transformedProducts,
       total: transformedProducts.length
@@ -949,6 +974,31 @@ app.get('/api/products/search', async (req, res) => {
       price: product.variants?.[0]?.price || '0.00',
       compareAtPrice: product.variants?.[0]?.compare_at_price || null,
     }));
+    
+    // Log search asynchronously (non-blocking)
+    if (query && query.trim() && storage) {
+      const searchTerm = query.trim();
+      const resultCount = transformedProducts.length;
+      
+      // Try to get userId from session
+      let userId = null;
+      try {
+        const sessionId = req.cookies.session_id || req.query.sessionId;
+        if (sessionId) {
+          const session = await storage.getSession(sessionId);
+          if (session) {
+            userId = session.userId;
+          }
+        }
+      } catch (err) {
+        // Continue without userId
+      }
+      
+      // Fire-and-forget logging
+      storage.logProductSearch(searchTerm, resultCount, userId).catch(err => {
+        console.error('Failed to log search:', err);
+      });
+    }
     
     res.json({ 
       products: transformedProducts,

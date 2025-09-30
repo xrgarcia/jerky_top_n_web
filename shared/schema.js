@@ -63,6 +63,15 @@ const productRankings = pgTable('product_rankings', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
+// User product searches - tracks search queries for analytics
+const userProductSearches = pgTable('user_product_searches', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id), // Nullable for anonymous searches
+  searchTerm: text('search_term').notNull(),
+  resultCount: integer('result_count').notNull(),
+  searchedAt: timestamp('searched_at').defaultNow(),
+});
+
 // Relations
 const usersRelations = relations(users, ({ many }) => ({
   rankings: many(rankings),
@@ -89,6 +98,7 @@ module.exports = {
   rankings,
   magicLinks,
   productRankings,
+  userProductSearches,
   usersRelations,
   sessionsRelations,
   rankingsRelations
