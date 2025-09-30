@@ -22,9 +22,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Navigation event listeners
     navLinks.forEach(link => {
         link.addEventListener('click', async function(e) {
-            e.preventDefault();
             const targetPage = this.dataset.page;
-            await showPage(targetPage);
+            if (targetPage) {
+                e.preventDefault();
+                await showPage(targetPage);
+            }
         });
     });
 
