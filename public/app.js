@@ -1271,12 +1271,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function clearAllRankings() {
         if (confirm('Are you sure you want to clear all rankings?')) {
-            rankingSlots.forEach((slot, index) => {
-                removeFromSlot(index + 1);
+            // Clear all filled slots directly without triggering individual auto-saves
+            rankingSlots.forEach((slot) => {
+                if (slot.classList.contains('filled')) {
+                    slot.classList.remove('filled');
+                    const rank = parseInt(slot.dataset.rank);
+                    slot.innerHTML = `
+                        <div class="slot-number">${rank}</div>
+                        <div class="slot-placeholder">Drop a product here to rank #${rank}</div>
+                    `;
+                    delete slot.dataset.productData;
+                    
+                    // Remove drag listeners
+                    slot.draggable = false;
+                    slot.removeEventListener('dragstart', handleSlotDragStart);
+                    slot.removeEventListener('dragend', handleSlotDragEnd);
+                }
             });
-            generateRankingSlots(10); // Reset to 10 slots
             
-            // Trigger auto-save after clearing
+            // Reset to 10 slots
+            generateRankingSlots(10);
+            
+            // Trigger a single auto-save to persist the cleared state to the database
+            console.log('🗑️ Cleared all rankings, saving to database...');
             scheduleAutoSave();
         }
     }
