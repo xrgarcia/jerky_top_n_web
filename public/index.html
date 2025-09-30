@@ -22,8 +22,8 @@
             </div>
             
             <div class="nav-links">
-                <a href="/" class="nav-link" data-page="home">HOME</a>
-                <a href="/products" class="nav-link">PRODUCTS</a>
+                <a href="#" class="nav-link" data-page="home">HOME</a>
+                <a href="#" class="nav-link" data-page="products">PRODUCTS</a>
                 <a href="#" class="nav-link" data-page="rank">RANK A PRODUCT</a>
             </div>
             
@@ -120,21 +120,21 @@
         
         <!-- Products Page Content -->
         <div class="page-content" id="productsPage" style="display: none;">
-            <section class="page-header">
+            <div class="products-header">
                 <h2>All Products</h2>
-                <p>Browse our complete jerky catalog with ranking statistics</p>
-            </section>
-            
-            <div class="products-page-container">
-                <!-- Search Box -->
-                <div class="products-search-section">
-                    <input type="text" id="productsSearchInput" placeholder="Search products..." class="products-search-input">
-                    <div id="productsSearchResults" class="products-search-results" style="display: none;"></div>
+                <p class="products-subtitle">Browse our complete jerky catalog with ranking statistics</p>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="productsSearchInput" 
+                        placeholder="Search for jerky products..."
+                        autocomplete="off"
+                    >
                 </div>
-                
-                <!-- Products Grid -->
-                <div id="productsLoading" class="loading" style="display: none;">Loading products...</div>
-                <div id="productsGrid" class="products-grid"></div>
+            </div>
+
+            <div id="productsGrid" class="products-grid" style="min-height: 400px;">
+                <div id="productsLoading" class="loading">Loading products...</div>
             </div>
         </div>
     </main>

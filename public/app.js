@@ -1654,9 +1654,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
     }
     
-    // Products page search with type-ahead
+    // Products page search - filters grid directly
     const productsSearchInput = document.getElementById('productsSearchInput');
-    const productsSearchResults = document.getElementById('productsSearchResults');
     
     if (productsSearchInput) {
         productsSearchInput.addEventListener('input', (e) => {
@@ -1667,15 +1666,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearTimeout(searchTimeout);
             }
             
-            // Hide search results if less than 3 characters
-            if (query.length < 3) {
-                productsSearchResults.style.display = 'none';
-                productsSearchResults.innerHTML = '';
-                
-                // Show all products when search is cleared
-                if (query.length === 0) {
-                    displayProductsGrid(allProductsData);
-                }
+            // Show all products when search is cleared
+            if (query.length === 0) {
+                displayProductsGrid(allProductsData);
                 return;
             }
             
@@ -1689,57 +1682,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         throw new Error(data.error || 'Search failed');
                     }
                     
-                    const searchResults = data.products.slice(0, 8); // Show top 8 results
-                    
-                    if (searchResults.length === 0) {
-                        productsSearchResults.innerHTML = '<div style="padding: 16px; text-align: center; color: #666;">No products found</div>';
-                        productsSearchResults.style.display = 'block';
-                    } else {
-                        productsSearchResults.innerHTML = searchResults.map(product => `
-                            <div class="search-result-item" data-product-id="${product.id}">
-                                ${product.image 
-                                    ? `<img src="${product.image}" alt="${product.title}" class="search-result-image">` 
-                                    : '<div class="search-result-image" style="background: #f0f0f0;"></div>'}
-                                <div class="search-result-info">
-                                    <div class="search-result-title">${product.title}</div>
-                                    <div class="search-result-vendor">${product.vendor || 'Unknown Brand'}</div>
-                                </div>
-                            </div>
-                        `).join('');
-                        productsSearchResults.style.display = 'block';
-                        
-                        // Add click handlers to search results
-                        productsSearchResults.querySelectorAll('.search-result-item').forEach(item => {
-                            item.addEventListener('click', () => {
-                                const productId = item.dataset.productId;
-                                const product = searchResults.find(p => p.id === productId);
-                                if (product) {
-                                    // Update search input with selected product
-                                    productsSearchInput.value = product.title;
-                                    productsSearchResults.style.display = 'none';
-                                    
-                                    // Show only the selected product
-                                    displayProductsGrid([product]);
-                                }
-                            });
-                        });
-                    }
-                    
-                    // Also update the main grid with search results
+                    // Update the grid with search results
                     displayProductsGrid(data.products);
                 } catch (error) {
                     console.error('Search error:', error);
-                    productsSearchResults.innerHTML = '<div style="padding: 16px; text-align: center; color: #dc3545;">Search failed</div>';
-                    productsSearchResults.style.display = 'block';
                 }
             }, 300);
-        });
-        
-        // Hide search results when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!productsSearchInput.contains(e.target) && !productsSearchResults.contains(e.target)) {
-                productsSearchResults.style.display = 'none';
-            }
         });
     }
 });

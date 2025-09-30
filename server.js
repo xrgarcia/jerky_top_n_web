@@ -1511,14 +1511,9 @@ app.get('/api/jerky/top/:n', (req, res) => {
   });
 });
 
-// Main route
-app.get('/', (req, res) => {
+// Main route - serves SPA for all routes
+app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-// Products page route
-app.get('/products', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'products.html'));
 });
 
 // Periodic cleanup of expired sessions (every hour)
