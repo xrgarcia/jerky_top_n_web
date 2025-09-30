@@ -1620,7 +1620,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!productsGrid) return;
         
-        productsLoading.style.display = 'block';
+        if (productsLoading) {
+            productsLoading.style.display = 'block';
+        }
         
         try {
             const url = `/api/products/all${query ? `?query=${encodeURIComponent(query)}` : ''}`;
@@ -1639,7 +1641,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error loading products:', error);
             productsGrid.innerHTML = '<div style="color: #dc3545; text-align: center; padding: 40px;">Error loading products. Please try again.</div>';
         } finally {
-            productsLoading.style.display = 'none';
+            if (productsLoading) {
+                productsLoading.style.display = 'none';
+            }
         }
     }
     
