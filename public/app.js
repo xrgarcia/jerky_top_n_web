@@ -38,6 +38,38 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Page navigation functions
     async function showPage(page, updateURL = true) {
+        const communityPage = document.getElementById('communityPage');
+        const profilePage = document.getElementById('profilePage');
+        const productDetailPage = document.getElementById('productDetailPage');
+        
+        // Check if this is a product detail route
+        if (page.startsWith('product/')) {
+            const productId = page.split('/')[1];
+            
+            // Update URL hash if needed
+            if (updateURL && window.location.hash !== `#${page}`) {
+                window.location.hash = `#${page}`;
+            }
+            
+            // Hide all pages
+            if (homePage) homePage.style.display = 'none';
+            if (rankPage) rankPage.style.display = 'none';
+            if (productsPage) productsPage.style.display = 'none';
+            if (communityPage) communityPage.style.display = 'none';
+            if (profilePage) profilePage.style.display = 'none';
+            if (productDetailPage) productDetailPage.style.display = 'block';
+            
+            // Load product detail
+            await loadProductDetail(productId);
+            
+            // Update active nav link (products should be active)
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            const productsLink = document.querySelector('[data-page="products"]');
+            if (productsLink) productsLink.classList.add('active');
+            
+            return;
+        }
+        
         // Check if rank page requires authentication
         if (page === 'rank') {
             // First try quick sync check, then async if needed
@@ -62,10 +94,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (homePage) homePage.style.display = 'none';
         if (rankPage) rankPage.style.display = 'none';
         if (productsPage) productsPage.style.display = 'none';
-        const communityPage = document.getElementById('communityPage');
         if (communityPage) communityPage.style.display = 'none';
-        const profilePage = document.getElementById('profilePage');
         if (profilePage) profilePage.style.display = 'none';
+        if (productDetailPage) productDetailPage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -1673,6 +1704,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Store products data for detail page access
+        window.productsData = products;
+        
         productsGrid.innerHTML = products.map(product => {
             const rankingBadgeClass = product.rankingCount === 0 ? 'ranking-badge zero' : 'ranking-badge';
             const rankingText = product.rankingCount === 0 
@@ -1680,7 +1714,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 : `${product.rankingCount} ranking${product.rankingCount === 1 ? '' : 's'}`;
             
             return `
-                <div class="product-card" onclick="showProductDetail('${product.id}', '${product.title.replace(/'/g, "\\'")}', '${product.vendor || 'Unknown Brand'}', '${product.price}', '${product.image || ''}')">
+                <div class="product-card" onclick="navigateToProduct('${product.id}')">
                     <div class="product-card-image-container">
                         ${product.image 
                             ? `<img src="${product.image}" alt="${product.title}" class="product-card-image">` 
@@ -1700,25 +1734,54 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
     }
     
-    // Product detail modal functions
-    async function showProductDetail(productId, title, vendor, price, image) {
-        const modal = document.getElementById('productDetailModal');
-        const detailImage = document.getElementById('productDetailImage');
-        const detailTitle = document.getElementById('productDetailTitle');
-        const detailVendor = document.getElementById('productDetailVendor');
-        const detailPrice = document.getElementById('productDetailPrice');
-        const statRankers = document.getElementById('productStatRankers');
-        const statAvgRank = document.getElementById('productStatAvgRank');
+    // Navigate to product detail page
+    window.navigateToProduct = function(productId) {
+        showPage(`product/${productId}`);
+    };
+    
+    // Back button handler for product detail page
+    window.goBackToProducts = function() {
+        showPage('products', true);
+    };
+    
+    // Load product detail page
+    async function loadProductDetail(productId) {
+        const detailImage = document.getElementById('productDetailPageImage');
+        const detailTitle = document.getElementById('productDetailPageTitle');
+        const detailVendor = document.getElementById('productDetailPageVendor');
+        const detailPrice = document.getElementById('productDetailPagePrice');
+        const statRankers = document.getElementById('productDetailPageRankers');
+        const statAvgRank = document.getElementById('productDetailPageAvgRank');
         
-        // Set basic product info
-        detailTitle.textContent = title;
-        detailVendor.textContent = vendor;
-        detailPrice.textContent = `$${price}`;
-        detailImage.src = image || '';
-        detailImage.alt = title;
+        // Try to get product from cached data first
+        let product = window.productsData && window.productsData.find(p => p.id === productId);
         
-        // Show modal
-        modal.style.display = 'block';
+        // If not in cache, fetch from API
+        if (!product) {
+            try {
+                const response = await fetch(`/api/products/all?query=`);
+                const data = await response.json();
+                if (response.ok && data.products) {
+                    window.productsData = data.products;
+                    product = data.products.find(p => p.id === productId);
+                }
+            } catch (error) {
+                console.error('Error loading product:', error);
+            }
+        }
+        
+        // Set product info
+        if (product) {
+            detailTitle.textContent = product.title;
+            detailVendor.textContent = product.vendor || 'Unknown Brand';
+            detailPrice.textContent = `$${product.price}`;
+            detailImage.src = product.image || '';
+            detailImage.alt = product.title;
+        } else {
+            detailTitle.textContent = 'Product not found';
+            detailVendor.textContent = '';
+            detailPrice.textContent = '';
+        }
         
         // Reset stats to loading state
         statRankers.textContent = '-';
@@ -1743,21 +1806,6 @@ document.addEventListener('DOMContentLoaded', function() {
             statAvgRank.textContent = 'Error';
         }
     }
-    
-    window.showProductDetail = showProductDetail;
-    
-    window.closeProductDetail = function() {
-        const modal = document.getElementById('productDetailModal');
-        modal.style.display = 'none';
-    };
-    
-    // Close modal when clicking outside of it
-    window.addEventListener('click', function(event) {
-        const modal = document.getElementById('productDetailModal');
-        if (event.target === modal) {
-            closeProductDetail();
-        }
-    });
     
     // Products page search - filters grid directly
     const productsSearchInput = document.getElementById('productsSearchInput');

@@ -26,6 +26,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-01: **Product detail pages converted to full routable pages** - Replaced modal with full-page layout, hash routing (#product/{id}), dedicated back button that always returns to products page, proper deep-linking support
 - 2025-10-01: **Profile page implemented** - Displays user information, ranking statistics, and link to update profile on jerky.com; clickable user name in navigation
 - 2025-10-01: **Community page launched** - Added people service with user discovery, search by name or ranked products, optimized with PostgreSQL trigram indexes
 - 2025-09-30: **Product search analytics** - Added user_product_searches table tracking search term, result count, page name, and user ID
