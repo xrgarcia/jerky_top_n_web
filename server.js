@@ -1602,11 +1602,14 @@ app.get('/api/profile', async (req, res) => {
     }
     
     // Get session to find user ID
-    const session = await storage.findCustomerSession(sessionId);
+    const session = await storage.getSession(sessionId);
     
     if (!session) {
       return res.status(401).json({ error: 'Session expired' });
     }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
     
     // Get user profile with ranking stats
     const result = await db.execute(sql`
@@ -1616,8 +1619,8 @@ app.get('/api/profile', async (req, res) => {
         u.last_name,
         u.email,
         u.display_name,
-        COUNT(DISTINCT pr.product_id) as ranked_count,
-        COUNT(DISTINCT pr.id) as ranking_lists_count
+        COUNT(DISTINCT pr.shopify_product_id) as ranked_count,
+        COUNT(DISTINCT pr.ranking_list_id) as ranking_lists_count
       FROM users u
       LEFT JOIN product_rankings pr ON u.id = pr.user_id
       WHERE u.id = ${session.userId}
