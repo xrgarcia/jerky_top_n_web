@@ -6,9 +6,11 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 ## Features
 - View top N jerky products (3, 5, or 8 items)
 - Interactive ranking system with drag-and-drop functionality
+- Community page to discover fellow jerky enthusiasts
+- Search users by name or products they've ranked
 - Clean, professional design inspired by jerky.com
 - Responsive layout for desktop and mobile
-- Local storage for saving user rankings
+- Persistent rankings with database storage
 
 ## Architecture
 - **Frontend**: Vanilla HTML, CSS, and JavaScript
@@ -22,6 +24,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-01: **Community page launched** - Added people service with user discovery, search by name or ranked products, optimized with PostgreSQL trigram indexes
+- 2025-09-30: **Product search analytics** - Added user_product_searches table tracking search term, result count, page name, and user ID
 - 2025-09-30: **Prevented duplicate rankings** - Already-ranked products no longer appear in rank page search results
 - 2025-09-30: **Removed dropdown from products search** - Search now filters grid directly without showing dropdown suggestions
 - 2025-09-30: **Converted products page to SPA** - Eliminated white flash by integrating products into SPA with instant hash navigation (#products)
