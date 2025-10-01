@@ -1656,6 +1656,116 @@ body {
     box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
 }
 
+/* Product Detail Modal */
+.product-detail-modal {
+    max-width: 900px;
+    width: 95%;
+    padding: 0;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    font-size: 35px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    z-index: 1;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #000;
+}
+
+.product-detail-container {
+    display: flex;
+    gap: 40px;
+    padding: 40px;
+}
+
+.product-detail-image-section {
+    flex: 0 0 300px;
+}
+
+.product-detail-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.product-detail-info-section {
+    flex: 1;
+}
+
+.product-detail-title {
+    font-size: 28px;
+    color: #2c2c2c;
+    margin: 0 0 10px 0;
+    font-weight: 600;
+}
+
+.product-detail-vendor {
+    color: #666;
+    font-size: 16px;
+    margin: 0 0 10px 0;
+}
+
+.product-detail-price {
+    font-size: 24px;
+    color: #6B8E23;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+}
+
+.product-stats-section {
+    margin-top: 30px;
+    padding-top: 30px;
+    border-top: 2px solid #e0e0e0;
+}
+
+.product-stats-section h3 {
+    font-size: 20px;
+    color: #2c2c2c;
+    margin: 0 0 20px 0;
+}
+
+.product-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.product-stat-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+}
+
+.product-stat-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.product-stat-value {
+    font-size: 36px;
+    font-weight: 700;
+    color: #6B8E23;
+    margin-bottom: 5px;
+}
+
+.product-stat-label {
+    font-size: 12px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .products-grid {
@@ -1668,6 +1778,19 @@ body {
     }
     
     .community-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .product-detail-container {
+        flex-direction: column;
+        padding: 30px 20px;
+    }
+    
+    .product-detail-image-section {
+        flex: 0 0 auto;
+    }
+    
+    .product-stats-grid {
         grid-template-columns: 1fr;
     }
 }

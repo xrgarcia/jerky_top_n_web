@@ -1588,6 +1588,46 @@ app.get('/api/community/users', async (req, res) => {
   }
 });
 
+// GET /api/products/:productId/stats - Get product statistics
+app.get('/api/products/:productId/stats', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    // Get product statistics from rankings
+    const stats = await db.execute(sql`
+      SELECT 
+        COUNT(DISTINCT pr.user_id) as unique_rankers,
+        AVG(pr.ranking) as avg_ranking,
+        COUNT(*) as total_rankings,
+        MIN(pr.ranking) as best_ranking,
+        MAX(pr.ranking) as worst_ranking
+      FROM product_rankings pr
+      WHERE pr.shopify_product_id = ${productId}
+    `);
+    
+    const result = stats.rows[0];
+    
+    res.json({
+      productId,
+      uniqueRankers: parseInt(result.unique_rankers) || 0,
+      avgRanking: result.avg_ranking ? parseFloat(result.avg_ranking).toFixed(2) : null,
+      totalRankings: parseInt(result.total_rankings) || 0,
+      bestRanking: result.best_ranking ? parseInt(result.best_ranking) : null,
+      worstRanking: result.worst_ranking ? parseInt(result.worst_ranking) : null
+    });
+  } catch (error) {
+    console.error('Product stats fetch error:', error);
+    res.status(500).json({ error: 'Failed to load product statistics' });
+  }
+});
+
 // GET /api/profile - Get current user profile
 app.get('/api/profile', async (req, res) => {
   try {

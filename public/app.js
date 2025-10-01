@@ -1680,7 +1680,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 : `${product.rankingCount} ranking${product.rankingCount === 1 ? '' : 's'}`;
             
             return `
-                <div class="product-card">
+                <div class="product-card" onclick="showProductDetail('${product.id}', '${product.title.replace(/'/g, "\\'")}', '${product.vendor || 'Unknown Brand'}', '${product.price}', '${product.image || ''}')">
                     <div class="product-card-image-container">
                         ${product.image 
                             ? `<img src="${product.image}" alt="${product.title}" class="product-card-image">` 
@@ -1699,6 +1699,65 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         }).join('');
     }
+    
+    // Product detail modal functions
+    async function showProductDetail(productId, title, vendor, price, image) {
+        const modal = document.getElementById('productDetailModal');
+        const detailImage = document.getElementById('productDetailImage');
+        const detailTitle = document.getElementById('productDetailTitle');
+        const detailVendor = document.getElementById('productDetailVendor');
+        const detailPrice = document.getElementById('productDetailPrice');
+        const statRankers = document.getElementById('productStatRankers');
+        const statAvgRank = document.getElementById('productStatAvgRank');
+        
+        // Set basic product info
+        detailTitle.textContent = title;
+        detailVendor.textContent = vendor;
+        detailPrice.textContent = `$${price}`;
+        detailImage.src = image || '';
+        detailImage.alt = title;
+        
+        // Show modal
+        modal.style.display = 'block';
+        
+        // Reset stats to loading state
+        statRankers.textContent = '-';
+        statAvgRank.textContent = '-';
+        
+        // Fetch product statistics
+        try {
+            const response = await fetch(`/api/products/${productId}/stats`);
+            const stats = await response.json();
+            
+            if (response.ok) {
+                statRankers.textContent = stats.uniqueRankers;
+                statAvgRank.textContent = stats.avgRanking || 'N/A';
+            } else {
+                console.error('Failed to load product stats:', stats.error);
+                statRankers.textContent = 'Error';
+                statAvgRank.textContent = 'Error';
+            }
+        } catch (error) {
+            console.error('Error fetching product stats:', error);
+            statRankers.textContent = 'Error';
+            statAvgRank.textContent = 'Error';
+        }
+    }
+    
+    window.showProductDetail = showProductDetail;
+    
+    window.closeProductDetail = function() {
+        const modal = document.getElementById('productDetailModal');
+        modal.style.display = 'none';
+    };
+    
+    // Close modal when clicking outside of it
+    window.addEventListener('click', function(event) {
+        const modal = document.getElementById('productDetailModal');
+        if (event.target === modal) {
+            closeProductDetail();
+        }
+    });
     
     // Products page search - filters grid directly
     const productsSearchInput = document.getElementById('productsSearchInput');
