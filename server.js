@@ -1905,20 +1905,32 @@ app.get('/api/search/global', async (req, res) => {
       return res.json({ products: [], users: [] });
     }
     
-    // Search products from Shopify
-    const allProducts = await fetchAllShopifyProducts();
-    const queryLower = query.toLowerCase();
+    // Search products from Shopify using intelligent multi-word search
+    let allProducts = await fetchAllShopifyProducts();
+    const searchTerm = query.trim().toLowerCase();
+    
+    // Split search query into individual words
+    const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
+    
     const matchedProducts = allProducts.filter(product => {
-      return product.title.toLowerCase().includes(queryLower) ||
-             (product.vendor && product.vendor.toLowerCase().includes(queryLower));
+      // Combine all searchable fields into one string
+      const searchableText = [
+        product.title,
+        product.vendor,
+        product.product_type,
+        product.tags || ''
+      ].join(' ').toLowerCase();
+      
+      // Check if ALL search words exist in the searchable text (in any order)
+      return searchWords.every(word => searchableText.includes(word));
     });
     
     const products = matchedProducts.slice(0, limit).map(product => ({
-      id: product.id,
+      id: product.id.toString(),
       title: product.title,
       vendor: product.vendor,
-      price: product.price,
-      image: product.image,
+      price: product.variants?.[0]?.price || '0.00',
+      image: product.images?.[0]?.src || null,
       type: 'product'
     }));
     
