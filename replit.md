@@ -26,6 +26,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-01: **Routable login page replaces popup** - Converted popup login window to clean SPA page at #login with email-based magic link authentication; removed all popup dependencies
+- 2025-10-01: **Production deployment fixes** - Added robust error handling and environment detection (APP_DOMAIN works in both dev/production); server starts gracefully even with missing credentials
 - 2025-10-01: **Global unified search with type-ahead** - Redesigned search bar matches jerky.com styling; searches both products and community members in real-time with dropdown results that link to product/user pages
 - 2025-10-01: **Product cards in user profiles now link to product details** - Clicking any product in a user's ranking list navigates to the full product detail page with statistics
 - 2025-10-01: **User profile pages from community** - Clickable community members navigate to routable readonly profile pages (#user/{id}) showing first name & last initial with complete product rankings

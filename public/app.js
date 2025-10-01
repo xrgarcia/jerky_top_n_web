@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const homePage = document.getElementById('homePage');
     const rankPage = document.getElementById('rankPage');
     const productsPage = document.getElementById('productsPage');
+    const loginPage = document.getElementById('loginPage');
 
     let currentJerkyData = [];
     let userRanking = [];
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (communityPage) communityPage.style.display = 'none';
             if (profilePage) profilePage.style.display = 'none';
             if (productDetailPage) productDetailPage.style.display = 'none';
+            if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'block';
             
             // Load user profile
@@ -88,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (communityPage) communityPage.style.display = 'none';
             if (profilePage) profilePage.style.display = 'none';
             if (productDetailPage) productDetailPage.style.display = 'block';
+            if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'none';
             
             // Load product detail
@@ -129,6 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (profilePage) profilePage.style.display = 'none';
         if (productDetailPage) productDetailPage.style.display = 'none';
         if (userProfilePage) userProfilePage.style.display = 'none';
+        if (loginPage) loginPage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -147,6 +151,8 @@ document.addEventListener('DOMContentLoaded', function() {
             profilePage.style.display = 'block';
             // Load profile data when page is shown
             loadProfileData();
+        } else if (page === 'login' && loginPage) {
+            loginPage.style.display = 'block';
         }
         
         // Update active nav link
@@ -229,73 +235,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showLoginRequiredMessage() {
-        const message = `
-            <div style="
-                position: fixed; 
-                top: 50%; 
-                left: 50%; 
-                transform: translate(-50%, -50%); 
-                background: white; 
-                padding: 30px; 
-                border-radius: 12px; 
-                box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-                z-index: 1000;
-                max-width: 400px;
-                text-align: center;
-                border: 3px solid #6B8E23;
-            " id="loginModal">
-                <h3 style="color: #6B8E23; margin-bottom: 15px;">🔒 Login Required</h3>
-                <p style="color: #333; margin-bottom: 20px;">You need to log in with your jerky.com account to access the ranking page.</p>
-                <button 
-                    style="
-                        background: #6B8E23; 
-                        color: white; 
-                        border: none; 
-                        padding: 12px 24px; 
-                        border-radius: 6px; 
-                        font-size: 16px; 
-                        font-weight: 600; 
-                        cursor: pointer; 
-                        margin-right: 10px;
-                    " 
-                    onclick="closeLoginModal(); initiateCustomerLogin();">
-                    Log In Now
-                </button>
-                <button 
-                    style="
-                        background: #666; 
-                        color: white; 
-                        border: none; 
-                        padding: 12px 24px; 
-                        border-radius: 6px; 
-                        font-size: 16px; 
-                        cursor: pointer;
-                    " 
-                    onclick="closeLoginModal();">
-                    Cancel
-                </button>
-            </div>
-            <div style="
-                position: fixed; 
-                top: 0; 
-                left: 0; 
-                width: 100%; 
-                height: 100%; 
-                background: rgba(0,0,0,0.5); 
-                z-index: 999;
-            " id="loginOverlay" onclick="closeLoginModal();"></div>
-        `;
-        
-        document.body.insertAdjacentHTML('beforeend', message);
+        // Navigate to login page instead of showing modal
+        showPage('login');
     }
-
-    // Global function to close login modal
-    window.closeLoginModal = function() {
-        const modal = document.getElementById('loginModal');
-        const overlay = document.getElementById('loginOverlay');
-        if (modal) modal.remove();
-        if (overlay) overlay.remove();
-    };
 
     // Global function to switch to rank page
     window.showRankPage = async function() {
@@ -321,60 +263,76 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function initiateCustomerLogin() {
-        console.log('🔑 Starting customer login for jerky.com accounts...');
-        
-        try {
-            // Get authorization URL from server
-            const response = await fetch('/api/customer/auth/start');
-            const data = await response.json();
+        console.log('🔑 Navigating to login page...');
+        // Navigate to login page instead of opening popup
+        await showPage('login');
+    }
+    
+    // Login form handler
+    const submitLoginBtn = document.getElementById('submitLoginBtn');
+    const loginEmail = document.getElementById('loginEmail');
+    const loginMessage = document.getElementById('loginMessage');
+    
+    if (submitLoginBtn) {
+        submitLoginBtn.addEventListener('click', async () => {
+            const email = loginEmail?.value?.trim();
             
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to start authentication');
-            }
-            
-            // Open OAuth in new window
-            const authWindow = window.open(
-                data.authUrl, 
-                'jerky-customer-auth', 
-                'width=600,height=700,scrollbars=yes,resizable=yes'
-            );
-            
-            if (!authWindow) {
-                alert('Popup blocked! Please allow popups and try again.');
+            if (!email) {
+                showLoginMessage('Please enter your email address', 'error');
                 return;
             }
             
-            // Listen for login success message from popup
-            const messageHandler = (event) => {
-                if (event.data?.type === 'CUSTOMER_LOGIN_SUCCESS') {
-                    // Store session info
-                    localStorage.setItem('customerSessionId', event.data.sessionId);
-                    localStorage.setItem('customerInfo', JSON.stringify(event.data.customer));
-                    
-                    // Update UI
-                    updateAuthUI(event.data.customer);
-                    
-                    // Remove event listener
-                    window.removeEventListener('message', messageHandler);
-                    
-                    console.log('✅ Customer login successful:', event.data.customer);
+            // Disable button during submission
+            submitLoginBtn.disabled = true;
+            submitLoginBtn.textContent = 'Sending...';
+            
+            try {
+                const response = await fetch('/api/customer/email-login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showLoginMessage(data.message || 'Check your email for a login link!', 'success');
+                    if (loginEmail) loginEmail.value = '';
+                } else {
+                    showLoginMessage(data.error || 'Failed to send login link', 'error');
                 }
-            };
-            
-            window.addEventListener('message', messageHandler);
-            
-            // Clean up if window is closed manually
-            const checkClosed = setInterval(() => {
-                if (authWindow.closed) {
-                    clearInterval(checkClosed);
-                    window.removeEventListener('message', messageHandler);
-                }
-            }, 1000);
-            
-        } catch (error) {
-            console.error('Customer login error:', error);
-            alert('Failed to start login. Please try again.');
-        }
+            } catch (error) {
+                console.error('Login error:', error);
+                showLoginMessage('Failed to send login link. Please try again.', 'error');
+            } finally {
+                submitLoginBtn.disabled = false;
+                submitLoginBtn.textContent = 'Send Login Link';
+            }
+        });
+    }
+    
+    // Allow Enter key to submit
+    if (loginEmail) {
+        loginEmail.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                submitLoginBtn?.click();
+            }
+        });
+    }
+    
+    function showLoginMessage(message, type) {
+        if (!loginMessage) return;
+        
+        loginMessage.textContent = message;
+        loginMessage.className = `login-message ${type}`;
+        loginMessage.style.display = 'block';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            loginMessage.style.display = 'none';
+        }, 5000);
     }
 
     async function customerLogout() {
