@@ -119,9 +119,7 @@ body {
     display: flex;
     align-items: center;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 4px;
-    padding: 8px 12px;
+    padding: 0;
     gap: 8px;
 }
 
