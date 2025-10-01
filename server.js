@@ -1905,9 +1905,15 @@ app.get('/api/search/global', async (req, res) => {
       return res.json({ products: [], users: [] });
     }
     
-    // Search products
-    const productsResult = await shopifyIntegration.searchProducts(query, limit);
-    const products = productsResult.products.slice(0, limit).map(product => ({
+    // Search products from Shopify
+    const allProducts = await fetchAllShopifyProducts();
+    const queryLower = query.toLowerCase();
+    const matchedProducts = allProducts.filter(product => {
+      return product.title.toLowerCase().includes(queryLower) ||
+             (product.vendor && product.vendor.toLowerCase().includes(queryLower));
+    });
+    
+    const products = matchedProducts.slice(0, limit).map(product => ({
       id: product.id,
       title: product.title,
       vendor: product.vendor,
