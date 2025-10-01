@@ -59,8 +59,25 @@ const oauthSessions = new Map(); // For PKCE during OAuth flow
 // Jerky.com shop domain for customer authentication
 const JERKY_SHOP_DOMAIN = 'jerky-com.myshopify.com';
 
+// Get the application domain (works in both dev and production)
+function getAppDomain() {
+  // In production deployments, use REPL_SLUG and REPL_OWNER
+  if (process.env.REPL_SLUG && process.env.REPL_OWNER) {
+    return `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app`;
+  }
+  // In development, use REPLIT_DEV_DOMAIN
+  if (process.env.REPLIT_DEV_DOMAIN) {
+    return process.env.REPLIT_DEV_DOMAIN;
+  }
+  // Fallback
+  return 'localhost:5000';
+}
+
+const APP_DOMAIN = getAppDomain();
+
 console.log('🔧 Shopify Customer Authentication Configuration:');
 console.log('🏪  Shop Domain:', JERKY_SHOP_DOMAIN);
+console.log('🌐  App Domain:', APP_DOMAIN);
 console.log('🔑  Using Customer Account API for jerky.com accounts');
 
 // Configure Express to trust proxy (required for Replit)
