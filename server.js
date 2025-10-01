@@ -59,8 +59,15 @@ const oauthSessions = new Map(); // For PKCE during OAuth flow
 // Jerky.com shop domain for customer authentication
 const JERKY_SHOP_DOMAIN = 'jerky-com.myshopify.com';
 
-// Get the application domain (works in both dev and production)
-function getAppDomain() {
+// Get the application domain from request (works in both dev and production)
+function getAppDomainFromRequest(req) {
+  // Use the host header from the request (works for both dev and production)
+  const host = req.get('host');
+  if (host) {
+    return host;
+  }
+  
+  // Fallback to environment-based detection
   // In production deployments, use REPL_SLUG and REPL_OWNER
   if (process.env.REPL_SLUG && process.env.REPL_OWNER) {
     return `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app`;
@@ -73,7 +80,11 @@ function getAppDomain() {
   return 'localhost:5000';
 }
 
-const APP_DOMAIN = getAppDomain();
+// For startup logging only - not used for actual URLs
+const APP_DOMAIN = process.env.REPLIT_DEV_DOMAIN || 
+                   (process.env.REPL_SLUG && process.env.REPL_OWNER ? 
+                    `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app` : 
+                    'localhost:5000');
 
 console.log('🔧 Shopify Customer Authentication Configuration:');
 console.log('🏪  Shop Domain:', JERKY_SHOP_DOMAIN);
@@ -162,9 +173,11 @@ app.get('/api/customer/auth/start', async (req, res) => {
     
     console.log('🔑 Starting email-based customer authentication for jerky.com');
     
+    const appDomain = getAppDomainFromRequest(req);
+    
     // Return our email login form URL
     res.json({
-      authUrl: `https://${APP_DOMAIN}/customer-login`,
+      authUrl: `https://${appDomain}/customer-login`,
       state: 'email_auth'
     });
     
@@ -415,7 +428,8 @@ app.post('/api/customer/email-login', async (req, res) => {
     
     // Send magic link email
     const { sendEmail } = require('./server/replitmail.js');
-    const magicLinkUrl = `https://${APP_DOMAIN}/api/customer/magic-login?token=${token}`;
+    const appDomain = getAppDomainFromRequest(req);
+    const magicLinkUrl = `https://${appDomain}/api/customer/magic-login?token=${token}`;
     
     await sendEmail({
       to: customer.email,
@@ -571,7 +585,8 @@ app.get('/api/customer/magic-login', async (req, res) => {
     console.log(`✅ 90-day session created for jerky.com customer: ${customer.displayName}`);
 
     // Redirect back to rankings app with session
-    const redirectUrl = `https://${APP_DOMAIN}/#login-success?sessionId=${session.id}`;
+    const appDomain = getAppDomainFromRequest(req);
+    const redirectUrl = `https://${appDomain}/#login-success?sessionId=${session.id}`;
     
     res.send(`
       <html>
@@ -1268,7 +1283,7 @@ app.get('/api/customer/auth/callback', async (req, res) => {
         client_id: process.env.SHOPIFY_API_KEY,
         client_secret: process.env.SHOPIFY_API_SECRET,
         code: code,
-        redirect_uri: `https://${APP_DOMAIN}/api/customer/auth/callback`,
+        redirect_uri: `https://${getAppDomainFromRequest(req)}/api/customer/auth/callback`,
         code_verifier: oauthSession.codeVerifier
       })
     });
