@@ -164,7 +164,7 @@ app.get('/api/customer/auth/start', async (req, res) => {
     
     // Return our email login form URL
     res.json({
-      authUrl: `https://${process.env.REPLIT_DEV_DOMAIN}/customer-login`,
+      authUrl: `https://${APP_DOMAIN}/customer-login`,
       state: 'email_auth'
     });
     
@@ -415,7 +415,7 @@ app.post('/api/customer/email-login', async (req, res) => {
     
     // Send magic link email
     const { sendEmail } = require('./server/replitmail.js');
-    const magicLinkUrl = `https://${process.env.REPLIT_DEV_DOMAIN}/api/customer/magic-login?token=${token}`;
+    const magicLinkUrl = `https://${APP_DOMAIN}/api/customer/magic-login?token=${token}`;
     
     await sendEmail({
       to: customer.email,
@@ -571,7 +571,7 @@ app.get('/api/customer/magic-login', async (req, res) => {
     console.log(`✅ 90-day session created for jerky.com customer: ${customer.displayName}`);
 
     // Redirect back to rankings app with session
-    const redirectUrl = `https://${process.env.REPLIT_DEV_DOMAIN}/#login-success?sessionId=${session.id}`;
+    const redirectUrl = `https://${APP_DOMAIN}/#login-success?sessionId=${session.id}`;
     
     res.send(`
       <html>
@@ -1268,7 +1268,7 @@ app.get('/api/customer/auth/callback', async (req, res) => {
         client_id: process.env.SHOPIFY_API_KEY,
         client_secret: process.env.SHOPIFY_API_SECRET,
         code: code,
-        redirect_uri: `https://${process.env.REPLIT_DEV_DOMAIN}/api/customer/auth/callback`,
+        redirect_uri: `https://${APP_DOMAIN}/api/customer/auth/callback`,
         code_verifier: oauthSession.codeVerifier
       })
     });
