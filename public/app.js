@@ -1880,7 +1880,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     userRankingsList.innerHTML = rankings.map(ranking => {
                         const product = ranking.product;
                         return `
-                            <div class="user-ranking-item">
+                            <div class="user-ranking-item" onclick="navigateToProduct('${ranking.productId}')">
                                 <div class="user-ranking-number">#${ranking.rank}</div>
                                 ${product.image 
                                     ? `<img src="${product.image}" alt="${product.title}" class="user-ranking-product-image">` 

@@ -1730,11 +1730,14 @@ body {
     padding: 20px;
     background: #f9f9f9;
     border-radius: 8px;
-    transition: background 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .user-ranking-item:hover {
     background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .user-ranking-number {

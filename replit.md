@@ -26,6 +26,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-01: **Product cards in user profiles now link to product details** - Clicking any product in a user's ranking list navigates to the full product detail page with statistics
 - 2025-10-01: **User profile pages from community** - Clickable community members navigate to routable readonly profile pages (#user/{id}) showing first name & last initial with complete product rankings
 - 2025-10-01: **Product detail pages converted to full routable pages** - Replaced modal with full-page layout, hash routing (#product/{id}), dedicated back button that always returns to products page, proper deep-linking support
 - 2025-10-01: **Profile page implemented** - Displays user information, ranking statistics, and link to update profile on jerky.com; clickable user name in navigation
