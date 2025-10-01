@@ -6,14 +6,50 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Startup validation - check critical environment variables
+console.log('🚀 Starting Jerky Top N Web Application...');
+console.log('🔍 Checking environment configuration...');
+
+const requiredEnvVars = {
+  SHOPIFY_API_KEY: process.env.SHOPIFY_API_KEY,
+  SHOPIFY_API_SECRET: process.env.SHOPIFY_API_SECRET,
+  SHOPIFY_ADMIN_ACCESS_TOKEN: process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
+  DATABASE_URL: process.env.DATABASE_URL
+};
+
+let shopifyAvailable = true;
+let databaseAvailable = true;
+
+// Check Shopify credentials
+if (!requiredEnvVars.SHOPIFY_API_KEY || !requiredEnvVars.SHOPIFY_API_SECRET || !requiredEnvVars.SHOPIFY_ADMIN_ACCESS_TOKEN) {
+  console.warn('⚠️  WARNING: Shopify credentials not configured');
+  console.warn('   Missing one or more of: SHOPIFY_API_KEY, SHOPIFY_API_SECRET, SHOPIFY_ADMIN_ACCESS_TOKEN');
+  console.warn('   Authentication and product features will be limited');
+  shopifyAvailable = false;
+} else {
+  console.log('✅ Shopify credentials found');
+}
+
+// Check database connection
+if (!requiredEnvVars.DATABASE_URL) {
+  console.warn('⚠️  WARNING: DATABASE_URL not configured');
+  console.warn('   User data persistence will not be available');
+  databaseAvailable = false;
+} else {
+  console.log('✅ Database URL found');
+}
+
 // Import database storage
 let storage;
 try {
   const { storage: dbStorage } = require('./server/storage.js');
   storage = dbStorage;
   console.log('📂 Database storage connected');
+  databaseAvailable = true;
 } catch (err) {
-  console.error('❌ Database storage failed to load:', err);
+  console.error('❌ Database storage failed to load:', err.message);
+  console.warn('   Continuing without database - user sessions will not persist');
+  databaseAvailable = false;
 }
 
 // Store for temporary OAuth sessions only (PKCE during OAuth flow)
@@ -99,6 +135,14 @@ async function getCustomerAccountEndpoints() {
 // Email-based customer authentication
 app.get('/api/customer/auth/start', async (req, res) => {
   try {
+    if (!shopifyAvailable) {
+      console.error('🚫 Authentication unavailable: Shopify credentials not configured');
+      return res.status(503).json({ 
+        error: 'Authentication service unavailable',
+        message: 'Please configure Shopify credentials in deployment settings'
+      });
+    }
+    
     console.log('🔑 Starting email-based customer authentication for jerky.com');
     
     // Return our email login form URL
@@ -271,6 +315,14 @@ app.get('/customer-login', (req, res) => {
 // Magic link email authentication endpoint
 app.post('/api/customer/email-login', async (req, res) => {
   try {
+    if (!shopifyAvailable) {
+      console.error('🚫 Login unavailable: Shopify credentials not configured');
+      return res.status(503).json({ 
+        error: 'Login service unavailable',
+        message: 'Please configure Shopify credentials in deployment settings'
+      });
+    }
+    
     const { email } = req.body;
     
     if (!email) {
@@ -661,6 +713,11 @@ function scheduleNextCacheInvalidation() {
 
 // Helper function to fetch all products from Shopify with cursor-based pagination (actual API calls)
 async function fetchProductsFromShopify() {
+  if (!shopifyAvailable) {
+    console.error('❌ Cannot fetch products: Shopify credentials not configured');
+    throw new Error('Shopify credentials not configured');
+  }
+  
   let allProducts = [];
   let pageInfo = null;
   const limit = 250; // Shopify's max per request
@@ -824,6 +881,15 @@ function parseLinkHeader(linkHeader) {
 // Get all products with their ranking counts
 app.get('/api/products/all', async (req, res) => {
   try {
+    if (!shopifyAvailable) {
+      console.warn('⚠️  Products unavailable: Shopify credentials not configured');
+      return res.status(503).json({ 
+        error: 'Products service unavailable',
+        message: 'Please configure Shopify credentials in deployment settings',
+        products: []
+      });
+    }
+    
     const { query = '' } = req.query;
     
     console.log(`🛍️ Fetching all products with ranking counts, query: "${query}"`);
@@ -2002,7 +2068,37 @@ if (storage) {
 }
 
 // Start server on all interfaces (required for Replit)
-app.listen(PORT, '0.0.0.0', () => {
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Server successfully started!`);
   console.log(`🥩 Jerky Top N Web server running on http://0.0.0.0:${PORT}`);
   console.log(`Visit the app at: http://localhost:${PORT}`);
+  console.log('');
+  console.log('📊 Service Status:');
+  console.log(`   Shopify Integration: ${shopifyAvailable ? '✅ Available' : '⚠️  Unavailable (missing credentials)'}`);
+  console.log(`   Database: ${databaseAvailable ? '✅ Connected' : '⚠️  Unavailable'}`);
+  console.log('');
+  if (!shopifyAvailable) {
+    console.log('⚠️  To enable full functionality, configure these secrets in Deployment settings:');
+    console.log('   - SHOPIFY_API_KEY');
+    console.log('   - SHOPIFY_API_SECRET');
+    console.log('   - SHOPIFY_ADMIN_ACCESS_TOKEN');
+  }
+});
+
+// Handle server errors
+server.on('error', (error) => {
+  console.error('❌ Server error:', error);
+  if (error.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use`);
+  }
+  process.exit(1);
+});
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('🛑 SIGTERM received, shutting down gracefully...');
+  server.close(() => {
+    console.log('✅ Server closed');
+    process.exit(0);
+  });
 });
