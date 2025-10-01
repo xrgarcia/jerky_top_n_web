@@ -2078,4 +2078,138 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Failed to load profile:', error);
         }
     }
+    
+    // ========================================
+    // Global Search with Type-Ahead Dropdown
+    // ========================================
+    
+    const globalSearchInput = document.getElementById('globalSearchInput');
+    const globalSearchDropdown = document.getElementById('globalSearchDropdown');
+    let globalSearchTimeout = null;
+    
+    if (globalSearchInput && globalSearchDropdown) {
+        globalSearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            // Clear previous timeout
+            if (globalSearchTimeout) {
+                clearTimeout(globalSearchTimeout);
+            }
+            
+            // Hide dropdown if empty
+            if (query.length === 0) {
+                globalSearchDropdown.classList.remove('active');
+                globalSearchDropdown.innerHTML = '';
+                return;
+            }
+            
+            // Debounce search - wait 300ms after user stops typing
+            globalSearchTimeout = setTimeout(async () => {
+                try {
+                    const response = await fetch(`/api/search/global?q=${encodeURIComponent(query)}`);
+                    const data = await response.json();
+                    
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Search failed');
+                    }
+                    
+                    displayGlobalSearchResults(data);
+                } catch (error) {
+                    console.error('Global search error:', error);
+                    globalSearchDropdown.classList.remove('active');
+                }
+            }, 300);
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!globalSearchInput.contains(e.target) && !globalSearchDropdown.contains(e.target)) {
+                globalSearchDropdown.classList.remove('active');
+            }
+        });
+        
+        // Focus search input when clicking the search button
+        const searchBtn = document.querySelector('.search-btn');
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                globalSearchInput.focus();
+            });
+        }
+    }
+    
+    function displayGlobalSearchResults(data) {
+        const { products, users } = data;
+        
+        if (products.length === 0 && users.length === 0) {
+            globalSearchDropdown.innerHTML = '<div class="search-dropdown-empty">No results found</div>';
+            globalSearchDropdown.classList.add('active');
+            return;
+        }
+        
+        let html = '';
+        
+        // Display products section
+        if (products.length > 0) {
+            html += '<div class="search-dropdown-section">';
+            html += '<div class="search-dropdown-section-title">Products</div>';
+            products.forEach(product => {
+                html += `
+                    <div class="search-dropdown-item" data-type="product" data-id="${product.id}">
+                        ${product.image 
+                            ? `<img src="${product.image}" alt="${product.title}" class="search-dropdown-item-image">` 
+                            : '<div class="search-dropdown-item-image"></div>'}
+                        <div class="search-dropdown-item-info">
+                            <div class="search-dropdown-item-title">${product.title}</div>
+                            <div class="search-dropdown-item-subtitle">${product.vendor || 'Unknown Brand'} • $${product.price}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+        
+        // Display users section
+        if (users.length > 0) {
+            html += '<div class="search-dropdown-section">';
+            html += '<div class="search-dropdown-section-title">Community Members</div>';
+            users.forEach(user => {
+                html += `
+                    <div class="search-dropdown-item" data-type="user" data-id="${user.id}">
+                        <div class="search-dropdown-item-image" style="display: flex; align-items: center; justify-content: center; background: #6B8E23; color: white; font-weight: bold;">
+                            ${user.displayShort.charAt(0).toUpperCase()}
+                        </div>
+                        <div class="search-dropdown-item-info">
+                            <div class="search-dropdown-item-title">${user.displayShort}</div>
+                            <div class="search-dropdown-item-subtitle">${user.rankedCount} product${user.rankedCount === 1 ? '' : 's'} ranked</div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+        }
+        
+        globalSearchDropdown.innerHTML = html;
+        globalSearchDropdown.classList.add('active');
+        
+        // Add click handlers to dropdown items
+        const dropdownItems = globalSearchDropdown.querySelectorAll('.search-dropdown-item');
+        dropdownItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const type = item.getAttribute('data-type');
+                const id = item.getAttribute('data-id');
+                
+                // Clear search and hide dropdown
+                globalSearchInput.value = '';
+                globalSearchDropdown.classList.remove('active');
+                globalSearchDropdown.innerHTML = '';
+                
+                // Navigate to the appropriate page
+                if (type === 'product') {
+                    navigateToProduct(id);
+                } else if (type === 'user') {
+                    navigateToUser(id);
+                }
+            });
+        });
+    }
 });

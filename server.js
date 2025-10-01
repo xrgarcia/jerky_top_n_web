@@ -1895,6 +1895,75 @@ app.get('/api/jerky/top/:n', (req, res) => {
   });
 });
 
+// GET /api/search/global - Unified search for products and users
+app.get('/api/search/global', async (req, res) => {
+  try {
+    const query = req.query.q || '';
+    const limit = parseInt(req.query.limit) || 5;
+    
+    if (!query.trim()) {
+      return res.json({ products: [], users: [] });
+    }
+    
+    // Search products
+    const productsResult = await shopifyIntegration.searchProducts(query, limit);
+    const products = productsResult.products.slice(0, limit).map(product => ({
+      id: product.id,
+      title: product.title,
+      vendor: product.vendor,
+      price: product.price,
+      image: product.image,
+      type: 'product'
+    }));
+    
+    // Search users from community
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const usersResult = await db.execute(sql`
+      SELECT DISTINCT ON (u.id)
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        COUNT(DISTINCT pr.id) as ranked_count
+      FROM users u
+      LEFT JOIN product_rankings pr ON pr.user_id = u.id
+      WHERE 
+        u.first_name ILIKE ${`%${query}%`}
+        OR u.last_name ILIKE ${`%${query}%`}
+        OR u.display_name ILIKE ${`%${query}%`}
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+      ORDER BY u.id, ranked_count DESC
+      LIMIT ${limit}
+    `);
+    
+    const users = usersResult.rows.map(user => {
+      let displayShort;
+      if (user.first_name) {
+        const lastInitial = user.last_name ? ` ${user.last_name.charAt(0)}.` : '';
+        displayShort = `${user.first_name}${lastInitial}`;
+      } else {
+        displayShort = user.display_name || 'User';
+      }
+      
+      return {
+        id: user.id,
+        displayShort,
+        rankedCount: parseInt(user.ranked_count) || 0,
+        type: 'user'
+      };
+    });
+    
+    res.json({
+      products,
+      users
+    });
+  } catch (error) {
+    console.error('Global search error:', error);
+    res.status(500).json({ error: 'Search failed' });
+  }
+});
+
 // Main route - serves SPA for all routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
