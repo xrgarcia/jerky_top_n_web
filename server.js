@@ -2080,6 +2080,20 @@ app.get('/api/search/global', async (req, res) => {
   }
 });
 
+// Health check endpoint for Cloud Run deployments
+app.get('/health', (req, res) => {
+  const health = {
+    status: 'healthy',
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    services: {
+      shopify: shopifyAvailable,
+      database: databaseAvailable
+    }
+  };
+  res.status(200).json(health);
+});
+
 // Main route - serves SPA for all routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -2133,4 +2147,24 @@ process.on('SIGTERM', () => {
     console.log('✅ Server closed');
     process.exit(0);
   });
+});
+
+// Handle uncaught exceptions
+process.on('uncaughtException', (error) => {
+  console.error('❌ Uncaught Exception:', error);
+  console.error('Stack:', error.stack);
+  // Don't exit immediately in production - log and continue
+  if (process.env.NODE_ENV === 'production') {
+    console.error('⚠️  Continuing despite error in production mode');
+  }
+});
+
+// Handle unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ Unhandled Rejection at:', promise);
+  console.error('Reason:', reason);
+  // Don't exit immediately in production - log and continue
+  if (process.env.NODE_ENV === 'production') {
+    console.error('⚠️  Continuing despite error in production mode');
+  }
 });
