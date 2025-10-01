@@ -1588,6 +1588,63 @@ app.get('/api/community/users', async (req, res) => {
   }
 });
 
+// GET /api/profile - Get current user profile
+app.get('/api/profile', async (req, res) => {
+  try {
+    const sessionId = req.cookies.session_id;
+    
+    if (!sessionId) {
+      return res.status(401).json({ error: 'Not authenticated' });
+    }
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    // Get session to find user ID
+    const session = await storage.findCustomerSession(sessionId);
+    
+    if (!session) {
+      return res.status(401).json({ error: 'Session expired' });
+    }
+    
+    // Get user profile with ranking stats
+    const result = await db.execute(sql`
+      SELECT 
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.email,
+        u.display_name,
+        COUNT(DISTINCT pr.product_id) as ranked_count,
+        COUNT(DISTINCT pr.id) as ranking_lists_count
+      FROM users u
+      LEFT JOIN product_rankings pr ON u.id = pr.user_id
+      WHERE u.id = ${session.userId}
+      GROUP BY u.id, u.first_name, u.last_name, u.email, u.display_name
+    `);
+    
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const user = result.rows[0];
+    
+    res.json({
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      email: user.email,
+      displayName: user.display_name,
+      rankedCount: parseInt(user.ranked_count) || 0,
+      rankingListsCount: parseInt(user.ranking_lists_count) || 0
+    });
+  } catch (error) {
+    console.error('Profile fetch error:', error);
+    res.status(500).json({ error: 'Failed to load profile' });
+  }
+});
+
 // GET /api/community/search - Search users by name or products they've ranked
 app.get('/api/community/search', async (req, res) => {
   try {

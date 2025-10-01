@@ -8,6 +8,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Interactive ranking system with drag-and-drop functionality
 - Community page to discover fellow jerky enthusiasts
 - Search users by name or products they've ranked
+- Profile page to view user information and ranking statistics
+- Link to update profile on jerky.com
 - Clean, professional design inspired by jerky.com
 - Responsive layout for desktop and mobile
 - Persistent rankings with database storage
@@ -24,6 +26,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-01: **Profile page implemented** - Displays user information, ranking statistics, and link to update profile on jerky.com; clickable user name in navigation
 - 2025-10-01: **Community page launched** - Added people service with user discovery, search by name or ranked products, optimized with PostgreSQL trigram indexes
 - 2025-09-30: **Product search analytics** - Added user_product_searches table tracking search term, result count, page name, and user ID
 - 2025-09-30: **Prevented duplicate rankings** - Already-ranked products no longer appear in rank page search results

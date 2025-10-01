@@ -64,6 +64,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (productsPage) productsPage.style.display = 'none';
         const communityPage = document.getElementById('communityPage');
         if (communityPage) communityPage.style.display = 'none';
+        const profilePage = document.getElementById('profilePage');
+        if (profilePage) profilePage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -78,6 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
             communityPage.style.display = 'block';
             // Load community users when page is shown
             loadCommunityUsers();
+        } else if (page === 'profile' && profilePage) {
+            profilePage.style.display = 'block';
+            // Load profile data when page is shown
+            loadProfileData();
         }
         
         // Update active nav link
@@ -343,7 +349,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show logged in state
             if (loginBtn) loginBtn.style.display = 'none';
             if (userProfile) userProfile.style.display = 'inline';
-            if (userName) userName.textContent = customer.displayName || customer.firstName || customer.email;
+            if (userName) {
+                userName.textContent = customer.displayName || customer.firstName || customer.email;
+                
+                // Add click handler to navigate to profile page
+                userName.onclick = () => showPage('profile');
+            }
         } else {
             // Show logged out state
             if (loginBtn) loginBtn.style.display = 'inline';
@@ -1817,5 +1828,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 loadCommunityUsers(query);
             }, 300);
         });
+    }
+    
+    // Profile page functions
+    async function loadProfileData() {
+        try {
+            const response = await fetch('/api/profile');
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to load profile');
+            }
+            
+            // Update profile display
+            const profileName = document.getElementById('profileName');
+            const profileEmail = document.getElementById('profileEmail');
+            const profileAvatar = document.getElementById('profileAvatar');
+            const profileRankedCount = document.getElementById('profileRankedCount');
+            const profileListsCount = document.getElementById('profileListsCount');
+            
+            if (profileName) {
+                profileName.textContent = data.displayName || data.firstName || 'User';
+            }
+            
+            if (profileEmail) {
+                profileEmail.textContent = data.email || '';
+            }
+            
+            if (profileAvatar) {
+                const initials = data.displayName 
+                    ? data.displayName.charAt(0).toUpperCase() 
+                    : (data.firstName ? data.firstName.charAt(0).toUpperCase() : 'U');
+                profileAvatar.textContent = initials;
+            }
+            
+            if (profileRankedCount) {
+                profileRankedCount.textContent = data.rankedCount || 0;
+            }
+            
+            if (profileListsCount) {
+                profileListsCount.textContent = data.rankingListsCount || 0;
+            }
+        } catch (error) {
+            console.error('Failed to load profile:', error);
+        }
     }
 });

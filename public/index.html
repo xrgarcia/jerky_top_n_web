@@ -36,7 +36,7 @@
                 <div class="user-actions">
                     <span class="login-link" id="loginBtn" style="display: inline;">LOG IN</span>
                     <div class="user-profile" id="userProfile" style="display: none;">
-                        <span class="user-name" id="userName"></span>
+                        <span class="user-name" id="userName" style="cursor: pointer;"></span>
                         <span class="logout-link" id="logoutBtn">LOGOUT</span>
                     </div>
                     <span class="cart-link">🛒 CART</span>
@@ -156,6 +156,36 @@
 
             <div id="communityList" class="community-grid" style="min-height: 400px;">
                 <div id="communityLoading" class="loading">Loading community members...</div>
+            </div>
+        </div>
+
+        <!-- Profile Page Content -->
+        <div class="page-content" id="profilePage" style="display: none;">
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar" id="profileAvatar"></div>
+                    <div class="profile-info">
+                        <h2 id="profileName">Loading...</h2>
+                        <p id="profileEmail"></p>
+                    </div>
+                </div>
+                
+                <div class="profile-stats">
+                    <div class="profile-stat-card">
+                        <div class="profile-stat-number" id="profileRankedCount">0</div>
+                        <div class="profile-stat-label">Products Ranked</div>
+                    </div>
+                    <div class="profile-stat-card">
+                        <div class="profile-stat-number" id="profileListsCount">0</div>
+                        <div class="profile-stat-label">Ranking Lists</div>
+                    </div>
+                </div>
+
+                <div class="profile-actions">
+                    <a href="https://www.jerky.com/account" target="_blank" class="profile-update-btn">
+                        Update Profile on Jerky.com
+                    </a>
+                </div>
             </div>
         </div>
     </main>
