@@ -24,6 +24,7 @@
             <div class="nav-links">
                 <a href="#" class="nav-link" data-page="home">HOME</a>
                 <a href="#" class="nav-link" data-page="products">PRODUCTS</a>
+                <a href="#" class="nav-link" data-page="community">COMMUNITY</a>
                 <a href="#" class="nav-link" data-page="rank">RANK A PRODUCT</a>
             </div>
             
@@ -135,6 +136,26 @@
 
             <div id="productsGrid" class="products-grid" style="min-height: 400px;">
                 <div id="productsLoading" class="loading">Loading products...</div>
+            </div>
+        </div>
+
+        <!-- Community Page Content -->
+        <div class="page-content" id="communityPage" style="display: none;">
+            <div class="community-header">
+                <h2>Community</h2>
+                <p class="community-subtitle">Discover fellow jerky enthusiasts and their rankings</p>
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="communitySearchInput" 
+                        placeholder="Search by name or products they've ranked..."
+                        autocomplete="off"
+                    >
+                </div>
+            </div>
+
+            <div id="communityList" class="community-grid" style="min-height: 400px;">
+                <div id="communityLoading" class="loading">Loading community members...</div>
             </div>
         </div>
     </main>

@@ -1528,6 +1528,146 @@ app.get('/api/customer/rankings', async (req, res) => {
   }
 });
 
+// Community API endpoints
+// GET /api/community/users - List all users with ranking statistics
+app.get('/api/community/users', async (req, res) => {
+  try {
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    // Query users with aggregated ranking statistics
+    const users = await db.execute(sql`
+      SELECT 
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        COUNT(DISTINCT pr.shopify_product_id) AS ranked_count,
+        COUNT(DISTINCT pr.ranking_list_id) AS ranking_lists_count
+      FROM users u
+      LEFT JOIN product_rankings pr ON pr.user_id = u.id
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+      ORDER BY ranked_count DESC, u.id ASC
+      LIMIT ${limit} OFFSET ${offset}
+    `);
+    
+    // Format the response with displayShort
+    const formattedUsers = users.rows.map(user => {
+      let displayShort;
+      if (user.first_name) {
+        const lastInitial = user.last_name ? ` ${user.last_name.charAt(0)}.` : '';
+        displayShort = `${user.first_name}${lastInitial}`;
+      } else {
+        displayShort = user.display_name || 'User';
+      }
+      
+      return {
+        id: user.id,
+        displayShort,
+        rankedCount: parseInt(user.ranked_count) || 0,
+        rankingListsCount: parseInt(user.ranking_lists_count) || 0
+      };
+    });
+    
+    res.json({
+      users: formattedUsers,
+      limit,
+      offset
+    });
+    
+  } catch (error) {
+    console.error('Error fetching community users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// GET /api/community/search - Search users by name or products they've ranked
+app.get('/api/community/search', async (req, res) => {
+  try {
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const query = req.query.q || '';
+    const limit = parseInt(req.query.limit) || 20;
+    const offset = parseInt(req.query.offset) || 0;
+    
+    if (!query.trim()) {
+      return res.json({ users: [], limit, offset });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const searchTerm = `%${query.toLowerCase()}%`;
+    
+    // Search users by name OR products they've ranked
+    const users = await db.execute(sql`
+      WITH name_match AS (
+        SELECT u.id FROM users u
+        WHERE lower(u.first_name) LIKE ${searchTerm}
+           OR lower(u.last_name) LIKE ${searchTerm}
+           OR lower(u.display_name) LIKE ${searchTerm}
+      ), product_match AS (
+        SELECT DISTINCT pr.user_id AS id
+        FROM product_rankings pr
+        WHERE lower(pr.product_data->>'title') LIKE ${searchTerm}
+      ), matched AS (
+        SELECT id FROM name_match UNION SELECT id FROM product_match
+      )
+      SELECT 
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        COUNT(DISTINCT pr.shopify_product_id) AS ranked_count,
+        COUNT(DISTINCT pr.ranking_list_id) AS ranking_lists_count
+      FROM users u
+      LEFT JOIN product_rankings pr ON pr.user_id = u.id
+      WHERE u.id IN (SELECT id FROM matched)
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+      ORDER BY ranked_count DESC, u.id ASC
+      LIMIT ${limit} OFFSET ${offset}
+    `);
+    
+    // Format the response with displayShort
+    const formattedUsers = users.rows.map(user => {
+      let displayShort;
+      if (user.first_name) {
+        const lastInitial = user.last_name ? ` ${user.last_name.charAt(0)}.` : '';
+        displayShort = `${user.first_name}${lastInitial}`;
+      } else {
+        displayShort = user.display_name || 'User';
+      }
+      
+      return {
+        id: user.id,
+        displayShort,
+        rankedCount: parseInt(user.ranked_count) || 0,
+        rankingListsCount: parseInt(user.ranking_lists_count) || 0
+      };
+    });
+    
+    res.json({
+      users: formattedUsers,
+      query,
+      limit,
+      offset
+    });
+    
+  } catch (error) {
+    console.error('Error searching community users:', error);
+    res.status(500).json({ error: 'Failed to search users' });
+  }
+});
+
 // API endpoint to get jerky products from jerky.com (using storefront API)
 app.get('/api/jerky/products', async (req, res) => {
   try {

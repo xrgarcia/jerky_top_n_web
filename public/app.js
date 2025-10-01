@@ -62,6 +62,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (homePage) homePage.style.display = 'none';
         if (rankPage) rankPage.style.display = 'none';
         if (productsPage) productsPage.style.display = 'none';
+        const communityPage = document.getElementById('communityPage');
+        if (communityPage) communityPage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -72,6 +74,10 @@ document.addEventListener('DOMContentLoaded', function() {
             productsPage.style.display = 'block';
             // Load products when page is shown
             loadAllProducts();
+        } else if (page === 'community' && communityPage) {
+            communityPage.style.display = 'block';
+            // Load community users when page is shown
+            loadCommunityUsers();
         }
         
         // Update active nav link
@@ -1716,6 +1722,99 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch (error) {
                     console.error('Search error:', error);
                 }
+            }, 300);
+        });
+    }
+
+    // ========================================
+    // Community Page Functionality
+    // ========================================
+    
+    let allCommunityData = [];
+    let communitySearchTimeout = null;
+    
+    async function loadCommunityUsers(query = '') {
+        const communityLoading = document.getElementById('communityLoading');
+        const communityList = document.getElementById('communityList');
+        
+        if (!communityList) return;
+        
+        if (communityLoading) {
+            communityLoading.style.display = 'block';
+        }
+        
+        try {
+            const url = query 
+                ? `/api/community/search?q=${encodeURIComponent(query)}` 
+                : '/api/community/users';
+            const response = await fetch(url);
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to load community');
+            }
+            
+            allCommunityData = data.users;
+            displayCommunityGrid(allCommunityData);
+            
+            console.log(`✅ Loaded ${allCommunityData.length} community members`);
+        } catch (error) {
+            console.error('Error loading community:', error);
+            communityList.innerHTML = '<div style="color: #dc3545; text-align: center; padding: 40px;">Error loading community. Please try again.</div>';
+        } finally {
+            if (communityLoading) {
+                communityLoading.style.display = 'none';
+            }
+        }
+    }
+    
+    function displayCommunityGrid(users) {
+        const communityList = document.getElementById('communityList');
+        if (!communityList) return;
+        
+        if (users.length === 0) {
+            communityList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No community members found</div>';
+            return;
+        }
+        
+        communityList.innerHTML = users.map(user => {
+            return `
+                <div class="community-card">
+                    <div class="community-card-avatar">
+                        ${user.displayShort.charAt(0).toUpperCase()}
+                    </div>
+                    <div class="community-card-content">
+                        <div class="community-card-name">${user.displayShort}</div>
+                        <div class="community-card-stats">
+                            ${user.rankedCount} product${user.rankedCount === 1 ? '' : 's'} ranked
+                        </div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+    
+    // Community page search
+    const communitySearchInput = document.getElementById('communitySearchInput');
+    
+    if (communitySearchInput) {
+        communitySearchInput.addEventListener('input', (e) => {
+            const query = e.target.value.trim();
+            
+            // Clear previous timeout
+            if (communitySearchTimeout) {
+                clearTimeout(communitySearchTimeout);
+            }
+            
+            // Show all users when search is cleared
+            if (query.length === 0) {
+                loadCommunityUsers('');
+                return;
+            }
+            
+            // Debounce search - wait 300ms after user stops typing
+            communitySearchTimeout = setTimeout(() => {
+                loadCommunityUsers(query);
             }, 300);
         });
     }
