@@ -188,6 +188,30 @@
             </div>
         </div>
 
+        <!-- User Profile Page Content (Community View) -->
+        <div class="page-content" id="userProfilePage" style="display: none;">
+            <div class="user-profile-page-container">
+                <button class="back-button" onclick="goBackToCommunity()">← Back to Community</button>
+                
+                <div class="user-profile-header">
+                    <div class="user-profile-avatar" id="userProfileAvatar"></div>
+                    <div class="user-profile-info">
+                        <h1 id="userProfileName">Loading...</h1>
+                        <div class="user-profile-stats-inline">
+                            <span id="userProfileRankedCount">0</span> products ranked
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-rankings-section">
+                    <h2>Product Rankings</h2>
+                    <div id="userRankingsList" class="user-rankings-list">
+                        <div class="loading">Loading rankings...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Product Detail Page Content -->
         <div class="page-content" id="productDetailPage" style="display: none;">
             <div class="product-detail-page-container">

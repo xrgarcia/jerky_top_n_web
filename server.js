@@ -1688,6 +1688,100 @@ app.get('/api/profile', async (req, res) => {
   }
 });
 
+// GET /api/community/users/:userId/rankings - Get a specific user's rankings (public view)
+app.get('/api/community/users/:userId/rankings', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    // Get user info
+    const userResult = await db.execute(sql`
+      SELECT 
+        u.id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        COUNT(DISTINCT pr.shopify_product_id) as ranked_count,
+        COUNT(DISTINCT pr.ranking_list_id) as ranking_lists_count
+      FROM users u
+      LEFT JOIN product_rankings pr ON u.id = pr.user_id
+      WHERE u.id = ${userId}
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+    `);
+    
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    
+    const user = userResult.rows[0];
+    
+    // Format displayShort (first name and last initial)
+    let displayShort;
+    if (user.first_name) {
+      const lastInitial = user.last_name ? ` ${user.last_name.charAt(0)}.` : '';
+      displayShort = `${user.first_name}${lastInitial}`;
+    } else {
+      displayShort = user.display_name || 'User';
+    }
+    
+    // Get user's rankings with product data
+    const rankingsResult = await db.execute(sql`
+      SELECT 
+        pr.shopify_product_id,
+        pr.ranking,
+        pr.product_data,
+        pr.ranking_list_id
+      FROM product_rankings pr
+      WHERE pr.user_id = ${userId}
+      ORDER BY pr.ranking ASC, pr.created_at DESC
+    `);
+    
+    const rankings = rankingsResult.rows.map(row => {
+      // Parse product_data if it's stored as a string
+      let productData = row.product_data;
+      if (typeof productData === 'string') {
+        try {
+          productData = JSON.parse(productData);
+        } catch (error) {
+          console.error('Failed to parse product_data:', error);
+          productData = {};
+        }
+      }
+      
+      return {
+        productId: row.shopify_product_id,
+        rank: row.ranking,
+        product: {
+          title: productData.title || 'Unknown Product',
+          vendor: productData.vendor || 'Unknown Brand',
+          price: productData.price || '0.00',
+          image: productData.image || null
+        },
+        listId: row.ranking_list_id
+      };
+    });
+    
+    res.json({
+      user: {
+        id: user.id,
+        displayShort,
+        rankedCount: parseInt(user.ranked_count) || 0,
+        rankingListsCount: parseInt(user.ranking_lists_count) || 0
+      },
+      rankings
+    });
+  } catch (error) {
+    console.error('User rankings fetch error:', error);
+    res.status(500).json({ error: 'Failed to load user rankings' });
+  }
+});
+
 // GET /api/community/search - Search users by name or products they've ranked
 app.get('/api/community/search', async (req, res) => {
   try {

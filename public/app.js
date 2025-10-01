@@ -41,6 +41,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const communityPage = document.getElementById('communityPage');
         const profilePage = document.getElementById('profilePage');
         const productDetailPage = document.getElementById('productDetailPage');
+        const userProfilePage = document.getElementById('userProfilePage');
+        
+        // Check if this is a user profile route
+        if (page.startsWith('user/')) {
+            const userId = page.split('/')[1];
+            
+            // Update URL hash if needed
+            if (updateURL && window.location.hash !== `#${page}`) {
+                window.location.hash = `#${page}`;
+            }
+            
+            // Hide all pages
+            if (homePage) homePage.style.display = 'none';
+            if (rankPage) rankPage.style.display = 'none';
+            if (productsPage) productsPage.style.display = 'none';
+            if (communityPage) communityPage.style.display = 'none';
+            if (profilePage) profilePage.style.display = 'none';
+            if (productDetailPage) productDetailPage.style.display = 'none';
+            if (userProfilePage) userProfilePage.style.display = 'block';
+            
+            // Load user profile
+            await loadUserProfile(userId);
+            
+            // Update active nav link (community should be active)
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            const communityLink = document.querySelector('[data-page="community"]');
+            if (communityLink) communityLink.classList.add('active');
+            
+            return;
+        }
         
         // Check if this is a product detail route
         if (page.startsWith('product/')) {
@@ -58,6 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (communityPage) communityPage.style.display = 'none';
             if (profilePage) profilePage.style.display = 'none';
             if (productDetailPage) productDetailPage.style.display = 'block';
+            if (userProfilePage) userProfilePage.style.display = 'none';
             
             // Load product detail
             await loadProductDetail(productId);
@@ -97,6 +128,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (communityPage) communityPage.style.display = 'none';
         if (profilePage) profilePage.style.display = 'none';
         if (productDetailPage) productDetailPage.style.display = 'none';
+        if (userProfilePage) userProfilePage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -1744,6 +1776,16 @@ document.addEventListener('DOMContentLoaded', function() {
         showPage('products', true);
     };
     
+    // Navigate to user profile page
+    window.navigateToUser = function(userId) {
+        showPage(`user/${userId}`);
+    };
+    
+    // Back button handler for user profile page
+    window.goBackToCommunity = function() {
+        showPage('community', true);
+    };
+    
     // Load product detail page
     async function loadProductDetail(productId) {
         const detailImage = document.getElementById('productDetailPageImage');
@@ -1804,6 +1846,62 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error fetching product stats:', error);
             statRankers.textContent = 'Error';
             statAvgRank.textContent = 'Error';
+        }
+    }
+    
+    // Load user profile page
+    async function loadUserProfile(userId) {
+        const userAvatar = document.getElementById('userProfileAvatar');
+        const userName = document.getElementById('userProfileName');
+        const userRankedCount = document.getElementById('userProfileRankedCount');
+        const userRankingsList = document.getElementById('userRankingsList');
+        
+        // Set loading state
+        userName.textContent = 'Loading...';
+        userRankedCount.textContent = '0';
+        userRankingsList.innerHTML = '<div class="loading">Loading rankings...</div>';
+        
+        try {
+            const response = await fetch(`/api/community/users/${userId}/rankings`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                const { user, rankings } = data;
+                
+                // Set user info
+                userName.textContent = user.displayShort;
+                userRankedCount.textContent = user.rankedCount;
+                userAvatar.textContent = user.displayShort.charAt(0).toUpperCase();
+                
+                // Display rankings
+                if (rankings.length === 0) {
+                    userRankingsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No rankings yet</div>';
+                } else {
+                    userRankingsList.innerHTML = rankings.map(ranking => {
+                        const product = ranking.product;
+                        return `
+                            <div class="user-ranking-item">
+                                <div class="user-ranking-number">#${ranking.rank}</div>
+                                ${product.image 
+                                    ? `<img src="${product.image}" alt="${product.title}" class="user-ranking-product-image">` 
+                                    : '<div class="user-ranking-product-image"></div>'}
+                                <div class="user-ranking-product-info">
+                                    <div class="user-ranking-product-title">${product.title}</div>
+                                    <div class="user-ranking-product-vendor">${product.vendor || 'Unknown Brand'}</div>
+                                    <div class="user-ranking-product-price">$${product.price}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } else {
+                userName.textContent = 'User not found';
+                userRankingsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">User not found</div>';
+            }
+        } catch (error) {
+            console.error('Error loading user profile:', error);
+            userName.textContent = 'Error loading profile';
+            userRankingsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff0000;">Failed to load user profile</div>';
         }
     }
     
@@ -1897,7 +1995,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         communityList.innerHTML = users.map(user => {
             return `
-                <div class="community-card">
+                <div class="community-card" onclick="navigateToUser('${user.id}')">
                     <div class="community-card-avatar">
                         ${user.displayShort.charAt(0).toUpperCase()}
                     </div>

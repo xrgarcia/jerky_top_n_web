@@ -1656,6 +1656,126 @@ body {
     box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
 }
 
+/* User Profile Page (Community View) */
+.user-profile-page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.user-profile-header {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.user-profile-avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6B8E23, #8FBC8F);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 42px;
+    font-weight: bold;
+    flex-shrink: 0;
+}
+
+.user-profile-info h1 {
+    margin: 0 0 10px 0;
+    font-size: 32px;
+    color: #2c1810;
+}
+
+.user-profile-stats-inline {
+    color: #666;
+    font-size: 16px;
+}
+
+.user-profile-stats-inline span {
+    font-weight: 600;
+    color: #6B8E23;
+}
+
+.user-rankings-section {
+    background: white;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.user-rankings-section h2 {
+    margin: 0 0 30px 0;
+    font-size: 24px;
+    color: #2c1810;
+}
+
+.user-rankings-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.user-ranking-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.user-ranking-item:hover {
+    background: #f0f0f0;
+}
+
+.user-ranking-number {
+    font-size: 24px;
+    font-weight: bold;
+    color: #6B8E23;
+    min-width: 40px;
+    text-align: center;
+}
+
+.user-ranking-product-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    background: #e0e0e0;
+}
+
+.user-ranking-product-info {
+    flex: 1;
+}
+
+.user-ranking-product-title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #2c1810;
+    margin-bottom: 5px;
+}
+
+.user-ranking-product-vendor {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.user-ranking-product-price {
+    color: #6B8E23;
+    font-weight: 600;
+    font-size: 16px;
+}
+
 /* Product Detail Page */
 .product-detail-page-container {
     max-width: 1200px;
@@ -1797,5 +1917,38 @@ body {
     
     .product-stats-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .user-profile-page-container {
+        padding: 20px 15px;
+    }
+    
+    .user-profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    .user-profile-info h1 {
+        font-size: 24px;
+    }
+    
+    .user-rankings-section {
+        padding: 30px 20px;
+    }
+    
+    .user-ranking-item {
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .user-ranking-number {
+        font-size: 20px;
+        min-width: 30px;
+    }
+    
+    .user-ranking-product-image {
+        width: 60px;
+        height: 60px;
     }
 }
