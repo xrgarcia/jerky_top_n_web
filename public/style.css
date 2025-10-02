@@ -1009,9 +1009,15 @@ body {
         gap: 15px;
     }
     
-    .ranking-panel, .search-panel {
+    .ranking-panel {
         height: auto;
         min-height: auto;
+        overflow: visible;
+    }
+    
+    .search-panel {
+        height: auto;
+        min-height: calc(100vh - 200px); /* Fill remaining viewport height */
         overflow: visible;
     }
     
