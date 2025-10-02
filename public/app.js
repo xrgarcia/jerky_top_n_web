@@ -693,6 +693,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
         );
 
+        // Build dropdown options for ALL slots (not just empty ones)
+        // This allows users to replace/reorder products even when all slots are filled
+        const allSlotOptions = rankingSlots.map((slot, index) => {
+            const slotNum = index + 1;
+            const isFilled = slot.classList.contains('filled');
+            const label = isFilled ? `Replace #${slotNum}` : `Rank as #${slotNum}`;
+            return `<option value="${slotNum}">${label}</option>`;
+        }).join('');
+
         // Filter out products that are already ranked
         const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
 
@@ -708,11 +717,28 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="product-title">${product.title}</div>
                 <div class="product-vendor">${product.vendor || 'Unknown Brand'}</div>
                 <div class="product-price">$${product.price}</div>
+                <select class="rank-dropdown">
+                    <option value="">Choose rank...</option>
+                    ${allSlotOptions}
+                </select>
             `;
 
             // Add drag event listeners
             productCard.addEventListener('dragstart', handleDragStart);
             productCard.addEventListener('dragend', handleDragEnd);
+
+            // Add dropdown event listener
+            const dropdown = productCard.querySelector('.rank-dropdown');
+            dropdown.addEventListener('click', (e) => {
+                e.stopPropagation(); // Prevent card drag when clicking dropdown
+            });
+            dropdown.addEventListener('change', (e) => {
+                e.stopPropagation();
+                const slotNumber = parseInt(e.target.value);
+                if (slotNumber && slotNumber >= 1 && slotNumber <= rankingSlots.length) {
+                    assignProductToSlot(product, slotNumber - 1); // Convert to 0-indexed
+                }
+            });
 
             productList.appendChild(productCard);
         });
@@ -1054,6 +1080,26 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         console.log(`📦 Inserted product at rank ${targetRank}, pushed ${itemsToPushDown.length} items down`);
+    }
+
+    // Shared function for assigning products to slots (used by both drag-drop and dropdown)
+    function assignProductToSlot(productData, slotIndex) {
+        const targetRank = slotIndex + 1; // Convert from 0-indexed to 1-indexed
+        
+        console.log(`🎯 Assigning product "${productData.title}" to slot ${targetRank}`);
+        
+        // Insert product with push-down behavior
+        insertProductWithPushDown(targetRank, productData);
+        
+        // Refresh product display to hide the ranked product
+        displayProducts();
+        
+        // Check if we need to add more slots
+        checkAndAddMoreSlotsForRank(targetRank);
+        checkAndAddMoreSlots();
+        
+        // Trigger auto-save
+        scheduleAutoSave();
     }
 
     function removeFromSlot(rank) {
