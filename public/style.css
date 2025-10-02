@@ -1791,7 +1791,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    display: flex;
+    display: none;
     flex-direction: column;
     gap: 2px;
     align-items: center;
@@ -1799,6 +1799,13 @@ body {
     background: #6B8E23;
     z-index: 10;
     pointer-events: none;
+}
+
+.center-status:has(.status-indicator.loading),
+.center-status:has(.status-indicator.saving),
+.center-status:has(.status-indicator.saved),
+.center-status:has(.status-indicator.error) {
+    display: flex;
 }
 
 .center-status .status-indicator {
