@@ -1017,7 +1017,7 @@ body {
     
     .search-panel {
         height: auto;
-        min-height: calc(100vh - 200px); /* Fill remaining viewport height */
+        min-height: 100vh; /* Full viewport height so users can scroll and see many products */
         overflow: visible;
     }
     
@@ -1354,9 +1354,15 @@ body {
     }
     
     /* Ranking Container - Natural scrolling */
-    .ranking-panel, .search-panel {
+    .ranking-panel {
         height: auto;
         min-height: auto;
+        overflow: visible;
+    }
+    
+    .search-panel {
+        height: auto;
+        min-height: 100vh; /* Full viewport height for maximum product visibility */
         overflow: visible;
     }
     
