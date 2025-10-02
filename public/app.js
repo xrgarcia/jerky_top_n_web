@@ -681,32 +681,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const rankingPanel = document.getElementById('rankingPanel');
         const toggleBtn = document.getElementById('toggleRankingsBtn');
         
-        console.log('🔄 Toggle clicked');
-        console.log('📍 Panel element:', rankingPanel);
-        console.log('📍 Button element:', toggleBtn);
+        if (!rankingPanel || !toggleBtn) return;
         
-        if (!rankingPanel || !toggleBtn) {
-            console.error('❌ Panel or button not found!');
-            return;
-        }
-        
-        const wasCollapsed = rankingPanel.classList.contains('collapsed');
-        console.log('📊 Current state - collapsed:', wasCollapsed);
-        
-        if (wasCollapsed) {
+        if (rankingPanel.classList.contains('collapsed')) {
             rankingPanel.classList.remove('collapsed');
             toggleBtn.innerHTML = '▼ Collapse';
-            console.log('✅ Expanded panel - removed collapsed class');
         } else {
             rankingPanel.classList.add('collapsed');
             toggleBtn.innerHTML = '▶ Expand';
-            console.log('✅ Collapsed panel - added collapsed class');
         }
-        
-        console.log('📊 New classes:', rankingPanel.className);
-        console.log('📊 Computed display:', window.getComputedStyle(rankingPanel).display);
-        console.log('📊 Computed visibility:', window.getComputedStyle(rankingPanel).visibility);
-        console.log('📊 Computed height:', window.getComputedStyle(rankingPanel).height);
     }
 
     // Display products in the grid

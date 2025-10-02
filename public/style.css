@@ -1015,6 +1015,11 @@ body {
         overflow: visible;
     }
     
+    /* When expanded on mobile, ensure panel has actual height */
+    .ranking-panel:not(.collapsed) {
+        min-height: 300px;
+    }
+    
     .search-panel {
         height: auto;
         min-height: 100vh; /* Full viewport height so users can scroll and see many products */
@@ -1358,6 +1363,11 @@ body {
         height: auto;
         min-height: auto;
         overflow: visible;
+    }
+    
+    /* When expanded on small mobile, ensure panel has actual height */
+    .ranking-panel:not(.collapsed) {
+        min-height: 300px;
     }
     
     .search-panel {
