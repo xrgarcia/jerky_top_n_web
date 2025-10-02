@@ -676,6 +676,22 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Toggle rankings panel collapse/expand
+    function toggleRankingsPanel() {
+        const rankingPanel = document.getElementById('rankingPanel');
+        const toggleBtn = document.getElementById('toggleRankingsBtn');
+        
+        if (!rankingPanel || !toggleBtn) return;
+        
+        if (rankingPanel.classList.contains('collapsed')) {
+            rankingPanel.classList.remove('collapsed');
+            toggleBtn.innerHTML = '▼ Collapse';
+        } else {
+            rankingPanel.classList.add('collapsed');
+            toggleBtn.innerHTML = '▶ Expand';
+        }
+    }
+
     // Display products in the grid
     function displayProducts() {
         const productList = document.getElementById('productList');
@@ -708,7 +724,11 @@ document.addEventListener('DOMContentLoaded', function() {
         unrankedProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
-            productCard.draggable = true;
+            
+            // Only enable drag-and-drop on desktop (> 768px)
+            const isMobile = window.innerWidth <= 768;
+            productCard.draggable = !isMobile;
+            
             productCard.dataset.productId = product.id;
             productCard.dataset.productData = JSON.stringify(product);
 
@@ -723,9 +743,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 </select>
             `;
 
-            // Add drag event listeners
-            productCard.addEventListener('dragstart', handleDragStart);
-            productCard.addEventListener('dragend', handleDragEnd);
+            // Only add drag event listeners on desktop
+            if (!isMobile) {
+                productCard.addEventListener('dragstart', handleDragStart);
+                productCard.addEventListener('dragend', handleDragEnd);
+            }
 
             // Add dropdown event listener
             const dropdown = productCard.querySelector('.rank-dropdown');
@@ -802,6 +824,57 @@ document.addEventListener('DOMContentLoaded', function() {
         if (clearRankingBtn) {
             clearRankingBtn.addEventListener('click', showClearModal);
         }
+
+        // Toggle rankings collapse on mobile
+        const toggleRankingsBtn = document.getElementById('toggleRankingsBtn');
+        if (toggleRankingsBtn) {
+            toggleRankingsBtn.addEventListener('click', toggleRankingsPanel);
+        }
+
+        // Track previous viewport state to detect breakpoint changes
+        let wasMobile = window.innerWidth <= 768;
+        
+        // Handle viewport resize to maintain proper state
+        function handleViewportResize() {
+            const rankingPanel = document.getElementById('rankingPanel');
+            const toggleBtn = document.getElementById('toggleRankingsBtn');
+            const isMobileNow = window.innerWidth <= 768;
+            
+            if (!rankingPanel || !toggleBtn) return;
+            
+            // Detect if we crossed the breakpoint
+            const crossedBreakpoint = wasMobile !== isMobileNow;
+            
+            if (!isMobileNow) {
+                // Desktop mode: always expand rankings
+                rankingPanel.classList.remove('collapsed');
+                toggleBtn.innerHTML = '▼ Collapse';
+            } else {
+                // Mobile mode: collapsed by default (only on first load)
+                if (!rankingPanel.dataset.initialized) {
+                    rankingPanel.classList.add('collapsed');
+                    toggleBtn.innerHTML = '▶ Expand';
+                    rankingPanel.dataset.initialized = 'true';
+                }
+            }
+            
+            // Re-render products if we crossed the breakpoint to update draggable state
+            if (crossedBreakpoint && currentProducts.length > 0) {
+                displayProducts();
+            }
+            
+            wasMobile = isMobileNow;
+        }
+        
+        // Initial check
+        handleViewportResize();
+        
+        // Listen for viewport changes (debounced to avoid too many re-renders)
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(handleViewportResize, 150);
+        });
 
         // Modal event listeners
         const cancelClearBtn = document.getElementById('cancelClearBtn');
@@ -1024,10 +1097,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Store product data on the slot
         slot.dataset.productData = JSON.stringify(productData);
         
-        // Make the entire slot draggable for reordering
-        slot.draggable = true;
-        slot.addEventListener('dragstart', handleSlotDragStart);
-        slot.addEventListener('dragend', handleSlotDragEnd);
+        // Only make slot draggable on desktop (> 768px)
+        const isMobile = window.innerWidth <= 768;
+        if (!isMobile) {
+            slot.draggable = true;
+            slot.addEventListener('dragstart', handleSlotDragStart);
+            slot.addEventListener('dragend', handleSlotDragEnd);
+        }
     }
 
     function insertProductWithPushDown(targetRank, productData) {

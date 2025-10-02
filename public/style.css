@@ -1032,7 +1032,7 @@ body {
         text-align: center;
     }
     
-    .save-btn, .clear-btn {
+    .save-btn, .clear-btn, .toggle-btn {
         font-size: 13px;
         padding: 8px 14px;
         white-space: nowrap;
@@ -1040,11 +1040,36 @@ body {
         width: 100%;
     }
     
+    /* Show toggle button only on mobile */
+    .toggle-btn {
+        display: block !important;
+    }
+    
     .search-controls {
         flex-direction: column;
         gap: 8px;
         width: 100%;
         order: 2;
+    }
+    
+    /* Disable drag cursor on mobile */
+    .product-card {
+        cursor: default !important;
+    }
+    
+    .ranking-slot.filled {
+        cursor: default !important;
+    }
+    
+    /* Give more space to search products when rankings collapsed */
+    .ranking-panel.collapsed {
+        height: auto !important;
+        min-height: auto !important;
+    }
+    
+    .ranking-container:has(.ranking-panel.collapsed) .search-panel {
+        height: 75vh !important;
+        min-height: 600px !important;
     }
     
     .search-input-field {
@@ -1340,11 +1365,16 @@ body {
         text-align: center;
     }
     
-    .save-btn, .clear-btn {
+    .save-btn, .clear-btn, .toggle-btn {
         font-size: 12px;
         padding: 7px 12px;
         order: 2;
         width: 100%;
+    }
+    
+    /* Toggle button visible on small mobile */
+    .toggle-btn {
+        display: block !important;
     }
     
     .search-controls {
@@ -1352,6 +1382,26 @@ body {
         width: 100%;
         gap: 6px;
         order: 2;
+    }
+    
+    /* Disable drag cursor on mobile */
+    .product-card {
+        cursor: default !important;
+    }
+    
+    .ranking-slot.filled {
+        cursor: default !important;
+    }
+    
+    /* Give more space to search products when rankings collapsed */
+    .ranking-panel.collapsed {
+        height: auto !important;
+        min-height: auto !important;
+    }
+    
+    .ranking-container:has(.ranking-panel.collapsed) .search-panel {
+        height: 70vh !important;
+        min-height: 500px !important;
     }
     
     .search-input-field {
@@ -2001,7 +2051,7 @@ body {
 }
 
 /* Buttons */
-.save-btn, .clear-btn {
+.save-btn, .clear-btn, .toggle-btn {
     background: #6B8E23;
     color: white;
     border: none;
@@ -2022,12 +2072,33 @@ body {
     border: 1px solid rgba(255,255,255,0.3);
 }
 
+.toggle-btn {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
 .save-btn:hover:not(:disabled) {
     background: #5a7a1f;
 }
 
-.clear-btn:hover {
+.clear-btn:hover, .toggle-btn:hover {
     background: rgba(255,255,255,0.3);
+}
+
+/* Toggle button - hidden on desktop, shown on mobile */
+.toggle-btn {
+    display: none;
+}
+
+/* Collapsed Rankings Panel */
+.ranking-panel.collapsed .ranking-slots {
+    display: none;
+}
+
+.ranking-panel.collapsed {
+    height: auto !important;
+    min-height: auto !important;
+    flex: 0 0 auto;
 }
 
 
