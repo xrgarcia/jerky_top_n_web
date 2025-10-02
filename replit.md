@@ -5,13 +5,13 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 
 ## Features
 - View top N jerky products (3, 5, or 8 items)
-- Interactive ranking system with drag-and-drop functionality
+- Dual ranking system: drag-and-drop OR dropdown selection (mobile-friendly)
 - Community page to discover fellow jerky enthusiasts
 - Search users by name or products they've ranked
 - Profile page to view user information and ranking statistics
 - Link to update profile on jerky.com
 - Clean, professional design inspired by jerky.com
-- Responsive layout for desktop and mobile
+- Fully responsive layout optimized for desktop, tablet, and mobile
 - Persistent rankings with database storage
 
 ## Architecture
@@ -26,6 +26,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-02: **Dropdown ranking system for mobile** - Added dropdown selector on product cards as mobile-friendly alternative to drag-and-drop; users can select any rank position from dropdown; both methods work together seamlessly with full feature parity
+- 2025-10-02: **Mobile responsive fixes** - Fixed panel header height constraints using !important declarations; headers now properly expand to show all controls (title, buttons, search) on mobile devices
 - 2025-10-01: **Routable login page replaces popup** - Converted popup login window to clean SPA page at #login with email-based magic link authentication; removed all popup dependencies
 - 2025-10-01: **Production deployment fixes** - Added robust error handling and environment detection (APP_DOMAIN works in both dev/production); server starts gracefully even with missing credentials
 - 2025-10-01: **Global unified search with type-ahead** - Redesigned search bar matches jerky.com styling; searches both products and community members in real-time with dropdown results that link to product/user pages
