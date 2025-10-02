@@ -1002,7 +1002,7 @@ body {
         padding: 25px 20px;
     }
     
-    /* Ranking Container - Stack on Mobile */
+    /* Ranking Container - Stack on Mobile with natural scrolling */
     .ranking-container {
         flex-direction: column;
         height: auto;
@@ -1010,8 +1010,9 @@ body {
     }
     
     .ranking-panel, .search-panel {
-        height: 50vh;
-        min-height: 400px;
+        height: auto;
+        min-height: auto;
+        overflow: visible;
     }
     
     .panel-header {
@@ -1024,6 +1025,14 @@ body {
         gap: 10px;
         flex-shrink: 0;
         overflow: visible !important;
+    }
+    
+    /* Make Search Products header sticky on mobile */
+    .search-panel .panel-header {
+        position: sticky;
+        top: 60px; /* Below the main navigation */
+        z-index: 10;
+        background: #6B8E23;
     }
     
     .panel-header h3 {
@@ -1067,11 +1076,6 @@ body {
         min-height: auto !important;
     }
     
-    .ranking-container:has(.ranking-panel.collapsed) .search-panel {
-        height: 75vh !important;
-        min-height: 600px !important;
-    }
-    
     .search-input-field {
         width: 100%;
         font-size: 14px;
@@ -1084,11 +1088,13 @@ body {
         width: 100%;
     }
     
-    
+    /* Remove nested scrolling on mobile - let page scroll naturally */
     .ranking-slots,
     .product-results {
-        flex: 1 1 auto;
+        overflow-y: visible;
+        height: auto;
         min-height: 0;
+        padding: 20px;
     }
     
     .product-list {
@@ -1341,10 +1347,11 @@ body {
         font-size: 14px;
     }
     
-    /* Ranking Container */
+    /* Ranking Container - Natural scrolling */
     .ranking-panel, .search-panel {
-        height: 45vh;
-        min-height: 350px;
+        height: auto;
+        min-height: auto;
+        overflow: visible;
     }
     
     .panel-header {
@@ -1357,6 +1364,14 @@ body {
         gap: 8px;
         flex-shrink: 0;
         overflow: visible !important;
+    }
+    
+    /* Sticky Search Products header on small mobile */
+    .search-panel .panel-header {
+        position: sticky;
+        top: 60px;
+        z-index: 10;
+        background: #6B8E23;
     }
     
     .panel-header h3 {
@@ -1399,11 +1414,6 @@ body {
         min-height: auto !important;
     }
     
-    .ranking-container:has(.ranking-panel.collapsed) .search-panel {
-        height: 70vh !important;
-        min-height: 500px !important;
-    }
-    
     .search-input-field {
         width: 100%;
         font-size: 13px;
@@ -1416,9 +1426,11 @@ body {
         padding: 8px 12px;
     }
     
+    /* Remove nested scrolling - natural page scroll */
     .ranking-slots,
     .product-results {
-        flex: 1 1 auto;
+        overflow-y: visible;
+        height: auto;
         min-height: 0;
         padding: 12px;
     }
