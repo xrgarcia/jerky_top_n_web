@@ -760,39 +760,169 @@ body {
 }
 
 /* Responsive Design */
+
+/* Tablet and iPad (portrait) */
+@media (max-width: 1024px) {
+    body {
+        font-size: 15px;
+    }
+    
+    .nav-container {
+        padding: 0 15px;
+    }
+    
+    .logo-img {
+        height: 70px;
+    }
+    
+    .nav-links {
+        gap: 20px;
+    }
+    
+    .nav-link {
+        font-size: 13px;
+        padding: 6px 10px;
+    }
+    
+    .hero {
+        min-height: 350px;
+    }
+    
+    .hero-title {
+        font-size: 40px;
+    }
+    
+    .hero-subtitle {
+        font-size: 16px;
+    }
+    
+    .hero-banner {
+        padding: 25px 40px;
+        max-width: 500px;
+    }
+    
+    .main-content {
+        padding: 30px 20px;
+    }
+    
+    .page-header h2 {
+        font-size: 32px;
+    }
+    
+    .welcome-section h2 {
+        font-size: 36px;
+    }
+    
+    .ranking-container {
+        height: 60vh;
+    }
+    
+    .ranking-panel, .search-panel {
+        height: 60vh;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 20px;
+    }
+    
+    .community-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+}
+
+/* Mobile - Tablets and Large Phones */
 @media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+    
+    /* Navigation */
+    .main-nav {
+        padding: 12px 0;
+    }
+    
     .nav-container {
         flex-direction: column;
         gap: 15px;
+        padding: 0 15px;
+    }
+    
+    .logo-img {
+        height: 60px;
     }
     
     .nav-links {
         order: 3;
         justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .nav-link {
+        font-size: 12px;
+        padding: 8px 14px;
     }
     
     .nav-actions {
         order: 2;
         flex-direction: column;
         gap: 10px;
+        width: 100%;
     }
     
     .search-container {
         width: 100%;
-        max-width: 300px;
+        max-width: 100%;
+    }
+    
+    .search-input {
+        width: 100%;
+    }
+    
+    /* Hero Section */
+    .hero {
+        min-height: 300px;
     }
     
     .hero-title {
         font-size: 32px;
     }
     
+    .hero-subtitle {
+        font-size: 15px;
+    }
+    
     .hero-banner {
         padding: 20px 30px;
         transform: rotate(0deg);
+        max-width: 90%;
+    }
+    
+    /* Main Content */
+    .main-content {
+        padding: 25px 15px;
+    }
+    
+    .page-header h2 {
+        font-size: 28px;
+    }
+    
+    .page-header p {
+        font-size: 16px;
+    }
+    
+    /* Welcome Section */
+    .welcome-section {
+        padding: 40px 15px;
     }
     
     .welcome-section h2 {
         font-size: 28px;
+    }
+    
+    .welcome-section p {
+        font-size: 16px;
     }
     
     .featured-stats {
@@ -802,17 +932,31 @@ body {
     
     .cta-buttons {
         flex-direction: column;
-        align-items: center;
+        align-items: stretch;
+        width: 100%;
     }
     
     .cta-btn {
         width: 100%;
-        max-width: 300px;
+        padding: 14px 24px;
     }
     
+    /* Controls */
     .controls {
         flex-direction: column;
         text-align: center;
+        padding: 20px 15px;
+    }
+    
+    .controls select,
+    .controls button {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    /* Jerky Items */
+    .jerky-item {
+        padding: 20px;
     }
     
     .jerky-header {
@@ -821,12 +965,24 @@ body {
         gap: 8px;
     }
     
+    .jerky-name {
+        font-size: 18px;
+    }
+    
+    .jerky-price {
+        font-size: 16px;
+    }
+    
+    /* Announcement Banner */
     .announcement-banner {
         flex-direction: column;
         gap: 8px;
         text-align: center;
+        padding: 10px 15px;
+        font-size: 13px;
     }
     
+    /* Shopify Sections */
     .shop-input-container {
         flex-direction: column;
         align-items: stretch;
@@ -839,6 +995,629 @@ body {
     .shopify-auth {
         flex-direction: column;
         gap: 5px;
+    }
+    
+    .shopify-connect-section,
+    .connected-shop-section {
+        padding: 25px 20px;
+    }
+    
+    /* Ranking Container - Stack on Mobile */
+    .ranking-container {
+        flex-direction: column;
+        height: auto;
+        gap: 15px;
+    }
+    
+    .ranking-panel, .search-panel {
+        height: 50vh;
+        min-height: 400px;
+    }
+    
+    .panel-header h3 {
+        font-size: 16px;
+    }
+    
+    .product-list {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 12px;
+    }
+    
+    .product-card {
+        padding: 12px;
+    }
+    
+    .product-image {
+        height: 100px;
+    }
+    
+    /* Products Grid */
+    .products-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .product-card-image-container {
+        height: 180px;
+    }
+    
+    .product-card-title {
+        font-size: 15px;
+    }
+    
+    /* Community Grid */
+    .community-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .community-card {
+        padding: 18px;
+    }
+    
+    /* Product Detail */
+    .product-detail-content {
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 30px;
+    }
+    
+    .product-detail-image-section {
+        flex: 0 0 auto;
+    }
+    
+    .product-detail-page-container {
+        padding: 20px 15px;
+    }
+    
+    .product-detail-title {
+        font-size: 24px;
+    }
+    
+    .product-stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* User Profile */
+    .user-profile-page-container {
+        padding: 20px 15px;
+    }
+    
+    .user-profile-header {
+        flex-direction: column;
+        text-align: center;
+        padding: 30px 20px;
+    }
+    
+    .user-profile-info h1 {
+        font-size: 24px;
+    }
+    
+    .user-rankings-section {
+        padding: 30px 20px;
+    }
+    
+    .user-ranking-item {
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .user-ranking-number {
+        font-size: 20px;
+        min-width: 30px;
+    }
+    
+    .user-ranking-product-image {
+        width: 60px;
+        height: 60px;
+    }
+    
+    /* Profile Stats */
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+    }
+    
+    .profile-info h2 {
+        font-size: 26px;
+    }
+    
+    .profile-stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .profile-stat-card {
+        padding: 25px;
+    }
+    
+    /* Login Page */
+    .login-page-container {
+        margin: 30px auto;
+        padding: 15px;
+    }
+    
+    .login-content {
+        padding: 30px 25px;
+    }
+}
+
+/* Mobile - Phones */
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+    }
+    
+    /* Navigation */
+    .logo-img {
+        height: 50px;
+    }
+    
+    .nav-link {
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+    
+    .user-actions {
+        gap: 10px;
+    }
+    
+    /* Hero Section */
+    .hero {
+        min-height: 250px;
+        padding: 20px 0;
+    }
+    
+    .hero-content {
+        padding: 0 15px;
+    }
+    
+    .hero-title {
+        font-size: 24px;
+        margin-bottom: 8px;
+    }
+    
+    .hero-subtitle {
+        font-size: 14px;
+    }
+    
+    .hero-banner {
+        padding: 18px 25px;
+        border-radius: 10px;
+    }
+    
+    /* Main Content */
+    .main-content {
+        padding: 20px 12px;
+    }
+    
+    .page-header h2 {
+        font-size: 24px;
+    }
+    
+    .page-header p {
+        font-size: 15px;
+    }
+    
+    /* Welcome Section */
+    .welcome-section {
+        padding: 30px 12px;
+    }
+    
+    .welcome-section h2 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+    
+    .welcome-section p {
+        font-size: 15px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-item {
+        font-size: 12px;
+    }
+    
+    .cta-btn {
+        padding: 12px 20px;
+        font-size: 14px;
+    }
+    
+    /* Controls */
+    .controls {
+        padding: 18px 12px;
+    }
+    
+    .controls label {
+        font-size: 14px;
+    }
+    
+    .controls select,
+    .controls button {
+        font-size: 14px;
+        padding: 10px 15px;
+    }
+    
+    /* Jerky Items */
+    .jerky-item {
+        padding: 18px;
+    }
+    
+    .jerky-name {
+        font-size: 16px;
+    }
+    
+    .jerky-price {
+        font-size: 15px;
+    }
+    
+    .jerky-brand {
+        font-size: 14px;
+    }
+    
+    .rank {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+    }
+    
+    /* Ranking Container */
+    .ranking-panel, .search-panel {
+        height: 45vh;
+        min-height: 350px;
+    }
+    
+    .panel-header {
+        padding: 12px 15px;
+        height: 50px;
+    }
+    
+    .panel-header h3 {
+        font-size: 14px;
+    }
+    
+    .ranking-slots,
+    .product-results {
+        padding: 15px;
+    }
+    
+    .ranking-slot {
+        padding: 12px;
+        min-height: 70px;
+    }
+    
+    .slot-number {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+    }
+    
+    .slot-placeholder {
+        font-size: 13px;
+        margin-left: 30px;
+    }
+    
+    .ranked-product {
+        margin-left: 30px;
+        gap: 12px;
+    }
+    
+    .ranked-product-image {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .ranked-product-title {
+        font-size: 13px;
+    }
+    
+    .ranked-product-vendor {
+        font-size: 11px;
+    }
+    
+    /* Product Cards */
+    .product-list {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .product-card {
+        padding: 10px;
+    }
+    
+    .product-image {
+        height: 90px;
+    }
+    
+    .product-title {
+        font-size: 13px;
+    }
+    
+    .product-vendor {
+        font-size: 11px;
+    }
+    
+    .product-price {
+        font-size: 13px;
+    }
+    
+    /* Products Grid */
+    .products-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .product-card-image-container {
+        height: 200px;
+    }
+    
+    .product-card-content {
+        padding: 14px;
+    }
+    
+    .product-card-title {
+        font-size: 14px;
+    }
+    
+    .product-card-vendor {
+        font-size: 13px;
+    }
+    
+    .product-card-price {
+        font-size: 16px;
+    }
+    
+    .ranking-badge {
+        padding: 5px 10px;
+        font-size: 12px;
+        top: 10px;
+        right: 10px;
+    }
+    
+    /* Community */
+    .community-header h2,
+    .products-header h2 {
+        font-size: 24px;
+    }
+    
+    .community-subtitle,
+    .products-subtitle {
+        font-size: 15px;
+    }
+    
+    .community-card {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .community-card-avatar {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .community-card-name {
+        font-size: 16px;
+    }
+    
+    .community-card-stats {
+        font-size: 13px;
+    }
+    
+    /* Product Detail */
+    .product-detail-content {
+        padding: 25px 15px;
+        gap: 25px;
+    }
+    
+    .product-detail-title {
+        font-size: 20px;
+    }
+    
+    .product-detail-vendor {
+        font-size: 14px;
+    }
+    
+    .product-detail-price {
+        font-size: 20px;
+    }
+    
+    .product-stats-section h3 {
+        font-size: 18px;
+    }
+    
+    .product-stat-card {
+        padding: 18px;
+    }
+    
+    .product-stat-icon {
+        font-size: 28px;
+    }
+    
+    .product-stat-value {
+        font-size: 28px;
+    }
+    
+    .product-stat-label {
+        font-size: 11px;
+    }
+    
+    /* User Profile */
+    .user-profile-avatar,
+    .profile-avatar {
+        width: 70px;
+        height: 70px;
+        font-size: 28px;
+    }
+    
+    .user-profile-info h1 {
+        font-size: 20px;
+    }
+    
+    .user-profile-stats-inline {
+        font-size: 14px;
+    }
+    
+    .user-rankings-section h2 {
+        font-size: 20px;
+    }
+    
+    .user-ranking-item {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .user-ranking-number {
+        font-size: 18px;
+        min-width: 28px;
+    }
+    
+    .user-ranking-product-image {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .user-ranking-product-title {
+        font-size: 14px;
+    }
+    
+    .user-ranking-product-vendor {
+        font-size: 12px;
+    }
+    
+    .user-ranking-product-price {
+        font-size: 14px;
+    }
+    
+    .profile-info h2 {
+        font-size: 22px;
+    }
+    
+    .profile-info p {
+        font-size: 14px;
+    }
+    
+    .profile-stat-number {
+        font-size: 36px;
+    }
+    
+    .profile-stat-label {
+        font-size: 12px;
+    }
+    
+    /* Buttons */
+    .save-btn, .clear-btn,
+    .search-btn-field {
+        font-size: 13px;
+        padding: 8px 14px;
+    }
+    
+    /* Announcement Banner */
+    .announcement-banner {
+        font-size: 12px;
+        padding: 8px 12px;
+    }
+    
+    .announcement-btn {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+    
+    /* Shopify Sections */
+    .shopify-connect-section,
+    .connected-shop-section {
+        padding: 20px 15px;
+    }
+    
+    .shopify-connect-section h3,
+    .connected-info h3 {
+        font-size: 20px;
+    }
+    
+    .shopify-connect-section p {
+        font-size: 14px;
+    }
+    
+    .shop-input,
+    .auth-button,
+    .secondary-btn {
+        font-size: 14px;
+        padding: 10px 20px;
+    }
+    
+    /* Modal */
+    .modal-content {
+        width: 95%;
+        max-width: 95%;
+    }
+    
+    .modal-header {
+        padding: 20px 20px 14px 20px;
+    }
+    
+    .modal-header h3 {
+        font-size: 18px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    .modal-body p {
+        font-size: 14px;
+    }
+    
+    .modal-footer {
+        padding: 14px 20px 20px 20px;
+        flex-direction: column;
+    }
+    
+    .modal-btn {
+        width: 100%;
+        padding: 12px 20px;
+    }
+    
+    /* Login Page */
+    .login-page-container {
+        margin: 20px auto;
+        padding: 10px;
+    }
+    
+    .login-content {
+        padding: 25px 20px;
+    }
+    
+    .login-header h2 {
+        font-size: 20px;
+    }
+    
+    .login-subtitle {
+        font-size: 13px;
+    }
+    
+    .login-input {
+        font-size: 14px;
+        padding: 10px 12px;
+    }
+    
+    .login-submit-btn {
+        font-size: 16px;
+        padding: 12px;
+    }
+    
+    .login-message {
+        font-size: 13px;
+    }
+    
+    .login-note p {
+        font-size: 12px;
     }
 }
 
