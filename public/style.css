@@ -1015,40 +1015,50 @@ body {
     }
     
     .panel-header {
-        padding: 12px 15px;
-        flex-wrap: wrap;
-        gap: 8px;
+        padding: 10px 12px;
+        height: auto;
+        min-height: 60px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
         flex-shrink: 0;
     }
     
     .panel-header h3 {
         font-size: 15px;
-        flex: 1 1 auto;
-        min-width: 150px;
+        order: 1;
+        text-align: center;
     }
     
     .save-btn, .clear-btn {
         font-size: 13px;
         padding: 8px 14px;
         white-space: nowrap;
-    }
-    
-    .search-controls {
-        flex-wrap: wrap;
-        gap: 8px;
+        order: 2;
         width: 100%;
     }
     
+    .search-controls {
+        flex-direction: column;
+        gap: 8px;
+        width: 100%;
+        order: 2;
+    }
+    
     .search-input-field {
-        flex: 1 1 auto;
-        min-width: 120px;
-        font-size: 13px;
-        padding: 8px 10px;
+        width: 100%;
+        font-size: 14px;
+        padding: 10px 12px;
     }
     
     .search-btn-field {
         font-size: 13px;
-        padding: 8px 12px;
+        padding: 10px 14px;
+        width: 100%;
+    }
+    
+    .center-status {
+        min-height: 60px;
     }
     
     .ranking-slots,
@@ -1314,28 +1324,33 @@ body {
     }
     
     .panel-header {
-        padding: 10px 12px;
-        flex-wrap: wrap;
-        gap: 6px;
+        padding: 8px 10px;
+        height: auto;
+        min-height: 50px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
         flex-shrink: 0;
     }
     
     .panel-header h3 {
         font-size: 13px;
-        flex: 1 1 100%;
-        min-width: auto;
-        margin-bottom: 4px;
+        order: 1;
+        text-align: center;
     }
     
     .save-btn, .clear-btn {
         font-size: 12px;
         padding: 7px 12px;
+        order: 2;
+        width: 100%;
     }
     
     .search-controls {
         flex-direction: column;
         width: 100%;
         gap: 6px;
+        order: 2;
     }
     
     .search-input-field {
@@ -1348,6 +1363,10 @@ body {
         width: 100%;
         font-size: 13px;
         padding: 8px 12px;
+    }
+    
+    .center-status {
+        min-height: 50px;
     }
     
     .ranking-slots,
@@ -1758,6 +1777,7 @@ body {
     align-items: center;
     height: 60px;
     box-sizing: border-box;
+    position: relative;
 }
 
 .panel-header h3 {
@@ -1766,13 +1786,23 @@ body {
 }
 
 .center-status {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     display: flex;
     flex-direction: column;
     gap: 2px;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    min-width: 200px;
+    background: #6B8E23;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.center-status .status-indicator {
+    pointer-events: auto;
 }
 
 .search-controls {
