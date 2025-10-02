@@ -2125,7 +2125,12 @@ body {
     flex: 0 0 auto;
 }
 
-/* Expanded Rankings Panel - explicitly show slots */
+/* Expanded Rankings Panel - explicitly show slots and restore layout */
+.ranking-panel:not(.collapsed) {
+    display: flex;
+    flex-direction: column;
+}
+
 .ranking-panel:not(.collapsed) .ranking-slots {
     display: block;
 }
