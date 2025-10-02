@@ -1016,10 +1016,9 @@ body {
     
     .panel-header {
         padding: 12px 15px;
-        height: auto;
-        min-height: 60px;
         flex-wrap: wrap;
         gap: 8px;
+        flex-shrink: 0;
     }
     
     .panel-header h3 {
@@ -1050,6 +1049,12 @@ body {
     .search-btn-field {
         font-size: 13px;
         padding: 8px 12px;
+    }
+    
+    .ranking-slots,
+    .product-results {
+        flex: 1 1 auto;
+        min-height: 0;
     }
     
     .product-list {
@@ -1310,10 +1315,9 @@ body {
     
     .panel-header {
         padding: 10px 12px;
-        height: auto;
-        min-height: 50px;
         flex-wrap: wrap;
         gap: 6px;
+        flex-shrink: 0;
     }
     
     .panel-header h3 {
@@ -1348,7 +1352,9 @@ body {
     
     .ranking-slots,
     .product-results {
-        padding: 15px;
+        flex: 1 1 auto;
+        min-height: 0;
+        padding: 12px;
     }
     
     .ranking-slot {
