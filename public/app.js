@@ -136,35 +136,29 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Show selected page
         if (page === 'home' && homePage) {
-            console.log('📄 Showing home page');
             homePage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'home');
         } else if (page === 'rank' && rankPage) {
-            console.log('📄 Showing rank page');
             rankPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'rank');
             // Load rankings and products when page is shown
             loadRankPageData();
         } else if (page === 'products' && productsPage) {
-            console.log('📄 Showing products page');
             productsPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'products');
             // Load products when page is shown
             loadAllProducts();
         } else if (page === 'community' && communityPage) {
-            console.log('📄 Showing community page');
             communityPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'community');
             // Load community users when page is shown
             loadCommunityUsers();
         } else if (page === 'profile' && profilePage) {
-            console.log('📄 Showing profile page');
             profilePage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'profile');
             // Load profile data when page is shown
             loadProfileData();
         } else if (page === 'login' && loginPage) {
-            console.log('📄 Showing login page');
             loginPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'login');
         }
@@ -467,8 +461,6 @@ document.addEventListener('DOMContentLoaded', function() {
         // If no hash, try to restore from sessionStorage
         const savedPage = sessionStorage.getItem('currentPage');
         const page = hash || savedPage || 'home';
-        
-        console.log('🔄 Routing - Hash:', window.location.hash, 'Saved:', savedPage, 'Page:', page);
         
         // Show the page based on URL hash, but don't update URL again (prevent loop)
         showPage(page, false);

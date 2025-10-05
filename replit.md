@@ -26,6 +26,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-05: **Full page refresh preservation** - Implemented dual routing strategy (hash + sessionStorage) to preserve current page on browser refresh; users can now refresh on any page (products, community, rank, profile) and stay on that page instead of being redirected to home
+- 2025-10-05: **Fixed data loading on initial page access** - Added loadRankPageData() function to ensure rankings and products load when rank page is accessed directly via URL or browser navigation; all pages now load their data on first access
 - 2025-10-02: **Natural page scrolling on mobile ranking page** - Eliminated nested scrollbars; entire page now scrolls naturally allowing users to see multiple product cards at once; Search Products header becomes sticky at top when scrolling; panels stack vertically with auto height on mobile devices
 - 2025-10-02: **Mobile UX optimizations for ranking page** - Disabled drag-and-drop on mobile (uses dropdown only); made "Your Rankings" collapsible and collapsed by default; increased search products panel space to show multiple cards at once; viewport-aware resize handling ensures correct behavior across device orientations
 - 2025-10-02: **Dropdown ranking system for mobile** - Added dropdown selector on product cards as mobile-friendly alternative to drag-and-drop; users can select any rank position from dropdown; both methods work together seamlessly with full feature parity
