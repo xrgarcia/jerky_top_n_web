@@ -455,6 +455,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Product ranking system variables - declare before routing to avoid initialization errors
+    let rankingSlots = [];
+    let currentProducts = [];
+    let currentPage = 1;
+    let isLoading = false;
+    let hasMoreProducts = true;
+    let currentSearchQuery = '';
+
     // URL routing functions
     function handleRouting() {
         const hash = window.location.hash.replace('#', '');
@@ -477,14 +485,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Handle login success from URL hash (for direct magic link navigation)
     handleLoginSuccessFromURL();
-
-    // Product ranking system variables
-    let rankingSlots = [];
-    let currentProducts = [];
-    let currentPage = 1;
-    let isLoading = false;
-    let hasMoreProducts = true;
-    let currentSearchQuery = '';
 
     // Load rank page data (rankings + products)
     async function loadRankPageData() {
