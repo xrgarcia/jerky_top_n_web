@@ -139,6 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
             homePage.style.display = 'block';
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
+            // Load rankings and products when page is shown
+            loadRankPageData();
         } else if (page === 'products' && productsPage) {
             productsPage.style.display = 'block';
             // Load products when page is shown
@@ -475,6 +477,33 @@ document.addEventListener('DOMContentLoaded', function() {
     let isLoading = false;
     let hasMoreProducts = true;
     let currentSearchQuery = '';
+
+    // Load rank page data (rankings + products)
+    async function loadRankPageData() {
+        if (!document.getElementById('rankingSlots')) return;
+        
+        // Only generate slots if they don't exist yet
+        if (rankingSlots.length === 0) {
+            generateRankingSlots(10); // Start with 10 slots
+            setupEventListeners();
+        }
+        
+        showRankingLoadStatus(); // Show loading indicator
+        
+        // Load rankings and products simultaneously for better performance
+        console.log('🚀 Loading rankings and products in parallel...');
+        try {
+            await Promise.all([
+                loadUserRankings(), // Load user's saved rankings
+                loadProductsForInitialLoad() // Load initial products (modified for parallel loading)
+            ]);
+            console.log('✅ Both rankings and products loaded successfully');
+        } catch (error) {
+            console.error('❌ Error during parallel loading:', error);
+        } finally {
+            hideRankingLoadStatus(); // Hide loading indicator only after both complete
+        }
+    }
 
     // Initialize ranking system on page load
     async function initializeRankingSystem() {
