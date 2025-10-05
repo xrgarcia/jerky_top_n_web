@@ -751,7 +751,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const allSlotOptions = rankingSlots.map((slot, index) => {
             const slotNum = index + 1;
             const isFilled = slot.classList.contains('filled');
-            const label = isFilled ? `Replace #${slotNum}` : `Rank as #${slotNum}`;
+            
+            let label;
+            if (isFilled && slot.dataset.productData) {
+                // Show the product name that's currently in this slot
+                const productData = JSON.parse(slot.dataset.productData);
+                const productName = productData.title || 'Unknown Product';
+                // Truncate long product names for readability
+                const truncatedName = productName.length > 30 ? productName.substring(0, 30) + '...' : productName;
+                label = `${slotNum} - ${truncatedName}`;
+            } else {
+                label = `${slotNum} - Empty`;
+            }
+            
             return `<option value="${slotNum}">${label}</option>`;
         }).join('');
 
