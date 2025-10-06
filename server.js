@@ -806,7 +806,21 @@ async function fetchProductsFromShopify() {
   }
   
   console.log(`🛍️ Total products fetched from Shopify: ${allProducts.length}`);
-  return allProducts;
+  
+  // Filter to only include products with "rankable" tag
+  const rankableProducts = allProducts.filter(product => {
+    if (!product.tags) return false;
+    
+    // Tags can be a comma-separated string or an array
+    const tags = Array.isArray(product.tags) 
+      ? product.tags 
+      : product.tags.split(',').map(tag => tag.trim().toLowerCase());
+    
+    return tags.includes('rankable');
+  });
+  
+  console.log(`✅ Filtered to ${rankableProducts.length} rankable products (out of ${allProducts.length} total)`);
+  return rankableProducts;
 }
 
 // Main function to get products (checks cache first, then fetches if needed)
