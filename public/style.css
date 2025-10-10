@@ -2400,6 +2400,164 @@ body {
     background: #c82333;
 }
 
+/* Ranking Modal Styles */
+.rank-modal-content {
+    max-width: 600px;
+    max-height: 80vh;
+}
+
+.modal-header {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.close-modal-btn {
+    background: none;
+    border: none;
+    font-size: 28px;
+    color: #999;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+}
+
+.close-modal-btn:hover {
+    color: #333;
+}
+
+.rank-modal-body {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.ranking-positions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.position-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    background: #f9f9f9;
+    transition: all 0.2s ease;
+}
+
+.position-item:hover {
+    border-color: #6B8E23;
+    background: #f5f8f0;
+}
+
+.position-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.position-number {
+    font-size: 18px;
+    font-weight: 700;
+    color: #6B8E23;
+}
+
+.position-status {
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.position-status.empty {
+    background: #e0e0e0;
+    color: #666;
+}
+
+.position-status.filled {
+    background: #d4edda;
+    color: #155724;
+}
+
+.position-product-name {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+    font-style: italic;
+}
+
+.position-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.position-btn {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.replace-btn {
+    background: #ffc107;
+    color: #333;
+}
+
+.replace-btn:hover {
+    background: #ffb300;
+}
+
+.replace-btn:disabled {
+    background: #f5f5f5;
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.insert-btn {
+    background: #6B8E23;
+    color: white;
+}
+
+.insert-btn:hover {
+    background: #5a7a1e;
+}
+
+/* Rank button on product cards */
+.rank-btn {
+    width: 100%;
+    padding: 10px;
+    background: #6B8E23;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.5px;
+}
+
+.rank-btn:hover {
+    background: #5a7a1e;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(107, 142, 35, 0.3);
+}
+
 /* Products Page Styles */
 .products-page {
     max-width: 1400px;

@@ -746,27 +746,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
         );
 
-        // Build dropdown options for ALL slots (not just empty ones)
-        // This allows users to replace/reorder products even when all slots are filled
-        const allSlotOptions = rankingSlots.map((slot, index) => {
-            const slotNum = index + 1;
-            const isFilled = slot.classList.contains('filled');
-            
-            let label;
-            if (isFilled && slot.dataset.productData) {
-                // Show the product name that's currently in this slot
-                const productData = JSON.parse(slot.dataset.productData);
-                const productName = productData.title || 'Unknown Product';
-                // Truncate long product names for readability
-                const truncatedName = productName.length > 30 ? productName.substring(0, 30) + '...' : productName;
-                label = `${slotNum} - ${truncatedName}`;
-            } else {
-                label = `${slotNum} - Empty`;
-            }
-            
-            return `<option value="${slotNum}">${label}</option>`;
-        }).join('');
-
         // Filter out products that are already ranked
         const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
 
@@ -786,10 +765,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="product-title">${product.title}</div>
                 <div class="product-vendor">${product.vendor || 'Unknown Brand'}</div>
                 <div class="product-price">$${product.price}</div>
-                <select class="rank-dropdown">
-                    <option value="">Choose rank...</option>
-                    ${allSlotOptions}
-                </select>
+                <button class="rank-btn">Rank This Product</button>
             `;
 
             // Only add drag event listeners on desktop
@@ -798,17 +774,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 productCard.addEventListener('dragend', handleDragEnd);
             }
 
-            // Add dropdown event listener
-            const dropdown = productCard.querySelector('.rank-dropdown');
-            dropdown.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevent card drag when clicking dropdown
-            });
-            dropdown.addEventListener('change', (e) => {
+            // Add rank button event listener
+            const rankBtn = productCard.querySelector('.rank-btn');
+            rankBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
-                const slotNumber = parseInt(e.target.value);
-                if (slotNumber && slotNumber >= 1 && slotNumber <= rankingSlots.length) {
-                    assignProductToSlot(product, slotNumber - 1); // Convert to 0-indexed
-                }
+                openRankModal(product);
             });
 
             productList.appendChild(productCard);
@@ -943,6 +913,23 @@ document.addEventListener('DOMContentLoaded', function() {
             clearModal.addEventListener('click', (e) => {
                 if (e.target === clearModal) {
                     hideClearModal();
+                }
+            });
+        }
+
+        // Ranking modal event listeners
+        const rankModal = document.getElementById('rankModal');
+        const closeRankModalBtn = document.getElementById('closeRankModal');
+
+        if (closeRankModalBtn) {
+            closeRankModalBtn.addEventListener('click', closeRankModal);
+        }
+
+        // Close rank modal when clicking outside of it
+        if (rankModal) {
+            rankModal.addEventListener('click', (e) => {
+                if (e.target === rankModal) {
+                    closeRankModal();
                 }
             });
         }
@@ -1207,7 +1194,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log(`📦 Inserted product at rank ${targetRank}, pushed ${itemsToPushDown.length} items down`);
     }
 
-    // Shared function for assigning products to slots (used by both drag-drop and dropdown)
+    // Shared function for assigning products to slots (used by drag-drop)
     function assignProductToSlot(productData, slotIndex) {
         const targetRank = slotIndex + 1; // Convert from 0-indexed to 1-indexed
         
@@ -1221,6 +1208,119 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Check if we need to add more slots
         checkAndAddMoreSlotsForRank(targetRank);
+        checkAndAddMoreSlots();
+        
+        // Trigger auto-save
+        scheduleAutoSave();
+    }
+
+    // Open ranking modal with replace/insert options
+    function openRankModal(productData) {
+        const modal = document.getElementById('rankModal');
+        const modalTitle = document.getElementById('rankModalTitle');
+        const rankingPositions = document.getElementById('rankingPositions');
+        
+        if (!modal || !modalTitle || !rankingPositions) return;
+        
+        // Update modal title with product name
+        const truncatedTitle = productData.title.length > 40 
+            ? productData.title.substring(0, 40) + '...' 
+            : productData.title;
+        modalTitle.textContent = `Rank: ${truncatedTitle}`;
+        
+        // Clear previous content
+        rankingPositions.innerHTML = '';
+        
+        // Build position items for each slot
+        rankingSlots.forEach((slot, index) => {
+            const position = index + 1;
+            const isFilled = slot.classList.contains('filled');
+            const currentProduct = isFilled && slot.dataset.productData 
+                ? JSON.parse(slot.dataset.productData) 
+                : null;
+            
+            const positionItem = document.createElement('div');
+            positionItem.className = 'position-item';
+            
+            positionItem.innerHTML = `
+                <div class="position-header">
+                    <span class="position-number">Position #${position}</span>
+                    <span class="position-status ${isFilled ? 'filled' : 'empty'}">
+                        ${isFilled ? 'Filled' : 'Empty'}
+                    </span>
+                </div>
+                ${currentProduct ? `<div class="position-product-name">${currentProduct.title}</div>` : ''}
+                <div class="position-actions">
+                    <button class="position-btn replace-btn" data-position="${position}" ${!isFilled ? 'disabled' : ''}>
+                        Replace
+                    </button>
+                    <button class="position-btn insert-btn" data-position="${position}">
+                        Insert
+                    </button>
+                </div>
+            `;
+            
+            // Add event listeners to buttons
+            const replaceBtn = positionItem.querySelector('.replace-btn');
+            const insertBtn = positionItem.querySelector('.insert-btn');
+            
+            replaceBtn.addEventListener('click', () => {
+                replaceProductAtPosition(productData, position);
+                closeRankModal();
+            });
+            
+            insertBtn.addEventListener('click', () => {
+                insertProductAtPosition(productData, position);
+                closeRankModal();
+            });
+            
+            rankingPositions.appendChild(positionItem);
+        });
+        
+        // Show modal
+        modal.classList.add('show');
+        modal.style.display = 'flex';
+    }
+
+    // Close ranking modal
+    function closeRankModal() {
+        const modal = document.getElementById('rankModal');
+        if (modal) {
+            modal.classList.remove('show');
+            modal.style.display = 'none';
+        }
+    }
+
+    // Replace product at specific position (no push-down)
+    function replaceProductAtPosition(productData, position) {
+        console.log(`🔄 Replacing product at position ${position} with "${productData.title}"`);
+        
+        // Simply fill the slot, overwriting whatever was there
+        fillSlot(rankingSlots[position - 1], position, productData);
+        
+        // Refresh product display
+        displayProducts();
+        
+        // Check if we need to add more slots
+        checkAndAddMoreSlotsForRank(position);
+        checkAndAddMoreSlots();
+        
+        // Trigger auto-save
+        scheduleAutoSave();
+    }
+
+    // Insert product at specific position (with push-down)
+    function insertProductAtPosition(productData, position) {
+        console.log(`➕ Inserting product at position ${position}: "${productData.title}"`);
+        
+        // Use existing insert logic with push-down
+        insertProductWithPushDown(position, productData);
+        
+        // Refresh product display
+        displayProducts();
+        
+        // Check if we need to add more slots
+        checkAndAddMoreSlotsForRank(position);
         checkAndAddMoreSlots();
         
         // Trigger auto-save
