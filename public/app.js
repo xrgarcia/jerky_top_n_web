@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const rankPage = document.getElementById('rankPage');
     const productsPage = document.getElementById('productsPage');
     const loginPage = document.getElementById('loginPage');
+    const heroSection = document.getElementById('heroSection');
 
     let currentJerkyData = [];
     let userRanking = [];
@@ -62,6 +63,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'none';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'block';
             
             // Load user profile
             await loadUserProfile(userId);
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'block';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'none';
+            if (heroSection) heroSection.style.display = 'block';
             
             // Load product detail
             await loadProductDetail(productId);
@@ -138,29 +141,41 @@ document.addEventListener('DOMContentLoaded', function() {
         if (page === 'home' && homePage) {
             homePage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'home');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'rank');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
             // Load rankings and products when page is shown
             loadRankPageData();
         } else if (page === 'products' && productsPage) {
             productsPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'products');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
             // Load products when page is shown
             loadAllProducts();
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'community');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
             // Load community users when page is shown
             loadCommunityUsers();
         } else if (page === 'profile' && profilePage) {
             profilePage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'profile');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
             // Load profile data when page is shown
             loadProfileData();
         } else if (page === 'login' && loginPage) {
             loginPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'login');
+            if (heroSection) heroSection.style.display = 'none';
+            document.body.classList.add('login-page-active');
         }
         
         // Update active nav link

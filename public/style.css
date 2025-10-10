@@ -299,6 +299,11 @@ body {
     font-weight: 600;
 }
 
+/* Hide hero on login page */
+body.login-page-active .hero {
+    display: none !important;
+}
+
 /* Main Content */
 .main-content {
     max-width: 1200px;
