@@ -26,6 +26,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-10: **Visual ranking modal with product images** - Added product images to ranking modal for better visual context; modal header shows the product being ranked with its image; each position displays the current product's image and name; improved UX with visual product identification
+- 2025-10-10: **Replace & Insert modal UI** - Replaced dropdown ranking with full-screen modal featuring two distinct actions: Replace (yellow button, swaps product without pushing) and Insert (green button, pushes items down); each position shows status badge and current product details
 - 2025-10-05: **Full page refresh preservation** - Implemented dual routing strategy (hash + sessionStorage) to preserve current page on browser refresh; users can now refresh on any page (products, community, rank, profile) and stay on that page instead of being redirected to home
 - 2025-10-05: **Fixed data loading on initial page access** - Added loadRankPageData() function to ensure rankings and products load when rank page is accessed directly via URL or browser navigation; all pages now load their data on first access
 - 2025-10-02: **Natural page scrolling on mobile ranking page** - Eliminated nested scrollbars; entire page now scrolls naturally allowing users to see multiple product cards at once; Search Products header becomes sticky at top when scrolling; panels stack vertically with auto height on mobile devices

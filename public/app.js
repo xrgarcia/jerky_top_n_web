@@ -1222,11 +1222,49 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!modal || !modalTitle || !rankingPositions) return;
         
-        // Update modal title with product name
+        // Update modal title with product name and image (secure DOM manipulation)
+        modalTitle.textContent = '';
+        const headerContainer = document.createElement('div');
+        headerContainer.style.display = 'flex';
+        headerContainer.style.alignItems = 'center';
+        headerContainer.style.gap = '12px';
+        
+        // Add product image
+        if (productData.image) {
+            const img = document.createElement('img');
+            img.src = productData.image;
+            img.alt = productData.title;
+            img.style.width = '60px';
+            img.style.height = '60px';
+            img.style.objectFit = 'cover';
+            img.style.borderRadius = '8px';
+            img.style.border = '2px solid #4a90e2';
+            headerContainer.appendChild(img);
+        } else {
+            const placeholder = document.createElement('div');
+            placeholder.style.width = '60px';
+            placeholder.style.height = '60px';
+            placeholder.style.background = '#f0f0f0';
+            placeholder.style.borderRadius = '8px';
+            placeholder.style.display = 'flex';
+            placeholder.style.alignItems = 'center';
+            placeholder.style.justifyContent = 'center';
+            placeholder.style.color = '#999';
+            placeholder.style.fontSize = '12px';
+            placeholder.textContent = 'No Image';
+            headerContainer.appendChild(placeholder);
+        }
+        
+        // Add product title
+        const titleSpan = document.createElement('span');
+        titleSpan.style.flex = '1';
         const truncatedTitle = productData.title.length > 40 
             ? productData.title.substring(0, 40) + '...' 
             : productData.title;
-        modalTitle.textContent = `Rank: ${truncatedTitle}`;
+        titleSpan.textContent = truncatedTitle;
+        headerContainer.appendChild(titleSpan);
+        
+        modalTitle.appendChild(headerContainer);
         
         // Clear previous content
         rankingPositions.innerHTML = '';
@@ -1242,38 +1280,82 @@ document.addEventListener('DOMContentLoaded', function() {
             const positionItem = document.createElement('div');
             positionItem.className = 'position-item';
             
-            positionItem.innerHTML = `
-                <div class="position-header">
-                    <span class="position-number">Position #${position}</span>
-                    <span class="position-status ${isFilled ? 'filled' : 'empty'}">
-                        ${isFilled ? 'Filled' : 'Empty'}
-                    </span>
-                </div>
-                ${currentProduct ? `<div class="position-product-name">${currentProduct.title}</div>` : ''}
-                <div class="position-actions">
-                    <button class="position-btn replace-btn" data-position="${position}" ${!isFilled ? 'disabled' : ''}>
-                        Replace
-                    </button>
-                    <button class="position-btn insert-btn" data-position="${position}">
-                        Insert
-                    </button>
-                </div>
-            `;
+            // Create position header
+            const positionHeader = document.createElement('div');
+            positionHeader.className = 'position-header';
             
-            // Add event listeners to buttons
-            const replaceBtn = positionItem.querySelector('.replace-btn');
-            const insertBtn = positionItem.querySelector('.insert-btn');
+            const positionNumber = document.createElement('span');
+            positionNumber.className = 'position-number';
+            positionNumber.textContent = `Position #${position}`;
+            positionHeader.appendChild(positionNumber);
             
+            const positionStatus = document.createElement('span');
+            positionStatus.className = `position-status ${isFilled ? 'filled' : 'empty'}`;
+            positionStatus.textContent = isFilled ? 'Filled' : 'Empty';
+            positionHeader.appendChild(positionStatus);
+            
+            positionItem.appendChild(positionHeader);
+            
+            // Add current product info if filled
+            if (currentProduct) {
+                const productInfo = document.createElement('div');
+                productInfo.className = 'position-product-info';
+                
+                // Add product image
+                if (currentProduct.image) {
+                    const img = document.createElement('img');
+                    img.src = currentProduct.image;
+                    img.alt = currentProduct.title;
+                    img.className = 'position-product-image';
+                    productInfo.appendChild(img);
+                } else {
+                    const placeholder = document.createElement('div');
+                    placeholder.className = 'position-product-image';
+                    placeholder.style.background = '#f0f0f0';
+                    placeholder.style.display = 'flex';
+                    placeholder.style.alignItems = 'center';
+                    placeholder.style.justifyContent = 'center';
+                    placeholder.style.color = '#999';
+                    placeholder.style.fontSize = '10px';
+                    placeholder.textContent = 'No Image';
+                    productInfo.appendChild(placeholder);
+                }
+                
+                // Add product name
+                const productName = document.createElement('div');
+                productName.className = 'position-product-name';
+                productName.textContent = currentProduct.title;
+                productInfo.appendChild(productName);
+                
+                positionItem.appendChild(productInfo);
+            }
+            
+            // Create action buttons
+            const actionContainer = document.createElement('div');
+            actionContainer.className = 'position-actions';
+            
+            const replaceBtn = document.createElement('button');
+            replaceBtn.className = 'position-btn replace-btn';
+            replaceBtn.textContent = 'Replace';
+            replaceBtn.dataset.position = position;
+            if (!isFilled) replaceBtn.disabled = true;
             replaceBtn.addEventListener('click', () => {
                 replaceProductAtPosition(productData, position);
                 closeRankModal();
             });
+            actionContainer.appendChild(replaceBtn);
             
+            const insertBtn = document.createElement('button');
+            insertBtn.className = 'position-btn insert-btn';
+            insertBtn.textContent = 'Insert';
+            insertBtn.dataset.position = position;
             insertBtn.addEventListener('click', () => {
                 insertProductAtPosition(productData, position);
                 closeRankModal();
             });
+            actionContainer.appendChild(insertBtn);
             
+            positionItem.appendChild(actionContainer);
             rankingPositions.appendChild(positionItem);
         });
         

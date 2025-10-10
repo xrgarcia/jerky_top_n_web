@@ -2487,11 +2487,30 @@ body {
     color: #155724;
 }
 
+.position-product-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 8px;
+    background: white;
+    border-radius: 6px;
+}
+
+.position-product-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+    flex-shrink: 0;
+}
+
 .position-product-name {
     font-size: 14px;
-    color: #666;
-    margin-bottom: 12px;
-    font-style: italic;
+    color: #333;
+    flex: 1;
+    line-height: 1.4;
 }
 
 .position-actions {
