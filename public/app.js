@@ -2581,7 +2581,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             product.title,
                             product.vendor,
                             product.productType,
-                            product.tags || ''
+                            product.tags || '',
+                            product.flavorDisplay || '',
+                            product.animalDisplay || ''
                         ].join(' ').toLowerCase();
                         
                         return searchWords.every(word => searchableText.includes(word));
@@ -2621,7 +2623,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         product.title,
                         product.vendor,
                         product.productType,
-                        product.tags || ''
+                        product.tags || '',
+                        product.flavorDisplay || '',
+                        product.animalDisplay || ''
                     ].join(' ').toLowerCase();
                     
                     return searchWords.every(word => searchableText.includes(word));
@@ -2682,7 +2686,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         product.title,
                         product.vendor,
                         product.productType,
-                        product.tags || ''
+                        product.tags || '',
+                        product.flavorDisplay || '',
+                        product.animalDisplay || ''
                     ].join(' ').toLowerCase();
                     
                     return searchWords.every(word => searchableText.includes(word));
