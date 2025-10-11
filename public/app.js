@@ -2302,6 +2302,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? '0 rankings' 
                 : `${product.rankingCount} ranking${product.rankingCount === 1 ? '' : 's'}`;
             
+            // Format average ranking display
+            const avgRankDisplay = product.avgRank 
+                ? `<div class="product-avg-rank">Avg Rank: ${parseFloat(product.avgRank).toFixed(1)}</div>`
+                : '';
+            
             return `
                 <div class="product-card" onclick="navigateToProduct('${product.id}')">
                     <div class="product-card-image-container">
@@ -2317,6 +2322,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="product-card-title">${product.title}</div>
                         <div class="product-card-vendor">${product.vendor || 'Unknown Brand'}</div>
                         <div class="product-card-price">$${product.price}</div>
+                        ${avgRankDisplay}
                     </div>
                 </div>
             `;
