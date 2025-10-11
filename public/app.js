@@ -2310,7 +2310,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Format average ranking display
             const avgRankDisplay = product.avgRank 
-                ? `<div class="product-avg-rank">Avg Rank: ${parseFloat(product.avgRank).toFixed(1)}</div>`
+                ? `<div class="product-avg-rank">Avg Rank: #${parseFloat(product.avgRank).toFixed(1)}</div>`
                 : '';
             
             return `
