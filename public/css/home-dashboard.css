@@ -1,0 +1,276 @@
+/* Home Page Dashboard Styles */
+
+.community-stats-overview {
+  margin: 30px 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.stat-card {
+  background: white;
+  border: 2px solid var(--jerky-purple);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.2);
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--jerky-blue);
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Dashboard Grid */
+.home-dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.dashboard-section {
+  background: white;
+  border: 2px solid var(--jerky-purple);
+  border-radius: 12px;
+  padding: 20px;
+  min-height: 250px;
+}
+
+.dashboard-section h3 {
+  margin: 0 0 10px 0;
+  color: var(--jerky-purple);
+  font-size: 20px;
+}
+
+.section-subtitle {
+  margin: -5px 0 15px 0;
+  font-size: 13px;
+  color: #666;
+}
+
+.dashboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dashboard-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.dashboard-item:hover {
+  background: #e9ecef;
+  transform: translateX(2px);
+}
+
+.product-item {
+  cursor: pointer;
+}
+
+/* Rank Badges */
+.rank-badge {
+  background: var(--jerky-purple);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.rank-badge.rank-1 {
+  background: #FFD700;
+  color: #333;
+}
+
+.rank-badge.rank-2 {
+  background: #C0C0C0;
+  color: #333;
+}
+
+.rank-badge.rank-3 {
+  background: #CD7F32;
+  color: white;
+}
+
+.trending-badge {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* Product Items */
+.product-thumb {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-stats {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+.time-ago {
+  color: #999;
+  margin-left: 5px;
+}
+
+.variance {
+  color: var(--jerky-orange);
+  font-weight: 600;
+  margin-left: 5px;
+}
+
+/* Ranker Items */
+.ranker-item {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+}
+
+.ranker-info {
+  flex: 1;
+}
+
+.ranker-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 15px;
+}
+
+.ranker-stats {
+  font-size: 13px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* Achievement Items */
+.achievement-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #f8f9fa;
+}
+
+.achievement-icon.bronze {
+  background: linear-gradient(135deg, #CD7F32, #B8732A);
+}
+
+.achievement-icon.silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+}
+
+.achievement-icon.gold {
+  background: linear-gradient(135deg, #FFD700, #FFC107);
+}
+
+.achievement-icon.platinum {
+  background: linear-gradient(135deg, #E5E4E2, #BCC6CC);
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-name {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.achievement-earned {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* Empty States */
+.empty-state {
+  text-align: center;
+  color: #999;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .home-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashboard-section {
+    padding: 15px;
+  }
+
+  .product-name {
+    font-size: 13px;
+  }
+
+  .product-stats {
+    font-size: 11px;
+  }
+}

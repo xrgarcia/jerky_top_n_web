@@ -13,7 +13,8 @@ function createGamificationRoutes(services) {
     leaderboardManager, 
     progressTracker,
     activityLogRepo,
-    productViewRepo 
+    productViewRepo,
+    homeStatsService
   } = services;
 
   router.get('/achievements', async (req, res) => {
@@ -249,6 +250,17 @@ function createGamificationRoutes(services) {
     } catch (error) {
       console.error('Error comparing users:', error);
       res.status(500).json({ error: 'Failed to compare users' });
+    }
+  });
+
+  // Home page statistics
+  router.get('/home-stats', async (req, res) => {
+    try {
+      const stats = await homeStatsService.getAllHomeStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error fetching home stats:', error);
+      res.status(500).json({ error: 'Failed to fetch home stats' });
     }
   });
 
