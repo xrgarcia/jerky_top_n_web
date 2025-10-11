@@ -7,6 +7,7 @@ const path = require('path');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
+const MetadataCache = require('./server/cache/MetadataCache');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -722,6 +723,9 @@ const productCache = {
 // 30-minute ranking statistics cache (OOP implementation)
 const rankingStatsCache = new RankingStatsCache(30);
 
+// 30-minute metadata cache (OOP implementation)
+const metadataCache = new MetadataCache(30);
+
 // Check if cache is valid (within 30-minute TTL)
 function isCacheValid() {
   if (!productCache.data || !productCache.timestamp) {
@@ -874,7 +878,7 @@ async function fetchAllShopifyProducts() {
   if (isCacheValid()) {
     const cacheAge = getCacheAgeMinutes();
     console.log(`💾 Cache HIT: Returning ${productCache.data.length} products from cache (age: ${cacheAge} minutes)`);
-    return productCache.data;
+    return { products: productCache.data, fromCache: true };
   }
   
   // Cache miss or expired - need to fetch fresh data
@@ -897,14 +901,14 @@ async function fetchAllShopifyProducts() {
     // If loading completed successfully, return cached data
     if (isCacheValid()) {
       console.log(`✅ Waited for cache load, returning ${productCache.data.length} products`);
-      return productCache.data;
+      return { products: productCache.data, fromCache: true };
     }
     
     // If still stale/invalid after waiting, use stale cache as fallback
     if (productCache.data) {
       const cacheAge = getCacheAgeMinutes();
       console.log(`⚠️ Load timed out, using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
-      return productCache.data;
+      return { products: productCache.data, fromCache: true };
     }
   }
   
@@ -925,7 +929,7 @@ async function fetchAllShopifyProducts() {
     scheduleNextCacheInvalidation();
     
     console.log(`✅ Cache UPDATED: Loaded ${freshProducts.length} products, valid for 30 minutes`);
-    return freshProducts;
+    return { products: freshProducts, fromCache: false };
     
   } catch (error) {
     productCache.isLoading = false;
@@ -935,7 +939,7 @@ async function fetchAllShopifyProducts() {
     if (productCache.data) {
       const cacheAge = getCacheAgeMinutes();
       console.log(`⚠️ Using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
-      return productCache.data;
+      return { products: productCache.data, fromCache: true };
     }
     
     // No cache data available, re-throw error
@@ -1008,18 +1012,21 @@ app.get('/api/products/all', async (req, res) => {
     
     console.log(`🛍️ Fetching all products with ranking counts, query: "${query}"`);
     
-    // Fetch all products from Shopify
-    let products = await fetchAllShopifyProducts();
+    // Fetch all products from Shopify (returns { products, fromCache })
+    const { products, fromCache } = await fetchAllShopifyProducts();
     
-    // Sync products metadata (animal categorization) to database
-    if (storage && products.length > 0) {
+    // Only sync products metadata when products are FRESHLY fetched, not from cache
+    if (storage && !fromCache && products.length > 0) {
       try {
         const { db } = require('./server/db.js');
         const ProductsMetadataService = require('./server/services/ProductsMetadataService');
         const metadataService = new ProductsMetadataService(db);
         
         await metadataService.syncProductsMetadata(products);
-        console.log(`🏷️ Synced metadata for ${products.length} products`);
+        console.log(`🏷️ Synced metadata for ${products.length} fresh products`);
+        
+        // Invalidate metadata cache so next request gets fresh data
+        metadataCache.invalidate();
       } catch (error) {
         console.error('Error syncing products metadata:', error);
         // Continue without metadata - non-critical
@@ -1092,23 +1099,34 @@ app.get('/api/products/all', async (req, res) => {
       console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
     }
     
-    // Fetch metadata for all products
+    // Fetch metadata for all products (with 30-min cache)
     let metadataMap = {};
     if (storage) {
       try {
-        const { db } = require('./server/db.js');
-        const ProductsMetadataRepository = require('./server/repositories/ProductsMetadataRepository');
-        const metadataRepo = new ProductsMetadataRepository(db);
-        const allMetadata = await metadataRepo.getAllMetadata();
+        // Check cache first
+        const cachedMetadata = metadataCache.get();
         
-        // Create lookup map by shopify_product_id
-        allMetadata.forEach(meta => {
-          metadataMap[meta.shopifyProductId] = {
-            animalType: meta.animalType,
-            animalDisplay: meta.animalDisplay,
-            animalIcon: meta.animalIcon
-          };
-        });
+        if (cachedMetadata) {
+          metadataMap = cachedMetadata;
+        } else {
+          // Fetch fresh metadata from database
+          const { db } = require('./server/db.js');
+          const ProductsMetadataRepository = require('./server/repositories/ProductsMetadataRepository');
+          const metadataRepo = new ProductsMetadataRepository(db);
+          const allMetadata = await metadataRepo.getAllMetadata();
+          
+          // Create lookup map by shopify_product_id
+          allMetadata.forEach(meta => {
+            metadataMap[meta.shopifyProductId] = {
+              animalType: meta.animalType,
+              animalDisplay: meta.animalDisplay,
+              animalIcon: meta.animalIcon
+            };
+          });
+          
+          // Store in cache
+          metadataCache.set(metadataMap);
+        }
       } catch (error) {
         console.error('Error fetching metadata:', error);
         // Continue without metadata
