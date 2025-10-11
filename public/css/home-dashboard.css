@@ -1,91 +1,136 @@
 /* Home Page Dashboard Styles */
 
+/* Stats Overview - Top Section */
 .community-stats-overview {
-  margin: 30px 0;
+  margin: 30px 0 40px 0;
+  background: linear-gradient(135deg, rgba(102, 51, 153, 0.05), rgba(0, 123, 255, 0.05));
+  border-radius: 16px;
+  padding: 25px;
+  border: 1px solid rgba(102, 51, 153, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 15px;
-  margin-bottom: 30px;
+  margin-top: 15px;
 }
 
 .stat-card {
   background: white;
   border: 2px solid var(--jerky-purple);
-  border-radius: 8px;
+  border-radius: 12px;
   padding: 20px;
   text-align: center;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.2);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(102, 51, 153, 0.15);
+  border-color: var(--jerky-blue);
 }
 
 .stat-value {
   font-size: 32px;
   font-weight: bold;
   color: var(--jerky-blue);
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .stat-label {
-  font-size: 14px;
+  font-size: 13px;
   color: #666;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  font-weight: 500;
 }
 
-/* Dashboard Grid */
+/* Dashboard Grid - Main Content Area */
 .home-dashboard {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 25px;
-  margin-top: 30px;
+  gap: 30px;
+  margin-top: 20px;
+  margin-bottom: 40px;
 }
 
+/* Dashboard Sections - Cards with Background */
 .dashboard-section {
   background: white;
-  border: 2px solid var(--jerky-purple);
-  border-radius: 12px;
-  padding: 20px;
-  min-height: 250px;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 24px;
+  min-height: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--jerky-purple), var(--jerky-blue));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dashboard-section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-section:hover::before {
+  opacity: 1;
 }
 
 .dashboard-section h3 {
-  margin: 0 0 10px 0;
+  margin: 0 0 8px 0;
   color: var(--jerky-purple);
   font-size: 20px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .section-subtitle {
-  margin: -5px 0 15px 0;
+  margin: -2px 0 20px 0;
   font-size: 13px;
-  color: #666;
+  color: #888;
+  font-weight: 400;
 }
 
+/* Dashboard List Items */
 .dashboard-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .dashboard-item {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 12px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  transition: background 0.2s, transform 0.2s;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  transition: all 0.25s ease;
 }
 
 .dashboard-item:hover {
-  background: #e9ecef;
-  transform: translateX(2px);
+  background: linear-gradient(135deg, #e9ecef, #f8f9fa);
+  border-color: var(--jerky-purple);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(102, 51, 153, 0.1);
 }
 
 .product-item {
@@ -96,36 +141,41 @@
 .rank-badge {
   background: var(--jerky-purple);
   color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: bold;
-  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 13px;
   flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .rank-badge.rank-1 {
-  background: #FFD700;
+  background: linear-gradient(135deg, #FFD700, #FFC700);
   color: #333;
+  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 .rank-badge.rank-2 {
-  background: #C0C0C0;
+  background: linear-gradient(135deg, #C0C0C0, #B0B0B0);
   color: #333;
+  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
 }
 
 .rank-badge.rank-3 {
-  background: #CD7F32;
+  background: linear-gradient(135deg, #CD7F32, #BD6F22);
   color: white;
+  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
 }
 
 .trending-badge {
   background: linear-gradient(135deg, #FF6B6B, #FF8E53);
   color: white;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 700;
   font-size: 12px;
   flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
 }
 
 /* Product Items */
@@ -133,8 +183,14 @@
   width: 50px;
   height: 50px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 8px;
   flex-shrink: 0;
+  border: 2px solid #f0f0f0;
+  transition: border-color 0.25s ease;
+}
+
+.dashboard-item:hover .product-thumb {
+  border-color: var(--jerky-purple);
 }
 
 .product-info {
@@ -149,28 +205,39 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 4px;
 }
 
 .product-stats {
   font-size: 12px;
   color: #666;
-  margin-top: 2px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .time-ago {
   color: #999;
-  margin-left: 5px;
+  font-size: 11px;
 }
 
 .variance {
   color: var(--jerky-orange);
-  font-weight: 600;
-  margin-left: 5px;
+  font-weight: 700;
+  background: rgba(255, 111, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 /* Ranker Items */
 .ranker-item {
-  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  background: linear-gradient(135deg, #f0f4ff, #ffffff);
+  border-color: #d0d9ff;
+}
+
+.ranker-item:hover {
+  background: linear-gradient(135deg, #e0e8ff, #f0f4ff);
+  border-color: var(--jerky-blue);
 }
 
 .ranker-info {
@@ -181,15 +248,25 @@
   font-weight: 600;
   color: #333;
   font-size: 15px;
+  margin-bottom: 4px;
 }
 
 .ranker-stats {
   font-size: 13px;
   color: #666;
-  margin-top: 2px;
 }
 
 /* Achievement Items */
+.achievement-item {
+  background: linear-gradient(135deg, #fffaf0, #ffffff);
+  border-color: #ffe4cc;
+}
+
+.achievement-item:hover {
+  background: linear-gradient(135deg, #fff5e6, #fffaf0);
+  border-color: var(--jerky-orange);
+}
+
 .achievement-icon {
   font-size: 32px;
   flex-shrink: 0;
@@ -199,7 +276,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #f8f9fa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .achievement-icon.bronze {
@@ -226,34 +303,69 @@
   font-weight: 600;
   color: #333;
   font-size: 14px;
+  margin-bottom: 4px;
 }
 
 .achievement-earned {
   font-size: 12px;
   color: #666;
-  margin-top: 2px;
 }
 
 /* Empty States */
 .empty-state {
   text-align: center;
-  color: #999;
-  padding: 20px;
+  color: #aaa;
+  padding: 30px 20px;
   font-style: italic;
+  font-size: 14px;
+  background: linear-gradient(135deg, #f8f9fa, #ffffff);
+  border-radius: 8px;
+  border: 1px dashed #dee2e6;
 }
 
-/* Responsive */
+/* Section-Specific Backgrounds */
+#topRankersSection {
+  background: linear-gradient(135deg, #fffbf5, #ffffff);
+}
+
+#topProductsSection {
+  background: linear-gradient(135deg, #f0f9ff, #ffffff);
+}
+
+#recentlyRankedSection {
+  background: linear-gradient(135deg, #f0fff4, #ffffff);
+}
+
+#trendingSection {
+  background: linear-gradient(135deg, #fff5f5, #ffffff);
+}
+
+#debatedSection {
+  background: linear-gradient(135deg, #fef3ff, #ffffff);
+}
+
+#recentAchievementsSection {
+  background: linear-gradient(135deg, #fffbeb, #ffffff);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .home-dashboard {
     grid-template-columns: 1fr;
+    gap: 20px;
   }
 
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
   }
 
   .stat-value {
     font-size: 24px;
+  }
+
+  .dashboard-section {
+    padding: 18px;
   }
 }
 
@@ -262,8 +374,12 @@
     grid-template-columns: 1fr;
   }
 
+  .community-stats-overview {
+    padding: 20px;
+  }
+
   .dashboard-section {
-    padding: 15px;
+    padding: 16px;
   }
 
   .product-name {
@@ -272,5 +388,9 @@
 
   .product-stats {
     font-size: 11px;
+  }
+
+  .dashboard-item {
+    padding: 10px;
   }
 }
