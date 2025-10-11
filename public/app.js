@@ -167,7 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productsSearchInput) productsSearchInput.value = query;
             if (productSortField) productSortField.value = field;
             if (productSortOrder) productSortOrder.setAttribute('data-order', order || 'asc');
-            // Load products when page is shown
+            // Load animal categories and products when page is shown
+            loadAnimalCategories();
             loadAllProducts(query, sort);
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
@@ -2076,6 +2077,65 @@ document.addEventListener('DOMContentLoaded', function() {
     let allProductsData = [];
     let searchTimeout = null;
     let currentSort = 'name-asc';
+    let selectedAnimal = null;
+    
+    async function loadAnimalCategories() {
+        const container = document.getElementById('animalCategories');
+        if (!container) return;
+        
+        try {
+            const response = await fetch('/api/products/animals');
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error('Failed to load animal categories');
+            }
+            
+            // Display animal categories
+            container.innerHTML = data.animals.map(animal => `
+                <div class="animal-category" data-animal="${animal.animal}">
+                    <div class="animal-category-icon">${animal.icon}</div>
+                    <div class="animal-category-name">${animal.animal}</div>
+                    <div class="animal-category-count">${animal.count}</div>
+                </div>
+            `).join('');
+            
+            // Add click handlers
+            container.querySelectorAll('.animal-category').forEach(categoryEl => {
+                categoryEl.addEventListener('click', () => {
+                    const animal = categoryEl.getAttribute('data-animal');
+                    
+                    // Toggle selection
+                    if (selectedAnimal === animal) {
+                        selectedAnimal = null;
+                        categoryEl.classList.remove('active');
+                        // Show all products
+                        displayProductsGrid(allProductsData);
+                    } else {
+                        // Deselect previous
+                        container.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
+                        // Select new
+                        selectedAnimal = animal;
+                        categoryEl.classList.add('active');
+                        // Filter products by animal
+                        filterProductsByAnimal(animal);
+                    }
+                });
+            });
+            
+        } catch (error) {
+            console.error('Error loading animal categories:', error);
+            container.innerHTML = '';
+        }
+    }
+    
+    function filterProductsByAnimal(animal) {
+        const filtered = allProductsData.filter(product => {
+            return product.title.toLowerCase().includes(animal.toLowerCase());
+        });
+        
+        displayProductsGrid(filtered);
+    }
     
     async function loadAllProducts(query = '', sort = 'name-asc') {
         const productsLoading = document.getElementById('productsLoading');
@@ -2351,6 +2411,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (productsSearchInput) {
         productsSearchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim().toLowerCase();
+            
+            // Reset animal filter when searching
+            selectedAnimal = null;
+            const animalCategories = document.getElementById('animalCategories');
+            if (animalCategories) {
+                animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
+            }
             
             // Filter products client-side - no page reload
             let filteredProducts = allProductsData;

@@ -2708,6 +2708,70 @@ body.login-page-active .hero {
     padding: 20px;
 }
 
+/* Animal Categories Filter */
+.animal-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 25px 0 20px 0;
+    padding: 15px;
+    background: #f8f8f8;
+    border-radius: 12px;
+    justify-content: center;
+}
+
+.animal-category {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 12px 16px;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 80px;
+}
+
+.animal-category:hover {
+    border-color: var(--jerky-purple);
+    background: #f5f0ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(107, 142, 35, 0.15);
+}
+
+.animal-category.active {
+    border-color: var(--jerky-purple);
+    background: var(--jerky-purple);
+    color: white;
+}
+
+.animal-category-icon {
+    font-size: 32px;
+    line-height: 1;
+}
+
+.animal-category-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.animal-category.active .animal-category-name {
+    color: white;
+}
+
+.animal-category-count {
+    font-size: 11px;
+    color: #666;
+    font-weight: 500;
+}
+
+.animal-category.active .animal-category-count {
+    color: rgba(255, 255, 255, 0.9);
+}
+
 .products-search-section {
     position: relative;
     margin-bottom: 30px;
