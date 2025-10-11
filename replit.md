@@ -6,11 +6,18 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 ## Features
 - View top N jerky products (3, 5, or 8 items)
 - Dual ranking system: drag-and-drop OR dropdown selection (mobile-friendly)
+- **Products Page with Advanced Sorting**:
+  - Sort by Name (A-Z / Z-A)
+  - Sort by Recently Ranked (most/least recent)
+  - Sort by Average Ranking (best/worst)
+  - Sort by Total Rankings (most/least ranked)
+  - URL parameters for deep linking to sorted views
+  - Client-side sorting for instant results
 - Community page to discover fellow jerky enthusiasts
 - Search users by name or products they've ranked
 - Profile page to view user information and ranking statistics
 - Link to update profile on jerky.com
-- **Gamification System** (NEW):
+- **Gamification System**:
   - Achievement tracking with 17 predefined achievements
   - User progress monitoring and milestone celebrations
   - Streak tracking for daily engagement
@@ -43,6 +50,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-11: **Products page sorting feature** - Added comprehensive sorting options: Name (A-Z/Z-A), Recently Ranked (most/least recent), Average Ranking (best/worst), Total Rankings (most/least); backend API enhanced with SQL aggregation for avgRank and lastRankedAt fields; client-side sorting with URL parameter support (#products?sort=recent-desc) for deep linking; mobile-responsive sort controls with flex layout
 - 2025-10-11: **Gamification system MVP implemented** - Built event-driven gamification architecture with achievements, streaks, leaderboards, and real-time updates; frontend uses EventBus for decoupled service communication; backend implements repository pattern with domain services; Socket.IO provides bidirectional real-time notifications; 17 achievements seeded covering ranking milestones (1, 5, 10, 25 products) to engagement goals (consecutive days, total rankings)
 - 2025-10-11: **Sentry service integration** - Integrated Sentry error tracking into rankings and products services with detailed context (service tags, operation metadata); added environment and URL tracking to distinguish dev vs production errors
 - 2025-10-10: **Sentry.io integration** - Added Sentry error monitoring and performance tracking for the Express.js application; automatically captures uncaught exceptions, unhandled promise rejections, and API errors

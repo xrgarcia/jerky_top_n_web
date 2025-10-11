@@ -155,8 +155,17 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('currentPage', 'products');
             if (heroSection) heroSection.style.display = 'block';
             document.body.classList.remove('login-page-active');
+            // Parse URL parameters
+            const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+            const query = hashParams.get('q') || '';
+            const sort = hashParams.get('sort') || 'name-asc';
+            // Update form elements
+            const productsSearchInput = document.getElementById('productsSearchInput');
+            const productSortSelect = document.getElementById('productSort');
+            if (productsSearchInput) productsSearchInput.value = query;
+            if (productSortSelect) productSortSelect.value = sort;
             // Load products when page is shown
-            loadAllProducts();
+            loadAllProducts(query, sort);
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'community');
@@ -2061,8 +2070,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     let allProductsData = [];
     let searchTimeout = null;
+    let currentSort = 'name-asc';
     
-    async function loadAllProducts(query = '') {
+    async function loadAllProducts(query = '', sort = 'name-asc') {
         const productsLoading = document.getElementById('productsLoading');
         const productsGrid = document.getElementById('productsGrid');
         
@@ -2082,6 +2092,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             allProductsData = data.products;
+            currentSort = sort;
+            
+            // Apply sorting
+            sortProductsData(sort);
             displayProductsGrid(allProductsData);
             
             console.log(`✅ Loaded ${allProductsData.length} products with ranking counts`);
@@ -2093,6 +2107,49 @@ document.addEventListener('DOMContentLoaded', function() {
                 productsLoading.style.display = 'none';
             }
         }
+    }
+    
+    function sortProductsData(sortBy) {
+        const [field, order] = sortBy.split('-');
+        const isAsc = order === 'asc';
+        
+        allProductsData.sort((a, b) => {
+            let aVal, bVal;
+            
+            switch(field) {
+                case 'name':
+                    aVal = a.title.toLowerCase();
+                    bVal = b.title.toLowerCase();
+                    break;
+                case 'recent':
+                    aVal = a.lastRankedAt || '1970-01-01';
+                    bVal = b.lastRankedAt || '1970-01-01';
+                    break;
+                case 'avgrank':
+                    aVal = a.avgRank || 9999;
+                    bVal = b.avgRank || 9999;
+                    break;
+                case 'totalranks':
+                    aVal = a.rankingCount || 0;
+                    bVal = b.rankingCount || 0;
+                    break;
+                default:
+                    return 0;
+            }
+            
+            if (aVal < bVal) return isAsc ? -1 : 1;
+            if (aVal > bVal) return isAsc ? 1 : -1;
+            return 0;
+        });
+    }
+    
+    function updateProductsURL(query = '', sort = 'name-asc') {
+        const params = new URLSearchParams();
+        if (query) params.set('q', query);
+        if (sort !== 'name-asc') params.set('sort', sort);
+        
+        const hash = params.toString() ? `products?${params.toString()}` : 'products';
+        window.location.hash = hash;
     }
     
     function displayProductsGrid(products) {
@@ -2275,6 +2332,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Products page search - filters grid directly
     const productsSearchInput = document.getElementById('productsSearchInput');
+    const productSortSelect = document.getElementById('productSort');
     
     if (productsSearchInput) {
         productsSearchInput.addEventListener('input', (e) => {
@@ -2285,28 +2343,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 clearTimeout(searchTimeout);
             }
             
-            // Show all products when search is cleared
-            if (query.length === 0) {
-                displayProductsGrid(allProductsData);
-                return;
-            }
-            
             // Debounce search - wait 300ms after user stops typing
             searchTimeout = setTimeout(async () => {
-                try {
-                    const response = await fetch(`/api/products/all?query=${encodeURIComponent(query)}`);
-                    const data = await response.json();
-                    
-                    if (!response.ok) {
-                        throw new Error(data.error || 'Search failed');
-                    }
-                    
-                    // Update the grid with search results
-                    displayProductsGrid(data.products);
-                } catch (error) {
-                    console.error('Search error:', error);
-                }
+                updateProductsURL(query, currentSort);
+                await loadAllProducts(query, currentSort);
             }, 300);
+        });
+    }
+    
+    if (productSortSelect) {
+        productSortSelect.addEventListener('change', (e) => {
+            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
+            const sort = e.target.value;
+            updateProductsURL(query, sort);
+            
+            // Re-sort and display without reloading data
+            currentSort = sort;
+            sortProductsData(sort);
+            displayProductsGrid(allProductsData);
         });
     }
 

@@ -984,34 +984,39 @@ app.get('/api/products/all', async (req, res) => {
     // Fetch all products from Shopify
     let products = await fetchAllShopifyProducts();
     
-    // Get ranking counts for all products from database
-    const rankingCounts = {};
+    // Get ranking stats for all products from database
+    const rankingStats = {};
     if (storage) {
       try {
         const { db } = require('./server/db.js');
-        const { productRankings } = require('./shared/schema.js');
-        const { count } = require('drizzle-orm');
+        const { sql } = require('drizzle-orm');
         
-        const results = await db
-          .select({
-            shopifyProductId: productRankings.shopifyProductId,
-            count: count()
-          })
-          .from(productRankings)
-          .groupBy(productRankings.shopifyProductId);
+        const results = await db.execute(sql`
+          SELECT 
+            shopify_product_id,
+            COUNT(*) as count,
+            AVG(ranking) as avg_rank,
+            MAX(created_at) as last_ranked_at
+          FROM product_rankings
+          GROUP BY shopify_product_id
+        `);
         
         // Convert to map for easy lookup
-        results.forEach(row => {
-          rankingCounts[row.shopifyProductId] = parseInt(row.count);
+        results.rows.forEach(row => {
+          rankingStats[row.shopify_product_id] = {
+            count: parseInt(row.count),
+            avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
+            lastRankedAt: row.last_ranked_at
+          };
         });
         
-        console.log(`📊 Found ranking counts for ${Object.keys(rankingCounts).length} products`);
+        console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
       } catch (error) {
-        console.error('Error fetching ranking counts:', error);
+        console.error('Error fetching ranking stats:', error);
         Sentry.captureException(error, {
-          tags: { service: 'products', operation: 'fetch_ranking_counts' }
+          tags: { service: 'products', operation: 'fetch_ranking_stats' }
         });
-        // Continue without ranking counts
+        // Continue without ranking stats
       }
     }
     
@@ -1034,19 +1039,24 @@ app.get('/api/products/all', async (req, res) => {
       console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
     }
     
-    // Transform products with ranking counts
-    const transformedProducts = products.map(product => ({
-      id: product.id.toString(),
-      title: product.title,
-      handle: product.handle,
-      vendor: product.vendor,
-      productType: product.product_type,
-      tags: product.tags,
-      image: product.images?.[0]?.src || null,
-      price: product.variants?.[0]?.price || '0.00',
-      compareAtPrice: product.variants?.[0]?.compare_at_price || null,
-      rankingCount: rankingCounts[product.id.toString()] || 0
-    }));
+    // Transform products with ranking stats
+    const transformedProducts = products.map(product => {
+      const stats = rankingStats[product.id.toString()] || { count: 0, avgRank: null, lastRankedAt: null };
+      return {
+        id: product.id.toString(),
+        title: product.title,
+        handle: product.handle,
+        vendor: product.vendor,
+        productType: product.product_type,
+        tags: product.tags,
+        image: product.images?.[0]?.src || null,
+        price: product.variants?.[0]?.price || '0.00',
+        compareAtPrice: product.variants?.[0]?.compare_at_price || null,
+        rankingCount: stats.count,
+        avgRank: stats.avgRank,
+        lastRankedAt: stats.lastRankedAt
+      };
+    });
     
     // Log search asynchronously (non-blocking)
     if (query && query.trim() && storage) {

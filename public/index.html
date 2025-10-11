@@ -154,13 +154,28 @@
             <div class="products-header">
                 <h2>All Products</h2>
                 <p class="products-subtitle">Browse our complete jerky catalog with ranking statistics</p>
-                <div class="search-container">
-                    <input 
-                        type="text" 
-                        id="productsSearchInput" 
-                        placeholder="Search for jerky products..."
-                        autocomplete="off"
-                    >
+                <div class="products-controls">
+                    <div class="search-container">
+                        <input 
+                            type="text" 
+                            id="productsSearchInput" 
+                            placeholder="Search for jerky products..."
+                            autocomplete="off"
+                        >
+                    </div>
+                    <div class="sort-container">
+                        <label for="productSort">Sort by:</label>
+                        <select id="productSort">
+                            <option value="name-asc">Name (A-Z)</option>
+                            <option value="name-desc">Name (Z-A)</option>
+                            <option value="recent-desc">Recently Ranked</option>
+                            <option value="recent-asc">Least Recently Ranked</option>
+                            <option value="avgrank-asc">Best Avg Ranking</option>
+                            <option value="avgrank-desc">Worst Avg Ranking</option>
+                            <option value="totalranks-desc">Most Ranked</option>
+                            <option value="totalranks-asc">Least Ranked</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
