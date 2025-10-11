@@ -126,6 +126,18 @@ const productViews = pgTable('product_views', {
   viewedAt: timestamp('viewed_at').defaultNow(),
 });
 
+// Products metadata - stores extracted metadata from Shopify products
+const productsMetadata = pgTable('products_metadata', {
+  id: serial('id').primaryKey(),
+  shopifyProductId: text('shopify_product_id').unique().notNull(),
+  animalType: text('animal_type'), // e.g., 'fish', 'cattle', 'poultry', 'game', 'exotic'
+  animalDisplay: text('animal_display'), // e.g., 'Beef', 'Chicken', 'Salmon'
+  animalIcon: text('animal_icon'), // Emoji icon
+  title: text('title').notNull(), // Product title for reference
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
 // Relations
 const usersRelations = relations(users, ({ many }) => ({
   rankings: many(rankings),
@@ -190,6 +202,7 @@ module.exports = {
   streaks,
   activityLogs,
   productViews,
+  productsMetadata,
   usersRelations,
   sessionsRelations,
   rankingsRelations,
