@@ -965,6 +965,29 @@ function parseLinkHeader(linkHeader) {
   return links;
 }
 
+// Get animal categories with product counts
+app.get('/api/products/animals', async (req, res) => {
+  try {
+    if (!storage) {
+      return res.json({ animals: [] });
+    }
+    
+    const { db } = require('./server/db.js');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+    const metadataService = new ProductsMetadataService(db);
+    
+    const animals = await metadataService.getAnimalCategories();
+    
+    res.json({ animals });
+  } catch (error) {
+    console.error('Error fetching animal categories:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'products', endpoint: '/api/products/animals' }
+    });
+    res.status(500).json({ error: 'Failed to fetch animal categories' });
+  }
+});
+
 // Get all products with their ranking counts
 app.get('/api/products/all', async (req, res) => {
   try {
@@ -983,6 +1006,21 @@ app.get('/api/products/all', async (req, res) => {
     
     // Fetch all products from Shopify
     let products = await fetchAllShopifyProducts();
+    
+    // Sync products metadata (animal categorization) to database
+    if (storage && products.length > 0) {
+      try {
+        const { db } = require('./server/db.js');
+        const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+        const metadataService = new ProductsMetadataService(db);
+        
+        await metadataService.syncProductsMetadata(products);
+        console.log(`🏷️ Synced metadata for ${products.length} products`);
+      } catch (error) {
+        console.error('Error syncing products metadata:', error);
+        // Continue without metadata - non-critical
+      }
+    }
     
     // Get ranking stats for all products from database
     const rankingStats = {};
