@@ -2170,7 +2170,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function filterProductsByAnimal(animal) {
+    async function filterProductsByAnimal(animal) {
+        // Ensure we have products loaded
+        if (!allProductsData || allProductsData.length === 0) {
+            console.warn('Products not loaded, loading now...');
+            await loadAllProducts('', getCurrentSort());
+        }
+        
         let filtered = allProductsData.filter(product => {
             return product.title.toLowerCase().includes(animal.toLowerCase());
         });
