@@ -2357,10 +2357,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Debounce search - wait 300ms after user stops typing
-            searchTimeout = setTimeout(async () => {
+            searchTimeout = setTimeout(() => {
                 const sort = getCurrentSort();
+                // Just update URL - hashchange event will trigger the load
                 updateProductsURL(query, sort);
-                await loadAllProducts(query, sort);
             }, 300);
         });
     }
@@ -2369,12 +2369,8 @@ document.addEventListener('DOMContentLoaded', function() {
         productSortField.addEventListener('change', (e) => {
             const query = productsSearchInput ? productsSearchInput.value.trim() : '';
             const sort = getCurrentSort();
+            // Just update URL - hashchange event will trigger the reload
             updateProductsURL(query, sort);
-            
-            // Re-sort and display without reloading data
-            currentSort = sort;
-            sortProductsData(sort);
-            displayProductsGrid(allProductsData);
         });
     }
     
@@ -2387,14 +2383,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const query = productsSearchInput ? productsSearchInput.value.trim() : '';
             const sort = getCurrentSort();
             
-            // Update global sort state
-            currentSort = sort;
-            
+            // Just update URL - hashchange event will trigger the reload
             updateProductsURL(query, sort);
-            
-            // Re-sort and display without reloading data
-            sortProductsData(sort);
-            displayProductsGrid(allProductsData);
         });
     }
 
