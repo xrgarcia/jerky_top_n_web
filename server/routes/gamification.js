@@ -14,7 +14,8 @@ function createGamificationRoutes(services) {
     progressTracker,
     activityLogRepo,
     productViewRepo,
-    homeStatsService
+    homeStatsService,
+    communityService
   } = services;
 
   router.get('/achievements', async (req, res) => {
@@ -85,7 +86,13 @@ function createGamificationRoutes(services) {
       const { period = 'all_time', limit = 50 } = req.query;
       const leaderboard = await leaderboardManager.getTopRankers(parseInt(limit), period);
 
-      res.json({ leaderboard, period });
+      // Format user display names with CommunityService (last name truncation)
+      const formattedLeaderboard = leaderboard.map(entry => ({
+        ...entry,
+        displayName: communityService.formatDisplayName(entry)
+      }));
+
+      res.json({ leaderboard: formattedLeaderboard, period });
     } catch (error) {
       console.error('Error fetching leaderboard:', error);
       res.status(500).json({ error: 'Failed to fetch leaderboard' });
