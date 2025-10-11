@@ -10,15 +10,32 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Search users by name or products they've ranked
 - Profile page to view user information and ranking statistics
 - Link to update profile on jerky.com
+- **Gamification System** (NEW):
+  - Achievement tracking with 17 predefined achievements
+  - User progress monitoring and milestone celebrations
+  - Streak tracking for daily engagement
+  - Real-time leaderboards and user comparisons
+  - Live activity feeds and social proof indicators
+  - Real-time notifications via WebSocket
 - Clean, professional design inspired by jerky.com
 - Fully responsive layout optimized for desktop, tablet, and mobile
 - Persistent rankings with database storage
 
 ## Architecture
-- **Frontend**: Vanilla HTML, CSS, and JavaScript
+- **Frontend**: Vanilla JavaScript with event-driven architecture
+  - EventBus for pub/sub communication between components
+  - ServiceRegistry for dependency injection and service lifecycle
+  - Domain services: Gamification, Social Proof, Activity Feed, Progress Tracking, Leaderboard
+  - Reusable UI components: Notifications, Progress Widgets, Leaderboards
 - **Backend**: Node.js with Express.js
+  - Repository pattern for data access (Achievements, Streaks, Activity Logs, Product Views)
+  - Domain services: AchievementManager, LeaderboardManager, ProgressTracker, StreakManager
+  - WebSocket Gateway for real-time bidirectional communication
+- **Real-time**: Socket.IO for live updates (achievements, streaks, notifications)
+- **Database**: PostgreSQL with Drizzle ORM
+  - Core tables: users, product_rankings, ranking_lists
+  - Gamification tables: achievements, user_achievements, streaks, activity_logs, product_views
 - **Styling**: Custom CSS with jerky.com-inspired theme
-- **Data**: In-memory sample jerky data (to be replaced with database in future phase)
 
 ## User Preferences
 - Clean, professional design aesthetic
@@ -26,6 +43,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-11: **Gamification system MVP implemented** - Built event-driven gamification architecture with achievements, streaks, leaderboards, and real-time updates; frontend uses EventBus for decoupled service communication; backend implements repository pattern with domain services; Socket.IO provides bidirectional real-time notifications; 17 achievements seeded covering ranking milestones (1, 5, 10, 25 products) to engagement goals (consecutive days, total rankings)
 - 2025-10-11: **Sentry service integration** - Integrated Sentry error tracking into rankings and products services with detailed context (service tags, operation metadata); added environment and URL tracking to distinguish dev vs production errors
 - 2025-10-10: **Sentry.io integration** - Added Sentry error monitoring and performance tracking for the Express.js application; automatically captures uncaught exceptions, unhandled promise rejections, and API errors
 - 2025-10-10: **Hidden hero image on login page** - Removed the hero banner image from the login page to prevent users from needing to scroll down to access the login form; hero remains visible on all other pages
