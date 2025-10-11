@@ -155,27 +155,22 @@
                 <h2>All Products</h2>
                 <p class="products-subtitle">Browse our complete jerky catalog with ranking statistics</p>
                 <div class="products-controls">
-                    <div class="search-container">
-                        <input 
-                            type="text" 
-                            id="productsSearchInput" 
-                            placeholder="Search for jerky products..."
-                            autocomplete="off"
-                        >
-                    </div>
-                    <div class="sort-container">
-                        <label for="productSort">Sort by:</label>
-                        <select id="productSort">
-                            <option value="name-asc">Name (A-Z)</option>
-                            <option value="name-desc">Name (Z-A)</option>
-                            <option value="recent-desc">Recently Ranked</option>
-                            <option value="recent-asc">Least Recently Ranked</option>
-                            <option value="avgrank-asc">Best Avg Ranking</option>
-                            <option value="avgrank-desc">Worst Avg Ranking</option>
-                            <option value="totalranks-desc">Most Ranked</option>
-                            <option value="totalranks-asc">Least Ranked</option>
-                        </select>
-                    </div>
+                    <input 
+                        type="text" 
+                        id="productsSearchInput" 
+                        placeholder="Search for jerky products..."
+                        autocomplete="off"
+                        class="products-search-input"
+                    >
+                    <select id="productSortField" class="products-sort-field">
+                        <option value="name">Sort by: Name</option>
+                        <option value="recent">Sort by: Recently Ranked</option>
+                        <option value="avgrank">Sort by: Avg Ranking</option>
+                        <option value="totalranks">Sort by: Total Rankings</option>
+                    </select>
+                    <button id="productSortOrder" class="products-sort-order" data-order="asc" title="Toggle sort order">
+                        <span class="funnel-icon">▼</span>
+                    </button>
                 </div>
             </div>
 

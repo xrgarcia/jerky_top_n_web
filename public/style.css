@@ -2626,43 +2626,80 @@ body.login-page-active .hero {
 }
 
 .products-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: 1fr auto 60px;
+    gap: 12px;
+    max-width: 1400px;
+    margin: 0 auto;
     margin-top: 20px;
-    flex-wrap: wrap;
+    padding: 0 20px;
 }
 
-.sort-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.products-search-input {
+    width: 100%;
+    padding: 15px 20px;
+    font-size: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease;
 }
 
-.sort-container label {
-    font-size: 14px;
-    font-weight: 600;
-    color: #333;
+.products-search-input:focus {
+    border-color: #6B8E23;
 }
 
-.sort-container select {
-    padding: 10px 15px;
-    font-size: 14px;
+.products-sort-field {
+    padding: 15px 20px;
+    font-size: 16px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
     background: white;
     outline: none;
     cursor: pointer;
     transition: border-color 0.3s ease;
+    min-width: 250px;
 }
 
-.sort-container select:hover {
+.products-sort-field:hover {
     border-color: var(--jerky-purple);
 }
 
-.sort-container select:focus {
+.products-sort-field:focus {
     border-color: var(--jerky-blue);
+}
+
+.products-sort-order {
+    width: 60px;
+    height: 52px;
+    padding: 0;
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.products-sort-order:hover {
+    border-color: var(--jerky-purple);
+    background: #f8f8f8;
+}
+
+.products-sort-order:active {
+    transform: scale(0.95);
+}
+
+.products-sort-order .funnel-icon {
+    font-size: 20px;
+    transition: transform 0.3s ease;
+    color: #333;
+}
+
+.products-sort-order[data-order="desc"] .funnel-icon {
+    transform: rotate(180deg);
 }
 
 .products-page-container {
@@ -3242,23 +3279,17 @@ body.login-page-active .hero {
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .products-controls {
-        flex-direction: column;
-        gap: 15px;
+        grid-template-columns: 1fr;
+        gap: 12px;
     }
     
-    .search-container {
+    .products-sort-field {
+        min-width: unset;
+    }
+    
+    .products-sort-order {
+        grid-column: 1;
         width: 100%;
-        max-width: 100%;
-    }
-    
-    .sort-container {
-        width: 100%;
-        justify-content: center;
-    }
-    
-    .sort-container select {
-        flex: 1;
-        max-width: 300px;
     }
     
     .products-grid {

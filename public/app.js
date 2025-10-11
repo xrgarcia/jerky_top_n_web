@@ -159,11 +159,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
             const query = hashParams.get('q') || '';
             const sort = hashParams.get('sort') || 'name-asc';
+            const [field, order] = sort.split('-');
             // Update form elements
             const productsSearchInput = document.getElementById('productsSearchInput');
-            const productSortSelect = document.getElementById('productSort');
+            const productSortField = document.getElementById('productSortField');
+            const productSortOrder = document.getElementById('productSortOrder');
             if (productsSearchInput) productsSearchInput.value = query;
-            if (productSortSelect) productSortSelect.value = sort;
+            if (productSortField) productSortField.value = field;
+            if (productSortOrder) productSortOrder.setAttribute('data-order', order || 'asc');
             // Load products when page is shown
             loadAllProducts(query, sort);
         } else if (page === 'community' && communityPage) {
@@ -2330,9 +2333,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Products page search - filters grid directly
+    // Products page search and sort controls
     const productsSearchInput = document.getElementById('productsSearchInput');
-    const productSortSelect = document.getElementById('productSort');
+    const productSortField = document.getElementById('productSortField');
+    const productSortOrder = document.getElementById('productSortOrder');
+    
+    function getCurrentSort() {
+        if (!productSortField || !productSortOrder) return 'name-asc';
+        const field = productSortField.value;
+        const order = productSortOrder.getAttribute('data-order');
+        return `${field}-${order}`;
+    }
     
     if (productsSearchInput) {
         productsSearchInput.addEventListener('input', (e) => {
@@ -2345,20 +2356,41 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Debounce search - wait 300ms after user stops typing
             searchTimeout = setTimeout(async () => {
-                updateProductsURL(query, currentSort);
-                await loadAllProducts(query, currentSort);
+                const sort = getCurrentSort();
+                updateProductsURL(query, sort);
+                await loadAllProducts(query, sort);
             }, 300);
         });
     }
     
-    if (productSortSelect) {
-        productSortSelect.addEventListener('change', (e) => {
+    if (productSortField) {
+        productSortField.addEventListener('change', (e) => {
             const query = productsSearchInput ? productsSearchInput.value.trim() : '';
-            const sort = e.target.value;
+            const sort = getCurrentSort();
             updateProductsURL(query, sort);
             
             // Re-sort and display without reloading data
             currentSort = sort;
+            sortProductsData(sort);
+            displayProductsGrid(allProductsData);
+        });
+    }
+    
+    if (productSortOrder) {
+        productSortOrder.addEventListener('click', () => {
+            const currentOrder = productSortOrder.getAttribute('data-order');
+            const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
+            productSortOrder.setAttribute('data-order', newOrder);
+            
+            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
+            const sort = getCurrentSort();
+            
+            // Update global sort state
+            currentSort = sort;
+            
+            updateProductsURL(query, sort);
+            
+            // Re-sort and display without reloading data
             sortProductsData(sort);
             displayProductsGrid(allProductsData);
         });
