@@ -16,7 +16,8 @@ class ProgressTrackingService extends BaseService {
       this.loadProgress();
     });
 
-    this.subscribe('ranking:saved', () => {
+    this.subscribe('ranking:saved', (data) => {
+      console.log('🔄 Progress widget received ranking:saved event, refreshing...', data);
       this.refreshProgress();
     });
   }

@@ -1656,6 +1656,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
+                
+                // Emit event to update progress widget and other reactive components
+                if (window.appEventBus) {
+                    console.log(`📢 Emitting ranking:saved event with count: ${rankings.length}`);
+                    window.appEventBus.emit('ranking:saved', { 
+                        count: rankings.length,
+                        rankingListId: 'default'
+                    });
+                }
             } else {
                 updateAutoSaveStatus('error', 'Save failed');
             }
@@ -1729,6 +1738,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
             alert(`Successfully saved ${filledSlots.length} product rankings!`);
             console.log(`✅ Saved ${filledSlots.length} product rankings`);
+            
+            // Emit event to update progress widget and other reactive components
+            if (window.appEventBus) {
+                window.appEventBus.emit('ranking:saved', { 
+                    count: filledSlots.length,
+                    rankingListId: rankingListId
+                });
+            }
 
         } catch (error) {
             console.error('Error saving rankings:', error);
@@ -1801,6 +1818,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (response.ok) {
                 console.log('✅ Successfully cleared all rankings from database');
                 updateAutoSaveStatus('saved', '✓ All rankings cleared');
+                
+                // Emit event to update progress widget and other reactive components
+                if (window.appEventBus) {
+                    window.appEventBus.emit('ranking:saved', { 
+                        count: 0,
+                        rankingListId: 'default'
+                    });
+                }
             } else {
                 console.error('❌ Failed to clear rankings from database');
                 updateAutoSaveStatus('error', 'Clear failed');
