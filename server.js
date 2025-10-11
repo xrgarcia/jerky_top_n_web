@@ -8,17 +8,32 @@ const cookieParser = require('cookie-parser');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Detect environment and URL for Sentry tracking
+const ENVIRONMENT = process.env.NODE_ENV || 
+                   (process.env.REPL_SLUG && process.env.REPL_OWNER ? 'production' : 'development');
+const APP_URL = process.env.REPLIT_DEV_DOMAIN || 
+                (process.env.REPL_SLUG && process.env.REPL_OWNER ? 
+                 `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app` : 
+                 'localhost:5000');
+
 // Initialize Sentry for error monitoring and performance tracking
 if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
+    environment: ENVIRONMENT,
     integrations: [
       nodeProfilingIntegration(),
     ],
     tracesSampleRate: 1.0,
     profilesSampleRate: 1.0,
+    initialScope: {
+      tags: {
+        app_url: APP_URL,
+        environment: ENVIRONMENT,
+      },
+    },
   });
-  console.log('✅ Sentry error monitoring initialized');
+  console.log(`✅ Sentry error monitoring initialized (${ENVIRONMENT} @ ${APP_URL})`);
 } else {
   console.warn('⚠️  Sentry DSN not configured - error monitoring disabled');
 }
@@ -984,6 +999,9 @@ app.get('/api/products/all', async (req, res) => {
         console.log(`📊 Found ranking counts for ${Object.keys(rankingCounts).length} products`);
       } catch (error) {
         console.error('Error fetching ranking counts:', error);
+        Sentry.captureException(error, {
+          tags: { service: 'products', operation: 'fetch_ranking_counts' }
+        });
         // Continue without ranking counts
       }
     }
@@ -1053,6 +1071,10 @@ app.get('/api/products/all', async (req, res) => {
     
   } catch (error) {
     console.error('Error fetching products with rankings:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'products', endpoint: '/api/products/all' },
+      extra: { query: req.query.query }
+    });
     res.status(500).json({ error: 'Failed to fetch products' });
   }
 });
@@ -1136,6 +1158,10 @@ app.get('/api/products/search', async (req, res) => {
     
   } catch (error) {
     console.error('Product search error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'products', endpoint: '/api/products/search' },
+      extra: { query: req.query.query, limit: req.query.limit, page: req.query.page }
+    });
     res.status(500).json({ error: 'Product search failed' });
   }
 });
@@ -1174,6 +1200,10 @@ app.post('/api/rankings/product', async (req, res) => {
     
   } catch (error) {
     console.error('Save product ranking error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'rankings', endpoint: '/api/rankings/product' },
+      extra: { productId: req.body.productId, ranking: req.body.ranking }
+    });
     res.status(500).json({ error: 'Failed to save ranking' });
   }
 });
@@ -1220,6 +1250,10 @@ app.post('/api/rankings/products', async (req, res) => {
     });
   } catch (error) {
     console.error('❌ Error bulk saving rankings:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'rankings', endpoint: '/api/rankings/products', operation: 'bulk_save' },
+      extra: { rankingCount: req.body.rankings?.length, rankingListId: req.body.rankingListId }
+    });
     res.status(500).json({ error: 'Failed to save rankings' });
   }
 });
@@ -1250,6 +1284,10 @@ app.get('/api/rankings/products', async (req, res) => {
     
   } catch (error) {
     console.error('Get product rankings error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'rankings', endpoint: '/api/rankings/products', operation: 'get' },
+      extra: { rankingListId: req.query.rankingListId }
+    });
     res.status(500).json({ error: 'Failed to get rankings' });
   }
 });
@@ -1281,6 +1319,10 @@ app.delete('/api/rankings/products/clear', async (req, res) => {
     
   } catch (error) {
     console.error('Clear product rankings error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'rankings', endpoint: '/api/rankings/products/clear', operation: 'clear' },
+      extra: { rankingListId: req.query.rankingListId }
+    });
     res.status(500).json({ error: 'Failed to clear rankings' });
   }
 });

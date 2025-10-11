@@ -26,6 +26,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-11: **Sentry service integration** - Integrated Sentry error tracking into rankings and products services with detailed context (service tags, operation metadata); added environment and URL tracking to distinguish dev vs production errors
 - 2025-10-10: **Sentry.io integration** - Added Sentry error monitoring and performance tracking for the Express.js application; automatically captures uncaught exceptions, unhandled promise rejections, and API errors
 - 2025-10-10: **Hidden hero image on login page** - Removed the hero banner image from the login page to prevent users from needing to scroll down to access the login form; hero remains visible on all other pages
 - 2025-10-10: **Visual ranking modal with product images** - Added product images to ranking modal for better visual context; modal header shows the product being ranked with its image; each position displays the current product's image and name; improved UX with visual product identification

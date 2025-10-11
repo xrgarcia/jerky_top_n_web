@@ -2,6 +2,7 @@ const { users, sessions, rankings, magicLinks, productRankings, userProductSearc
 const { db } = require('./db.js');
 const { eq, lt } = require('drizzle-orm');
 const crypto = require('crypto');
+const Sentry = require('@sentry/node');
 
 class DatabaseStorage {
   async getUser(shopifyCustomerId) {
@@ -158,40 +159,80 @@ class DatabaseStorage {
 
   // Product rankings methods
   async saveProductRanking({ userId, shopifyProductId, productData, ranking, rankingListId }) {
-    const [productRanking] = await db.insert(productRankings).values({
-      userId,
-      shopifyProductId,
-      productData,
-      ranking,
-      rankingListId,
-    }).returning();
+    try {
+      const [productRanking] = await db.insert(productRankings).values({
+        userId,
+        shopifyProductId,
+        productData,
+        ranking,
+        rankingListId,
+      }).returning();
 
-    return productRanking;
+      return productRanking;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings' },
+        extra: { userId, shopifyProductId, ranking, rankingListId }
+      });
+      throw error;
+    }
   }
 
   async getUserProductRankings(userId, rankingListId) {
-    const { and } = require('drizzle-orm');
-    return await db.select().from(productRankings)
-      .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)))
-      .orderBy(productRankings.ranking);
+    try {
+      const { and } = require('drizzle-orm');
+      return await db.select().from(productRankings)
+        .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)))
+        .orderBy(productRankings.ranking);
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings' },
+        extra: { userId, rankingListId }
+      });
+      throw error;
+    }
   }
 
   async updateProductRanking(id, ranking) {
-    const [updated] = await db.update(productRankings)
-      .set({ ranking, updatedAt: new Date() })
-      .where(eq(productRankings.id, id))
-      .returning();
-    return updated;
+    try {
+      const [updated] = await db.update(productRankings)
+        .set({ ranking, updatedAt: new Date() })
+        .where(eq(productRankings.id, id))
+        .returning();
+      return updated;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings' },
+        extra: { rankingId: id, newRanking: ranking }
+      });
+      throw error;
+    }
   }
 
   async deleteProductRanking(id) {
-    await db.delete(productRankings).where(eq(productRankings.id, id));
+    try {
+      await db.delete(productRankings).where(eq(productRankings.id, id));
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings' },
+        extra: { rankingId: id }
+      });
+      throw error;
+    }
   }
 
   async clearUserProductRankings(userId, rankingListId) {
-    const { and } = require('drizzle-orm');
-    await db.delete(productRankings)
-      .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)));
+    try {
+      const { and } = require('drizzle-orm');
+      await db.delete(productRankings)
+        .where(and(eq(productRankings.userId, userId), eq(productRankings.rankingListId, rankingListId)));
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings' },
+        extra: { userId, rankingListId }
+      });
+      throw error;
+    }
   }
 
   async logProductSearch(searchTerm, resultCount, userId = null, pageName) {
@@ -205,6 +246,10 @@ class DatabaseStorage {
     } catch (error) {
       // Silently fail - don't interrupt the search experience
       console.error('Error logging product search:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'products' },
+        extra: { searchTerm, resultCount, userId, pageName }
+      });
     }
   }
 }
