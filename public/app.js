@@ -2114,11 +2114,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function sortProductsData(sortBy) {
+    function sortProductsData(sortBy, dataArray = null) {
         const [field, order] = sortBy.split('-');
         const isAsc = order === 'asc';
+        const dataToSort = dataArray || allProductsData;
         
-        allProductsData.sort((a, b) => {
+        dataToSort.sort((a, b) => {
             let aVal, bVal;
             
             switch(field) {
@@ -2349,28 +2350,56 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (productsSearchInput) {
         productsSearchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
+            const query = e.target.value.trim().toLowerCase();
             
-            // Clear previous timeout
-            if (searchTimeout) {
-                clearTimeout(searchTimeout);
+            // Filter products client-side - no page reload
+            let filteredProducts = allProductsData;
+            
+            if (query) {
+                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
+                filteredProducts = allProductsData.filter(product => {
+                    const searchableText = [
+                        product.title,
+                        product.vendor,
+                        product.productType,
+                        product.tags || ''
+                    ].join(' ').toLowerCase();
+                    
+                    return searchWords.every(word => searchableText.includes(word));
+                });
             }
             
-            // Debounce search - wait 300ms after user stops typing
-            searchTimeout = setTimeout(() => {
-                const sort = getCurrentSort();
-                // Just update URL - hashchange event will trigger the load
-                updateProductsURL(query, sort);
-            }, 300);
+            // Apply current sort and display
+            const tempData = [...filteredProducts];
+            sortProductsData(getCurrentSort(), tempData);
+            displayProductsGrid(tempData);
         });
     }
     
     if (productSortField) {
         productSortField.addEventListener('change', (e) => {
-            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
-            const sort = getCurrentSort();
-            // Just update URL - hashchange event will trigger the reload
-            updateProductsURL(query, sort);
+            // Apply search filter first
+            const query = productsSearchInput ? productsSearchInput.value.trim().toLowerCase() : '';
+            let filteredProducts = allProductsData;
+            
+            if (query) {
+                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
+                filteredProducts = allProductsData.filter(product => {
+                    const searchableText = [
+                        product.title,
+                        product.vendor,
+                        product.productType,
+                        product.tags || ''
+                    ].join(' ').toLowerCase();
+                    
+                    return searchWords.every(word => searchableText.includes(word));
+                });
+            }
+            
+            // Sort and display
+            const tempData = [...filteredProducts];
+            sortProductsData(getCurrentSort(), tempData);
+            displayProductsGrid(tempData);
         });
     }
     
@@ -2380,11 +2409,28 @@ document.addEventListener('DOMContentLoaded', function() {
             const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
             productSortOrder.setAttribute('data-order', newOrder);
             
-            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
-            const sort = getCurrentSort();
+            // Apply search filter first
+            const query = productsSearchInput ? productsSearchInput.value.trim().toLowerCase() : '';
+            let filteredProducts = allProductsData;
             
-            // Just update URL - hashchange event will trigger the reload
-            updateProductsURL(query, sort);
+            if (query) {
+                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
+                filteredProducts = allProductsData.filter(product => {
+                    const searchableText = [
+                        product.title,
+                        product.vendor,
+                        product.productType,
+                        product.tags || ''
+                    ].join(' ').toLowerCase();
+                    
+                    return searchWords.every(word => searchableText.includes(word));
+                });
+            }
+            
+            // Sort and display
+            const tempData = [...filteredProducts];
+            sortProductsData(getCurrentSort(), tempData);
+            displayProductsGrid(tempData);
         });
     }
 
