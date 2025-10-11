@@ -2459,41 +2459,79 @@ document.addEventListener('DOMContentLoaded', function() {
         productsSearchInput.addEventListener('input', (e) => {
             const query = e.target.value.trim().toLowerCase();
             
-            // Reset animal filter when searching
-            selectedAnimal = null;
+            // Check if search query matches an animal name
             const animalCategories = document.getElementById('animalCategories');
-            if (animalCategories) {
-                animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
-            }
+            let matchedAnimal = null;
             
-            // Update URL to remove animal filter (without page reload)
-            const params = new URLSearchParams();
-            if (query) params.set('q', query);
-            if (currentSort !== 'name-asc') params.set('sort', currentSort);
-            const hash = params.toString() ? `#products?${params.toString()}` : '#products';
-            history.replaceState(null, '', hash);
-            
-            // Filter products client-side - no page reload
-            let filteredProducts = allProductsData;
-            
-            if (query) {
-                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
-                filteredProducts = allProductsData.filter(product => {
-                    const searchableText = [
-                        product.title,
-                        product.vendor,
-                        product.productType,
-                        product.tags || ''
-                    ].join(' ').toLowerCase();
-                    
-                    return searchWords.every(word => searchableText.includes(word));
+            if (query && animalCategories) {
+                const categoryElements = animalCategories.querySelectorAll('.animal-category');
+                categoryElements.forEach(el => {
+                    const animalName = el.getAttribute('data-animal').toLowerCase();
+                    if (animalName === query || animalName.includes(query) || query.includes(animalName)) {
+                        matchedAnimal = el.getAttribute('data-animal');
+                    }
                 });
             }
             
-            // Apply current sort and display
-            const tempData = [...filteredProducts];
-            sortProductsData(getCurrentSort(), tempData);
-            displayProductsGrid(tempData);
+            // If matched an animal, activate it and filter by animal
+            if (matchedAnimal) {
+                selectedAnimal = matchedAnimal;
+                if (animalCategories) {
+                    animalCategories.querySelectorAll('.animal-category').forEach(el => {
+                        if (el.getAttribute('data-animal') === matchedAnimal) {
+                            el.classList.add('active');
+                        } else {
+                            el.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Update URL with animal filter
+                const params = new URLSearchParams();
+                if (query) params.set('q', query);
+                if (currentSort !== 'name-asc') params.set('sort', currentSort);
+                params.set('animal', matchedAnimal);
+                const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+                history.replaceState(null, '', hash);
+                
+                // Filter by animal
+                filterProductsByAnimal(matchedAnimal);
+            } else {
+                // Reset animal filter when searching normally
+                selectedAnimal = null;
+                if (animalCategories) {
+                    animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
+                }
+                
+                // Update URL to remove animal filter (without page reload)
+                const params = new URLSearchParams();
+                if (query) params.set('q', query);
+                if (currentSort !== 'name-asc') params.set('sort', currentSort);
+                const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+                history.replaceState(null, '', hash);
+                
+                // Filter products client-side - no page reload
+                let filteredProducts = allProductsData;
+                
+                if (query) {
+                    const searchWords = query.split(/\s+/).filter(word => word.length > 0);
+                    filteredProducts = allProductsData.filter(product => {
+                        const searchableText = [
+                            product.title,
+                            product.vendor,
+                            product.productType,
+                            product.tags || ''
+                        ].join(' ').toLowerCase();
+                        
+                        return searchWords.every(word => searchableText.includes(word));
+                    });
+                }
+                
+                // Apply current sort and display
+                const tempData = [...filteredProducts];
+                sortProductsData(getCurrentSort(), tempData);
+                displayProductsGrid(tempData);
+            }
         });
     }
     
