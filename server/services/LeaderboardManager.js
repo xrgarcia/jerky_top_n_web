@@ -29,6 +29,8 @@ class LeaderboardManager {
     const query = this.db
       .select({
         userId: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
         displayName: users.displayName,
         email: users.email,
         totalRankings: sql`count(distinct ${productRankings.id})::int`,

@@ -4,11 +4,12 @@ const { sql } = require('drizzle-orm');
  * HomeStatsService - Aggregates statistics for home page dashboard
  */
 class HomeStatsService {
-  constructor(db, leaderboardManager, activityLogRepo, productViewRepo) {
+  constructor(db, leaderboardManager, activityLogRepo, productViewRepo, communityService) {
     this.db = db;
     this.leaderboardManager = leaderboardManager;
     this.activityLogRepo = activityLogRepo;
     this.productViewRepo = productViewRepo;
+    this.communityService = communityService;
   }
 
   /**
@@ -160,7 +161,8 @@ class HomeStatsService {
         a.icon as achievement_icon,
         a.tier as achievement_tier,
         u.first_name,
-        u.last_name
+        u.last_name,
+        u.display_name
       FROM user_achievements ua
       JOIN achievements a ON ua.achievement_id = a.id
       JOIN users u ON ua.user_id = u.id
@@ -170,7 +172,7 @@ class HomeStatsService {
 
     return results.rows.map(row => ({
       userId: row.user_id,
-      userName: `${row.first_name} ${row.last_name.charAt(0)}.`,
+      userName: this.communityService.formatDisplayName(row),
       achievementName: row.achievement_name,
       achievementIcon: row.achievement_icon,
       achievementTier: row.achievement_tier,
@@ -240,8 +242,13 @@ class HomeStatsService {
       this.getCommunityStats(),
     ]);
 
+    const formattedTopRankers = topRankers.map(ranker => ({
+      ...ranker,
+      displayName: this.communityService.formatDisplayName(ranker)
+    }));
+
     return {
-      topRankers,
+      topRankers: formattedTopRankers,
       topProducts,
       recentlyRanked,
       trending,

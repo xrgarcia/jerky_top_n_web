@@ -20,7 +20,8 @@ The application features a modern web architecture designed for responsiveness, 
 
 ### Technical Implementations
 - **Frontend**: Built with Vanilla JavaScript and an event-driven architecture utilizing an `EventBus` for pub/sub communication and `ServiceRegistry` for dependency injection. Key domain services include Gamification, Social Proof, Activity Feed, Progress Tracking, and Leaderboard, supported by reusable UI components for notifications and widgets.
-- **Backend**: Implemented with Node.js and Express.js, following a repository pattern for data access. Domain services like `AchievementManager`, `LeaderboardManager`, `ProgressTracker`, and `StreakManager` handle core business logic.
+- **Backend**: Implemented with Node.js and Express.js, following a repository pattern for data access. Domain services like `AchievementManager`, `LeaderboardManager`, `ProgressTracker`, `StreakManager`, and `CommunityService` handle core business logic.
+- **User Privacy**: Centralized `CommunityService` handles all user data formatting with last name truncation (e.g., "John D." instead of "John Doe") for privacy across all features including top rankers, community pages, leaderboards, and search results.
 - **Real-time Communication**: Powered by Socket.IO for real-time bidirectional communication, enabling live updates for achievements, streaks, and notifications.
 - **Product Management**: A centralized `ProductsService` combines product data from external sources with metadata and ranking statistics. Advanced filtering includes animal categories (15 unique types with icons and counts) and flavor profiles (8 distinct types with visual badges and searchability).
 - **Gamification**: An event-driven system tracks 17 predefined achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.

@@ -13,6 +13,7 @@ const StreakManager = require('../services/StreakManager');
 const LeaderboardManager = require('../services/LeaderboardManager');
 const ProgressTracker = require('../services/ProgressTracker');
 const HomeStatsService = require('../services/HomeStatsService');
+const CommunityService = require('../services/CommunityService');
 
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
@@ -25,11 +26,12 @@ async function initializeGamification(app, io, db, storage) {
   const activityLogRepo = new ActivityLogRepository(db);
   const productViewRepo = new ProductViewRepository(db);
 
+  const communityService = new CommunityService(db);
   const achievementManager = new AchievementManager(achievementRepo, activityLogRepo);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
-  const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo);
+  const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService);
 
   const services = {
     db,
@@ -38,6 +40,7 @@ async function initializeGamification(app, io, db, storage) {
     streakRepo,
     activityLogRepo,
     productViewRepo,
+    communityService,
     achievementManager,
     streakManager,
     leaderboardManager,
