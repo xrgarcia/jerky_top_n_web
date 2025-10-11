@@ -46,7 +46,17 @@ function extractAnimalFromTitle(title) {
   
   const lowerTitle = title.toLowerCase();
   
-  // Check for multi-word animals first (e.g., "wild boar", "rainbow trout")
+  // Priority 1: Check for primary meat types (the actual jerky meat) - usually appears first
+  // These are the core jerky types that should be checked before flavor names
+  const primaryMeatTypes = ['chicken', 'turkey', 'beef', 'pork', 'bacon', 'venison', 'elk'];
+  
+  for (const meatType of primaryMeatTypes) {
+    if (lowerTitle.includes(meatType)) {
+      return animalMapping[meatType];
+    }
+  }
+  
+  // Priority 2: Check for multi-word animals (e.g., "wild boar", "rainbow trout")
   const multiWordAnimals = [
     'ahi tuna',
     'rainbow trout',
@@ -59,9 +69,10 @@ function extractAnimalFromTitle(title) {
     }
   }
   
-  // Then check single-word animals
+  // Priority 3: Check remaining single-word animals (buffalo, alligator, etc.)
+  // Skip animals already checked in primary meat types
   for (const [animalName, metadata] of Object.entries(animalMapping)) {
-    if (lowerTitle.includes(animalName)) {
+    if (!primaryMeatTypes.includes(animalName) && lowerTitle.includes(animalName)) {
       return metadata;
     }
   }
