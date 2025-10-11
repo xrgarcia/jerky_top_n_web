@@ -2323,6 +2323,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 : 'N/A';
             const avgRankDisplay = `<div class="product-avg-rank">Avg Rank: ${avgRankText}</div>`;
             
+            // Format flavor profile badge - show if available
+            const flavorBadge = product.flavorDisplay 
+                ? `<div class="product-flavor-badge">${product.flavorIcon} ${product.flavorDisplay}</div>`
+                : '';
+            
             return `
                 <div class="product-card" onclick="navigateToProduct('${product.id}')">
                     <div class="product-card-image-container">
@@ -2339,6 +2344,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="product-card-vendor">${product.vendor || 'Unknown Brand'}</div>
                         <div class="product-card-price">$${product.price}</div>
                         ${avgRankDisplay}
+                        ${flavorBadge}
                     </div>
                 </div>
             `;
@@ -2371,6 +2377,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const detailTitle = document.getElementById('productDetailPageTitle');
         const detailVendor = document.getElementById('productDetailPageVendor');
         const detailPrice = document.getElementById('productDetailPagePrice');
+        const detailFlavor = document.getElementById('productDetailPageFlavor');
         const statRankers = document.getElementById('productDetailPageRankers');
         const statAvgRank = document.getElementById('productDetailPageAvgRank');
         
@@ -2398,10 +2405,23 @@ document.addEventListener('DOMContentLoaded', function() {
             detailPrice.textContent = `$${product.price}`;
             detailImage.src = product.image || '';
             detailImage.alt = product.title;
+            
+            // Set flavor profile if available
+            if (product.flavorDisplay) {
+                detailFlavor.innerHTML = `
+                    <div class="product-flavor-badge-large">
+                        <span class="flavor-icon">${product.flavorIcon}</span>
+                        <span class="flavor-text">${product.flavorDisplay}</span>
+                    </div>
+                `;
+            } else {
+                detailFlavor.innerHTML = '';
+            }
         } else {
             detailTitle.textContent = 'Product not found';
             detailVendor.textContent = '';
             detailPrice.textContent = '';
+            detailFlavor.innerHTML = '';
         }
         
         // Reset stats to loading state

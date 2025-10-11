@@ -19,6 +19,7 @@ const flavorMapping = {
   'chipotle': { type: 'spicy', icon: '🌶️' },
   
   // Savory flavors
+  'savory': { type: 'savory', icon: '🥩' },
   'original': { type: 'savory', icon: '🥩' },
   'classic': { type: 'savory', icon: '🥩' },
   'traditional': { type: 'savory', icon: '🥩' },

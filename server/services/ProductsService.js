@@ -136,7 +136,11 @@ class ProductsService {
         metadataMap[meta.shopifyProductId] = {
           animalType: meta.animalType,
           animalDisplay: meta.animalDisplay,
-          animalIcon: meta.animalIcon
+          animalIcon: meta.animalIcon,
+          primaryFlavor: meta.primaryFlavor,
+          secondaryFlavors: meta.secondaryFlavors ? JSON.parse(meta.secondaryFlavors) : [],
+          flavorDisplay: meta.flavorDisplay,
+          flavorIcon: meta.flavorIcon
         };
       });
       
@@ -187,7 +191,11 @@ class ProductsService {
     const metadata = metadataMap[productId] || { 
       animalType: null, 
       animalDisplay: null, 
-      animalIcon: null 
+      animalIcon: null,
+      primaryFlavor: null,
+      secondaryFlavors: [],
+      flavorDisplay: null,
+      flavorIcon: null
     };
     
     return {
@@ -205,7 +213,11 @@ class ProductsService {
       lastRankedAt: stats.lastRankedAt,
       animalType: metadata.animalType,
       animalDisplay: metadata.animalDisplay,
-      animalIcon: metadata.animalIcon
+      animalIcon: metadata.animalIcon,
+      primaryFlavor: metadata.primaryFlavor,
+      secondaryFlavors: metadata.secondaryFlavors,
+      flavorDisplay: metadata.flavorDisplay,
+      flavorIcon: metadata.flavorIcon
     };
   }
   

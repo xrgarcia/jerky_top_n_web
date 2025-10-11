@@ -1,5 +1,6 @@
 const ProductsMetadataRepository = require('../repositories/ProductsMetadataRepository');
 const { extractAnimalFromTitle } = require('../utils/animalExtractor');
+const { extractFlavorsFromTitle } = require('../utils/flavorExtractor');
 
 class ProductsMetadataService {
   constructor(db) {
@@ -16,12 +17,17 @@ class ProductsMetadataService {
     
     for (const product of products) {
       const animal = extractAnimalFromTitle(product.title);
+      const flavors = extractFlavorsFromTitle(product.title);
       
       const metadata = {
         title: product.title,
         animalType: animal?.type || null,
         animalDisplay: animal?.display || null,
         animalIcon: animal?.icon || null,
+        primaryFlavor: flavors?.primary || null,
+        secondaryFlavors: flavors?.secondary ? JSON.stringify(flavors.secondary) : null,
+        flavorDisplay: flavors?.display || null,
+        flavorIcon: flavors?.icon || null,
       };
       
       await this.repository.upsertProductMetadata(product.id, metadata);
