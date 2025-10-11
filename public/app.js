@@ -2611,7 +2611,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Apply animal filter if any
             if (selectedAnimal) {
                 filteredProducts = filteredProducts.filter(product => {
-                    return product.title.toLowerCase().includes(selectedAnimal.toLowerCase());
+                    // Primary: Filter by animalDisplay metadata (exact match)
+                    if (product.animalDisplay) {
+                        return product.animalDisplay.toLowerCase() === selectedAnimal.toLowerCase();
+                    }
+                    // Fallback: Comprehensive search (title, vendor, tags)
+                    const searchableText = [
+                        product.title,
+                        product.vendor,
+                        product.productType,
+                        product.tags || ''
+                    ].join(' ').toLowerCase();
+                    return searchableText.includes(selectedAnimal.toLowerCase());
                 });
             }
             
@@ -2661,7 +2672,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Apply animal filter if any
             if (selectedAnimal) {
                 filteredProducts = filteredProducts.filter(product => {
-                    return product.title.toLowerCase().includes(selectedAnimal.toLowerCase());
+                    // Primary: Filter by animalDisplay metadata (exact match)
+                    if (product.animalDisplay) {
+                        return product.animalDisplay.toLowerCase() === selectedAnimal.toLowerCase();
+                    }
+                    // Fallback: Comprehensive search (title, vendor, tags)
+                    const searchableText = [
+                        product.title,
+                        product.vendor,
+                        product.productType,
+                        product.tags || ''
+                    ].join(' ').toLowerCase();
+                    return searchableText.includes(selectedAnimal.toLowerCase());
                 });
             }
             

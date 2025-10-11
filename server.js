@@ -1012,154 +1012,37 @@ app.get('/api/products/all', async (req, res) => {
     
     console.log(`🛍️ Fetching all products with ranking counts, query: "${query}"`);
     
-    // Fetch all products from Shopify (returns { products, fromCache })
-    const { products, fromCache } = await fetchAllShopifyProducts();
-    
-    // Only sync products metadata when products are FRESHLY fetched, not from cache
-    if (storage && !fromCache && products.length > 0) {
-      try {
-        const { db } = require('./server/db.js');
-        const ProductsMetadataService = require('./server/services/ProductsMetadataService');
-        const metadataService = new ProductsMetadataService(db);
-        
-        await metadataService.syncProductsMetadata(products);
-        console.log(`🏷️ Synced metadata for ${products.length} fresh products`);
-        
-        // Invalidate metadata cache so next request gets fresh data
-        metadataCache.invalidate();
-      } catch (error) {
-        console.error('Error syncing products metadata:', error);
-        // Continue without metadata - non-critical
-      }
+    // Use unified ProductsService for consistent data retrieval
+    if (!storage) {
+      return res.json({ products: [], total: 0 });
     }
     
-    // Get ranking stats for all products from database (with 30-min cache)
-    let rankingStats = {};
-    if (storage) {
-      try {
-        // Check cache first
-        const cachedStats = rankingStatsCache.get();
-        
-        if (cachedStats) {
-          rankingStats = cachedStats;
-        } else {
-          // Fetch fresh stats from database
-          const { db } = require('./server/db.js');
-          const { sql } = require('drizzle-orm');
-          
-          const results = await db.execute(sql`
-            SELECT 
-              shopify_product_id,
-              COUNT(*) as count,
-              AVG(ranking) as avg_rank,
-              MAX(created_at) as last_ranked_at
-            FROM product_rankings
-            GROUP BY shopify_product_id
-          `);
-          
-          // Convert to map for easy lookup
-          results.rows.forEach(row => {
-            rankingStats[row.shopify_product_id] = {
-              count: parseInt(row.count),
-              avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
-              lastRankedAt: row.last_ranked_at
-            };
-          });
-          
-          console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
-          
-          // Store in cache
-          rankingStatsCache.set(rankingStats);
-        }
-      } catch (error) {
-        console.error('Error fetching ranking stats:', error);
-        Sentry.captureException(error, {
-          tags: { service: 'products', operation: 'fetch_ranking_stats' }
-        });
-        // Continue without ranking stats
-      }
-    }
+    const { db } = require('./server/db.js');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    // Apply search filter if query provided
-    if (query && query.trim()) {
-      const searchTerm = query.trim().toLowerCase();
-      const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
-      
-      products = products.filter(product => {
-        const searchableText = [
-          product.title,
-          product.vendor,
-          product.product_type,
-          product.tags || ''
-        ].join(' ').toLowerCase();
-        
-        return searchWords.every(word => searchableText.includes(word));
-      });
-      
-      console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
-    }
+    const metadataService = new ProductsMetadataService(db);
     
-    // Fetch metadata for all products (with 30-min cache)
-    let metadataMap = {};
-    if (storage) {
-      try {
-        // Check cache first
-        const cachedMetadata = metadataCache.get();
-        
-        if (cachedMetadata) {
-          metadataMap = cachedMetadata;
-        } else {
-          // Fetch fresh metadata from database
-          const { db } = require('./server/db.js');
-          const ProductsMetadataRepository = require('./server/repositories/ProductsMetadataRepository');
-          const metadataRepo = new ProductsMetadataRepository(db);
-          const allMetadata = await metadataRepo.getAllMetadata();
-          
-          // Create lookup map by shopify_product_id
-          allMetadata.forEach(meta => {
-            metadataMap[meta.shopifyProductId] = {
-              animalType: meta.animalType,
-              animalDisplay: meta.animalDisplay,
-              animalIcon: meta.animalIcon
-            };
-          });
-          
-          // Store in cache
-          metadataCache.set(metadataMap);
-        }
-      } catch (error) {
-        console.error('Error fetching metadata:', error);
-        // Continue without metadata
-      }
-    }
+    // Create service with dependency injection (using shared cache instances)
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      (products) => metadataService.syncProductsMetadata(products),
+      metadataCache,
+      rankingStatsCache
+    );
     
-    // Transform products with ranking stats and metadata
-    const transformedProducts = products.map(product => {
-      const stats = rankingStats[product.id.toString()] || { count: 0, avgRank: null, lastRankedAt: null };
-      const metadata = metadataMap[product.id.toString()] || { animalType: null, animalDisplay: null, animalIcon: null };
-      return {
-        id: product.id.toString(),
-        title: product.title,
-        handle: product.handle,
-        vendor: product.vendor,
-        productType: product.product_type,
-        tags: product.tags,
-        image: product.images?.[0]?.src || null,
-        price: product.variants?.[0]?.price || '0.00',
-        compareAtPrice: product.variants?.[0]?.compare_at_price || null,
-        rankingCount: stats.count,
-        avgRank: stats.avgRank,
-        lastRankedAt: stats.lastRankedAt,
-        animalType: metadata.animalType,
-        animalDisplay: metadata.animalDisplay,
-        animalIcon: metadata.animalIcon
-      };
+    // Get all products with complete data (Shopify + metadata + rankings)
+    const enrichedProducts = await productsService.getAllProducts({
+      query,
+      includeMetadata: true,
+      includeRankingStats: true
     });
     
     // Log search asynchronously (non-blocking)
-    if (query && query.trim() && storage) {
+    if (query && query.trim()) {
       const searchTerm = query.trim();
-      const resultCount = transformedProducts.length;
+      const resultCount = enrichedProducts.length;
       
       // Try to get userId from session
       let userId = null;
@@ -1182,8 +1065,8 @@ app.get('/api/products/all', async (req, res) => {
     }
     
     res.json({ 
-      products: transformedProducts,
-      total: transformedProducts.length
+      products: enrichedProducts,
+      total: enrichedProducts.length
     });
     
   } catch (error) {
