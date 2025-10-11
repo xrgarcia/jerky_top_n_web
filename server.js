@@ -1085,46 +1085,32 @@ app.get('/api/products/search', async (req, res) => {
     
     console.log(`🔍 Searching products: "${query}", page: ${page}, limit: ${limit}`);
     
-    // Fetch ALL products from Shopify (with pagination)
-    let products = await fetchAllShopifyProducts();
+    // Use unified ProductsService with shared cache instances
+    const { db } = require('./server/db.js');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    // If we have a search query, filter products with intelligent multi-word search
-    if (query && query.trim()) {
-      const searchTerm = query.trim().toLowerCase();
-      
-      // Split search query into individual words
-      const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
-      
-      products = products.filter(product => {
-        // Combine all searchable fields into one string
-        const searchableText = [
-          product.title,
-          product.vendor,
-          product.product_type,
-          product.tags || ''
-        ].join(' ').toLowerCase();
-        
-        // Check if ALL search words exist in the searchable text (in any order)
-        return searchWords.every(word => searchableText.includes(word));
-      });
-      
-      console.log(`🔍 Filtered to ${products.length} products matching all words in "${query}"`);
-    }
+    const metadataService = new ProductsMetadataService(db);
     
-    console.log(`✅ Found ${products.length} products`);
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      (products) => metadataService.syncProductsMetadata(products),
+      metadataCache,
+      rankingStatsCache
+    );
     
-    // Transform products for frontend
-    const transformedProducts = products.map(product => ({
-      id: product.id.toString(),
-      title: product.title,
-      handle: product.handle,
-      vendor: product.vendor,
-      productType: product.product_type,
-      tags: product.tags,
-      image: product.images?.[0]?.src || null,
-      price: product.variants?.[0]?.price || '0.00',
-      compareAtPrice: product.variants?.[0]?.compare_at_price || null,
-    }));
+    // Get products with metadata and ranking stats
+    const enrichedProducts = await productsService.getAllProducts({
+      query,
+      includeMetadata: true,
+      includeRankingStats: true
+    });
+    
+    console.log(`✅ Found ${enrichedProducts.length} products`);
+    
+    // Products are already transformed by ProductsService
+    const transformedProducts = enrichedProducts;
     
     // Log search asynchronously (non-blocking)
     if (query && query.trim() && storage) {
@@ -1153,7 +1139,7 @@ app.get('/api/products/search', async (req, res) => {
     
     res.json({ 
       products: transformedProducts,
-      hasMore: products.length >= parseInt(limit) // Simple pagination indicator
+      hasMore: transformedProducts.length >= parseInt(limit) // Simple pagination indicator
     });
     
   } catch (error) {
