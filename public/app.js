@@ -2241,12 +2241,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     bVal = b.lastRankedAt || '1970-01-01';
                     break;
                 case 'avgrank':
-                    aVal = a.avgRank || 9999;
-                    bVal = b.avgRank || 9999;
+                    aVal = parseFloat(a.avgRank) || 9999;
+                    bVal = parseFloat(b.avgRank) || 9999;
                     break;
                 case 'totalranks':
-                    aVal = a.rankingCount || 0;
-                    bVal = b.rankingCount || 0;
+                    aVal = parseInt(a.rankingCount) || 0;
+                    bVal = parseInt(b.rankingCount) || 0;
                     break;
                 default:
                     return 0;
