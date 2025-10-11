@@ -1377,6 +1377,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show modal
         modal.classList.add('show');
         modal.style.display = 'flex';
+        
+        // Add ESC key listener when modal opens
+        document.addEventListener('keydown', handleModalEscKey);
+    }
+
+    // ESC key handler for modal
+    function handleModalEscKey(event) {
+        if (event.key === 'Escape') {
+            closeRankModal();
+        }
     }
 
     // Close ranking modal
@@ -1385,6 +1395,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (modal) {
             modal.classList.remove('show');
             modal.style.display = 'none';
+            // Remove ESC key listener when modal closes
+            document.removeEventListener('keydown', handleModalEscKey);
         }
     }
 
