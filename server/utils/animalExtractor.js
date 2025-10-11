@@ -1,11 +1,11 @@
 // Animal extraction and categorization utility
 const animalMapping = {
-  // Fish
-  'ahi tuna': { type: 'fish', display: 'Tuna', icon: '🐟' },
-  'tuna': { type: 'fish', display: 'Tuna', icon: '🐟' },
-  'salmon': { type: 'fish', display: 'Salmon', icon: '🐟' },
-  'rainbow trout': { type: 'fish', display: 'Trout', icon: '🐟' },
-  'trout': { type: 'fish', display: 'Trout', icon: '🐟' },
+  // Fish - all consolidated as "Fish"
+  'ahi tuna': { type: 'fish', display: 'Fish', icon: '🐟' },
+  'tuna': { type: 'fish', display: 'Fish', icon: '🐟' },
+  'salmon': { type: 'fish', display: 'Fish', icon: '🐟' },
+  'rainbow trout': { type: 'fish', display: 'Fish', icon: '🐟' },
+  'trout': { type: 'fish', display: 'Fish', icon: '🐟' },
   
   // Cattle
   'beef': { type: 'cattle', display: 'Beef', icon: '🐄' },
@@ -16,9 +16,9 @@ const animalMapping = {
   'chicken': { type: 'poultry', display: 'Chicken', icon: '🐔' },
   'turkey': { type: 'poultry', display: 'Turkey', icon: '🦃' },
   
-  // Pork
+  // Pork - bacon consolidated into Pork
   'pork': { type: 'pork', display: 'Pork', icon: '🐷' },
-  'bacon': { type: 'pork', display: 'Bacon', icon: '🥓' },
+  'bacon': { type: 'pork', display: 'Pork', icon: '🐷' },
   
   // Game
   'elk': { type: 'game', display: 'Elk', icon: '🦌' },
