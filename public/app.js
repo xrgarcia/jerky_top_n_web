@@ -2171,10 +2171,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function filterProductsByAnimal(animal) {
-        const filtered = allProductsData.filter(product => {
+        let filtered = allProductsData.filter(product => {
             return product.title.toLowerCase().includes(animal.toLowerCase());
         });
         
+        // Apply current sort to filtered products
+        sortProductsData(getCurrentSort(), filtered);
         displayProductsGrid(filtered);
     }
     
