@@ -6,6 +6,7 @@ const { Server } = require('socket.io');
 const path = require('path');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
+const RankingStatsCache = require('./server/cache/RankingStatsCache');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -718,6 +719,9 @@ const productCache = {
   TTL: 30 * 60 * 1000 // 30 minutes in milliseconds
 };
 
+// 30-minute ranking statistics cache (OOP implementation)
+const rankingStatsCache = new RankingStatsCache(30);
+
 // Check if cache is valid (within 30-minute TTL)
 function isCacheValid() {
   if (!productCache.data || !productCache.timestamp) {
@@ -1022,33 +1026,44 @@ app.get('/api/products/all', async (req, res) => {
       }
     }
     
-    // Get ranking stats for all products from database
-    const rankingStats = {};
+    // Get ranking stats for all products from database (with 30-min cache)
+    let rankingStats = {};
     if (storage) {
       try {
-        const { db } = require('./server/db.js');
-        const { sql } = require('drizzle-orm');
+        // Check cache first
+        const cachedStats = rankingStatsCache.get();
         
-        const results = await db.execute(sql`
-          SELECT 
-            shopify_product_id,
-            COUNT(*) as count,
-            AVG(ranking) as avg_rank,
-            MAX(created_at) as last_ranked_at
-          FROM product_rankings
-          GROUP BY shopify_product_id
-        `);
-        
-        // Convert to map for easy lookup
-        results.rows.forEach(row => {
-          rankingStats[row.shopify_product_id] = {
-            count: parseInt(row.count),
-            avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
-            lastRankedAt: row.last_ranked_at
-          };
-        });
-        
-        console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
+        if (cachedStats) {
+          rankingStats = cachedStats;
+        } else {
+          // Fetch fresh stats from database
+          const { db } = require('./server/db.js');
+          const { sql } = require('drizzle-orm');
+          
+          const results = await db.execute(sql`
+            SELECT 
+              shopify_product_id,
+              COUNT(*) as count,
+              AVG(ranking) as avg_rank,
+              MAX(created_at) as last_ranked_at
+            FROM product_rankings
+            GROUP BY shopify_product_id
+          `);
+          
+          // Convert to map for easy lookup
+          results.rows.forEach(row => {
+            rankingStats[row.shopify_product_id] = {
+              count: parseInt(row.count),
+              avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
+              lastRankedAt: row.last_ranked_at
+            };
+          });
+          
+          console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
+          
+          // Store in cache
+          rankingStatsCache.set(rankingStats);
+        }
       } catch (error) {
         console.error('Error fetching ranking stats:', error);
         Sentry.captureException(error, {
@@ -1251,6 +1266,9 @@ app.post('/api/rankings/product', async (req, res) => {
       rankingListId: rankingListId || 'default'
     });
     
+    // Invalidate ranking stats cache since data changed
+    rankingStatsCache.invalidate();
+    
     console.log(`✅ Product ranking saved: ${productData.title} at rank ${ranking}`);
     
     res.json({ success: true, ranking: productRanking });
@@ -1299,6 +1317,9 @@ app.post('/api/rankings/products', async (req, res) => {
         rankingListId: rankingListId
       });
     }
+    
+    // Invalidate ranking stats cache since data changed
+    rankingStatsCache.invalidate();
 
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
     
@@ -1403,6 +1424,9 @@ app.delete('/api/rankings/products/clear', async (req, res) => {
     
     // Clear user's rankings
     await storage.clearUserProductRankings(session.userId, rankingListId);
+    
+    // Invalidate ranking stats cache since data changed
+    rankingStatsCache.invalidate();
     
     console.log(`🗑️ Cleared rankings for user ${session.userId}, list: ${rankingListId}`);
     res.json({ success: true });

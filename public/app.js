@@ -2308,10 +2308,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 ? '0 rankings' 
                 : `${product.rankingCount} ranking${product.rankingCount === 1 ? '' : 's'}`;
             
-            // Format average ranking display
-            const avgRankDisplay = product.avgRank 
-                ? `<div class="product-avg-rank">Avg Rank: #${parseFloat(product.avgRank).toFixed(1)}</div>`
-                : '';
+            // Format average ranking display - always show
+            const avgRankText = product.avgRank 
+                ? `#${parseFloat(product.avgRank).toFixed(1)}`
+                : 'N/A';
+            const avgRankDisplay = `<div class="product-avg-rank">Avg Rank: ${avgRankText}</div>`;
             
             return `
                 <div class="product-card" onclick="navigateToProduct('${product.id}')">
