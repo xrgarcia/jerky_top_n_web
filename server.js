@@ -1253,6 +1253,39 @@ app.post('/api/rankings/products', async (req, res) => {
     }
 
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
+    
+    // Check and award achievements after saving rankings
+    if (gamificationServices && rankings.length > 0) {
+      try {
+        const { achievementManager, leaderboardManager, streakManager } = gamificationServices;
+        
+        // Get updated user stats
+        const userStats = await leaderboardManager.getUserStats(userId);
+        const position = await leaderboardManager.getUserPosition(userId);
+        const streaks = await streakManager.getUserStreaks(userId);
+        const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
+        
+        const stats = {
+          ...userStats,
+          leaderboardPosition: position.rank || 999,
+          currentStreak: dailyStreak?.currentStreak || 0,
+        };
+        
+        // Check for new achievements
+        const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
+        
+        // Broadcast new achievements via WebSocket
+        if (newAchievements.length > 0 && io) {
+          io.to(`user:${userId}`).emit('achievements:earned', { achievements: newAchievements });
+          console.log(`🏆 User ${userId} earned ${newAchievements.length} new achievement(s):`, 
+            newAchievements.map(a => a.name).join(', '));
+        }
+      } catch (achievementError) {
+        console.error('Error checking achievements:', achievementError);
+        // Don't fail the ranking save if achievement check fails
+      }
+    }
+    
     res.json({ 
       success: true, 
       message: `Saved ${rankings.length} rankings` 
@@ -2177,13 +2210,19 @@ app.get('/health', (req, res) => {
 });
 
 // Initialize gamification system BEFORE catch-all route if database is available
+let gamificationServices = null;
 if (databaseAvailable && storage) {
   const initializeGamification = require('./server/init/gamification');
   const { db } = require('./server/db');
   
-  initializeGamification(app, io, db, storage).catch(error => {
-    console.error('❌ Failed to initialize gamification:', error);
-  });
+  initializeGamification(app, io, db, storage)
+    .then(services => {
+      gamificationServices = services;
+      console.log('✅ Gamification services available for achievements');
+    })
+    .catch(error => {
+      console.error('❌ Failed to initialize gamification:', error);
+    });
 }
 
 // Sentry error handling middleware (must be before other error handlers)

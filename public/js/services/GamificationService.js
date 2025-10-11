@@ -29,6 +29,19 @@ class GamificationService extends BaseService {
       this.showAchievementNotification(achievement);
     });
 
+    this.socket.on('achievements:earned', (data) => {
+      console.log('🏆 Received achievements:earned event', data);
+      if (data.achievements && data.achievements.length > 0) {
+        data.achievements.forEach(achievement => {
+          this.achievements.push(achievement);
+          this.emit('achievement:new', achievement);
+          this.showAchievementNotification(achievement);
+        });
+        // Reload achievements to get updated progress
+        this.loadAchievements();
+      }
+    });
+
     this.socket.on('streak:updated', (streak) => {
       this.updateStreak(streak);
       this.emit('streak:changed', streak);
