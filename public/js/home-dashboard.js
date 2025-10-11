@@ -11,18 +11,23 @@ class HomeDashboard {
 
   async loadStats() {
     try {
+      console.log('🔄 Fetching home stats from /api/gamification/home-stats');
       const response = await fetch('/api/gamification/home-stats', {
         credentials: 'include',
       });
 
+      console.log('📥 Home stats response:', response.status, response.statusText);
+
       if (response.ok) {
         this.stats = await response.json();
+        console.log('✅ Home stats loaded:', this.stats);
         this.render();
       } else {
-        console.error('Failed to load home stats');
+        const errorText = await response.text();
+        console.error('❌ Failed to load home stats:', response.status, errorText);
       }
     } catch (error) {
-      console.error('Error loading home stats:', error);
+      console.error('❌ Error loading home stats:', error);
     }
   }
 
@@ -218,9 +223,19 @@ const homeDashboard = new HomeDashboard();
 if (window.appEventBus) {
   window.appEventBus.on('page:shown', (data) => {
     if (data.page === 'home') {
+      console.log('📊 Loading home stats...');
       homeDashboard.loadStats();
     }
   });
 }
+
+// Also check if we're already on the home page (for initial load)
+setTimeout(() => {
+  const homePage = document.getElementById('homePage');
+  if (homePage && homePage.style.display !== 'none') {
+    console.log('📊 Loading initial home stats...');
+    homeDashboard.loadStats();
+  }
+}, 100);
 
 console.log('✅ Home dashboard initialized');

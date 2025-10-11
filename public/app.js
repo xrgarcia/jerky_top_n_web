@@ -184,6 +184,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (activeLink) {
             activeLink.classList.add('active');
         }
+        
+        // Emit page:shown event for integrations
+        if (window.appEventBus) {
+            window.appEventBus.emit('page:shown', { page });
+        }
     }
 
     // Customer authentication elements

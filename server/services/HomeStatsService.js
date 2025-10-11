@@ -33,7 +33,7 @@ class HomeStatsService {
       FROM product_rankings
       WHERE product_data IS NOT NULL
       GROUP BY shopify_product_id, product_data
-      HAVING COUNT(*) >= 3
+      HAVING COUNT(*) >= 1
       ORDER BY avg_rank ASC
       LIMIT ${limit}
     `);
@@ -132,7 +132,7 @@ class HomeStatsService {
       FROM product_rankings
       WHERE product_data IS NOT NULL
       GROUP BY shopify_product_id, product_data
-      HAVING COUNT(*) >= 5
+      HAVING COUNT(*) >= 2
       ORDER BY STDDEV(ranking) DESC
       LIMIT ${limit}
     `);
