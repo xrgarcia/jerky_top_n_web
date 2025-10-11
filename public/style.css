@@ -2743,8 +2743,11 @@ body.login-page-active .hero {
 
 .animal-category.active {
     border-color: var(--jerky-purple);
-    background: var(--jerky-purple);
-    color: white;
+    border-width: 3px;
+    background: #f5f0ff;
+    color: #333;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
 }
 
 .animal-category-icon {
@@ -2759,7 +2762,8 @@ body.login-page-active .hero {
 }
 
 .animal-category.active .animal-category-name {
-    color: white;
+    color: var(--jerky-purple);
+    font-weight: 700;
 }
 
 .animal-category-count {
@@ -2769,7 +2773,8 @@ body.login-page-active .hero {
 }
 
 .animal-category.active .animal-category-count {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--jerky-purple);
+    font-weight: 600;
 }
 
 .products-search-section {

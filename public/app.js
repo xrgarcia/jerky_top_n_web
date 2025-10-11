@@ -190,6 +190,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             categoryEl.classList.add('active');
                         }
                     }
+                    // Populate search box with animal name from URL
+                    if (productsSearchInput && !query) {
+                        productsSearchInput.value = selectedAnimal;
+                    }
                 }
             });
             
@@ -2128,6 +2132,7 @@ document.addEventListener('DOMContentLoaded', function() {
             container.querySelectorAll('.animal-category').forEach(categoryEl => {
                 categoryEl.addEventListener('click', () => {
                     const animal = categoryEl.getAttribute('data-animal');
+                    const searchInput = document.getElementById('productsSearchInput');
                     
                     // Toggle selection
                     if (selectedAnimal === animal) {
@@ -2135,6 +2140,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         categoryEl.classList.remove('active');
                         // Update URL to remove animal filter
                         updateProductsURLWithAnimal(null);
+                        // Clear search box
+                        if (searchInput) {
+                            searchInput.value = '';
+                            // Trigger input event to update display
+                            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
                     } else {
                         // Deselect previous
                         container.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
@@ -2143,6 +2154,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         categoryEl.classList.add('active');
                         // Update URL with animal filter
                         updateProductsURLWithAnimal(animal);
+                        // Populate search box with animal name
+                        if (searchInput) {
+                            searchInput.value = animal;
+                            // Trigger input event to filter products
+                            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
                     }
                 });
             });
