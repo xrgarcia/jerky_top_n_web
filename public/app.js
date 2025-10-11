@@ -20,6 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentJerkyData = [];
     let userRanking = [];
     let isRankingMode = false;
+    
+    // Products page state variables
+    let allProductsData = [];
+    let searchTimeout = null;
+    let currentSort = 'name-asc';
+    let selectedAnimal = null;
 
     // Navigation event listeners
     navLinks.forEach(link => {
@@ -159,7 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
             const query = hashParams.get('q') || '';
             const sort = hashParams.get('sort') || 'name-asc';
+            const animal = hashParams.get('animal') || null;
             const [field, order] = sort.split('-');
+            
             // Update form elements
             const productsSearchInput = document.getElementById('productsSearchInput');
             const productSortField = document.getElementById('productSortField');
@@ -167,9 +175,30 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productsSearchInput) productsSearchInput.value = query;
             if (productSortField) productSortField.value = field;
             if (productSortOrder) productSortOrder.setAttribute('data-order', order || 'asc');
+            
+            // Set selected animal from URL
+            selectedAnimal = animal;
+            
             // Load animal categories and products when page is shown
-            loadAnimalCategories();
-            loadAllProducts(query, sort);
+            loadAnimalCategories().then(() => {
+                // After categories load, activate the selected animal if from URL
+                if (selectedAnimal) {
+                    const animalCategories = document.getElementById('animalCategories');
+                    if (animalCategories) {
+                        const categoryEl = animalCategories.querySelector(`[data-animal="${selectedAnimal}"]`);
+                        if (categoryEl) {
+                            categoryEl.classList.add('active');
+                        }
+                    }
+                }
+            });
+            
+            loadAllProducts(query, sort).then(() => {
+                // Apply animal filter after products load if selected
+                if (selectedAnimal) {
+                    filterProductsByAnimal(selectedAnimal);
+                }
+            });
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'community');
@@ -2074,11 +2103,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Products Page Functionality
     // ========================================
     
-    let allProductsData = [];
-    let searchTimeout = null;
-    let currentSort = 'name-asc';
-    let selectedAnimal = null;
-    
     async function loadAnimalCategories() {
         const container = document.getElementById('animalCategories');
         if (!container) return;
@@ -2109,16 +2133,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (selectedAnimal === animal) {
                         selectedAnimal = null;
                         categoryEl.classList.remove('active');
-                        // Show all products
-                        displayProductsGrid(allProductsData);
+                        // Update URL to remove animal filter
+                        updateProductsURLWithAnimal(null);
                     } else {
                         // Deselect previous
                         container.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
                         // Select new
                         selectedAnimal = animal;
                         categoryEl.classList.add('active');
-                        // Filter products by animal
-                        filterProductsByAnimal(animal);
+                        // Update URL with animal filter
+                        updateProductsURLWithAnimal(animal);
                     }
                 });
             });
@@ -2213,9 +2237,32 @@ document.addEventListener('DOMContentLoaded', function() {
         const params = new URLSearchParams();
         if (query) params.set('q', query);
         if (sort !== 'name-asc') params.set('sort', sort);
+        if (selectedAnimal) params.set('animal', selectedAnimal);
         
         const hash = params.toString() ? `products?${params.toString()}` : 'products';
         window.location.hash = hash;
+    }
+    
+    function updateProductsURLWithAnimal(animal) {
+        const params = new URLSearchParams();
+        const searchInput = document.getElementById('productsSearchInput');
+        const query = searchInput ? searchInput.value.trim() : '';
+        
+        if (query) params.set('q', query);
+        if (currentSort !== 'name-asc') params.set('sort', currentSort);
+        if (animal) params.set('animal', animal);
+        
+        const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+        
+        // Update URL without triggering hashchange event
+        history.replaceState(null, '', hash);
+        
+        // Apply the filter
+        if (animal) {
+            filterProductsByAnimal(animal);
+        } else {
+            displayProductsGrid(allProductsData);
+        }
     }
     
     function displayProductsGrid(products) {
@@ -2419,6 +2466,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
             }
             
+            // Update URL to remove animal filter (without page reload)
+            const params = new URLSearchParams();
+            if (query) params.set('q', query);
+            if (currentSort !== 'name-asc') params.set('sort', currentSort);
+            const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+            history.replaceState(null, '', hash);
+            
             // Filter products client-side - no page reload
             let filteredProducts = allProductsData;
             
@@ -2445,13 +2499,25 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (productSortField) {
         productSortField.addEventListener('change', (e) => {
-            // Apply search filter first
-            const query = productsSearchInput ? productsSearchInput.value.trim().toLowerCase() : '';
+            // Update current sort
+            currentSort = getCurrentSort();
+            
+            // Update URL with new sort
+            const params = new URLSearchParams();
+            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
+            if (query) params.set('q', query);
+            if (currentSort !== 'name-asc') params.set('sort', currentSort);
+            if (selectedAnimal) params.set('animal', selectedAnimal);
+            const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+            history.replaceState(null, '', hash);
+            
+            // Apply filters
             let filteredProducts = allProductsData;
             
+            // Apply search filter if any
             if (query) {
-                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
-                filteredProducts = allProductsData.filter(product => {
+                const searchWords = query.toLowerCase().split(/\s+/).filter(word => word.length > 0);
+                filteredProducts = filteredProducts.filter(product => {
                     const searchableText = [
                         product.title,
                         product.vendor,
@@ -2463,9 +2529,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             
+            // Apply animal filter if any
+            if (selectedAnimal) {
+                filteredProducts = filteredProducts.filter(product => {
+                    return product.title.toLowerCase().includes(selectedAnimal.toLowerCase());
+                });
+            }
+            
             // Sort and display
             const tempData = [...filteredProducts];
-            sortProductsData(getCurrentSort(), tempData);
+            sortProductsData(currentSort, tempData);
             displayProductsGrid(tempData);
         });
     }
@@ -2476,13 +2549,25 @@ document.addEventListener('DOMContentLoaded', function() {
             const newOrder = currentOrder === 'asc' ? 'desc' : 'asc';
             productSortOrder.setAttribute('data-order', newOrder);
             
-            // Apply search filter first
-            const query = productsSearchInput ? productsSearchInput.value.trim().toLowerCase() : '';
+            // Update current sort
+            currentSort = getCurrentSort();
+            
+            // Update URL with new sort order
+            const params = new URLSearchParams();
+            const query = productsSearchInput ? productsSearchInput.value.trim() : '';
+            if (query) params.set('q', query);
+            if (currentSort !== 'name-asc') params.set('sort', currentSort);
+            if (selectedAnimal) params.set('animal', selectedAnimal);
+            const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+            history.replaceState(null, '', hash);
+            
+            // Apply filters
             let filteredProducts = allProductsData;
             
+            // Apply search filter if any
             if (query) {
-                const searchWords = query.split(/\s+/).filter(word => word.length > 0);
-                filteredProducts = allProductsData.filter(product => {
+                const searchWords = query.toLowerCase().split(/\s+/).filter(word => word.length > 0);
+                filteredProducts = filteredProducts.filter(product => {
                     const searchableText = [
                         product.title,
                         product.vendor,
@@ -2494,9 +2579,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             
+            // Apply animal filter if any
+            if (selectedAnimal) {
+                filteredProducts = filteredProducts.filter(product => {
+                    return product.title.toLowerCase().includes(selectedAnimal.toLowerCase());
+                });
+            }
+            
             // Sort and display
             const tempData = [...filteredProducts];
-            sortProductsData(getCurrentSort(), tempData);
+            sortProductsData(currentSort, tempData);
             displayProductsGrid(tempData);
         });
     }
