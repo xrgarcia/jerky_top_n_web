@@ -6,13 +6,15 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 ## Features
 - View top N jerky products (3, 5, or 8 items)
 - Dual ranking system: drag-and-drop OR dropdown selection (mobile-friendly)
-- **Products Page with Advanced Sorting**:
+- **Products Page with Advanced Sorting & Animal Filtering**:
   - Sort by Name (A-Z / Z-A)
   - Sort by Recently Ranked (most/least recent)
   - Sort by Average Ranking (best/worst)
   - Sort by Total Rankings (most/least ranked)
   - URL parameters for deep linking to sorted views
   - Client-side sorting for instant results
+  - Animal category icons with product counts for quick filtering
+  - 18 unique animal categories (Beef, Chicken, Turkey, Salmon, etc.)
 - Community page to discover fellow jerky enthusiasts
 - Search users by name or products they've ranked
 - Profile page to view user information and ranking statistics
@@ -42,6 +44,7 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - **Database**: PostgreSQL with Drizzle ORM
   - Core tables: users, product_rankings, ranking_lists
   - Gamification tables: achievements, user_achievements, streaks, activity_logs, product_views
+  - Metadata tables: products_metadata (animal categorization extracted from product titles)
 - **Styling**: Custom CSS with jerky.com-inspired theme
 
 ## User Preferences
@@ -50,6 +53,8 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 - Responsive design for all devices
 
 ## Recent Changes
+- 2025-10-11: **Animal category filtering on products page** - Implemented intelligent animal categorization system that extracts animal types from product titles; created products_metadata table to store animal data (type, display name, icon); built backend repository and service for syncing metadata; added visual category icons above search bar with product counts; click-to-filter functionality with toggle selection; 18 unique animals identified (Beef 50, Bacon 6, Buffalo 4, Chicken 3, etc.); integrates seamlessly with search and sort features
+- 2025-10-11: **Client-side instant search** - Converted products page search to instant client-side filtering without page refresh; multi-word search support; resets animal filter when searching; debounced input for performance
 - 2025-10-11: **Products page sorting feature** - Added comprehensive sorting with separated controls: sort field dropdown (Name, Recently Ranked, Avg Ranking, Total Rankings) and sort order toggle button with animated funnel icon (▼ rotates 180° for desc); backend API enhanced with SQL aggregation for avgRank and lastRankedAt fields; client-side sorting with URL parameter support (#products?sort=recent-desc) for deep linking; CSS Grid layout (1fr auto 60px) ensures controls match products grid width (max-width 1400px); mobile-responsive with vertical stacking on screens <768px
 - 2025-10-11: **Gamification system MVP implemented** - Built event-driven gamification architecture with achievements, streaks, leaderboards, and real-time updates; frontend uses EventBus for decoupled service communication; backend implements repository pattern with domain services; Socket.IO provides bidirectional real-time notifications; 17 achievements seeded covering ranking milestones (1, 5, 10, 25 products) to engagement goals (consecutive days, total rankings)
 - 2025-10-11: **Sentry service integration** - Integrated Sentry error tracking into rankings and products services with detailed context (service tags, operation metadata); added environment and URL tracking to distinguish dev vs production errors
