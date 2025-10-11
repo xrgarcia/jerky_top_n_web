@@ -57,7 +57,7 @@ class ProgressWidget {
           <div class="recent-badges">
             <div class="badges-label">Recent Achievements:</div>
             <div class="badges-list">
-              ${progress.recentAchievements.slice(0, 3).map(achievement => `
+              ${progress.recentAchievements.map(achievement => `
                 <span class="badge-icon tier-${achievement.tier}" title="${achievement.name}">
                   ${achievement.icon}
                 </span>

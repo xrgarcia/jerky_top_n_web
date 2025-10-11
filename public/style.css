@@ -3765,6 +3765,7 @@ body.login-page-active .hero {
 .badges-list {
     display: flex;
     gap: 10px;
+    flex-wrap: wrap;
 }
 
 .badge-icon {

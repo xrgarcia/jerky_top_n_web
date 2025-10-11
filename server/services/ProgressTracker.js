@@ -43,7 +43,7 @@ class ProgressTracker {
       currentStreak: dailyStreak?.currentStreak || 0,
       longestStreak: dailyStreak?.longestStreak || 0,
       nextMilestones,
-      recentAchievements: achievements.slice(0, 5),
+      recentAchievements: achievements.slice(0, 10),
     };
   }
 
