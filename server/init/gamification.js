@@ -1,0 +1,66 @@
+/**
+ * Gamification System Initialization
+ * Wires together repositories, services, routes, and WebSocket gateway
+ */
+
+const AchievementRepository = require('../repositories/AchievementRepository');
+const StreakRepository = require('../repositories/StreakRepository');
+const ActivityLogRepository = require('../repositories/ActivityLogRepository');
+const ProductViewRepository = require('../repositories/ProductViewRepository');
+
+const AchievementManager = require('../services/AchievementManager');
+const StreakManager = require('../services/StreakManager');
+const LeaderboardManager = require('../services/LeaderboardManager');
+const ProgressTracker = require('../services/ProgressTracker');
+
+const createGamificationRoutes = require('../routes/gamification');
+const WebSocketGateway = require('../websocket/gateway');
+
+async function initializeGamification(app, io, db, storage) {
+  console.log('🎮 Initializing gamification system...');
+
+  const achievementRepo = new AchievementRepository(db);
+  const streakRepo = new StreakRepository(db);
+  const activityLogRepo = new ActivityLogRepository(db);
+  const productViewRepo = new ProductViewRepository(db);
+
+  const achievementManager = new AchievementManager(achievementRepo, activityLogRepo);
+  const streakManager = new StreakManager(streakRepo, activityLogRepo);
+  const leaderboardManager = new LeaderboardManager(db);
+  const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
+
+  const services = {
+    db,
+    storage,
+    achievementRepo,
+    streakRepo,
+    activityLogRepo,
+    productViewRepo,
+    achievementManager,
+    streakManager,
+    leaderboardManager,
+    progressTracker,
+    io,
+  };
+
+  const gamificationRouter = createGamificationRoutes(services);
+  app.use('/api/gamification', gamificationRouter);
+  console.log('✅ Gamification routes registered at /api/gamification');
+
+  const wsGateway = new WebSocketGateway(io, services);
+  console.log('✅ WebSocket gateway initialized');
+
+  services.wsGateway = wsGateway;
+
+  achievementManager.seedAchievements().then(() => {
+    console.log('✅ Achievements seeded');
+  }).catch(err => {
+    console.error('❌ Failed to seed achievements:', err);
+  });
+
+  console.log('🎮 Gamification system initialized successfully');
+
+  return services;
+}
+
+module.exports = initializeGamification;

@@ -1,12 +1,21 @@
 const Sentry = require("@sentry/node");
 const { nodeProfilingIntegration } = require("@sentry/profiling-node");
 const express = require('express');
+const http = require('http');
+const { Server } = require('socket.io');
 const path = require('path');
 const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+const httpServer = http.createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 
 // Detect environment and URL for Sentry tracking
 const ENVIRONMENT = process.env.NODE_ENV || 
@@ -2167,12 +2176,22 @@ app.get('/health', (req, res) => {
   res.status(200).json(health);
 });
 
+// Initialize gamification system BEFORE catch-all route if database is available
+if (databaseAvailable && storage) {
+  const initializeGamification = require('./server/init/gamification');
+  const { db } = require('./server/db');
+  
+  initializeGamification(app, io, db, storage).catch(error => {
+    console.error('❌ Failed to initialize gamification:', error);
+  });
+}
+
 // Sentry error handling middleware (must be before other error handlers)
 if (process.env.SENTRY_DSN && Sentry.Handlers) {
   app.use(Sentry.Handlers.errorHandler());
 }
 
-// Main route - serves SPA for all routes
+// Main route - serves SPA for all routes (MUST BE LAST)
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
@@ -2192,7 +2211,7 @@ if (storage) {
 }
 
 // Start server on all interfaces (required for Replit)
-const server = app.listen(PORT, '0.0.0.0', () => {
+const server = httpServer.listen(PORT, '0.0.0.0', () => {
   console.log(`✅ Server successfully started!`);
   console.log(`🥩 Jerky Top N Web server running on http://0.0.0.0:${PORT}`);
   console.log(`Visit the app at: http://localhost:${PORT}`);
