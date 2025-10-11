@@ -1,3 +1,5 @@
+const Sentry = require("@sentry/node");
+const { nodeProfilingIntegration } = require("@sentry/profiling-node");
 const express = require('express');
 const path = require('path');
 const crypto = require('crypto');
@@ -5,6 +7,21 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Initialize Sentry for error monitoring and performance tracking
+if (process.env.SENTRY_DSN) {
+  Sentry.init({
+    dsn: process.env.SENTRY_DSN,
+    integrations: [
+      nodeProfilingIntegration(),
+    ],
+    tracesSampleRate: 1.0,
+    profilesSampleRate: 1.0,
+  });
+  console.log('✅ Sentry error monitoring initialized');
+} else {
+  console.warn('⚠️  Sentry DSN not configured - error monitoring disabled');
+}
 
 // Startup validation - check critical environment variables
 console.log('🚀 Starting Jerky Top N Web Application...');
@@ -2108,6 +2125,11 @@ app.get('/health', (req, res) => {
   res.status(200).json(health);
 });
 
+// Sentry error handling middleware (must be before other error handlers)
+if (process.env.SENTRY_DSN && Sentry.Handlers) {
+  app.use(Sentry.Handlers.errorHandler());
+}
+
 // Main route - serves SPA for all routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
@@ -2167,6 +2189,12 @@ process.on('SIGTERM', () => {
 process.on('uncaughtException', (error) => {
   console.error('❌ Uncaught Exception:', error);
   console.error('Stack:', error.stack);
+  
+  // Report to Sentry
+  if (process.env.SENTRY_DSN) {
+    Sentry.captureException(error);
+  }
+  
   // Don't exit immediately in production - log and continue
   if (process.env.NODE_ENV === 'production') {
     console.error('⚠️  Continuing despite error in production mode');
@@ -2177,6 +2205,12 @@ process.on('uncaughtException', (error) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('❌ Unhandled Rejection at:', promise);
   console.error('Reason:', reason);
+  
+  // Report to Sentry
+  if (process.env.SENTRY_DSN) {
+    Sentry.captureException(reason);
+  }
+  
   // Don't exit immediately in production - log and continue
   if (process.env.NODE_ENV === 'production') {
     console.error('⚠️  Continuing despite error in production mode');
