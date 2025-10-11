@@ -133,6 +133,10 @@ const productsMetadata = pgTable('products_metadata', {
   animalType: text('animal_type'), // e.g., 'fish', 'cattle', 'poultry', 'game', 'exotic'
   animalDisplay: text('animal_display'), // e.g., 'Beef', 'Chicken', 'Salmon'
   animalIcon: text('animal_icon'), // Emoji icon
+  primaryFlavor: text('primary_flavor'), // e.g., 'sweet', 'spicy', 'savory', 'smoky'
+  secondaryFlavors: text('secondary_flavors'), // JSON array of secondary flavor types
+  flavorDisplay: text('flavor_display'), // e.g., 'Sweet & Spicy', 'Savory'
+  flavorIcon: text('flavor_icon'), // Emoji icon for primary flavor
   title: text('title').notNull(), // Product title for reference
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
