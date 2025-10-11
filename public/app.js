@@ -2140,12 +2140,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         categoryEl.classList.remove('active');
                         // Update URL to remove animal filter
                         updateProductsURLWithAnimal(null);
-                        // Clear search box
+                        // Clear search box and show all products
                         if (searchInput) {
                             searchInput.value = '';
-                            // Trigger input event to update display
-                            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
                         }
+                        displayProductsGrid(allProductsData);
                     } else {
                         // Deselect previous
                         container.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
@@ -2154,12 +2153,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         categoryEl.classList.add('active');
                         // Update URL with animal filter
                         updateProductsURLWithAnimal(animal);
-                        // Populate search box with animal name
+                        // Clear search box and filter by animal metadata
                         if (searchInput) {
-                            searchInput.value = animal;
-                            // Trigger input event to filter products
-                            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+                            searchInput.value = '';
                         }
+                        filterProductsByAnimal(animal);
                     }
                 });
             });
@@ -2178,7 +2176,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         let filtered = allProductsData.filter(product => {
-            return product.title.toLowerCase().includes(animal.toLowerCase());
+            // Primary: Filter by animalDisplay metadata field (exact match)
+            if (product.animalDisplay) {
+                return product.animalDisplay.toLowerCase() === animal.toLowerCase();
+            }
+            // Fallback: If metadata missing, comprehensive search (title, vendor, tags)
+            const searchableText = [
+                product.title,
+                product.vendor,
+                product.productType,
+                product.tags || ''
+            ].join(' ').toLowerCase();
+            return searchableText.includes(animal.toLowerCase());
         });
         
         // Apply current sort to filtered products

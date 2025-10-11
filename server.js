@@ -1092,9 +1092,33 @@ app.get('/api/products/all', async (req, res) => {
       console.log(`🔍 Filtered to ${products.length} products matching "${query}"`);
     }
     
-    // Transform products with ranking stats
+    // Fetch metadata for all products
+    let metadataMap = {};
+    if (storage) {
+      try {
+        const { db } = require('./server/db.js');
+        const ProductsMetadataRepository = require('./server/repositories/ProductsMetadataRepository');
+        const metadataRepo = new ProductsMetadataRepository(db);
+        const allMetadata = await metadataRepo.getAllMetadata();
+        
+        // Create lookup map by shopify_product_id
+        allMetadata.forEach(meta => {
+          metadataMap[meta.shopifyProductId] = {
+            animalType: meta.animalType,
+            animalDisplay: meta.animalDisplay,
+            animalIcon: meta.animalIcon
+          };
+        });
+      } catch (error) {
+        console.error('Error fetching metadata:', error);
+        // Continue without metadata
+      }
+    }
+    
+    // Transform products with ranking stats and metadata
     const transformedProducts = products.map(product => {
       const stats = rankingStats[product.id.toString()] || { count: 0, avgRank: null, lastRankedAt: null };
+      const metadata = metadataMap[product.id.toString()] || { animalType: null, animalDisplay: null, animalIcon: null };
       return {
         id: product.id.toString(),
         title: product.title,
@@ -1107,7 +1131,10 @@ app.get('/api/products/all', async (req, res) => {
         compareAtPrice: product.variants?.[0]?.compare_at_price || null,
         rankingCount: stats.count,
         avgRank: stats.avgRank,
-        lastRankedAt: stats.lastRankedAt
+        lastRankedAt: stats.lastRankedAt,
+        animalType: metadata.animalType,
+        animalDisplay: metadata.animalDisplay,
+        animalIcon: metadata.animalIcon
       };
     });
     
