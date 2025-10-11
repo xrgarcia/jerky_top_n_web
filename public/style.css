@@ -2698,7 +2698,7 @@ body.login-page-active .hero {
     color: #333;
 }
 
-.products-sort-order[data-order="desc"] .funnel-icon {
+.products-sort-order[data-order="asc"] .funnel-icon {
     transform: rotate(180deg);
 }
 
