@@ -1,0 +1,541 @@
+3824-02c2723c08686710.js:1 Unrecognized feature: 'ambient-light-sensor'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'battery'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'layout-animations'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'navigation-override'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'oversized-images'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'speaker-selection'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'unsized-media'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+3824-02c2723c08686710.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+n @ main-76601aab9e4db230.js:1
+u @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ main-76601aab9e4db230.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+navigateTo @ 3824-02c2723c08686710.js:1
+refresh @ 3824-02c2723c08686710.js:1
+(anonymous) @ 3824-02c2723c08686710.js:1
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+onClick @ _app-4f38a9c7d036feda.js:4
+(anonymous) @ _app-4f38a9c7d036feda.js:4
+eB @ framework-feb8d59901280d4c.js:1
+eH @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+re @ framework-feb8d59901280d4c.js:1
+rt @ framework-feb8d59901280d4c.js:1
+(anonymous) @ framework-feb8d59901280d4c.js:1
+uT @ framework-feb8d59901280d4c.js:1
+eM @ framework-feb8d59901280d4c.js:1
+ru @ framework-feb8d59901280d4c.js:1
+tB @ framework-feb8d59901280d4c.js:1
+tD @ framework-feb8d59901280d4c.js:1
+n @ _app-4f38a9c7d036feda.js:28Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2F&id=%3Ar36o%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 🔐 Socket authenticated for user: 1
+injected.js:27 ✅ 90-day customer session validated: Ray Garcia
