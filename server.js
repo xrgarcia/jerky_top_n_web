@@ -2126,6 +2126,12 @@ if (databaseAvailable && storage) {
     .then(services => {
       gamificationServices = services;
       console.log('✅ Gamification services available for achievements');
+      
+      // Initialize tools routes (employee admin only)
+      const createToolsRoutes = require('./server/routes/tools');
+      const toolsRouter = createToolsRoutes(services);
+      app.use('/api/tools', toolsRouter);
+      console.log('✅ Tools routes registered at /api/tools');
     })
     .catch(error => {
       console.error('❌ Failed to initialize gamification:', error);

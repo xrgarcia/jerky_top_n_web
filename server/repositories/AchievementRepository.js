@@ -78,6 +78,14 @@ class AchievementRepository {
     const userAchs = await this.getUserAchievements(userId);
     return userAchs.reduce((total, ach) => total + (ach.points || 0), 0);
   }
+
+  async getAchievementEarningCount(achievementId) {
+    const { count } = require('drizzle-orm');
+    const result = await this.db.select({ count: count() })
+      .from(userAchievements)
+      .where(eq(userAchievements.achievementId, achievementId));
+    return result[0]?.count || 0;
+  }
 }
 
 module.exports = AchievementRepository;
