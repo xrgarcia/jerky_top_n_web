@@ -1,0 +1,96 @@
+10The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+10The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+10The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+_app-4f38a9c7d036feda.js:28 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.Understand this error
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?Understand this error
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.Understand this error
+_app-4f38a9c7d036feda.js:28 [LaunchDarkly] LaunchDarkly client initialized
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+framework-feb8d59901280d4c.js:1 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-feb8d59901280d4c.js:1Understand this error
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'battery'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+framework-feb8d59901280d4c.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-feb8d59901280d4c.js:1Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'battery'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'layout-animations'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'navigation-override'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'oversized-images'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'publickey-credentials'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'speaker-selection'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'unoptimized-images'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Unrecognized feature: 'unsized-media'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3c%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+workspace_iframe.html?initialPath=%2F%23login&id=%3Ar3c%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.Understand this error
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ 90-day customer session validated: Customer
+2injected.js:27 🛠️ Initializing Tools page...
+2injected.js:27 Error loading achievements table: SyntaxError: Failed to execute 'json' on 'Response': Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+    at loadAchievementsTable (tools.js:18:33)
+    at async window.initToolsPage (tools.js:86:3)
+(anonymous) @ injected.js:27Understand this error
+injected.js:27 🛠️ Initializing Tools page...
+injected.js:27 Error loading achievements table: SyntaxError: Failed to execute 'json' on 'Response': Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+    at loadAchievementsTable (tools.js:18:33)
+    at async window.initToolsPage (tools.js:86:3)

@@ -1586,35 +1586,6 @@ app.get('/api/customer/auth/callback', async (req, res) => {
   }
 });
 
-// API endpoint to check customer authentication status
-app.get('/api/customer/status', async (req, res) => {
-  try {
-    const sessionId = req.query.sessionId;
-    
-    if (!sessionId || !storage) {
-      return res.json({ authenticated: false, customer: null });
-    }
-    
-    // Get session from database (includes expiry check)
-    const session = await storage.getSession(sessionId);
-    
-    if (session) {
-      res.json({
-        authenticated: true,
-        customer: session.customerData
-      });
-    } else {
-      res.json({
-        authenticated: false,
-        customer: null
-      });
-    }
-  } catch (error) {
-    console.error('Error checking session status:', error);
-    res.json({ authenticated: false, customer: null });
-  }
-});
-
 // API endpoint to logout customer
 app.post('/api/customer/logout', async (req, res) => {
   try {
@@ -2132,21 +2103,27 @@ if (databaseAvailable && storage) {
       const toolsRouter = createToolsRoutes(services);
       app.use('/api/tools', toolsRouter);
       console.log('✅ Tools routes registered at /api/tools');
+      
+      // Main route - serves SPA for all routes (MUST BE LAST)
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+      });
+      console.log('✅ Catch-all route registered (serves SPA)');
     })
     .catch(error => {
       console.error('❌ Failed to initialize gamification:', error);
     });
+} else {
+  // If gamification not available, still need catch-all route
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
 }
 
 // Sentry error handling middleware (must be before other error handlers)
 if (process.env.SENTRY_DSN && Sentry.Handlers) {
   app.use(Sentry.Handlers.errorHandler());
 }
-
-// Main route - serves SPA for all routes (MUST BE LAST)
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
 
 // Periodic cleanup of expired sessions (every hour)
 if (storage) {

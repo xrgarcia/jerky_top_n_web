@@ -34,6 +34,8 @@ The application features a modern web architecture designed for responsiveness, 
 - **Community**: Discover users, search by name or ranked products, and view user profiles with ranking statistics.
 - **User Profile**: Displays user information, ranking statistics, and links to update external profiles.
 - **Gamification**: Achievement tracking, user progress monitoring, streak tracking, real-time leaderboards, live activity feeds, and real-time notifications.
+- **Admin Tools**: Role-based access for @jerky.com employees with dedicated Tools section featuring:
+  - **Manage Achievements**: View all achievements with tier, category, requirements, points, and earning statistics in a sortable table
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM for all data persistence.
