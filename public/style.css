@@ -124,16 +124,17 @@ body {
     position: relative;
     display: flex;
     align-items: center;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 6px 12px;
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    padding: 10px 16px;
     transition: all 0.3s ease;
+    min-width: 260px;
 }
 
 .search-container:focus-within {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 1);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .search-input {
@@ -141,31 +142,36 @@ body {
     border: none;
     color: white;
     outline: none;
-    font-size: 13px;
-    width: 160px;
+    font-size: 14px;
+    width: 100%;
     padding: 0;
     margin: 0;
+    flex: 1;
 }
 
 .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(255, 255, 255, 0.6);
 }
 
 .search-btn {
     background: none;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
-    padding: 0 0 0 6px;
+    padding: 0 0 0 12px;
     margin: 0;
-    font-size: 16px;
     display: flex;
     align-items: center;
     transition: color 0.2s ease;
+    flex-shrink: 0;
 }
 
 .search-btn:hover {
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 1);
+}
+
+.search-btn svg {
+    display: block;
 }
 
 .search-dropdown {
