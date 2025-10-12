@@ -7,6 +7,7 @@ class ProgressTrackingService extends BaseService {
     super(eventBus);
     this.progress = null;
     this.insights = null;
+    this.achievements = [];
   }
 
   async initialize() {
@@ -14,6 +15,7 @@ class ProgressTrackingService extends BaseService {
     
     this.subscribe('user:authenticated', () => {
       this.loadProgress();
+      this.loadAchievements();
     });
 
     this.subscribe('ranking:saved', (data) => {
@@ -42,8 +44,26 @@ class ProgressTrackingService extends BaseService {
     }
   }
 
+  async loadAchievements() {
+    try {
+      const response = await this.apiRequest('/api/gamification/achievements');
+      this.achievements = response.achievements || [];
+      
+      this.emit('achievements:loaded', {
+        achievements: this.achievements
+      });
+      
+      return this.achievements;
+    } catch (error) {
+      console.error('Failed to load achievements:', error);
+      return [];
+    }
+  }
+
   async refreshProgress() {
-    return await this.loadProgress();
+    await this.loadProgress();
+    await this.loadAchievements();
+    return { progress: this.progress, achievements: this.achievements };
   }
 
   checkMilestones() {

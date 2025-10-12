@@ -21,6 +21,10 @@ class ProgressWidget {
       this.render();
     });
 
+    this.eventBus.on('achievements:loaded', () => {
+      this.render();
+    });
+
     this.eventBus.on('ranking:saved', () => {
       setTimeout(() => this.render(), 500);
     });
@@ -29,6 +33,7 @@ class ProgressWidget {
   render() {
     const progress = this.progressService.progress;
     const nextMilestone = this.progressService.getNextMilestone();
+    const achievements = this.progressService.achievements || [];
 
     if (!progress || !nextMilestone) {
       this.container.innerHTML = '<div class="progress-loading">Loading progress...</div>';
@@ -53,13 +58,15 @@ class ProgressWidget {
           <div class="milestone-status">${nextMilestone.remaining} more to go!</div>
         </div>
 
-        ${progress.recentAchievements && progress.recentAchievements.length > 0 ? `
-          <div class="recent-badges">
-            <div class="badges-label">Recent Achievements:</div>
-            <div class="badges-list">
-              ${progress.recentAchievements.map(achievement => `
-                <span class="badge-icon tier-${achievement.tier}" title="${achievement.name}">
-                  ${achievement.icon}
+        ${achievements.length > 0 ? `
+          <div class="all-achievements">
+            <div class="achievements-label">All Achievements:</div>
+            <div class="achievements-grid">
+              ${achievements.map(achievement => `
+                <span class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}" 
+                      title="${achievement.name}${achievement.earned ? '' : ' (Locked)'}">
+                  <span class="achievement-icon">${achievement.icon}</span>
+                  <span class="achievement-name">${achievement.name}</span>
                 </span>
               `).join('')}
             </div>
