@@ -130,7 +130,6 @@ body {
     padding: 0;
     transition: all 0.3s ease;
     min-width: 280px;
-    overflow: hidden;
 }
 
 .search-container:focus-within {
@@ -146,11 +145,13 @@ body {
     font-size: 15px;
     width: 100%;
     padding: 12px 16px;
+    padding-right: 8px;
     margin: 0;
     flex: 1;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    cursor: text;
 }
 
 .search-input:focus {
@@ -168,12 +169,13 @@ body {
     border: none;
     color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
-    padding: 12px 16px;
+    padding: 12px 12px 12px 0;
     margin: 0;
     display: flex;
     align-items: center;
     transition: color 0.2s ease;
     flex-shrink: 0;
+    pointer-events: all;
 }
 
 .search-btn:hover {
