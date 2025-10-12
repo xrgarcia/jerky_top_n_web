@@ -15,6 +15,11 @@ class DatabaseStorage {
     return user || undefined;
   }
 
+  async getUserById(userId) {
+    const [user] = await db.select().from(users).where(eq(users.id, userId));
+    return user || undefined;
+  }
+
   async createOrUpdateUser(userData) {
     // Check if user exists
     const existingUser = await this.getUser(userData.shopifyCustomerId);

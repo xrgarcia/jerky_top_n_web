@@ -689,11 +689,15 @@ app.get('/api/customer/status', async (req, res) => {
     const session = await storage.getSession(sessionId);
     
     if (session && session.customerData) {
+      // Get user from database to include role
+      const user = await storage.getUserById(session.userId);
+      
       console.log(`✅ 90-day session validated for: ${session.customerData.displayName}`);
       return res.json({ 
         authenticated: true, 
         customer: session.customerData,
-        sessionId: session.id 
+        sessionId: session.id,
+        role: user?.role || 'user'
       });
     } else {
       // Clear invalid cookie if it exists
