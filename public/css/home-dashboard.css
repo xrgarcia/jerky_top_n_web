@@ -19,7 +19,7 @@
 
 .stat-card {
   background: white;
-  border: 2px solid var(--jerky-purple);
+  border: 2px solid #663399;
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -30,7 +30,7 @@
 .stat-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 16px rgba(102, 51, 153, 0.15);
-  border-color: var(--jerky-blue);
+  border-color: #0066CC;
 }
 
 .stat-value {
@@ -77,7 +77,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--jerky-purple), var(--jerky-blue));
+  background: linear-gradient(90deg, #663399, #0066CC);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -93,7 +93,7 @@
 
 .dashboard-section h3 {
   margin: 0 0 8px 0;
-  color: var(--jerky-purple);
+  color: #663399;
   font-size: 20px;
   font-weight: 700;
   display: flex;
@@ -128,7 +128,7 @@
 
 .dashboard-item:hover {
   background: linear-gradient(135deg, #e9ecef, #f8f9fa);
-  border-color: var(--jerky-purple);
+  border-color: #663399;
   transform: translateX(4px);
   box-shadow: 0 2px 8px rgba(102, 51, 153, 0.1);
 }
@@ -139,7 +139,7 @@
 
 /* Rank Badges */
 .rank-badge {
-  background: var(--jerky-purple);
+  background: #663399;
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
@@ -190,7 +190,7 @@
 }
 
 .dashboard-item:hover .product-thumb {
-  border-color: var(--jerky-purple);
+  border-color: #663399;
 }
 
 .product-info {
@@ -222,7 +222,7 @@
 }
 
 .variance {
-  color: var(--jerky-orange);
+  color: #FF6F00;
   font-weight: 700;
   background: rgba(255, 111, 0, 0.1);
   padding: 2px 6px;
@@ -237,7 +237,7 @@
 
 .ranker-item:hover {
   background: linear-gradient(135deg, #e0e8ff, #f0f4ff);
-  border-color: var(--jerky-blue);
+  border-color: #0066CC;
 }
 
 .ranker-info {
@@ -264,7 +264,7 @@
 
 .achievement-item:hover {
   background: linear-gradient(135deg, #fff5e6, #fffaf0);
-  border-color: var(--jerky-orange);
+  border-color: #FF6F00;
 }
 
 .achievement-icon {
