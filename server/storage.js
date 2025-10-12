@@ -19,6 +19,11 @@ class DatabaseStorage {
     // Check if user exists
     const existingUser = await this.getUser(userData.shopifyCustomerId);
     
+    // Determine role based on email domain
+    const role = userData.email && userData.email.toLowerCase().endsWith('@jerky.com') 
+      ? 'employee_admin' 
+      : 'user';
+    
     if (existingUser) {
       // Update existing user
       const [updatedUser] = await db
@@ -28,6 +33,7 @@ class DatabaseStorage {
           firstName: userData.firstName,
           lastName: userData.lastName,
           displayName: userData.displayName,
+          role: role, // Update role on login to handle promotions
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
@@ -47,6 +53,7 @@ class DatabaseStorage {
           firstName: userData.firstName,
           lastName: userData.lastName,
           displayName: userData.displayName,
+          role: role,
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours

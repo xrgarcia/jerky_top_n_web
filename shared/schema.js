@@ -9,6 +9,7 @@ const users = pgTable('users', {
   firstName: text('first_name'),
   lastName: text('last_name'),
   displayName: text('display_name'),
+  role: text('role').default('user').notNull(), // 'user' or 'employee_admin'
   accessToken: text('access_token'),
   refreshToken: text('refresh_token'),
   tokenExpiry: timestamp('token_expiry'),
