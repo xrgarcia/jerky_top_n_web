@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const rankPage = document.getElementById('rankPage');
     const productsPage = document.getElementById('productsPage');
     const loginPage = document.getElementById('loginPage');
+    const toolsPage = document.getElementById('toolsPage');
     const heroSection = document.getElementById('heroSection');
 
     let currentJerkyData = [];
@@ -142,6 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (productDetailPage) productDetailPage.style.display = 'none';
         if (userProfilePage) userProfilePage.style.display = 'none';
         if (loginPage) loginPage.style.display = 'none';
+        if (toolsPage) toolsPage.style.display = 'none';
         
         // Show selected page
         if (page === 'home' && homePage) {
@@ -222,6 +224,15 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('currentPage', 'login');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.add('login-page-active');
+        } else if (page === 'tools' && toolsPage) {
+            toolsPage.style.display = 'block';
+            sessionStorage.setItem('currentPage', 'tools');
+            if (heroSection) heroSection.style.display = 'block';
+            document.body.classList.remove('login-page-active');
+            // Initialize tools page
+            if (window.initToolsPage) {
+                window.initToolsPage();
+            }
         }
         
         // Update active nav link
@@ -277,19 +288,22 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('customerSessionId', data.sessionId);
                 }
                 localStorage.setItem('customerInfo', JSON.stringify(data.customer));
-                updateAuthUI(data.customer);
+                localStorage.setItem('userRole', data.role || 'user');
+                updateAuthUI(data.customer, data.role);
                 console.log('✅ 90-day customer session validated:', data.customer.displayName);
                 
                 return {
                     authenticated: true,
                     sessionId: data.sessionId,
-                    customer: data.customer
+                    customer: data.customer,
+                    role: data.role
                 };
             } else {
                 // Session expired or invalid - clear local data
                 localStorage.removeItem('customerSessionId');
                 localStorage.removeItem('customerInfo');
-                updateAuthUI(null);
+                localStorage.removeItem('userRole');
+                updateAuthUI(null, null);
                 console.log('❌ Customer session expired or not found');
                 
                 return {
@@ -426,7 +440,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 localStorage.removeItem('customerInfo');
                 
                 // Update UI
-                updateAuthUI(null);
+                updateAuthUI(null, null);
                 
                 console.log('🔌 Customer logged out successfully (90-day session cleared)');
             }
@@ -435,10 +449,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function updateAuthUI(customer) {
+    function updateAuthUI(customer, role) {
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
         const userName = document.getElementById('userName');
+        const toolsNavLink = document.getElementById('toolsNavLink');
         
         if (customer) {
             // Show logged in state
@@ -450,11 +465,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Add click handler to navigate to profile page
                 userName.onclick = () => showPage('profile');
             }
+            
+            // Show Tools link for employees only
+            if (toolsNavLink) {
+                toolsNavLink.style.display = (role === 'employee_admin') ? 'inline' : 'none';
+            }
         } else {
             // Show logged out state
             if (loginBtn) loginBtn.style.display = 'inline';
             if (userProfile) userProfile.style.display = 'none';
             if (userName) userName.textContent = '';
+            if (toolsNavLink) toolsNavLink.style.display = 'none';
         }
     }
 
@@ -471,13 +492,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.setItem('customerSessionId', data.sessionId);
                 }
                 localStorage.setItem('customerInfo', JSON.stringify(data.customer));
-                updateAuthUI(data.customer);
+                localStorage.setItem('userRole', data.role || 'user');
+                updateAuthUI(data.customer, data.role);
                 console.log('✅ 90-day customer session validated:', data.customer.displayName);
             } else {
                 // Session expired or invalid - clear local data
                 localStorage.removeItem('customerSessionId');
                 localStorage.removeItem('customerInfo');
-                updateAuthUI(null);
+                localStorage.removeItem('userRole');
+                updateAuthUI(null, null);
                 console.log('❌ Customer session expired or not found');
             }
         } catch (error) {

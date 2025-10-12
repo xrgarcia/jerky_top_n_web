@@ -4078,3 +4078,144 @@ body.login-page-active .hero {
         padding: 10px;
     }
 }
+
+/* Tools Page Styles */
+.tools-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.tools-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.tools-header h2 {
+    color: #2c3e50;
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.tools-subtitle {
+    color: #7f8c8d;
+    font-size: 16px;
+}
+
+.tools-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ecf0f1;
+    padding-bottom: 10px;
+}
+
+.tools-nav-btn {
+    padding: 10px 20px;
+    background: #ecf0f1;
+    border: none;
+    border-radius: 5px 5px 0 0;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.tools-nav-btn:hover {
+    background: #d5dbdb;
+}
+
+.tools-nav-btn.active {
+    background: #663399;
+    color: white;
+}
+
+.achievements-table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.achievements-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.achievements-table thead {
+    background: #2c3e50;
+    color: white;
+}
+
+.achievements-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.achievements-table tbody tr {
+    border-bottom: 1px solid #ecf0f1;
+    transition: background 0.2s;
+}
+
+.achievements-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.achievements-table td {
+    padding: 15px;
+}
+
+.achievement-icon-cell {
+    font-size: 24px;
+    text-align: center;
+    width: 60px;
+}
+
+.tier-badge {
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.tier-bronze {
+    background: #cd7f32;
+    color: white;
+}
+
+.tier-silver {
+    background: #c0c0c0;
+    color: #333;
+}
+
+.tier-gold {
+    background: #ffd700;
+    color: #333;
+}
+
+.tier-platinum {
+    background: linear-gradient(135deg, #e5e4e2, #b8b8b8);
+    color: #333;
+}
+
+.category-badge {
+    padding: 4px 10px;
+    background: #3498db;
+    color: white;
+    border-radius: 4px;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.earning-count {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #663399;
+    color: white;
+    border-radius: 12px;
+    font-weight: 600;
+}
+

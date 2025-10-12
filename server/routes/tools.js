@@ -1,5 +1,4 @@
 const express = require('express');
-const { requireRole } = require('../middleware/auth');
 
 /**
  * Tools Routes - Admin/Employee tools
@@ -9,11 +8,43 @@ function createToolsRoutes(services) {
   const router = express.Router();
   const { storage, achievementRepo } = services;
 
-  // All routes require employee_admin role
-  const employeeOnly = requireRole(storage, 'employee_admin');
+  // Middleware to check employee role
+  async function checkEmployeeRole(req, res, next) {
+    try {
+      const sessionId = req.cookies.session_id;
+      
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid or expired session' });
+      }
+
+      const user = await storage.getUserById(session.userId);
+      if (!user) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+
+      if (user.role !== 'employee_admin') {
+        return res.status(403).json({ 
+          error: 'Forbidden', 
+          message: 'You do not have permission to access this resource' 
+        });
+      }
+
+      req.user = user;
+      req.session = session;
+      next();
+    } catch (error) {
+      console.error('Role check error:', error);
+      res.status(500).json({ error: 'Authentication failed' });
+    }
+  }
 
   // Get all achievements for management
-  router.get('/achievements', employeeOnly, async (req, res) => {
+  router.get('/achievements', checkEmployeeRole, async (req, res) => {
     try {
       const achievements = await achievementRepo.getAllAchievements();
       
