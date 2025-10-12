@@ -6,7 +6,30 @@ class ProgressWidget {
     this.container = document.getElementById(containerId);
     this.progressService = progressService;
     this.eventBus = eventBus;
+    this.mysteriousDescriptions = this.initMysteriousDescriptions();
     this.init();
+  }
+
+  initMysteriousDescriptions() {
+    return {
+      first_rank: "Every legend begins with a single choice...",
+      rank_10: "The path reveals itself to those who persist...",
+      rank_25: "Power grows with dedication. Keep going...",
+      rank_50: "You're halfway to something extraordinary...",
+      rank_100: "Only the elite reach this milestone. Will you?",
+      streak_3: "The flame ignites. Feed it daily...",
+      streak_7: "Seven suns have witnessed your devotion...",
+      streak_30: "The calendar bends to your will. Don't break...",
+      streak_100: "Legends speak of those who reached this height...",
+      explorer: "Variety is the spice of discovery...",
+      adventurer: "The world is vast. Taste it all...",
+      globe_trotter: "Few have wandered this far. Continue...",
+      top_10: "Rise above the masses. The podium awaits...",
+      top_3: "Bronze, silver, or gold? Claim your throne...",
+      community_leader: "Influence spreads like wildfire. Be the spark...",
+      early_adopter: "The pioneers inherit the earth...",
+      taste_maker: "Shape the future. Others will follow..."
+    };
   }
 
   init() {
@@ -62,18 +85,42 @@ class ProgressWidget {
           <div class="all-achievements">
             <div class="achievements-label">All Achievements:</div>
             <div class="achievements-grid">
-              ${achievements.map(achievement => `
-                <span class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}" 
-                      title="${achievement.name}${achievement.earned ? '' : ' (Locked)'}">
-                  <span class="achievement-icon">${achievement.icon}</span>
-                  <span class="achievement-name">${achievement.name}</span>
-                </span>
-              `).join('')}
+              ${achievements.map(achievement => {
+                const mysteriousDesc = this.mysteriousDescriptions[achievement.code] || achievement.description;
+                const tooltipText = achievement.earned 
+                  ? `<strong>${achievement.name}</strong><br>${achievement.description}<br><em>Unlocked!</em>`
+                  : `<strong>???</strong><br>${mysteriousDesc}<br><span class="requirement-hint">${this.getRequirementHint(achievement)}</span>`;
+                
+                return `
+                  <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}">
+                    <span class="achievement-icon">${achievement.icon}</span>
+                    <span class="achievement-name">${achievement.earned ? achievement.name : '???'}</span>
+                    <div class="achievement-tooltip">${tooltipText}</div>
+                  </div>
+                `;
+              }).join('')}
             </div>
           </div>
         ` : ''}
       </div>
     `;
+  }
+
+  getRequirementHint(achievement) {
+    const { type, value } = achievement.requirement;
+    const progress = achievement.progress || { current: 0, required: value };
+    
+    const hints = {
+      rank_count: `Progress: ${progress.current}/${progress.required}`,
+      streak_days: `Current streak: ${progress.current}/${progress.required} days`,
+      unique_brands: `Brands explored: ${progress.current}/${progress.required}`,
+      leaderboard_position: `Rank higher to unlock...`,
+      profile_views: `Views: ${progress.current}/${progress.required}`,
+      join_before: `Time-limited achievement`,
+      trendsetter: `Rank trending products...`
+    };
+    
+    return hints[type] || 'Complete to unlock...';
   }
 }
 
