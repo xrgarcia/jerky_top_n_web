@@ -116,6 +116,41 @@ class GamificationService extends BaseService {
     return this.streaks.find(s => s.streakType === type);
   }
 
+  filterDuplicateAchievements(achievements) {
+    // Group achievements by their requirement type
+    const grouped = {};
+    const tierOrder = { bronze: 1, silver: 2, gold: 3, platinum: 4 };
+    
+    achievements.forEach(achievement => {
+      const reqType = achievement.requirement?.type;
+      if (!reqType) {
+        // If no requirement type, always show it
+        if (!grouped['other']) grouped['other'] = [];
+        grouped['other'].push(achievement);
+        return;
+      }
+      
+      if (!grouped[reqType]) {
+        grouped[reqType] = [];
+      }
+      grouped[reqType].push(achievement);
+    });
+    
+    // For each requirement type, only keep the highest tier achievement
+    const filtered = [];
+    Object.values(grouped).forEach(group => {
+      if (group.length === 1) {
+        filtered.push(group[0]);
+      } else {
+        // Sort by tier and keep only the highest
+        group.sort((a, b) => (tierOrder[b.tier] || 0) - (tierOrder[a.tier] || 0));
+        filtered.push(group[0]);
+      }
+    });
+    
+    return filtered;
+  }
+
   showAchievementNotification(achievement) {
     const notification = {
       type: 'achievement',
