@@ -62,45 +62,50 @@ body {
 /* Dark Navigation Bar */
 .main-nav {
     background: #2c2c2c;
-    padding: 15px 0;
+    padding: 10px 0;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .nav-container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 }
 
 .logo {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 }
 
 .logo-img {
-    height: 80px;
+    height: 65px;
     width: auto;
     filter: brightness(1.1);
 }
 
 .nav-links {
     display: flex;
-    gap: 30px;
+    gap: 18px;
+    flex: 1;
+    justify-content: center;
 }
 
 .nav-link {
     color: #cccccc;
     text-decoration: none;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
-    padding: 8px 12px;
+    letter-spacing: 0.3px;
+    padding: 8px 10px;
     border-radius: 4px;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .nav-link:hover, .nav-link.active {
@@ -111,16 +116,24 @@ body {
 .nav-actions {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
+    flex-shrink: 0;
 }
 
 .search-container {
     position: relative;
     display: flex;
     align-items: center;
-    background: transparent;
-    padding: 0;
-    gap: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    padding: 6px 12px;
+    transition: all 0.3s ease;
+}
+
+.search-container:focus-within {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .search-input {
@@ -128,14 +141,14 @@ body {
     border: none;
     color: white;
     outline: none;
-    font-size: 14px;
-    width: 200px;
+    font-size: 13px;
+    width: 160px;
     padding: 0;
     margin: 0;
 }
 
 .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.5);
 }
 
 .search-btn {
@@ -143,11 +156,16 @@ body {
     border: none;
     color: rgba(255, 255, 255, 0.6);
     cursor: pointer;
-    padding: 0;
+    padding: 0 0 0 6px;
     margin: 0;
     font-size: 16px;
     display: flex;
     align-items: center;
+    transition: color 0.2s ease;
+}
+
+.search-btn:hover {
+    color: rgba(255, 255, 255, 0.9);
 }
 
 .search-dropdown {
@@ -229,31 +247,72 @@ body {
     color: #999;
 }
 
-.search-btn {
-    background: none;
-    border: none;
-    color: #cccccc;
-    cursor: pointer;
-    padding: 4px;
-}
-
 .user-actions {
     display: flex;
-    gap: 15px;
+    gap: 10px;
     align-items: center;
 }
 
-.login-link, .logout-link {
-    color: #cccccc;
+.login-btn {
+    background: rgba(107, 142, 35, 0.8);
+    color: white;
+    border: none;
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
     cursor: pointer;
-    transition: color 0.3s ease;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
 }
 
-.login-link:hover, .logout-link:hover {
+.login-btn:hover {
+    background: rgba(107, 142, 35, 1);
+    transform: translateY(-1px);
+}
+
+.user-profile {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.user-avatar:hover {
+    transform: scale(1.1);
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 1);
+    transform: translateX(2px);
 }
 
 /* Hero Section */

@@ -452,18 +452,22 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateAuthUI(customer, role) {
         const loginBtn = document.getElementById('loginBtn');
         const userProfile = document.getElementById('userProfile');
-        const userName = document.getElementById('userName');
+        const userAvatar = document.getElementById('userAvatar');
         const toolsNavLink = document.getElementById('toolsNavLink');
         
         if (customer) {
             // Show logged in state
             if (loginBtn) loginBtn.style.display = 'none';
-            if (userProfile) userProfile.style.display = 'inline';
-            if (userName) {
-                userName.textContent = customer.displayName || customer.firstName || customer.email;
+            if (userProfile) userProfile.style.display = 'flex';
+            
+            // Set user avatar with initials
+            if (userAvatar) {
+                const name = customer.displayName || customer.firstName || customer.email;
+                const initials = name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                userAvatar.textContent = initials;
                 
                 // Add click handler to navigate to profile page
-                userName.onclick = () => showPage('profile');
+                userAvatar.onclick = () => showPage('profile');
             }
             
             // Show Tools link for employees only
@@ -474,7 +478,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show logged out state
             if (loginBtn) loginBtn.style.display = 'inline';
             if (userProfile) userProfile.style.display = 'none';
-            if (userName) userName.textContent = '';
+            if (userAvatar) userAvatar.textContent = '';
             if (toolsNavLink) toolsNavLink.style.display = 'none';
         }
     }
