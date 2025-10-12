@@ -468,6 +468,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Add click handler to navigate to profile page
                 userAvatar.onclick = () => showPage('profile');
+                
+                // Add keyboard support for accessibility
+                userAvatar.onkeydown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        showPage('profile');
+                    }
+                };
             }
             
             // Show Tools link for employees only
