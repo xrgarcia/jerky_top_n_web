@@ -32,7 +32,10 @@ class GamificationService extends BaseService {
     this.socket.on('achievements:earned', (data) => {
       console.log('🏆 Received achievements:earned event', data);
       if (data.achievements && data.achievements.length > 0) {
-        data.achievements.forEach(achievement => {
+        // Filter out redundant achievements - keep only the best of each type
+        const filtered = this.filterDuplicateAchievements(data.achievements);
+        
+        filtered.forEach(achievement => {
           this.achievements.push(achievement);
           this.emit('achievement:new', achievement);
           this.showAchievementNotification(achievement);
