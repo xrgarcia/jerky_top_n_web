@@ -3716,18 +3716,22 @@ body.login-page-active .hero {
 
 .notification-achievement.tier-bronze {
     border-left-color: #CD7F32;
+    background: #FFF8F0;
 }
 
 .notification-achievement.tier-silver {
     border-left-color: #C0C0C0;
+    background: #F8F9FA;
 }
 
 .notification-achievement.tier-gold {
     border-left-color: #FFD700;
+    background: #FFFBEA;
 }
 
 .notification-achievement.tier-platinum {
     border-left-color: #E5E4E2;
+    background: #F0F4F8;
 }
 
 .notification-milestone {

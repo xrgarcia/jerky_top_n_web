@@ -136,7 +136,7 @@ const achievementDefinitions = [
     code: 'top_10',
     name: 'Top 10 Ranker',
     description: 'Reach the top 10 on the leaderboard',
-    icon: '🥇',
+    icon: '🏅',
     tier: 'gold',
     category: 'social',
     requirement: { type: 'leaderboard_position', value: 10 },
