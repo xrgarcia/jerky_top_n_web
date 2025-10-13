@@ -58,7 +58,14 @@ class ProgressWidget {
     const nextMilestone = this.progressService.getNextMilestone();
     const achievements = this.progressService.achievements || [];
 
-    if (!progress || !nextMilestone) {
+    // For new users with 0 rankings, don't show loading - just hide the widget
+    if (!progress || (progress.totalRankings === 0 && !nextMilestone)) {
+      this.container.innerHTML = '';
+      return;
+    }
+    
+    // Only show loading if we're actually waiting for data to load
+    if (!nextMilestone && progress.totalRankings > 0) {
       this.container.innerHTML = '<div class="progress-loading">Loading progress...</div>';
       return;
     }
