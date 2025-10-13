@@ -24,7 +24,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **User Privacy**: Centralized `CommunityService` handles all user data formatting with last name truncation (e.g., "John D." instead of "John Doe") for privacy across all features including top rankers, community pages, leaderboards, and search results.
 - **Real-time Communication**: Powered by Socket.IO for real-time bidirectional communication, enabling live updates for achievements, streaks, and notifications.
 - **Product Management**: A centralized `ProductsService` combines product data from external sources with metadata and ranking statistics. Advanced filtering includes animal categories (15 unique types with icons and counts) and flavor profiles (8 distinct types with visual badges and searchability).
-- **Gamification**: An event-driven system tracks 17 predefined achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.
+- **Gamification**: An event-driven system tracks 18 achievements (including dynamic "Complete Collection" for ranking all available products), user progress with dynamic milestone tracking based on actual achievement definitions, streaks, and populates real-time leaderboards and activity feeds. The milestone system automatically adapts to product catalog changes.
 - **Search**: Global unified search with type-ahead functionality, searching both products and community members. Client-side instant search for products with multi-word support.
 - **Styling**: Custom CSS for a consistent look and feel.
 

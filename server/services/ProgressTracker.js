@@ -11,13 +11,14 @@ class ProgressTracker {
   /**
    * Get comprehensive user progress data
    * @param {number} userId - User ID
+   * @param {number} totalRankableProducts - Total number of rankable products (for dynamic milestones)
    * @returns {Object} Complete progress information
    */
-  async getUserProgress(userId) {
+  async getUserProgress(userId, totalRankableProducts = 89) {
     const { productRankings } = require('../../shared/schema');
     const { eq, sql } = require('drizzle-orm');
 
-    const [achievements, streaks, rankingStats] = await Promise.all([
+    const [achievements, streaks, rankingStats, allAchievements] = await Promise.all([
       this.achievementRepo.getUserAchievements(userId),
       this.streakRepo.getAllUserStreaks(userId),
       this.db.select({
@@ -27,13 +28,19 @@ class ProgressTracker {
       .from(productRankings)
       .where(eq(productRankings.userId, userId))
       .limit(1),
+      this.achievementRepo.getAllAchievements(),
     ]);
 
     const stats = rankingStats[0] || { totalRankings: 0, uniqueProducts: 0 };
     const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
     const totalPoints = await this.achievementRepo.getUserTotalPoints(userId);
 
-    const nextMilestones = this.getNextMilestones(stats.totalRankings);
+    const nextMilestones = this.getNextMilestones(
+      stats.totalRankings, 
+      stats.uniqueProducts,
+      allAchievements,
+      totalRankableProducts
+    );
 
     return {
       totalRankings: stats.totalRankings,
@@ -48,18 +55,48 @@ class ProgressTracker {
   }
 
   /**
-   * Get next milestones for user
+   * Get next milestones for user - dynamically based on achievement definitions
    */
-  getNextMilestones(currentRankings) {
-    const milestones = [1, 10, 25, 50, 100, 250, 500];
-    const next = milestones.filter(m => m > currentRankings);
+  getNextMilestones(currentRankings, uniqueProducts, allAchievements, totalRankableProducts) {
+    const milestones = [];
     
-    return next.slice(0, 3).map(target => ({
-      target,
-      current: currentRankings,
-      remaining: target - currentRankings,
-      progress: Math.min(100, (currentRankings / target) * 100),
-    }));
+    // Extract rank_count based milestones from achievements
+    allAchievements.forEach(achievement => {
+      if (achievement.requirement.type === 'rank_count') {
+        const target = achievement.requirement.value;
+        if (target > currentRankings) {
+          milestones.push({
+            target,
+            current: currentRankings,
+            remaining: target - currentRankings,
+            progress: Math.min(100, (currentRankings / target) * 100),
+            type: 'rank_count',
+            label: `${target} rankings`,
+            achievementName: achievement.name,
+            achievementIcon: achievement.icon,
+          });
+        }
+      } else if (achievement.requirement.type === 'rank_all_products') {
+        // Dynamic "Complete Collection" milestone
+        if (uniqueProducts < totalRankableProducts) {
+          milestones.push({
+            target: totalRankableProducts,
+            current: uniqueProducts,
+            remaining: totalRankableProducts - uniqueProducts,
+            progress: Math.min(100, (uniqueProducts / totalRankableProducts) * 100),
+            type: 'rank_all_products',
+            label: `all ${totalRankableProducts} products`,
+            achievementName: achievement.name,
+            achievementIcon: achievement.icon,
+          });
+        }
+      }
+    });
+    
+    // Sort by target and return top 3
+    return milestones
+      .sort((a, b) => a.target - b.target)
+      .slice(0, 3);
   }
 
   /**

@@ -82,7 +82,7 @@ class ProgressWidget {
         </div>
         
         <div class="progress-milestone">
-          <div class="milestone-label">Next Milestone: ${nextMilestone.target} rankings</div>
+          <div class="milestone-label">${nextMilestone.achievementIcon || '🎯'} ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}</div>
           <div class="progress-bar">
             <div class="progress-fill" style="width: ${nextMilestone.progress}%"></div>
           </div>

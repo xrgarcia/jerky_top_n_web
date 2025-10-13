@@ -76,7 +76,11 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
 
-      const progress = await progressTracker.getUserProgress(userId);
+      // Get total rankable products count for dynamic milestones
+      const { products } = await services.fetchAllShopifyProducts();
+      const totalRankableProducts = products.length;
+
+      const progress = await progressTracker.getUserProgress(userId, totalRankableProducts);
       const insights = await progressTracker.getUserInsights(userId);
 
       res.json({ progress, insights });
