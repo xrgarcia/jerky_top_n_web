@@ -37,6 +37,10 @@ class AchievementManager {
       trendsetter: (userStats, requirement) => {
         return userStats.trendingRanks >= requirement.value;
       },
+      rank_all_products: (userStats, requirement) => {
+        // Check if user has ranked all available products
+        return userStats.totalRankableProducts && userStats.uniqueProducts >= userStats.totalRankableProducts;
+      },
     };
   }
 
@@ -121,6 +125,10 @@ class AchievementManager {
       unique_brands: () => ({ current: userStats.uniqueBrands || 0, required: value }),
       leaderboard_position: () => ({ current: userStats.leaderboardPosition || 999, required: value }),
       profile_views: () => ({ current: userStats.profileViews || 0, required: value }),
+      rank_all_products: () => ({ 
+        current: userStats.uniqueProducts || 0, 
+        required: userStats.totalRankableProducts || 89 
+      }),
     };
 
     const calculator = progressMap[type];
@@ -129,23 +137,59 @@ class AchievementManager {
 
   /**
    * Seed achievement definitions into database
+   * Uses upsert to ensure new achievements are added even if some exist
    */
   async seedAchievements() {
-    const existing = await this.achievementRepo.getAllAchievements();
-    if (existing.length > 0) {
-      console.log('Achievements already seeded');
-      return existing;
-    }
-
     const db = this.achievementRepo.db;
-    const { achievements } = require('../../shared/schema');
+    const { sql } = require('drizzle-orm');
     
-    const seeded = await db.insert(achievements)
-      .values(achievementDefinitions)
-      .returning();
+    let seededCount = 0;
+    const errors = [];
     
-    console.log(`Seeded ${seeded.length} achievements`);
-    return seeded;
+    for (const definition of achievementDefinitions) {
+      try {
+        // Normalize JSON to ensure consistent representation
+        const requirementJson = typeof definition.requirement === 'string' 
+          ? definition.requirement 
+          : JSON.stringify(definition.requirement);
+        
+        // Upsert: insert or update if code already exists
+        await db.execute(sql`
+          INSERT INTO achievements (code, name, description, icon, tier, category, requirement, points)
+          VALUES (
+            ${definition.code},
+            ${definition.name},
+            ${definition.description},
+            ${definition.icon},
+            ${definition.tier},
+            ${definition.category},
+            ${requirementJson}::jsonb,
+            ${definition.points}
+          )
+          ON CONFLICT (code) DO UPDATE SET
+            name = EXCLUDED.name,
+            description = EXCLUDED.description,
+            icon = EXCLUDED.icon,
+            tier = EXCLUDED.tier,
+            category = EXCLUDED.category,
+            requirement = EXCLUDED.requirement,
+            points = EXCLUDED.points
+        `);
+        seededCount++;
+      } catch (error) {
+        const errorMsg = `Failed to seed achievement ${definition.code}: ${error.message}`;
+        console.error(`❌ ${errorMsg}`, error);
+        errors.push({ code: definition.code, error: error.message });
+      }
+    }
+    
+    if (errors.length > 0) {
+      console.warn(`⚠️ ${errors.length} achievement(s) failed to seed:`, errors);
+    }
+    
+    console.log(`✅ Seeded/updated ${seededCount}/${achievementDefinitions.length} achievements`);
+    const allAchievements = await this.achievementRepo.getAllAchievements();
+    return allAchievements;
   }
 }
 

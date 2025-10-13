@@ -35,11 +35,16 @@ function createGamificationRoutes(services) {
       const userStats = await leaderboardManager.getUserStats(userId);
       const position = await leaderboardManager.getUserPosition(userId);
       
+      // Get total rankable products count for dynamic achievement
+      const { products } = await services.fetchAllShopifyProducts();
+      const totalRankableProducts = products.length;
+      
       const stats = {
         ...userStats,
         leaderboardPosition: position.rank || 999,
         totalRankings: userStats.totalRankings,
         currentStreak: 0,
+        totalRankableProducts,
       };
 
       const streaks = await streakManager.getUserStreaks(userId);

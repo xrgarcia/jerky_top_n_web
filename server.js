@@ -1252,10 +1252,15 @@ app.post('/api/rankings/products', async (req, res) => {
         const streaks = await streakManager.getUserStreaks(userId);
         const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
         
+        // Get total rankable products count for dynamic achievement
+        const { products } = await fetchAllShopifyProducts();
+        const totalRankableProducts = products.length;
+        
         const stats = {
           ...userStats,
           leaderboardPosition: position.rank || 999,
           currentStreak: dailyStreak?.currentStreak || 0,
+          totalRankableProducts,
         };
         
         // Check for new achievements
@@ -2093,7 +2098,7 @@ if (databaseAvailable && storage) {
   const initializeGamification = require('./server/init/gamification');
   const { db } = require('./server/db');
   
-  initializeGamification(app, io, db, storage)
+  initializeGamification(app, io, db, storage, fetchAllShopifyProducts)
     .then(services => {
       gamificationServices = services;
       console.log('✅ Gamification services available for achievements');

@@ -17,6 +17,7 @@ class ProgressWidget {
       rank_25: "Power grows with dedication. Keep going...",
       rank_50: "You're halfway to something extraordinary...",
       rank_100: "Only the elite reach this milestone. Will you?",
+      complete_collection: "The ultimate completionist. Rank them all...",
       streak_3: "The flame ignites. Feed it daily...",
       streak_7: "Seven suns have witnessed your devotion...",
       streak_30: "The calendar bends to your will. Don't break...",
@@ -124,7 +125,8 @@ class ProgressWidget {
       leaderboard_position: `Rank higher to unlock...`,
       profile_views: `Views: ${progress.current}/${progress.required}`,
       join_before: `Time-limited achievement`,
-      trendsetter: `Rank trending products...`
+      trendsetter: `Rank trending products...`,
+      rank_all_products: `Products ranked: ${progress.current}/${progress.required}`
     };
     
     return hints[type] || 'Complete to unlock...';
