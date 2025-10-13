@@ -616,29 +616,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Initialize ranking system on page load
-    async function initializeRankingSystem() {
-        if (document.getElementById('rankingSlots')) {
-            generateRankingSlots(10); // Start with 10 slots
-            showRankingLoadStatus(); // Show loading indicator
-            
-            // Load rankings and products simultaneously for better performance
-            console.log('🚀 Loading rankings and products in parallel...');
-            try {
-                await Promise.all([
-                    loadUserRankings(), // Load user's saved rankings
-                    loadProductsForInitialLoad() // Load initial products (modified for parallel loading)
-                ]);
-                console.log('✅ Both rankings and products loaded successfully');
-            } catch (error) {
-                console.error('❌ Error during parallel loading:', error);
-            } finally {
-                hideRankingLoadStatus(); // Hide loading indicator only after both complete
-            }
-            
-            setupEventListeners();
-        }
-    }
 
     // Special version of loadProducts for initial parallel loading (no duplicate loading indicators)
     async function loadProductsForInitialLoad() {
@@ -1926,17 +1903,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Make removeFromSlot globally accessible
     window.removeFromSlot = removeFromSlot;
-
-    // Initialize ranking system when rank page is shown
-    const originalShowPage = showPage;
-    showPage = function(page) {
-        originalShowPage(page);
-        if (page === 'rank') {
-            setTimeout(async () => {
-                await initializeRankingSystem();
-            }, 100);
-        }
-    };
 
     async function loadTopJerky() {
         // Legacy function - redirect to new ranking system with auth check
