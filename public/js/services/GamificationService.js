@@ -26,7 +26,6 @@ class GamificationService extends BaseService {
     this.socket.on('achievement:earned', (achievement) => {
       this.achievements.push(achievement);
       this.emit('achievement:new', achievement);
-      this.showAchievementNotification(achievement);
     });
 
     this.socket.on('achievements:earned', (data) => {
@@ -38,7 +37,6 @@ class GamificationService extends BaseService {
         filtered.forEach(achievement => {
           this.achievements.push(achievement);
           this.emit('achievement:new', achievement);
-          this.showAchievementNotification(achievement);
         });
         // Reload achievements to get updated progress
         this.loadAchievements();
@@ -149,17 +147,6 @@ class GamificationService extends BaseService {
     });
     
     return filtered;
-  }
-
-  showAchievementNotification(achievement) {
-    const notification = {
-      type: 'achievement',
-      title: 'Achievement Unlocked!',
-      message: `${achievement.icon} ${achievement.name}`,
-      description: achievement.description,
-      tier: achievement.tier
-    };
-    this.emit('notification:show', notification);
   }
 }
 
