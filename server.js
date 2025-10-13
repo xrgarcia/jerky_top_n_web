@@ -1242,8 +1242,10 @@ app.post('/api/rankings/products', async (req, res) => {
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
     
     // Check and award achievements after saving rankings
+    console.log(`🔍 Checking achievements: gamificationServices=${!!gamificationServices}, rankings.length=${rankings.length}`);
     if (gamificationServices && rankings.length > 0) {
       try {
+        console.log('🎯 Running achievement check for user', userId);
         const { achievementManager, leaderboardManager, streakManager } = gamificationServices;
         
         // Get updated user stats

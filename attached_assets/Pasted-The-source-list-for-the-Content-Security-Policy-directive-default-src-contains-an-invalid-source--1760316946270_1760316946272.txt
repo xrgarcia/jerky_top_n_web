@@ -1,0 +1,843 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ [LaunchDarkly] LaunchDarkly client initialized
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'battery'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'layout-animations'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'navigation-override'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'oversized-images'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'publickey-credentials'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'speaker-selection'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'unoptimized-images'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'unsized-media'.
+_ @ framework-feb8d59901280d4c.js:1
+ Unrecognized feature: 'pointer-lock'.
+_ @ framework-feb8d59901280d4c.js:1
+ Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-feb8d59901280d4c.js:1
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-feb8d59901280d4c.js:1
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Aris%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+ 🚀 Initializing application architecture...
+ ⚙️ Initializing services...
+ ✅ Application architecture initialized
+ ✅ gamification initialized
+ ✅ Page integrations initialized
+ ✅ Home dashboard initialized
+ 🚀 Loading rankings and products in parallel...
+ ✅ Progress widget integrated into Rank page
+ ✅ WebSocket connected
+ ✅ socialProof initialized
+ ✅ activityFeed initialized
+ ✅ progressTracking initialized
+ ✅ leaderboard initialized
+ ✅ All services initialized
+ 🎨 Initializing UI widgets...
+ ✅ Notification widget created
+ 🔐 Socket authenticated for user: 2
+ ✅ 90-day customer session validated: Customer
+ ✅ Loaded 75 saved rankings
+ 📈 Adding 68 more slots to existing 10 slots
+ ✅ Total ranking slots: 78
+ 📈 Pre-expanded slots to 78 to accommodate rank 75
+ ✅ 90-day customer session validated: Customer
+ ✅ Loaded 89 products (total: 89)
+ ✅ Both rankings and products loaded successfully
+ 🛠️ Initializing Tools page...
+ 🛠️ Initializing Tools page...
+ ❌ WebSocket disconnected
+ ✅ WebSocket connected
+ 🔐 Socket authenticated for user: 2
+ 🚀 Loading rankings and products in parallel...
+ 🚀 Loading rankings and products in parallel...
+ ⏳ Products already loading, skipping duplicate call
+ ✅ 90-day customer session validated: Customer
+ ✅ Loaded 89 products (total: 89)
+ ✅ 90-day customer session validated: Customer
+ ✅ Loaded 75 saved rankings
+ ✅ Both rankings and products loaded successfully
+ ✅ Loaded 75 saved rankings
+ ✅ Both rankings and products loaded successfully
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drag over slot 76
+ 🎯 Drop on slot 76, draggedSlot: none, draggedProduct: yes
+ 📦 Adding product to slot 76 with push-down
+ 📦 Inserted product at rank 76, pushed 0 items down
+ 📈 Adding 5 more slots to existing 78 slots
+ ✅ Total ranking slots: 83
+ ♾️ Infinite expansion triggered! Filled 76/78 slots, highest rank: 76, added 5 more slots
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drop on slot 77, draggedSlot: none, draggedProduct: yes
+ 📦 Adding product to slot 77 with push-down
+ 📦 Inserted product at rank 77, pushed 0 items down
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 77
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 📢 Emitting ranking:saved event with count: 76
+ 🔄 Progress widget received ranking:saved event, refreshing... Object
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drag over slot 78
+ 🎯 Drop on slot 78, draggedSlot: none, draggedProduct: yes
+ 📦 Adding product to slot 78 with push-down
+ 📦 Inserted product at rank 78, pushed 0 items down
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drag over slot 79
+ 🎯 Drop on slot 79, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 79 with push-down
+injected.js:27 📦 Inserted product at rank 79, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 78
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 79
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drag over slot 80
+injected.js:27 🎯 Drop on slot 80, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 80 with push-down
+injected.js:27 📦 Inserted product at rank 80, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 79
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drop on slot 81, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 81 with push-down
+injected.js:27 📦 Inserted product at rank 81, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 83 slots
+injected.js:27 ✅ Total ranking slots: 88
+injected.js:27 ♾️ Infinite expansion triggered! Filled 81/83 slots, highest rank: 81, added 5 more slots
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 81
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drop on slot 82, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 82 with push-down
+injected.js:27 📦 Inserted product at rank 82, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 81
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 82
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drag over slot 83
+injected.js:27 🎯 Drop on slot 83, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 83 with push-down
+injected.js:27 📦 Inserted product at rank 83, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 82
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 📢 Emitting ranking:saved event with count: 83
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drag over slot 84
+injected.js:27 🎯 Drop on slot 84, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 84 with push-down
+injected.js:27 📦 Inserted product at rank 84, pushed 0 items down
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drag over slot 85
+injected.js:27 🎯 Drop on slot 85, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 85 with push-down
+injected.js:27 📦 Inserted product at rank 85, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 84
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drag over slot 86
+injected.js:27 🎯 Drop on slot 86, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 86 with push-down
+injected.js:27 📦 Inserted product at rank 86, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 88 slots
+injected.js:27 ✅ Total ranking slots: 93
+injected.js:27 ♾️ Infinite expansion triggered! Filled 86/88 slots, highest rank: 86, added 5 more slots
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drag over slot 87
+injected.js:27 🎯 Drop on slot 87, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 87 with push-down
+injected.js:27 📦 Inserted product at rank 87, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 86
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drag over slot 88
+injected.js:27 🎯 Drop on slot 88, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 88 with push-down
+injected.js:27 📦 Inserted product at rank 88, pushed 0 items down
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drag over slot 89
+injected.js:27 🎯 Drop on slot 89, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 89 with push-down
+injected.js:27 📦 Inserted product at rank 89, pushed 0 items down
+injected.js:27 📢 Emitting ranking:saved event with count: 88
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... Object
