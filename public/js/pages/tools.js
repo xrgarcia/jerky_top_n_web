@@ -113,10 +113,13 @@ function updateLiveUsersTable(users, count) {
     const lastActivityTime = formatTimeAgo(user.lastActivity);
     const displayName = `${user.firstName} ${user.lastName}`;
     const pageIcon = getPageIcon(user.currentPage);
+    const connectionBadge = user.connectionCount > 1 
+      ? `<span style="background: #3498db; color: white; padding: 2px 6px; border-radius: 10px; font-size: 11px; margin-left: 5px;">${user.connectionCount} tabs</span>` 
+      : '';
     
     return `
       <tr>
-        <td><strong>${displayName}</strong></td>
+        <td><strong>${displayName}</strong>${connectionBadge}</td>
         <td>${user.email}</td>
         <td>${pageIcon} ${formatPageName(user.currentPage)}</td>
         <td>${connectedTime}</td>

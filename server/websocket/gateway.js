@@ -7,7 +7,8 @@ class WebSocketGateway {
   constructor(io, services) {
     this.io = io;
     this.services = services;
-    this.activeConnections = new Map();
+    this.activeConnections = new Map(); // socketId -> connection data
+    this.activeUsers = new Map(); // userId -> aggregated user data
     this.setupEventHandlers();
   }
 
@@ -33,17 +34,32 @@ class WebSocketGateway {
                 role: user.role
               };
               
+              // Track this socket connection
               this.activeConnections.set(socket.id, {
                 socketId: socket.id,
                 userId: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                role: user.role,
-                connectedAt: new Date().toISOString(),
-                lastActivity: new Date().toISOString(),
-                currentPage: 'home'
+                currentPage: 'home',
+                lastActivity: new Date().toISOString()
               });
+              
+              // Update or create user entry (aggregated view)
+              if (this.activeUsers.has(user.id)) {
+                const existingUser = this.activeUsers.get(user.id);
+                existingUser.socketIds.push(socket.id);
+                existingUser.lastActivity = new Date().toISOString();
+              } else {
+                this.activeUsers.set(user.id, {
+                  userId: user.id,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
+                  email: user.email,
+                  role: user.role,
+                  connectedAt: new Date().toISOString(),
+                  lastActivity: new Date().toISOString(),
+                  currentPage: 'home',
+                  socketIds: [socket.id]
+                });
+              }
               
               this.broadcastActiveUsersUpdate();
             }
@@ -55,10 +71,20 @@ class WebSocketGateway {
 
       socket.on('page:view', (data) => {
         if (socket.userId && this.activeConnections.has(socket.id)) {
+          // Update socket connection
           const connection = this.activeConnections.get(socket.id);
           connection.currentPage = data.page || 'unknown';
           connection.lastActivity = new Date().toISOString();
           this.activeConnections.set(socket.id, connection);
+          
+          // Update user's current page (most recent page view)
+          if (this.activeUsers.has(socket.userId)) {
+            const user = this.activeUsers.get(socket.userId);
+            user.currentPage = data.page || 'unknown';
+            user.lastActivity = new Date().toISOString();
+            this.activeUsers.set(socket.userId, user);
+          }
+          
           this.broadcastActiveUsersUpdate();
         }
       });
@@ -100,7 +126,27 @@ class WebSocketGateway {
         console.log(`👋 WebSocket client disconnected: ${socket.id}`);
         
         if (this.activeConnections.has(socket.id)) {
+          const connection = this.activeConnections.get(socket.id);
+          const userId = connection.userId;
+          
+          // Remove socket connection
           this.activeConnections.delete(socket.id);
+          
+          // Update user entry - remove this socket from their list
+          if (userId && this.activeUsers.has(userId)) {
+            const user = this.activeUsers.get(userId);
+            user.socketIds = user.socketIds.filter(id => id !== socket.id);
+            
+            // If user has no more active sockets, remove them completely
+            if (user.socketIds.length === 0) {
+              this.activeUsers.delete(userId);
+              console.log(`👤 User ${userId} fully disconnected (no active sockets)`);
+            } else {
+              this.activeUsers.set(userId, user);
+              console.log(`👤 User ${userId} still has ${user.socketIds.length} active socket(s)`);
+            }
+          }
+          
           this.broadcastActiveUsersUpdate();
         }
       });
@@ -108,7 +154,11 @@ class WebSocketGateway {
   }
 
   getActiveUsers() {
-    return Array.from(this.activeConnections.values());
+    return Array.from(this.activeUsers.values()).map(user => ({
+      ...user,
+      socketId: user.socketIds[0], // Use first socket as representative ID
+      connectionCount: user.socketIds.length
+    }));
   }
 
   broadcastActiveUsersUpdate() {
