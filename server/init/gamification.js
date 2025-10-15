@@ -14,6 +14,7 @@ const LeaderboardManager = require('../services/LeaderboardManager');
 const ProgressTracker = require('../services/ProgressTracker');
 const HomeStatsService = require('../services/HomeStatsService');
 const CommunityService = require('../services/CommunityService');
+const PageViewService = require('../services/PageViewService');
 
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
@@ -31,6 +32,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
+  const pageViewService = new PageViewService(db, productViewRepo);
   const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService);
 
   const services = {
@@ -45,6 +47,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     streakManager,
     leaderboardManager,
     progressTracker,
+    pageViewService,
     homeStatsService,
     fetchAllShopifyProducts,
     io,

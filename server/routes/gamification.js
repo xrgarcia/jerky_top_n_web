@@ -280,6 +280,42 @@ function createGamificationRoutes(services) {
     }
   });
 
+  // Track page view (async, fire-and-forget)
+  router.post('/track-view', async (req, res) => {
+    try {
+      const { pageType, pageIdentifier, referrer } = req.body;
+
+      if (!pageType) {
+        return res.status(400).json({ error: 'pageType is required' });
+      }
+
+      // Get user ID from session (optional - allow anonymous tracking)
+      let userId = null;
+      const sessionId = req.cookies.session_id;
+      if (sessionId) {
+        const session = await services.storage.getSession(sessionId);
+        if (session) {
+          userId = session.userId;
+        }
+      }
+
+      // Track asynchronously (fire and forget)
+      services.pageViewService.trackPageViewAsync({
+        userId,
+        pageType,
+        pageIdentifier,
+        referrer,
+      });
+
+      // Respond immediately without waiting
+      res.status(202).json({ success: true, message: 'View tracked' });
+    } catch (error) {
+      console.error('Error tracking page view:', error);
+      // Still return success - tracking failures shouldn't block user
+      res.status(202).json({ success: true, message: 'View tracking queued' });
+    }
+  });
+
   return router;
 }
 
