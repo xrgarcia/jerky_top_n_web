@@ -254,7 +254,22 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Emit page:shown event for integrations
         if (window.appEventBus) {
-            window.appEventBus.emit('page:shown', { page });
+            // Extract page type and identifier for tracking
+            let pageType = page;
+            let identifier = null;
+            
+            if (page.startsWith('user/')) {
+                pageType = 'profile';
+                identifier = page.split('/')[1];
+            } else if (page.startsWith('product/')) {
+                pageType = 'product_detail';
+                identifier = page.split('/')[1];
+            }
+            
+            window.appEventBus.emit('page:shown', { 
+                page: pageType, 
+                identifier: identifier 
+            });
         }
         
         // Track page view for live user monitoring
