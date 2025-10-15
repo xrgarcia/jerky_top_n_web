@@ -569,9 +569,10 @@ document.addEventListener('DOMContentLoaded', function() {
                             // Store session info
                             localStorage.setItem('customerSessionId', sessionId);
                             localStorage.setItem('customerInfo', JSON.stringify(data.customer));
+                            localStorage.setItem('userRole', data.role || 'user');
                             
-                            // Update UI
-                            updateAuthUI(data.customer);
+                            // Update UI with role to show Tools menu for employees
+                            updateAuthUI(data.customer, data.role);
                             
                             console.log('✅ Customer login restored from URL:', data.customer);
                             
