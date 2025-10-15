@@ -1,5 +1,5 @@
 const { desc, sql, eq } = require('drizzle-orm');
-const { users, productRankings, userAchievements, achievements, pageViews } = require('../../shared/schema');
+const { users, productRankings, userAchievements, achievements, pageViews, userProductSearches } = require('../../shared/schema');
 
 /**
  * LeaderboardManager - Domain service for leaderboard calculations
@@ -11,23 +11,40 @@ class LeaderboardManager {
 
   /**
    * Get top rankers leaderboard
-   * Ranks users by engagement score = total rankings + page views
+   * Ranks users by engagement score = achievements + page views + rankings + searches
    * @param {number} limit - Number of top rankers to return
    * @param {string} period - 'all_time', 'week', 'month'
    * @returns {Array} Leaderboard entries
    */
   async getTopRankers(limit = 50, period = 'all_time') {
-    let dateCondition = '';
+    let dateFilter = '';
     
     if (period === 'week') {
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      dateCondition = `AND (pr.created_at >= '${weekAgo.toISOString()}' OR pv.viewed_at >= '${weekAgo.toISOString()}')`;
+      dateFilter = `>= '${weekAgo.toISOString()}'`;
     } else if (period === 'month') {
       const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-      dateCondition = `AND (pr.created_at >= '${monthAgo.toISOString()}' OR pv.viewed_at >= '${monthAgo.toISOString()}')`;
+      dateFilter = `>= '${monthAgo.toISOString()}'`;
     }
 
-    // Calculate engagement score = total rankings + page views
+    // Calculate engagement score = achievements + page views + rankings + searches
+    // Use FILTER to apply date conditions per metric
+    const achievementsCount = dateFilter 
+      ? `COUNT(DISTINCT ua.id) FILTER (WHERE ua.earned_at ${dateFilter})`
+      : `COUNT(DISTINCT ua.id)`;
+    
+    const pageViewsCount = dateFilter
+      ? `COUNT(DISTINCT pv.id) FILTER (WHERE pv.viewed_at ${dateFilter})`
+      : `COUNT(DISTINCT pv.id)`;
+    
+    const rankingsCount = dateFilter
+      ? `COUNT(DISTINCT pr.id) FILTER (WHERE pr.created_at ${dateFilter})`
+      : `COUNT(DISTINCT pr.id)`;
+    
+    const searchesCount = dateFilter
+      ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
+      : `COUNT(DISTINCT ups.id)`;
+
     const query = `
       SELECT 
         u.id as user_id,
@@ -35,16 +52,21 @@ class LeaderboardManager {
         u.last_name,
         u.display_name,
         u.email,
-        COALESCE(COUNT(DISTINCT pr.id), 0)::int as total_rankings,
         COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
-        COALESCE(COUNT(DISTINCT pv.id), 0)::int as total_page_views,
-        (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0))::int as engagement_score
+        (COALESCE(${achievementsCount}, 0) 
+         + COALESCE(${pageViewsCount}, 0) 
+         + COALESCE(${rankingsCount}, 0) 
+         + COALESCE(${searchesCount}, 0))::int as engagement_score
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
       LEFT JOIN page_views pv ON pv.user_id = u.id
-      WHERE 1=1 ${dateCondition}
+      LEFT JOIN user_achievements ua ON ua.user_id = u.id
+      LEFT JOIN user_product_searches ups ON ups.user_id = u.id
       GROUP BY u.id
-      HAVING (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0)) > 0
+      HAVING (COALESCE(${achievementsCount}, 0) 
+              + COALESCE(${pageViewsCount}, 0) 
+              + COALESCE(${rankingsCount}, 0) 
+              + COALESCE(${searchesCount}, 0)) > 0
       ORDER BY engagement_score DESC
       LIMIT ${limit}
     `;
@@ -57,9 +79,7 @@ class LeaderboardManager {
       lastName: row.last_name,
       displayName: row.display_name,
       email: row.email,
-      totalRankings: row.total_rankings,
       uniqueProducts: row.unique_products,
-      totalPageViews: row.total_page_views,
       engagementScore: row.engagement_score,
     }));
 
@@ -102,7 +122,7 @@ class LeaderboardManager {
       return {
         userId,
         rank: null,
-        totalRankings: 0,
+        engagementScore: 0,
         uniqueProducts: 0,
         percentile: null,
       };

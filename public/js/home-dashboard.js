@@ -87,7 +87,7 @@ class HomeDashboard {
         <div class="rank-badge rank-${index + 1}">#${index + 1}</div>
         <div class="ranker-info">
           <div class="ranker-name">${ranker.displayName}</div>
-          <div class="ranker-stats">${ranker.engagementScore || ranker.totalRankings} engagement (${ranker.totalRankings} rankings + ${ranker.totalPageViews || 0} views)</div>
+          <div class="ranker-stats">${ranker.engagementScore} engagement${ranker.engagementScore !== 1 ? 's' : ''}</div>
         </div>
       </div>
     `).join('');
