@@ -54,7 +54,7 @@ class LeaderboardWidget {
               <div class="entry-rank rank-${entry.rank}">#${entry.rank}</div>
               <div class="entry-info">
                 <div class="entry-name">${entry.displayName || 'Anonymous'}</div>
-                <div class="entry-stats">${entry.totalRankings} rankings</div>
+                <div class="entry-stats">${entry.engagementScore} engagement${entry.engagementScore !== 1 ? 's' : ''}</div>
               </div>
               ${entry.badges && entry.badges.length > 0 ? `
                 <div class="entry-badges">
