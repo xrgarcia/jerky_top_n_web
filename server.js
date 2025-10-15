@@ -1277,9 +1277,9 @@ app.post('/api/rankings/products', async (req, res) => {
           
           // Calculate completed animal categories (animals with >2 products)
           let completedAnimalCategories = [];
-          if (productsService) {
+          if (gamificationServices.productsService) {
             try {
-              const productsWithMetadata = await productsService.getAllProducts({ 
+              const productsWithMetadata = await gamificationServices.productsService.getAllProducts({ 
                 includeMetadata: true, 
                 includeRankingStats: false 
               });
