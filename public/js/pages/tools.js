@@ -393,6 +393,57 @@ function setupToolNavigation() {
   });
 }
 
+// Modal helper functions
+function showConfirmationModal(title, message, onConfirm) {
+  const modal = document.getElementById('confirmationModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalMessage = document.getElementById('modalMessage');
+  const confirmBtn = document.getElementById('modalConfirmBtn');
+  const cancelBtn = document.getElementById('modalCancelBtn');
+  
+  modalTitle.textContent = title;
+  modalMessage.textContent = message;
+  modal.style.display = 'flex';
+  
+  const handleConfirm = async () => {
+    cleanup();
+    await onConfirm();
+  };
+  
+  const handleCancel = () => {
+    cleanup();
+  };
+  
+  const cleanup = () => {
+    modal.style.display = 'none';
+    confirmBtn.removeEventListener('click', handleConfirm);
+    cancelBtn.removeEventListener('click', handleCancel);
+  };
+  
+  confirmBtn.addEventListener('click', handleConfirm);
+  cancelBtn.addEventListener('click', handleCancel);
+}
+
+async function clearAllAchievements() {
+  try {
+    const response = await fetch('/api/tools/achievements/all', {
+      method: 'DELETE'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to clear achievements');
+    }
+    
+    const data = await response.json();
+    alert(`✅ Successfully cleared ${data.deletedCount} achievement(s) for all users`);
+    
+    await loadAchievementsTable();
+  } catch (error) {
+    console.error('Error clearing achievements:', error);
+    alert(`❌ Failed to clear achievements: ${error.message}`);
+  }
+}
+
 // Initialize tools page when it's shown
 window.initToolsPage = async function() {
   console.log('🛠️ Initializing Tools page...');
@@ -407,6 +458,17 @@ window.initToolsPage = async function() {
   setupToolNavigation();
   setupProductFilters();
   await loadAchievementsTable();
+  
+  const clearAllBtn = document.getElementById('clearAllAchievementsBtn');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      showConfirmationModal(
+        'Clear All Achievements',
+        '⚠️ This will permanently delete ALL achievement data for ALL users. This action cannot be undone. Are you absolutely sure?',
+        clearAllAchievements
+      );
+    });
+  }
   
   if (window.socket) {
     window.socket.on('live-users:update', (data) => {
