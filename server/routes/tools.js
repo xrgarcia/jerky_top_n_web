@@ -94,6 +94,28 @@ function createToolsRoutes(services) {
     }
   });
 
+  // Get all products for management
+  router.get('/products', checkEmployeeRole, async (req, res) => {
+    try {
+      const { productsService } = services;
+      
+      if (!productsService) {
+        return res.status(503).json({ error: 'Products service unavailable' });
+      }
+
+      const products = await productsService.getAllProducts();
+      
+      res.json({ 
+        products: products,
+        count: products.length,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Error fetching products for tools:', error);
+      res.status(500).json({ error: 'Failed to fetch products' });
+    }
+  });
+
   return router;
 }
 

@@ -4,6 +4,8 @@
 
 let liveUsersSubscribed = false;
 let currentToolTab = 'achievements';
+let allProducts = [];
+let filteredProducts = [];
 
 async function loadAchievementsTable() {
   try {
@@ -185,6 +187,167 @@ function formatRequirement(requirement) {
   return `${typeLabel}: ${requirement.value}`;
 }
 
+async function loadProductsTable() {
+  try {
+    const response = await fetch('/api/tools/products');
+    
+    if (!response.ok) {
+      if (response.status === 403) {
+        alert('Access denied. This section is for employees only.');
+        window.showPage('home');
+        return;
+      }
+      throw new Error('Failed to load products');
+    }
+
+    const data = await response.json();
+    allProducts = data.products || [];
+    filteredProducts = [...allProducts];
+    
+    populateFilterDropdowns();
+    renderProductsTable();
+    
+  } catch (error) {
+    console.error('Error loading products table:', error);
+    const tableBody = document.getElementById('productsTableBody');
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; color: #e74c3c; padding: 20px;">
+            Failed to load products. ${error.message}
+          </td>
+        </tr>
+      `;
+    }
+  }
+}
+
+function populateFilterDropdowns() {
+  const vendors = [...new Set(allProducts.map(p => p.vendor).filter(Boolean))].sort();
+  const animalTypes = [...new Set(allProducts.map(p => p.animalType).filter(Boolean))].sort();
+  const animalDisplays = [...new Set(allProducts.map(p => p.animalDisplay).filter(Boolean))].sort();
+  const flavors = [...new Set(allProducts.map(p => p.primaryFlavor).filter(Boolean))].sort();
+  
+  const vendorFilter = document.getElementById('vendorFilter');
+  const animalTypeFilter = document.getElementById('animalTypeFilter');
+  const animalDisplayFilter = document.getElementById('animalDisplayFilter');
+  const primaryFlavorFilter = document.getElementById('primaryFlavorFilter');
+  
+  if (vendorFilter) {
+    vendorFilter.innerHTML = '<option value="">All Vendors</option>' + 
+      vendors.map(v => `<option value="${v}">${v}</option>`).join('');
+  }
+  
+  if (animalTypeFilter) {
+    animalTypeFilter.innerHTML = '<option value="">All Animal Types</option>' + 
+      animalTypes.map(a => `<option value="${a}">${a}</option>`).join('');
+  }
+  
+  if (animalDisplayFilter) {
+    animalDisplayFilter.innerHTML = '<option value="">All Animal Displays</option>' + 
+      animalDisplays.map(a => `<option value="${a}">${a}</option>`).join('');
+  }
+  
+  if (primaryFlavorFilter) {
+    primaryFlavorFilter.innerHTML = '<option value="">All Flavors</option>' + 
+      flavors.map(f => `<option value="${f}">${f}</option>`).join('');
+  }
+}
+
+function applyProductFilters() {
+  const searchTerm = document.getElementById('productsSearch')?.value.toLowerCase() || '';
+  const vendorFilter = document.getElementById('vendorFilter')?.value || '';
+  const animalTypeFilter = document.getElementById('animalTypeFilter')?.value || '';
+  const animalDisplayFilter = document.getElementById('animalDisplayFilter')?.value || '';
+  const primaryFlavorFilter = document.getElementById('primaryFlavorFilter')?.value || '';
+  
+  filteredProducts = allProducts.filter(product => {
+    const matchesSearch = searchTerm === '' || 
+      Object.values(product).some(val => 
+        val && val.toString().toLowerCase().includes(searchTerm)
+      );
+    
+    const matchesVendor = vendorFilter === '' || product.vendor === vendorFilter;
+    const matchesAnimalType = animalTypeFilter === '' || product.animalType === animalTypeFilter;
+    const matchesAnimalDisplay = animalDisplayFilter === '' || product.animalDisplay === animalDisplayFilter;
+    const matchesFlavor = primaryFlavorFilter === '' || product.primaryFlavor === primaryFlavorFilter;
+    
+    return matchesSearch && matchesVendor && matchesAnimalType && matchesAnimalDisplay && matchesFlavor;
+  });
+  
+  renderProductsTable();
+}
+
+function renderProductsTable() {
+  const tableBody = document.getElementById('productsTableBody');
+  const countBadge = document.getElementById('productsCount');
+  
+  if (countBadge) {
+    countBadge.textContent = `${filteredProducts.length} products`;
+  }
+  
+  if (!tableBody) return;
+  
+  if (filteredProducts.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+          No products match the current filters
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tableBody.innerHTML = filteredProducts.map(product => {
+    const imageUrl = product.image || '/placeholder.png';
+    const avgRank = product.avgRank ? product.avgRank.toFixed(1) : '-';
+    const price = product.price ? `$${product.price}` : '-';
+    
+    return `
+      <tr>
+        <td><img src="${imageUrl}" alt="${product.title}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;" onerror="this.src='/placeholder.png'"></td>
+        <td><strong>${product.title || 'Untitled'}</strong></td>
+        <td>${product.vendor || '-'}</td>
+        <td>${product.animalIcon || ''} ${product.animalType || '-'}</td>
+        <td>${product.animalDisplay || '-'}</td>
+        <td>${product.flavorIcon || ''} ${product.primaryFlavor || '-'}</td>
+        <td>${price}</td>
+        <td>${product.rankingCount || 0}</td>
+        <td>${avgRank}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function setupProductFilters() {
+  const searchInput = document.getElementById('productsSearch');
+  const vendorFilter = document.getElementById('vendorFilter');
+  const animalTypeFilter = document.getElementById('animalTypeFilter');
+  const animalDisplayFilter = document.getElementById('animalDisplayFilter');
+  const primaryFlavorFilter = document.getElementById('primaryFlavorFilter');
+  
+  if (searchInput) {
+    searchInput.addEventListener('input', applyProductFilters);
+  }
+  
+  if (vendorFilter) {
+    vendorFilter.addEventListener('change', applyProductFilters);
+  }
+  
+  if (animalTypeFilter) {
+    animalTypeFilter.addEventListener('change', applyProductFilters);
+  }
+  
+  if (animalDisplayFilter) {
+    animalDisplayFilter.addEventListener('change', applyProductFilters);
+  }
+  
+  if (primaryFlavorFilter) {
+    primaryFlavorFilter.addEventListener('change', applyProductFilters);
+  }
+}
+
 function setupToolNavigation() {
   const toolBtns = document.querySelectorAll('.tools-nav-btn');
   
@@ -217,6 +380,14 @@ function setupToolNavigation() {
           window.socket.emit('subscribe:live-users');
           liveUsersSubscribed = true;
         }
+      } else if (tool === 'products') {
+        document.getElementById('productsTool').style.display = 'block';
+        await loadProductsTable();
+        
+        if (liveUsersSubscribed && window.socket) {
+          window.socket.emit('unsubscribe:live-users');
+          liveUsersSubscribed = false;
+        }
       }
     });
   });
@@ -234,6 +405,7 @@ window.initToolsPage = async function() {
   }
   
   setupToolNavigation();
+  setupProductFilters();
   await loadAchievementsTable();
   
   if (window.socket) {

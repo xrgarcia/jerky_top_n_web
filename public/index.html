@@ -358,6 +358,7 @@
                 <div class="tools-nav">
                     <button class="tools-nav-btn active" data-tool="achievements">Manage Achievements</button>
                     <button class="tools-nav-btn" data-tool="live-users">Live Users</button>
+                    <button class="tools-nav-btn" data-tool="products">Manage Products</button>
                 </div>
 
                 <!-- Manage Achievements Tool -->
@@ -410,6 +411,56 @@
                                         No active users at the moment
                                     </td>
                                 </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Products Management Tool -->
+                <div class="tool-section" id="productsTool" style="display: none;">
+                    <div class="products-header">
+                        <h3>🥩 Product Management</h3>
+                        <div class="products-count-badge" id="productsCount">0 products</div>
+                    </div>
+                    
+                    <!-- Filters and Search -->
+                    <div class="products-filters">
+                        <div class="products-search-box">
+                            <input type="text" id="productsSearch" placeholder="Search by any attribute..." />
+                        </div>
+                        <div class="products-filter-dropdowns">
+                            <select id="vendorFilter" class="product-filter-select">
+                                <option value="">All Vendors</option>
+                            </select>
+                            <select id="animalTypeFilter" class="product-filter-select">
+                                <option value="">All Animal Types</option>
+                            </select>
+                            <select id="animalDisplayFilter" class="product-filter-select">
+                                <option value="">All Animal Displays</option>
+                            </select>
+                            <select id="primaryFlavorFilter" class="product-filter-select">
+                                <option value="">All Flavors</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="products-table-container">
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Title</th>
+                                    <th>Vendor</th>
+                                    <th>Animal Type</th>
+                                    <th>Animal Display</th>
+                                    <th>Primary Flavor</th>
+                                    <th>Price</th>
+                                    <th>Rankings</th>
+                                    <th>Avg Rank</th>
+                                </tr>
+                            </thead>
+                            <tbody id="productsTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
                             </tbody>
                         </table>
                     </div>
