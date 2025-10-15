@@ -6,7 +6,7 @@ const express = require('express');
  */
 function createToolsRoutes(services) {
   const router = express.Router();
-  const { storage, achievementRepo } = services;
+  const { storage, achievementRepo, achievementManager } = services;
 
   // Middleware to check employee role
   async function checkEmployeeRole(req, res, next) {
@@ -113,6 +113,56 @@ function createToolsRoutes(services) {
     } catch (error) {
       console.error('Error fetching products for tools:', error);
       res.status(500).json({ error: 'Failed to fetch products' });
+    }
+  });
+
+  // Clear achievements for a specific user
+  router.delete('/achievements/user/:userId', checkEmployeeRole, async (req, res) => {
+    try {
+      if (!achievementManager) {
+        return res.status(503).json({ error: 'Achievement service unavailable' });
+      }
+
+      const userId = parseInt(req.params.userId);
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      const deletedCount = await achievementManager.clearUserAchievements(userId);
+      
+      console.log(`🗑️ Cleared ${deletedCount} achievements for user ${userId} by ${req.user.email}`);
+      
+      res.json({ 
+        success: true,
+        deletedCount,
+        userId,
+        message: `Cleared ${deletedCount} achievement(s) for user ${userId}`
+      });
+    } catch (error) {
+      console.error('Error clearing user achievements:', error);
+      res.status(500).json({ error: 'Failed to clear user achievements' });
+    }
+  });
+
+  // Clear all achievements for all users
+  router.delete('/achievements/all', checkEmployeeRole, async (req, res) => {
+    try {
+      if (!achievementManager) {
+        return res.status(503).json({ error: 'Achievement service unavailable' });
+      }
+
+      const deletedCount = await achievementManager.clearAllAchievements();
+      
+      console.log(`🗑️ Cleared ALL ${deletedCount} achievements by ${req.user.email}`);
+      
+      res.json({ 
+        success: true,
+        deletedCount,
+        message: `Cleared all ${deletedCount} achievement(s) for all users`
+      });
+    } catch (error) {
+      console.error('Error clearing all achievements:', error);
+      res.status(500).json({ error: 'Failed to clear all achievements' });
     }
   });
 
