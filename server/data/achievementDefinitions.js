@@ -130,6 +130,16 @@ const achievementDefinitions = [
     requirement: { type: 'unique_brands', value: 3 },
     points: 300
   },
+  {
+    code: 'animal_specialist',
+    name: 'Animal Specialist',
+    description: 'Rank all products from the same animal type',
+    icon: '🎓',
+    tier: 'silver',
+    category: 'discovery',
+    requirement: { type: 'complete_animal_category', value: 1 },
+    points: 200
+  },
 
   // Social Achievements
   {

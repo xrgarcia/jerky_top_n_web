@@ -41,6 +41,10 @@ class AchievementManager {
         // Check if user has ranked all available products
         return userStats.totalRankableProducts && userStats.uniqueProducts >= userStats.totalRankableProducts;
       },
+      complete_animal_category: (userStats, requirement) => {
+        // Check if user has completed at least one animal category (with >2 products)
+        return userStats.completedAnimalCategories && userStats.completedAnimalCategories.length >= requirement.value;
+      },
     };
   }
 
@@ -128,6 +132,10 @@ class AchievementManager {
       rank_all_products: () => ({ 
         current: userStats.uniqueProducts || 0, 
         required: userStats.totalRankableProducts || 89 
+      }),
+      complete_animal_category: () => ({ 
+        current: userStats.completedAnimalCategories?.length || 0, 
+        required: value 
       }),
     };
 
