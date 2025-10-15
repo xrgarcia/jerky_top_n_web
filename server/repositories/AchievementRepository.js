@@ -86,6 +86,19 @@ class AchievementRepository {
       .where(eq(userAchievements.achievementId, achievementId));
     return result[0]?.count || 0;
   }
+
+  async deleteUserAchievements(userId) {
+    const result = await this.db.delete(userAchievements)
+      .where(eq(userAchievements.userId, userId))
+      .returning();
+    return result.length;
+  }
+
+  async deleteAllAchievements() {
+    const result = await this.db.delete(userAchievements)
+      .returning();
+    return result.length;
+  }
 }
 
 module.exports = AchievementRepository;
