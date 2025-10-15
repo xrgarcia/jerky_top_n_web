@@ -1,5 +1,5 @@
 const { desc, sql, eq } = require('drizzle-orm');
-const { users, productRankings, userAchievements, achievements } = require('../../shared/schema');
+const { users, productRankings, userAchievements, achievements, productViews } = require('../../shared/schema');
 
 /**
  * LeaderboardManager - Domain service for leaderboard calculations
@@ -11,42 +11,57 @@ class LeaderboardManager {
 
   /**
    * Get top rankers leaderboard
+   * Ranks users by engagement score = total rankings + page views
    * @param {number} limit - Number of top rankers to return
    * @param {string} period - 'all_time', 'week', 'month'
    * @returns {Array} Leaderboard entries
    */
   async getTopRankers(limit = 50, period = 'all_time') {
-    let dateFilter = null;
+    let dateCondition = '';
     
     if (period === 'week') {
       const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
-      dateFilter = sql`${productRankings.createdAt} >= ${weekAgo}`;
+      dateCondition = `AND (pr.created_at >= '${weekAgo.toISOString()}' OR pv.viewed_at >= '${weekAgo.toISOString()}')`;
     } else if (period === 'month') {
       const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
-      dateFilter = sql`${productRankings.createdAt} >= ${monthAgo}`;
+      dateCondition = `AND (pr.created_at >= '${monthAgo.toISOString()}' OR pv.viewed_at >= '${monthAgo.toISOString()}')`;
     }
 
-    const query = this.db
-      .select({
-        userId: users.id,
-        firstName: users.firstName,
-        lastName: users.lastName,
-        displayName: users.displayName,
-        email: users.email,
-        totalRankings: sql`count(distinct ${productRankings.id})::int`,
-        uniqueProducts: sql`count(distinct ${productRankings.shopifyProductId})::int`,
-      })
-      .from(users)
-      .innerJoin(productRankings, eq(productRankings.userId, users.id))
-      .groupBy(users.id)
-      .orderBy(desc(sql`count(distinct ${productRankings.id})`))
-      .limit(limit);
+    // Calculate engagement score = total rankings + page views
+    const query = `
+      SELECT 
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.email,
+        COALESCE(COUNT(DISTINCT pr.id), 0)::int as total_rankings,
+        COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
+        COALESCE(COUNT(DISTINCT pv.id), 0)::int as total_page_views,
+        (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0))::int as engagement_score
+      FROM users u
+      LEFT JOIN product_rankings pr ON pr.user_id = u.id
+      LEFT JOIN product_views pv ON pv.user_id = u.id
+      WHERE 1=1 ${dateCondition}
+      GROUP BY u.id
+      HAVING (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0)) > 0
+      ORDER BY engagement_score DESC
+      LIMIT ${limit}
+    `;
 
-    if (dateFilter) {
-      query.where(dateFilter);
-    }
+    const results = await this.db.execute(sql.raw(query));
 
-    const leaderboard = await query;
+    const leaderboard = results.rows.map(row => ({
+      userId: row.user_id,
+      firstName: row.first_name,
+      lastName: row.last_name,
+      displayName: row.display_name,
+      email: row.email,
+      totalRankings: row.total_rankings,
+      uniqueProducts: row.unique_products,
+      totalPageViews: row.total_page_views,
+      engagementScore: row.engagement_score,
+    }));
 
     const leaderboardWithBadges = await Promise.all(
       leaderboard.map(async (entry, index) => {
