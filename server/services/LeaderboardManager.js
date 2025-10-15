@@ -1,5 +1,5 @@
 const { desc, sql, eq } = require('drizzle-orm');
-const { users, productRankings, userAchievements, achievements, productViews } = require('../../shared/schema');
+const { users, productRankings, userAchievements, achievements, pageViews } = require('../../shared/schema');
 
 /**
  * LeaderboardManager - Domain service for leaderboard calculations
@@ -41,7 +41,7 @@ class LeaderboardManager {
         (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0))::int as engagement_score
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
-      LEFT JOIN product_views pv ON pv.user_id = u.id
+      LEFT JOIN page_views pv ON pv.user_id = u.id
       WHERE 1=1 ${dateCondition}
       GROUP BY u.id
       HAVING (COALESCE(COUNT(DISTINCT pr.id), 0) + COALESCE(COUNT(DISTINCT pv.id), 0)) > 0
