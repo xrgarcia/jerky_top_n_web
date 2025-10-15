@@ -37,6 +37,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Gamification**: Achievement tracking, user progress monitoring, streak tracking, real-time leaderboards, live activity feeds, and real-time notifications.
 - **Admin Tools**: Role-based access for @jerky.com employees with dedicated Tools section featuring:
   - **Manage Achievements**: View all achievements with tier, category, requirements, points, and earning statistics in a sortable table
+  - **Live Users**: Real-time monitoring of active users on the site, showing current page, connection time, and activity. Features WebSocket-based live updates with employee-only access and privacy-preserving data sanitization (last name truncation, email redaction for non-employees)
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM for all data persistence.
