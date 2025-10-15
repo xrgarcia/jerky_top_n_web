@@ -143,6 +143,16 @@ const productsMetadata = pgTable('products_metadata', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
+// Page views - tracks all page views for engagement metrics
+const pageViews = pgTable('page_views', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id), // Nullable for anonymous views
+  pageType: text('page_type').notNull(), // 'home', 'products', 'community', 'rank', 'profile', 'product_detail'
+  pageIdentifier: text('page_identifier'), // Optional: product ID, user ID, etc.
+  referrer: text('referrer'), // Where the user came from
+  viewedAt: timestamp('viewed_at').defaultNow(),
+});
+
 // Relations
 const usersRelations = relations(users, ({ many }) => ({
   rankings: many(rankings),
@@ -208,6 +218,7 @@ module.exports = {
   activityLogs,
   productViews,
   productsMetadata,
+  pageViews,
   usersRelations,
   sessionsRelations,
   rankingsRelations,
