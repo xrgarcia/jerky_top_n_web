@@ -63,17 +63,19 @@ class PageViewService {
   async getPageViewCount(pageType, pageIdentifier = null, hoursAgo = 24) {
     const since = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
     
-    const query = this.db.select({
+    // Build query immutably by reassigning
+    let query = this.db.select({
       count: sql`count(*)::int`
     })
     .from(pageViews)
     .where(eq(pageViews.pageType, pageType));
 
+    // Chain additional filters
     if (pageIdentifier) {
-      query.where(eq(pageViews.pageIdentifier, pageIdentifier));
+      query = query.where(eq(pageViews.pageIdentifier, pageIdentifier));
     }
 
-    query.where(gte(pageViews.viewedAt, since));
+    query = query.where(gte(pageViews.viewedAt, since));
 
     const result = await query;
     return result[0]?.count || 0;
