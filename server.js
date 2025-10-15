@@ -1241,41 +1241,64 @@ app.post('/api/rankings/products', async (req, res) => {
 
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
     
-    // Check and award achievements after saving rankings
+    // Process gamification asynchronously to avoid slowing down the response
     if (gamificationServices && rankings.length > 0) {
-      try {
-        const { achievementManager, leaderboardManager, streakManager } = gamificationServices;
-        
-        // Get updated user stats
-        const userStats = await leaderboardManager.getUserStats(userId);
-        const position = await leaderboardManager.getUserPosition(userId);
-        const streaks = await streakManager.getUserStreaks(userId);
-        const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
-        
-        // Get total rankable products count for dynamic achievement
-        const { products } = await fetchAllShopifyProducts();
-        const totalRankableProducts = products.length;
-        
-        const stats = {
-          ...userStats,
-          leaderboardPosition: position.rank || 999,
-          currentStreak: dailyStreak?.currentStreak || 0,
-          totalRankableProducts,
-        };
-        
-        // Check for new achievements
-        const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
-        
-        // Broadcast new achievements via WebSocket
-        if (newAchievements.length > 0 && io) {
-          io.to(`user:${userId}`).emit('achievements:earned', { achievements: newAchievements });
-          console.log(`🏆 User ${userId} earned ${newAchievements.length} new achievement(s):`, 
-            newAchievements.map(a => a.name).join(', '));
+      // Don't await this - let it run in the background
+      (async () => {
+        try {
+          console.log(`🎮 Starting async gamification for user ${userId}`);
+          const { achievementManager, leaderboardManager, streakManager } = gamificationServices;
+          
+          // Update daily ranking streak
+          console.log(`🔥 Updating streak for user ${userId}...`);
+          const streakResult = await streakManager.updateStreak(userId, 'daily_rank');
+          console.log(`🔥 Streak update result:`, streakResult);
+          
+          // Broadcast streak update via WebSocket if streak changed
+          if (streakResult && (streakResult.continued || streakResult.broken) && io) {
+            io.to(`user:${userId}`).emit('streak:updated', streakResult);
+            
+            if (streakResult.continued) {
+              console.log(`🔥 User ${userId} continued streak: ${streakResult.currentStreak} days`);
+            } else if (streakResult.broken) {
+              console.log(`💔 User ${userId} broke streak: was ${streakResult.previousStreak} days`);
+            }
+          }
+          
+          // Get updated user stats
+          const userStats = await leaderboardManager.getUserStats(userId);
+          const position = await leaderboardManager.getUserPosition(userId);
+          const streaks = await streakManager.getUserStreaks(userId);
+          const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
+          
+          // Get total rankable products count for dynamic achievement
+          const { products } = await fetchAllShopifyProducts();
+          const totalRankableProducts = products.length;
+          
+          const stats = {
+            ...userStats,
+            leaderboardPosition: position.rank || 999,
+            currentStreak: dailyStreak?.currentStreak || 0,
+            totalRankableProducts,
+          };
+          
+          // Check for new achievements
+          const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
+          
+          // Broadcast new achievements via WebSocket
+          if (newAchievements.length > 0 && io) {
+            io.to(`user:${userId}`).emit('achievements:earned', { achievements: newAchievements });
+            console.log(`🏆 User ${userId} earned ${newAchievements.length} new achievement(s):`, 
+              newAchievements.map(a => a.name).join(', '));
+          }
+        } catch (gamificationError) {
+          console.error('Error processing gamification:', gamificationError);
+          Sentry.captureException(gamificationError, {
+            tags: { service: 'gamification', operation: 'async_update' },
+            extra: { userId, rankingCount: rankings.length }
+          });
         }
-      } catch (achievementError) {
-        console.error('Error checking achievements:', achievementError);
-        // Don't fail the ranking save if achievement check fails
-      }
+      })();
     }
     
     res.json({ 

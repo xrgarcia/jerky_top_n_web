@@ -94,11 +94,17 @@ class StreakManager {
   }
 
   /**
-   * Get days difference between two dates
+   * Get days difference between two dates using calendar days (not 24-hour periods)
+   * This properly handles timezone edge cases and ensures streaks work correctly
    */
   getDaysDifference(date1, date2) {
+    // Normalize both dates to midnight UTC to compare calendar days
+    const d1 = new Date(Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()));
+    const d2 = new Date(Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()));
+    
+    // Calculate difference in milliseconds and convert to days
+    const diffTime = Math.abs(d2 - d1);
     const oneDay = 24 * 60 * 60 * 1000;
-    const diffTime = Math.abs(date2 - date1);
     return Math.floor(diffTime / oneDay);
   }
 
