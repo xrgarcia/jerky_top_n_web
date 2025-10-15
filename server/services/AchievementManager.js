@@ -191,6 +191,43 @@ class AchievementManager {
     const allAchievements = await this.achievementRepo.getAllAchievements();
     return allAchievements;
   }
+
+  /**
+   * Clear all achievements for a specific user
+   * @param {number} userId - User ID
+   * @returns {number} Count of deleted achievements
+   */
+  async clearUserAchievements(userId) {
+    const deletedCount = await this.achievementRepo.deleteUserAchievements(userId);
+    
+    if (deletedCount > 0) {
+      await this.activityLogRepo.logActivity(
+        userId,
+        'achievements_cleared',
+        { deletedCount }
+      );
+    }
+    
+    return deletedCount;
+  }
+
+  /**
+   * Clear all achievements for all users (admin only)
+   * @returns {number} Count of deleted achievements
+   */
+  async clearAllAchievements() {
+    const deletedCount = await this.achievementRepo.deleteAllAchievements();
+    
+    if (deletedCount > 0) {
+      await this.activityLogRepo.logActivity(
+        null,
+        'all_achievements_cleared',
+        { deletedCount }
+      );
+    }
+    
+    return deletedCount;
+  }
 }
 
 module.exports = AchievementManager;
