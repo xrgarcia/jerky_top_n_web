@@ -105,6 +105,7 @@
   window.appEventBus = eventBus;
   window.appServices = serviceRegistry;
   window.appSocket = socket;
+  window.socket = socket;
 
   console.log('✅ Application architecture initialized');
 })();

@@ -4300,3 +4300,85 @@ body.login-page-active .hero {
     font-weight: 600;
 }
 
+/* Live Users Tool Styles */
+.live-users-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.live-users-header h3 {
+    margin: 0;
+    color: #2c3e50;
+    font-size: 24px;
+}
+
+.live-users-stats {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.live-count-badge {
+    padding: 8px 16px;
+    background: #663399;
+    color: white;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.live-indicator {
+    font-size: 14px;
+    font-weight: 600;
+    color: #27ae60;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.live-users-table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.live-users-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.live-users-table thead {
+    background: #2c3e50;
+    color: white;
+}
+
+.live-users-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.live-users-table tbody tr {
+    border-bottom: 1px solid #ecf0f1;
+    transition: background 0.2s;
+}
+
+.live-users-table tbody tr:hover {
+    background: #f8f9fa;
+}
+
+.live-users-table td {
+    padding: 15px;
+}
+

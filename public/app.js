@@ -80,6 +80,11 @@ document.addEventListener('DOMContentLoaded', function() {
             const communityLink = document.querySelector('[data-page="community"]');
             if (communityLink) communityLink.classList.add('active');
             
+            // Track page view for live user monitoring
+            if (window.socket && window.socket.connected) {
+                window.socket.emit('page:view', { page: 'community' });
+            }
+            
             return;
         }
         
@@ -110,6 +115,11 @@ document.addEventListener('DOMContentLoaded', function() {
             navLinks.forEach(navLink => navLink.classList.remove('active'));
             const productsLink = document.querySelector('[data-page="products"]');
             if (productsLink) productsLink.classList.add('active');
+            
+            // Track page view for live user monitoring
+            if (window.socket && window.socket.connected) {
+                window.socket.emit('page:view', { page: 'products' });
+            }
             
             return;
         }
@@ -245,6 +255,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // Emit page:shown event for integrations
         if (window.appEventBus) {
             window.appEventBus.emit('page:shown', { page });
+        }
+        
+        // Track page view for live user monitoring
+        if (window.socket && window.socket.connected) {
+            window.socket.emit('page:view', { page });
         }
     }
 

@@ -357,10 +357,11 @@
                 <!-- Tools Navigation -->
                 <div class="tools-nav">
                     <button class="tools-nav-btn active" data-tool="achievements">Manage Achievements</button>
+                    <button class="tools-nav-btn" data-tool="live-users">Live Users</button>
                 </div>
 
                 <!-- Manage Achievements Tool -->
-                <div class="tool-section" id="achievementsTool">
+                <div class="tool-section active" id="achievementsTool">
                     <div class="achievements-table-container">
                         <table class="achievements-table">
                             <thead>
@@ -377,6 +378,38 @@
                             </thead>
                             <tbody id="achievementsTableBody">
                                 <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Live Users Tool -->
+                <div class="tool-section" id="liveUsersTool" style="display: none;">
+                    <div class="live-users-header">
+                        <h3>👥 Active Users</h3>
+                        <div class="live-users-stats">
+                            <span class="live-count-badge" id="liveUserCount">0 online</span>
+                            <span class="live-indicator">🟢 Live</span>
+                        </div>
+                    </div>
+                    <div class="live-users-table-container">
+                        <table class="live-users-table">
+                            <thead>
+                                <tr>
+                                    <th>User</th>
+                                    <th>Email</th>
+                                    <th>Current Page</th>
+                                    <th>Connected</th>
+                                    <th>Last Activity</th>
+                                    <th>Connection ID</th>
+                                </tr>
+                            </thead>
+                            <tbody id="liveUsersTableBody">
+                                <tr>
+                                    <td colspan="6" style="text-align: center; padding: 40px; color: #999;">
+                                        No active users at the moment
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
