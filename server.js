@@ -134,6 +134,8 @@ console.log('🏪  Shop Domain:', JERKY_SHOP_DOMAIN);
 console.log('🌐  App Domain:', APP_DOMAIN);
 console.log('🔑  Using Customer Account API for jerky.com accounts');
 
+const emailService = require('./server/services/EmailService.js');
+
 // Configure Express to trust proxy (required for Replit)
 app.set('trust proxy', true);
 
@@ -469,38 +471,15 @@ app.post('/api/customer/email-login', async (req, res) => {
       expiresIn: 30 // 30 minutes
     });
     
-    // Send magic link email
-    const { sendEmail } = require('./server/replitmail.js');
+    // Send magic link email using custom SMTP
+    const emailService = require('./server/services/EmailService.js');
     const appDomain = getAppDomainFromRequest(req);
     const magicLinkUrl = `https://${appDomain}/api/customer/magic-login?token=${token}`;
     
-    await sendEmail({
+    await emailService.sendMagicLink({
       to: customer.email,
-      subject: '🔑 Your Jerky Rankings Login Link',
-      html: `
-        <h2>🥩 Welcome to Jerky Rankings!</h2>
-        <p>Hi ${customer.firstName},</p>
-        <p>Click the link below to securely access your jerky.com account on our rankings site:</p>
-        <p><a href="${magicLinkUrl}" style="background: #6B8E23; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;">🔑 Log In to Jerky Rankings</a></p>
-        <p>This link will expire in 30 minutes for your security.</p>
-        <p>If you didn't request this login, you can safely ignore this email.</p>
-        <br>
-        <p>Happy ranking!</p>
-        <p>The Jerky.com Team</p>
-      `,
-      text: `
-Hi ${customer.firstName},
-
-Click this link to securely access your jerky.com account on our rankings site:
-${magicLinkUrl}
-
-This link will expire in 30 minutes for your security.
-
-If you didn't request this login, you can safely ignore this email.
-
-Happy ranking!
-The Jerky.com Team
-      `
+      magicLink: magicLinkUrl,
+      customerName: customer.firstName
     });
     
     console.log(`📧 Magic link sent to: ${customer.email}`);
