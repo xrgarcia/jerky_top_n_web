@@ -1275,49 +1275,11 @@ app.post('/api/rankings/products', async (req, res) => {
           const { products } = await fetchAllShopifyProducts();
           const totalRankableProducts = products.length;
           
-          // Calculate completed animal categories (animals with >2 products)
-          let completedAnimalCategories = [];
-          if (gamificationServices.productsService) {
-            try {
-              const productsWithMetadata = await gamificationServices.productsService.getAllProducts({ 
-                includeMetadata: true, 
-                includeRankingStats: false 
-              });
-              
-              // Group products by animal
-              const animalGroups = {};
-              productsWithMetadata.forEach(product => {
-                if (product.animalDisplay) {
-                  if (!animalGroups[product.animalDisplay]) {
-                    animalGroups[product.animalDisplay] = [];
-                  }
-                  animalGroups[product.animalDisplay].push(product.id);
-                }
-              });
-              
-              // Get user's ranked product IDs
-              const { productRankings } = require('./shared/schema');
-              const { eq } = require('drizzle-orm');
-              const userRankings = await db.select()
-                .from(productRankings)
-                .where(eq(productRankings.userId, userId));
-              const rankedIds = new Set(userRankings.map(r => r.shopifyProductId));
-              
-              // Check each animal group
-              for (const [animal, productIds] of Object.entries(animalGroups)) {
-                // Only consider animals with >2 products
-                if (productIds.length > 2) {
-                  // Check if user has ranked ALL products from this animal
-                  const hasRankedAll = productIds.every(id => rankedIds.has(id));
-                  if (hasRankedAll) {
-                    completedAnimalCategories.push(animal);
-                  }
-                }
-              }
-            } catch (error) {
-              console.error('Error calculating animal categories:', error);
-            }
-          }
+          // Calculate completed animal categories using service method (DRY principle)
+          const completedAnimalCategories = await leaderboardManager.getCompletedAnimalCategories(
+            userId,
+            gamificationServices.productsService
+          );
           
           const stats = {
             ...userStats,

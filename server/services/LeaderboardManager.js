@@ -195,6 +195,62 @@ class LeaderboardManager {
     
     return Math.round((intersection / union) * 100);
   }
+
+  /**
+   * Calculate completed animal categories for a user
+   * Returns array of animal names where user has ranked ALL products (animal must have >2 products)
+   * @param {number} userId - User ID
+   * @param {Object} productsService - ProductsService instance
+   * @returns {Promise<Array<string>>} Array of completed animal category names
+   */
+  async getCompletedAnimalCategories(userId, productsService) {
+    const completedCategories = [];
+    
+    if (!productsService) {
+      return completedCategories;
+    }
+    
+    try {
+      // Get all products with metadata
+      const productsWithMetadata = await productsService.getAllProducts({ 
+        includeMetadata: true, 
+        includeRankingStats: false 
+      });
+      
+      // Group products by animal
+      const animalGroups = {};
+      productsWithMetadata.forEach(product => {
+        if (product.animalDisplay) {
+          if (!animalGroups[product.animalDisplay]) {
+            animalGroups[product.animalDisplay] = [];
+          }
+          animalGroups[product.animalDisplay].push(product.id);
+        }
+      });
+      
+      // Get user's ranked product IDs
+      const userRankings = await this.db.select()
+        .from(productRankings)
+        .where(eq(productRankings.userId, userId));
+      const rankedIds = new Set(userRankings.map(r => r.shopifyProductId));
+      
+      // Check each animal group
+      for (const [animal, productIds] of Object.entries(animalGroups)) {
+        // Only consider animals with >2 products
+        if (productIds.length > 2) {
+          // Check if user has ranked ALL products from this animal
+          const hasRankedAll = productIds.every(id => rankedIds.has(id));
+          if (hasRankedAll) {
+            completedCategories.push(animal);
+          }
+        }
+      }
+    } catch (error) {
+      console.error('Error calculating completed animal categories:', error);
+    }
+    
+    return completedCategories;
+  }
 }
 
 module.exports = LeaderboardManager;
