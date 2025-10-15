@@ -103,31 +103,31 @@ const achievementDefinitions = [
   {
     code: 'explorer',
     name: 'Taste Explorer',
-    description: 'Try ranking products from 5 different brands',
+    description: 'Try ranking products from your first brand',
     icon: '🗺️',
     tier: 'bronze',
     category: 'discovery',
-    requirement: { type: 'unique_brands', value: 5 },
+    requirement: { type: 'unique_brands', value: 1 },
     points: 50
   },
   {
     code: 'adventurer',
     name: 'Flavor Adventurer',
-    description: 'Try ranking products from 15 different brands',
+    description: 'Try ranking products from 2 different brands',
     icon: '🌍',
     tier: 'silver',
     category: 'discovery',
-    requirement: { type: 'unique_brands', value: 15 },
+    requirement: { type: 'unique_brands', value: 2 },
     points: 150
   },
   {
     code: 'globe_trotter',
     name: 'Global Taster',
-    description: 'Try ranking products from 30 different brands',
+    description: 'Try ranking products from all 3 brands',
     icon: '✈️',
     tier: 'gold',
     category: 'discovery',
-    requirement: { type: 'unique_brands', value: 30 },
+    requirement: { type: 'unique_brands', value: 3 },
     points: 300
   },
 
