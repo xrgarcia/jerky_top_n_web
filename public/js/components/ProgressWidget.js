@@ -16,7 +16,6 @@ class ProgressWidget {
       rank_10: "The path reveals itself to those who persist...",
       rank_25: "Power grows with dedication. Keep going...",
       rank_50: "You're halfway to something extraordinary...",
-      rank_100: "Only the elite reach this milestone. Will you?",
       complete_collection: "The ultimate completionist. Rank them all...",
       streak_3: "The flame ignites. Feed it daily...",
       streak_7: "Seven suns have witnessed your devotion...",

@@ -47,16 +47,6 @@ const achievementDefinitions = [
     points: 200
   },
   {
-    code: 'rank_100',
-    name: 'Jerky Connoisseur',
-    description: 'Rank 100 products',
-    icon: '🏆',
-    tier: 'platinum',
-    category: 'ranking',
-    requirement: { type: 'rank_count', value: 100 },
-    points: 500
-  },
-  {
     code: 'complete_collection',
     name: 'Complete Collection',
     description: 'Rank all available products',
