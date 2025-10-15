@@ -19,7 +19,7 @@ const PageViewService = require('../services/PageViewService');
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
 
-async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts) {
+async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, productsService = null) {
   console.log('🎮 Initializing gamification system...');
 
   const achievementRepo = new AchievementRepository(db);
@@ -50,6 +50,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     pageViewService,
     homeStatsService,
     fetchAllShopifyProducts,
+    productsService,
     io,
   };
 

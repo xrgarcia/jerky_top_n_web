@@ -2121,7 +2121,20 @@ if (databaseAvailable && storage) {
   const initializeGamification = require('./server/init/gamification');
   const { db } = require('./server/db');
   
-  initializeGamification(app, io, db, storage, fetchAllShopifyProducts)
+  // Create shared ProductsService instance
+  const ProductsService = require('./server/services/ProductsService');
+  const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+  const metadataService = new ProductsMetadataService(db);
+  
+  const productsService = new ProductsService(
+    db,
+    fetchAllShopifyProducts,
+    (products) => metadataService.syncProductsMetadata(products),
+    metadataCache,
+    rankingStatsCache
+  );
+  
+  initializeGamification(app, io, db, storage, fetchAllShopifyProducts, productsService)
     .then(services => {
       gamificationServices = services;
       console.log('✅ Gamification services available for achievements');
