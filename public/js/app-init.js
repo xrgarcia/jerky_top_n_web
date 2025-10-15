@@ -64,6 +64,11 @@
     return new LeaderboardService(bus, sock);
   });
 
+  serviceRegistry.register('pageViewTracker', (registry) => {
+    const bus = registry.get('eventBus');
+    return new PageViewTracker(bus);
+  });
+
   async function initializeServices() {
     console.log('⚙️ Initializing services...');
     
@@ -72,7 +77,8 @@
       'socialProof',
       'activityFeed',
       'progressTracking',
-      'leaderboard'
+      'leaderboard',
+      'pageViewTracker'
     ];
 
     for (const serviceName of services) {
