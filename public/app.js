@@ -576,6 +576,11 @@ document.addEventListener('DOMContentLoaded', function() {
                             
                             console.log('✅ Customer login restored from URL:', data.customer);
                             
+                            // Authenticate WebSocket with the sessionId
+                            if (window.socket && window.socket.connected) {
+                                window.socket.emit('auth', { sessionId });
+                            }
+                            
                             // Clean up URL
                             window.location.hash = '';
                         }
