@@ -13,6 +13,38 @@
 
   const socket = io();
 
+  // Listen for authentication success from login popup
+  window.addEventListener('message', (event) => {
+    // Security: Only accept messages from our own origin
+    if (event.origin !== window.location.origin) {
+      console.warn('⚠️ Rejected postMessage from untrusted origin:', event.origin);
+      return;
+    }
+
+    if (event.data.type === 'CUSTOMER_LOGIN_SUCCESS') {
+      const { sessionId, customer } = event.data;
+      
+      // Validate payload structure
+      if (!sessionId || !customer) {
+        console.error('❌ Invalid login message payload');
+        return;
+      }
+      
+      console.log('🔐 Received login success, storing session:', customer.displayName || customer.firstName);
+      
+      // Store session ID in localStorage for WebSocket authentication
+      localStorage.setItem('customerSessionId', sessionId);
+      
+      // Authenticate WebSocket with new session
+      socket.emit('auth', { sessionId });
+      
+      // Reload page to refresh UI with authenticated state
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
+    }
+  });
+
   socket.on('connect', () => {
     console.log('✅ WebSocket connected');
     const sessionId = localStorage.getItem('customerSessionId');
