@@ -363,6 +363,10 @@
 
                 <!-- Manage Achievements Tool -->
                 <div class="tool-section active" id="achievementsTool">
+                    <div class="tool-header">
+                        <h3>Achievement Management</h3>
+                        <button class="btn-danger" id="clearAllAchievementsBtn">Clear all Achievements data</button>
+                    </div>
                     <div class="achievements-table-container">
                         <table class="achievements-table">
                             <thead>
@@ -496,6 +500,18 @@
                 <div id="rankingPositions" class="ranking-positions">
                     <!-- Position buttons will be dynamically generated here -->
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h3 id="modalTitle">Confirm Action</h3>
+            <p id="modalMessage">Are you sure you want to proceed?</p>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
+                <button class="btn-danger" id="modalConfirmBtn">Confirm</button>
             </div>
         </div>
     </div>
