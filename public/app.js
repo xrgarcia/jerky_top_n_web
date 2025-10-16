@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isUserAuthenticated()) {
                 const isAuthenticatedAsync = await isUserAuthenticatedAsync();
                 if (!isAuthenticatedAsync) {
-                    showLoginRequiredMessage();
+                    showLoginRequiredMessage('rank');
                     return;
                 }
             }
@@ -230,6 +230,17 @@ document.addEventListener('DOMContentLoaded', function() {
             // Load profile data when page is shown
             loadProfileData();
         } else if (page === 'login' && loginPage) {
+            // Check if user is already logged in
+            const authStatus = await checkSession();
+            if (authStatus.authenticated) {
+                // User is already logged in, redirect to intended page or home
+                const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'home';
+                sessionStorage.removeItem('redirectAfterLogin');
+                console.log(`✅ User already logged in, redirecting to: ${redirectTo}`);
+                await showPage(redirectTo);
+                return;
+            }
+            
             loginPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'login');
             if (heroSection) heroSection.style.display = 'none';
@@ -352,7 +363,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function showLoginRequiredMessage() {
+    function showLoginRequiredMessage(intendedPage = null) {
+        // Save the intended page for redirect after login
+        if (intendedPage) {
+            sessionStorage.setItem('redirectAfterLogin', intendedPage);
+        }
         // Navigate to login page instead of showing modal
         showPage('login');
     }
@@ -363,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!isUserAuthenticated()) {
             const isAuthenticatedAsync = await isUserAuthenticatedAsync();
             if (!isAuthenticatedAsync) {
-                showLoginRequiredMessage();
+                showLoginRequiredMessage('rank');
                 return;
             }
         }
@@ -581,8 +596,13 @@ document.addEventListener('DOMContentLoaded', function() {
                                 window.socket.emit('auth', { sessionId });
                             }
                             
-                            // Clean up URL
-                            window.location.hash = '';
+                            // Redirect to intended page or home
+                            const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'home';
+                            sessionStorage.removeItem('redirectAfterLogin');
+                            console.log(`✅ Redirecting after login to: ${redirectTo}`);
+                            
+                            // Clean up URL and redirect
+                            window.location.hash = `#${redirectTo}`;
                         }
                     })
                     .catch(error => {
