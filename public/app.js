@@ -1156,11 +1156,22 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Clear all slots first
+        // Clear all slots first - do this directly without calling removeFromSlot
+        // to avoid cascading move-up logic that interferes with reordering
         rankingSlots.forEach((slot, index) => {
             const rank = index + 1;
             if (slot.classList.contains('filled')) {
-                removeFromSlot(rank);
+                slot.classList.remove('filled');
+                slot.innerHTML = `
+                    <div class="slot-number">${rank}</div>
+                    <div class="slot-placeholder">Drop a product here to rank #${rank}</div>
+                `;
+                delete slot.dataset.productData;
+                
+                // Remove drag listeners for filled slots
+                slot.draggable = false;
+                slot.removeEventListener('dragstart', handleSlotDragStart);
+                slot.removeEventListener('dragend', handleSlotDragEnd);
             }
         });
         
@@ -1190,6 +1201,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         console.log(`🔄 Push-down reorder: moved rank ${sourceRank} to rank ${targetRank}, pushed others down`);
+        
+        // Refresh product display to ensure UI is consistent
+        displayProducts();
     }
 
     function handleDragOver(e) {
