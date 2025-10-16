@@ -1,0 +1,225 @@
+app-init.js:9 🚀 Initializing application architecture...
+app-init.js:105 ⚙️ Initializing services...
+app-init.js:148 ✅ Application architecture initialized
+app-init.js:121 ✅ gamification initialized
+page-integrations.js:77 ✅ Page integrations initialized
+home-dashboard.js:241 ✅ Home dashboard initialized
+app.js?v=20251012b:661 🚀 Loading rankings and products in parallel...
+page-integrations.js:56 ✅ Progress widget integrated into Rank page
+app-init.js:49 ✅ WebSocket connected
+app-init.js:121 ✅ socialProof initialized
+app-init.js:121 ✅ activityFeed initialized
+app-init.js:121 ✅ progressTracking initialized
+app-init.js:121 ✅ leaderboard initialized
+app-init.js:139 ✅ All services initialized
+app-init.js:130 🎨 Initializing UI widgets...
+app-init.js:133 ✅ Notification widget created
+app.js?v=20251012b:334 ✅ 90-day customer session validated: Customer
+app.js?v=20251012b:554 ✅ 90-day customer session validated: Customer
+app-init.js:57 🔐 Socket authenticated for user: 4
+app.js?v=20251012b:737 ✅ Loaded 26 saved rankings
+app.js?v=20251012b:1658 📈 Adding 19 more slots to existing 10 slots
+app.js?v=20251012b:1679 ✅ Total ranking slots: 29
+app.js?v=20251012b:747 📈 Pre-expanded slots to 29 to accommodate rank 26
+BaseService.js:52  GET https://rank.jerky.com/api/gamification/streaks 500 (Internal Server Error)
+apiRequest @ BaseService.js:52
+loadStreaks @ GamificationService.js?v=20251013b:70
+(anonymous) @ GamificationService.js?v=20251013b:21
+(anonymous) @ EventBus.js:77
+emit @ EventBus.js:75
+(anonymous) @ app-init.js:59
+(anonymous) @ index.js:136
+emitEvent @ socket.js:553
+onevent @ socket.js:540
+onpacket @ socket.js:508
+(anonymous) @ index.js:136
+(anonymous) @ manager.js:217
+Promise.then
+(anonymous) @ globals.js:4
+ondecoded @ manager.js:216
+(anonymous) @ index.js:136
+add @ index.js:142
+ondata @ manager.js:203
+(anonymous) @ index.js:136
+_onPacket @ socket.js:259
+(anonymous) @ index.js:136
+onPacket @ transport.js:99
+callback @ polling.js:79
+onData @ polling.js:82
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+doOpen @ polling.js:19
+open @ transport.js:47
+_open @ socket.js:197
+SocketWithoutUpgrade @ socket.js:150
+SocketWithUpgrade @ socket.js:565
+Socket @ socket.js:725
+open @ manager.js:115
+Manager @ manager.js:41
+lookup @ index.js:33
+(anonymous) @ app-init.js:14
+(anonymous) @ app-init.js:149Understand this error
+BaseService.js:87 API Error [/api/gamification/streaks]: Error: Non-JSON response from server
+    at GamificationService.apiRequest (BaseService.js:82:23)
+    at async GamificationService.loadStreaks (GamificationService.js?v=20251013b:70:24)
+apiRequest @ BaseService.js:87
+await in apiRequest
+loadStreaks @ GamificationService.js?v=20251013b:70
+(anonymous) @ GamificationService.js?v=20251013b:21
+(anonymous) @ EventBus.js:77
+emit @ EventBus.js:75
+(anonymous) @ app-init.js:59
+(anonymous) @ index.js:136
+emitEvent @ socket.js:553
+onevent @ socket.js:540
+onpacket @ socket.js:508
+(anonymous) @ index.js:136
+(anonymous) @ manager.js:217
+Promise.then
+(anonymous) @ globals.js:4
+ondecoded @ manager.js:216
+(anonymous) @ index.js:136
+add @ index.js:142
+ondata @ manager.js:203
+(anonymous) @ index.js:136
+_onPacket @ socket.js:259
+(anonymous) @ index.js:136
+onPacket @ transport.js:99
+callback @ polling.js:79
+onData @ polling.js:82
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+doOpen @ polling.js:19
+open @ transport.js:47
+_open @ socket.js:197
+SocketWithoutUpgrade @ socket.js:150
+SocketWithUpgrade @ socket.js:565
+Socket @ socket.js:725
+open @ manager.js:115
+Manager @ manager.js:41
+lookup @ index.js:33
+(anonymous) @ app-init.js:14
+(anonymous) @ app-init.js:149Understand this error
+GamificationService.js?v=20251013b:75 Failed to load streaks: Error: Non-JSON response from server
+    at GamificationService.apiRequest (BaseService.js:82:23)
+    at async GamificationService.loadStreaks (GamificationService.js?v=20251013b:70:24)
+loadStreaks @ GamificationService.js?v=20251013b:75
+await in loadStreaks
+(anonymous) @ GamificationService.js?v=20251013b:21
+(anonymous) @ EventBus.js:77
+emit @ EventBus.js:75
+(anonymous) @ app-init.js:59
+(anonymous) @ index.js:136
+emitEvent @ socket.js:553
+onevent @ socket.js:540
+onpacket @ socket.js:508
+(anonymous) @ index.js:136
+(anonymous) @ manager.js:217
+Promise.then
+(anonymous) @ globals.js:4
+ondecoded @ manager.js:216
+(anonymous) @ index.js:136
+add @ index.js:142
+ondata @ manager.js:203
+(anonymous) @ index.js:136
+_onPacket @ socket.js:259
+(anonymous) @ index.js:136
+onPacket @ transport.js:99
+callback @ polling.js:79
+onData @ polling.js:82
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+onData @ polling.js:89
+(anonymous) @ index.js:136
+_onLoad @ polling-xhr.js:193
+(anonymous) @ polling-xhr.js:129
+XMLHttpRequest.send
+_create @ polling-xhr.js:139
+Request @ polling-xhr.js:75
+request @ polling-xhr.js:253
+doPoll @ polling-xhr.js:52
+_poll @ polling.js:59
+doOpen @ polling.js:19
+open @ transport.js:47
+_open @ socket.js:197
+SocketWithoutUpgrade @ socket.js:150
+SocketWithUpgrade @ socket.js:565
+Socket @ socket.js:725
+open @ manager.js:115
+Manager @ manager.js:41
+lookup @ index.js:33
+(anonymous) @ app-init.js:14
+(anonymous) @ app-init.js:149Understand this error
+app.js?v=20251012b:713 ✅ Loaded 163 products (total: 163)
+app.js?v=20251012b:667 ✅ Both rankings and products loaded successfully
