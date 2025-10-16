@@ -1,0 +1,56 @@
+BaseService.js:52  GET https://rank.jerky.com/api/gamification/streaks 500 (Internal Server Error)
+apiRequest @ BaseService.js:52
+loadStreaks @ GamificationService.js?v=20251013b:70
+(anonymous) @ GamificationService.js?v=20251013b:21
+(anonymous) @ EventBus.js:77
+emit @ EventBus.js:75
+(anonymous) @ app-init.js:59
+Emitter.emit @ index.js:136
+emitEvent @ socket.js:553
+onevent @ socket.js:540
+onpacket @ socket.js:508
+Emitter.emit @ index.js:136
+(anonymous) @ manager.js:217
+Promise.then
+(anonymous) @ globals.js:4
+ondecoded @ manager.js:216
+Emitter.emit @ index.js:136
+add @ index.js:142
+ondata @ manager.js:203
+Emitter.emit @ index.js:136
+_onPacket @ socket.js:259
+Emitter.emit @ index.js:136
+onPacket @ transport.js:99
+onData @ transport.js:91
+ws.onmessage @ websocket.js:48Understand this error
+BaseService.js:69 API Error [/api/gamification/streaks]: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at GamificationService.apiRequest (BaseService.js:61:41)
+    at async GamificationService.loadStreaks (GamificationService.js?v=20251013b:70:24)
+apiRequest @ BaseService.js:69
+await in apiRequest
+loadStreaks @ GamificationService.js?v=20251013b:70
+(anonymous) @ GamificationService.js?v=20251013b:21
+(anonymous) @ EventBus.js:77
+emit @ EventBus.js:75
+(anonymous) @ app-init.js:59
+Emitter.emit @ index.js:136
+emitEvent @ socket.js:553
+onevent @ socket.js:540
+onpacket @ socket.js:508
+Emitter.emit @ index.js:136
+(anonymous) @ manager.js:217
+Promise.then
+(anonymous) @ globals.js:4
+ondecoded @ manager.js:216
+Emitter.emit @ index.js:136
+add @ index.js:142
+ondata @ manager.js:203
+Emitter.emit @ index.js:136
+_onPacket @ socket.js:259
+Emitter.emit @ index.js:136
+onPacket @ transport.js:99
+onData @ transport.js:91
+ws.onmessage @ websocket.js:48Understand this error
+GamificationService.js?v=20251013b:75 Failed to load streaks: SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input
+    at GamificationService.apiRequest (BaseService.js:61:41)
+    at async GamificationService.loadStreaks (GamificationService.js?v=20251013b:70:24)
