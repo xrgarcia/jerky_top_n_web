@@ -1,0 +1,200 @@
+2025-10-15 21:31:40.47
+1898810d
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-15 21:31:40.47
+1898810d
+User
+✅ Cache UPDATED: Loaded 163 products, valid for 30 minutes
+2025-10-15 21:31:41.32
+1898810d
+User
+✅ Waited for cache load, returning 163 products
+2025-10-15 21:31:41.90
+1898810d
+User
+✅ User position retrieved: rank 3
+2025-10-15 21:31:41.90
+1898810d
+User
+🔄 Fetching products...
+2025-10-15 21:31:41.90
+1898810d
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:31:41.90
+1898810d
+User
+✅ Products fetched: 163 rankable products
+2025-10-15 21:31:41.90
+1898810d
+User
+🔄 Getting completed animal categories...
+2025-10-15 21:31:41.90
+1898810d
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:31:41.90
+1898810d
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-15 21:31:41.99
+1898810d
+User
+✅ Metadata Cache UPDATED: Stored 165 products, valid for 30 minutes
+2025-10-15 21:31:41.99
+1898810d
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-15 21:31:42.05
+1898810d
+User
+✅ Completed animal categories:
+2025-10-15 21:31:42.05
+1898810d
+User
+🔄 Fetching user streaks...
+2025-10-15 21:31:42.35
+1898810d
+User
+✅ Database query completed: 2823 streak(s) found
+2025-10-15 21:31:42.35
+1898810d
+User
+✅ Streaks fetched successfully for user 4: 2823 streak(s)
+2025-10-15 21:31:47.39
+1898810d
+User
+✅ Streaks fetched: 2823 streak(s)
+2025-10-15 21:31:47.39
+1898810d
+User
+✅ Current streak: 2
+2025-10-15 21:31:47.39
+1898810d
+User
+🔄 Getting achievements with progress...
+2025-10-15 21:31:47.48
+1898810d
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-15 21:31:47.52
+1898810d
+User
+🔍 Achievements endpoint called
+2025-10-15 21:31:47.52
+1898810d
+User
+🔑 Session ID present: bb9ac122...
+2025-10-15 21:31:47.57
+1898810d
+User
+✅ Session validated for user 4
+2025-10-15 21:31:47.57
+1898810d
+User
+📊 Fetching achievements for user 4
+2025-10-15 21:31:47.57
+1898810d
+User
+🔄 Getting user stats...
+2025-10-15 21:31:47.62
+1898810d
+User
+✅ User stats retrieved
+2025-10-15 21:31:47.62
+1898810d
+User
+🔄 Getting user position...
+2025-10-15 21:31:48.98
+1898810d
+User
+✅ User position retrieved: rank 3
+2025-10-15 21:31:48.98
+1898810d
+User
+🔄 Fetching products...
+2025-10-15 21:31:48.98
+1898810d
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:31:48.98
+1898810d
+User
+✅ Products fetched: 163 rankable products
+2025-10-15 21:31:48.98
+1898810d
+User
+🔄 Getting completed animal categories...
+2025-10-15 21:31:48.98
+1898810d
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:31:48.98
+1898810d
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-10-15 21:31:49.07
+1898810d
+User
+✅ Completed animal categories:
+2025-10-15 21:31:49.07
+1898810d
+User
+🔄 Fetching user streaks...
+2025-10-15 21:31:51.35
+1898810d
+User
+✅ Streaks fetched: 2823 streak(s)
+2025-10-15 21:31:51.35
+1898810d
+User
+✅ Current streak: 2
+2025-10-15 21:31:51.35
+1898810d
+User
+🔄 Getting achievements with progress...
+2025-10-15 21:31:51.44
+1898810d
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-15 21:31:55.41
+1898810d
+User
+🏷️ Synced metadata for 163 fresh products
+2025-10-15 21:31:55.41
+1898810d
+User
+🗑️ Metadata cache invalidated
+2025-10-15 21:31:55.41
+1898810d
+User
+🚫 RankingStats Cache MISS: Data expired or not found
+2025-10-15 21:31:55.49
+1898810d
+User
+📊 Found ranking stats for 150 products
+2025-10-15 21:31:55.49
+1898810d
+User
+✅ RankingStats Cache UPDATED: Stored 150 product stats, valid for 30 minutes
+2025-10-15 21:31:55.49
+1898810d
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-15 21:31:55.49
+1898810d
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-15 21:31:55.58
+1898810d
+User
+✅ Metadata Cache UPDATED: Stored 165 products, valid for 30 minutes
+2025-10-15 21:31:55.58
+1898810d
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-15 21:31:55.58
+1898810d
+User
+✅ Found 163 products
