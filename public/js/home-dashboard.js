@@ -7,6 +7,29 @@ class HomeDashboard {
   constructor() {
     this.eventBus = window.appEventBus;
     this.stats = null;
+    this.socket = null;
+    this.setupSocketListeners();
+  }
+
+  setupSocketListeners() {
+    // Wait for socket to be available
+    const checkSocket = () => {
+      if (window.socket) {
+        this.socket = window.socket;
+        
+        // Subscribe to leaderboard room to receive updates
+        this.socket.emit('subscribe:leaderboard');
+        
+        // Listen for leaderboard updates to refresh top rankers
+        this.socket.on('leaderboard:updated', () => {
+          console.log('🔄 Leaderboard updated, refreshing home stats...');
+          this.loadStats();
+        });
+      } else {
+        setTimeout(checkSocket, 100);
+      }
+    };
+    checkSocket();
   }
 
   async loadStats() {
