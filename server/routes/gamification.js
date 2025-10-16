@@ -19,34 +19,46 @@ function createGamificationRoutes(services) {
   } = services;
 
   router.get('/achievements', async (req, res) => {
+    let userId = null;
     try {
+      console.log('🔍 Achievements endpoint called');
+      
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
         console.log('⚠️ Achievements request without session_id cookie');
         return res.status(401).json({ error: 'Not authenticated' });
       }
+      console.log(`🔑 Session ID present: ${sessionId.substring(0, 8)}...`);
 
       const session = await services.storage.getSession(sessionId);
       if (!session) {
         console.log('⚠️ Invalid session for achievements request:', sessionId);
         return res.status(401).json({ error: 'Invalid session' });
       }
+      console.log(`✅ Session validated for user ${session.userId}`);
 
-      const userId = session.userId;
+      userId = session.userId;
       console.log(`📊 Fetching achievements for user ${userId}`);
 
+      console.log(`🔄 Getting user stats...`);
       const userStats = await leaderboardManager.getUserStats(userId);
-      const position = await leaderboardManager.getUserPosition(userId);
+      console.log(`✅ User stats retrieved`);
       
-      // Get total rankable products count for dynamic achievement
+      console.log(`🔄 Getting user position...`);
+      const position = await leaderboardManager.getUserPosition(userId);
+      console.log(`✅ User position retrieved: rank ${position.rank || 999}`);
+      
+      console.log(`🔄 Fetching products...`);
       const { products } = await services.fetchAllShopifyProducts();
       const totalRankableProducts = products.length;
+      console.log(`✅ Products fetched: ${totalRankableProducts} rankable products`);
       
-      // Calculate completed animal categories using service method (DRY principle)
+      console.log(`🔄 Getting completed animal categories...`);
       const completedAnimalCategories = await leaderboardManager.getCompletedAnimalCategories(
         userId, 
         services.productsService
       );
+      console.log(`✅ Completed animal categories: ${completedAnimalCategories}`);
       
       const stats = {
         ...userStats,
@@ -57,20 +69,30 @@ function createGamificationRoutes(services) {
         completedAnimalCategories,
       };
 
+      console.log(`🔄 Fetching user streaks...`);
       const streaks = await streakManager.getUserStreaks(userId);
+      console.log(`✅ Streaks fetched: ${streaks.length} streak(s)`);
+      
       const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
       if (dailyStreak) {
         stats.currentStreak = dailyStreak.currentStreak;
+        console.log(`✅ Current streak: ${stats.currentStreak}`);
       }
 
+      console.log(`🔄 Getting achievements with progress...`);
       const achievements = await achievementManager.getAchievementsWithProgress(userId, stats);
       console.log(`✅ Achievements fetched successfully for user ${userId}: ${achievements.length} achievement(s)`);
 
       res.json({ achievements, stats });
     } catch (error) {
       console.error('❌ Error fetching achievements:', error);
-      console.error('Stack trace:', error.stack);
-      res.status(500).json({ error: 'Failed to fetch achievements' });
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('User ID:', userId);
+      
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to fetch achievements' });
+      }
     }
   });
 
@@ -162,28 +184,48 @@ function createGamificationRoutes(services) {
   });
 
   router.get('/streaks', async (req, res) => {
+    let userId = null;
     try {
+      console.log('🔍 Streaks endpoint called');
+      
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
         console.log('⚠️ Streaks request without session_id cookie');
         return res.status(401).json({ error: 'Not authenticated' });
       }
+      console.log(`🔑 Session ID present: ${sessionId.substring(0, 8)}...`);
 
       const session = await services.storage.getSession(sessionId);
       if (!session) {
         console.log('⚠️ Invalid session for streaks request:', sessionId);
         return res.status(401).json({ error: 'Invalid session' });
       }
+      console.log(`✅ Session validated for user ${session.userId}`);
 
-      const userId = session.userId;
+      userId = session.userId;
       console.log(`📊 Fetching streaks for user ${userId}`);
-      const streaks = await streakManager.getUserStreaks(userId);
+      
+      let streaks = [];
+      try {
+        streaks = await streakManager.getUserStreaks(userId);
+        console.log(`✅ Database query completed: ${streaks ? streaks.length : 0} streak(s) found`);
+      } catch (dbError) {
+        console.error('❌ Database error in getUserStreaks:', dbError);
+        console.error('DB Error stack:', dbError.stack);
+        throw dbError;
+      }
+      
       console.log(`✅ Streaks fetched successfully for user ${userId}: ${streaks.length} streak(s)`);
-      res.json({ streaks });
+      res.json({ streaks: streaks || [] });
     } catch (error) {
       console.error('❌ Error fetching streaks:', error);
-      console.error('Stack trace:', error.stack);
-      res.status(500).json({ error: 'Failed to fetch streaks' });
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('User ID:', userId);
+      
+      if (!res.headersSent) {
+        res.status(500).json({ error: 'Failed to fetch streaks' });
+      }
     }
   });
 

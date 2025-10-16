@@ -1,0 +1,135 @@
+2025-10-15 21:24:13.93
+e5fe0aad
+User
+📊 Service Status:
+2025-10-15 21:24:13.93
+e5fe0aad
+User
+Shopify Integration: ✅ Available
+2025-10-15 21:24:13.93
+e5fe0aad
+User
+Database: ✅ Connected
+2025-10-15 21:24:13.93
+e5fe0aad
+User
+2025-10-15 21:24:13.96
+e5fe0aad
+User
+✅ Gamification services available for achievements
+2025-10-15 21:24:13.96
+e5fe0aad
+User
+✅ Tools routes registered at /api/tools
+2025-10-15 21:24:13.96
+e5fe0aad
+User
+✅ Catch-all route registered (serves SPA)
+2025-10-15 21:24:14.91
+e5fe0aad
+User
+✅ Seeded/updated 18/18 achievements
+2025-10-15 21:24:14.96
+e5fe0aad
+User
+✅ Achievements seeded
+2025-10-15 21:24:31.63
+b1f5cd46
+User
+👋 WebSocket client disconnected: 9iP7kaWwXhFONaTZAAAf
+2025-10-15 21:24:31.63
+b1f5cd46
+User
+👤 User 4 fully disconnected (no active sockets)
+2025-10-15 21:24:31.63
+b1f5cd46
+System
+system: received signal terminated
+2025-10-15 21:24:31.81
+e5fe0aad
+User
+🔍 Searching products: "", page: 1, limit: 20
+2025-10-15 21:24:31.81
+e5fe0aad
+User
+🚫 Cache MISS: No cached data
+2025-10-15 21:24:31.81
+e5fe0aad
+User
+🔄 Fetching fresh products from Shopify API...
+2025-10-15 21:24:31.85
+e5fe0aad
+User
+✅ WebSocket client connected: WYwk0a0aS1-4SyNRAAAB
+2025-10-15 21:24:32.02
+e5fe0aad
+User
+✅ 90-day session validated for: Customer
+2025-10-15 21:24:32.11
+e5fe0aad
+User
+🔐 User 4 authenticated on socket WYwk0a0aS1-4SyNRAAAB
+2025-10-15 21:24:32.13
+e5fe0aad
+User
+📄 Fetched page 1: 250 products (total so far: 250)
+2025-10-15 21:24:32.15
+e5fe0aad
+User
+✅ 90-day session validated for: Customer
+2025-10-15 21:24:32.24
+e5fe0aad
+User
+📊 Fetching achievements for user 4
+2025-10-15 21:24:32.24
+e5fe0aad
+User
+🚫 Cache MISS: No cached data
+2025-10-15 21:24:32.24
+e5fe0aad
+User
+⏳ Another request is already loading products, waiting...
+2025-10-15 21:24:32.34
+e5fe0aad
+User
+📄 Fetched page 2: 232 products (total so far: 482)
+2025-10-15 21:24:32.34
+e5fe0aad
+User
+🛍️ Total products fetched from Shopify: 482
+2025-10-15 21:24:32.34
+e5fe0aad
+User
+✅ Filtered to 163 rankable products (out of 482 total)
+2025-10-15 21:24:32.34
+e5fe0aad
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-15 21:24:32.34
+e5fe0aad
+User
+✅ Cache UPDATED: Loaded 163 products, valid for 30 minutes
+2025-10-15 21:24:32.37
+e5fe0aad
+User
+📊 Fetching streaks for user 4
+2025-10-15 21:24:33.24
+e5fe0aad
+User
+✅ Waited for cache load, returning 163 products
+2025-10-15 21:24:34.03
+e5fe0aad
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:24:34.03
+e5fe0aad
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-15 21:24:34.03
+e5fe0aad
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-15 21:24:34.17
+e5fe0aad
+User
+✅ Metadata Cache UPDATED: Stored 165 products, valid for 30 minutes

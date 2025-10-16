@@ -54,9 +54,17 @@ class StreakRepository {
   }
 
   async getAllUserStreaks(userId) {
-    return await this.db.select()
-      .from(streaks)
-      .where(eq(streaks.userId, userId));
+    try {
+      const result = await this.db.select()
+        .from(streaks)
+        .where(eq(streaks.userId, userId));
+      return result || [];
+    } catch (error) {
+      console.error('❌ StreakRepository.getAllUserStreaks error:', error);
+      console.error('User ID:', userId);
+      console.error('Error details:', error.message, error.stack);
+      throw error;
+    }
   }
 }
 
