@@ -167,33 +167,33 @@
         
         <!-- Products Page Content -->
         <div class="page-content" id="productsPage" style="display: none;">
-            <div class="products-header">
+            <div class="page-header">
                 <h2>All Products</h2>
                 <p class="products-subtitle">Browse our complete jerky catalog with ranking statistics</p>
-                
-                <!-- Animal Categories Filter -->
-                <div class="animal-categories" id="animalCategories">
-                    <!-- Categories will be loaded dynamically -->
-                </div>
-                
-                <div class="products-controls">
-                    <input 
-                        type="text" 
-                        id="productsSearchInput" 
-                        placeholder="Search for jerky products..."
-                        autocomplete="off"
-                        class="products-search-input"
-                    >
-                    <select id="productSortField" class="products-sort-field">
-                        <option value="name">Sort by: Name</option>
-                        <option value="recent">Sort by: Recently Ranked</option>
-                        <option value="avgrank">Sort by: Avg Ranking</option>
-                        <option value="totalranks">Sort by: Total Rankings</option>
-                    </select>
-                    <button type="button" id="productSortOrder" class="products-sort-order" data-order="asc" title="Toggle sort order">
-                        <span class="funnel-icon">▼</span>
-                    </button>
-                </div>
+            </div>
+            
+            <!-- Animal Categories Filter -->
+            <div class="animal-categories" id="animalCategories">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+            
+            <div class="products-controls">
+                <input 
+                    type="text" 
+                    id="productsSearchInput" 
+                    placeholder="Search for jerky products..."
+                    autocomplete="off"
+                    class="products-search-input"
+                >
+                <select id="productSortField" class="products-sort-field">
+                    <option value="name">Sort by: Name</option>
+                    <option value="recent">Sort by: Recently Ranked</option>
+                    <option value="avgrank">Sort by: Avg Ranking</option>
+                    <option value="totalranks">Sort by: Total Rankings</option>
+                </select>
+                <button type="button" id="productSortOrder" class="products-sort-order" data-order="asc" title="Toggle sort order">
+                    <span class="funnel-icon">▼</span>
+                </button>
             </div>
 
             <div id="productsGrid" class="products-grid" style="min-height: 400px;">

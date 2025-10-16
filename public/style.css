@@ -1634,7 +1634,7 @@ body.login-page-active .hero {
     
     /* Community */
     .community-header h2,
-    .products-header h2 {
+    #productsPage .page-header h2 {
         font-size: 24px;
     }
     
@@ -2664,17 +2664,6 @@ body.login-page-active .hero {
     max-width: 1400px;
     margin: 0 auto;
     padding: 40px 20px;
-}
-
-.products-header {
-    text-align: center;
-    margin-bottom: 40px;
-}
-
-.products-header h2 {
-    font-size: 36px;
-    color: #2c2c2c;
-    margin-bottom: 10px;
 }
 
 .products-subtitle {
@@ -4383,7 +4372,7 @@ body.login-page-active .hero {
 }
 
 /* Products Management Tool Styles */
-.products-header {
+#productsTool .products-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -4394,7 +4383,7 @@ body.login-page-active .hero {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-.products-header h3 {
+#productsTool .products-header h3 {
     margin: 0;
     color: #2c3e50;
     font-size: 24px;
