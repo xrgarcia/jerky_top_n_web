@@ -58,10 +58,28 @@ class BaseService {
                 ...options
             });
 
-            const data = await response.json();
+            let data;
+            const contentType = response.headers.get('content-type');
+            
+            if (contentType && contentType.includes('application/json')) {
+                const text = await response.text();
+                if (text) {
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        console.error(`Failed to parse JSON response from ${url}:`, text);
+                        throw new Error('Invalid JSON response from server');
+                    }
+                } else {
+                    data = {};
+                }
+            } else {
+                data = { error: 'Non-JSON response from server' };
+            }
 
             if (!response.ok) {
-                throw new Error(data.error || data.message || 'API request failed');
+                const errorMessage = data.error || data.message || `Request failed with status ${response.status}`;
+                throw new Error(errorMessage);
             }
 
             return data;

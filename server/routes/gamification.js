@@ -22,15 +22,18 @@ function createGamificationRoutes(services) {
     try {
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
+        console.log('⚠️ Achievements request without session_id cookie');
         return res.status(401).json({ error: 'Not authenticated' });
       }
 
       const session = await services.storage.getSession(sessionId);
       if (!session) {
+        console.log('⚠️ Invalid session for achievements request:', sessionId);
         return res.status(401).json({ error: 'Invalid session' });
       }
 
       const userId = session.userId;
+      console.log(`📊 Fetching achievements for user ${userId}`);
 
       const userStats = await leaderboardManager.getUserStats(userId);
       const position = await leaderboardManager.getUserPosition(userId);
@@ -61,10 +64,12 @@ function createGamificationRoutes(services) {
       }
 
       const achievements = await achievementManager.getAchievementsWithProgress(userId, stats);
+      console.log(`✅ Achievements fetched successfully for user ${userId}: ${achievements.length} achievement(s)`);
 
       res.json({ achievements, stats });
     } catch (error) {
-      console.error('Error fetching achievements:', error);
+      console.error('❌ Error fetching achievements:', error);
+      console.error('Stack trace:', error.stack);
       res.status(500).json({ error: 'Failed to fetch achievements' });
     }
   });
@@ -160,19 +165,24 @@ function createGamificationRoutes(services) {
     try {
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
+        console.log('⚠️ Streaks request without session_id cookie');
         return res.status(401).json({ error: 'Not authenticated' });
       }
 
       const session = await services.storage.getSession(sessionId);
       if (!session) {
+        console.log('⚠️ Invalid session for streaks request:', sessionId);
         return res.status(401).json({ error: 'Invalid session' });
       }
 
       const userId = session.userId;
+      console.log(`📊 Fetching streaks for user ${userId}`);
       const streaks = await streakManager.getUserStreaks(userId);
+      console.log(`✅ Streaks fetched successfully for user ${userId}: ${streaks.length} streak(s)`);
       res.json({ streaks });
     } catch (error) {
-      console.error('Error fetching streaks:', error);
+      console.error('❌ Error fetching streaks:', error);
+      console.error('Stack trace:', error.stack);
       res.status(500).json({ error: 'Failed to fetch streaks' });
     }
   });
