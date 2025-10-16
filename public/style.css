@@ -2884,6 +2884,7 @@ body.login-page-active .hero {
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
     margin-top: 20px;
+    min-height: 800px;
 }
 
 .product-card {
