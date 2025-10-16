@@ -101,7 +101,7 @@ const userAchievements = pgTable('user_achievements', {
 const streaks = pgTable('streaks', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').references(() => users.id).notNull(),
-  streakType: text('streak_type').notNull(), // 'daily_rank', 'daily_login'
+  streakType: text('streak_type').notNull(), // VALID VALUES: 'daily_rank', 'daily_login' (see shared/constants.js)
   currentStreak: integer('current_streak').default(0),
   longestStreak: integer('longest_streak').default(0),
   lastActivityDate: timestamp('last_activity_date'),

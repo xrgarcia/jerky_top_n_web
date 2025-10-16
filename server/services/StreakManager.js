@@ -14,6 +14,12 @@ class StreakManager {
    * @returns {Object} Updated streak information
    */
   async updateStreak(userId, streakType) {
+    // Defense in depth: Validate streak type at service layer
+    const { VALID_STREAK_TYPES } = require('../../shared/constants');
+    if (!VALID_STREAK_TYPES.includes(streakType)) {
+      throw new Error(`Invalid streak type: ${streakType}`);
+    }
+    
     const streak = await this.streakRepo.getUserStreak(userId, streakType);
     const now = new Date();
     

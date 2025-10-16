@@ -243,6 +243,14 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
       const { streakType = 'daily_rank' } = req.body;
+      
+      // CRITICAL: Validate streak type to prevent database corruption
+      const { VALID_STREAK_TYPES } = require('../../shared/constants');
+      if (!VALID_STREAK_TYPES.includes(streakType)) {
+        console.warn(`⚠️ Invalid streak type rejected: "${streakType}" from user ${userId}`);
+        return res.status(400).json({ error: 'Invalid streak type' });
+      }
+      
       const streakUpdate = await streakManager.updateStreak(userId, streakType);
 
       if (services.io) {
