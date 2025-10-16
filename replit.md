@@ -46,3 +46,4 @@ The application features a modern web architecture designed for responsiveness, 
 - **Database**: PostgreSQL with Drizzle ORM for all data persistence.
 - **Error Tracking**: Sentry.io for error monitoring and performance tracking, integrated into services with detailed context.
 - **Real-time**: Socket.IO for WebSocket communication.
+- **Email**: Custom SMTP service using nodemailer with Google Workspace (no-reply@jerky.com) for authentication magic links. Requires EMAIL_PASSWORD (App Password), SMTP_HOST (smtp.gmail.com), and SMTP_PORT (587) environment variables.

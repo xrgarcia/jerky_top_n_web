@@ -2125,27 +2125,6 @@ if (databaseAvailable && storage) {
       gamificationServices = services;
       console.log('✅ Gamification services available for achievements');
       
-      // Test email endpoint (temporary)
-      app.post('/api/test-email', async (req, res) => {
-        try {
-          const { to } = req.body;
-          if (!to) {
-            return res.status(400).json({ error: 'Email address required' });
-          }
-          
-          await emailService.sendMagicLink({
-            to: to,
-            magicLink: 'https://example.com/test-link',
-            customerName: 'Test User'
-          });
-          
-          res.json({ success: true, message: `Test email sent to ${to}` });
-        } catch (error) {
-          console.error('Test email error:', error);
-          res.status(500).json({ error: error.message });
-        }
-      });
-      
       // Initialize tools routes (employee admin only)
       const createToolsRoutes = require('./server/routes/tools');
       const toolsRouter = createToolsRoutes(services);
