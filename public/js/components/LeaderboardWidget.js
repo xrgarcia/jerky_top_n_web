@@ -25,6 +25,13 @@ class LeaderboardWidget {
     this.eventBus.on('position:loaded', () => {
       this.render();
     });
+
+    // Reload leaderboard when community page is shown
+    this.eventBus.on('page:shown', (data) => {
+      if (data.page === 'community') {
+        this.load();
+      }
+    });
   }
 
   async load() {
