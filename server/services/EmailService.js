@@ -181,7 +181,7 @@ class EmailService {
         <div class="email-wrapper">
           <div class="container">
             <div class="header">
-              <img src="https://cdn.shopify.com/s/files/1/0570/9698/7895/files/jerky-logo-white.png" alt="Jerky.com Logo" class="logo">
+              <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_300x.png?v=1678208718" alt="Jerky.com Logo" class="logo">
             </div>
             <div class="content">
               <h2>Welcome back${customerName ? ', ' + customerName : ', Customer'}!</h2>
