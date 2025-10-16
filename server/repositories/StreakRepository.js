@@ -1,4 +1,4 @@
-const { eq, and } = require('drizzle-orm');
+const { eq, and, sql, desc } = require('drizzle-orm');
 const { streaks } = require('../../shared/schema');
 
 /**
@@ -55,10 +55,25 @@ class StreakRepository {
 
   async getAllUserStreaks(userId) {
     try {
-      const result = await this.db.select()
-        .from(streaks)
-        .where(eq(streaks.userId, userId));
-      return result || [];
+      // Use DISTINCT ON to get only the most recent streak per type
+      // This protects against duplicate streak records in the database
+      const result = await this.db.execute(sql`
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = ${userId}
+        ORDER BY streak_type, updated_at DESC
+      `);
+      
+      console.log(`🔍 getAllUserStreaks: Found ${result.rows?.length || 0} unique streak types for user ${userId}`);
+      return result.rows || [];
     } catch (error) {
       console.error('❌ StreakRepository.getAllUserStreaks error:', error);
       console.error('User ID:', userId);
