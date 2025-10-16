@@ -127,14 +127,14 @@ class HomeStatsService {
         product_data,
         COUNT(*) as rank_count,
         AVG(ranking) as avg_rank,
-        STDDEV(ranking) as rank_variance,
+        COALESCE(STDDEV(ranking), 0) as rank_variance,
         MIN(ranking) as best_rank,
         MAX(ranking) as worst_rank
       FROM product_rankings
       WHERE product_data IS NOT NULL
       GROUP BY shopify_product_id, product_data
-      HAVING COUNT(*) >= 2
-      ORDER BY STDDEV(ranking) DESC
+      HAVING COUNT(*) >= 1
+      ORDER BY COALESCE(STDDEV(ranking), 0) DESC
       LIMIT ${limit}
     `);
 
