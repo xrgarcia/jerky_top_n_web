@@ -56,7 +56,8 @@ class StreakRepository {
   async getAllUserStreaks(userId) {
     try {
       // Use DISTINCT ON to get only the most recent streak per type
-      // This protects against duplicate streak records in the database
+      // Add LIMIT 10 as safety measure against corrupted data
+      // Filter for known streak types only (daily_rank is the primary type)
       const result = await this.db.execute(sql`
         SELECT DISTINCT ON (streak_type)
           id,
@@ -69,10 +70,12 @@ class StreakRepository {
           updated_at AS "updatedAt"
         FROM streaks
         WHERE user_id = ${userId}
+          AND streak_type IN ('daily_rank', 'daily_login')
         ORDER BY streak_type, updated_at DESC
+        LIMIT 10
       `);
       
-      console.log(`🔍 getAllUserStreaks: Found ${result.rows?.length || 0} unique streak types for user ${userId}`);
+      console.log(`🔍 getAllUserStreaks: Found ${result.rows?.length || 0} valid streak(s) for user ${userId}`);
       return result.rows || [];
     } catch (error) {
       console.error('❌ StreakRepository.getAllUserStreaks error:', error);
