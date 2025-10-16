@@ -81,7 +81,7 @@ class HomeStatsService {
           productId: row.shopify_product_id,
           productData: row.product_data,
           ranking: parseInt(row.ranking),
-          rankedAt: row.created_at,
+          rankedAt: new Date(row.created_at).toISOString(),
           rankedBy: `${row.first_name} ${row.last_name.charAt(0)}.`,
         });
       }
@@ -176,7 +176,7 @@ class HomeStatsService {
       achievementName: row.achievement_name,
       achievementIcon: row.achievement_icon,
       achievementTier: row.achievement_tier,
-      earnedAt: row.earned_at,
+      earnedAt: new Date(row.earned_at).toISOString(),
     }));
   }
 

@@ -227,9 +227,24 @@ class HomeDashboard {
   }
 
   getTimeAgo(dateString) {
+    // Parse ISO 8601 UTC timestamp (e.g., "2025-10-16T15:18:57.727Z")
+    // JavaScript automatically converts UTC to local timezone for display
     const date = new Date(dateString);
+    
+    // Validate the date is valid
+    if (isNaN(date.getTime())) {
+      console.warn('Invalid timestamp:', dateString);
+      return 'unknown';
+    }
+    
     const now = new Date();
     const seconds = Math.floor((now - date) / 1000);
+    
+    // Handle negative values (future dates - clock skew)
+    if (seconds < 0) {
+      console.warn('Timestamp in future:', dateString);
+      return 'just now';
+    }
 
     if (seconds < 60) return 'just now';
     if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
