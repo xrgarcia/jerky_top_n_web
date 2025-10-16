@@ -144,25 +144,27 @@ function createToolsRoutes(services) {
     }
   });
 
-  // Clear all achievements for all users
+  // Clear all achievements and streaks for all users
   router.delete('/achievements/all', checkEmployeeRole, async (req, res) => {
     try {
       if (!achievementManager) {
         return res.status(503).json({ error: 'Achievement service unavailable' });
       }
 
-      const deletedCount = await achievementManager.clearAllAchievements();
+      const result = await achievementManager.clearAllAchievements();
       
-      console.log(`🗑️ Cleared ALL ${deletedCount} achievements by ${req.user.email}`);
+      console.log(`🗑️ Cleared ${result.achievements} achievements and ${result.streaks} streaks by ${req.user.email}`);
       
       res.json({ 
         success: true,
-        deletedCount,
-        message: `Cleared all ${deletedCount} achievement(s) for all users`
+        deletedCount: result.total,
+        achievements: result.achievements,
+        streaks: result.streaks,
+        message: `Cleared ${result.achievements} achievement(s) and ${result.streaks} streak(s) for all users`
       });
     } catch (error) {
-      console.error('Error clearing all achievements:', error);
-      res.status(500).json({ error: 'Failed to clear all achievements' });
+      console.error('Error clearing all achievements and streaks:', error);
+      res.status(500).json({ error: 'Failed to clear all achievements and streaks' });
     }
   });
 

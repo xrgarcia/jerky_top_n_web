@@ -435,7 +435,7 @@ async function clearAllAchievements() {
     }
     
     const data = await response.json();
-    alert(`✅ Successfully cleared ${data.deletedCount} achievement(s) for all users`);
+    alert(`✅ Successfully cleared ${data.achievements} achievement(s) and ${data.streaks} streak(s) for all users`);
     
     await loadAchievementsTable();
   } catch (error) {
@@ -463,8 +463,8 @@ window.initToolsPage = async function() {
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', () => {
       showConfirmationModal(
-        'Clear All Achievements',
-        '⚠️ This will permanently delete ALL achievement data for ALL users. This action cannot be undone. Are you absolutely sure?',
+        'Clear All Achievements & Streaks',
+        '⚠️ This will permanently delete ALL achievement and streak data for ALL users. This action cannot be undone. Are you absolutely sure?',
         clearAllAchievements
       );
     });

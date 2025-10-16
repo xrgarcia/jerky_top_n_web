@@ -84,6 +84,12 @@ class StreakRepository {
       throw error;
     }
   }
+
+  async deleteAllStreaks() {
+    const result = await this.db.delete(streaks)
+      .returning();
+    return result.length;
+  }
 }
 
 module.exports = StreakRepository;

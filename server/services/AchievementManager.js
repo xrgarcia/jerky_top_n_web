@@ -220,21 +220,33 @@ class AchievementManager {
   }
 
   /**
-   * Clear all achievements for all users (admin only)
-   * @returns {number} Count of deleted achievements
+   * Clear all achievements and streaks for all users (admin only)
+   * @returns {Object} Count of deleted achievements and streaks
    */
   async clearAllAchievements() {
-    const deletedCount = await this.achievementRepo.deleteAllAchievements();
+    const deletedAchievements = await this.achievementRepo.deleteAllAchievements();
     
-    if (deletedCount > 0) {
+    // Also clear all streaks
+    const StreakRepository = require('../repositories/StreakRepository');
+    const streakRepo = new StreakRepository(this.achievementRepo.db);
+    const deletedStreaks = await streakRepo.deleteAllStreaks();
+    
+    if (deletedAchievements > 0 || deletedStreaks > 0) {
       await this.activityLogRepo.logActivity(
         null,
         'all_achievements_cleared',
-        { deletedCount }
+        { 
+          deletedAchievements,
+          deletedStreaks 
+        }
       );
     }
     
-    return deletedCount;
+    return {
+      achievements: deletedAchievements,
+      streaks: deletedStreaks,
+      total: deletedAchievements + deletedStreaks
+    };
   }
 }
 
