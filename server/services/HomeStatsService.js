@@ -181,9 +181,64 @@ class HomeStatsService {
   }
 
   /**
+   * Get start of today in US Central time
+   * @returns {Date} Start of today in Central time (as UTC Date object)
+   */
+  getStartOfTodayCentral() {
+    const now = new Date();
+    
+    // Get today's date in Central timezone
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    });
+    
+    const parts = formatter.formatToParts(now);
+    const year = parseInt(parts.find(p => p.type === 'year').value);
+    const month = parseInt(parts.find(p => p.type === 'month').value);
+    const day = parseInt(parts.find(p => p.type === 'day').value);
+    
+    // Find the UTC timestamp for midnight Central on this date
+    // We test different UTC hours to find when Central time shows 00:00
+    const timeFormatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Chicago',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
+    
+    // Start testing from a reasonable range (CST is UTC-6, CDT is UTC-5)
+    // So midnight Central should be between 5-7 UTC
+    for (let utcHour = 4; utcHour <= 7; utcHour++) {
+      const testDate = new Date(Date.UTC(year, month - 1, day, utcHour, 0, 0, 0));
+      const testParts = timeFormatter.formatToParts(testDate);
+      
+      const testDay = parseInt(testParts.find(p => p.type === 'day').value);
+      const testHour = parseInt(testParts.find(p => p.type === 'hour').value);
+      const testMinute = parseInt(testParts.find(p => p.type === 'minute').value);
+      
+      // Found midnight Central (00:00) on the correct day
+      if (testDay === day && testHour === 0 && testMinute === 0) {
+        return testDate;
+      }
+    }
+    
+    // Fallback if not found in expected range (should not happen)
+    // Default to CST offset (UTC-6)
+    return new Date(Date.UTC(year, month - 1, day, 6, 0, 0, 0));
+  }
+
+  /**
    * Get community stats overview
    */
   async getCommunityStats() {
+    const startOfTodayCentral = this.getStartOfTodayCentral();
+    
     const [totalRankings, totalRankers, totalProducts, activeToday] = await Promise.all([
       // Total rankings
       this.db.execute(sql`SELECT COUNT(*) as count FROM product_rankings`),
@@ -194,11 +249,12 @@ class HomeStatsService {
       // Total unique products ranked
       this.db.execute(sql`SELECT COUNT(DISTINCT shopify_product_id) as count FROM product_rankings`),
       
-      // Active rankers today
+      // Active users today (based on page views in US Central time)
       this.db.execute(sql`
         SELECT COUNT(DISTINCT user_id) as count 
-        FROM product_rankings 
-        WHERE created_at >= CURRENT_DATE
+        FROM page_views 
+        WHERE user_id IS NOT NULL 
+        AND viewed_at >= ${startOfTodayCentral}
       `),
     ]);
 
