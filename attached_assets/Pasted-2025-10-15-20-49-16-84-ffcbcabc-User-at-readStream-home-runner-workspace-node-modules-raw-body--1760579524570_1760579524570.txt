@@ -1,0 +1,152 @@
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at readStream (/home/runner/workspace/node_modules/raw-body/index.js:163:17)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at read (/home/runner/workspace/node_modules/body-parser/lib/read.js:79:3)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at Layer.handle [as handle_request] (/home/runner/workspace/node_modules/express/lib/router/layer.js:95:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at trim_prefix (/home/runner/workspace/node_modules/express/lib/router/index.js:328:13)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at /home/runner/workspace/node_modules/express/lib/router/index.js:286:9
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at next (/home/runner/workspace/node_modules/express/lib/router/index.js:280:10)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at expressInit (/home/runner/workspace/node_modules/express/lib/middleware/init.js:40:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+PayloadTooLargeError: request entity too large
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at readStream (/home/runner/workspace/node_modules/raw-body/index.js:163:17)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at getRawBody (/home/runner/workspace/node_modules/raw-body/index.js:116:12)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at jsonParser (/home/runner/workspace/node_modules/body-parser/lib/types/json.js:138:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at Layer.handle [as handle_request] (/home/runner/workspace/node_modules/express/lib/router/layer.js:95:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at /home/runner/workspace/node_modules/express/lib/router/index.js:286:9
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at Layer.handle [as handle_request] (/home/runner/workspace/node_modules/express/lib/router/layer.js:95:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at readStream (/home/runner/workspace/node_modules/raw-body/index.js:163:17)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at read (/home/runner/workspace/node_modules/body-parser/lib/read.js:79:3)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at trim_prefix (/home/runner/workspace/node_modules/express/lib/router/index.js:328:13)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at expressInit (/home/runner/workspace/node_modules/express/lib/middleware/init.js:40:5)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+PayloadTooLargeError: request entity too large
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at readStream (/home/runner/workspace/node_modules/raw-body/index.js:163:17)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at read (/home/runner/workspace/node_modules/body-parser/lib/read.js:79:3)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at /home/runner/workspace/node_modules/express/lib/router/index.js:286:9
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at Function.process_params (/home/runner/workspace/node_modules/express/lib/router/index.js:346:12)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at readStream (/home/runner/workspace/node_modules/raw-body/index.js:163:17)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at trim_prefix (/home/runner/workspace/node_modules/express/lib/router/index.js:328:13)
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at /home/runner/workspace/node_modules/express/lib/router/index.js:286:9
+2025-10-15 20:49:16.84
+ffcbcabc
+User
+at Function.process_params (/home/runner/workspace/node_modules/express/lib/router/index.js:346:12)
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+at getRawBody (/home/runner/workspace/node_modules/raw-body/index.js:116:12)
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+at read (/home/runner/workspace/node_modules/body-parser/lib/read.js:79:3)
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+at Function.process_params (/home/runner/workspace/node_modules/express/lib/router/index.js:346:12)
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+at trim_prefix (/home/runner/workspace/node_modules/express/lib/router/index.js:328:13)
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+at /home/runner/workspace/node_modules/express/lib/router/index.js:286:9
+2025-10-15 20:49:16.92
+ffcbcabc
+User
+PayloadTooLargeError: request entity too large
+2025-10-15 20:49:17.36
+ffcbcabc
+User
+at trim_prefix (/home/runner/workspace/node_modules/express/lib/router/index.js:328:13)
+2025-10-15 20:49:17.36
+ffcbcabc
+User
+at next (/home/runner/workspace/node_modules/express/lib/router/index.js:280:10)
+2025-10-15 20:49:20.33
+ffcbcabc
+User
+💾 Cache HIT: Returning 163 products from cache (age: 2 minutes)
+2025-10-15 20:49:20.33
+ffcbcabc
+User
+💾 Cache HIT: Returning 163 products from cache (age: 2 minutes)
+2025-10-15 20:49:20.33
+ffcbcabc
+User
+💾 Metadata Cache HIT: Returning data (age: 2 minutes)

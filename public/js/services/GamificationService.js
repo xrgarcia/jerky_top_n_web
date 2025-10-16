@@ -44,7 +44,7 @@ class GamificationService extends BaseService {
     });
 
     this.socket.on('streak:updated', (streak) => {
-      this.updateStreak(streak);
+      this.updateStreakData(streak);
       this.emit('streak:changed', streak);
     });
   }

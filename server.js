@@ -140,7 +140,7 @@ const emailService = require('./server/services/EmailService.js');
 app.set('trust proxy', true);
 
 // Parse JSON bodies and cookies
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
 // Disable caching for development in Replit environment
