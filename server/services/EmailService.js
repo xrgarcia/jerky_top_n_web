@@ -96,7 +96,7 @@ class EmailService {
             overflow: hidden;
           }
           .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #2c2c2c;
             padding: 30px 40px;
             text-align: center;
           }
