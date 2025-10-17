@@ -15,7 +15,8 @@ function createGamificationRoutes(services) {
     activityLogRepo,
     productViewRepo,
     homeStatsService,
-    communityService
+    communityService,
+    userStatsAggregator
   } = services;
 
   router.get('/achievements', async (req, res) => {
@@ -40,44 +41,16 @@ function createGamificationRoutes(services) {
       userId = session.userId;
       console.log(`📊 Fetching achievements for user ${userId}`);
 
-      console.log(`🔄 Getting user stats...`);
-      const userStats = await leaderboardManager.getUserStats(userId);
-      console.log(`✅ User stats retrieved`);
-      
-      console.log(`🔄 Getting user position...`);
-      const position = await leaderboardManager.getUserPosition(userId);
-      console.log(`✅ User position retrieved: rank ${position.rank || 999}`);
-      
+      // Get product count from cache (already optimized)
       console.log(`🔄 Fetching products...`);
       const { products } = await services.fetchAllShopifyProducts();
       const totalRankableProducts = products.length;
       console.log(`✅ Products fetched: ${totalRankableProducts} rankable products`);
-      
-      console.log(`🔄 Getting completed animal categories...`);
-      const completedAnimalCategories = await leaderboardManager.getCompletedAnimalCategories(
-        userId, 
-        services.productsService
-      );
-      console.log(`✅ Completed animal categories: ${completedAnimalCategories}`);
-      
-      const stats = {
-        ...userStats,
-        leaderboardPosition: position.rank || 999,
-        totalRankings: userStats.totalRankings,
-        currentStreak: 0,
-        totalRankableProducts,
-        completedAnimalCategories,
-      };
 
-      console.log(`🔄 Fetching user streaks...`);
-      const streaks = await streakManager.getUserStreaks(userId);
-      console.log(`✅ Streaks fetched: ${streaks.length} streak(s)`);
-      
-      const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
-      if (dailyStreak) {
-        stats.currentStreak = dailyStreak.currentStreak;
-        console.log(`✅ Current streak: ${stats.currentStreak}`);
-      }
+      // Use UserStatsAggregator to batch all user stats queries (Facade Pattern)
+      console.log(`🔄 Batching user stats queries...`);
+      const stats = await userStatsAggregator.getStatsForAchievements(userId, totalRankableProducts);
+      console.log(`✅ User stats aggregated: position ${stats.leaderboardPosition}, streak ${stats.currentStreak}`);
 
       console.log(`🔄 Getting achievements with progress...`);
       const achievements = await achievementManager.getAchievementsWithProgress(userId, stats);

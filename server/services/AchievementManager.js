@@ -196,6 +196,10 @@ class AchievementManager {
     }
     
     console.log(`✅ Seeded/updated ${seededCount}/${achievementDefinitions.length} achievements`);
+    
+    // Invalidate achievement cache to force fresh fetch on next request
+    this.achievementRepo.achievementCache.invalidate();
+    
     const allAchievements = await this.achievementRepo.getAllAchievements();
     return allAchievements;
   }

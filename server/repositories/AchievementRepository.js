@@ -1,5 +1,6 @@
 const { eq, and, desc, sql, sum } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
+const AchievementCache = require('../cache/AchievementCache');
 
 /**
  * AchievementRepository - Data access layer for achievements
@@ -8,10 +9,20 @@ const { achievements, userAchievements } = require('../../shared/schema');
 class AchievementRepository {
   constructor(db) {
     this.db = db;
+    this.achievementCache = AchievementCache.getInstance();
   }
 
   async getAllAchievements() {
-    return await this.db.select().from(achievements);
+    // Check cache first (Singleton pattern)
+    const cached = this.achievementCache.get();
+    if (cached) {
+      return cached;
+    }
+
+    // Fetch from database and cache
+    const definitions = await this.db.select().from(achievements);
+    this.achievementCache.set(definitions);
+    return definitions;
   }
 
   async getAchievementByCode(code) {
