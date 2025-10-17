@@ -675,6 +675,24 @@ document.addEventListener('DOMContentLoaded', function() {
             hideRankingLoadStatus(); // Hide loading indicator only after both complete
         }
     }
+    
+    // Remove product from list when ranked (reactive UI update)
+    function removeProductFromList(productId) {
+        const initialCount = currentProducts.length;
+        currentProducts = currentProducts.filter(product => product.id !== productId);
+        
+        if (currentProducts.length < initialCount) {
+            console.log(`🗑️ Removed product ${productId} from display (${initialCount} → ${currentProducts.length})`);
+            displayProducts(); // Re-render products grid
+        }
+    }
+    
+    // Subscribe to product:ranked event for reactive product removal
+    if (window.appEventBus) {
+        window.appEventBus.on('product:ranked', ({ productId }) => {
+            removeProductFromList(productId);
+        });
+    }
 
 
     // Special version of loadProducts for initial parallel loading (no duplicate loading indicators)
