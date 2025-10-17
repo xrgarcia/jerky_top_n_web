@@ -1,0 +1,41 @@
+app-init.js:9 🚀 Initializing application architecture...
+app-init.js:105 ⚙️ Initializing services...
+app-init.js:148 ✅ Application architecture initialized
+app-init.js:121 ✅ gamification initialized
+page-integrations.js:77 ✅ Page integrations initialized
+home-dashboard.js:279 ✅ Home dashboard initialized
+app.js?v=20251012b:665 🚀 Loading rankings and products in parallel...
+page-integrations.js:56 ✅ Progress widget integrated into Rank page
+app-init.js:121 ✅ socialProof initialized
+app-init.js:121 ✅ activityFeed initialized
+app-init.js:121 ✅ progressTracking initialized
+app-init.js:121 ✅ leaderboard initialized
+app-init.js:139 ✅ All services initialized
+app-init.js:130 🎨 Initializing UI widgets...
+app-init.js:133 ✅ Notification widget created
+app-init.js:49 ✅ WebSocket connected
+app.js?v=20251012b:730 ✅ Loaded 20 products (total: 20)
+app.js?v=20251012b:338 ✅ 90-day customer session validated: Customer
+app.js?v=20251012b:558 ✅ 90-day customer session validated: Customer
+app-init.js:57 🔐 Socket authenticated for user: 4
+app.js?v=20251012b:754 ✅ Loaded 70 saved rankings
+app.js?v=20251012b:1702 📈 Adding 63 more slots to existing 10 slots
+app.js?v=20251012b:1723 ✅ Total ranking slots: 73
+app.js?v=20251012b:764 📈 Pre-expanded slots to 73 to accommodate rank 70
+app.js?v=20251012b:671 ✅ Both rankings and products loaded successfully
+ProgressTrackingService.js:27 📊 ProgressTrackingService received achievements from GamificationService
+page-integrations.js:33 ✅ Leaderboard widget integrated into Community page
+PageViewTracker.js:47 📊 Page view tracked: community
+app.js?v=20251012b:2900 ✅ Loaded 8 community members
+app.js?v=20251012b:2900 ✅ Loaded 8 community members
+app.js?v=20251012b:665 🚀 Loading rankings and products in parallel...
+PageViewTracker.js:47 📊 Page view tracked: rank
+app.js?v=20251012b:665 🚀 Loading rankings and products in parallel...
+app.js?v=20251012b:683 ⏳ Products already loading, skipping duplicate call
+app.js?v=20251012b:338 ✅ 90-day customer session validated: Customer
+app.js?v=20251012b:730 ✅ Loaded 20 products (total: 20)
+app.js?v=20251012b:338 ✅ 90-day customer session validated: Customer
+app.js?v=20251012b:754 ✅ Loaded 70 saved rankings
+app.js?v=20251012b:671 ✅ Both rankings and products loaded successfully
+app.js?v=20251012b:754 ✅ Loaded 70 saved rankings
+app.js?v=20251012b:671 ✅ Both rankings and products loaded successfully

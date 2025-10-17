@@ -55,6 +55,14 @@
       progressWidget = new ProgressWidget('rankPageProgress', progressService, eventBus);
       console.log('✅ Progress widget integrated into Rank page');
     }
+    
+    // Always reload achievements and streaks when rank page is shown
+    const gamificationService = services.get('gamification');
+    if (gamificationService) {
+      gamificationService.loadAchievements();
+      gamificationService.loadStreaks();
+      console.log('🔄 Reloading achievements and streaks for rank page');
+    }
   }
 
   eventBus.on('page:shown', (data) => {
