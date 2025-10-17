@@ -2312,9 +2312,23 @@ document.addEventListener('DOMContentLoaded', function() {
             
             displayProductsGrid(allProductsData);
             
-            // Show load more button if there are more products
+            // Update load more button with remaining count
             if (loadMoreBtn && hasMoreProductsPage) {
+                const totalProducts = data.total || 0;
+                const loadedProducts = allProductsData.length;
+                const remaining = totalProducts - loadedProducts;
+                
+                // Show "Load 20 more products" or "Load X more products" based on remaining
+                if (remaining >= 20) {
+                    loadMoreBtn.textContent = 'Load 20 more products';
+                } else if (remaining > 0) {
+                    loadMoreBtn.textContent = `Load ${remaining} more product${remaining === 1 ? '' : 's'}`;
+                }
+                
                 loadMoreBtn.style.display = 'inline-block';
+            } else if (loadMoreBtn) {
+                // Hide button when no more products
+                loadMoreBtn.style.display = 'none';
             }
             
             console.log(`✅ Loaded ${data.products.length} products (page ${currentProductsPage}), total: ${allProductsData.length}, hasMore: ${hasMoreProductsPage}`);
