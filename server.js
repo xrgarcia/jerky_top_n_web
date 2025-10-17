@@ -1075,9 +1075,9 @@ app.get('/api/products/all', async (req, res) => {
 
 app.get('/api/products/search', async (req, res) => {
   try {
-    const { query = '', limit = 20, page = 1 } = req.query;
+    const { query = '', limit = 20, page = 1, sort = 'name-asc' } = req.query;
     
-    console.log(`🔍 Searching products: "${query}", page: ${page}, limit: ${limit}`);
+    console.log(`🔍 Searching products: "${query}", page: ${page}, limit: ${limit}, sort: ${sort}`);
     
     // Use unified ProductsService with shared cache instances
     const { db } = require('./server/db.js');
@@ -1103,8 +1103,50 @@ app.get('/api/products/search', async (req, res) => {
     
     console.log(`✅ Found ${enrichedProducts.length} products`);
     
-    // Products are already transformed by ProductsService
-    const transformedProducts = enrichedProducts;
+    // Clone products array to avoid mutating the cache
+    const products = [...enrichedProducts];
+    
+    // Apply server-side sorting
+    const [field, order] = sort.split('-');
+    const isAsc = order === 'asc';
+    
+    products.sort((a, b) => {
+      let aVal, bVal;
+      
+      switch(field) {
+        case 'name':
+          aVal = a.title.toLowerCase();
+          bVal = b.title.toLowerCase();
+          break;
+        case 'recent':
+          aVal = a.lastRankedAt || '1970-01-01';
+          bVal = b.lastRankedAt || '1970-01-01';
+          break;
+        case 'avgrank':
+          aVal = parseFloat(a.avgRank) || 9999;
+          bVal = parseFloat(b.avgRank) || 9999;
+          break;
+        case 'totalranks':
+          aVal = parseInt(a.rankingCount) || 0;
+          bVal = parseInt(b.rankingCount) || 0;
+          break;
+        default:
+          return 0;
+      }
+      
+      if (aVal < bVal) return isAsc ? -1 : 1;
+      if (aVal > bVal) return isAsc ? 1 : -1;
+      return 0;
+    });
+    
+    // Apply pagination after sorting
+    const limitNum = parseInt(limit);
+    const pageNum = parseInt(page);
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = startIndex + limitNum;
+    
+    const transformedProducts = products.slice(startIndex, endIndex);
+    const totalProducts = products.length;
     
     // Log search asynchronously (non-blocking)
     if (query && query.trim() && storage) {
@@ -1133,7 +1175,10 @@ app.get('/api/products/search', async (req, res) => {
     
     res.json({ 
       products: transformedProducts,
-      hasMore: transformedProducts.length >= parseInt(limit) // Simple pagination indicator
+      hasMore: endIndex < totalProducts, // True if there are more products beyond the current page
+      total: totalProducts,
+      page: pageNum,
+      limit: limitNum
     });
     
   } catch (error) {

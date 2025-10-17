@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSort = 'name-asc';
     let selectedAnimal = null;
     let currentProductsPage = 1;
-    let hasMoreProducts = true;
+    let hasMoreProductsPage = true;
     let isProductsLoading = false;
     let currentProductsQuery = '';
 
@@ -2270,18 +2270,34 @@ document.addEventListener('DOMContentLoaded', function() {
         displayProductsGrid(filtered);
     }
     
-    async function loadAllProducts(query = '', sort = 'name-asc') {
+    async function loadAllProducts(query = '', sort = 'name-asc', reset = true) {
+        if (isProductsLoading) return;
+        
         const productsLoading = document.getElementById('productsLoading');
         const productsGrid = document.getElementById('productsGrid');
+        const loadMoreBtn = document.getElementById('productsLoadMoreBtn');
         
         if (!productsGrid) return;
+        
+        // Reset if query/sort changed
+        if (reset) {
+            currentProductsPage = 1;
+            allProductsData = [];
+            currentProductsQuery = query;
+            currentSort = sort;
+        }
+        
+        isProductsLoading = true;
         
         if (productsLoading) {
             productsLoading.style.display = 'block';
         }
+        if (loadMoreBtn) {
+            loadMoreBtn.style.display = 'none';
+        }
         
         try {
-            const url = `/api/products/all${query ? `?query=${encodeURIComponent(query)}` : ''}`;
+            const url = `/api/products/search?query=${encodeURIComponent(query)}&page=${currentProductsPage}&limit=20&sort=${encodeURIComponent(sort)}`;
             const response = await fetch(url);
             const data = await response.json();
             
@@ -2289,18 +2305,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'Failed to load products');
             }
             
-            allProductsData = data.products;
-            currentSort = sort;
+            // Append new products to existing data  
+            // Note: Products are already sorted by the server, don't re-sort partial data
+            allProductsData = [...allProductsData, ...data.products];
+            hasMoreProductsPage = data.hasMore;
             
-            // Apply sorting
-            sortProductsData(sort);
             displayProductsGrid(allProductsData);
             
-            console.log(`✅ Loaded ${allProductsData.length} products with ranking counts`);
+            // Show load more button if there are more products
+            if (loadMoreBtn && hasMoreProductsPage) {
+                loadMoreBtn.style.display = 'inline-block';
+            }
+            
+            console.log(`✅ Loaded ${data.products.length} products (page ${currentProductsPage}), total: ${allProductsData.length}, hasMore: ${hasMoreProductsPage}`);
         } catch (error) {
             console.error('Error loading products:', error);
             productsGrid.innerHTML = '<div style="color: #dc3545; text-align: center; padding: 40px;">Error loading products. Please try again.</div>';
         } finally {
+            isProductsLoading = false;
             if (productsLoading) {
                 productsLoading.style.display = 'none';
             }
@@ -2792,6 +2814,15 @@ document.addEventListener('DOMContentLoaded', function() {
             const tempData = [...filteredProducts];
             sortProductsData(currentSort, tempData);
             displayProductsGrid(tempData);
+        });
+    }
+    
+    // Load more button for products page
+    const productsLoadMoreBtn = document.getElementById('productsLoadMoreBtn');
+    if (productsLoadMoreBtn) {
+        productsLoadMoreBtn.addEventListener('click', async () => {
+            currentProductsPage++;
+            await loadAllProducts(currentProductsQuery, currentSort, false); // Don't reset, append to existing
         });
     }
 
