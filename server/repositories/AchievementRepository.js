@@ -1,4 +1,4 @@
-const { eq, and, desc } = require('drizzle-orm');
+const { eq, and, desc, sql, sum } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
 
 /**
@@ -75,8 +75,15 @@ class AchievementRepository {
   }
 
   async getUserTotalPoints(userId) {
-    const userAchs = await this.getUserAchievements(userId);
-    return userAchs.reduce((total, ach) => total + (ach.points || 0), 0);
+    // Optimized: Use SQL aggregation instead of fetching all achievements
+    const result = await this.db.select({
+      totalPoints: sql`COALESCE(SUM(${achievements.points}), 0)::int`
+    })
+    .from(userAchievements)
+    .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+    .where(eq(userAchievements.userId, userId));
+    
+    return result[0]?.totalPoints || 0;
   }
 
   async getAchievementEarningCount(achievementId) {
