@@ -110,15 +110,86 @@ class LeaderboardManager {
 
   /**
    * Get user's leaderboard position
+   * OPTIMIZED: Direct SQL query instead of fetching entire leaderboard
    * @param {number} userId - User ID
    * @param {string} period - 'all_time', 'week', 'month'
    * @returns {Object} User's position and stats
    */
   async getUserPosition(userId, period = 'all_time') {
-    const leaderboard = await this.getTopRankers(999, period);
-    const userEntry = leaderboard.find(entry => entry.userId === userId);
+    let dateFilter = '';
     
-    if (!userEntry) {
+    if (period === 'week') {
+      const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+      dateFilter = `>= '${weekAgo.toISOString()}'`;
+    } else if (period === 'month') {
+      const monthAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      dateFilter = `>= '${monthAgo.toISOString()}'`;
+    }
+
+    // Build engagement score calculation
+    const achievementsCount = dateFilter 
+      ? `COUNT(DISTINCT ua.id) FILTER (WHERE ua.earned_at ${dateFilter})`
+      : `COUNT(DISTINCT ua.id)`;
+    
+    const pageViewsCount = dateFilter
+      ? `COUNT(DISTINCT pv.id) FILTER (WHERE pv.viewed_at ${dateFilter})`
+      : `COUNT(DISTINCT pv.id)`;
+    
+    const rankingsCount = dateFilter
+      ? `COUNT(DISTINCT pr.id) FILTER (WHERE pr.created_at ${dateFilter})`
+      : `COUNT(DISTINCT pr.id)`;
+    
+    const searchesCount = dateFilter
+      ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
+      : `COUNT(DISTINCT ups.id)`;
+
+    // Use window functions to calculate both rank and percentile correctly
+    // RANK() for display rank (tied users get same rank)  
+    // ROW_NUMBER() for sequential position used in percentile calculation
+    const positionQuery = `
+      WITH user_scores AS (
+        SELECT 
+          u.id as user_id,
+          COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
+          (COALESCE(${achievementsCount}, 0) 
+           + COALESCE(${pageViewsCount}, 0) 
+           + COALESCE(${rankingsCount}, 0) 
+           + COALESCE(${searchesCount}, 0))::int as engagement_score
+        FROM users u
+        LEFT JOIN product_rankings pr ON pr.user_id = u.id
+        LEFT JOIN page_views pv ON pv.user_id = u.id
+        LEFT JOIN user_achievements ua ON ua.user_id = u.id
+        LEFT JOIN user_product_searches ups ON ups.user_id = u.id
+        GROUP BY u.id
+        HAVING (COALESCE(${achievementsCount}, 0) 
+                + COALESCE(${pageViewsCount}, 0) 
+                + COALESCE(${rankingsCount}, 0) 
+                + COALESCE(${searchesCount}, 0)) > 0
+      ),
+      ranked_scores AS (
+        SELECT 
+          user_id,
+          unique_products,
+          engagement_score,
+          RANK() OVER (ORDER BY engagement_score DESC) as rank,
+          ROW_NUMBER() OVER (ORDER BY engagement_score DESC, user_id ASC) as row_num,
+          COUNT(*) OVER () as total_users
+        FROM user_scores
+      )
+      SELECT 
+        user_id,
+        unique_products,
+        engagement_score,
+        rank,
+        row_num,
+        total_users
+      FROM ranked_scores
+      WHERE user_id = ${userId}
+    `;
+
+    const positionResult = await this.db.execute(sql.raw(positionQuery));
+    
+    if (!positionResult.rows.length) {
       return {
         userId,
         rank: null,
@@ -128,12 +199,18 @@ class LeaderboardManager {
       };
     }
 
-    const percentile = ((leaderboard.length - userEntry.rank + 1) / leaderboard.length * 100).toFixed(1);
+    const { rank, engagement_score, unique_products, row_num, total_users } = positionResult.rows[0];
+    // Percentile based on sequential position (row_num) for accurate standings
+    // Matches original formula: ((total - position + 1) / total * 100)
+    const percentile = ((total_users - row_num + 1) / total_users * 100).toFixed(1);
 
     return {
-      ...userEntry,
+      userId,
+      rank,
+      engagementScore: engagement_score,
+      uniqueProducts: unique_products,
       percentile: parseFloat(percentile),
-      totalUsers: leaderboard.length,
+      totalUsers: total_users,
     };
   }
 

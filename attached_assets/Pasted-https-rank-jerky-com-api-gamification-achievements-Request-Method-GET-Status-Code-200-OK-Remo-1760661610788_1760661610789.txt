@@ -1,0 +1,73 @@
+https://rank.jerky.com/api/gamification/achievements
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+34.111.179.208:443
+Referrer Policy
+strict-origin-when-cross-origin
+alt-svc
+h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+cache-control
+no-cache, no-store, must-revalidate
+content-length
+10168
+content-type
+application/json; charset=utf-8
+date
+Fri, 17 Oct 2025 00:39:39 GMT
+etag
+W/"27b8-a7fc9cVs+i2+phcdeNrKbaGhw/o"
+expires
+0
+last-modified
+Fri, 17 Oct 2025 00:39:34 GMT
+pragma
+no-cache
+server
+Google Frontend
+strict-transport-security
+max-age=63072000; includeSubDomains
+via
+1.1 google
+x-cloud-trace-context
+948f9084e863d6ab3ed4065d6824b4b1
+x-powered-by
+Express
+:authority
+rank.jerky.com
+:method
+GET
+:path
+/api/gamification/achievements
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+content-type
+application/json
+cookie
+_shopify_y=F7682150-b033-432F-bfb1-c29b29054398; _scid=eQiWl-T1PPPq6CfhwdTOIGkdUhayXq0o; _sctr=1%7C1751259600000; _lc2_fpi=cb30ed6ebd06--01jz0jpdnee2g645py6432xtb7; _geps=true; _ga=GA1.1.521972299.1751292522; _scid_r=coiWl-T1PPPq6CfhwdTOIGkdUhayXq0ojMzbbw; _uetvid=ba752e7055bb11f0bfa60bc5992c9e12; _gcl_au=1.1.864472373.1759082905; _fbp=fb.1.1759082905728.766156944545698133; _gekf=cmF5QGplcmt5LmNvbQ==; _tracking_consent=3.AMPS_USTX_f_t_bXRSO5icQc-HPPwi-STuzw; _gecntaos=16; _reidsn=i_1.06; _geffran=1; _geran=1; _getdran=1; _geffresponse=2; _ga_9QT5Y3C99N=GS2.1.s1760576080$o10$g0$t1760576279$j60$l0$h0; _ga_P6FVBRLQCL=GS2.1.s1760576081$o9$g0$t1760576279$j60$l0$h0; session_id=bb9ac122b290ad06e887a64f8b87420f5469b584703a5d71d99a350f7797ad37
+priority
+u=1, i
+referer
+https://rank.jerky.com/
+sec-ch-ua
+"Chromium";v="140", "Not=A?Brand";v="24", "Google Chrome";v="140"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36
