@@ -690,8 +690,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Subscribe to product:ranked event for reactive product removal
     if (window.appEventBus) {
         window.appEventBus.on('product:ranked', ({ productId }) => {
+            console.log(`📥 Received product:ranked event for product ${productId}`);
             removeProductFromList(productId);
         });
+        console.log('✅ Subscribed to product:ranked events for reactive UI updates');
+    } else {
+        console.warn('⚠️ EventBus not available - product removal will not work');
     }
 
 
@@ -1838,6 +1842,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Emit product:ranked for each successfully saved product (enables reactive UI updates)
                     rankings.forEach(ranking => {
+                        console.log(`📤 Emitting product:ranked for product ${ranking.productData.id}`);
                         window.appEventBus.emit('product:ranked', { 
                             productId: ranking.productData.id 
                         });
@@ -1915,6 +1920,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Emit product:ranked event for successful save (enables reactive UI updates)
                 if (window.appEventBus) {
+                    console.log(`📤 Emitting product:ranked for product ${slot.productData.id}`);
                     window.appEventBus.emit('product:ranked', { 
                         productId: slot.productData.id 
                     });
