@@ -49,6 +49,7 @@ The application features a modern web architecture designed for responsiveness, 
 ### Feature Specifications
 - **Ranking**: View top N jerky products (3, 5, or 8), persistent rankings with database storage, and a visual ranking modal with product images.
 - **Products Page**: Advanced sorting (Name, Recently Ranked, Avg Ranking, Total Rankings), animal and flavor filtering, client-side instant search, and server-side pagination (20 products per page) with dynamic "Load More" button showing remaining count ("Load 20 more products" or "Load X more products").
+- **Rank Page Products**: Server-side filtering via `/api/products/rankable` endpoint using `ProductRankingRepository` and `ProductsService.getRankableProductsForUser()` to exclude already-ranked products BEFORE pagination. Ensures users with extensive ranking history (70+ products) always see unranked products on initial load without manual pagination.
 - **Community**: Discover users, search by name or ranked products, and view user profiles with ranking statistics.
 - **User Profile**: Displays user information, ranking statistics, and links to update external profiles.
 - **Gamification**: Achievement tracking, user progress monitoring, streak tracking, real-time leaderboards, live activity feeds, and real-time notifications.
