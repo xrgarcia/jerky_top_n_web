@@ -1,0 +1,204 @@
+2025-10-16 20:45:20.66
+240e5ab6
+User
+⏱️ getUserPosition() window function query: 4601ms (total: 4601ms)
+2025-10-16 20:45:20.66
+240e5ab6
+User
+⏱️ Batch 1 completed in 4601ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-16 20:45:20.66
+240e5ab6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 8 minutes)
+2025-10-16 20:45:20.66
+240e5ab6
+User
+💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+2025-10-16 20:45:20.78
+240e5ab6
+User
+⏱️ Batch 2 completed in 127ms (getCompletedAnimalCategories)
+2025-10-16 20:45:20.78
+240e5ab6
+User
+⏱️ Total aggregation time: 4728ms
+2025-10-16 20:45:20.78
+240e5ab6
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:45:20.78
+240e5ab6
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:45:20.78
+240e5ab6
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 9 minutes)
+2025-10-16 20:45:20.83
+240e5ab6
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:45:20.88
+240e5ab6
+User
+🔍 Achievements endpoint called
+2025-10-16 20:45:20.88
+240e5ab6
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:45:20.94
+240e5ab6
+User
+✅ Session validated for user 4
+2025-10-16 20:45:20.94
+240e5ab6
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:45:20.94
+240e5ab6
+User
+🔄 Fetching products...
+2025-10-16 20:45:20.94
+240e5ab6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 8 minutes)
+2025-10-16 20:45:20.94
+240e5ab6
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:45:20.94
+240e5ab6
+User
+🔄 Batching user stats queries...
+2025-10-16 20:45:20.98
+240e5ab6
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:45:25.43
+240e5ab6
+User
+⏱️ getUserPosition() window function query: 4495ms (total: 4495ms)
+2025-10-16 20:45:25.43
+240e5ab6
+User
+⏱️ Batch 1 completed in 4497ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-16 20:45:25.43
+240e5ab6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 8 minutes)
+2025-10-16 20:45:25.43
+240e5ab6
+User
+💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+2025-10-16 20:45:25.55
+240e5ab6
+User
+⏱️ Batch 2 completed in 121ms (getCompletedAnimalCategories)
+2025-10-16 20:45:25.55
+240e5ab6
+User
+⏱️ Total aggregation time: 4618ms
+2025-10-16 20:45:25.55
+240e5ab6
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:45:25.55
+240e5ab6
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:45:25.55
+240e5ab6
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 9 minutes)
+2025-10-16 20:45:25.60
+240e5ab6
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:45:25.67
+240e5ab6
+User
+🔍 Achievements endpoint called
+2025-10-16 20:45:25.67
+240e5ab6
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:45:25.71
+240e5ab6
+User
+✅ Session validated for user 4
+2025-10-16 20:45:25.71
+240e5ab6
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:45:25.71
+240e5ab6
+User
+🔄 Fetching products...
+2025-10-16 20:45:25.71
+240e5ab6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 8 minutes)
+2025-10-16 20:45:25.71
+240e5ab6
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:45:25.71
+240e5ab6
+User
+🔄 Batching user stats queries...
+2025-10-16 20:45:25.76
+240e5ab6
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:45:30.19
+240e5ab6
+User
+⏱️ getUserPosition() window function query: 4476ms (total: 4476ms)
+2025-10-16 20:45:30.19
+240e5ab6
+User
+⏱️ Batch 1 completed in 4478ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-16 20:45:30.19
+240e5ab6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 8 minutes)
+2025-10-16 20:45:30.19
+240e5ab6
+User
+💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+2025-10-16 20:45:30.32
+240e5ab6
+User
+⏱️ Batch 2 completed in 131ms (getCompletedAnimalCategories)
+2025-10-16 20:45:30.32
+240e5ab6
+User
+⏱️ Total aggregation time: 4609ms
+2025-10-16 20:45:30.32
+240e5ab6
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:45:30.32
+240e5ab6
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:45:30.32
+240e5ab6
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 9 minutes)
+2025-10-16 20:45:30.36
+240e5ab6
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:47:47.26
+240e5ab6
+User
+👋 WebSocket client disconnected: PV5_UMkhnMxL2fOCAAAM
+2025-10-16 20:47:49.84
+240e5ab6
+User
+✅ WebSocket client connected: _vWGMvi16XA3r7DOAAAT
+
+Wrap
+
+Colors
