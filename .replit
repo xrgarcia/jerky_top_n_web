@@ -37,4 +37,4 @@ externalPort = 80
 [deployment]
 deploymentTarget = "autoscale"
 run = ["npm", "start"]
-build = ["npm", "run", "db:migrate"]
+build = ["bash", "-c", "npm run db:migrate"]
