@@ -698,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Don't show productLoading indicator - using unified ranking load status instead
 
         try {
-            const response = await fetch(`/api/products/search?query=&page=${currentPage}&limit=20&sort=name-asc`);
+            const response = await fetch(`/api/products/rankable?query=&page=${currentPage}&limit=20&sort=name-asc`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -834,7 +834,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadMoreBtn.style.display = 'none';
 
         try {
-            const response = await fetch(`/api/products/search?query=${encodeURIComponent(query)}&page=${currentPage}&limit=20&sort=name-asc`);
+            const response = await fetch(`/api/products/rankable?query=${encodeURIComponent(query)}&page=${currentPage}&limit=20&sort=name-asc`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -902,27 +902,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         productList.innerHTML = '';
 
-        // Get IDs of products that are already ranked
-        const rankedProductIds = new Set(
-            rankingSlots
-                .filter(slot => slot.classList.contains('filled'))
-                .map(slot => {
-                    const productData = JSON.parse(slot.dataset.productData);
-                    return productData.id;
-                })
-        );
-
-        // Filter out products that are already ranked
-        const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
-        
-        // If all loaded products are ranked and there are more products, auto-load more
-        if (unrankedProducts.length === 0 && hasMoreProducts && !isLoading) {
-            console.log('📦 All loaded products are ranked, auto-loading more...');
-            loadProducts(currentSearchQuery, false);
-            return;
-        }
-
-        unrankedProducts.forEach(product => {
+        // Server now filters out ranked products, so we can display all returned products
+        currentProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
             
