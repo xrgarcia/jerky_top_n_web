@@ -1,0 +1,144 @@
+2025-10-17 11:14:20.12
+7d99cc03
+User
+🔍 Achievements endpoint called
+2025-10-17 11:14:20.12
+7d99cc03
+User
+🔑 Session ID present: a8e95887...
+2025-10-17 11:14:20.16
+7d99cc03
+User
+🔍 getAllUserStreaks: Found 0 valid streak(s) for user 8
+2025-10-17 11:14:20.16
+7d99cc03
+User
+✅ Session validated for user 8
+2025-10-17 11:14:20.16
+7d99cc03
+User
+📊 Fetching achievements for user 8
+2025-10-17 11:14:20.16
+7d99cc03
+User
+✅ Product count retrieved: 163 rankable products
+2025-10-17 11:14:20.16
+7d99cc03
+User
+🔄 Batching user stats queries...
+2025-10-17 11:14:20.16
+7d99cc03
+User
+💾 LeaderboardPositionCache HIT: User 8 (all_time) position 7 (age: 51s)
+2025-10-17 11:14:20.20
+7d99cc03
+User
+🔍 getAllUserStreaks: Found 0 valid streak(s) for user 8
+2025-10-17 11:14:20.20
+7d99cc03
+User
+⏱️ Batch 1 completed in 44ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-17 11:14:20.20
+7d99cc03
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-17 11:14:20.20
+7d99cc03
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-17 11:14:20.25
+7d99cc03
+User
+⏱️ Batch 2 completed in 44ms (getCompletedAnimalCategories)
+2025-10-17 11:14:20.25
+7d99cc03
+User
+⏱️ Total aggregation time: 88ms
+2025-10-17 11:14:20.25
+7d99cc03
+User
+✅ User stats aggregated: position 7, streak 0
+2025-10-17 11:14:20.25
+7d99cc03
+User
+🔄 Getting achievements with progress...
+2025-10-17 11:14:20.25
+7d99cc03
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 2 minutes)
+2025-10-17 11:14:20.30
+7d99cc03
+User
+✅ Achievements fetched successfully for user 8: 19 achievement(s)
+2025-10-17 11:14:20.35
+7d99cc03
+User
+🔍 Achievements endpoint called
+2025-10-17 11:14:20.35
+7d99cc03
+User
+🔑 Session ID present: a8e95887...
+2025-10-17 11:14:20.40
+7d99cc03
+User
+✅ Session validated for user 8
+2025-10-17 11:14:20.40
+7d99cc03
+User
+📊 Fetching achievements for user 8
+2025-10-17 11:14:20.40
+7d99cc03
+User
+✅ Product count retrieved: 163 rankable products
+2025-10-17 11:14:20.40
+7d99cc03
+User
+🔄 Batching user stats queries...
+2025-10-17 11:14:20.40
+7d99cc03
+User
+💾 LeaderboardPositionCache HIT: User 8 (all_time) position 7 (age: 51s)
+2025-10-17 11:14:20.44
+7d99cc03
+User
+🔍 getAllUserStreaks: Found 0 valid streak(s) for user 8
+2025-10-17 11:14:20.44
+7d99cc03
+User
+⏱️ Batch 1 completed in 42ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-17 11:14:20.44
+7d99cc03
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-17 11:14:20.44
+7d99cc03
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-17 11:14:20.48
+7d99cc03
+User
+⏱️ Batch 2 completed in 43ms (getCompletedAnimalCategories)
+2025-10-17 11:14:20.48
+7d99cc03
+User
+⏱️ Total aggregation time: 85ms
+2025-10-17 11:14:20.48
+7d99cc03
+User
+✅ User stats aggregated: position 7, streak 0
+2025-10-17 11:14:20.48
+7d99cc03
+User
+🔄 Getting achievements with progress...
+2025-10-17 11:14:20.48
+7d99cc03
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 2 minutes)
+2025-10-17 11:14:20.53
+7d99cc03
+User
+✅ Achievements fetched successfully for user 8: 19 achievement(s)
+
+Wrap
+
+Colors
