@@ -31,16 +31,18 @@ The application features a modern web architecture designed for responsiveness, 
 - **Top Rankers**: Calculated by engagement score (sum of achievements + page views + rankings + searches), providing a comprehensive measure of user activity across all interactions. Displays total engagement count without breakdown for simplicity. Both home and community pages auto-refresh on navigation and WebSocket updates to ensure consistent engagement scores.
 - **Most Debated Products**: Identifies products with highest ranking variance (disagreement) using PostgreSQL STDDEV. Requires minimum 2 rankings with actual variance (STDDEV > 0) to ensure only products with genuine disagreement appear. Products sorted by variance descending to highlight community debate.
 - **Streak Tracking**: Calendar-day-based streak calculation (UTC normalized) ensures consistent streak detection across timezones. Daily ranking streaks update automatically when users rank products, with real-time WebSocket notifications for streak continuations and breaks. Multi-layer validation (API, service, query) enforces valid streak types ('daily_rank', 'daily_login') preventing data corruption. The `getAllUserStreaks` query uses `DISTINCT ON` with type filtering and LIMIT 10 to return only valid streaks, protecting against corrupted data and API timeouts.
-- **Performance Optimizations**: System optimized using OOP design patterns and SQL window functions:
-  - **Achievement System** (~78% faster, 650ms → 145ms):
+- **Performance Optimizations**: System optimized using OOP design patterns, caching strategies, and query optimization:
+  - **Achievement System** (~95% faster, 10s → 300-400ms):
     - **SQL Aggregation**: `getUserTotalPoints()` uses SQL SUM() instead of JavaScript reduce, reducing query time from ~150ms to ~8ms
     - **Facade Pattern**: `UserStatsAggregator` batches database queries with Promise.all, reducing achievement route latency from ~300ms to ~120ms
     - **Singleton Pattern**: `AchievementCache` with 1-hour TTL caches achievement definitions, improving cache hit performance from ~100ms to ~15ms. Cache automatically invalidates when definitions are seeded/updated
-  - **Leaderboard Position** (~98% faster, 5s → <100ms):
-    - **Window Functions**: `getUserPosition()` uses CTE with RANK() and ROW_NUMBER() window functions instead of fetching 999 users
-    - RANK() for display rank (handles ties: same score = same rank)
-    - ROW_NUMBER() for percentile calculation (sequential position for accurate standings)
-    - Single optimized query replaces massive 5-table JOIN for entire leaderboard
+    - **Product Count Optimization**: `getRankableProductCount()` eliminates unnecessary full product fetching (163 products) from achievements endpoint, using cached count instead
+  - **Leaderboard Position** (~93% faster, 4-5s → 280-350ms):
+    - **COUNT-based Query**: `getUserPosition()` uses optimized CTE with COUNT() subqueries instead of window functions scanning all users
+    - **Position Cache**: `LeaderboardPositionCache` singleton with 5-minute TTL and period-aware keys (all_time, week, month) prevents repeated expensive queries
+    - Cache invalidation hooks on ranking changes ensure data consistency
+    - Single optimized query with HAVING clause filters active users efficiently
+    - **Future optimization path**: Materialized views or pre-aggregated stats needed to reach <100ms target
 - **Search**: Global unified search with type-ahead functionality, searching both products and community members. Client-side instant search for products with multi-word support.
 - **Styling**: Custom CSS for a consistent look and feel.
 
