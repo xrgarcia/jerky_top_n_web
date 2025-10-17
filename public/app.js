@@ -1817,6 +1817,13 @@ document.addEventListener('DOMContentLoaded', function() {
                         count: rankings.length,
                         rankingListId: 'default'
                     });
+                    
+                    // Emit product:ranked for each successfully saved product (enables reactive UI updates)
+                    rankings.forEach(ranking => {
+                        window.appEventBus.emit('product:ranked', { 
+                            productId: ranking.productData.id 
+                        });
+                    });
                 }
             } else {
                 updateAutoSaveStatus('error', 'Save failed');
@@ -1886,6 +1893,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (!response.ok) {
                     throw new Error(`Failed to save ranking for ${slot.productData.title}`);
+                }
+                
+                // Emit product:ranked event for successful save (enables reactive UI updates)
+                if (window.appEventBus) {
+                    window.appEventBus.emit('product:ranked', { 
+                        productId: slot.productData.id 
+                    });
                 }
             }
 
