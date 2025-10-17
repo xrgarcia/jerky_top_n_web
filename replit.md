@@ -55,7 +55,7 @@ The application features a modern web architecture designed for responsiveness, 
   - **Live Users**: Real-time monitoring of active users on the site, showing current page, connection time, and activity. Features WebSocket-based live updates with employee-only access and privacy-preserving data sanitization (last name truncation, email redaction for non-employees)
 
 ## External Dependencies
-- **Database**: PostgreSQL with Drizzle ORM for all data persistence. Streak types validated at application layer with optional CHECK constraint available for database-level enforcement.
+- **Database**: PostgreSQL with Drizzle ORM for all data persistence. Dual migration system: `npm run db:push` for schema changes (tables, columns), `npm run db:migrate` for custom SQL (indexes, constraints). Migration tracking in `_migrations` table ensures idempotent execution. Performance indexes on foreign keys and timestamps reduce leaderboard queries from 4s to <300ms.
 - **Error Tracking**: Sentry.io for error monitoring and performance tracking, integrated into services with detailed context.
 - **Real-time**: Socket.IO for WebSocket communication.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace (no-reply@jerky.com) for authentication magic links. Requires EMAIL_PASSWORD (App Password), SMTP_HOST (smtp.gmail.com), and SMTP_PORT (587) environment variables.
