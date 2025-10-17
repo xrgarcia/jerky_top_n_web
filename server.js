@@ -1191,6 +1191,113 @@ app.get('/api/products/search', async (req, res) => {
   }
 });
 
+// Get rankable products for authenticated user (excludes already-ranked products)
+app.get('/api/products/rankable', async (req, res) => {
+  try {
+    const { query = '', limit = 20, page = 1, sort = 'name-asc' } = req.query;
+    
+    // Get session for user authentication
+    const sessionId = req.cookies.session_id || req.query.sessionId;
+    if (!sessionId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    const session = await storage.getSession(sessionId);
+    if (!session) {
+      return res.status(401).json({ error: 'Invalid session' });
+    }
+    
+    const userId = session.userId;
+    console.log(`🎯 Fetching rankable products for user ${userId}: page ${page}, limit ${limit}, sort ${sort}`);
+    
+    // Use unified ProductsService with shared cache instances
+    const { db } = require('./server/db.js');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+    
+    const metadataService = new ProductsMetadataService(db);
+    
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      (products) => metadataService.syncProductsMetadata(products),
+      metadataCache,
+      rankingStatsCache
+    );
+    
+    // Get products excluding user's already-ranked products
+    const enrichedProducts = await productsService.getRankableProductsForUser(userId, {
+      query,
+      rankingListId: 'topN',
+      includeMetadata: true,
+      includeRankingStats: true
+    });
+    
+    // Clone products array to avoid mutating the cache
+    const products = [...enrichedProducts];
+    
+    // Apply server-side sorting
+    const [field, order] = sort.split('-');
+    const isAsc = order === 'asc';
+    
+    products.sort((a, b) => {
+      let aVal, bVal;
+      
+      switch(field) {
+        case 'name':
+          aVal = a.title.toLowerCase();
+          bVal = b.title.toLowerCase();
+          break;
+        case 'recent':
+          aVal = a.lastRankedAt || '1970-01-01';
+          bVal = b.lastRankedAt || '1970-01-01';
+          break;
+        case 'avgrank':
+          aVal = parseFloat(a.avgRank) || 9999;
+          bVal = parseFloat(b.avgRank) || 9999;
+          break;
+        case 'totalranks':
+          aVal = parseInt(a.rankingCount) || 0;
+          bVal = parseInt(b.rankingCount) || 0;
+          break;
+        default:
+          return 0;
+      }
+      
+      if (aVal < bVal) return isAsc ? -1 : 1;
+      if (aVal > bVal) return isAsc ? 1 : -1;
+      return 0;
+    });
+    
+    // Apply pagination after sorting
+    const limitNum = parseInt(limit);
+    const pageNum = parseInt(page);
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = startIndex + limitNum;
+    
+    const transformedProducts = products.slice(startIndex, endIndex);
+    const totalProducts = products.length;
+    
+    console.log(`✅ Returning ${transformedProducts.length} rankable products (${totalProducts} total unranked)`);
+    
+    res.json({ 
+      products: transformedProducts,
+      hasMore: endIndex < totalProducts,
+      total: totalProducts,
+      page: pageNum,
+      limit: limitNum
+    });
+    
+  } catch (error) {
+    console.error('Rankable products error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'products', endpoint: '/api/products/rankable' },
+      extra: { query: req.query.query, limit: req.query.limit, page: req.query.page }
+    });
+    res.status(500).json({ error: 'Failed to fetch rankable products' });
+  }
+});
+
 // Save product ranking
 app.post('/api/rankings/product', async (req, res) => {
   try {
