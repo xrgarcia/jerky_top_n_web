@@ -1335,6 +1335,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Track optimistically removed products for potential restoration on save failure
+    let optimisticallyRemovedProducts = [];
+
     // Helper function to check if a product is already ranked
     function isProductAlreadyRanked(productId) {
         for (let i = 0; i < rankingSlots.length; i++) {
@@ -1361,6 +1364,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             }
             return; // Prevent duplicate ranking
+        }
+
+        // OPTIMISTIC UI: Immediately remove product from available products list
+        const productIndex = currentProducts.findIndex(p => p.id === productData.id);
+        if (productIndex !== -1) {
+            const removedProduct = currentProducts.splice(productIndex, 1)[0];
+            optimisticallyRemovedProducts.push(removedProduct);
+            console.log(`⚡ Optimistically removed product ${productData.id} from display`);
+            displayProducts(); // Re-render immediately
         }
 
         // Collect all items at and after the target rank (to be pushed down)
@@ -1622,11 +1634,17 @@ document.addEventListener('DOMContentLoaded', function() {
             return; // Prevent duplicate ranking
         }
         
+        // OPTIMISTIC UI: Immediately remove product from available products list
+        const productIndex = currentProducts.findIndex(p => p.id === productData.id);
+        if (productIndex !== -1) {
+            const removedProduct = currentProducts.splice(productIndex, 1)[0];
+            optimisticallyRemovedProducts.push(removedProduct);
+            console.log(`⚡ Optimistically removed product ${productData.id} from display`);
+            displayProducts(); // Re-render immediately
+        }
+        
         // Simply fill the slot, overwriting whatever was there
         fillSlot(rankingSlots[position - 1], position, productData);
-        
-        // Refresh product display
-        displayProducts();
         
         // Check if we need to add more slots
         checkAndAddMoreSlotsForRank(position);
@@ -1640,11 +1658,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function insertProductAtPosition(productData, position) {
         console.log(`➕ Inserting product at position ${position}: "${productData.title}"`);
         
-        // Use existing insert logic with push-down
+        // Use existing insert logic with push-down (handles optimistic removal)
         insertProductWithPushDown(position, productData);
-        
-        // Refresh product display
-        displayProducts();
         
         // Check if we need to add more slots
         checkAndAddMoreSlotsForRank(position);
@@ -1889,6 +1904,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update last saved product IDs
                 lastSavedProductIds = currentProductIds;
                 
+                // Clear optimistically removed products on successful save
+                optimisticallyRemovedProducts = [];
+                
                 // Emit event to update progress widget and other reactive components
                 if (window.appEventBus) {
                     console.log(`📢 Emitting ranking:saved event with count: ${rankings.length}`);
@@ -1904,22 +1922,52 @@ document.addEventListener('DOMContentLoaded', function() {
                     });
                 }
             } else {
+                // Save failed - restore optimistically removed products
+                console.error('❌ Save failed, restoring optimistically removed products');
+                if (optimisticallyRemovedProducts.length > 0) {
+                    currentProducts.push(...optimisticallyRemovedProducts);
+                    optimisticallyRemovedProducts = [];
+                    displayProducts(); // Re-render to show restored products
+                    console.log(`♻️ Restored ${optimisticallyRemovedProducts.length} products to display`);
+                }
+                
                 // Handle server-side duplicate detection
                 if (result.error && result.error.includes('Duplicate')) {
                     updateAutoSaveStatus('error', 'Duplicate products detected');
                     if (window.appEventBus) {
                         window.appEventBus.emit('notification:show', {
-                            message: 'Cannot save: duplicate products in ranking',
+                            message: 'Save failed: duplicate products in ranking. Products restored to list.',
                             type: 'error'
                         });
                     }
                 } else {
                     updateAutoSaveStatus('error', 'Save failed');
+                    if (window.appEventBus) {
+                        window.appEventBus.emit('notification:show', {
+                            message: 'Save failed. Products restored to list.',
+                            type: 'error'
+                        });
+                    }
                 }
             }
         } catch (error) {
             console.error('Auto-save error:', error);
+            
+            // Restore optimistically removed products on exception
+            if (optimisticallyRemovedProducts.length > 0) {
+                currentProducts.push(...optimisticallyRemovedProducts);
+                optimisticallyRemovedProducts = [];
+                displayProducts();
+                console.log(`♻️ Restored products to display after error`);
+            }
+            
             updateAutoSaveStatus('error', 'Save failed');
+            if (window.appEventBus) {
+                window.appEventBus.emit('notification:show', {
+                    message: 'Save failed. Products restored to list.',
+                    type: 'error'
+                });
+            }
         } finally {
             isSaving = false;
         }
