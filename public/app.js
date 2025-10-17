@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let searchTimeout = null;
     let currentSort = 'name-asc';
     let selectedAnimal = null;
+    let currentProductsPage = 1;
+    let hasMoreProducts = true;
+    let isProductsLoading = false;
+    let currentProductsQuery = '';
 
     // Navigation event listeners
     navLinks.forEach(link => {
