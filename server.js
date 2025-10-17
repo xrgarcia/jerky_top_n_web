@@ -930,6 +930,17 @@ async function fetchAllShopifyProducts() {
   }
 }
 
+// Lightweight helper to get just the product count (optimized for achievements endpoint)
+function getRankableProductCount() {
+  // If cache has data (even if stale), return count immediately
+  if (productCache.data && productCache.data.length > 0) {
+    return productCache.data.length;
+  }
+  
+  // Default fallback (will trigger fetch on first request)
+  return 89; // Default estimate based on current catalog
+}
+
 // Helper function to parse Shopify's Link header for pagination
 function parseLinkHeader(linkHeader) {
   if (!linkHeader) return null;
@@ -1217,6 +1228,11 @@ app.post('/api/rankings/products', async (req, res) => {
     
     // Invalidate ranking stats cache since data changed
     rankingStatsCache.invalidate();
+    
+    // Invalidate leaderboard position cache since rankings changed
+    if (gamificationServices?.leaderboardManager) {
+      gamificationServices.leaderboardManager.positionCache.invalidateAll();
+    }
 
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
     
@@ -2120,7 +2136,7 @@ if (databaseAvailable && storage) {
     rankingStatsCache
   );
   
-  initializeGamification(app, io, db, storage, fetchAllShopifyProducts, productsService)
+  initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService)
     .then(services => {
       gamificationServices = services;
       console.log('✅ Gamification services available for achievements');

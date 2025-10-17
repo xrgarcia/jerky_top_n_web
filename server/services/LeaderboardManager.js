@@ -1,5 +1,6 @@
 const { desc, sql, eq } = require('drizzle-orm');
 const { users, productRankings, userAchievements, achievements, pageViews, userProductSearches } = require('../../shared/schema');
+const LeaderboardPositionCache = require('../cache/LeaderboardPositionCache');
 
 /**
  * LeaderboardManager - Domain service for leaderboard calculations
@@ -7,6 +8,7 @@ const { users, productRankings, userAchievements, achievements, pageViews, userP
 class LeaderboardManager {
   constructor(db) {
     this.db = db;
+    this.positionCache = LeaderboardPositionCache.getInstance();
   }
 
   /**
@@ -110,13 +112,20 @@ class LeaderboardManager {
 
   /**
    * Get user's leaderboard position
-   * OPTIMIZED: Direct SQL query instead of fetching entire leaderboard
+   * OPTIMIZED: Uses cache and COUNT-based query instead of window functions
    * @param {number} userId - User ID
    * @param {string} period - 'all_time', 'week', 'month'
    * @returns {Object} User's position and stats
    */
   async getUserPosition(userId, period = 'all_time') {
     const startTime = Date.now();
+    
+    // Check cache first (include period in key)
+    const cached = this.positionCache.get(userId, period);
+    if (cached) {
+      return cached;
+    }
+    
     let dateFilter = '';
     
     if (period === 'week') {
@@ -144,12 +153,10 @@ class LeaderboardManager {
       ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
       : `COUNT(DISTINCT ups.id)`;
 
-    // Use window functions to calculate both rank and percentile correctly
-    // RANK() for display rank (tied users get same rank)  
-    // ROW_NUMBER() for sequential position used in percentile calculation
-    const queryBuildTime = Date.now() - startTime;
+    // OPTIMIZED: Use subquery with GROUP BY + HAVING instead of window functions
+    // This calculates only what we need for one user instead of ranking everyone
     const positionQuery = `
-      WITH user_scores AS (
+      WITH all_scores AS (
         SELECT 
           u.id as user_id,
           COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
@@ -168,25 +175,24 @@ class LeaderboardManager {
                 + COALESCE(${rankingsCount}, 0) 
                 + COALESCE(${searchesCount}, 0)) > 0
       ),
-      ranked_scores AS (
-        SELECT 
-          user_id,
-          unique_products,
-          engagement_score,
-          RANK() OVER (ORDER BY engagement_score DESC) as rank,
-          ROW_NUMBER() OVER (ORDER BY engagement_score DESC, user_id ASC) as row_num,
-          COUNT(*) OVER () as total_users
-        FROM user_scores
+      user_score AS (
+        SELECT * FROM all_scores WHERE user_id = ${userId}
+      ),
+      higher_scores AS (
+        SELECT COUNT(*)::int as users_above
+        FROM all_scores
+        WHERE engagement_score > (SELECT engagement_score FROM user_score)
+      ),
+      total_active AS (
+        SELECT COUNT(*)::int as total_users FROM all_scores
       )
       SELECT 
-        user_id,
-        unique_products,
-        engagement_score,
-        rank,
-        row_num,
-        total_users
-      FROM ranked_scores
-      WHERE user_id = ${userId}
+        us.user_id,
+        us.unique_products,
+        us.engagement_score,
+        COALESCE((SELECT users_above FROM higher_scores), 0) + 1 as rank,
+        COALESCE((SELECT total_users FROM total_active), 0) as total_users
+      FROM user_score us
     `;
 
     const queryStartTime = Date.now();
@@ -194,24 +200,23 @@ class LeaderboardManager {
     const queryExecutionTime = Date.now() - queryStartTime;
     const totalTime = Date.now() - startTime;
     
-    console.log(`⏱️ getUserPosition() window function query: ${queryExecutionTime}ms (total: ${totalTime}ms)`);
+    console.log(`⏱️ getUserPosition() optimized COUNT query: ${queryExecutionTime}ms (total: ${totalTime}ms)`);
     
-    if (!positionResult.rows.length) {
-      return {
+    if (!positionResult.rows.length || positionResult.rows[0].engagement_score === 0) {
+      const result = {
         userId,
         rank: null,
         engagementScore: 0,
         uniqueProducts: 0,
         percentile: null,
       };
+      return result;
     }
 
-    const { rank, engagement_score, unique_products, row_num, total_users } = positionResult.rows[0];
-    // Percentile based on sequential position (row_num) for accurate standings
-    // Matches original formula: ((total - position + 1) / total * 100)
-    const percentile = ((total_users - row_num + 1) / total_users * 100).toFixed(1);
+    const { rank, engagement_score, unique_products, total_users } = positionResult.rows[0];
+    const percentile = total_users > 0 ? ((total_users - rank + 1) / total_users * 100).toFixed(1) : 0;
 
-    return {
+    const result = {
       userId,
       rank,
       engagementScore: engagement_score,
@@ -219,6 +224,11 @@ class LeaderboardManager {
       percentile: parseFloat(percentile),
       totalUsers: total_users,
     };
+    
+    // Cache the result (include period in key)
+    this.positionCache.set(userId, period, result);
+    
+    return result;
   }
 
   /**

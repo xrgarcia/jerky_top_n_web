@@ -41,11 +41,9 @@ function createGamificationRoutes(services) {
       userId = session.userId;
       console.log(`📊 Fetching achievements for user ${userId}`);
 
-      // Get product count from cache (already optimized)
-      console.log(`🔄 Fetching products...`);
-      const { products } = await services.fetchAllShopifyProducts();
-      const totalRankableProducts = products.length;
-      console.log(`✅ Products fetched: ${totalRankableProducts} rankable products`);
+      // Get product count from cache (optimized - no full product fetch)
+      const totalRankableProducts = services.getRankableProductCount();
+      console.log(`✅ Product count retrieved: ${totalRankableProducts} rankable products`);
 
       // Use UserStatsAggregator to batch all user stats queries (Facade Pattern)
       console.log(`🔄 Batching user stats queries...`);
