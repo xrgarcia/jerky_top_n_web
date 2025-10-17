@@ -710,8 +710,21 @@ document.addEventListener('DOMContentLoaded', function() {
             hasMoreProducts = data.hasMore;
             
             if (hasMoreProducts) {
+                const totalProducts = data.total || 0;
+                const loadedProducts = currentProducts.length;
+                const remaining = totalProducts - loadedProducts;
+                
+                // Show "Load 20 more products" or "Load X more products" based on remaining
+                if (remaining >= 20) {
+                    loadMoreBtn.textContent = 'Load 20 more products';
+                } else if (remaining > 0) {
+                    loadMoreBtn.textContent = `Load ${remaining} more product${remaining === 1 ? '' : 's'}`;
+                }
+                
                 loadMoreBtn.style.display = 'block';
                 currentPage++;
+            } else {
+                loadMoreBtn.style.display = 'none';
             }
 
             console.log(`✅ Loaded ${data.products.length} products (total: ${currentProducts.length})`);
@@ -838,8 +851,21 @@ document.addEventListener('DOMContentLoaded', function() {
             hasMoreProducts = data.hasMore;
             
             if (hasMoreProducts) {
+                const totalProducts = data.total || 0;
+                const loadedProducts = currentProducts.length;
+                const remaining = totalProducts - loadedProducts;
+                
+                // Show "Load 20 more products" or "Load X more products" based on remaining
+                if (remaining >= 20) {
+                    loadMoreBtn.textContent = 'Load 20 more products';
+                } else if (remaining > 0) {
+                    loadMoreBtn.textContent = `Load ${remaining} more product${remaining === 1 ? '' : 's'}`;
+                }
+                
                 loadMoreBtn.style.display = 'block';
                 currentPage++;
+            } else {
+                loadMoreBtn.style.display = 'none';
             }
 
             console.log(`✅ Loaded ${data.products.length} products (total: ${currentProducts.length})`);
