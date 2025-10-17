@@ -1,0 +1,144 @@
+2025-10-17 11:07:54.39
+551cd5c6
+User
+🔑 Session ID present: 9c7896e2...
+2025-10-17 11:07:54.43
+551cd5c6
+User
+✅ Session validated for user 6
+2025-10-17 11:07:54.43
+551cd5c6
+User
+📊 Fetching achievements for user 6
+2025-10-17 11:07:54.47
+551cd5c6
+User
+🔍 getAllUserStreaks: Found 0 valid streak(s) for user 6
+2025-10-17 11:07:54.47
+551cd5c6
+User
+✅ Database query completed: 0 streak(s) found
+2025-10-17 11:08:00.53
+551cd5c6
+User
+⏱️ Batch 1 completed in 6091ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-17 11:08:00.57
+551cd5c6
+User
+✅ User stats aggregated: position 8, streak 0
+2025-10-17 11:08:00.61
+551cd5c6
+User
+✅ Achievements fetched successfully for user 6: 19 achievement(s)
+2025-10-17 11:08:00.80
+551cd5c6
+User
+📊 Fetching achievements for user 6
+2025-10-17 11:08:00.80
+551cd5c6
+User
+✅ Product count retrieved: 163 rankable products
+2025-10-17 11:08:00.85
+551cd5c6
+User
+🔍 getAllUserStreaks: Found 0 valid streak(s) for user 6
+2025-10-17 11:08:00.89
+551cd5c6
+User
+⏱️ Total aggregation time: 92ms
+2025-10-17 11:08:00.53
+551cd5c6
+User
+⏱️ getUserPosition() optimized COUNT query: 6091ms (total: 6091ms)
+2025-10-17 11:08:00.53
+551cd5c6
+User
+✅ LeaderboardPositionCache SET: User 6 (all_time) rank 8
+2025-10-17 11:08:00.53
+551cd5c6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-17 11:08:00.53
+551cd5c6
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-17 11:08:00.57
+551cd5c6
+User
+⏱️ Batch 2 completed in 42ms (getCompletedAnimalCategories)
+2025-10-17 11:08:00.57
+551cd5c6
+User
+⏱️ Total aggregation time: 6133ms
+2025-10-17 11:08:00.57
+551cd5c6
+User
+🔄 Getting achievements with progress...
+2025-10-17 11:08:00.57
+551cd5c6
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 1 minutes)
+2025-10-17 11:08:00.76
+551cd5c6
+User
+🔍 Achievements endpoint called
+2025-10-17 11:08:00.76
+551cd5c6
+User
+🔑 Session ID present: 9c7896e2...
+2025-10-17 11:08:00.80
+551cd5c6
+User
+✅ Session validated for user 6
+2025-10-17 11:08:00.80
+551cd5c6
+User
+🔄 Batching user stats queries...
+2025-10-17 11:08:00.80
+551cd5c6
+User
+💾 LeaderboardPositionCache HIT: User 6 (all_time) position 8 (age: 0s)
+2025-10-17 11:08:00.85
+551cd5c6
+User
+⏱️ Batch 1 completed in 50ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-17 11:08:00.85
+551cd5c6
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-17 11:08:00.85
+551cd5c6
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-17 11:08:00.89
+551cd5c6
+User
+⏱️ Batch 2 completed in 42ms (getCompletedAnimalCategories)
+2025-10-17 11:08:00.89
+551cd5c6
+User
+✅ User stats aggregated: position 8, streak 0
+2025-10-17 11:08:00.89
+551cd5c6
+User
+🔄 Getting achievements with progress...
+2025-10-17 11:08:00.89
+551cd5c6
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 1 minutes)
+2025-10-17 11:08:00.93
+551cd5c6
+User
+✅ Achievements fetched successfully for user 6: 19 achievement(s)
+2025-10-17 11:08:19.94
+f01ae9a5
+User
+👋 WebSocket client disconnected: 3VxQdJ8Vr4twQ7hFAAAX
+2025-10-17 11:08:19.94
+f01ae9a5
+User
+👤 User 8 still has 2 active socket(s)
+
+Wrap
+
+Colors

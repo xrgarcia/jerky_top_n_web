@@ -914,6 +914,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Filter out products that are already ranked
         const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
+        
+        // If all loaded products are ranked and there are more products, auto-load more
+        if (unrankedProducts.length === 0 && hasMoreProducts && !isLoading) {
+            console.log('📦 All loaded products are ranked, auto-loading more...');
+            loadProducts(currentSearchQuery, false);
+            return;
+        }
 
         unrankedProducts.forEach(product => {
             const productCard = document.createElement('div');
