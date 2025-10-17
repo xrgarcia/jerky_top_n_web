@@ -1364,6 +1364,20 @@ app.post('/api/rankings/products', async (req, res) => {
 
     const userId = session.userId;
     
+    // Validate rankings for duplicates
+    const productIds = rankings.map(r => r.productData.id);
+    const uniqueProductIds = new Set(productIds);
+    
+    if (productIds.length !== uniqueProductIds.size) {
+      // Find duplicate product IDs
+      const duplicates = productIds.filter((id, index) => productIds.indexOf(id) !== index);
+      console.error(`⚠️ Duplicate product IDs detected in rankings:`, duplicates);
+      return res.status(400).json({ 
+        error: 'Duplicate products detected in rankings', 
+        duplicates: [...new Set(duplicates)] 
+      });
+    }
+    
     // Clear existing rankings for this user and list first
     await storage.clearUserProductRankings(userId, rankingListId);
     

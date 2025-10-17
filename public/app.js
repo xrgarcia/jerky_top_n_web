@@ -797,6 +797,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 
+                // Initialize lastSavedProductIds with loaded rankings
+                lastSavedProductIds = new Set(data.rankings.map(r => r.productData.id));
+                
                 // Refresh product display to filter out already-ranked products
                 displayProducts();
             } else {
@@ -1332,7 +1335,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Helper function to check if a product is already ranked
+    function isProductAlreadyRanked(productId) {
+        for (let i = 0; i < rankingSlots.length; i++) {
+            const slot = rankingSlots[i];
+            if (slot.classList.contains('filled')) {
+                const slotProduct = JSON.parse(slot.dataset.productData);
+                if (slotProduct.id === productId) {
+                    return i + 1; // Return the rank position where it's found
+                }
+            }
+        }
+        return null; // Not found
+    }
+
     function insertProductWithPushDown(targetRank, productData) {
+        // Check if product is already ranked
+        const existingRank = isProductAlreadyRanked(productData.id);
+        if (existingRank !== null) {
+            console.warn(`⚠️ Product "${productData.title}" is already ranked at position ${existingRank}`);
+            if (window.appEventBus) {
+                window.appEventBus.emit('notification:show', {
+                    message: `This product is already ranked at position #${existingRank}`,
+                    type: 'warning'
+                });
+            }
+            return; // Prevent duplicate ranking
+        }
+
         // Collect all items at and after the target rank (to be pushed down)
         const itemsToPushDown = [];
         for (let i = targetRank - 1; i < rankingSlots.length; i++) {
@@ -1579,6 +1609,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function replaceProductAtPosition(productData, position) {
         console.log(`🔄 Replacing product at position ${position} with "${productData.title}"`);
         
+        // Check if product is already ranked elsewhere (not in the target position)
+        const existingRank = isProductAlreadyRanked(productData.id);
+        if (existingRank !== null && existingRank !== position) {
+            console.warn(`⚠️ Product "${productData.title}" is already ranked at position ${existingRank}`);
+            if (window.appEventBus) {
+                window.appEventBus.emit('notification:show', {
+                    message: `This product is already ranked at position #${existingRank}`,
+                    type: 'warning'
+                });
+            }
+            return; // Prevent duplicate ranking
+        }
+        
         // Simply fill the slot, overwriting whatever was there
         fillSlot(rankingSlots[position - 1], position, productData);
         
@@ -1788,6 +1831,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 800);
     }
 
+    // Track last saved product IDs to detect newly ranked products
+    let lastSavedProductIds = new Set();
+
     function collectRankingData() {
         return rankingSlots
             .filter(slot => slot.classList.contains('filled'))
@@ -1819,6 +1865,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const rankings = collectRankingData();
             
+            // Track current product IDs
+            const currentProductIds = new Set(rankings.map(r => r.productData.id));
+            
+            // Find newly added products (in current but not in last saved)
+            const newlyRankedProductIds = [...currentProductIds].filter(id => !lastSavedProductIds.has(id));
+            
             const response = await fetch('/api/rankings/products', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -1828,9 +1880,14 @@ document.addEventListener('DOMContentLoaded', function() {
                     rankings: rankings
                 })
             });
+            
+            const result = await response.json();
 
             if (response.ok) {
                 updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
+                
+                // Update last saved product IDs
+                lastSavedProductIds = currentProductIds;
                 
                 // Emit event to update progress widget and other reactive components
                 if (window.appEventBus) {
@@ -1840,16 +1897,25 @@ document.addEventListener('DOMContentLoaded', function() {
                         rankingListId: 'default'
                     });
                     
-                    // Emit product:ranked for each successfully saved product (enables reactive UI updates)
-                    rankings.forEach(ranking => {
-                        console.log(`📤 Emitting product:ranked for product ${ranking.productData.id}`);
-                        window.appEventBus.emit('product:ranked', { 
-                            productId: ranking.productData.id 
-                        });
+                    // Only emit product:ranked for NEWLY added products (prevents duplicate events on re-save)
+                    newlyRankedProductIds.forEach(productId => {
+                        console.log(`📤 Emitting product:ranked for newly added product ${productId}`);
+                        window.appEventBus.emit('product:ranked', { productId });
                     });
                 }
             } else {
-                updateAutoSaveStatus('error', 'Save failed');
+                // Handle server-side duplicate detection
+                if (result.error && result.error.includes('Duplicate')) {
+                    updateAutoSaveStatus('error', 'Duplicate products detected');
+                    if (window.appEventBus) {
+                        window.appEventBus.emit('notification:show', {
+                            message: 'Cannot save: duplicate products in ranking',
+                            type: 'error'
+                        });
+                    }
+                } else {
+                    updateAutoSaveStatus('error', 'Save failed');
+                }
             }
         } catch (error) {
             console.error('Auto-save error:', error);
