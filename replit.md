@@ -47,7 +47,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Styling**: Custom CSS for a consistent look and feel.
 
 ### Feature Specifications
-- **Ranking**: View top N jerky products (3, 5, or 8), persistent rankings with database storage, and a visual ranking modal with product images.
+- **Ranking**: View top N jerky products (3, 5, or 8), persistent rankings with database storage, and a visual ranking modal with product images. Multi-layer duplicate prevention validates that no product can be ranked twice through client-side pre-checks (`isProductAlreadyRanked`), server-side validation, and smart event emission that only fires for newly added products.
 - **Products Page**: Advanced sorting (Name, Recently Ranked, Avg Ranking, Total Rankings), animal and flavor filtering, client-side instant search, and server-side pagination (20 products per page) with dynamic "Load More" button showing remaining count ("Load 20 more products" or "Load X more products").
 - **Rank Page Products**: Server-side filtering via `/api/products/rankable` endpoint using `ProductRankingRepository` and `ProductsService.getRankableProductsForUser()` to exclude already-ranked products BEFORE pagination. Ensures users with extensive ranking history (70+ products) always see unranked products on initial load without manual pagination. Event-driven product removal: when products are successfully ranked and saved, they are immediately removed from the available products list using `product:ranked` events, providing instant visual feedback.
 - **Community**: Discover users, search by name or ranked products, and view user profiles with ranking statistics.
