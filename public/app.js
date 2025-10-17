@@ -676,27 +676,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // Remove product from list when ranked (reactive UI update)
-    function removeProductFromList(productId) {
-        const initialCount = currentProducts.length;
-        currentProducts = currentProducts.filter(product => product.id !== productId);
-        
-        if (currentProducts.length < initialCount) {
-            console.log(`🗑️ Removed product ${productId} from display (${initialCount} → ${currentProducts.length})`);
-            displayProducts(); // Re-render products grid
-        }
-    }
-    
-    // Subscribe to product:ranked event for reactive product removal
-    if (window.appEventBus) {
-        window.appEventBus.on('product:ranked', ({ productId }) => {
-            console.log(`📥 Received product:ranked event for product ${productId}`);
-            removeProductFromList(productId);
-        });
-        console.log('✅ Subscribed to product:ranked events for reactive UI updates');
-    } else {
-        console.warn('⚠️ EventBus not available - product removal will not work');
-    }
+    // Note: Product removal now happens optimistically (immediately when ranked)
+    // See insertProductWithPushDown() and replaceProductAtPosition() for implementation
 
 
     // Special version of loadProducts for initial parallel loading (no duplicate loading indicators)
@@ -1915,11 +1896,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         rankingListId: 'default'
                     });
                     
-                    // Only emit product:ranked for NEWLY added products (prevents duplicate events on re-save)
-                    newlyRankedProductIds.forEach(productId => {
-                        console.log(`📤 Emitting product:ranked for newly added product ${productId}`);
-                        window.appEventBus.emit('product:ranked', { productId });
-                    });
+                    // Note: product:ranked events no longer needed with optimistic UI
+                    // Products are removed immediately when ranked, not after save
                 }
             } else {
                 // Save failed - restore optimistically removed products
@@ -2032,15 +2010,13 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error(`Failed to save ranking for ${slot.productData.title}`);
                 }
                 
-                // Emit product:ranked event for successful save (enables reactive UI updates)
-                if (window.appEventBus) {
-                    console.log(`📤 Emitting product:ranked for product ${slot.productData.id}`);
-                    window.appEventBus.emit('product:ranked', { 
-                        productId: slot.productData.id 
-                    });
-                }
+                // Note: product:ranked events no longer needed with optimistic UI
+                // Products are removed immediately when ranked, not after save
             }
 
+            // Clear optimistically removed products on successful manual save
+            optimisticallyRemovedProducts = [];
+            
             alert(`Successfully saved ${filledSlots.length} product rankings!`);
             console.log(`✅ Saved ${filledSlots.length} product rankings`);
             
@@ -2054,7 +2030,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             console.error('Error saving rankings:', error);
-            alert('Failed to save rankings. Please try again.');
+            
+            // Restore optimistically removed products on failure
+            if (optimisticallyRemovedProducts.length > 0) {
+                currentProducts.push(...optimisticallyRemovedProducts);
+                optimisticallyRemovedProducts = [];
+                displayProducts();
+                console.log(`♻️ Restored products to display after manual save error`);
+            }
+            
+            alert('Failed to save rankings. Products have been restored to the list.');
+            
+            if (window.appEventBus) {
+                window.appEventBus.emit('notification:show', {
+                    message: 'Save failed. Products restored to list.',
+                    type: 'error'
+                });
+            }
         } finally {
             saveBtn.disabled = false;
             saveBtn.textContent = originalText;
