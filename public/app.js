@@ -698,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Don't show productLoading indicator - using unified ranking load status instead
 
         try {
-            const response = await fetch(`/api/products/search?query=&page=${currentPage}&limit=20`);
+            const response = await fetch(`/api/products/search?query=&page=${currentPage}&limit=20&sort=name-asc`);
             const data = await response.json();
 
             if (!response.ok) {
@@ -834,7 +834,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadMoreBtn.style.display = 'none';
 
         try {
-            const response = await fetch(`/api/products/search?query=${encodeURIComponent(query)}&page=${currentPage}&limit=20`);
+            const response = await fetch(`/api/products/search?query=${encodeURIComponent(query)}&page=${currentPage}&limit=20&sort=name-asc`);
             const data = await response.json();
 
             if (!response.ok) {
