@@ -20,21 +20,32 @@ class UserStatsAggregator {
    * @returns {Object} Aggregated user statistics
    */
   async getAggregatedUserStats(userId) {
+    const startTime = Date.now();
+    
     // Batch 1: Execute all independent queries in parallel
+    const batch1Start = Date.now();
     const [userStats, position, streaks] = await Promise.all([
       this.leaderboardManager.getUserStats(userId),
       this.leaderboardManager.getUserPosition(userId),
       this.streakManager.getUserStreaks(userId)
     ]);
+    const batch1Time = Date.now() - batch1Start;
+    console.log(`⏱️ Batch 1 completed in ${batch1Time}ms (getUserStats + getUserPosition + getUserStreaks)`);
 
     // Batch 2: Execute dependent queries (needs productsService)
+    const batch2Start = Date.now();
     const completedAnimalCategories = await this.leaderboardManager.getCompletedAnimalCategories(
       userId, 
       this.productsService
     );
+    const batch2Time = Date.now() - batch2Start;
+    console.log(`⏱️ Batch 2 completed in ${batch2Time}ms (getCompletedAnimalCategories)`);
 
     // Extract daily streak
     const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
+
+    const totalTime = Date.now() - startTime;
+    console.log(`⏱️ Total aggregation time: ${totalTime}ms`);
 
     // Return aggregated data transfer object (DTO)
     return {

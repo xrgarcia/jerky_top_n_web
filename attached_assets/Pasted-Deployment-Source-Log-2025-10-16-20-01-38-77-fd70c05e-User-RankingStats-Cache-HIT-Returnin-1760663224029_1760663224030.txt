@@ -1,0 +1,247 @@
+Deployment
+Source
+Log
+2025-10-16 20:01:38.77
+fd70c05e
+User
+💾 RankingStats Cache HIT: Returning data (age: 0 minutes)
+2025-10-16 20:02:31.15
+fd70c05e
+User
+📊 Socket 3AnavUb7mx_8q1DZAAAF subscribed to leaderboard
+2025-10-16 20:02:31.31
+fd70c05e
+User
+🔐 User 4 authenticated on socket 3AnavUb7mx_8q1DZAAAF
+2025-10-16 20:02:31.43
+fd70c05e
+User
+🔍 Achievements endpoint called
+2025-10-16 20:02:31.43
+fd70c05e
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:02:31.43
+fd70c05e
+User
+🔍 Streaks endpoint called
+2025-10-16 20:02:31.43
+fd70c05e
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:02:31.47
+fd70c05e
+User
+✅ Session validated for user 4
+2025-10-16 20:02:31.47
+fd70c05e
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:02:31.47
+fd70c05e
+User
+🔄 Fetching products...
+2025-10-16 20:02:31.47
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-16 20:02:31.47
+fd70c05e
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:02:31.47
+fd70c05e
+User
+🔄 Batching user stats queries...
+2025-10-16 20:02:31.48
+fd70c05e
+User
+✅ Session validated for user 4
+2025-10-16 20:02:31.48
+fd70c05e
+User
+📊 Fetching streaks for user 4
+2025-10-16 20:02:31.48
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-16 20:02:31.48
+fd70c05e
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 1 minutes)
+2025-10-16 20:02:31.52
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:02:31.52
+fd70c05e
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-16 20:02:31.52
+fd70c05e
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-16 20:02:31.65
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:02:31.67
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:02:35.62
+fd70c05e
+User
+🔄 Batching user stats queries...
+2025-10-16 20:02:35.67
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:02:39.36
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 1 minutes)
+2025-10-16 20:02:39.36
+fd70c05e
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-16 20:02:39.49
+fd70c05e
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:02:39.49
+fd70c05e
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:02:39.49
+fd70c05e
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 1 minutes)
+2025-10-16 20:02:39.53
+fd70c05e
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:04:41.12
+49a0470d
+User
+👋 WebSocket client disconnected: M9I6Tm55Hv-oodiCAABZ
+2025-10-16 20:04:41.12
+49a0470d
+User
+👤 User 4 still has 1 active socket(s)
+2025-10-16 20:04:42.22
+fd70c05e
+User
+✅ WebSocket client connected: ju8M2GzZxqCGXcebAAAH
+2025-10-16 20:04:44.88
+fd70c05e
+User
+🔐 User 4 authenticated on socket ju8M2GzZxqCGXcebAAAH
+2025-10-16 20:04:45.02
+fd70c05e
+User
+🔍 Achievements endpoint called
+2025-10-16 20:04:45.02
+fd70c05e
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:04:45.02
+fd70c05e
+User
+🔍 Streaks endpoint called
+2025-10-16 20:04:45.02
+fd70c05e
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:04:45.05
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 3 minutes)
+2025-10-16 20:04:45.05
+fd70c05e
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 3 minutes)
+2025-10-16 20:04:47.19
+fd70c05e
+User
+✅ Session validated for user 4
+2025-10-16 20:04:47.19
+fd70c05e
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:04:47.19
+fd70c05e
+User
+🔄 Fetching products...
+2025-10-16 20:04:47.19
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 3 minutes)
+2025-10-16 20:04:47.19
+fd70c05e
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:04:47.19
+fd70c05e
+User
+🔄 Batching user stats queries...
+2025-10-16 20:04:47.19
+fd70c05e
+User
+✅ Session validated for user 4
+2025-10-16 20:04:47.19
+fd70c05e
+User
+📊 Fetching streaks for user 4
+2025-10-16 20:04:47.31
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:04:47.31
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:04:47.31
+fd70c05e
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-16 20:04:47.32
+fd70c05e
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-16 20:04:47.37
+fd70c05e
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:04:51.08
+fd70c05e
+User
+💾 Cache HIT: Returning 163 products from cache (age: 3 minutes)
+2025-10-16 20:04:51.08
+fd70c05e
+User
+💾 Metadata Cache HIT: Returning data (age: 3 minutes)
+2025-10-16 20:04:51.21
+fd70c05e
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:04:51.21
+fd70c05e
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:04:51.21
+fd70c05e
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 3 minutes)
+2025-10-16 20:04:51.25
+fd70c05e
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:04:51.29
+fd70c05e
+User
+🔍 Achievements endpoint called
+2025-10-16 20:04:51.29
+fd70c05e
+User
+🔑 Session ID present: bb9ac122...

@@ -116,6 +116,7 @@ class LeaderboardManager {
    * @returns {Object} User's position and stats
    */
   async getUserPosition(userId, period = 'all_time') {
+    const startTime = Date.now();
     let dateFilter = '';
     
     if (period === 'week') {
@@ -146,6 +147,7 @@ class LeaderboardManager {
     // Use window functions to calculate both rank and percentile correctly
     // RANK() for display rank (tied users get same rank)  
     // ROW_NUMBER() for sequential position used in percentile calculation
+    const queryBuildTime = Date.now() - startTime;
     const positionQuery = `
       WITH user_scores AS (
         SELECT 
@@ -187,7 +189,12 @@ class LeaderboardManager {
       WHERE user_id = ${userId}
     `;
 
+    const queryStartTime = Date.now();
     const positionResult = await this.db.execute(sql.raw(positionQuery));
+    const queryExecutionTime = Date.now() - queryStartTime;
+    const totalTime = Date.now() - startTime;
+    
+    console.log(`⏱️ getUserPosition() window function query: ${queryExecutionTime}ms (total: ${totalTime}ms)`);
     
     if (!positionResult.rows.length) {
       return {
