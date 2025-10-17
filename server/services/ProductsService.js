@@ -1,6 +1,7 @@
 const MetadataCache = require('../cache/MetadataCache');
 const RankingStatsCache = require('../cache/RankingStatsCache');
 const ProductsMetadataRepository = require('../repositories/ProductsMetadataRepository');
+const ProductRankingRepository = require('../repositories/ProductRankingRepository');
 const { sql } = require('drizzle-orm');
 
 /**
@@ -219,6 +220,32 @@ class ProductsService {
       flavorDisplay: metadata.flavorDisplay,
       flavorIcon: metadata.flavorIcon
     };
+  }
+  
+  /**
+   * Get rankable products for a specific user (excludes already-ranked products)
+   * This ensures users with many rankings always see unranked products
+   * 
+   * @param {number} userId - The user ID to get unranked products for
+   * @param {object} options - Same options as getAllProducts plus rankingListId
+   * @returns {Promise<Array>} Filtered products that user hasn't ranked yet
+   */
+  async getRankableProductsForUser(userId, options = {}) {
+    const { rankingListId = 'topN', ...otherOptions } = options;
+    
+    // 1. Get all products with full enrichment
+    const allProducts = await this.getAllProducts(otherOptions);
+    
+    // 2. Get user's ranked product IDs
+    const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, rankingListId);
+    const rankedSet = new Set(rankedProductIds);
+    
+    // 3. Filter out already-ranked products BEFORE pagination
+    const unrankedProducts = allProducts.filter(product => !rankedSet.has(product.id));
+    
+    console.log(`🎯 User ${userId}: ${allProducts.length} total products, ${rankedProductIds.length} ranked, ${unrankedProducts.length} available to rank`);
+    
+    return unrankedProducts;
   }
   
   /**
