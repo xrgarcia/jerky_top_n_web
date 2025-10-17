@@ -1,0 +1,204 @@
+2025-10-16 20:15:42.47
+222295c7
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-16 20:15:42.58
+222295c7
+User
+✅ Session validated for user 4
+2025-10-16 20:15:42.58
+222295c7
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:15:42.58
+222295c7
+User
+🔄 Fetching products...
+2025-10-16 20:15:42.58
+222295c7
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-16 20:15:42.58
+222295c7
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:15:42.58
+222295c7
+User
+🔄 Batching user stats queries...
+2025-10-16 20:15:42.62
+222295c7
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:15:42.63
+222295c7
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:15:46.47
+222295c7
+User
+⏱️ getUserPosition() window function query: 3887ms (total: 3887ms)
+2025-10-16 20:15:46.47
+222295c7
+User
+⏱️ Batch 1 completed in 3888ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-16 20:15:46.47
+222295c7
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-16 20:15:46.47
+222295c7
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-16 20:15:46.56
+222295c7
+User
+✅ Metadata Cache UPDATED: Stored 165 products, valid for 30 minutes
+2025-10-16 20:15:46.56
+222295c7
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-16 20:15:46.66
+222295c7
+User
+⏱️ Batch 2 completed in 186ms (getCompletedAnimalCategories)
+2025-10-16 20:15:46.66
+222295c7
+User
+⏱️ Total aggregation time: 4074ms
+2025-10-16 20:15:46.66
+222295c7
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:15:46.66
+222295c7
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:15:46.66
+222295c7
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 0 minutes)
+2025-10-16 20:15:46.70
+222295c7
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:15:46.74
+222295c7
+User
+🔍 Achievements endpoint called
+2025-10-16 20:15:46.74
+222295c7
+User
+🔑 Session ID present: bb9ac122...
+2025-10-16 20:15:46.79
+222295c7
+User
+✅ Session validated for user 4
+2025-10-16 20:15:46.79
+222295c7
+User
+📊 Fetching achievements for user 4
+2025-10-16 20:15:46.79
+222295c7
+User
+🔄 Fetching products...
+2025-10-16 20:15:46.79
+222295c7
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-16 20:15:46.79
+222295c7
+User
+✅ Products fetched: 163 rankable products
+2025-10-16 20:15:46.79
+222295c7
+User
+🔄 Batching user stats queries...
+2025-10-16 20:15:46.84
+222295c7
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-16 20:15:50.65
+222295c7
+User
+⏱️ getUserPosition() window function query: 3856ms (total: 3856ms)
+2025-10-16 20:15:50.65
+222295c7
+User
+⏱️ Batch 1 completed in 3857ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-16 20:15:50.65
+222295c7
+User
+💾 Cache HIT: Returning 163 products from cache (age: 0 minutes)
+2025-10-16 20:15:50.65
+222295c7
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-10-16 20:15:50.78
+222295c7
+User
+⏱️ Batch 2 completed in 136ms (getCompletedAnimalCategories)
+2025-10-16 20:15:50.78
+222295c7
+User
+⏱️ Total aggregation time: 3993ms
+2025-10-16 20:15:50.78
+222295c7
+User
+✅ User stats aggregated: position 1, streak 2
+2025-10-16 20:15:50.78
+222295c7
+User
+🔄 Getting achievements with progress...
+2025-10-16 20:15:50.78
+222295c7
+User
+💾 AchievementCache HIT: Returning 19 definitions (age: 0 minutes)
+2025-10-16 20:15:50.83
+222295c7
+User
+✅ Achievements fetched successfully for user 4: 19 achievement(s)
+2025-10-16 20:15:57.59
+222295c7
+User
+🏷️ Synced metadata for 163 fresh products
+2025-10-16 20:15:57.59
+222295c7
+User
+🗑️ Metadata cache invalidated
+2025-10-16 20:15:57.59
+222295c7
+User
+🚫 RankingStats Cache MISS: Data expired or not found
+2025-10-16 20:15:57.69
+222295c7
+User
+📊 Found ranking stats for 150 products
+2025-10-16 20:15:57.69
+222295c7
+User
+✅ RankingStats Cache UPDATED: Stored 150 product stats, valid for 30 minutes
+2025-10-16 20:15:57.69
+222295c7
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-16 20:15:57.69
+222295c7
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-16 20:15:57.78
+222295c7
+User
+✅ Metadata Cache UPDATED: Stored 165 products, valid for 30 minutes
+2025-10-16 20:15:57.78
+222295c7
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-16 20:15:57.78
+222295c7
+User
+✅ Found 163 products
+
+Wrap
+
+Colors
