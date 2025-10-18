@@ -75,53 +75,14 @@
   font-weight: 500;
 }
 
-/* Last Achievement Badge */
-.last-achievement-badge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
-  border: 2px solid #663399;
-  background: linear-gradient(135deg, #f8f9ff, #ffffff);
+.progress-stats .stat-achievement {
+  font-size: 18px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  padding: 0;
-  flex-shrink: 0;
+  transition: transform 0.2s ease;
 }
 
-.last-achievement-badge:hover {
-  transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.3);
-}
-
-.last-achievement-badge:focus {
-  outline: 2px solid #663399;
-  outline-offset: 2px;
-}
-
-.last-achievement-badge.tier-bronze {
-  border-color: #CD7F32;
-}
-
-.last-achievement-badge.tier-silver {
-  border-color: #C0C0C0;
-}
-
-.last-achievement-badge.tier-gold {
-  border-color: #FFD700;
-  background: linear-gradient(135deg, #fffbf0, #ffffff);
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.2);
-}
-
-.last-achievement-badge.tier-gold:hover {
-  box-shadow: 0 4px 16px rgba(255, 215, 0, 0.4);
-}
-
-.achievement-badge-icon {
-  font-size: 22px;
-  line-height: 1;
+.progress-stats .stat-achievement:hover {
+  transform: scale(1.2);
 }
 
 .progress-milestone {
@@ -338,15 +299,6 @@
   .progress-stats {
     font-size: 13px;
     gap: 12px;
-  }
-
-  .last-achievement-badge {
-    width: 36px;
-    height: 36px;
-  }
-
-  .achievement-badge-icon {
-    font-size: 20px;
   }
 
   .achievements-grid {

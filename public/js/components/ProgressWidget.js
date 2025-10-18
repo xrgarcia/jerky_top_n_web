@@ -156,13 +156,9 @@ class ProgressWidget {
             </div>
             <div class="progress-stats">
               ${lastAchievement ? `
-                <button 
-                  class="last-achievement-badge tier-${lastAchievement.tier}"
-                  aria-label="Last earned: ${lastAchievement.name}. Click to view all achievements"
-                  title="${lastAchievement.name}"
-                >
-                  <span class="achievement-badge-icon">${lastAchievement.icon}</span>
-                </button>
+                <span class="stat stat-achievement" data-action="expand" title="${lastAchievement.name}">
+                  ${lastAchievement.icon}
+                </span>
               ` : ''}
               <span class="stat">${progress.totalRankings} Ranked</span>
               ${progress.currentStreak > 0 ? `<span class="stat">🔥 ${progress.currentStreak} Day Streak</span>` : ''}
@@ -207,26 +203,20 @@ class ProgressWidget {
       </div>
     `;
 
-    // Add click handler for toggle button (header)
+    // Add click handler for toggle button
     const toggleButton = this.container.querySelector('.progress-toggle-button');
     
     if (toggleButton) {
       toggleButton.addEventListener('click', (e) => {
-        // Only toggle if the click wasn't on the achievement badge
-        if (!e.target.closest('.last-achievement-badge')) {
+        // If clicking the achievement stat, expand achievements
+        if (e.target.closest('.stat-achievement')) {
+          e.preventDefault();
+          this.expandAchievements();
+        } else {
+          // Otherwise toggle normally
           e.preventDefault();
           this.toggleCollapsed();
         }
-      });
-    }
-
-    // Add separate click handler for last achievement badge
-    const lastAchievementBadge = this.container.querySelector('.last-achievement-badge');
-    if (lastAchievementBadge) {
-      lastAchievementBadge.addEventListener('click', (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        this.expandAchievements();
       });
     }
   }
