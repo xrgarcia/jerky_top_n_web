@@ -3179,6 +3179,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Profile page functions
     async function loadProfileData() {
+        const profileAchievementsList = document.getElementById('profileAchievementsList');
+        
         try {
             const response = await fetch('/api/profile');
             const data = await response.json();
@@ -3216,8 +3218,42 @@ document.addEventListener('DOMContentLoaded', function() {
             if (profileListsCount) {
                 profileListsCount.textContent = data.rankingListsCount || 0;
             }
+            
+            // Load achievements for this user
+            if (data.id && profileAchievementsList) {
+                try {
+                    const achievementsResponse = await fetch(`/api/gamification/user/${data.id}/achievements`);
+                    const achievementsData = await achievementsResponse.json();
+                    
+                    if (achievementsResponse.ok && achievementsData.achievements) {
+                        const achievements = achievementsData.achievements;
+                        
+                        if (achievements.length === 0) {
+                            profileAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet. Start ranking to unlock achievements!</div>';
+                        } else {
+                            profileAchievementsList.innerHTML = achievements.map(achievement => {
+                                return `
+                                    <div class="user-achievement-badge tier-${achievement.tier}">
+                                        <span class="user-achievement-icon">${achievement.icon}</span>
+                                        <span class="user-achievement-name">${achievement.name}</span>
+                                        <div class="user-achievement-tooltip">${achievement.description}</div>
+                                    </div>
+                                `;
+                            }).join('');
+                        }
+                    } else {
+                        profileAchievementsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">Unable to load achievements</div>';
+                    }
+                } catch (achievementError) {
+                    console.error('Failed to load achievements:', achievementError);
+                    profileAchievementsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">Unable to load achievements</div>';
+                }
+            }
         } catch (error) {
             console.error('Failed to load profile:', error);
+            if (profileAchievementsList) {
+                profileAchievementsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">Unable to load achievements</div>';
+            }
         }
     }
     
