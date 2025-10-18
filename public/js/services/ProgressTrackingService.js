@@ -25,7 +25,7 @@ class ProgressTrackingService extends BaseService {
     this.subscribe('achievements:loaded', (data) => {
       this.achievements = data.achievements || [];
       console.log('📊 ProgressTrackingService received achievements from GamificationService');
-      this.emit('achievements:loaded', data);
+      this.emit('progress:achievements:updated', { achievements: this.achievements });
     });
   }
 

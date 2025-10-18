@@ -44,7 +44,7 @@ class ProgressWidget {
       this.render();
     });
 
-    this.eventBus.on('achievements:loaded', () => {
+    this.eventBus.on('progress:achievements:updated', () => {
       this.render();
     });
 
@@ -54,6 +54,11 @@ class ProgressWidget {
   }
 
   render() {
+    if (!this.container) {
+      console.warn('ProgressWidget: Container not found, skipping render');
+      return;
+    }
+
     const progress = this.progressService.progress;
     const nextMilestone = this.progressService.getNextMilestone();
     const achievements = this.progressService.achievements || [];
