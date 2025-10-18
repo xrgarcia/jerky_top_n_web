@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'none';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'block';
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             
             // Load user profile
             await loadUserProfile(userId);
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'block';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'none';
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             
             // Load product detail
             await loadProductDetail(productId);
@@ -188,14 +188,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'rank');
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Load rankings and products when page is shown
             loadRankPageData();
         } else if (page === 'products' && productsPage) {
             productsPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'products');
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Parse URL parameters
             const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
@@ -242,14 +242,14 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'community');
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Load community users when page is shown
             loadCommunityUsers();
         } else if (page === 'profile' && profilePage) {
             profilePage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'profile');
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Load profile data when page is shown
             loadProfileData();
@@ -272,7 +272,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'tools');
-            if (heroSection) heroSection.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Initialize tools page
             if (window.initToolsPage) {
