@@ -45,6 +45,7 @@ The application features a modern web architecture designed for responsiveness, 
     - **Future optimization path**: Materialized views or pre-aggregated stats needed to reach <100ms target
   - **Home Page Stats** (~99% faster, 10-15s → <1ms):
     - **Home Stats Cache**: `HomeStatsCache` singleton with 5-minute TTL caches aggregated home page statistics (top rankers, trending products, community stats, recent achievements)
+    - **Cache Warming**: `CacheWarmer` service automatically warms all caches on server startup (async, non-blocking) ensuring first visitor gets instant response
     - Cache invalidation hooks on ranking saves and achievement earnings ensure data consistency
     - Proven performance: first load ~16.8s, subsequent cache hits <1ms (99%+ improvement)
 - **Search**: Global unified search with type-ahead functionality, searching both products and community members. Client-side instant search for products with multi-word support.
