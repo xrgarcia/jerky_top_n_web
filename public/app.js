@@ -396,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
         showPage('login');
     }
 
-    // Global function to switch to rank page
+    // Global navigation functions for backwards compatibility and onclick handlers
     window.showRankPage = async function() {
         // Check authentication before accessing ranking page
         if (!isUserAuthenticated()) {
@@ -407,7 +407,41 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        await showPage('rank');
+        window.location.hash = '#rank';
+    };
+
+    window.showProductsPage = async function() {
+        window.location.hash = '#products';
+    };
+
+    window.showCommunityPage = async function() {
+        // Check authentication before accessing community page
+        if (!isUserAuthenticated()) {
+            const isAuthenticatedAsync = await isUserAuthenticatedAsync();
+            if (!isAuthenticatedAsync) {
+                showLoginRequiredMessage('community');
+                return;
+            }
+        }
+        
+        window.location.hash = '#community';
+    };
+
+    window.showProfilePage = async function() {
+        // Check authentication before accessing profile page
+        if (!isUserAuthenticated()) {
+            const isAuthenticatedAsync = await isUserAuthenticatedAsync();
+            if (!isAuthenticatedAsync) {
+                showLoginRequiredMessage('profile');
+                return;
+            }
+        }
+        
+        window.location.hash = '#profile';
+    };
+
+    window.showHomePage = function() {
+        window.location.hash = '';
     };
 
     // Customer authentication functions
