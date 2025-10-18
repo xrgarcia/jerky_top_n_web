@@ -16,6 +16,7 @@ const HomeStatsService = require('../services/HomeStatsService');
 const CommunityService = require('../services/CommunityService');
 const PageViewService = require('../services/PageViewService');
 const UserStatsAggregator = require('../services/UserStatsAggregator');
+const CacheWarmer = require('../services/CacheWarmer');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -72,10 +73,25 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
 
   services.wsGateway = wsGateway;
 
+  // Seed achievements (this also warms AchievementCache)
   achievementManager.seedAchievements().then(() => {
     console.log('✅ Achievements seeded');
   }).catch(err => {
     console.error('❌ Failed to seed achievements:', err);
+  });
+
+  // Initialize cache warmer and register global caches
+  const cacheWarmer = new CacheWarmer();
+  
+  // Register HomeStatsCache warming
+  cacheWarmer.register('HomeStatsCache', async () => {
+    await homeStatsService.getAllHomeStats();
+  });
+
+  // Warm all caches asynchronously (non-blocking)
+  // This runs in background after server starts accepting requests
+  setImmediate(() => {
+    cacheWarmer.warmAllAsync();
   });
 
   console.log('🎮 Gamification system initialized successfully');
