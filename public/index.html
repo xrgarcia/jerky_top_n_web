@@ -62,9 +62,69 @@
     <!-- Hero Section -->
     <section class="hero" id="heroSection">
         <div class="hero-content">
+            <!-- Main Title Banner -->
             <div class="hero-banner">
                 <h1 class="hero-title">#1 Jerky Ranking Site</h1>
-                <p class="hero-subtitle">Discover and rank the best jerky products</p>
+                <p class="hero-subtitle">Join the community, rank products, and earn achievements</p>
+            </div>
+
+            <!-- Gamification Dashboard -->
+            <div class="hero-dashboard" id="heroDashboard">
+                <!-- Live Stats Counters -->
+                <div class="hero-stats">
+                    <div class="hero-stat-card">
+                        <div class="stat-icon">🔥</div>
+                        <div class="stat-value" id="heroActiveRankers">...</div>
+                        <div class="stat-label">Active Rankers Today</div>
+                    </div>
+                    <div class="hero-stat-card">
+                        <div class="stat-icon">⭐</div>
+                        <div class="stat-value" id="heroAchievementsWeek">...</div>
+                        <div class="stat-label">Achievements This Week</div>
+                    </div>
+                    <div class="hero-stat-card">
+                        <div class="stat-icon">🏆</div>
+                        <div class="stat-value" id="heroTotalRankings">...</div>
+                        <div class="stat-label">Total Rankings</div>
+                    </div>
+                </div>
+
+                <!-- User Progress Area (shown when logged in) -->
+                <div class="hero-user-progress" id="heroUserProgress" style="display: none;">
+                    <div class="progress-content">
+                        <div class="progress-item">
+                            <span class="progress-icon">🔥</span>
+                            <span class="progress-text" id="heroUserStreak">Your Streak: Loading...</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-icon">📊</span>
+                            <span class="progress-text" id="heroUserRank">Rank: Loading...</span>
+                        </div>
+                        <div class="progress-item">
+                            <span class="progress-icon">🎯</span>
+                            <span class="progress-text" id="heroUserNext">Next: Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Proof Slider -->
+                <div class="hero-achievements-slider">
+                    <div class="slider-container" id="heroAchievementsSlider">
+                        <div class="slider-item">Loading recent achievements...</div>
+                    </div>
+                </div>
+
+                <!-- Dual CTAs -->
+                <div class="hero-cta-buttons">
+                    <button class="hero-cta-btn primary" id="heroStartRankingBtn">
+                        <span class="cta-text">Start Ranking Now</span>
+                        <span class="cta-icon">→</span>
+                    </button>
+                    <button class="hero-cta-btn secondary" id="heroLeaderboardBtn">
+                        <span class="cta-text">View Leaderboard</span>
+                        <span class="cta-icon">🏆</span>
+                    </button>
+                </div>
             </div>
         </div>
     </section>
