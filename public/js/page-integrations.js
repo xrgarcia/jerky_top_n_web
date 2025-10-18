@@ -47,14 +47,14 @@
       progressContainer.id = 'rankPageProgress';
       progressContainer.style.marginBottom = '20px';
       
-      const pageHeader = rankPage.querySelector('.page-header');
+      const pageHeader = rankPage.querySelector('.page-header-minimal');
       if (pageHeader) {
         pageHeader.after(progressContainer);
         console.log('✅ Progress container inserted after page header');
       } else {
         // If no page header, insert at the top of rank page
         rankPage.insertBefore(progressContainer, rankPage.firstChild);
-        console.log('✅ Progress container inserted at top of rank page');
+        console.log('⚠️ Progress container inserted at top of rank page (no header found)');
       }
     }
 
