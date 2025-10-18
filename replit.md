@@ -14,10 +14,11 @@ The application features a modern web architecture designed for responsiveness, 
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional design aesthetic inspired by jerky.com, utilizing a blue/purple color scheme.
 - **Responsiveness**: Fully responsive layout optimized for desktop, tablet, and mobile devices.
-- **Hero Gamification Dashboard**: Transformed hero section into a live engagement dashboard featuring live stats counters, a social proof slider, user progress bar, and dual CTAs with real-time updates via WebSockets.
+- **Hero Gamification Dashboard**: Transformed hero section into a live engagement dashboard featuring live stats counters, a social proof slider, user progress bar, and dual CTAs with real-time updates via WebSockets. Displays only on homepage for maximum engagement.
+- **Minimal Page Headers**: Content pages (Products, Community, Rank, Profile, Tools) use compact ~150-200px headers with breadcrumbs, page title with icon, subtitle, and page-specific action buttons. Features subtle gradient backgrounds and responsive design for mobile devices. Provides content-focused experience without hero distraction.
 - **Home Page Dashboard**: Dynamic Bento Box layout with engaging micro-copy and interactive CTAs within widgets. Includes quick-action buttons on product items and improved empty states with encouraging CTAs. Accessibility is ensured with proper `aria-labels` and touch-friendly targets.
 - **Interactive Ranking**: Dual ranking system supporting drag-and-drop for desktop and dropdown selection for mobile with visual cues, badges, and animated sorting icons.
-- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking.
+- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking. SPA navigation controls hero section visibility (shown only on homepage).
 
 ### Technical Implementations
 - **Frontend**: Built with Vanilla JavaScript, an event-driven architecture using `EventBus` for pub/sub, and `ServiceRegistry` for dependency injection. Key services handle gamification, social proof, activity feeds, progress tracking, and leaderboards. Page navigation triggers automatic data reloading for achievements and streaks.
