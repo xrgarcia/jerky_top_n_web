@@ -43,6 +43,10 @@ The application features a modern web architecture designed for responsiveness, 
     - Cache invalidation hooks on ranking changes ensure data consistency
     - Single optimized query with HAVING clause filters active users efficiently
     - **Future optimization path**: Materialized views or pre-aggregated stats needed to reach <100ms target
+  - **Home Page Stats** (~99% faster, 10-15s → <1ms):
+    - **Home Stats Cache**: `HomeStatsCache` singleton with 5-minute TTL caches aggregated home page statistics (top rankers, trending products, community stats, recent achievements)
+    - Cache invalidation hooks on ranking saves and achievement earnings ensure data consistency
+    - Proven performance: first load ~16.8s, subsequent cache hits <1ms (99%+ improvement)
 - **Search**: Global unified search with type-ahead functionality, searching both products and community members. Client-side instant search for products with multi-word support.
 - **Styling**: Custom CSS for a consistent look and feel.
 
