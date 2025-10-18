@@ -1228,7 +1228,7 @@ app.get('/api/products/rankable', async (req, res) => {
     // Get products excluding user's already-ranked products
     const enrichedProducts = await productsService.getRankableProductsForUser(userId, {
       query,
-      rankingListId: 'topN',
+      rankingListId: 'default',  // Must match the rankingListId used when saving rankings
       includeMetadata: true,
       includeRankingStats: true
     });
