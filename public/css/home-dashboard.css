@@ -33,19 +33,23 @@
   border-color: #0066CC;
 }
 
-.stat-value {
-  font-size: 32px;
-  font-weight: bold;
-  color: #0066CC;
+/* Community stats need more specific selectors to override hero-dashboard.css */
+.community-stats-overview .stat-value,
+.dashboard-section .stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  color: #2c2c2c;
   margin-bottom: 8px;
+  font-family: 'Arial Black', sans-serif;
 }
 
-.stat-label {
+.community-stats-overview .stat-label,
+.dashboard-section .stat-label {
   font-size: 13px;
-  color: #666;
+  color: #2c2c2c;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 /* Dashboard Grid - Main Content Area */
