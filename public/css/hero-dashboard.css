@@ -1,10 +1,59 @@
 /* Hero Dashboard Gamification Styles */
 
+/* Hero Overlay for better contrast */
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(44, 44, 44, 0.6) 100%);
+    z-index: 0;
+}
+
+/* Update hero content to be centered and relative */
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Hero Banner - Updated styling */
+.hero-banner {
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+    padding: 30px 50px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    transform: rotate(-1deg);
+    margin-bottom: 40px;
+    display: inline-block;
+}
+
+.hero-title {
+    font-size: 48px;
+    font-weight: 800;
+    color: #2c2c2c;
+    margin-bottom: 10px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.hero-subtitle {
+    font-size: 16px;
+    color: #2c2c2c;
+    font-weight: 600;
+    margin: 0;
+}
+
 /* Hero Dashboard Container */
 .hero-dashboard {
     margin-top: 30px;
     width: 100%;
-    max-width: 1200px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* Live Stats Counters */
@@ -16,59 +65,55 @@
 }
 
 .hero-stat-card {
-    background: rgba(255, 255, 255, 0.95);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 25px 20px;
     text-align: center;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: 2px solid transparent;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
 }
 
 .hero-stat-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background: rgba(255, 255, 255, 0.25);
     border-color: #FFD700;
+    box-shadow: 0 12px 40px rgba(255, 215, 0, 0.3);
 }
 
 .stat-icon {
-    font-size: 36px;
+    font-size: 40px;
     margin-bottom: 10px;
-    animation: pulse 2s ease-in-out infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        transform: scale(1);
-    }
-    50% {
-        transform: scale(1.1);
-    }
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .stat-value {
-    font-size: 32px;
+    font-size: 36px;
     font-weight: 800;
-    color: #2c2c2c;
-    margin-bottom: 5px;
+    color: #ffffff;
+    margin-bottom: 8px;
     font-family: 'Arial Black', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .stat-label {
-    font-size: 13px;
-    color: #666;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
 }
 
 /* User Progress Area */
 .hero-user-progress {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
     padding: 20px 30px;
     margin-bottom: 25px;
-    box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
 }
 
 .progress-content {
@@ -89,20 +134,24 @@
 
 .progress-icon {
     font-size: 24px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 .progress-text {
     font-size: 15px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 /* Social Proof Achievements Slider */
 .hero-achievements-slider {
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 30px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
     border-left: 4px solid #FFD700;
 }
 
@@ -120,7 +169,7 @@
     padding: 10px 15px;
     animation: slideIn 0.5s ease-out;
     font-size: 15px;
-    color: #2c2c2c;
+    color: #ffffff;
 }
 
 @keyframes slideIn {
@@ -137,6 +186,7 @@
 .achievement-badge {
     font-size: 28px;
     animation: bounce 1s ease-in-out;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
 @keyframes bounce {
@@ -154,22 +204,24 @@
 
 .achievement-user {
     font-weight: 700;
-    color: #667eea;
+    color: #FFD700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .achievement-name {
     font-weight: 600;
-    color: #2c2c2c;
+    color: #ffffff;
 }
 
 .achievement-tier {
     display: inline-block;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 8px;
     font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     margin-left: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .achievement-tier.gold {
@@ -187,19 +239,26 @@
     color: white;
 }
 
+.achievement-time {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 8px;
+}
+
 /* Hero CTA Buttons */
 .hero-cta-buttons {
     display: flex;
     gap: 15px;
     justify-content: center;
     flex-wrap: wrap;
+    margin-top: 40px;
 }
 
 .hero-cta-btn {
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 18px 35px;
+    padding: 18px 40px;
     font-size: 16px;
     font-weight: 700;
     border-radius: 12px;
@@ -208,7 +267,7 @@
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
 .hero-cta-btn.primary {
@@ -219,7 +278,7 @@
 .hero-cta-btn.primary:hover {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
 }
 
 .hero-cta-btn.secondary {
@@ -230,7 +289,7 @@
 .hero-cta-btn.secondary:hover {
     background: linear-gradient(135deg, #FFA500, #FFD700);
     transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
 }
 
 .cta-icon {
@@ -244,6 +303,20 @@
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hero-banner {
+        padding: 25px 40px;
+        transform: rotate(0deg);
+        margin-bottom: 30px;
+    }
+
+    .hero-title {
+        font-size: 32px;
+    }
+
+    .hero-subtitle {
+        font-size: 14px;
+    }
+
     .hero-dashboard {
         margin-top: 20px;
     }
@@ -259,15 +332,15 @@
     }
 
     .stat-icon {
-        font-size: 28px;
+        font-size: 32px;
     }
 
     .stat-value {
-        font-size: 24px;
+        font-size: 28px;
     }
 
     .stat-label {
-        font-size: 12px;
+        font-size: 11px;
     }
 
     .hero-user-progress {
@@ -293,6 +366,8 @@
     .slider-item {
         font-size: 14px;
         padding: 8px 12px;
+        flex-direction: column;
+        text-align: center;
     }
 
     .achievement-badge {
@@ -302,6 +377,7 @@
     .hero-cta-buttons {
         flex-direction: column;
         gap: 12px;
+        margin-top: 30px;
     }
 
     .hero-cta-btn {
@@ -312,12 +388,24 @@
 }
 
 @media (max-width: 480px) {
+    .hero-banner {
+        padding: 20px 30px;
+    }
+
+    .hero-title {
+        font-size: 24px;
+    }
+
+    .hero-subtitle {
+        font-size: 13px;
+    }
+
     .stat-value {
-        font-size: 20px;
+        font-size: 24px;
     }
 
     .stat-label {
-        font-size: 11px;
+        font-size: 10px;
     }
 
     .progress-icon {

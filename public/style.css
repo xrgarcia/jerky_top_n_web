@@ -339,41 +339,12 @@ body {
                 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400"><rect fill="%238B4513" width="1200" height="400"/><rect fill="%23A0522D" width="200" height="400" x="0"/><rect fill="%23CD853F" width="200" height="400" x="200"/><rect fill="%23D2691E" width="200" height="400" x="400"/><rect fill="%23DEB887" width="200" height="400" x="600"/><rect fill="%23F4A460" width="200" height="400" x="800"/><rect fill="%23D2691E" width="200" height="400" x="1000"/></svg>');
     background-size: cover;
     background-position: center;
-    min-height: 400px;
+    min-height: 700px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-}
-
-.hero-content {
-    text-align: center;
-    max-width: 800px;
-    padding: 0 20px;
-}
-
-.hero-banner {
-    background: linear-gradient(45deg, #FFD700, #FFA500);
-    padding: 30px 50px;
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    transform: rotate(-2deg);
-    margin: 0 auto;
-    max-width: 600px;
-}
-
-.hero-title {
-    font-size: 48px;
-    font-weight: 800;
-    color: #2c2c2c;
-    margin-bottom: 10px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-.hero-subtitle {
-    font-size: 18px;
-    color: #2c2c2c;
-    font-weight: 600;
+    padding: 60px 20px;
 }
 
 /* Hide hero on login page */
