@@ -63,6 +63,12 @@ class ProgressWidget {
     });
   }
 
+  expandAchievements() {
+    if (this.isCollapsed) {
+      this.toggleCollapsed();
+    }
+  }
+
   toggleCollapsed() {
     const achievementsSection = this.container.querySelector('.all-achievements');
     if (!achievementsSection) return;
@@ -129,6 +135,9 @@ class ProgressWidget {
     }
 
     const achievementsId = 'progress-achievements-section';
+    
+    // Get last earned achievement
+    const lastAchievement = progress?.recentAchievements?.[0];
 
     this.container.innerHTML = `
       <div class="progress-widget ${this.isCollapsed ? 'collapsed' : 'expanded'}">
@@ -146,6 +155,15 @@ class ProgressWidget {
               </svg>
             </div>
             <div class="progress-stats">
+              ${lastAchievement ? `
+                <button 
+                  class="last-achievement-badge tier-${lastAchievement.tier}"
+                  aria-label="Last earned: ${lastAchievement.name}. Click to view all achievements"
+                  title="${lastAchievement.name}"
+                >
+                  <span class="achievement-badge-icon">${lastAchievement.icon}</span>
+                </button>
+              ` : ''}
               <span class="stat">${progress.totalRankings} Ranked</span>
               ${progress.currentStreak > 0 ? `<span class="stat">🔥 ${progress.currentStreak} Day Streak</span>` : ''}
             </div>
@@ -189,13 +207,26 @@ class ProgressWidget {
       </div>
     `;
 
-    // Add click handler for toggle button
+    // Add click handler for toggle button (header)
     const toggleButton = this.container.querySelector('.progress-toggle-button');
     
     if (toggleButton) {
       toggleButton.addEventListener('click', (e) => {
+        // Only toggle if the click wasn't on the achievement badge
+        if (!e.target.closest('.last-achievement-badge')) {
+          e.preventDefault();
+          this.toggleCollapsed();
+        }
+      });
+    }
+
+    // Add separate click handler for last achievement badge
+    const lastAchievementBadge = this.container.querySelector('.last-achievement-badge');
+    if (lastAchievementBadge) {
+      lastAchievementBadge.addEventListener('click', (e) => {
         e.preventDefault();
-        this.toggleCollapsed();
+        e.stopPropagation();
+        this.expandAchievements();
       });
     }
   }
