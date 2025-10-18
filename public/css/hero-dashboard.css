@@ -88,7 +88,8 @@
     filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
 }
 
-.stat-value {
+/* Scope these to hero dashboard only */
+.hero-dashboard-container .stat-value {
     font-size: 36px;
     font-weight: 800;
     color: #ffffff;
@@ -97,7 +98,7 @@
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.stat-label {
+.hero-dashboard-container .stat-label {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
