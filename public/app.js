@@ -2848,7 +2848,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }).join('');
                 }
             } else {
-                userAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet</div>';
+                console.error('Failed to load achievements:', achievementsResponse.status);
+                userAchievementsList.innerHTML = '<div style="text-align: center; padding: 20px; color: #999;">Unable to load achievements</div>';
             }
         } catch (error) {
             console.error('Error loading user profile:', error);

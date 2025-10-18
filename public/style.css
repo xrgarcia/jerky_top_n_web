@@ -3272,7 +3272,7 @@ body.login-page-active .hero {
     padding: 16px;
     border: 2px solid #663399;
     border-radius: 12px;
-    background: linear-gradient(135deg, #f8f9ff, #ffffff);
+    background: white;
     transition: all 0.2s ease;
     position: relative;
     cursor: pointer;
@@ -3280,7 +3280,7 @@ body.login-page-active .hero {
 
 .user-achievement-badge:hover {
     transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(102, 51, 153, 0.25);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .user-achievement-badge.tier-bronze {
@@ -3293,12 +3293,10 @@ body.login-page-active .hero {
 
 .user-achievement-badge.tier-gold {
     border-color: #FFD700;
-    background: linear-gradient(135deg, #fffbf0, #ffffff);
-    box-shadow: 0 2px 12px rgba(255, 215, 0, 0.2);
 }
 
-.user-achievement-badge.tier-gold:hover {
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+.user-achievement-badge.tier-platinum {
+    border-color: #E5E4E2;
 }
 
 .user-achievement-icon {

@@ -307,7 +307,7 @@ function createGamificationRoutes(services) {
     }
   });
 
-  // Public endpoint: Get achievements for a specific user
+  // Public endpoint: Get achievements for a specific user (optimized - earned only)
   router.get('/user/:userId/achievements', async (req, res) => {
     try {
       const targetUserId = parseInt(req.params.userId);
@@ -316,17 +316,12 @@ function createGamificationRoutes(services) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
-      console.log(`📊 Fetching public achievements for user ${targetUserId}`);
+      console.log(`📊 Fetching public achievements for user ${targetUserId} (earned only)`);
 
-      // Get product count from cache
-      const totalRankableProducts = services.getRankableProductCount();
-
-      // Get user stats for achievement calculation
-      const stats = await userStatsAggregator.getStatsForAchievements(targetUserId, totalRankableProducts);
-      
-      // Get achievements with progress (only show earned achievements publicly)
-      const allAchievements = await achievementManager.getAchievementsWithProgress(targetUserId, stats);
-      const earnedAchievements = allAchievements.filter(a => a.earned);
+      // For public viewing, only return already-earned achievements from database
+      // No need to calculate current stats/progress - just show what they've achieved
+      const achievementRepo = services.achievementRepo;
+      const earnedAchievements = await achievementRepo.getUserAchievements(targetUserId);
 
       console.log(`✅ Public achievements fetched for user ${targetUserId}: ${earnedAchievements.length} earned`);
 
