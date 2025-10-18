@@ -101,7 +101,7 @@ class HomeDashboard {
     const { topRankers } = this.stats;
 
     if (topRankers.length === 0) {
-      container.innerHTML = '<p class="empty-state">No rankers yet. Be the first!</p>';
+      container.innerHTML = '<p class="empty-state">🏆 No rankers yet. Start ranking to claim the top spot!</p>';
       return;
     }
 
@@ -121,7 +121,7 @@ class HomeDashboard {
     const { topProducts } = this.stats;
 
     if (topProducts.length === 0) {
-      container.innerHTML = '<p class="empty-state">No products ranked yet</p>';
+      container.innerHTML = '<p class="empty-state">⭐ No products ranked yet. Be the first to share your favorites!</p>';
       return;
     }
 
@@ -131,8 +131,11 @@ class HomeDashboard {
         <img src="${product.productData.image}" alt="${product.productData.title}" class="product-thumb">
         <div class="product-info">
           <div class="product-name">${product.productData.title}</div>
-          <div class="product-stats">Avg rank: ${product.avgRank} • ${product.rankCount} rankings</div>
+          <div class="product-stats">Avg rank: ${product.avgRank} • ${product.rankCount} ranking${product.rankCount !== 1 ? 's' : ''}</div>
         </div>
+        <button class="quick-action-btn" onclick="event.stopPropagation(); showRankPage();" title="Rank this too!" aria-label="Rank ${product.productData.title}">
+          <span aria-hidden="true">📝</span>
+        </button>
       </div>
     `).join('');
   }
@@ -142,7 +145,7 @@ class HomeDashboard {
     const { recentlyRanked } = this.stats;
 
     if (recentlyRanked.length === 0) {
-      container.innerHTML = '<p class="empty-state">No recent rankings</p>';
+      container.innerHTML = '<p class="empty-state">🆕 Nothing ranked yet. Fresh rankings coming soon!</p>';
       return;
     }
 
@@ -152,8 +155,7 @@ class HomeDashboard {
         <div class="product-info">
           <div class="product-name">${item.productData.title}</div>
           <div class="product-stats">
-            Ranked #${item.ranking} by ${item.rankedBy}
-            <span class="time-ago">${this.getTimeAgo(item.rankedAt)}</span>
+            Ranked #${item.ranking} by ${item.rankedBy} • ${this.getTimeAgo(item.rankedAt)}
           </div>
         </div>
       </div>
@@ -165,7 +167,7 @@ class HomeDashboard {
     const { trending } = this.stats;
 
     if (trending.length === 0) {
-      container.innerHTML = '<p class="empty-state">No trending products</p>';
+      container.innerHTML = '<p class="empty-state">📈 No trends yet. Start ranking to create some buzz!</p>';
       return;
     }
 
@@ -175,7 +177,7 @@ class HomeDashboard {
         <img src="${product.productData.image}" alt="${product.productData.title}" class="product-thumb">
         <div class="product-info">
           <div class="product-name">${product.productData.title}</div>
-          <div class="product-stats">Avg rank: ${product.avgRank}</div>
+          <div class="product-stats">Avg rank: ${product.avgRank} • Hot this week!</div>
         </div>
       </div>
     `).join('');
@@ -186,7 +188,7 @@ class HomeDashboard {
     const { debated } = this.stats;
 
     if (debated.length === 0) {
-      container.innerHTML = '<p class="empty-state">No debated products yet</p>';
+      container.innerHTML = '<p class="empty-state">🎯 Everyone agrees so far! Rank some products to shake things up.</p>';
       return;
     }
 
@@ -196,10 +198,12 @@ class HomeDashboard {
         <div class="product-info">
           <div class="product-name">${product.productData.title}</div>
           <div class="product-stats">
-            Ranks from #${product.bestRank} to #${product.worstRank}
-            <span class="variance">±${product.variance}</span>
+            Ranks from #${product.bestRank} to #${product.worstRank} • ±${product.variance}
           </div>
         </div>
+        <button class="quick-action-btn secondary" onclick="event.stopPropagation(); showRankPage();" title="Settle the debate!" aria-label="Settle debate for ${product.productData.title}">
+          <span aria-hidden="true">⚔️</span>
+        </button>
       </div>
     `).join('');
   }
@@ -209,7 +213,7 @@ class HomeDashboard {
     const { recentAchievements } = this.stats;
 
     if (recentAchievements.length === 0) {
-      container.innerHTML = '<p class="empty-state">No achievements yet</p>';
+      container.innerHTML = '<p class="empty-state">🏅 No badges earned yet. Start ranking to unlock yours!</p>';
       return;
     }
 

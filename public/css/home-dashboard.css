@@ -51,13 +51,79 @@
   font-weight: 500;
 }
 
-/* Dashboard Grid - Main Content Area */
+/* Dashboard Grid - Bento Box Layout */
 .home-dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 30px;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: auto auto auto;
+  gap: 24px;
   margin-top: 20px;
   margin-bottom: 40px;
+}
+
+/* Bento Box Widget Sizing */
+#topProductsSection {
+  grid-column: 1 / 3;
+  grid-row: 1 / 3;
+}
+
+#topRankersSection {
+  grid-column: 3 / 5;
+  grid-row: 1 / 3;
+}
+
+#recentlyRankedSection {
+  grid-column: 1 / 3;
+  grid-row: 3;
+}
+
+#trendingSection {
+  grid-column: 3 / 5;
+  grid-row: 3;
+}
+
+#debatedSection {
+  grid-column: 1 / 3;
+  grid-row: 4;
+}
+
+#achievementsSection {
+  grid-column: 3 / 5;
+  grid-row: 4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .home-dashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  #topProductsSection,
+  #topRankersSection,
+  #recentlyRankedSection,
+  #trendingSection,
+  #debatedSection,
+  #achievementsSection {
+    grid-column: span 1;
+    grid-row: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-dashboard {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  #topProductsSection,
+  #topRankersSection,
+  #recentlyRankedSection,
+  #trendingSection,
+  #debatedSection,
+  #achievementsSection {
+    grid-column: 1;
+    grid-row: auto;
+  }
 }
 
 /* Dashboard Sections - Cards with Background */
@@ -106,9 +172,56 @@
 
 .section-subtitle {
   margin: -2px 0 20px 0;
-  font-size: 13px;
-  color: #888;
+  font-size: 14px;
+  color: #666;
   font-weight: 400;
+  font-style: italic;
+}
+
+/* Widget Header with Actions */
+.widget-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.widget-title-group {
+  flex: 1;
+}
+
+.widget-action-btn {
+  background: linear-gradient(135deg, #663399, #0066CC);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(102, 51, 153, 0.3);
+  white-space: nowrap;
+}
+
+.widget-action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.4);
+  background: linear-gradient(135deg, #7744AA, #0077EE);
+}
+
+.widget-action-btn:active {
+  transform: translateY(0);
+}
+
+.widget-action-btn.secondary {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+
+.widget-action-btn.secondary:hover {
+  background: linear-gradient(135deg, #FF7C7C, #FF9F64);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
 }
 
 /* Dashboard List Items */
@@ -138,6 +251,62 @@
 
 .product-item {
   cursor: pointer;
+}
+
+/* Quick Action Buttons */
+.quick-action-btn {
+  background: linear-gradient(135deg, #663399, #0066CC);
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 6px rgba(102, 51, 153, 0.3);
+  flex-shrink: 0;
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+/* Desktop: Show on hover */
+@media (hover: hover) and (pointer: fine) {
+  .dashboard-item:hover .quick-action-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Mobile/Touch: Always visible */
+@media (hover: none), (pointer: coarse) {
+  .quick-action-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.quick-action-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.5);
+  background: linear-gradient(135deg, #7744AA, #0077EE);
+}
+
+.quick-action-btn:active {
+  transform: scale(0.95);
+}
+
+.quick-action-btn.secondary {
+  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+
+.quick-action-btn.secondary:hover {
+  background: linear-gradient(135deg, #FF7C7C, #FF9F64);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.5);
 }
 
 /* Rank Badges */

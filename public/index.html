@@ -143,39 +143,69 @@
                 
                 <!-- Home Dashboard Grid -->
                 <div class="home-dashboard">
-                    <div class="dashboard-section" id="topRankersSection">
-                        <h3>🏆 Top Rankers</h3>
-                        <p class="section-subtitle">Ranked by total engagement</p>
-                        <div id="topRankersList" class="dashboard-list"></div>
-                    </div>
-                    
                     <div class="dashboard-section" id="topProductsSection">
-                        <h3>⭐ Community Favorites</h3>
-                        <p class="section-subtitle">Top Products by Average Rank</p>
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>⭐ Community Favorites</h3>
+                                <p class="section-subtitle">The crowd has spoken! See what's winning hearts.</p>
+                            </div>
+                            <button class="widget-action-btn" onclick="showRankPage()" aria-label="Rank your favorites">Rank This Too!</button>
+                        </div>
                         <div id="topProductsList" class="dashboard-list"></div>
                     </div>
                     
+                    <div class="dashboard-section" id="topRankersSection">
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>🏆 Top Rankers</h3>
+                                <p class="section-subtitle">Think you can top them? Start ranking to compete!</p>
+                            </div>
+                            <button class="widget-action-btn" onclick="showRankPage()" aria-label="Join the competition">Join the Race</button>
+                        </div>
+                        <div id="topRankersList" class="dashboard-list"></div>
+                    </div>
+                    
                     <div class="dashboard-section" id="recentlyRankedSection">
-                        <h3>🆕 Recently Ranked</h3>
-                        <p class="section-subtitle">Latest products ranked by the community</p>
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>🆕 Recently Ranked</h3>
+                                <p class="section-subtitle">Fresh off the grill! See what's being ranked right now.</p>
+                            </div>
+                            <button class="widget-action-btn secondary" onclick="showProductsPage()" aria-label="View all products">Explore All</button>
+                        </div>
                         <div id="recentlyRankedList" class="dashboard-list"></div>
                     </div>
                     
                     <div class="dashboard-section" id="trendingSection">
-                        <h3>📈 Trending This Week</h3>
-                        <p class="section-subtitle">Hot products with recent rankings</p>
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>🔥 Trending This Week</h3>
+                                <p class="section-subtitle">Don't miss out on what's hot in the community!</p>
+                            </div>
+                            <button class="widget-action-btn secondary" onclick="showRankPage()" aria-label="Jump on trending products">Jump In!</button>
+                        </div>
                         <div id="trendingList" class="dashboard-list"></div>
                     </div>
                     
                     <div class="dashboard-section" id="debatedSection">
-                        <h3>🎯 Most Debated</h3>
-                        <p class="section-subtitle">Products with varied rankings</p>
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>⚔️ Most Debated</h3>
+                                <p class="section-subtitle">The community can't agree - you decide!</p>
+                            </div>
+                            <button class="widget-action-btn" onclick="showRankPage()" aria-label="Settle the debate">Settle It!</button>
+                        </div>
                         <div id="debatedList" class="dashboard-list"></div>
                     </div>
                     
                     <div class="dashboard-section" id="achievementsSection">
-                        <h3>🏅 Recent Achievements</h3>
-                        <p class="section-subtitle">Latest badges earned by members</p>
+                        <div class="widget-header">
+                            <div class="widget-title-group">
+                                <h3>🏅 Recent Achievements</h3>
+                                <p class="section-subtitle">Unlock your next badge! Start ranking to earn.</p>
+                            </div>
+                            <button class="widget-action-btn" onclick="showRankPage()" aria-label="Earn achievements">Earn Badges</button>
+                        </div>
                         <div id="recentAchievementsList" class="dashboard-list"></div>
                     </div>
                 </div>
