@@ -684,7 +684,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const savedPage = sessionStorage.getItem('currentPage');
         // Extract just the page name (before any query parameters)
         const fullPage = hash || savedPage || 'home';
-        const page = fullPage.split('?')[0];
+        // Treat both empty hash and "home" hash as home page
+        const page = fullPage.split('?')[0] === 'home' || fullPage === '' ? 'home' : fullPage.split('?')[0];
         
         // Show the page based on URL hash, but don't update URL again (prevent loop)
         showPage(page, false);
