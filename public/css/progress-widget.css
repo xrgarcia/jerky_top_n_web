@@ -8,17 +8,59 @@
   margin-bottom: 20px;
 }
 
-.progress-header {
+.progress-header-wrapper {
+  margin-bottom: 16px;
+}
+
+.progress-toggle-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.2s ease;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 8px;
+  text-align: left;
+}
+
+.progress-toggle-button:hover {
+  background-color: rgba(102, 51, 153, 0.05);
+}
+
+.progress-toggle-button:focus {
+  outline: 2px solid #663399;
+  outline-offset: 2px;
+}
+
+.progress-title-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .progress-title {
   font-size: 18px;
   font-weight: 700;
   color: #333;
+}
+
+.chevron {
+  color: #663399;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.progress-widget.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.progress-widget.expanded .chevron {
+  transform: rotate(0deg);
 }
 
 .progress-stats {
@@ -34,6 +76,11 @@
 
 .progress-milestone {
   margin-bottom: 20px;
+  transition: margin-bottom 0.3s ease;
+}
+
+.progress-widget.collapsed .progress-milestone {
+  margin-bottom: 0;
 }
 
 .milestone-label {
@@ -68,6 +115,24 @@
   margin-top: 20px;
   padding-top: 20px;
   border-top: 1px solid #e9ecef;
+  max-height: 1000px;
+  opacity: 1;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease, padding-top 0.3s ease;
+}
+
+/* Collapsed state - smooth animation */
+.progress-widget.collapsed .all-achievements {
+  max-height: 0;
+  opacity: 0;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+/* Hidden attribute overrides display after animation completes */
+.all-achievements[hidden] {
+  display: none;
 }
 
 .achievements-label {
@@ -100,6 +165,11 @@
 .achievement-badge:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 12px rgba(102, 51, 153, 0.2);
+}
+
+.achievement-badge:focus {
+  outline: 2px solid #663399;
+  outline-offset: 2px;
 }
 
 .achievement-badge.earned {
@@ -187,7 +257,8 @@
   border-top-color: #333;
 }
 
-.achievement-badge:hover .achievement-tooltip {
+.achievement-badge:hover .achievement-tooltip,
+.achievement-badge:focus .achievement-tooltip {
   display: block;
 }
 
@@ -208,6 +279,17 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .progress-toggle-button {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .progress-stats {
+    font-size: 13px;
+    gap: 12px;
+  }
+
   .achievements-grid {
     grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
     gap: 10px;

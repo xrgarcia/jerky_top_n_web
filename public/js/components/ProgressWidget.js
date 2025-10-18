@@ -7,6 +7,8 @@ class ProgressWidget {
     this.progressService = progressService;
     this.eventBus = eventBus;
     this.mysteriousDescriptions = this.initMysteriousDescriptions();
+    // Check sessionStorage for collapsed state preference, default to collapsed (true)
+    this.isCollapsed = sessionStorage.getItem('progressWidgetCollapsed') !== 'false';
     this.init();
   }
 
@@ -61,6 +63,41 @@ class ProgressWidget {
     });
   }
 
+  toggleCollapsed() {
+    const achievementsSection = this.container.querySelector('.all-achievements');
+    if (!achievementsSection) return;
+
+    this.isCollapsed = !this.isCollapsed;
+    sessionStorage.setItem('progressWidgetCollapsed', this.isCollapsed);
+
+    const toggleButton = this.container.querySelector('.progress-toggle-button');
+    const widget = this.container.querySelector('.progress-widget');
+
+    if (this.isCollapsed) {
+      // Collapsing: Let animation run, THEN add hidden after animation completes
+      widget.classList.remove('expanded');
+      widget.classList.add('collapsed');
+      toggleButton.setAttribute('aria-expanded', 'false');
+      toggleButton.setAttribute('aria-label', 'Show all achievements');
+      achievementsSection.setAttribute('aria-hidden', 'true');
+      
+      // Add hidden attribute after animation completes (400ms transition duration)
+      setTimeout(() => {
+        if (this.isCollapsed) {
+          achievementsSection.setAttribute('hidden', '');
+        }
+      }, 400);
+    } else {
+      // Expanding: Remove hidden first, THEN let animation run
+      achievementsSection.removeAttribute('hidden');
+      widget.classList.remove('collapsed');
+      widget.classList.add('expanded');
+      toggleButton.setAttribute('aria-expanded', 'true');
+      toggleButton.setAttribute('aria-label', 'Hide all achievements');
+      achievementsSection.setAttribute('aria-hidden', 'false');
+    }
+  }
+
   render() {
     if (!this.container) {
       console.warn('⚠️ ProgressWidget: Container not found, skipping render');
@@ -75,7 +112,8 @@ class ProgressWidget {
       hasProgress: !!progress,
       hasMilestone: !!nextMilestone,
       achievementsCount: achievements.length,
-      totalRankings: progress?.totalRankings
+      totalRankings: progress?.totalRankings,
+      isCollapsed: this.isCollapsed
     });
 
     // For new users with 0 rankings, don't show loading - just hide the widget
@@ -90,14 +128,28 @@ class ProgressWidget {
       return;
     }
 
+    const achievementsId = 'progress-achievements-section';
+
     this.container.innerHTML = `
-      <div class="progress-widget">
-        <div class="progress-header">
-          <div class="progress-title">Your Progress</div>
-          <div class="progress-stats">
-            <span class="stat">${progress.totalRankings} Ranked</span>
-            ${progress.currentStreak > 0 ? `<span class="stat">🔥 ${progress.currentStreak} Day Streak</span>` : ''}
-          </div>
+      <div class="progress-widget ${this.isCollapsed ? 'collapsed' : 'expanded'}">
+        <div class="progress-header-wrapper">
+          <button 
+            class="progress-toggle-button" 
+            aria-expanded="${!this.isCollapsed}"
+            aria-controls="${achievementsId}"
+            aria-label="${this.isCollapsed ? 'Show' : 'Hide'} all achievements"
+          >
+            <div class="progress-title-section">
+              <span class="progress-title">Your Progress</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="progress-stats">
+              <span class="stat">${progress.totalRankings} Ranked</span>
+              ${progress.currentStreak > 0 ? `<span class="stat">🔥 ${progress.currentStreak} Day Streak</span>` : ''}
+            </div>
+          </button>
         </div>
         
         <div class="progress-milestone">
@@ -109,7 +161,12 @@ class ProgressWidget {
         </div>
 
         ${achievements.length > 0 ? `
-          <div class="all-achievements">
+          <div 
+            id="${achievementsId}" 
+            class="all-achievements" 
+            aria-hidden="${this.isCollapsed}"
+            ${this.isCollapsed ? 'hidden' : ''}
+          >
             <div class="achievements-label">All Achievements:</div>
             <div class="achievements-grid">
               ${achievements.map(achievement => {
@@ -119,10 +176,10 @@ class ProgressWidget {
                   : `<strong>???</strong><br>${mysteriousDesc}<br><span class="requirement-hint">${this.getRequirementHint(achievement)}</span>`;
                 
                 return `
-                  <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}">
+                  <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}" tabindex="0">
                     <span class="achievement-icon">${achievement.icon}</span>
                     <span class="achievement-name">${achievement.earned ? achievement.name : '???'}</span>
-                    <div class="achievement-tooltip">${tooltipText}</div>
+                    <div class="achievement-tooltip" role="tooltip">${tooltipText}</div>
                   </div>
                 `;
               }).join('')}
@@ -131,6 +188,16 @@ class ProgressWidget {
         ` : ''}
       </div>
     `;
+
+    // Add click handler for toggle button
+    const toggleButton = this.container.querySelector('.progress-toggle-button');
+    
+    if (toggleButton) {
+      toggleButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.toggleCollapsed();
+      });
+    }
   }
 
   getRequirementHint(achievement) {
