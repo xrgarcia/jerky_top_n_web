@@ -49,6 +49,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (enableRankingBtn) enableRankingBtn.addEventListener('click', enableRankingMode);
     if (resetRankingBtn) resetRankingBtn.addEventListener('click', resetRanking);
 
+    // Quiz button - opens jerky.com quiz in new tab
+    const quizBtn = document.querySelector('.announcement-btn');
+    if (quizBtn) {
+        quizBtn.addEventListener('click', function() {
+            window.open('https://www.jerky.com/pages/jerky-quiz-get-started', '_blank');
+        });
+    }
+
     // Page navigation functions
     async function showPage(page, updateURL = true) {
         const communityPage = document.getElementById('communityPage');
