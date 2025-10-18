@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="css/home-dashboard.css">
     <link rel="stylesheet" href="css/hero-dashboard.css">
+    <link rel="stylesheet" href="css/page-header.css">
     <link rel="stylesheet" href="css/footer.css">
 </head>
 <body>
@@ -215,10 +216,28 @@
         
         <!-- Rank Product Page Content -->
         <div class="page-content" id="rankPage" style="display: none;">
-            <section class="page-header">
-                <h2>Rank Your Favorite Jerky Products</h2>
-                <p>Drag jerky products from the search results to your ranking slots</p>
-            </section>
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#" data-page="home">Home</a>
+                            <span>›</span>
+                            <span>Rank</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">🏆</span>
+                            <span>Rank Your Favorites</span>
+                        </h1>
+                        <p class="page-header-subtitle">Drag jerky products to your ranking slots and share your taste</p>
+                    </div>
+                    <div class="page-header-action">
+                        <button class="page-action-btn" onclick="showProductsPage()">
+                            <span class="icon">🔍</span>
+                            <span>Browse All</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
             
             <!-- Split Screen Layout -->
             <div class="ranking-container">
@@ -257,9 +276,27 @@
         
         <!-- Products Page Content -->
         <div class="page-content" id="productsPage" style="display: none;">
-            <div class="page-header">
-                <h2>All Products</h2>
-                <p class="products-subtitle">Browse our complete jerky catalog with ranking statistics</p>
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#" data-page="home">Home</a>
+                            <span>›</span>
+                            <span>Products</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">🥩</span>
+                            <span>All Products</span>
+                        </h1>
+                        <p class="page-header-subtitle">Browse our complete jerky catalog with ranking statistics</p>
+                    </div>
+                    <div class="page-header-action">
+                        <button class="page-action-btn" onclick="showRankPage()">
+                            <span class="icon">📝</span>
+                            <span>Rank Now</span>
+                        </button>
+                    </div>
+                </div>
             </div>
             
             <!-- Animal Categories Filter -->
@@ -297,17 +334,36 @@
 
         <!-- Community Page Content -->
         <div class="page-content" id="communityPage" style="display: none;">
-            <div class="community-header">
-                <h2>Community</h2>
-                <p class="community-subtitle">Discover fellow jerky enthusiasts and their rankings</p>
-                <div class="search-container">
-                    <input 
-                        type="text" 
-                        id="communitySearchInput" 
-                        placeholder="Search by name or products they've ranked..."
-                        autocomplete="off"
-                    >
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#" data-page="home">Home</a>
+                            <span>›</span>
+                            <span>Community</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">👥</span>
+                            <span>Community</span>
+                        </h1>
+                        <p class="page-header-subtitle">Discover fellow jerky enthusiasts and their rankings</p>
+                    </div>
+                    <div class="page-header-action">
+                        <button class="page-action-btn" onclick="showCommunityPage()">
+                            <span class="icon">🏆</span>
+                            <span>Leaderboard</span>
+                        </button>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="search-container" style="max-width: 1200px; margin: 0 auto 30px; padding: 0 20px;">
+                <input 
+                    type="text" 
+                    id="communitySearchInput" 
+                    placeholder="Search by name or products they've ranked..."
+                    autocomplete="off"
+                >
             </div>
 
             <div id="communityList" class="community-grid" style="min-height: 400px;">
@@ -317,6 +373,29 @@
 
         <!-- Profile Page Content -->
         <div class="page-content" id="profilePage" style="display: none;">
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#" data-page="home">Home</a>
+                            <span>›</span>
+                            <span>My Profile</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">👤</span>
+                            <span>My Profile</span>
+                        </h1>
+                        <p class="page-header-subtitle">View your stats, rankings, and achievements</p>
+                    </div>
+                    <div class="page-header-action">
+                        <button class="page-action-btn" onclick="showRankPage()">
+                            <span class="icon">🏆</span>
+                            <span>Rank More</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
             <div class="profile-container">
                 <div class="profile-header">
                     <div class="profile-avatar" id="profileAvatar"></div>
@@ -442,11 +521,30 @@
 
         <!-- Tools Page Content (Employee Admin Only) -->
         <div class="page-content" id="toolsPage" style="display: none;">
-            <div class="tools-page-container">
-                <div class="tools-header">
-                    <h2>🛠️ Admin Tools</h2>
-                    <p class="tools-subtitle">Management tools for jerky.com employees</p>
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#" data-page="home">Home</a>
+                            <span>›</span>
+                            <span>Admin Tools</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">🛠️</span>
+                            <span>Admin Tools</span>
+                        </h1>
+                        <p class="page-header-subtitle">Management tools for jerky.com employees</p>
+                    </div>
+                    <div class="page-header-action">
+                        <button class="page-action-btn" onclick="location.reload()">
+                            <span class="icon">🔄</span>
+                            <span>Refresh Data</span>
+                        </button>
+                    </div>
                 </div>
+            </div>
+            
+            <div class="tools-page-container">
 
                 <!-- Tools Navigation -->
                 <div class="tools-nav">
