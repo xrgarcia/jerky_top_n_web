@@ -1329,6 +1329,11 @@ app.post('/api/rankings/product', async (req, res) => {
     // Invalidate ranking stats cache since data changed
     rankingStatsCache.invalidate();
     
+    // Invalidate home stats cache since rankings affect home page stats
+    if (gamificationServices?.homeStatsService) {
+      gamificationServices.homeStatsService.invalidateCache();
+    }
+    
     console.log(`✅ Product ranking saved: ${productData.title} at rank ${ranking}`);
     
     res.json({ success: true, ranking: productRanking });
@@ -1399,6 +1404,11 @@ app.post('/api/rankings/products', async (req, res) => {
     if (gamificationServices?.leaderboardManager) {
       gamificationServices.leaderboardManager.positionCache.invalidateAll();
     }
+    
+    // Invalidate home stats cache since rankings affect home page stats
+    if (gamificationServices?.homeStatsService) {
+      gamificationServices.homeStatsService.invalidateCache();
+    }
 
     console.log(`✅ Bulk saved ${rankings.length} product rankings for user ${userId}`);
     
@@ -1452,6 +1462,11 @@ app.post('/api/rankings/products', async (req, res) => {
           
           // Check for new achievements
           const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
+          
+          // Invalidate home stats cache if achievements were earned (affects recent achievements)
+          if (newAchievements.length > 0 && gamificationServices?.homeStatsService) {
+            gamificationServices.homeStatsService.invalidateCache();
+          }
           
           // Broadcast new achievements via WebSocket
           if (newAchievements.length > 0 && io) {
