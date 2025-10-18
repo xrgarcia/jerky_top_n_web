@@ -37,19 +37,18 @@
 .community-stats-overview .stat-value,
 .dashboard-section .stat-value {
   font-size: 36px;
-  font-weight: 800;
+  font-weight: 600;
   color: #2c2c2c;
   margin-bottom: 8px;
-  font-family: 'Arial Black', sans-serif;
 }
 
 .community-stats-overview .stat-label,
 .dashboard-section .stat-label {
   font-size: 13px;
-  color: #2c2c2c;
+  color: #666;
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  font-weight: 700;
+  font-weight: 500;
 }
 
 /* Dashboard Grid - Main Content Area */
