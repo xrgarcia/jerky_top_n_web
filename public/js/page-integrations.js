@@ -36,7 +36,10 @@
 
   function initializeRankPage() {
     const rankPage = document.getElementById('rankPage');
-    if (!rankPage) return;
+    if (!rankPage) {
+      console.warn('⚠️ Rank page not found, skipping progress widget initialization');
+      return;
+    }
 
     let progressContainer = document.getElementById('rankPageProgress');
     if (!progressContainer) {
@@ -47,6 +50,11 @@
       const pageHeader = rankPage.querySelector('.page-header');
       if (pageHeader) {
         pageHeader.after(progressContainer);
+        console.log('✅ Progress container inserted after page header');
+      } else {
+        // If no page header, insert at the top of rank page
+        rankPage.insertBefore(progressContainer, rankPage.firstChild);
+        console.log('✅ Progress container inserted at top of rank page');
       }
     }
 

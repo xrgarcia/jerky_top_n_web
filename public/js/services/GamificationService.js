@@ -51,16 +51,18 @@ class GamificationService extends BaseService {
 
   async loadAchievements() {
     try {
+      console.log('📊 GamificationService: Loading achievements from /api/gamification/achievements');
       const response = await this.apiRequest('/api/gamification/achievements');
       this.achievements = response.achievements || [];
       this.userStats = response.stats || {};
+      console.log(`✅ GamificationService: Loaded ${this.achievements.length} achievements, emitting event`);
       this.emit('achievements:loaded', {
         achievements: this.achievements,
         stats: this.userStats
       });
       return this.achievements;
     } catch (error) {
-      console.error('Failed to load achievements:', error);
+      console.error('❌ Failed to load achievements:', error);
       return [];
     }
   }

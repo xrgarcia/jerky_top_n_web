@@ -33,35 +33,50 @@ class ProgressWidget {
   }
 
   init() {
-    if (!this.container) return;
+    if (!this.container) {
+      console.error('❌ ProgressWidget init failed: container not found');
+      return;
+    }
     
+    console.log('✅ ProgressWidget init: setting up listeners and rendering');
     this.setupEventListeners();
     this.render();
   }
 
   setupEventListeners() {
+    console.log('🎧 ProgressWidget: Setting up event listeners');
     this.eventBus.on('progress:loaded', () => {
+      console.log('📡 ProgressWidget received progress:loaded event');
       this.render();
     });
 
     this.eventBus.on('progress:achievements:updated', () => {
+      console.log('📡 ProgressWidget received progress:achievements:updated event');
       this.render();
     });
 
     this.eventBus.on('ranking:saved', () => {
+      console.log('📡 ProgressWidget received ranking:saved event');
       setTimeout(() => this.render(), 500);
     });
   }
 
   render() {
     if (!this.container) {
-      console.warn('ProgressWidget: Container not found, skipping render');
+      console.warn('⚠️ ProgressWidget: Container not found, skipping render');
       return;
     }
 
     const progress = this.progressService.progress;
     const nextMilestone = this.progressService.getNextMilestone();
     const achievements = this.progressService.achievements || [];
+    
+    console.log('🎨 ProgressWidget rendering with:', {
+      hasProgress: !!progress,
+      hasMilestone: !!nextMilestone,
+      achievementsCount: achievements.length,
+      totalRankings: progress?.totalRankings
+    });
 
     // For new users with 0 rankings, don't show loading - just hide the widget
     if (!progress || (progress.totalRankings === 0 && !nextMilestone)) {

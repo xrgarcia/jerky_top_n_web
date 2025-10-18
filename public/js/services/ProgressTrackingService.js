@@ -31,9 +31,12 @@ class ProgressTrackingService extends BaseService {
 
   async loadProgress() {
     try {
+      console.log('📊 Loading progress data from /api/gamification/progress');
       const response = await this.apiRequest('/api/gamification/progress');
       this.progress = response.progress || null;
       this.insights = response.insights || null;
+      
+      console.log('✅ Progress data loaded:', this.progress);
       
       this.emit('progress:loaded', {
         progress: this.progress,
@@ -44,7 +47,7 @@ class ProgressTrackingService extends BaseService {
       
       return { progress: this.progress, insights: this.insights };
     } catch (error) {
-      console.error('Failed to load progress:', error);
+      console.error('❌ Failed to load progress:', error);
       return null;
     }
   }
