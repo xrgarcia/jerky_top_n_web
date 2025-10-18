@@ -33,13 +33,12 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentProductsQuery = '';
 
     // Navigation event listeners
+    // No longer needed - nav links use proper hash hrefs and hashchange listener handles routing
+    // Keeping the handler for backwards compatibility but letting hash navigation work naturally
     navLinks.forEach(link => {
         link.addEventListener('click', async function(e) {
-            const targetPage = this.dataset.page;
-            if (targetPage) {
-                e.preventDefault();
-                await showPage(targetPage);
-            }
+            // Let the browser handle hash navigation naturally
+            // The hashchange listener will trigger showPage()
         });
     });
 
