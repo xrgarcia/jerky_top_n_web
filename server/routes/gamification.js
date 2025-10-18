@@ -307,6 +307,36 @@ function createGamificationRoutes(services) {
     }
   });
 
+  // Public endpoint: Get achievements for a specific user
+  router.get('/user/:userId/achievements', async (req, res) => {
+    try {
+      const targetUserId = parseInt(req.params.userId);
+      
+      if (!targetUserId || isNaN(targetUserId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      console.log(`📊 Fetching public achievements for user ${targetUserId}`);
+
+      // Get product count from cache
+      const totalRankableProducts = services.getRankableProductCount();
+
+      // Get user stats for achievement calculation
+      const stats = await userStatsAggregator.getStatsForAchievements(targetUserId, totalRankableProducts);
+      
+      // Get achievements with progress (only show earned achievements publicly)
+      const allAchievements = await achievementManager.getAchievementsWithProgress(targetUserId, stats);
+      const earnedAchievements = allAchievements.filter(a => a.earned);
+
+      console.log(`✅ Public achievements fetched for user ${targetUserId}: ${earnedAchievements.length} earned`);
+
+      res.json({ achievements: earnedAchievements });
+    } catch (error) {
+      console.error('Error fetching user achievements:', error);
+      res.status(500).json({ error: 'Failed to fetch user achievements' });
+    }
+  });
+
   // Home page statistics
   router.get('/home-stats', async (req, res) => {
     try {

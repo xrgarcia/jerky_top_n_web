@@ -2777,18 +2777,27 @@ document.addEventListener('DOMContentLoaded', function() {
         const userName = document.getElementById('userProfileName');
         const userRankedCount = document.getElementById('userProfileRankedCount');
         const userRankingsList = document.getElementById('userRankingsList');
+        const userAchievementsList = document.getElementById('userAchievementsList');
         
         // Set loading state
         userName.textContent = 'Loading...';
         userRankedCount.textContent = '0';
         userRankingsList.innerHTML = '<div class="loading">Loading rankings...</div>';
+        userAchievementsList.innerHTML = '<div class="loading">Loading achievements...</div>';
         
         try {
-            const response = await fetch(`/api/community/users/${userId}/rankings`);
-            const data = await response.json();
+            // Load user rankings and achievements in parallel
+            const [rankingsResponse, achievementsResponse] = await Promise.all([
+                fetch(`/api/community/users/${userId}/rankings`),
+                fetch(`/api/gamification/user/${userId}/achievements`)
+            ]);
             
-            if (response.ok) {
-                const { user, rankings } = data;
+            const rankingsData = await rankingsResponse.json();
+            const achievementsData = await achievementsResponse.json();
+            
+            // Handle rankings
+            if (rankingsResponse.ok) {
+                const { user, rankings } = rankingsData;
                 
                 // Set user info
                 userName.textContent = user.displayShort;
@@ -2820,10 +2829,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 userName.textContent = 'User not found';
                 userRankingsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">User not found</div>';
             }
+            
+            // Handle achievements
+            if (achievementsResponse.ok && achievementsData.achievements) {
+                const achievements = achievementsData.achievements;
+                
+                if (achievements.length === 0) {
+                    userAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet</div>';
+                } else {
+                    userAchievementsList.innerHTML = achievements.map(achievement => {
+                        return `
+                            <div class="user-achievement-badge tier-${achievement.tier}">
+                                <span class="user-achievement-icon">${achievement.icon}</span>
+                                <span class="user-achievement-name">${achievement.name}</span>
+                                <div class="user-achievement-tooltip">${achievement.description}</div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } else {
+                userAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet</div>';
+            }
         } catch (error) {
             console.error('Error loading user profile:', error);
             userName.textContent = 'Error loading profile';
             userRankingsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff0000;">Failed to load user profile</div>';
+            userAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff0000;">Failed to load achievements</div>';
         }
     }
     
