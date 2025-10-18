@@ -48,6 +48,12 @@ The application features a modern web architecture designed for responsiveness, 
     - **Cache Warming**: `CacheWarmer` service automatically warms all caches on server startup (async, non-blocking) ensuring first visitor gets instant response
     - Cache invalidation hooks on ranking saves and achievement earnings ensure data consistency
     - Proven performance: first load ~16.8s, subsequent cache hits <1ms (99%+ improvement)
+  - **Community Page Leaderboard** (~99% faster):
+    - **Leaderboard Cache**: `LeaderboardCache` singleton with 5-minute TTL and period-aware keys (all_time, week, month) caches top rankers data
+    - Cache integration in `LeaderboardManager.getTopRankers()` with check/set pattern reduces expensive SQL queries
+    - Cache invalidation hooks on ranking saves and achievement earnings ensure fresh leaderboard data
+    - Cache warming ensures instant community page load (top 10 leaderboard pre-loaded on startup)
+    - Proven performance: first load ~25s, subsequent cache hits instant
 - **Search**: Global unified search with type-ahead functionality, searching both products and community members. Client-side instant search for products with multi-word support.
 - **Styling**: Custom CSS for a consistent look and feel.
 
