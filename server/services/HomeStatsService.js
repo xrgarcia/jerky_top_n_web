@@ -4,12 +4,13 @@ const { sql } = require('drizzle-orm');
  * HomeStatsService - Aggregates statistics for home page dashboard
  */
 class HomeStatsService {
-  constructor(db, leaderboardManager, activityLogRepo, productViewRepo, communityService) {
+  constructor(db, leaderboardManager, activityLogRepo, productViewRepo, communityService, homeStatsCache) {
     this.db = db;
     this.leaderboardManager = leaderboardManager;
     this.activityLogRepo = activityLogRepo;
     this.productViewRepo = productViewRepo;
     this.communityService = communityService;
+    this.homeStatsCache = homeStatsCache;
   }
 
   /**
@@ -278,8 +279,18 @@ class HomeStatsService {
 
   /**
    * Get all home page stats in one call
+   * Uses cache to avoid expensive repeated queries
    */
   async getAllHomeStats() {
+    // Check cache first
+    const cached = this.homeStatsCache ? this.homeStatsCache.get() : null;
+    if (cached) {
+      return cached;
+    }
+
+    // Cache miss - fetch fresh data
+    const startTime = Date.now();
+    
     const [
       topRankers,
       topProducts,
@@ -303,7 +314,7 @@ class HomeStatsService {
       displayName: this.communityService.formatDisplayName(ranker)
     }));
 
-    return {
+    const stats = {
       topRankers: formattedTopRankers,
       topProducts,
       recentlyRanked,
@@ -312,6 +323,26 @@ class HomeStatsService {
       recentAchievements,
       communityStats,
     };
+
+    // Store in cache
+    if (this.homeStatsCache) {
+      this.homeStatsCache.set(stats);
+    }
+
+    const duration = Date.now() - startTime;
+    console.log(`⏱️ Home stats fetched in ${duration}ms (cache MISS)`);
+
+    return stats;
+  }
+  
+  /**
+   * Invalidate home stats cache
+   * Called when rankings or achievements change
+   */
+  invalidateCache() {
+    if (this.homeStatsCache) {
+      this.homeStatsCache.invalidate();
+    }
   }
 }
 

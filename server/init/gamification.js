@@ -17,6 +17,8 @@ const CommunityService = require('../services/CommunityService');
 const PageViewService = require('../services/PageViewService');
 const UserStatsAggregator = require('../services/UserStatsAggregator');
 
+const HomeStatsCache = require('../cache/HomeStatsCache');
+
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
 
@@ -28,13 +30,16 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const activityLogRepo = new ActivityLogRepository(db);
   const productViewRepo = new ProductViewRepository(db);
 
+  // Initialize cache instances
+  const homeStatsCache = HomeStatsCache.getInstance();
+
   const communityService = new CommunityService(db);
   const achievementManager = new AchievementManager(achievementRepo, activityLogRepo);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
   const pageViewService = new PageViewService(db, productViewRepo);
-  const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService);
+  const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService, homeStatsCache);
   const userStatsAggregator = new UserStatsAggregator(leaderboardManager, streakManager, productsService);
 
   const services = {
