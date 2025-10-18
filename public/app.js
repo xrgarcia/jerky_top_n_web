@@ -140,6 +140,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // Check if community page requires authentication
+        if (page === 'community') {
+            // First try quick sync check, then async if needed
+            if (!isUserAuthenticated()) {
+                const isAuthenticatedAsync = await isUserAuthenticatedAsync();
+                if (!isAuthenticatedAsync) {
+                    showLoginRequiredMessage('community');
+                    return;
+                }
+            }
+        }
+        
         // Update URL hash for linkable pages
         if (updateURL) {
             const newHash = page === 'home' ? '' : `#${page}`;
