@@ -344,6 +344,48 @@ class HomeStatsService {
       this.homeStatsCache.invalidate();
     }
   }
+
+  /**
+   * Get hero dashboard statistics (lightweight version for hero section)
+   * Returns: active rankers today, achievements this week, total rankings, recent achievements
+   */
+  async getHeroDashboardStats() {
+    const startOfTodayCentral = this.getStartOfTodayCentral();
+    
+    // Calculate start of this week (7 days ago)
+    const startOfWeek = new Date(startOfTodayCentral);
+    startOfWeek.setDate(startOfWeek.getDate() - 7);
+
+    const [activeToday, achievementsThisWeek, totalRankings, recentAchievements] = await Promise.all([
+      // Active users today (users who have page views or rankings)
+      this.db.execute(sql`
+        SELECT COUNT(DISTINCT user_id) as count 
+        FROM page_views 
+        WHERE user_id IS NOT NULL 
+        AND viewed_at >= ${startOfTodayCentral}
+      `),
+      
+      // Achievements earned this week
+      this.db.execute(sql`
+        SELECT COUNT(*) as count
+        FROM user_achievements
+        WHERE earned_at >= ${startOfWeek}
+      `),
+      
+      // Total rankings all-time
+      this.db.execute(sql`SELECT COUNT(*) as count FROM product_rankings`),
+      
+      // Recent achievements (last 10)
+      this.getRecentAchievements(10),
+    ]);
+
+    return {
+      activeRankersToday: parseInt(activeToday.rows[0].count),
+      achievementsThisWeek: parseInt(achievementsThisWeek.rows[0].count),
+      totalRankings: parseInt(totalRankings.rows[0].count),
+      recentAchievements,
+    };
+  }
 }
 
 module.exports = HomeStatsService;

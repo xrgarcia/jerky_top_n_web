@@ -318,6 +318,17 @@ function createGamificationRoutes(services) {
     }
   });
 
+  // Hero dashboard statistics (lightweight version)
+  router.get('/hero-stats', async (req, res) => {
+    try {
+      const stats = await homeStatsService.getHeroDashboardStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error fetching hero stats:', error);
+      res.status(500).json({ error: 'Failed to fetch hero stats' });
+    }
+  });
+
   // Track page view (async, fire-and-forget)
   router.post('/track-view', async (req, res) => {
     try {
