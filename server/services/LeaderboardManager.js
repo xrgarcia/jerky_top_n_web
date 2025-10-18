@@ -1,6 +1,7 @@
 const { desc, sql, eq } = require('drizzle-orm');
 const { users, productRankings, userAchievements, achievements, pageViews, userProductSearches } = require('../../shared/schema');
 const LeaderboardPositionCache = require('../cache/LeaderboardPositionCache');
+const LeaderboardCache = require('../cache/LeaderboardCache');
 
 /**
  * LeaderboardManager - Domain service for leaderboard calculations
@@ -9,16 +10,27 @@ class LeaderboardManager {
   constructor(db) {
     this.db = db;
     this.positionCache = LeaderboardPositionCache.getInstance();
+    this.leaderboardCache = LeaderboardCache.getInstance();
   }
 
   /**
    * Get top rankers leaderboard
    * Ranks users by engagement score = achievements + page views + rankings + searches
+   * Uses cache to avoid expensive repeated queries
    * @param {number} limit - Number of top rankers to return
    * @param {string} period - 'all_time', 'week', 'month'
    * @returns {Array} Leaderboard entries
    */
   async getTopRankers(limit = 50, period = 'all_time') {
+    // Check cache first
+    const cached = this.leaderboardCache.get(period, limit);
+    if (cached) {
+      return cached;
+    }
+
+    // Cache miss - fetch fresh data
+    const startTime = Date.now();
+    
     let dateFilter = '';
     
     if (period === 'week') {
@@ -106,6 +118,12 @@ class LeaderboardManager {
         };
       })
     );
+
+    // Store in cache
+    this.leaderboardCache.set(period, limit, leaderboardWithBadges);
+
+    const duration = Date.now() - startTime;
+    console.log(`⏱️ Leaderboard fetched in ${duration}ms (cache MISS, period: ${period}, limit: ${limit})`);
 
     return leaderboardWithBadges;
   }

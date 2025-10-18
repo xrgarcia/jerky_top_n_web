@@ -87,6 +87,17 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   cacheWarmer.register('HomeStatsCache', async () => {
     await homeStatsService.getAllHomeStats();
   });
+  
+  // Register LeaderboardCache warming (top 10 for community page)
+  cacheWarmer.register('LeaderboardCache', async () => {
+    const leaderboard = await leaderboardManager.getTopRankers(10, 'all_time');
+    // Format user display names
+    const formatted = leaderboard.map(entry => ({
+      ...entry,
+      displayName: communityService.formatDisplayName(entry)
+    }));
+    return formatted;
+  });
 
   // Warm all caches asynchronously (non-blocking)
   // This runs in background after server starts accepting requests
