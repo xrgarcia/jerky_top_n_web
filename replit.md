@@ -14,6 +14,12 @@ The application features a modern web architecture designed for responsiveness, 
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional design aesthetic inspired by jerky.com, utilizing a blue/purple color scheme.
 - **Responsiveness**: Fully responsive layout optimized for desktop, tablet, and mobile devices.
+- **Hero Gamification Dashboard**: Transformed hero section into a live engagement dashboard featuring:
+  - **Live Stats Counters**: Three animated stat cards displaying active rankers today, achievements this week, and total rankings with easing animations
+  - **Social Proof Slider**: Auto-rotating achievement feed showing recent community achievements (rotates every 5 seconds with slide-in animations)
+  - **User Progress Bar**: Conditional display for logged-in users showing current streak, leaderboard rank, and next achievement
+  - **Dual CTAs**: Action-focused buttons ("Start Ranking Now" / "View Leaderboard") with gradient backgrounds and hover effects
+  - **Real-time Updates**: WebSocket listeners refresh stats when achievements are earned or rankings are saved
 - **Interactive Ranking**: Dual ranking system supporting drag-and-drop for desktop and dropdown selection for mobile.
 - **Visual Cues**: Product images in ranking modals, visual badges for flavor profiles and average rankings, and animated sorting icons.
 - **Navigation**: SPA with hash routing, preserving state on page refresh, and deep-linking support for products and user profiles.
