@@ -275,7 +275,91 @@ function applyProductFilters() {
     return matchesSearch && matchesVendor && matchesAnimalType && matchesAnimalDisplay && matchesFlavor;
   });
   
+  updateActiveFilterCount();
   renderProductsTable();
+}
+
+function updateActiveFilterCount() {
+  const searchTerm = document.getElementById('productsSearch')?.value || '';
+  const vendorFilter = document.getElementById('vendorFilter')?.value || '';
+  const animalTypeFilter = document.getElementById('animalTypeFilter')?.value || '';
+  const animalDisplayFilter = document.getElementById('animalDisplayFilter')?.value || '';
+  const primaryFlavorFilter = document.getElementById('primaryFlavorFilter')?.value || '';
+  
+  let activeCount = 0;
+  if (searchTerm) activeCount++;
+  if (vendorFilter) activeCount++;
+  if (animalTypeFilter) activeCount++;
+  if (animalDisplayFilter) activeCount++;
+  if (primaryFlavorFilter) activeCount++;
+  
+  const badge = document.getElementById('productsActiveFilterCount');
+  if (badge) {
+    if (activeCount > 0) {
+      badge.textContent = `${activeCount} active`;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+function toggleProductFilters() {
+  const filtersContainer = document.getElementById('productsFilters');
+  const filterContent = document.getElementById('productsFilterContent');
+  const toggleButton = document.getElementById('productsFilterToggle');
+  
+  if (!filtersContainer || !filterContent || !toggleButton) return;
+  
+  const isCurrentlyCollapsed = filtersContainer.classList.contains('collapsed');
+  
+  if (isCurrentlyCollapsed) {
+    filterContent.removeAttribute('hidden');
+    filtersContainer.classList.remove('collapsed');
+    filtersContainer.classList.add('expanded');
+    toggleButton.setAttribute('aria-expanded', 'true');
+    toggleButton.setAttribute('aria-label', 'Hide filters');
+    filterContent.setAttribute('aria-hidden', 'false');
+    sessionStorage.setItem('productsFiltersCollapsed', 'false');
+  } else {
+    filtersContainer.classList.remove('expanded');
+    filtersContainer.classList.add('collapsed');
+    toggleButton.setAttribute('aria-expanded', 'false');
+    toggleButton.setAttribute('aria-label', 'Show filters');
+    filterContent.setAttribute('aria-hidden', 'true');
+    sessionStorage.setItem('productsFiltersCollapsed', 'true');
+    
+    setTimeout(() => {
+      if (filtersContainer.classList.contains('collapsed')) {
+        filterContent.setAttribute('hidden', '');
+      }
+    }, 400);
+  }
+}
+
+function initializeProductFiltersState() {
+  const isCollapsed = sessionStorage.getItem('productsFiltersCollapsed') !== 'false';
+  const filtersContainer = document.getElementById('productsFilters');
+  const filterContent = document.getElementById('productsFilterContent');
+  const toggleButton = document.getElementById('productsFilterToggle');
+  
+  if (!filtersContainer || !filterContent || !toggleButton) return;
+  
+  if (isCollapsed) {
+    filtersContainer.classList.add('collapsed');
+    filtersContainer.classList.remove('expanded');
+    toggleButton.setAttribute('aria-expanded', 'false');
+    toggleButton.setAttribute('aria-label', 'Show filters');
+    filterContent.setAttribute('aria-hidden', 'true');
+    filterContent.setAttribute('hidden', '');
+  } else {
+    filtersContainer.classList.add('expanded');
+    filtersContainer.classList.remove('collapsed');
+    toggleButton.setAttribute('aria-expanded', 'true');
+    toggleButton.setAttribute('aria-label', 'Hide filters');
+    filterContent.setAttribute('aria-hidden', 'false');
+    filterContent.removeAttribute('hidden');
+  }
 }
 
 function renderProductsTable() {
@@ -326,6 +410,7 @@ function setupProductFilters() {
   const animalTypeFilter = document.getElementById('animalTypeFilter');
   const animalDisplayFilter = document.getElementById('animalDisplayFilter');
   const primaryFlavorFilter = document.getElementById('primaryFlavorFilter');
+  const toggleButton = document.getElementById('productsFilterToggle');
   
   if (searchInput) {
     searchInput.addEventListener('input', applyProductFilters);
@@ -346,6 +431,12 @@ function setupProductFilters() {
   if (primaryFlavorFilter) {
     primaryFlavorFilter.addEventListener('change', applyProductFilters);
   }
+  
+  if (toggleButton) {
+    toggleButton.addEventListener('click', toggleProductFilters);
+  }
+  
+  initializeProductFiltersState();
 }
 
 function setupToolNavigation() {
