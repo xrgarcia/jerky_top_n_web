@@ -167,34 +167,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Store current page to track what's currently visible
-        const currentlyVisiblePage = sessionStorage.getItem('currentPage');
+        // Hide all pages
+        if (homePage) homePage.style.display = 'none';
+        if (rankPage) rankPage.style.display = 'none';
+        if (productsPage) productsPage.style.display = 'none';
+        if (communityPage) communityPage.style.display = 'none';
+        if (profilePage) profilePage.style.display = 'none';
+        if (productDetailPage) productDetailPage.style.display = 'none';
+        if (userProfilePage) userProfilePage.style.display = 'none';
+        if (loginPage) loginPage.style.display = 'none';
+        if (toolsPage) toolsPage.style.display = 'none';
         
-        // Only hide/show if we're actually changing pages (prevents flash on back button)
-        const shouldUpdatePages = currentlyVisiblePage !== page;
-        
-        if (shouldUpdatePages) {
-            // Hide all pages
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
-            if (productDetailPage) productDetailPage.style.display = 'none';
-            if (userProfilePage) userProfilePage.style.display = 'none';
-            if (loginPage) loginPage.style.display = 'none';
-            if (toolsPage) toolsPage.style.display = 'none';
-        }
-        
-        // Show selected page
+        // Show selected page (sessionStorage removed - URL is single source of truth)
         if (page === 'home' && homePage) {
             homePage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'home');
             if (heroSection) heroSection.style.display = 'block';
             document.body.classList.remove('login-page-active');
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'rank');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             
@@ -219,7 +209,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else if (page === 'products' && productsPage) {
             productsPage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'products');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Parse URL parameters
@@ -269,14 +258,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         } else if (page === 'community' && communityPage) {
             communityPage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'community');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Load community users when page is shown
             loadCommunityUsers();
         } else if (page === 'profile' && profilePage) {
             profilePage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'profile');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Load profile data when page is shown
@@ -294,12 +281,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             loginPage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'login');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.add('login-page-active');
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';
-            sessionStorage.setItem('currentPage', 'tools');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Initialize tools page
@@ -706,31 +691,33 @@ document.addEventListener('DOMContentLoaded', function() {
     let hasMoreProducts = true;
     let currentSearchQuery = '';
 
-    // URL routing functions
-    function handleRouting(isInitialLoad = false) {
+    // URL routing functions - single source of truth from URL hash
+    function handleRouting() {
         const hash = window.location.hash.replace('#', '');
-        
-        // Only use sessionStorage fallback on initial page load, not on hashchange
-        let fullPage;
-        if (isInitialLoad && !hash) {
-            const savedPage = sessionStorage.getItem('currentPage');
-            fullPage = savedPage || 'home';
-        } else {
-            fullPage = hash || 'home';
-        }
-        
         // Extract just the page name (before any query parameters)
+        const fullPage = hash || 'home';
         const page = fullPage.split('?')[0] === 'home' || fullPage === '' ? 'home' : fullPage.split('?')[0];
         
-        // Show the page based on URL hash, but don't update URL again (prevent loop)
+        // Show the page based on URL hash, don't update URL (prevent loop)
         showPage(page, false);
     }
     
+    // Helper function for programmatic navigation (updates URL, triggers routing)
+    function navigateTo(page, options = {}) {
+        const newHash = page === 'home' ? '' : `#${page}`;
+        if (options.replace) {
+            history.replaceState(null, '', newHash || '/');
+        } else {
+            window.location.hash = newHash;
+        }
+        // hashchange event will trigger handleRouting automatically
+    }
+    
     // Handle URL hash changes (back/forward buttons, direct links)
-    window.addEventListener('hashchange', () => handleRouting(false));
+    window.addEventListener('hashchange', handleRouting);
     
     // Handle initial page load based on current URL hash
-    handleRouting(true);
+    handleRouting();
     
     // Check customer auth status on load
     checkCustomerAuthStatus();
