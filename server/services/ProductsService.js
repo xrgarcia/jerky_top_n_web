@@ -206,6 +206,7 @@ class ProductsService {
       vendor: product.vendor,
       productType: product.product_type,
       tags: product.tags,
+      bodyHtml: product.body_html || null,
       image: product.images?.[0]?.src || null,
       price: product.variants?.[0]?.price || '0.00',
       compareAtPrice: product.variants?.[0]?.compare_at_price || null,
