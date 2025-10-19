@@ -3925,6 +3925,19 @@ body.login-page-active .hero {
     box-shadow: 0 4px 16px rgba(123, 139, 82, 0.2);
 }
 
+.btn-secondary-cta.ranked {
+    background: #7b8b52;
+    color: white;
+    border: 3px solid #7b8b52;
+}
+
+.btn-secondary-cta.ranked:hover {
+    background: #5d6b3d;
+    border-color: #5d6b3d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(93, 107, 61, 0.3);
+}
+
 .cta-icon {
     font-size: 18px;
 }

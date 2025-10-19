@@ -2939,13 +2939,61 @@ document.addEventListener('DOMContentLoaded', function() {
                 buyNowBtn.style.display = 'none';
             }
             
-            // Set up Rank This Product button
-            if (rankThisProductBtn) {
-                rankThisProductBtn.onclick = () => {
-                    // Navigate to rank page with search parameter
-                    const searchQuery = encodeURIComponent(product.title);
-                    window.location.hash = `#rank?search=${searchQuery}`;
-                };
+            // Check if user has already ranked this product
+            try {
+                const sessionData = await checkSession();
+                if (sessionData.authenticated) {
+                    const rankingResponse = await fetch(`/api/rankings/products?sessionId=${sessionData.sessionId}&rankingListId=default`);
+                    const rankingData = await rankingResponse.json();
+                    
+                    if (rankingResponse.ok && rankingData.rankings) {
+                        const existingRank = rankingData.rankings.find(r => r.productData.id === productId);
+                        
+                        if (existingRank && rankThisProductBtn) {
+                            // User has already ranked this product - show their rank
+                            rankThisProductBtn.innerHTML = `
+                                <span class="cta-icon">🏆</span>
+                                Your Rank: #${existingRank.ranking}
+                            `;
+                            rankThisProductBtn.classList.add('ranked');
+                            rankThisProductBtn.onclick = () => {
+                                // Navigate to rank page to view/edit their rankings
+                                window.location.hash = '#rank';
+                            };
+                        } else if (rankThisProductBtn) {
+                            // User hasn't ranked this product - show rank button
+                            rankThisProductBtn.innerHTML = `
+                                <span class="cta-icon">⭐</span>
+                                Rank This Jerky
+                            `;
+                            rankThisProductBtn.classList.remove('ranked');
+                            rankThisProductBtn.onclick = () => {
+                                // Navigate to rank page with search parameter
+                                const searchQuery = encodeURIComponent(product.title);
+                                window.location.hash = `#rank?search=${searchQuery}`;
+                            };
+                        }
+                    }
+                } else {
+                    // Not authenticated - show default rank button
+                    if (rankThisProductBtn) {
+                        rankThisProductBtn.innerHTML = `
+                            <span class="cta-icon">⭐</span>
+                            Rank This Jerky
+                        `;
+                        rankThisProductBtn.onclick = () => {
+                            window.location.hash = '#rank';
+                        };
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking product ranking:', error);
+                // Fallback to default button on error
+                if (rankThisProductBtn) {
+                    rankThisProductBtn.onclick = () => {
+                        window.location.hash = '#rank';
+                    };
+                }
             }
         } else {
             detailTitle.textContent = 'Product not found';
