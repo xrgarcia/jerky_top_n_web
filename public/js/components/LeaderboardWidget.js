@@ -36,18 +36,18 @@ class LeaderboardWidget {
 
   async load() {
     this.leaderboardService.subscribeToUpdates();
-    await this.leaderboardService.loadLeaderboard(this.period, 10);
+    await this.leaderboardService.loadLeaderboard(this.period, 5);
     await this.leaderboardService.loadUserPosition(this.period);
   }
 
   render() {
-    const leaderboard = this.leaderboardService.getTopRankers(10);
+    const leaderboard = this.leaderboardService.getTopRankers(5);
     const userPosition = this.leaderboardService.userPosition;
 
     this.container.innerHTML = `
       <div class="leaderboard-widget">
         <div class="leaderboard-header">
-          <h3>🏆 Top Rankers</h3>
+          <h3>🏆 Top 5 Rankers</h3>
           ${userPosition && userPosition.rank ? `
             <div class="user-position">
               Your Rank: #${userPosition.rank}
