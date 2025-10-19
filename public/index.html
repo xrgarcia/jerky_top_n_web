@@ -301,8 +301,19 @@
             </div>
             
             <!-- Animal Categories Filter -->
-            <div class="animal-categories" id="animalCategories">
-                <!-- Categories will be loaded dynamically -->
+            <div class="animal-filter-wrapper collapsed" id="animalFilterWrapper">
+                <button class="animal-filter-toggle-button" id="animalFilterToggle" aria-expanded="false" aria-label="Show animal filters">
+                    <div class="animal-filter-title-section">
+                        <span class="animal-filter-title">🐄 Filter by Animal</span>
+                    </div>
+                    <span class="animal-filter-chevron">▼</span>
+                </button>
+                
+                <div class="animal-filter-content" id="animalFilterContent" aria-hidden="true" hidden>
+                    <div class="animal-categories" id="animalCategories">
+                        <!-- Categories will be loaded dynamically -->
+                    </div>
+                </div>
             </div>
             
             <div class="products-controls">
