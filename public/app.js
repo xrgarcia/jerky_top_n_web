@@ -2767,9 +2767,15 @@ document.addEventListener('DOMContentLoaded', function() {
         const detailTitle = document.getElementById('productDetailPageTitle');
         const detailVendor = document.getElementById('productDetailPageVendor');
         const detailPrice = document.getElementById('productDetailPagePrice');
+        const detailComparePrice = document.getElementById('productDetailPageComparePrice');
         const detailFlavor = document.getElementById('productDetailPageFlavor');
+        const detailDescription = document.getElementById('productDetailPageDescription');
+        const buyNowBtn = document.getElementById('buyNowBtn');
         const statRankers = document.getElementById('productDetailPageRankers');
         const statAvgRank = document.getElementById('productDetailPageAvgRank');
+        const statBestRank = document.getElementById('productDetailPageBestRank');
+        const statWorstRank = document.getElementById('productDetailPageWorstRank');
+        const rankThisProductBtn = document.getElementById('rankThisProductBtn');
         
         // Try to get product from cached data first
         let product = window.productsData && window.productsData.find(p => p.id === productId);
@@ -2796,6 +2802,14 @@ document.addEventListener('DOMContentLoaded', function() {
             detailImage.src = product.image || '';
             detailImage.alt = product.title;
             
+            // Set compare at price if available
+            if (product.compareAtPrice && parseFloat(product.compareAtPrice) > parseFloat(product.price)) {
+                detailComparePrice.textContent = `$${product.compareAtPrice}`;
+                detailComparePrice.style.display = 'inline';
+            } else {
+                detailComparePrice.style.display = 'none';
+            }
+            
             // Set flavor profile if available
             if (product.flavorDisplay) {
                 detailFlavor.innerHTML = `
@@ -2807,16 +2821,42 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 detailFlavor.innerHTML = '';
             }
+            
+            // Set product description from body_html
+            if (product.bodyHtml) {
+                detailDescription.innerHTML = product.bodyHtml;
+            } else {
+                detailDescription.innerHTML = '<p>No description available.</p>';
+            }
+            
+            // Set Buy Now button URL
+            if (product.handle) {
+                buyNowBtn.href = `https://www.jerky.com/products/${product.handle}`;
+            } else {
+                buyNowBtn.style.display = 'none';
+            }
+            
+            // Set up Rank This Product button
+            if (rankThisProductBtn) {
+                rankThisProductBtn.onclick = () => {
+                    showPage('rank', true);
+                };
+            }
         } else {
             detailTitle.textContent = 'Product not found';
             detailVendor.textContent = '';
             detailPrice.textContent = '';
+            detailComparePrice.style.display = 'none';
             detailFlavor.innerHTML = '';
+            detailDescription.innerHTML = '<p>Product not found.</p>';
+            buyNowBtn.style.display = 'none';
         }
         
         // Reset stats to loading state
         statRankers.textContent = '-';
         statAvgRank.textContent = '-';
+        statBestRank.textContent = '-';
+        statWorstRank.textContent = '-';
         
         // Fetch product statistics
         try {
@@ -2824,17 +2864,23 @@ document.addEventListener('DOMContentLoaded', function() {
             const stats = await response.json();
             
             if (response.ok) {
-                statRankers.textContent = stats.uniqueRankers;
+                statRankers.textContent = stats.uniqueRankers || 0;
                 statAvgRank.textContent = stats.avgRanking || 'N/A';
+                statBestRank.textContent = stats.bestRanking || 'N/A';
+                statWorstRank.textContent = stats.worstRanking || 'N/A';
             } else {
                 console.error('Failed to load product stats:', stats.error);
                 statRankers.textContent = 'Error';
                 statAvgRank.textContent = 'Error';
+                statBestRank.textContent = 'Error';
+                statWorstRank.textContent = 'Error';
             }
         } catch (error) {
             console.error('Error fetching product stats:', error);
             statRankers.textContent = 'Error';
             statAvgRank.textContent = 'Error';
+            statBestRank.textContent = 'Error';
+            statWorstRank.textContent = 'Error';
         }
     }
     
