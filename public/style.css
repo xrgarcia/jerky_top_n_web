@@ -2193,12 +2193,14 @@ body.login-page-active .hero {
     display: block;
 }
 
+/* Rank page product cards - keep base styling consistent */
 .product-title {
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 5px;
     color: #333;
     line-height: 1.3;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
 .product-vendor {
@@ -3683,7 +3685,7 @@ body.login-page-active .hero {
     flex-direction: column;
 }
 
-.product-title {
+.product-details .product-title {
     font-size: 32px;
     font-weight: 700;
     color: #3b2f25;
@@ -4114,7 +4116,7 @@ body.login-page-active .hero {
         padding: 30px 20px;
     }
     
-    .product-title {
+    .product-details .product-title {
         font-size: 24px;
     }
     

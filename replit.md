@@ -12,10 +12,11 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
 The application features a modern web architecture designed for responsiveness, scalability, and real-time interaction.
 
 ### UI/UX Decisions
-- **Design Inspiration**: Clean, professional design aesthetic inspired by jerky.com, utilizing a blue/purple color scheme.
+- **Design Inspiration**: Clean, professional design aesthetic inspired by jerky.com, utilizing an **earth tone color palette** (parchment background #f5f3ed, sage green accents #7b8b52, wood brown typography #3b2f25, muted gold #c4a962).
 - **Responsiveness**: Fully responsive layout optimized for desktop, tablet, and mobile devices.
 - **Hero Gamification Dashboard**: Transformed hero section into a live engagement dashboard featuring live stats counters, a social proof slider, user progress bar, and dual CTAs with real-time updates via WebSockets. Displays only on homepage for maximum engagement.
-- **Minimal Page Headers**: Content pages (Products, Community, Rank, Profile, Tools) use compact ~150-200px headers with breadcrumbs, page title with icon, subtitle, and page-specific action buttons. Features subtle gradient backgrounds and responsive design for mobile devices. Provides content-focused experience without hero distraction.
+- **Minimal Page Headers**: Content pages (Products, Community, Rank, Profile, Tools) use compact ~150-200px headers with breadcrumbs, page title with icon, subtitle, and page-specific action buttons. Features sage green gradients, sage green borders, wood brown breadcrumbs, and responsive design for mobile devices. Provides content-focused experience without hero distraction.
+- **Unified Product Cards**: Products and Rank pages share consistent card styling with 14px titles, 12px vendor names, 14px prices, and full-height images (auto-scaling with min-height constraints). Ensures visual consistency across all product displays.
 - **Home Page Dashboard**: Dynamic Bento Box layout with engaging micro-copy and interactive CTAs within widgets. Includes quick-action buttons on product items and improved empty states with encouraging CTAs. Accessibility is ensured with proper `aria-labels` and touch-friendly targets.
 - **Interactive Ranking**: Dual ranking system supporting drag-and-drop for desktop and dropdown selection for mobile with visual cues, badges, and animated sorting icons.
 - **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking. SPA navigation controls hero section visibility (shown only on homepage).
@@ -35,7 +36,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Streak Tracking**: Calendar-day-based streak calculation (UTC normalized) with multi-layer validation and optimized database queries.
 - **Performance Optimizations**: Extensive use of OOP design patterns, caching strategies, and query optimization for achievement system (SQL aggregation, Facade pattern, Singleton cache), leaderboard position (COUNT-based query, position cache), home page stats (Home Stats Cache, Cache Warming), and community page leaderboard (Leaderboard Cache, Cache Warming). Achieves significant speed improvements (e.g., home page stats <1ms).
 - **Search**: Global unified search with type-ahead functionality for products and community members, including client-side instant search for products.
-- **Styling**: Custom CSS for consistent look and feel.
+- **Styling**: Custom CSS with earth tone color palette for consistent look and feel. Content pages use shared `.page-header-minimal` theme with sage green accents. Product cards share unified base styles (`.product-card`, `.product-title`, `.product-vendor`, `.product-price`) across Products and Rank pages.
 
 ### Feature Specifications
 - **Ranking**: View top N jerky products (3, 5, or 8), persistent rankings with database storage, and a visual ranking modal with product images. Includes multi-layer duplicate prevention and an optimistic UI pattern for immediate feedback.
