@@ -635,23 +635,33 @@
                     </div>
                     
                     <!-- Filters and Search -->
-                    <div class="products-filters">
-                        <div class="products-search-box">
-                            <input type="text" id="productsSearch" placeholder="Search by any attribute..." />
-                        </div>
-                        <div class="products-filter-dropdowns">
-                            <select id="vendorFilter" class="product-filter-select">
-                                <option value="">All Vendors</option>
-                            </select>
-                            <select id="animalTypeFilter" class="product-filter-select">
-                                <option value="">All Animal Types</option>
-                            </select>
-                            <select id="animalDisplayFilter" class="product-filter-select">
-                                <option value="">All Animal Displays</option>
-                            </select>
-                            <select id="primaryFlavorFilter" class="product-filter-select">
-                                <option value="">All Flavors</option>
-                            </select>
+                    <div class="products-filters collapsed" id="productsFilters">
+                        <button class="products-filter-toggle-button" id="productsFilterToggle" aria-expanded="false" aria-label="Show filters">
+                            <div class="products-filter-title-section">
+                                <span class="products-filter-title">🔍 Filters</span>
+                                <span class="products-filter-count-badge" id="productsActiveFilterCount" style="display: none;">0 active</span>
+                            </div>
+                            <span class="products-filter-chevron">▼</span>
+                        </button>
+                        
+                        <div class="products-filter-content" id="productsFilterContent" aria-hidden="true" hidden>
+                            <div class="products-search-box">
+                                <input type="text" id="productsSearch" placeholder="Search by any attribute..." />
+                            </div>
+                            <div class="products-filter-dropdowns">
+                                <select id="vendorFilter" class="product-filter-select">
+                                    <option value="">All Vendors</option>
+                                </select>
+                                <select id="animalTypeFilter" class="product-filter-select">
+                                    <option value="">All Animal Types</option>
+                                </select>
+                                <select id="animalDisplayFilter" class="product-filter-select">
+                                    <option value="">All Animal Displays</option>
+                                </select>
+                                <select id="primaryFlavorFilter" class="product-filter-select">
+                                    <option value="">All Flavors</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
 
