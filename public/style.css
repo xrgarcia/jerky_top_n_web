@@ -3609,6 +3609,168 @@ body.login-page-active .hero {
     letter-spacing: 0.5px;
 }
 
+/* Product Ranking Hero Section (Primary Focus) */
+.product-ranking-hero {
+    background: linear-gradient(135deg, #6B8E23 0%, #557018 100%);
+    border-radius: 12px;
+    padding: 40px;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 20px rgba(107, 142, 35, 0.3);
+}
+
+.ranking-hero-title {
+    text-align: center;
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 30px 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.product-stats-grid-hero {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.product-stat-card-hero {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    padding: 25px 20px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.product-stat-card-hero:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.product-stat-icon-hero {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.product-stat-value-hero {
+    font-size: 42px;
+    font-weight: 800;
+    color: #6B8E23;
+    margin-bottom: 8px;
+    line-height: 1;
+}
+
+.product-stat-label-hero {
+    font-size: 13px;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+.rank-this-product-btn {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 18px 32px;
+    background: white;
+    color: #6B8E23;
+    border: 3px solid white;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rank-this-product-btn:hover {
+    background: #6B8E23;
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+/* Product Price Section */
+.product-price-section {
+    margin: 20px 0;
+}
+
+.product-price-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.product-compare-price {
+    font-size: 18px;
+    color: #999;
+    text-decoration: line-through;
+}
+
+/* Product Description */
+.product-detail-description {
+    margin: 30px 0;
+    padding: 25px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #6B8E23;
+}
+
+.product-detail-description h3 {
+    font-size: 20px;
+    color: #2c2c2c;
+    margin: 0 0 15px 0;
+    font-weight: 600;
+}
+
+.product-description-content {
+    color: #444;
+    line-height: 1.6;
+}
+
+.product-description-content p {
+    margin: 0 0 12px 0;
+}
+
+.product-description-content ul,
+.product-description-content ol {
+    margin: 12px 0;
+    padding-left: 25px;
+}
+
+.product-description-content li {
+    margin: 8px 0;
+}
+
+/* Product Actions */
+.product-actions {
+    margin-top: 30px;
+}
+
+.buy-now-btn {
+    display: inline-block;
+    padding: 16px 32px;
+    background: #6B8E23;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 3px solid #6B8E23;
+}
+
+.buy-now-btn:hover {
+    background: #557018;
+    border-color: #557018;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(107, 142, 35, 0.3);
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .products-controls {
@@ -3653,6 +3815,40 @@ body.login-page-active .hero {
     
     .product-stats-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .product-stats-grid-hero {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+    
+    .product-stat-card-hero {
+        padding: 20px 15px;
+    }
+    
+    .product-stat-icon-hero {
+        font-size: 36px;
+    }
+    
+    .product-stat-value-hero {
+        font-size: 32px;
+    }
+    
+    .product-stat-label-hero {
+        font-size: 11px;
+    }
+    
+    .ranking-hero-title {
+        font-size: 24px;
+    }
+    
+    .product-ranking-hero {
+        padding: 30px 20px;
+    }
+    
+    .rank-this-product-btn {
+        font-size: 16px;
+        padding: 14px 24px;
     }
     
     .user-profile-page-container {
