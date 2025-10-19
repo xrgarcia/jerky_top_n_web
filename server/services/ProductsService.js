@@ -90,7 +90,10 @@ class ProductsService {
         SELECT 
           shopify_product_id,
           COUNT(*) as count,
+          COUNT(DISTINCT user_id) as unique_rankers,
           AVG(ranking) as avg_rank,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
           MAX(created_at) as last_ranked_at
         FROM product_rankings
         GROUP BY shopify_product_id
@@ -100,7 +103,10 @@ class ProductsService {
       results.rows.forEach(row => {
         rankingStats[row.shopify_product_id] = {
           count: parseInt(row.count),
+          uniqueRankers: parseInt(row.unique_rankers),
           avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
+          bestRank: row.best_rank ? parseInt(row.best_rank) : null,
+          worstRank: row.worst_rank ? parseInt(row.worst_rank) : null,
           lastRankedAt: row.last_ranked_at
         };
       });
@@ -183,8 +189,11 @@ class ProductsService {
     
     // Get stats or default values
     const stats = rankingStats[productId] || { 
-      count: 0, 
-      avgRank: null, 
+      count: 0,
+      uniqueRankers: 0,
+      avgRank: null,
+      bestRank: null,
+      worstRank: null,
       lastRankedAt: null 
     };
     
@@ -211,7 +220,10 @@ class ProductsService {
       price: product.variants?.[0]?.price || '0.00',
       compareAtPrice: product.variants?.[0]?.compare_at_price || null,
       rankingCount: stats.count,
+      uniqueRankers: stats.uniqueRankers,
       avgRank: stats.avgRank,
+      bestRank: stats.bestRank,
+      worstRank: stats.worstRank,
       lastRankedAt: stats.lastRankedAt,
       animalType: metadata.animalType,
       animalDisplay: metadata.animalDisplay,
