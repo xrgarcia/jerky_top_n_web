@@ -189,8 +189,26 @@ document.addEventListener('DOMContentLoaded', function() {
             sessionStorage.setItem('currentPage', 'rank');
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
+            
+            // Parse URL parameters for search
+            const hashParams = new URLSearchParams(window.location.hash.split('?')[1] || '');
+            const searchQuery = hashParams.get('search') || '';
+            
             // Load rankings and products when page is shown
             loadRankPageData();
+            
+            // If there's a search parameter, populate the search input and trigger search
+            if (searchQuery) {
+                const productSearchInput = document.getElementById('productSearch');
+                if (productSearchInput) {
+                    productSearchInput.value = searchQuery;
+                    // Trigger the search after a brief delay to ensure the page is fully loaded
+                    setTimeout(() => {
+                        currentSearchQuery = searchQuery;
+                        loadProducts(searchQuery, true);
+                    }, 300);
+                }
+            }
         } else if (page === 'products' && productsPage) {
             productsPage.style.display = 'block';
             sessionStorage.setItem('currentPage', 'products');
@@ -2924,7 +2942,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set up Rank This Product button
             if (rankThisProductBtn) {
                 rankThisProductBtn.onclick = () => {
-                    showPage('rank', true);
+                    // Navigate to rank page with search parameter
+                    const searchQuery = encodeURIComponent(product.title);
+                    window.location.hash = `#rank?search=${searchQuery}`;
                 };
             }
         } else {
