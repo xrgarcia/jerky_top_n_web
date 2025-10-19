@@ -1,8 +1,8 @@
-/* Minimal Page Header Styles for Content Pages */
+/* Minimal Page Header Styles for Content Pages - Earth Tone Theme */
 
 .page-header-minimal {
-  background: linear-gradient(135deg, rgba(102, 51, 153, 0.08) 0%, rgba(0, 102, 204, 0.08) 100%);
-  border-bottom: 3px solid #663399;
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.08) 0%, rgba(196, 169, 98, 0.08) 100%);
+  border-bottom: 3px solid #7b8b52;
   padding: 40px 20px;
   margin-bottom: 40px;
   position: relative;
@@ -16,7 +16,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="rgba(102,51,153,0.03)" stroke-width="1"/></svg>') repeat;
+  background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="rgba(123,139,82,0.03)" stroke-width="1"/></svg>') repeat;
   opacity: 0.5;
   pointer-events: none;
 }
@@ -39,11 +39,12 @@
 .page-header-title {
   font-size: 36px;
   font-weight: 800;
-  color: #2c2c2c;
+  color: #3b2f25;
   margin: 0 0 10px 0;
   display: flex;
   align-items: center;
   gap: 15px;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 .page-header-icon {
@@ -60,26 +61,32 @@
 
 .page-header-breadcrumbs {
   font-size: 13px;
-  color: #888;
+  color: #3b2f25;
   margin-bottom: 15px;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-weight: 600;
 }
 
 .page-header-breadcrumbs a {
-  color: #663399;
+  color: #7b8b52;
   text-decoration: none;
   transition: color 0.3s ease;
+  font-weight: 600;
 }
 
 .page-header-breadcrumbs a:hover {
-  color: #0066CC;
+  color: #5d6b3d;
   text-decoration: underline;
 }
 
 .page-header-breadcrumbs span {
-  color: #ccc;
+  color: #3b2f25;
+}
+
+.page-header-breadcrumbs span:not(:last-child) {
+  color: #999;
 }
 
 .page-header-action {
@@ -87,7 +94,7 @@
 }
 
 .page-action-btn {
-  background: linear-gradient(135deg, #663399, #0066CC);
+  background: #7b8b52;
   color: white;
   border: none;
   padding: 14px 28px;
@@ -96,7 +103,7 @@
   font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.3);
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
@@ -107,8 +114,8 @@
 
 .page-action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(102, 51, 153, 0.4);
-  background: linear-gradient(135deg, #7744AA, #0077EE);
+  box-shadow: 0 6px 20px rgba(123, 139, 82, 0.4);
+  background: #5d6b3d;
 }
 
 .page-action-btn:active {
