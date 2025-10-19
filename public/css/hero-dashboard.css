@@ -108,7 +108,7 @@
 
 /* User Progress Area */
 .hero-user-progress {
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+    background: linear-gradient(135deg, rgba(123, 139, 82, 0.9) 0%, rgba(93, 107, 61, 0.9) 100%);
     backdrop-filter: blur(10px);
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 15px;
@@ -277,14 +277,14 @@
 }
 
 .hero-cta-btn.primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #7b8b52 0%, #5d6b3d 100%);
     color: white;
 }
 
 .hero-cta-btn.primary:hover {
-    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+    background: linear-gradient(135deg, #5d6b3d 0%, #7b8b52 100%);
     transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5);
+    box-shadow: 0 8px 25px rgba(123, 139, 82, 0.5);
 }
 
 .hero-cta-btn.secondary {
