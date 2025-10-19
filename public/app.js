@@ -32,15 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let isProductsLoading = false;
     let currentProductsQuery = '';
 
-    // Navigation event listeners
-    // No longer needed - nav links use proper hash hrefs and hashchange listener handles routing
-    // Keeping the handler for backwards compatibility but letting hash navigation work naturally
-    navLinks.forEach(link => {
-        link.addEventListener('click', async function(e) {
-            // Let the browser handle hash navigation naturally
-            // The hashchange listener will trigger showPage()
-        });
-    });
+    // Navigation is handled purely by hash changes
+    // No click handlers needed - browser handles hash links natively
 
     // Event listeners
     if (loadButton) loadButton.addEventListener('click', loadTopJerky);
@@ -700,6 +693,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const hash = window.location.hash.replace('#', '');
         const fullPage = hash || 'home';
         const page = fullPage.split('?')[0] || 'home';
+        
+        console.log(`🔀 Hash changed to: "${hash}" → Routing to: "${page}"`);
         
         // Show the page based on URL hash, don't update URL (prevent loop)
         showPage(page, false);
