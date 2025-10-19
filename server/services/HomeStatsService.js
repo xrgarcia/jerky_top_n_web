@@ -27,14 +27,14 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        product_data,
+        MIN(product_data) as product_data,
         COUNT(*) as rank_count,
         AVG(ranking) as avg_rank,
         MIN(ranking) as best_rank,
         MAX(ranking) as worst_rank
       FROM product_rankings
       WHERE product_data IS NOT NULL
-      GROUP BY shopify_product_id, product_data
+      GROUP BY shopify_product_id
       HAVING COUNT(*) >= 1
       ORDER BY avg_rank ASC
       LIMIT ${limit}
@@ -98,14 +98,14 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        product_data,
+        MIN(product_data) as product_data,
         COUNT(*) as recent_rank_count,
         AVG(ranking) as avg_rank
       FROM product_rankings
       WHERE 
         product_data IS NOT NULL
         AND created_at >= NOW() - INTERVAL '${sql.raw(days.toString())} days'
-      GROUP BY shopify_product_id, product_data
+      GROUP BY shopify_product_id
       ORDER BY recent_rank_count DESC, avg_rank ASC
       LIMIT ${limit}
     `);
@@ -125,7 +125,7 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        product_data,
+        MIN(product_data) as product_data,
         COUNT(*) as rank_count,
         AVG(ranking) as avg_rank,
         STDDEV(ranking) as rank_variance,
@@ -133,7 +133,7 @@ class HomeStatsService {
         MAX(ranking) as worst_rank
       FROM product_rankings
       WHERE product_data IS NOT NULL
-      GROUP BY shopify_product_id, product_data
+      GROUP BY shopify_product_id
       HAVING COUNT(*) >= 2 AND STDDEV(ranking) > 0
       ORDER BY STDDEV(ranking) DESC
       LIMIT ${limit}
