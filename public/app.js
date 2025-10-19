@@ -154,7 +154,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Update URL hash for linkable pages
         if (updateURL) {
-            const newHash = page === 'home' ? '' : `#${page}`;
+            const newHash = `#${page}`;
             if (window.location.hash !== newHash) {
                 window.location.hash = newHash;
             }
@@ -704,17 +704,25 @@ document.addEventListener('DOMContentLoaded', function() {
     window.addEventListener('hashchange', handleRouting);
     
     // Initialize routing after DOM is ready
-    if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => {
+    function initializeRouting() {
+        // If no hash on initial load, set it to #home for proper browser history
+        if (!window.location.hash) {
+            window.location.hash = '#home';
+            // hashchange event will fire and call handleRouting
+        } else {
+            // Hash exists, handle it
             handleRouting();
-            checkCustomerAuthStatus();
-            handleLoginSuccessFromURL();
-        });
-    } else {
-        // DOM already loaded
-        handleRouting();
+        }
+        
         checkCustomerAuthStatus();
         handleLoginSuccessFromURL();
+    }
+    
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeRouting);
+    } else {
+        // DOM already loaded
+        initializeRouting();
     }
 
     // Load rank page data (rankings + products)
