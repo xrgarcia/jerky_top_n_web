@@ -8,33 +8,9 @@
 
   // Handle footer navigation links
   function initializeFooterNavigation() {
-    const footerLinks = document.querySelectorAll('.footer-links a[data-page]');
-    
-    footerLinks.forEach(link => {
-      // Remove click handler, let browser handle hash navigation naturally
-      link.removeEventListener('click', () => {});
-      
-      // Update href to use proper hash
-      const page = link.getAttribute('data-page');
-      link.href = page === 'home' ? '#home' : `#${page}`;
-    });
-    
-    // Handle login link in footer
-    const footerLoginLink = document.getElementById('footerLoginLink');
-    if (footerLoginLink) {
-      footerLoginLink.addEventListener('click', (e) => {
-        e.preventDefault();
-        const isLoggedIn = localStorage.getItem('sessionId');
-        
-        if (isLoggedIn) {
-          // Already logged in, go to profile
-          window.location.hash = '#profile';
-        } else {
-          // Trigger login
-          window.location.hash = '#login';
-        }
-      });
-    }
+    // All footer links now use proper hash hrefs in HTML
+    // No need to manipulate them dynamically
+    console.log('✅ Footer navigation links using native hash routing');
   }
   
   // Update footer based on authentication state
