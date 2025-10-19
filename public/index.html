@@ -30,7 +30,16 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link" data-page="home">HOME</a>
                 <a href="#products" class="nav-link" data-page="products">PRODUCTS</a>
-                <a href="#community" class="nav-link" data-page="community">COMMUNITY</a>
+                <div class="nav-item-with-dropdown">
+                    <a href="#community" class="nav-link nav-dropdown-trigger" data-page="community">
+                        <span>COMMUNITY</span>
+                        <span class="nav-dropdown-arrow">▼</span>
+                    </a>
+                    <div class="nav-dropdown-menu">
+                        <a href="#community">COMMUNITY</a>
+                        <a href="#leaderboard">LEADERBOARD</a>
+                    </div>
+                </div>
                 <a href="#rank" class="nav-link" data-page="rank">RANK</a>
                 <a href="#tools" class="nav-link" data-page="tools" id="toolsNavLink" style="display: none;">TOOLS</a>
             </div>
