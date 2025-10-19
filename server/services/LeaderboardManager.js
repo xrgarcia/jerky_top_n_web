@@ -171,27 +171,64 @@ class LeaderboardManager {
       ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
       : `COUNT(DISTINCT ups.id)`;
 
-    // OPTIMIZED: Use subquery with GROUP BY + HAVING instead of window functions
-    // This calculates only what we need for one user instead of ranking everyone
+    // OPTIMIZED: Pre-aggregate each table separately to avoid Cartesian product
+    // Then join the small aggregated results instead of joining raw tables
+    const achievementsFilter = dateFilter ? `WHERE earned_at ${dateFilter}` : '';
+    const pageViewsFilter = dateFilter ? `WHERE viewed_at ${dateFilter}` : '';
+    const rankingsFilter = dateFilter ? `WHERE created_at ${dateFilter}` : '';
+    const searchesFilter = dateFilter ? `WHERE searched_at ${dateFilter}` : '';
+    
     const positionQuery = `
-      WITH all_scores AS (
+      WITH 
+      -- Pre-aggregate achievements per user
+      user_achievements_agg AS (
+        SELECT user_id, COUNT(*)::int as achievement_count
+        FROM user_achievements
+        ${achievementsFilter}
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate page views per user
+      user_pageviews_agg AS (
+        SELECT user_id, COUNT(*)::int as pageview_count
+        FROM page_views
+        ${pageViewsFilter}
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate rankings per user
+      user_rankings_agg AS (
+        SELECT 
+          user_id, 
+          COUNT(*)::int as ranking_count,
+          COUNT(DISTINCT shopify_product_id)::int as unique_products
+        FROM product_rankings
+        ${rankingsFilter}
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate searches per user
+      user_searches_agg AS (
+        SELECT user_id, COUNT(*)::int as search_count
+        FROM user_product_searches
+        ${searchesFilter}
+        GROUP BY user_id
+      ),
+      -- Join pre-aggregated results (small tables)
+      all_scores AS (
         SELECT 
           u.id as user_id,
-          COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
-          (COALESCE(${achievementsCount}, 0) 
-           + COALESCE(${pageViewsCount}, 0) 
-           + COALESCE(${rankingsCount}, 0) 
-           + COALESCE(${searchesCount}, 0))::int as engagement_score
+          COALESCE(ra.unique_products, 0) as unique_products,
+          (COALESCE(ach.achievement_count, 0) 
+           + COALESCE(pv.pageview_count, 0) 
+           + COALESCE(ra.ranking_count, 0) 
+           + COALESCE(s.search_count, 0))::int as engagement_score
         FROM users u
-        LEFT JOIN product_rankings pr ON pr.user_id = u.id
-        LEFT JOIN page_views pv ON pv.user_id = u.id
-        LEFT JOIN user_achievements ua ON ua.user_id = u.id
-        LEFT JOIN user_product_searches ups ON ups.user_id = u.id
-        GROUP BY u.id
-        HAVING (COALESCE(${achievementsCount}, 0) 
-                + COALESCE(${pageViewsCount}, 0) 
-                + COALESCE(${rankingsCount}, 0) 
-                + COALESCE(${searchesCount}, 0)) > 0
+        LEFT JOIN user_achievements_agg ach ON ach.user_id = u.id
+        LEFT JOIN user_pageviews_agg pv ON pv.user_id = u.id
+        LEFT JOIN user_rankings_agg ra ON ra.user_id = u.id
+        LEFT JOIN user_searches_agg s ON s.user_id = u.id
+        WHERE (COALESCE(ach.achievement_count, 0) 
+               + COALESCE(pv.pageview_count, 0) 
+               + COALESCE(ra.ranking_count, 0) 
+               + COALESCE(s.search_count, 0)) > 0
       ),
       user_score AS (
         SELECT * FROM all_scores WHERE user_id = ${userId}
