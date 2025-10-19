@@ -3955,23 +3955,22 @@ body.login-page-active .hero {
     align-items: center;
     justify-content: center;
     padding: 18px 36px;
-    background: transparent;
-    color: #FFD700;
+    background: #7b8b52;
+    color: white;
     text-decoration: none;
     border-radius: 8px;
     font-size: 18px;
     font-weight: 700;
-    border: 3px solid #FFD700;
+    border: 3px solid #7b8b52;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .btn-primary-cta:hover {
-    background: #FFD700;
-    color: #2c2c2c;
-    border-color: #FFD700;
+    background: #5d6b3d;
+    border-color: #5d6b3d;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 6px 20px rgba(123, 139, 82, 0.3);
 }
 
 .btn-secondary-cta {
@@ -3998,16 +3997,17 @@ body.login-page-active .hero {
 }
 
 .btn-secondary-cta.ranked {
-    background: #7b8b52;
-    color: white;
-    border: 3px solid #7b8b52;
+    background: transparent;
+    color: #FFD700;
+    border: 3px solid #FFD700;
 }
 
 .btn-secondary-cta.ranked:hover {
-    background: #5d6b3d;
-    border-color: #5d6b3d;
+    background: #FFD700;
+    color: #2c2c2c;
+    border-color: #FFD700;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(93, 107, 61, 0.3);
+    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
 }
 
 .cta-icon {
