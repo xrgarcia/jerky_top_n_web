@@ -19,7 +19,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Unified Product Cards**: Products and Rank pages share consistent card styling with 14px titles, 12px vendor names, 14px prices, and full-height images (auto-scaling with min-height constraints). Ensures visual consistency across all product displays.
 - **Home Page Dashboard**: Dynamic Bento Box layout with engaging micro-copy and interactive CTAs within widgets. Includes quick-action buttons on product items and improved empty states with encouraging CTAs. Accessibility is ensured with proper `aria-labels` and touch-friendly targets.
 - **Interactive Ranking**: Dual ranking system supporting drag-and-drop for desktop and dropdown selection for mobile with visual cues, badges, and animated sorting icons.
-- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking. SPA navigation controls hero section visibility (shown only on homepage).
+- **Navigation**: Single Page Application (SPA) with hash routing (#home, #products, etc.), preserving state and supporting deep-linking. URL hash is the single source of truth for routing. Browser back/forward buttons work correctly with proper history management. Protected route redirects use history.replaceState() to avoid navigation loops. SPA navigation controls hero section visibility (shown only on homepage).
 
 ### Technical Implementations
 - **Frontend**: Built with Vanilla JavaScript, an event-driven architecture using `EventBus` for pub/sub, and `ServiceRegistry` for dependency injection. Key services handle gamification, social proof, activity feeds, progress tracking, and leaderboards. Page navigation triggers automatic data reloading for achievements and streaks.
