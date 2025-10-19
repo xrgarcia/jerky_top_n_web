@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Page navigation functions
     async function showPage(page, updateURL = true) {
         const communityPage = document.getElementById('communityPage');
+        const leaderboardPage = document.getElementById('leaderboardPage');
         const profilePage = document.getElementById('profilePage');
         const productDetailPage = document.getElementById('productDetailPage');
         const userProfilePage = document.getElementById('userProfilePage');
@@ -70,6 +71,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (rankPage) rankPage.style.display = 'none';
             if (productsPage) productsPage.style.display = 'none';
             if (communityPage) communityPage.style.display = 'none';
+            if (leaderboardPage) leaderboardPage.style.display = 'none';
             if (profilePage) profilePage.style.display = 'none';
             if (productDetailPage) productDetailPage.style.display = 'none';
             if (loginPage) loginPage.style.display = 'none';
@@ -106,6 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (rankPage) rankPage.style.display = 'none';
             if (productsPage) productsPage.style.display = 'none';
             if (communityPage) communityPage.style.display = 'none';
+            if (leaderboardPage) leaderboardPage.style.display = 'none';
             if (profilePage) profilePage.style.display = 'none';
             if (productDetailPage) productDetailPage.style.display = 'block';
             if (loginPage) loginPage.style.display = 'none';
@@ -152,6 +155,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
+        // Check if leaderboard page requires authentication
+        if (page === 'leaderboard') {
+            // First try quick sync check, then async if needed
+            if (!isUserAuthenticated()) {
+                const isAuthenticatedAsync = await isUserAuthenticatedAsync();
+                if (!isAuthenticatedAsync) {
+                    showLoginRequiredMessage('leaderboard');
+                    return;
+                }
+            }
+        }
+        
         // Update URL hash for linkable pages
         if (updateURL) {
             const newHash = `#${page}`;
@@ -165,6 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rankPage) rankPage.style.display = 'none';
         if (productsPage) productsPage.style.display = 'none';
         if (communityPage) communityPage.style.display = 'none';
+        if (leaderboardPage) leaderboardPage.style.display = 'none';
         if (profilePage) profilePage.style.display = 'none';
         if (productDetailPage) productDetailPage.style.display = 'none';
         if (userProfilePage) userProfilePage.style.display = 'none';
@@ -255,6 +271,11 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.remove('login-page-active');
             // Load community users when page is shown
             loadCommunityUsers();
+        } else if (page === 'leaderboard' && leaderboardPage) {
+            leaderboardPage.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
+            document.body.classList.remove('login-page-active');
+            // Leaderboard widget will be initialized by page-integrations.js
         } else if (page === 'profile' && profilePage) {
             profilePage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
