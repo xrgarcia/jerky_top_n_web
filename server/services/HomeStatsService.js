@@ -27,7 +27,7 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        MIN(product_data) as product_data,
+        MAX(product_data::text)::jsonb as product_data,
         COUNT(*) as rank_count,
         AVG(ranking) as avg_rank,
         MIN(ranking) as best_rank,
@@ -98,7 +98,7 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        MIN(product_data) as product_data,
+        MAX(product_data::text)::jsonb as product_data,
         COUNT(*) as recent_rank_count,
         AVG(ranking) as avg_rank
       FROM product_rankings
@@ -125,7 +125,7 @@ class HomeStatsService {
     const results = await this.db.execute(sql`
       SELECT 
         shopify_product_id,
-        MIN(product_data) as product_data,
+        MAX(product_data::text)::jsonb as product_data,
         COUNT(*) as rank_count,
         AVG(ranking) as avg_rank,
         STDDEV(ranking) as rank_variance,
