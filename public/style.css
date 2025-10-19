@@ -412,7 +412,7 @@ body.login-page-active .hero {
 
 .page-header-breadcrumbs {
     font-size: 13px;
-    color: #666;
+    color: #3b2f25;
     margin-bottom: 8px;
 }
 
@@ -429,6 +429,10 @@ body.login-page-active .hero {
 }
 
 .page-header-breadcrumbs span {
+    color: #3b2f25;
+}
+
+.page-header-breadcrumbs span:not(:last-child) {
     margin: 0 6px;
     color: #999;
 }
