@@ -5296,17 +5296,17 @@ body.login-page-active .hero {
 
 /* Home CTA Section */
 .home-cta-section {
-    margin: 60px auto 40px;
-    padding: 0 20px;
-    max-width: 800px;
+    grid-column: 1 / -1;
+    margin-top: 20px;
 }
 
 .home-cta-content {
-    background: linear-gradient(135deg, #7b8b52 0%, #5d6b3d 100%);
-    border-radius: 20px;
+    background: linear-gradient(135deg, rgba(123, 139, 82, 0.15) 0%, rgba(93, 107, 61, 0.15) 100%);
+    border: 1px solid rgba(123, 139, 82, 0.3);
+    border-radius: 16px;
     padding: 50px 40px;
     text-align: center;
-    box-shadow: 0 10px 40px rgba(123, 139, 82, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     position: relative;
     overflow: hidden;
 }
@@ -5318,24 +5318,23 @@ body.login-page-active .hero {
     right: -50%;
     width: 200%;
     height: 200%;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(123, 139, 82, 0.05) 0%, transparent 70%);
     pointer-events: none;
 }
 
 .home-cta-title {
     font-size: 36px;
     font-weight: 800;
-    color: #f5f3ed;
+    color: #3b2f25;
     margin-bottom: 20px;
     position: relative;
     z-index: 1;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .home-cta-text {
     font-size: 18px;
     line-height: 1.7;
-    color: #f5f3ed;
+    color: #3b2f25;
     margin-bottom: 35px;
     position: relative;
     z-index: 1;
@@ -5379,13 +5378,8 @@ body.login-page-active .hero {
 }
 
 @media (max-width: 768px) {
-    .home-cta-section {
-        margin: 40px auto 30px;
-    }
-    
     .home-cta-content {
         padding: 35px 25px;
-        border-radius: 15px;
     }
     
     .home-cta-title {
