@@ -1,12 +1,12 @@
-/* Home Page Dashboard Styles */
+/* Home Page Dashboard Styles - Earth Tone Theme */
 
 /* Stats Overview - Top Section */
 .community-stats-overview {
   margin: 30px 0 40px 0;
-  background: linear-gradient(135deg, rgba(102, 51, 153, 0.05), rgba(0, 123, 255, 0.05));
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.08), rgba(196, 169, 98, 0.08));
   border-radius: 16px;
   padding: 25px;
-  border: 1px solid rgba(102, 51, 153, 0.1);
+  border: 1px solid rgba(123, 139, 82, 0.15);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
@@ -19,7 +19,7 @@
 
 .stat-card {
   background: white;
-  border: 2px solid #663399;
+  border: 2px solid #7b8b52;
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -29,8 +29,8 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(102, 51, 153, 0.15);
-  border-color: #0066CC;
+  box-shadow: 0 8px 16px rgba(123, 139, 82, 0.2);
+  border-color: #5d6b3d;
 }
 
 /* Community stats need more specific selectors to override hero-dashboard.css */
@@ -38,7 +38,7 @@
 .dashboard-section .stat-value {
   font-size: 36px;
   font-weight: 600;
-  color: #2c2c2c;
+  color: #3b2f25;
   margin-bottom: 8px;
 }
 
@@ -146,7 +146,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #663399, #0066CC);
+  background: linear-gradient(90deg, #7b8b52, #c4a962);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -162,12 +162,13 @@
 
 .dashboard-section h3 {
   margin: 0 0 8px 0;
-  color: #663399;
+  color: #3b2f25;
   font-size: 20px;
   font-weight: 700;
   display: flex;
   align-items: center;
   gap: 8px;
+  font-family: Georgia, 'Times New Roman', serif;
 }
 
 .section-subtitle {
@@ -191,7 +192,7 @@
 }
 
 .widget-action-btn {
-  background: linear-gradient(135deg, #663399, #0066CC);
+  background: #7b8b52;
   color: white;
   border: none;
   padding: 8px 16px;
@@ -200,7 +201,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(102, 51, 153, 0.3);
+  box-shadow: 0 2px 6px rgba(123, 139, 82, 0.3);
   white-space: nowrap;
   text-decoration: none;
   display: inline-block;
@@ -208,8 +209,8 @@
 
 .widget-action-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.4);
-  background: linear-gradient(135deg, #7744AA, #0077EE);
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.4);
+  background: #5d6b3d;
 }
 
 .widget-action-btn:active {
@@ -217,13 +218,13 @@
 }
 
 .widget-action-btn.secondary {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.3);
 }
 
 .widget-action-btn.secondary:hover {
-  background: linear-gradient(135deg, #FF7C7C, #FF9F64);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  background: linear-gradient(135deg, #DD8F42, #C88343);
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.4);
 }
 
 /* Dashboard List Items */
@@ -246,9 +247,9 @@
 
 .dashboard-item:hover {
   background: linear-gradient(135deg, #e9ecef, #f8f9fa);
-  border-color: #663399;
+  border-color: #7b8b52;
   transform: translateX(4px);
-  box-shadow: 0 2px 8px rgba(102, 51, 153, 0.1);
+  box-shadow: 0 2px 8px rgba(123, 139, 82, 0.15);
 }
 
 .product-item {
@@ -257,7 +258,7 @@
 
 /* Quick Action Buttons */
 .quick-action-btn {
-  background: linear-gradient(135deg, #663399, #0066CC);
+  background: #7b8b52;
   color: white;
   border: none;
   width: 36px;
@@ -269,7 +270,7 @@
   font-size: 16px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(102, 51, 153, 0.3);
+  box-shadow: 0 2px 6px rgba(123, 139, 82, 0.3);
   flex-shrink: 0;
   opacity: 0;
   transform: scale(0.8);
@@ -293,8 +294,8 @@
 
 .quick-action-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(102, 51, 153, 0.5);
-  background: linear-gradient(135deg, #7744AA, #0077EE);
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.5);
+  background: #5d6b3d;
 }
 
 .quick-action-btn:active {
@@ -302,18 +303,18 @@
 }
 
 .quick-action-btn.secondary {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.3);
 }
 
 .quick-action-btn.secondary:hover {
-  background: linear-gradient(135deg, #FF7C7C, #FF9F64);
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.5);
+  background: linear-gradient(135deg, #DD8F42, #C88343);
+  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.5);
 }
 
 /* Rank Badges */
 .rank-badge {
-  background: #663399;
+  background: #7b8b52;
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
@@ -325,13 +326,13 @@
 
 .rank-badge.rank-1 {
   background: linear-gradient(135deg, #FFD700, #FFC700);
-  color: #333;
+  color: #3b2f25;
   box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
 }
 
 .rank-badge.rank-2 {
   background: linear-gradient(135deg, #C0C0C0, #B0B0B0);
-  color: #333;
+  color: #3b2f25;
   box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
 }
 
@@ -342,14 +343,14 @@
 }
 
 .trending-badge {
-  background: linear-gradient(135deg, #FF6B6B, #FF8E53);
+  background: linear-gradient(135deg, #CD7F32, #B87333);
   color: white;
   padding: 6px 12px;
   border-radius: 8px;
   font-weight: 700;
   font-size: 12px;
   flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.3);
 }
 
 /* Product Items */
@@ -364,7 +365,7 @@
 }
 
 .dashboard-item:hover .product-thumb {
-  border-color: #663399;
+  border-color: #7b8b52;
 }
 
 .product-info {
@@ -374,7 +375,7 @@
 
 .product-name {
   font-weight: 600;
-  color: #333;
+  color: #3b2f25;
   font-size: 14px;
   white-space: nowrap;
   overflow: hidden;
@@ -396,22 +397,22 @@
 }
 
 .variance {
-  color: #FF6F00;
+  color: #CD7F32;
   font-weight: 700;
-  background: rgba(255, 111, 0, 0.1);
+  background: rgba(205, 127, 50, 0.1);
   padding: 2px 6px;
   border-radius: 4px;
 }
 
 /* Ranker Items */
 .ranker-item {
-  background: linear-gradient(135deg, #f0f4ff, #ffffff);
-  border-color: #d0d9ff;
+  background: linear-gradient(135deg, rgba(245, 243, 237, 0.5), #ffffff);
+  border-color: rgba(123, 139, 82, 0.2);
 }
 
 .ranker-item:hover {
-  background: linear-gradient(135deg, #e0e8ff, #f0f4ff);
-  border-color: #0066CC;
+  background: linear-gradient(135deg, rgba(245, 243, 237, 0.8), rgba(255, 255, 255, 0.9));
+  border-color: #7b8b52;
 }
 
 .ranker-info {
@@ -420,7 +421,7 @@
 
 .ranker-name {
   font-weight: 600;
-  color: #333;
+  color: #3b2f25;
   font-size: 15px;
   margin-bottom: 4px;
 }
@@ -438,7 +439,7 @@
 
 .achievement-item:hover {
   background: linear-gradient(135deg, #fff5e6, #fffaf0);
-  border-color: #FF6F00;
+  border-color: #c4a962;
 }
 
 .achievement-icon {
@@ -475,7 +476,7 @@
 
 .achievement-name {
   font-weight: 600;
-  color: #333;
+  color: #3b2f25;
   font-size: 14px;
   margin-bottom: 4px;
 }
@@ -497,29 +498,29 @@
   border: 1px dashed #dee2e6;
 }
 
-/* Section-Specific Backgrounds */
+/* Section-Specific Backgrounds - Earthy Tones */
 #topRankersSection {
-  background: linear-gradient(135deg, #fffbf5, #ffffff);
+  background: linear-gradient(135deg, rgba(245, 243, 237, 0.3), #ffffff);
 }
 
 #topProductsSection {
-  background: linear-gradient(135deg, #f0f9ff, #ffffff);
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.03), #ffffff);
 }
 
 #recentlyRankedSection {
-  background: linear-gradient(135deg, #f0fff4, #ffffff);
+  background: linear-gradient(135deg, rgba(196, 169, 98, 0.05), #ffffff);
 }
 
 #trendingSection {
-  background: linear-gradient(135deg, #fff5f5, #ffffff);
+  background: linear-gradient(135deg, rgba(205, 127, 50, 0.05), #ffffff);
 }
 
 #debatedSection {
-  background: linear-gradient(135deg, #fef3ff, #ffffff);
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.05), #ffffff);
 }
 
 #recentAchievementsSection {
-  background: linear-gradient(135deg, #fffbeb, #ffffff);
+  background: linear-gradient(135deg, rgba(196, 169, 98, 0.08), #ffffff);
 }
 
 /* Responsive Design */
