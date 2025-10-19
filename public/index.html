@@ -481,6 +481,35 @@
             <div class="product-detail-page-container">
                 <button class="back-button" onclick="goBackToProducts()">← Back to Products</button>
                 
+                <!-- HERO: Ranking Statistics (Primary Focus) -->
+                <div class="product-ranking-hero">
+                    <h2 class="ranking-hero-title">Community Rankings</h2>
+                    <div class="product-stats-grid-hero">
+                        <div class="product-stat-card-hero">
+                            <div class="product-stat-icon-hero">👥</div>
+                            <div class="product-stat-value-hero" id="productDetailPageRankers">-</div>
+                            <div class="product-stat-label-hero">Unique Rankers</div>
+                        </div>
+                        <div class="product-stat-card-hero">
+                            <div class="product-stat-icon-hero">🏆</div>
+                            <div class="product-stat-value-hero" id="productDetailPageAvgRank">-</div>
+                            <div class="product-stat-label-hero">Average Rank</div>
+                        </div>
+                        <div class="product-stat-card-hero">
+                            <div class="product-stat-icon-hero">🥇</div>
+                            <div class="product-stat-value-hero" id="productDetailPageBestRank">-</div>
+                            <div class="product-stat-label-hero">Best Rank</div>
+                        </div>
+                        <div class="product-stat-card-hero">
+                            <div class="product-stat-icon-hero">📊</div>
+                            <div class="product-stat-value-hero" id="productDetailPageWorstRank">-</div>
+                            <div class="product-stat-label-hero">Worst Rank</div>
+                        </div>
+                    </div>
+                    <button id="rankThisProductBtn" class="rank-this-product-btn">Rank This Product</button>
+                </div>
+                
+                <!-- Product Information Section -->
                 <div class="product-detail-content">
                     <div class="product-detail-image-section">
                         <img id="productDetailPageImage" src="" alt="" class="product-detail-image">
@@ -488,23 +517,25 @@
                     <div class="product-detail-info-section">
                         <h1 id="productDetailPageTitle" class="product-detail-title">Loading...</h1>
                         <p id="productDetailPageVendor" class="product-detail-vendor"></p>
-                        <p id="productDetailPagePrice" class="product-detail-price"></p>
+                        
+                        <div class="product-price-section">
+                            <div id="productDetailPagePriceContainer" class="product-price-container">
+                                <span id="productDetailPagePrice" class="product-detail-price"></span>
+                                <span id="productDetailPageComparePrice" class="product-compare-price"></span>
+                            </div>
+                        </div>
+                        
                         <div id="productDetailPageFlavor" class="product-detail-flavor"></div>
                         
-                        <div class="product-stats-section">
-                            <h3>Ranking Statistics</h3>
-                            <div class="product-stats-grid">
-                                <div class="product-stat-card">
-                                    <div class="product-stat-icon">👥</div>
-                                    <div class="product-stat-value" id="productDetailPageRankers">-</div>
-                                    <div class="product-stat-label">Unique Rankers</div>
-                                </div>
-                                <div class="product-stat-card">
-                                    <div class="product-stat-icon">🏆</div>
-                                    <div class="product-stat-value" id="productDetailPageAvgRank">-</div>
-                                    <div class="product-stat-label">Average Rank</div>
-                                </div>
-                            </div>
+                        <div class="product-detail-description">
+                            <h3>Product Description</h3>
+                            <div id="productDetailPageDescription" class="product-description-content"></div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <a id="buyNowBtn" href="#" target="_blank" rel="noopener noreferrer" class="buy-now-btn">
+                                Buy Now on Jerky.com →
+                            </a>
                         </div>
                     </div>
                 </div>
