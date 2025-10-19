@@ -1,0 +1,49 @@
+✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🔄 Reloading achievements, streaks, and progress for rank page
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Progress data loaded: {totalRankings: 95, uniqueProducts: 95, achievementsEarned: 11, totalPoints: 2590, currentStreak: 3, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 0, totalRankings: 95, isCollapsed: true}
+injected.js:27 ✅ Progress data loaded: {totalRankings: 95, uniqueProducts: 95, achievementsEarned: 11, totalPoints: 2590, currentStreak: 3, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 0, totalRankings: 95, isCollapsed: true}
+injected.js:27 ✅ Loaded 95 saved rankings
+injected.js:27 📈 Adding 88 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 98
+injected.js:27 📈 Pre-expanded slots to 98 to accommodate rank 95
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 11, totalRankings: 104, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ GamificationService: Loaded 18 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 18, totalRankings: 95, isCollapsed: true}
+injected.js:27 ✅ GamificationService: Loaded 18 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 18, totalRankings: 95, isCollapsed: true}
+injected.js:27 🔀 Hash changed to: "community" → Routing to: "community"
+injected.js:27 ✅ Leaderboard widget integrated into Community page
+injected.js:27 📊 Page view tracked: community
+injected.js:27 ✅ Loaded 2 community members
+injected.js:27 🔀 Hash changed to: "leaderboard" → Routing to: "leaderboard"
+injected.js:27 ✅ Full leaderboard widget integrated into Leaderboard page
+injected.js:27 📊 Page view tracked: leaderboard

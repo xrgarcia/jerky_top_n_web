@@ -88,9 +88,14 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     await homeStatsService.getAllHomeStats();
   });
   
-  // Register LeaderboardCache warming (top 10 for community page)
+  // Register LeaderboardCache warming (top 5 for home/community, top 50 for leaderboard page)
   cacheWarmer.register('LeaderboardCache', async () => {
-    const leaderboard = await leaderboardManager.getTopRankers(10, 'all_time');
+    // Warm top 5 for home/community pages
+    await leaderboardManager.getTopRankers(5, 'all_time');
+    
+    // Warm top 50 for dedicated leaderboard page
+    const leaderboard = await leaderboardManager.getTopRankers(50, 'all_time');
+    
     // Format user display names
     const formatted = leaderboard.map(entry => ({
       ...entry,

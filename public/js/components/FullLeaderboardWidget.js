@@ -36,14 +36,34 @@ class FullLeaderboardWidget {
   }
 
   async load() {
+    // Show loading state
+    this.renderLoading();
+    
     this.leaderboardService.subscribeToUpdates();
     await this.leaderboardService.loadLeaderboard(this.period, this.limit);
     await this.leaderboardService.loadUserPosition(this.period);
   }
 
+  renderLoading() {
+    this.container.innerHTML = `
+      <div class="full-leaderboard-widget">
+        <div class="full-leaderboard-header">
+          <h2>🏆 Top ${this.limit} Jerky Rankers</h2>
+        </div>
+        <div class="loading-leaderboard">
+          <div class="loading-spinner"></div>
+          <p>Calculating rankings...</p>
+          <p class="loading-note">This may take a moment on first load</p>
+        </div>
+      </div>
+    `;
+  }
+
   render() {
     const leaderboard = this.leaderboardService.getTopRankers(this.limit);
     const userPosition = this.leaderboardService.userPosition;
+    
+    console.log('📊 Rendering full leaderboard:', leaderboard.length, 'entries');
 
     this.container.innerHTML = `
       <div class="full-leaderboard-widget">
