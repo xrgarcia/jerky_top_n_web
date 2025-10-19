@@ -2745,12 +2745,91 @@ body.login-page-active .hero {
     padding: 20px;
 }
 
+/* Animal Categories Filter Wrapper */
+.animal-filter-wrapper {
+    margin: 25px auto 20px;
+    max-width: 1200px;
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.animal-filter-toggle-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.2s ease;
+    padding: 8px;
+    margin: -8px -8px 12px -8px;
+    border-radius: 8px;
+    text-align: left;
+}
+
+.animal-filter-toggle-button:hover {
+    background-color: rgba(102, 51, 153, 0.05);
+}
+
+.animal-filter-toggle-button:focus {
+    outline: 2px solid #663399;
+    outline-offset: 2px;
+}
+
+.animal-filter-title-section {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.animal-filter-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #333;
+}
+
+.animal-filter-chevron {
+    color: #663399;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+    font-size: 18px;
+}
+
+.animal-filter-wrapper.collapsed .animal-filter-chevron {
+    transform: rotate(-90deg);
+}
+
+.animal-filter-wrapper.expanded .animal-filter-chevron {
+    transform: rotate(0deg);
+}
+
+.animal-filter-content {
+    max-height: 800px;
+    opacity: 1;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin-top 0.3s ease;
+}
+
+.animal-filter-wrapper.collapsed .animal-filter-content {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+}
+
+.animal-filter-content[hidden] {
+    display: none;
+}
+
 /* Animal Categories Filter */
 .animal-categories {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    margin: 25px 0 20px 0;
+    margin: 0;
     padding: 15px;
     background: #f8f8f8;
     border-radius: 12px;
