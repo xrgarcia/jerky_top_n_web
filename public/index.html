@@ -478,65 +478,120 @@
 
         <!-- Product Detail Page Content -->
         <div class="page-content" id="productDetailPage" style="display: none;">
-            <div class="product-detail-page-container">
-                <button class="back-button" onclick="goBackToProducts()">← Back to Products</button>
-                
-                <!-- HERO: Ranking Statistics (Primary Focus) -->
-                <div class="product-ranking-hero">
-                    <h2 class="ranking-hero-title">Community Rankings</h2>
-                    <div class="product-stats-grid-hero">
-                        <div class="product-stat-card-hero">
-                            <div class="product-stat-icon-hero">👥</div>
-                            <div class="product-stat-value-hero" id="productDetailPageRankers">-</div>
-                            <div class="product-stat-label-hero">Unique Rankers</div>
-                        </div>
-                        <div class="product-stat-card-hero">
-                            <div class="product-stat-icon-hero">🏆</div>
-                            <div class="product-stat-value-hero" id="productDetailPageAvgRank">-</div>
-                            <div class="product-stat-label-hero">Average Rank</div>
-                        </div>
-                        <div class="product-stat-card-hero">
-                            <div class="product-stat-icon-hero">🥇</div>
-                            <div class="product-stat-value-hero" id="productDetailPageBestRank">-</div>
-                            <div class="product-stat-label-hero">Best Rank</div>
-                        </div>
-                        <div class="product-stat-card-hero">
-                            <div class="product-stat-icon-hero">📊</div>
-                            <div class="product-stat-value-hero" id="productDetailPageWorstRank">-</div>
-                            <div class="product-stat-label-hero">Worst Rank</div>
-                        </div>
-                    </div>
-                    <button id="rankThisProductBtn" class="rank-this-product-btn">Rank This Product</button>
+            <div class="product-detail-container">
+                <!-- Breadcrumb Navigation -->
+                <div class="product-breadcrumb">
+                    <a href="#products" class="breadcrumb-link">Products</a>
+                    <span class="breadcrumb-separator">›</span>
+                    <span class="breadcrumb-current" id="productBreadcrumb">Loading...</span>
                 </div>
                 
-                <!-- Product Information Section -->
-                <div class="product-detail-content">
-                    <div class="product-detail-image-section">
-                        <img id="productDetailPageImage" src="" alt="" class="product-detail-image">
+                <!-- Two-Column Product Layout -->
+                <div class="product-two-column">
+                    <!-- LEFT: Product Image Gallery -->
+                    <div class="product-gallery">
+                        <div class="product-main-image">
+                            <img id="productDetailPageImage" src="" alt="" class="product-image">
+                        </div>
                     </div>
-                    <div class="product-detail-info-section">
-                        <h1 id="productDetailPageTitle" class="product-detail-title">Loading...</h1>
-                        <p id="productDetailPageVendor" class="product-detail-vendor"></p>
+                    
+                    <!-- RIGHT: Product Details -->
+                    <div class="product-details">
+                        <!-- Product Title -->
+                        <h1 id="productDetailPageTitle" class="product-title">Loading...</h1>
                         
-                        <div class="product-price-section">
-                            <div id="productDetailPagePriceContainer" class="product-price-container">
-                                <span id="productDetailPagePrice" class="product-detail-price"></span>
-                                <span id="productDetailPageComparePrice" class="product-compare-price"></span>
+                        <!-- Community Rating (stars derived from avg rank) -->
+                        <div class="product-rating-row">
+                            <div class="product-stars" id="productStars">
+                                <span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span><span class="star">☆</span>
+                            </div>
+                            <span class="product-rating-text" id="productRatingText">No ratings yet</span>
+                        </div>
+                        
+                        <!-- Engaging Tagline -->
+                        <div class="product-tagline" id="productTagline">
+                            <p>A community favorite, ranked by jerky enthusiasts like you.</p>
+                        </div>
+                        
+                        <!-- Flavor & Category Badges -->
+                        <div class="product-badges" id="productBadges">
+                            <div id="productDetailPageFlavor" class="product-flavor-badge"></div>
+                        </div>
+                        
+                        <!-- Product Description -->
+                        <div class="product-description-section">
+                            <div id="productDetailPageDescription" class="product-description-text"></div>
+                        </div>
+                        
+                        <!-- Product Highlights (Bullet Points) -->
+                        <div class="product-highlights" id="productHighlights" style="display: none;">
+                            <ul id="productHighlightsList"></ul>
+                        </div>
+                        
+                        <!-- Price & Availability -->
+                        <div class="product-pricing">
+                            <div class="price-display">
+                                <span id="productDetailPagePrice" class="current-price">$0.00</span>
+                                <span id="productDetailPageComparePrice" class="compare-price"></span>
+                                <span id="productSavingsPercent" class="savings-percent"></span>
+                            </div>
+                            <div class="stock-indicator">
+                                <span class="stock-icon">✓</span>
+                                <span class="stock-text">View on Jerky.com</span>
                             </div>
                         </div>
                         
-                        <div id="productDetailPageFlavor" class="product-detail-flavor"></div>
-                        
-                        <div class="product-detail-description">
-                            <h3>Product Description</h3>
-                            <div id="productDetailPageDescription" class="product-description-content"></div>
-                        </div>
-                        
-                        <div class="product-actions">
-                            <a id="buyNowBtn" href="#" target="_blank" rel="noopener noreferrer" class="buy-now-btn">
+                        <!-- Primary & Secondary CTAs -->
+                        <div class="product-ctas">
+                            <a id="buyNowBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-primary-cta">
                                 Buy Now on Jerky.com →
                             </a>
+                            <button id="rankThisProductBtn" class="btn-secondary-cta">
+                                <span class="cta-icon">⭐</span>
+                                Rank This Jerky
+                            </button>
                         </div>
+                        
+                        <!-- Community Stats Strip (Social Proof) -->
+                        <div class="community-stats-strip">
+                            <div class="stats-strip-title">Trusted by Jerky Lovers</div>
+                            <div class="stats-badges">
+                                <div class="stat-badge">
+                                    <span class="badge-icon">👥</span>
+                                    <span class="badge-text">
+                                        <strong id="productDetailPageRankers">0</strong> rankers
+                                    </span>
+                                </div>
+                                <div class="stat-badge">
+                                    <span class="badge-icon">📊</span>
+                                    <span class="badge-text">
+                                        Avg rank: <strong id="productDetailPageAvgRank">N/A</strong>
+                                    </span>
+                                </div>
+                                <div class="stat-badge-range">
+                                    <span class="range-label">Community range:</span>
+                                    <div class="range-chips">
+                                        <span class="chip-best" id="productDetailPageBestChip">#1</span>
+                                        <span class="chip-separator">→</span>
+                                        <span class="chip-worst" id="productDetailPageWorstChip">#10</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Full-Width: Product Story Section -->
+                <div class="product-story-section" id="productStorySection" style="display: none;">
+                    <h2 class="story-title">The Story</h2>
+                    <div class="story-content" id="productStoryContent"></div>
+                </div>
+                
+                <!-- Full-Width: Community Testimonials -->
+                <div class="product-testimonials-section" id="productTestimonialsSection" style="display: none;">
+                    <h2 class="testimonials-title">What Jerky Lovers Are Saying</h2>
+                    <div class="testimonials-grid" id="productTestimonialsGrid">
+                        <!-- Will be populated dynamically or with defaults -->
                     </div>
                 </div>
             </div>

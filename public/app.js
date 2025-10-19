@@ -2761,20 +2761,65 @@ document.addEventListener('DOMContentLoaded', function() {
         showPage('community', true);
     };
     
+    // Helper: Convert ranking to star rating (1-10 rank → 5-1 stars)
+    function rankToStars(avgRank) {
+        if (!avgRank || avgRank === 'N/A') return 0;
+        const rank = parseFloat(avgRank);
+        // Better rank (lower number) = more stars
+        // Rank 1-2 = 5 stars, 3-4 = 4 stars, 5-6 = 3 stars, 7-8 = 2 stars, 9-10 = 1 star
+        if (rank <= 2) return 5;
+        if (rank <= 4) return 4;
+        if (rank <= 6) return 3;
+        if (rank <= 8) return 2;
+        return 1;
+    }
+    
+    // Helper: Update star display
+    function updateStars(avgRank, uniqueRankers) {
+        const stars = rankToStars(avgRank);
+        const starsContainer = document.getElementById('productStars');
+        const ratingText = document.getElementById('productRatingText');
+        
+        if (starsContainer) {
+            const starElements = starsContainer.querySelectorAll('.star');
+            starElements.forEach((star, index) => {
+                if (index < stars) {
+                    star.textContent = '★';
+                    star.classList.add('filled');
+                } else {
+                    star.textContent = '☆';
+                    star.classList.remove('filled');
+                }
+            });
+        }
+        
+        if (ratingText) {
+            if (uniqueRankers > 0) {
+                ratingText.textContent = `${stars}/5 stars (${uniqueRankers} ${uniqueRankers === 1 ? 'ranker' : 'rankers'})`;
+            } else {
+                ratingText.textContent = 'No ratings yet';
+            }
+        }
+    }
+    
     // Load product detail page
     async function loadProductDetail(productId) {
         const detailImage = document.getElementById('productDetailPageImage');
         const detailTitle = document.getElementById('productDetailPageTitle');
-        const detailVendor = document.getElementById('productDetailPageVendor');
         const detailPrice = document.getElementById('productDetailPagePrice');
         const detailComparePrice = document.getElementById('productDetailPageComparePrice');
+        const savingsPercent = document.getElementById('productSavingsPercent');
         const detailFlavor = document.getElementById('productDetailPageFlavor');
         const detailDescription = document.getElementById('productDetailPageDescription');
+        const productBreadcrumb = document.getElementById('productBreadcrumb');
+        const productTagline = document.getElementById('productTagline');
+        const productHighlights = document.getElementById('productHighlights');
+        const productHighlightsList = document.getElementById('productHighlightsList');
         const buyNowBtn = document.getElementById('buyNowBtn');
         const statRankers = document.getElementById('productDetailPageRankers');
         const statAvgRank = document.getElementById('productDetailPageAvgRank');
-        const statBestRank = document.getElementById('productDetailPageBestRank');
-        const statWorstRank = document.getElementById('productDetailPageWorstRank');
+        const bestChip = document.getElementById('productDetailPageBestChip');
+        const worstChip = document.getElementById('productDetailPageWorstChip');
         const rankThisProductBtn = document.getElementById('rankThisProductBtn');
         
         // Try to get product from cached data first
@@ -2797,36 +2842,76 @@ document.addEventListener('DOMContentLoaded', function() {
         // Set product info
         if (product) {
             detailTitle.textContent = product.title;
-            detailVendor.textContent = product.vendor || 'Unknown Brand';
             detailPrice.textContent = `$${product.price}`;
             detailImage.src = product.image || '';
             detailImage.alt = product.title;
             
-            // Set compare at price if available
-            if (product.compareAtPrice && parseFloat(product.compareAtPrice) > parseFloat(product.price)) {
-                detailComparePrice.textContent = `$${product.compareAtPrice}`;
-                detailComparePrice.style.display = 'inline';
-            } else {
-                detailComparePrice.style.display = 'none';
+            // Set breadcrumb
+            if (productBreadcrumb) {
+                productBreadcrumb.textContent = product.title;
             }
             
-            // Set flavor profile if available
-            if (product.flavorDisplay) {
-                detailFlavor.innerHTML = `
-                    <div class="product-flavor-badge-large">
-                        <span class="flavor-icon">${product.flavorIcon}</span>
-                        <span class="flavor-text">${product.flavorDisplay}</span>
-                    </div>
-                `;
+            // Set compare at price and savings if available
+            if (product.compareAtPrice && parseFloat(product.compareAtPrice) > parseFloat(product.price)) {
+                const original = parseFloat(product.compareAtPrice);
+                const current = parseFloat(product.price);
+                const savings = Math.round(((original - current) / original) * 100);
+                
+                detailComparePrice.textContent = `$${product.compareAtPrice}`;
+                detailComparePrice.style.display = 'inline';
+                
+                if (savingsPercent) {
+                    savingsPercent.textContent = `${savings}% SAVINGS`;
+                    savingsPercent.style.display = 'inline';
+                }
+            } else {
+                detailComparePrice.style.display = 'none';
+                if (savingsPercent) savingsPercent.style.display = 'none';
+            }
+            
+            // Set flavor badge
+            if (product.flavorDisplay && detailFlavor) {
+                detailFlavor.innerHTML = `${product.flavorIcon || ''} ${product.flavorDisplay}`;
             } else {
                 detailFlavor.innerHTML = '';
             }
             
+            // Set engaging tagline based on product type/flavor
+            if (productTagline) {
+                let taglineText = 'A community favorite, ranked by jerky enthusiasts like you.';
+                
+                if (product.animalType === 'tuna') {
+                    taglineText = 'A pescatarian delight, this tuna jerky is a fish-lovers favorite.';
+                } else if (product.animalType === 'beef') {
+                    taglineText = 'Classic beef jerky, expertly crafted for bold flavor and tender texture.';
+                } else if (product.animalType === 'turkey') {
+                    taglineText = 'Lean and protein-packed, this turkey jerky delivers clean flavor.';
+                } else if (product.animalType === 'pork') {
+                    taglineText = 'Premium pork jerky with savory, slow-smoked perfection.';
+                } else if (product.animalType === 'chicken') {
+                    taglineText = 'Light and satisfying, this chicken jerky is a healthy snack staple.';
+                }
+                
+                productTagline.querySelector('p').textContent = taglineText;
+            }
+            
             // Set product description from body_html
-            if (product.bodyHtml) {
+            if (product.bodyHtml && detailDescription) {
                 detailDescription.innerHTML = product.bodyHtml;
+                
+                // Extract bullet points if present in HTML
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = product.bodyHtml;
+                const bulletList = tempDiv.querySelector('ul');
+                
+                if (bulletList && productHighlights && productHighlightsList) {
+                    productHighlightsList.innerHTML = bulletList.innerHTML;
+                    productHighlights.style.display = 'block';
+                }
             } else {
-                detailDescription.innerHTML = '<p>No description available.</p>';
+                if (detailDescription) {
+                    detailDescription.innerHTML = '<p>Solid filets of premium protein expertly sliced into this high-protein gourmet jerky. High in vitamins and minerals and even higher in flavor! Seriously...this stuff is good.</p>';
+                }
             }
             
             // Set Buy Now button URL
@@ -2844,19 +2929,21 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else {
             detailTitle.textContent = 'Product not found';
-            detailVendor.textContent = '';
+            if (productBreadcrumb) productBreadcrumb.textContent = 'Not Found';
             detailPrice.textContent = '';
             detailComparePrice.style.display = 'none';
-            detailFlavor.innerHTML = '';
-            detailDescription.innerHTML = '<p>Product not found.</p>';
+            if (savingsPercent) savingsPercent.style.display = 'none';
+            if (detailFlavor) detailFlavor.innerHTML = '';
+            if (detailDescription) detailDescription.innerHTML = '<p>Product not found.</p>';
             buyNowBtn.style.display = 'none';
         }
         
         // Reset stats to loading state
-        statRankers.textContent = '-';
-        statAvgRank.textContent = '-';
-        statBestRank.textContent = '-';
-        statWorstRank.textContent = '-';
+        statRankers.textContent = '0';
+        statAvgRank.textContent = 'N/A';
+        if (bestChip) bestChip.textContent = '#1';
+        if (worstChip) worstChip.textContent = '#10';
+        updateStars(null, 0);
         
         // Fetch product statistics
         try {
@@ -2864,23 +2951,31 @@ document.addEventListener('DOMContentLoaded', function() {
             const stats = await response.json();
             
             if (response.ok) {
-                statRankers.textContent = stats.uniqueRankers || 0;
-                statAvgRank.textContent = stats.avgRanking || 'N/A';
-                statBestRank.textContent = stats.bestRanking || 'N/A';
-                statWorstRank.textContent = stats.worstRanking || 'N/A';
+                const uniqueRankers = stats.uniqueRankers || 0;
+                const avgRank = stats.avgRanking || 'N/A';
+                const bestRank = stats.bestRanking || null;
+                const worstRank = stats.worstRanking || null;
+                
+                statRankers.textContent = uniqueRankers;
+                statAvgRank.textContent = avgRank;
+                
+                // Update star rating
+                updateStars(avgRank, uniqueRankers);
+                
+                // Update best/worst rank chips
+                if (bestChip && bestRank) {
+                    bestChip.textContent = `#${bestRank}`;
+                }
+                if (worstChip && worstRank) {
+                    worstChip.textContent = `#${worstRank}`;
+                }
             } else {
                 console.error('Failed to load product stats:', stats.error);
-                statRankers.textContent = 'Error';
-                statAvgRank.textContent = 'Error';
-                statBestRank.textContent = 'Error';
-                statWorstRank.textContent = 'Error';
+                updateStars(null, 0);
             }
         } catch (error) {
             console.error('Error fetching product stats:', error);
-            statRankers.textContent = 'Error';
-            statAvgRank.textContent = 'Error';
-            statBestRank.textContent = 'Error';
-            statWorstRank.textContent = 'Error';
+            updateStars(null, 0);
         }
     }
     
