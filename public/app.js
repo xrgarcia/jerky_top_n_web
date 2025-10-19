@@ -214,6 +214,9 @@ document.addEventListener('DOMContentLoaded', function() {
             // Set selected animal from URL
             selectedAnimal = animal;
             
+            // Initialize animal filter toggle state
+            initializeAnimalFilterState();
+            
             // Load animal categories and products when page is shown
             loadAnimalCategories().then(() => {
                 // After categories load, activate the selected animal if from URL
@@ -2453,6 +2456,70 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Error loading animal categories:', error);
             container.innerHTML = '';
         }
+    }
+    
+    function toggleAnimalFilter() {
+        const filterWrapper = document.getElementById('animalFilterWrapper');
+        const filterContent = document.getElementById('animalFilterContent');
+        const toggleButton = document.getElementById('animalFilterToggle');
+        
+        if (!filterWrapper || !filterContent || !toggleButton) return;
+        
+        const isCurrentlyCollapsed = filterWrapper.classList.contains('collapsed');
+        
+        if (isCurrentlyCollapsed) {
+            // Expand
+            filterContent.removeAttribute('hidden');
+            filterWrapper.classList.remove('collapsed');
+            filterWrapper.classList.add('expanded');
+            toggleButton.setAttribute('aria-expanded', 'true');
+            toggleButton.setAttribute('aria-label', 'Hide animal filters');
+            filterContent.setAttribute('aria-hidden', 'false');
+            sessionStorage.setItem('animalFilterCollapsed', 'false');
+        } else {
+            // Collapse
+            filterWrapper.classList.remove('expanded');
+            filterWrapper.classList.add('collapsed');
+            toggleButton.setAttribute('aria-expanded', 'false');
+            toggleButton.setAttribute('aria-label', 'Show animal filters');
+            filterContent.setAttribute('aria-hidden', 'true');
+            sessionStorage.setItem('animalFilterCollapsed', 'true');
+            
+            // Wait for animation to complete before hiding
+            setTimeout(() => {
+                if (filterWrapper.classList.contains('collapsed')) {
+                    filterContent.setAttribute('hidden', '');
+                }
+            }, 400);
+        }
+    }
+    
+    function initializeAnimalFilterState() {
+        const isCollapsed = sessionStorage.getItem('animalFilterCollapsed') !== 'false';
+        const filterWrapper = document.getElementById('animalFilterWrapper');
+        const filterContent = document.getElementById('animalFilterContent');
+        const toggleButton = document.getElementById('animalFilterToggle');
+        
+        if (!filterWrapper || !filterContent || !toggleButton) return;
+        
+        if (isCollapsed) {
+            filterWrapper.classList.add('collapsed');
+            filterWrapper.classList.remove('expanded');
+            toggleButton.setAttribute('aria-expanded', 'false');
+            toggleButton.setAttribute('aria-label', 'Show animal filters');
+            filterContent.setAttribute('aria-hidden', 'true');
+            filterContent.setAttribute('hidden', '');
+        } else {
+            filterWrapper.classList.add('expanded');
+            filterWrapper.classList.remove('collapsed');
+            toggleButton.setAttribute('aria-expanded', 'true');
+            toggleButton.setAttribute('aria-label', 'Hide animal filters');
+            filterContent.setAttribute('aria-hidden', 'false');
+            filterContent.removeAttribute('hidden');
+        }
+        
+        // Add click handler for toggle button
+        toggleButton.addEventListener('click', toggleAnimalFilter);
     }
     
     async function filterProductsByAnimal(animal) {
