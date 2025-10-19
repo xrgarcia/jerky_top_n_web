@@ -11,30 +11,12 @@
     const footerLinks = document.querySelectorAll('.footer-links a[data-page]');
     
     footerLinks.forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const page = link.getAttribute('data-page');
-        
-        if (page === 'profile') {
-          // Check if user is logged in
-          const isLoggedIn = localStorage.getItem('sessionId');
-          if (!isLoggedIn) {
-            // Redirect to login
-            document.getElementById('loginBtn')?.click();
-            return;
-          }
-          // Navigate to profile page
-          if (typeof showProfilePage === 'function') {
-            showProfilePage();
-          }
-        } else {
-          // Use existing navigation functions
-          const navLink = document.querySelector(`.nav-link[data-page="${page}"]`);
-          if (navLink) {
-            navLink.click();
-          }
-        }
-      });
+      // Remove click handler, let browser handle hash navigation naturally
+      link.removeEventListener('click', () => {});
+      
+      // Update href to use proper hash
+      const page = link.getAttribute('data-page');
+      link.href = page === 'home' ? '#home' : `#${page}`;
     });
     
     // Handle login link in footer
@@ -46,11 +28,10 @@
         
         if (isLoggedIn) {
           // Already logged in, go to profile
-          const profileLink = document.getElementById('footerProfileLink');
-          profileLink?.click();
+          window.location.hash = '#profile';
         } else {
           // Trigger login
-          document.getElementById('loginBtn')?.click();
+          window.location.hash = '#login';
         }
       });
     }

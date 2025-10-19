@@ -405,8 +405,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (intendedPage) {
             sessionStorage.setItem('redirectAfterLogin', intendedPage);
         }
-        // Navigate to login page instead of showing modal
-        showPage('login');
+        // Replace current history entry to avoid back button loop
+        history.replaceState(null, '', '#login');
+        // Trigger routing to show login page
+        handleRouting();
     }
 
     // Global navigation functions for backwards compatibility and onclick handlers
@@ -691,39 +693,34 @@ document.addEventListener('DOMContentLoaded', function() {
     let hasMoreProducts = true;
     let currentSearchQuery = '';
 
-    // URL routing functions - single source of truth from URL hash
+    // ========== ROUTING SYSTEM ==========
+    // Simple hash-based routing - URL is single source of truth
+    
     function handleRouting() {
         const hash = window.location.hash.replace('#', '');
-        // Extract just the page name (before any query parameters)
         const fullPage = hash || 'home';
-        const page = fullPage.split('?')[0] === 'home' || fullPage === '' ? 'home' : fullPage.split('?')[0];
+        const page = fullPage.split('?')[0] || 'home';
         
         // Show the page based on URL hash, don't update URL (prevent loop)
         showPage(page, false);
     }
     
-    // Helper function for programmatic navigation (updates URL, triggers routing)
-    function navigateTo(page, options = {}) {
-        const newHash = page === 'home' ? '' : `#${page}`;
-        if (options.replace) {
-            history.replaceState(null, '', newHash || '/');
-        } else {
-            window.location.hash = newHash;
-        }
-        // hashchange event will trigger handleRouting automatically
-    }
-    
     // Handle URL hash changes (back/forward buttons, direct links)
     window.addEventListener('hashchange', handleRouting);
     
-    // Handle initial page load based on current URL hash
-    handleRouting();
-    
-    // Check customer auth status on load
-    checkCustomerAuthStatus();
-    
-    // Handle login success from URL hash (for direct magic link navigation)
-    handleLoginSuccessFromURL();
+    // Initialize routing after DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            handleRouting();
+            checkCustomerAuthStatus();
+            handleLoginSuccessFromURL();
+        });
+    } else {
+        // DOM already loaded
+        handleRouting();
+        checkCustomerAuthStatus();
+        handleLoginSuccessFromURL();
+    }
 
     // Load rank page data (rankings + products)
     async function loadRankPageData() {
