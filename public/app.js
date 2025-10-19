@@ -699,13 +699,19 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentSearchQuery = '';
 
     // URL routing functions
-    function handleRouting() {
+    function handleRouting(isInitialLoad = false) {
         const hash = window.location.hash.replace('#', '');
-        // If no hash, try to restore from sessionStorage
-        const savedPage = sessionStorage.getItem('currentPage');
+        
+        // Only use sessionStorage fallback on initial page load, not on hashchange
+        let fullPage;
+        if (isInitialLoad && !hash) {
+            const savedPage = sessionStorage.getItem('currentPage');
+            fullPage = savedPage || 'home';
+        } else {
+            fullPage = hash || 'home';
+        }
+        
         // Extract just the page name (before any query parameters)
-        const fullPage = hash || savedPage || 'home';
-        // Treat both empty hash and "home" hash as home page
         const page = fullPage.split('?')[0] === 'home' || fullPage === '' ? 'home' : fullPage.split('?')[0];
         
         // Show the page based on URL hash, but don't update URL again (prevent loop)
@@ -713,10 +719,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Handle URL hash changes (back/forward buttons, direct links)
-    window.addEventListener('hashchange', handleRouting);
+    window.addEventListener('hashchange', () => handleRouting(false));
     
     // Handle initial page load based on current URL hash
-    handleRouting();
+    handleRouting(true);
     
     // Check customer auth status on load
     checkCustomerAuthStatus();
