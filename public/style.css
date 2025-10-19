@@ -3998,16 +3998,16 @@ body.login-page-active .hero {
 
 .btn-secondary-cta.ranked {
     background: transparent;
-    color: #FFD700;
-    border: 3px solid #FFD700;
+    color: #7b8b52;
+    border: 3px solid #7b8b52;
 }
 
 .btn-secondary-cta.ranked:hover {
-    background: #FFD700;
-    color: #2c2c2c;
-    border-color: #FFD700;
+    background: #7b8b52;
+    color: white;
+    border-color: #7b8b52;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(255, 215, 0, 0.3);
+    box-shadow: 0 4px 16px rgba(123, 139, 82, 0.3);
 }
 
 .cta-icon {
