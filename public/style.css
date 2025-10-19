@@ -5294,3 +5294,130 @@ body.login-page-active .hero {
     background: #c0392b;
 }
 
+/* Home CTA Section */
+.home-cta-section {
+    margin: 60px auto 40px;
+    padding: 0 20px;
+    max-width: 800px;
+}
+
+.home-cta-content {
+    background: linear-gradient(135deg, #7b8b52 0%, #5d6b3d 100%);
+    border-radius: 20px;
+    padding: 50px 40px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(123, 139, 82, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.home-cta-content::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.home-cta-title {
+    font-size: 36px;
+    font-weight: 800;
+    color: #f5f3ed;
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.home-cta-text {
+    font-size: 18px;
+    line-height: 1.7;
+    color: #f5f3ed;
+    margin-bottom: 35px;
+    position: relative;
+    z-index: 1;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.home-cta-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 40px;
+    background: #c4a962;
+    color: #3b2f25;
+    text-decoration: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px rgba(196, 169, 98, 0.4);
+    position: relative;
+    z-index: 1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.home-cta-button:hover {
+    background: #d4b972;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(196, 169, 98, 0.5);
+}
+
+.home-cta-button .cta-arrow {
+    font-size: 22px;
+    transition: transform 0.3s ease;
+}
+
+.home-cta-button:hover .cta-arrow {
+    transform: translateX(5px);
+}
+
+@media (max-width: 768px) {
+    .home-cta-section {
+        margin: 40px auto 30px;
+    }
+    
+    .home-cta-content {
+        padding: 35px 25px;
+        border-radius: 15px;
+    }
+    
+    .home-cta-title {
+        font-size: 28px;
+        margin-bottom: 15px;
+    }
+    
+    .home-cta-text {
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+    
+    .home-cta-button {
+        padding: 16px 32px;
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .home-cta-title {
+        font-size: 24px;
+    }
+    
+    .home-cta-text {
+        font-size: 15px;
+    }
+    
+    .home-cta-button {
+        padding: 14px 28px;
+        font-size: 15px;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
