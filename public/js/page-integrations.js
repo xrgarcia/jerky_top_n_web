@@ -15,16 +15,10 @@
     const communityPage = document.getElementById('communityPage');
     if (!communityPage) return;
 
-    let leaderboardContainer = document.getElementById('communityLeaderboard');
+    const leaderboardContainer = document.getElementById('communityLeaderboard');
     if (!leaderboardContainer) {
-      leaderboardContainer = document.createElement('div');
-      leaderboardContainer.id = 'communityLeaderboard';
-      leaderboardContainer.style.marginBottom = '30px';
-      
-      const communityList = document.getElementById('communityList');
-      if (communityList) {
-        communityList.parentNode.insertBefore(leaderboardContainer, communityList);
-      }
+      console.warn('⚠️ Community leaderboard container not found');
+      return;
     }
 
     if (!leaderboardWidget) {
