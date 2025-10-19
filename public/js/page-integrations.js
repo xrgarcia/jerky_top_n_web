@@ -10,6 +10,7 @@
 
   let progressWidget = null;
   let leaderboardWidget = null;
+  let fullLeaderboardWidget = null;
 
   function initializeCommunityPage() {
     const communityPage = document.getElementById('communityPage');
@@ -25,6 +26,23 @@
       const leaderboardService = services.get('leaderboard');
       leaderboardWidget = new LeaderboardWidget('communityLeaderboard', leaderboardService, eventBus);
       console.log('✅ Leaderboard widget integrated into Community page');
+    }
+  }
+
+  function initializeLeaderboardPage() {
+    const leaderboardPage = document.getElementById('leaderboardPage');
+    if (!leaderboardPage) return;
+
+    const fullLeaderboardContainer = document.getElementById('fullLeaderboard');
+    if (!fullLeaderboardContainer) {
+      console.warn('⚠️ Full leaderboard container not found');
+      return;
+    }
+
+    if (!fullLeaderboardWidget) {
+      const leaderboardService = services.get('leaderboard');
+      fullLeaderboardWidget = new FullLeaderboardWidget('fullLeaderboard', leaderboardService, eventBus);
+      console.log('✅ Full leaderboard widget integrated into Leaderboard page');
     }
   }
 
@@ -76,6 +94,8 @@
   eventBus.on('page:shown', (data) => {
     if (data.page === 'community') {
       initializeCommunityPage();
+    } else if (data.page === 'leaderboard') {
+      initializeLeaderboardPage();
     } else if (data.page === 'rank') {
       initializeRankPage();
     }
@@ -85,6 +105,8 @@
     const currentPage = sessionStorage.getItem('currentPage');
     if (currentPage === 'community') {
       initializeCommunityPage();
+    } else if (currentPage === 'leaderboard') {
+      initializeLeaderboardPage();
     } else if (currentPage === 'rank') {
       initializeRankPage();
     }
