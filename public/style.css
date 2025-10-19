@@ -5339,6 +5339,9 @@ body.login-page-active .hero {
     margin-bottom: 35px;
     position: relative;
     z-index: 1;
+    max-width: 750px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .home-cta-image {
