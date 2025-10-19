@@ -3549,11 +3549,11 @@ body.login-page-active .hero {
 /* Two-Column Layout */
 .product-two-column {
     display: grid;
-    grid-template-columns: 45% 55%;
-    gap: 60px;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
     background: white;
     border-radius: 12px;
-    padding: 50px;
+    padding: 40px;
     box-shadow: 0 2px 12px rgba(59, 47, 37, 0.08);
     margin-bottom: 40px;
 }
