@@ -5322,6 +5322,16 @@ body.login-page-active .hero {
     pointer-events: none;
 }
 
+.home-cta-image {
+    width: 180px;
+    height: auto;
+    margin: 0 auto 20px;
+    display: block;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+}
+
 .home-cta-title {
     font-size: 36px;
     font-weight: 800;
@@ -5399,6 +5409,10 @@ body.login-page-active .hero {
 }
 
 @media (max-width: 480px) {
+    .home-cta-image {
+        width: 140px;
+    }
+    
     .home-cta-title {
         font-size: 24px;
     }
