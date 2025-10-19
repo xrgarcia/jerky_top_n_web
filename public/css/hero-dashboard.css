@@ -212,10 +212,10 @@
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-.achievement-name {
+.hero-achievements-slider .achievement-name {
     font-weight: 600;
-    color: #ffffff;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: #f5f3ed;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .achievement-tier {
