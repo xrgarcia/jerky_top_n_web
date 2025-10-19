@@ -171,6 +171,7 @@
     animation: slideIn 0.5s ease-out;
     font-size: 15px;
     color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 @keyframes slideIn {
@@ -201,6 +202,8 @@
 
 .achievement-text {
     flex: 1;
+    color: #ffffff;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .achievement-user {
