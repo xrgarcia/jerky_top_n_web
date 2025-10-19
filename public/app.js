@@ -167,16 +167,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Hide all pages
-        if (homePage) homePage.style.display = 'none';
-        if (rankPage) rankPage.style.display = 'none';
-        if (productsPage) productsPage.style.display = 'none';
-        if (communityPage) communityPage.style.display = 'none';
-        if (profilePage) profilePage.style.display = 'none';
-        if (productDetailPage) productDetailPage.style.display = 'none';
-        if (userProfilePage) userProfilePage.style.display = 'none';
-        if (loginPage) loginPage.style.display = 'none';
-        if (toolsPage) toolsPage.style.display = 'none';
+        // Store current page to track what's currently visible
+        const currentlyVisiblePage = sessionStorage.getItem('currentPage');
+        
+        // Only hide/show if we're actually changing pages (prevents flash on back button)
+        const shouldUpdatePages = currentlyVisiblePage !== page;
+        
+        if (shouldUpdatePages) {
+            // Hide all pages
+            if (homePage) homePage.style.display = 'none';
+            if (rankPage) rankPage.style.display = 'none';
+            if (productsPage) productsPage.style.display = 'none';
+            if (communityPage) communityPage.style.display = 'none';
+            if (profilePage) profilePage.style.display = 'none';
+            if (productDetailPage) productDetailPage.style.display = 'none';
+            if (userProfilePage) userProfilePage.style.display = 'none';
+            if (loginPage) loginPage.style.display = 'none';
+            if (toolsPage) toolsPage.style.display = 'none';
+        }
         
         // Show selected page
         if (page === 'home' && homePage) {
