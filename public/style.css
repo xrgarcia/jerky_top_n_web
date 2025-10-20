@@ -1234,16 +1234,12 @@ body.login-page-active .hero {
         padding: 25px 20px;
     }
     
-    /* Rank Page Container - Add bottom padding on mobile */
-    .rank-page-container {
-        padding-bottom: 400px; /* Extra space to prevent footer overlap on mobile */
-    }
-    
     /* Ranking Container - Stack on Mobile with natural scrolling */
     .ranking-container {
         flex-direction: column;
         height: auto;
         gap: 15px;
+        padding-bottom: 400px;
     }
     
     .ranking-panel {
@@ -1343,11 +1339,6 @@ body.login-page-active .hero {
         height: auto;
         min-height: 0;
         padding: 20px;
-    }
-    
-    /* Extra bottom padding for product results to prevent footer overlap */
-    .product-results {
-        padding-bottom: 400px;
     }
     
     .product-list {
@@ -1600,12 +1591,11 @@ body.login-page-active .hero {
         font-size: 14px;
     }
     
-    /* Rank Page Container - Add bottom padding on small mobile */
-    .rank-page-container {
-        padding-bottom: 400px; /* Extra space to prevent footer overlap on small mobile */
+    /* Ranking Container - Natural scrolling with footer clearance */
+    .ranking-container {
+        padding-bottom: 400px;
     }
     
-    /* Ranking Container - Natural scrolling */
     .ranking-panel {
         height: auto;
         min-height: auto;
@@ -1702,11 +1692,6 @@ body.login-page-active .hero {
         height: auto;
         min-height: 0;
         padding: 12px;
-    }
-    
-    /* Extra bottom padding for product results to prevent footer overlap */
-    .product-results {
-        padding-bottom: 400px;
     }
     
     .ranking-slot {
