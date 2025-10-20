@@ -1231,7 +1231,6 @@ body.login-page-active .hero {
         flex-direction: column;
         height: auto;
         gap: 15px;
-        padding-bottom: 400px;
     }
     
     .ranking-panel {
@@ -1249,6 +1248,7 @@ body.login-page-active .hero {
         height: auto;
         min-height: 100vh; /* Full viewport height so users can scroll and see many products */
         overflow: visible;
+        padding-bottom: 400px; /* Footer clearance - padding on the panel that contains products */
     }
     
     .panel-header {
@@ -1588,7 +1588,6 @@ body.login-page-active .hero {
         flex-direction: column;
         height: auto;
         gap: 15px;
-        padding-bottom: 400px;
     }
     
     .ranking-panel {
@@ -1606,6 +1605,7 @@ body.login-page-active .hero {
         height: auto;
         min-height: 100vh; /* Full viewport height for maximum product visibility */
         overflow: visible;
+        padding-bottom: 400px; /* Footer clearance - padding on the panel that contains products */
     }
     
     .panel-header {
