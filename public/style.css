@@ -2923,7 +2923,8 @@ body.login-page-active .hero {
     transform: rotate(180deg);
 }
 
-.products-page-container {
+.products-page-container,
+.rank-page-container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
