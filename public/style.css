@@ -1276,7 +1276,7 @@ body.login-page-active .hero {
     /* Make Search Products header sticky on mobile */
     .search-panel .panel-header {
         position: sticky;
-        top: 60px; /* Below the main navigation */
+        top: 0; /* Stick to top of search panel */
         z-index: 10;
         background: #6B8E23;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Shadow to separate from content below */
@@ -1645,7 +1645,7 @@ body.login-page-active .hero {
     /* Sticky Search Products header on small mobile */
     .search-panel .panel-header {
         position: sticky;
-        top: 60px;
+        top: 0; /* Stick to top of search panel */
         z-index: 10;
         background: #6B8E23;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Shadow to separate from content below */
