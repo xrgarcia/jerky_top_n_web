@@ -1045,14 +1045,6 @@ body.login-page-active .hero {
         font-size: 36px;
     }
     
-    .ranking-container {
-        height: 60vh;
-    }
-    
-    .ranking-panel, .search-panel {
-        height: 60vh;
-    }
-    
     .products-grid {
         grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
         gap: 20px;
