@@ -2062,23 +2062,26 @@ body.login-page-active .hero {
     background: #555;
     transform: translateY(-2px);
 }
-/* Split Screen Ranking Layout */
-.ranking-container {
-    display: flex;
-    gap: 20px;
-    height: 70vh; /* Fixed height based on viewport */
-    margin-top: 20px;
-}
 
-.ranking-panel, .search-panel {
-    flex: 1;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: 70vh; /* Match container height exactly */
+/* Desktop Only: Split Screen Ranking Layout */
+@media (min-width: 769px) {
+    .ranking-container {
+        display: flex;
+        gap: 20px;
+        height: 70vh; /* Fixed height based on viewport */
+        margin-top: 20px;
+    }
+
+    .ranking-panel, .search-panel {
+        flex: 1;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 70vh; /* Match container height exactly */
+    }
 }
 
 .panel-header {
@@ -2220,10 +2223,13 @@ body.login-page-active .hero {
     background: rgba(255,255,255,0.3);
 }
 
-.product-results {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
+/* Desktop only - fixed height with internal scroll */
+@media (min-width: 769px) {
+    .product-results {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+    }
 }
 
 .product-list {
