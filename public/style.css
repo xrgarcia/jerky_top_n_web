@@ -4945,7 +4945,8 @@ body.login-page-active .hero {
     border-color: #7b8b52;
     border-bottom: 2px solid #7b8b52;
     position: relative;
-    z-index: 1;
+    z-index: 2;
+    margin-bottom: -2px;
 }
 
 .tool-section {
@@ -4953,7 +4954,8 @@ body.login-page-active .hero {
     border: 2px solid #ddd;
     border-radius: 0 8px 8px 8px;
     padding: 20px;
-    margin-top: -2px;
+    position: relative;
+    z-index: 1;
 }
 
 .achievements-table-container {
