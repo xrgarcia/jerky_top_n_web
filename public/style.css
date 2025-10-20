@@ -4924,16 +4924,17 @@ body.login-page-active .hero {
 
 .tools-nav-btn {
     padding: 10px 20px;
-    background: #ecf0f1;
+    background: #f5f3ed;
     border: none;
     border-radius: 5px 5px 0 0;
     cursor: pointer;
     font-weight: 600;
     transition: all 0.3s;
+    color: #3b2f25;
 }
 
 .tools-nav-btn:hover {
-    background: #d5dbdb;
+    background: #e8e5db;
 }
 
 .tools-nav-btn.active {
