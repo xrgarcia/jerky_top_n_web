@@ -1345,6 +1345,11 @@ body.login-page-active .hero {
         padding: 20px;
     }
     
+    /* Extra bottom padding for product results to prevent footer overlap */
+    .product-results {
+        padding-bottom: 400px;
+    }
+    
     .product-list {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         gap: 12px;
@@ -1697,6 +1702,11 @@ body.login-page-active .hero {
         height: auto;
         min-height: 0;
         padding: 12px;
+    }
+    
+    /* Extra bottom padding for product results to prevent footer overlap */
+    .product-results {
+        padding-bottom: 400px;
     }
     
     .ranking-slot {
