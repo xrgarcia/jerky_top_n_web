@@ -1234,12 +1234,16 @@ body.login-page-active .hero {
         padding: 25px 20px;
     }
     
+    /* Rank Page Container - Add bottom padding on mobile */
+    .rank-page-container {
+        padding-bottom: 400px; /* Extra space to prevent footer overlap on mobile */
+    }
+    
     /* Ranking Container - Stack on Mobile with natural scrolling */
     .ranking-container {
         flex-direction: column;
         height: auto;
         gap: 15px;
-        padding-bottom: 100px; /* Extra space to prevent footer overlap */
     }
     
     .ranking-panel {
@@ -1589,6 +1593,11 @@ body.login-page-active .hero {
         width: 30px;
         height: 30px;
         font-size: 14px;
+    }
+    
+    /* Rank Page Container - Add bottom padding on small mobile */
+    .rank-page-container {
+        padding-bottom: 400px; /* Extra space to prevent footer overlap on small mobile */
     }
     
     /* Ranking Container - Natural scrolling */
