@@ -7,6 +7,16 @@ let allAchievementsData = [];
 let userCollectionProgress = {};
 
 /**
+ * Helper function to render an icon (emoji or image)
+ */
+function renderIcon(iconValue, iconType, cssClass = '', size = '48px') {
+  if (iconType === 'image') {
+    return `<img src="${iconValue}" alt="Icon" class="${cssClass}" style="width: ${size}; height: ${size}; object-fit: contain;">`;
+  }
+  return `<span class="${cssClass}">${iconValue}</span>`;
+}
+
+/**
  * Initialize Coin Book page
  */
 window.initCoinbookPage = async function() {
@@ -174,7 +184,7 @@ function renderStaticCollections() {
     return `
       <div class="collection-card">
         <div class="collection-header">
-          <span class="collection-icon">${collection.icon}</span>
+          ${renderIcon(collection.icon, collection.iconType, 'collection-icon', '48px')}
           <div class="collection-info">
             <div class="collection-name">${collection.name}</div>
             <div class="collection-description">${collection.description}</div>
@@ -254,7 +264,7 @@ function renderDynamicCollections() {
     return `
       <div class="dynamic-collection-card tier-${progress.currentTier || 'none'}">
         <div class="collection-header">
-          <span class="collection-icon">${collections[0].icon}</span>
+          ${renderIcon(collections[0].icon, collections[0].iconType, 'collection-icon', '48px')}
           <div class="collection-info">
             <div class="collection-name">${collections[0].name}</div>
             <div class="collection-description">${collections[0].description}</div>
@@ -309,7 +319,7 @@ function renderHiddenAchievements() {
     
     return `
       <div class="hidden-achievement-card ${isLocked ? 'locked' : ''}">
-        <div class="hidden-achievement-icon">${achievement.icon}</div>
+        <div class="hidden-achievement-icon">${renderIcon(achievement.icon, achievement.iconType, '', '64px')}</div>
         <div class="hidden-achievement-name">${isLocked ? '???' : achievement.name}</div>
         <div class="hidden-achievement-description">
           ${isLocked ? 'Complete secret requirements to unlock' : achievement.description}
