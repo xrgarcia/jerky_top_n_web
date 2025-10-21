@@ -1470,6 +1470,36 @@ app.post('/api/rankings/products', async (req, res) => {
             completedAnimalCategories,
           };
           
+          // Check and award flavor coins for newly ranked products
+          const { flavorCoinManager, collectionManager } = gamificationServices;
+          const newFlavorCoins = [];
+          
+          if (flavorCoinManager) {
+            for (const ranking of rankings) {
+              const coins = await flavorCoinManager.checkAndAwardFlavorCoins(userId, ranking.productData.id);
+              newFlavorCoins.push(...coins);
+            }
+            
+            if (newFlavorCoins.length > 0) {
+              console.log(`🪙 User ${userId} earned ${newFlavorCoins.length} new Flavor Coin(s)`);
+              if (io) {
+                io.to(`user:${userId}`).emit('flavor_coins:earned', { coins: newFlavorCoins });
+              }
+            }
+          }
+          
+          // Update dynamic collection progress
+          if (collectionManager) {
+            const collectionUpdates = await collectionManager.checkAndUpdateDynamicCollections(userId);
+            
+            if (collectionUpdates.length > 0) {
+              console.log(`📚 User ${userId} updated ${collectionUpdates.length} collection(s)`);
+              if (io) {
+                io.to(`user:${userId}`).emit('collections:updated', { updates: collectionUpdates });
+              }
+            }
+          }
+          
           // Check for new achievements
           const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
           

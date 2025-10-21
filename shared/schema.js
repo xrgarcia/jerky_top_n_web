@@ -74,18 +74,35 @@ const userProductSearches = pgTable('user_product_searches', {
   searchedAt: timestamp('searched_at').defaultNow(),
 });
 
+// Flavor Coins - earned when ranking unique flavors for the first time
+const flavorCoins = pgTable('flavor_coins', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  flavorType: text('flavor_type').notNull(), // e.g., 'sweet', 'spicy', 'savory', 'smoky'
+  flavorDisplay: text('flavor_display').notNull(), // e.g., 'Sweet', 'Spicy'
+  flavorIcon: text('flavor_icon').notNull(), // Emoji icon
+  shopifyProductId: text('shopify_product_id').notNull(), // First product that earned this coin
+  earnedAt: timestamp('earned_at').defaultNow(),
+});
+
 // Achievement definitions - types of badges users can earn
 const achievements = pgTable('achievements', {
   id: serial('id').primaryKey(),
-  code: text('code').unique().notNull(), // e.g., 'first_rank', 'streak_7', 'top_10'
+  code: text('code').unique().notNull(), // e.g., 'first_rank', 'beef_master', 'bbq_lovers'
   name: text('name').notNull(), // Display name
   description: text('description').notNull(),
   icon: text('icon').notNull(), // Emoji or icon identifier
-  tier: text('tier').notNull(), // 'bronze', 'silver', 'gold', 'platinum'
-  category: text('category').notNull(), // 'ranking', 'social', 'discovery', 'streak'
-  requirement: jsonb('requirement').notNull(), // Criteria for earning (e.g., {type: 'count', value: 50})
+  tier: text('tier'), // For legacy achievements: 'bronze', 'silver', 'gold', 'platinum' (nullable for new dynamic collections)
+  collectionType: text('collection_type').notNull(), // 'static_collection', 'dynamic_collection', 'hidden_collection', 'legacy'
+  category: text('category'), // 'ranking', 'social', 'discovery', 'streak' (for legacy achievements)
+  proteinCategory: text('protein_category'), // For dynamic master collections: 'cattle', 'poultry', 'pork', 'fish', 'game', 'exotic'
+  isHidden: integer('is_hidden').default(0), // 0 = visible, 1 = hidden until unlocked
+  requirement: jsonb('requirement').notNull(), // Criteria for earning (e.g., {type: 'complete_flavor_set', flavors: ['sweet', 'spicy']})
+  tierThresholds: jsonb('tier_thresholds'), // For dynamic collections: {bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100}
   points: integer('points').default(0), // Points awarded for earning
+  isActive: integer('is_active').default(1), // 0 = inactive, 1 = active (for admin control)
   createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
 });
 
 // User achievements - badges earned by users
@@ -93,8 +110,11 @@ const userAchievements = pgTable('user_achievements', {
   id: serial('id').primaryKey(),
   userId: integer('user_id').references(() => users.id).notNull(),
   achievementId: integer('achievement_id').references(() => achievements.id).notNull(),
+  currentTier: text('current_tier'), // For dynamic collections: 'bronze', 'silver', 'gold', 'platinum', 'diamond'
+  percentageComplete: integer('percentage_complete').default(0), // For dynamic collections: 0-100
   earnedAt: timestamp('earned_at').defaultNow(),
-  progress: jsonb('progress'), // Track progress toward achievement
+  progress: jsonb('progress'), // Track detailed progress toward achievement
+  updatedAt: timestamp('updated_at').defaultNow(),
 });
 
 // User streaks - tracks consecutive activity
@@ -154,12 +174,20 @@ const pageViews = pgTable('page_views', {
 });
 
 // Relations
+const flavorCoinsRelations = relations(flavorCoins, ({ one }) => ({
+  user: one(users, {
+    fields: [flavorCoins.userId],
+    references: [users.id],
+  }),
+}));
+
 const usersRelations = relations(users, ({ many }) => ({
   rankings: many(rankings),
   sessions: many(sessions),
   achievements: many(userAchievements),
   streaks: many(streaks),
   activityLogs: many(activityLogs),
+  flavorCoins: many(flavorCoins),
 }));
 
 const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -212,6 +240,7 @@ module.exports = {
   magicLinks,
   productRankings,
   userProductSearches,
+  flavorCoins,
   achievements,
   userAchievements,
   streaks,
@@ -222,6 +251,7 @@ module.exports = {
   usersRelations,
   sessionsRelations,
   rankingsRelations,
+  flavorCoinsRelations,
   achievementsRelations,
   userAchievementsRelations,
   streaksRelations,

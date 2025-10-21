@@ -64,6 +64,13 @@ class ProductsMetadataRepository {
     
     return Object.values(counts).sort((a, b) => b.count - a.count);
   }
+
+  async getProductsByAnimalType(animalType) {
+    return await this.db
+      .select()
+      .from(productsMetadata)
+      .where(eq(productsMetadata.animalType, animalType));
+  }
 }
 
 module.exports = ProductsMetadataRepository;
