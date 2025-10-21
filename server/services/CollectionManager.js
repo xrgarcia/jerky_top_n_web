@@ -183,6 +183,29 @@ class CollectionManager {
 
     return collections;
   }
+
+  async getCollectionProgress(userId, proteinCategory) {
+    const collection = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'dynamic_collection'),
+        eq(achievements.proteinCategory, proteinCategory),
+        eq(achievements.isActive, 1)
+      ))
+      .limit(1);
+
+    if (collection.length === 0) {
+      return { percentage: 0, currentTier: null };
+    }
+
+    const progress = await this.calculateCollectionProgress(userId, collection[0]);
+    return {
+      percentage: progress.percentage,
+      currentTier: progress.tier,
+      totalAvailable: progress.totalAvailable,
+      totalRanked: progress.totalRanked
+    };
+  }
 }
 
 module.exports = CollectionManager;

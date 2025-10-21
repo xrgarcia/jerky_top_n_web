@@ -390,6 +390,75 @@ function createGamificationRoutes(services) {
     }
   });
 
+  // Get user's flavor coins
+  router.get('/flavor-coins', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      const flavorCoins = await services.flavorCoinManager.getUserFlavorCoins(userId);
+      
+      res.json({ flavorCoins });
+    } catch (error) {
+      console.error('Error fetching flavor coins:', error);
+      res.status(500).json({ error: 'Failed to fetch flavor coins' });
+    }
+  });
+
+  // Get collections progress
+  router.get('/collections-progress', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      
+      // Get all achievements
+      const achievements = await services.achievementManager.getAllAchievements();
+      
+      // Get user progress for collections
+      const userProgress = {};
+      
+      for (const achievement of achievements) {
+        if (achievement.collectionType === 'dynamic_collection' && achievement.proteinCategory) {
+          const progress = await services.collectionManager.getCollectionProgress(
+            userId,
+            achievement.proteinCategory
+          );
+          userProgress[achievement.proteinCategory] = progress;
+        }
+        
+        // For static and hidden achievements, check if user has earned them
+        const hasAchievement = await services.achievementManager.hasAchievement(userId, achievement.id);
+        userProgress[achievement.id] = {
+          completed: hasAchievement,
+          unlocked: hasAchievement,
+          percentage: hasAchievement ? 100 : 0
+        };
+      }
+      
+      res.json({ achievements, userProgress });
+    } catch (error) {
+      console.error('Error fetching collections progress:', error);
+      res.status(500).json({ error: 'Failed to fetch collections progress' });
+    }
+  });
+
   return router;
 }
 

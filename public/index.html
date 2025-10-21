@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/page-header.css">
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/admin-dashboard.css">
+    <link rel="stylesheet" href="css/coinbook.css">
 </head>
 <body>
     <!-- Green Announcement Banner -->
@@ -31,6 +32,7 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link" data-page="home">HOME</a>
                 <a href="#products" class="nav-link" data-page="products">PRODUCTS</a>
+                <a href="#coinbook" class="nav-link" data-page="coinbook">🏆 COIN BOOK</a>
                 <div class="nav-item-with-dropdown">
                     <a href="#community" class="nav-link nav-dropdown-trigger" data-page="community">
                         <span>COMMUNITY</span>
@@ -43,8 +45,7 @@
                 </div>
                 <a href="#rank" class="nav-link" data-page="rank">RANK</a>
                 <a href="#tools" class="nav-link" data-page="tools" id="toolsNavLink" style="display: none;">TOOLS</a>
-            </div>
-            
+            </div>            
             <div class="nav-actions">
                 <div class="search-container">
                     <input type="text" placeholder="Search for people or products" class="search-input" id="globalSearchInput" autocomplete="off">
@@ -693,6 +694,100 @@
             </div>
         </div>
 
+        <!-- Coin Book Page Content -->
+        <div class="page-content" id="coinbookPage" style="display: none;">
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#home">Home</a>
+                            <span>›</span>
+                            <span>Coin Book</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">🏆</span>
+                            <span>My Coin Book</span>
+                        </h1>
+                        <p class="page-header-subtitle">Track your flavor discoveries and collection progress</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="coinbook-container">
+                <!-- Coin Book Navigation Tabs -->
+                <div class="coinbook-tabs">
+                    <button class="coinbook-tab active" data-tab="flavor-coins">
+                        <span class="tab-icon">🪙</span>
+                        <span>Flavor Coins</span>
+                        <span class="tab-badge" id="flavorCoinsBadge">0</span>
+                    </button>
+                    <button class="coinbook-tab" data-tab="static-collections">
+                        <span class="tab-icon">📚</span>
+                        <span>Static Collections</span>
+                        <span class="tab-badge" id="staticCollectionsBadge">0</span>
+                    </button>
+                    <button class="coinbook-tab" data-tab="dynamic-collections">
+                        <span class="tab-icon">📊</span>
+                        <span>Dynamic Collections</span>
+                        <span class="tab-badge" id="dynamicCollectionsBadge">0</span>
+                    </button>
+                    <button class="coinbook-tab" data-tab="hidden-achievements">
+                        <span class="tab-icon">🔒</span>
+                        <span>Hidden Achievements</span>
+                        <span class="tab-badge" id="hiddenAchievementsBadge">0</span>
+                    </button>
+                </div>
+
+                <!-- Flavor Coins Tab Content -->
+                <div class="coinbook-tab-content active" id="flavorCoinsContent">
+                    <div class="coinbook-section-header">
+                        <h2>🪙 Flavor Coins Collection</h2>
+                        <p>Earn unique flavor coins by ranking products with different primary flavors for the first time</p>
+                    </div>
+                    
+                    <div class="flavor-coins-grid" id="flavorCoinsGrid">
+                        <div class="loading-message">Loading your flavor coins...</div>
+                    </div>
+                </div>
+
+                <!-- Static Collections Tab Content -->
+                <div class="coinbook-tab-content" id="staticCollectionsContent" style="display: none;">
+                    <div class="coinbook-section-header">
+                        <h2>📚 Static Collections</h2>
+                        <p>Complete specific sets of products to unlock these achievements</p>
+                    </div>
+                    
+                    <div class="collections-list" id="staticCollectionsList">
+                        <div class="loading-message">Loading static collections...</div>
+                    </div>
+                </div>
+
+                <!-- Dynamic Collections Tab Content -->
+                <div class="coinbook-tab-content" id="dynamicCollectionsContent" style="display: none;">
+                    <div class="coinbook-section-header">
+                        <h2>📊 Dynamic Master Collections</h2>
+                        <p>Progress through 5 tiers (Bronze → Diamond) by completing protein category collections</p>
+                    </div>
+                    
+                    <div class="dynamic-collections-list" id="dynamicCollectionsList">
+                        <div class="loading-message">Loading dynamic collections...</div>
+                    </div>
+                </div>
+
+                <!-- Hidden Achievements Tab Content -->
+                <div class="coinbook-tab-content" id="hiddenAchievementsContent" style="display: none;">
+                    <div class="coinbook-section-header">
+                        <h2>🔒 Hidden Achievements</h2>
+                        <p>Secret achievements unlock automatically when you meet special criteria</p>
+                    </div>
+                    
+                    <div class="hidden-achievements-list" id="hiddenAchievementsList">
+                        <div class="loading-message">Loading hidden achievements...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Tools Page Content (Employee Admin Only) -->
         <div class="page-content" id="toolsPage" style="display: none;">
             <div class="page-header-minimal">
@@ -1072,6 +1167,7 @@
     <script src="app.js?v=20251012b"></script>
     
     <!-- Page Scripts -->
+    <script src="js/pages/coinbook.js"></script>
     <script src="js/pages/toolsAdmin.js"></script>
     <script src="js/pages/tools.js"></script>
     

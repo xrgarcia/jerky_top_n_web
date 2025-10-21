@@ -497,9 +497,14 @@ async function clearAllAchievements() {
 window.initToolsPage = async function() {
   console.log('🛠️ Initializing Tools page...');
   
+  const userEmail = localStorage.getItem('userEmail');
   const userRole = localStorage.getItem('userRole');
-  if (userRole !== 'employee_admin') {
-    alert('Access denied. This section is for employees only.');
+  
+  // Allow access if user has employee_admin role OR email ends with @jerky.com
+  const hasAccess = userRole === 'employee_admin' || (userEmail && userEmail.endsWith('@jerky.com'));
+  
+  if (!hasAccess) {
+    alert('Access denied. This section is for jerky.com employees only.');
     window.showPage('home');
     return;
   }

@@ -10,8 +10,12 @@ const AchievementCache = require('../../cache/AchievementCache');
 
 function requireEmployeeAuth(req, res, next) {
   const userRole = req.session?.userRole;
+  const userEmail = req.session?.email;
   
-  if (userRole !== 'employee_admin') {
+  // Allow access if user has employee_admin role OR email ends with @jerky.com
+  const hasAccess = userRole === 'employee_admin' || (userEmail && userEmail.endsWith('@jerky.com'));
+  
+  if (!hasAccess) {
     return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
   }
   
