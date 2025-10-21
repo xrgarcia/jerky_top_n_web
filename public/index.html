@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/progress-widget.css">
     <link rel="stylesheet" href="css/page-header.css">
     <link rel="stylesheet" href="css/footer.css">
+    <link rel="stylesheet" href="css/admin-dashboard.css">
 </head>
 <body>
     <!-- Green Announcement Banner -->
@@ -729,25 +730,42 @@
                 <!-- Manage Achievements Tool -->
                 <div class="tool-section active" id="achievementsTool">
                     <div class="tool-header">
-                        <h3>Achievement Management</h3>
-                        <button class="btn-danger" id="clearAllAchievementsBtn">Clear all Achievements & Streaks</button>
+                        <h3>🏆 Coin Book Admin Dashboard</h3>
+                        <div class="tool-header-actions">
+                            <button class="btn-primary" id="createAchievementBtn">+ Create Achievement</button>
+                            <button class="btn-danger" id="clearAllAchievementsBtn">Clear All Data</button>
+                        </div>
                     </div>
+                    
+                    <!-- Achievement Type Filters -->
+                    <div class="achievement-type-nav">
+                        <button class="achievement-type-btn active" data-type="all">All Achievements</button>
+                        <button class="achievement-type-btn" data-type="static">📚 Static Collections</button>
+                        <button class="achievement-type-btn" data-type="dynamic">📊 Dynamic Collections</button>
+                        <button class="achievement-type-btn" data-type="hidden">🔒 Hidden Achievements</button>
+                        <button class="achievement-type-btn" data-type="legacy">⚙️ Legacy</button>
+                    </div>
+                    
                     <div class="achievements-table-container">
                         <table class="achievements-table">
                             <thead>
                                 <tr>
                                     <th>Icon</th>
                                     <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Tier</th>
+                                    <th>Type</th>
                                     <th>Category</th>
-                                    <th>Requirement</th>
+                                    <th>Description</th>
                                     <th>Points</th>
-                                    <th>Times Earned</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="achievementsTableBody">
-                                <!-- Table rows will be populated by JavaScript -->
+                                <tr>
+                                    <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+                                        Loading achievements...
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -891,6 +909,138 @@
         </div>
     </div>
 
+    <!-- Achievement Form Modal -->
+    <div id="achievementFormModal" class="modal-overlay" style="display: none;">
+        <div class="modal-content achievement-form-modal">
+            <div class="modal-header">
+                <h3 id="achievementFormTitle">Create Achievement</h3>
+                <button class="modal-close-btn" id="closeAchievementFormBtn">&times;</button>
+            </div>
+            <form id="achievementForm" class="achievement-form">
+                <input type="hidden" id="achievementId" name="id">
+                
+                <div class="form-section">
+                    <h4>Basic Information</h4>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="achievementCode">Code (unique identifier)*</label>
+                            <input type="text" id="achievementCode" name="code" required placeholder="e.g., beef_master_bronze">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="achievementIcon">Icon (emoji)*</label>
+                            <input type="text" id="achievementIcon" name="icon" required placeholder="e.g., 🥇" maxlength="4">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievementName">Name*</label>
+                        <input type="text" id="achievementName" name="name" required placeholder="e.g., Beef Master">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="achievementDescription">Description*</label>
+                        <textarea id="achievementDescription" name="description" required placeholder="e.g., Complete 40% of all beef products" rows="3"></textarea>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="achievementPoints">Points</label>
+                            <input type="number" id="achievementPoints" name="points" value="0" min="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="achievementIsActive">Active Status</label>
+                            <select id="achievementIsActive" name="isActive">
+                                <option value="1" selected>Active</option>
+                                <option value="0">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>Collection Type</h4>
+                    
+                    <div class="form-group">
+                        <label for="achievementCollectionType">Collection Type*</label>
+                        <select id="achievementCollectionType" name="collectionType" required>
+                            <option value="">Select Type</option>
+                            <option value="static_collection">Static Collection</option>
+                            <option value="dynamic_collection">Dynamic Collection</option>
+                            <option value="hidden_collection">Hidden Achievement</option>
+                            <option value="legacy">Legacy Achievement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="proteinCategoryGroup" style="display: none;">
+                        <label for="achievementProteinCategory">Protein Category (for dynamic collections)</label>
+                        <select id="achievementProteinCategory" name="proteinCategory">
+                            <option value="">None</option>
+                            <option value="cattle">Cattle (Beef)</option>
+                            <option value="poultry">Poultry (Chicken, Turkey)</option>
+                            <option value="pork">Pork</option>
+                            <option value="fish">Fish</option>
+                            <option value="game">Game (Deer, Elk, etc.)</option>
+                            <option value="exotic">Exotic (Alligator, etc.)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="legacyFieldsGroup" style="display: none;">
+                        <label for="achievementTier">Legacy Tier</label>
+                        <select id="achievementTier" name="tier">
+                            <option value="">None</option>
+                            <option value="bronze">Bronze</option>
+                            <option value="silver">Silver</option>
+                            <option value="gold">Gold</option>
+                            <option value="platinum">Platinum</option>
+                            <option value="diamond">Diamond</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="legacyCategoryGroup" style="display: none;">
+                        <label for="achievementCategory">Legacy Category</label>
+                        <select id="achievementCategory" name="category">
+                            <option value="">None</option>
+                            <option value="ranking">Ranking</option>
+                            <option value="social">Social</option>
+                            <option value="discovery">Discovery</option>
+                            <option value="streak">Streak</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="achievementIsHidden" name="isHidden" value="1">
+                            Hidden Achievement (unlock criteria not shown)
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <h4>Requirements (JSON)*</h4>
+                    <div class="form-group">
+                        <label for="achievementRequirement">Requirement Configuration</label>
+                        <textarea id="achievementRequirement" name="requirement" required placeholder='{"type": "rank_count", "value": 10}' rows="4"></textarea>
+                        <small>Example: {"type": "rank_count", "value": 10} or {"type": "complete_flavor_set", "flavors": ["sweet", "spicy"]}</small>
+                    </div>
+                    
+                    <div class="form-group" id="tierThresholdsGroup" style="display: none;">
+                        <label for="achievementTierThresholds">Tier Thresholds (JSON, for dynamic collections)</label>
+                        <textarea id="achievementTierThresholds" name="tierThresholds" placeholder='{"bronze": 40, "silver": 60, "gold": 75, "platinum": 90, "diamond": 100}' rows="3"></textarea>
+                        <small>Percentage thresholds for each tier (Bronze to Diamond)</small>
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelAchievementFormBtn">Cancel</button>
+                    <button type="submit" class="btn-primary" id="saveAchievementBtn">Save Achievement</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Socket.IO Client -->
     <script src="/socket.io/socket.io.js"></script>
     
@@ -922,6 +1072,7 @@
     <script src="app.js?v=20251012b"></script>
     
     <!-- Page Scripts -->
+    <script src="js/pages/toolsAdmin.js"></script>
     <script src="js/pages/tools.js"></script>
     
     <!-- Page Integrations -->

@@ -1,0 +1,399 @@
+/* Admin Dashboard Styles - Coin Book Management */
+
+/* Tool Header Actions */
+.tool-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.tool-header h3 {
+  margin: 0;
+  color: #2c2c2c;
+  font-size: 24px;
+}
+
+.tool-header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* Achievement Type Navigation */
+.achievement-type-nav {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.achievement-type-btn {
+  padding: 10px 20px;
+  border: 2px solid #e0e0e0;
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.achievement-type-btn:hover {
+  border-color: #7b8b52;
+  background: rgba(123, 139, 82, 0.05);
+}
+
+.achievement-type-btn.active {
+  background: #7b8b52;
+  color: white;
+  border-color: #7b8b52;
+}
+
+/* Achievements Table */
+.achievements-table-container {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.achievements-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.achievements-table thead {
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.08), rgba(196, 169, 98, 0.08));
+  border-bottom: 2px solid #7b8b52;
+}
+
+.achievements-table th {
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+  color: #2c2c2c;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+}
+
+.achievements-table td {
+  padding: 12px 15px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.achievements-table tr:hover {
+  background: rgba(123, 139, 82, 0.03);
+}
+
+.achievement-icon-cell {
+  font-size: 24px;
+  text-align: center;
+}
+
+.achievement-description {
+  max-width: 300px;
+  color: #666;
+  font-size: 13px;
+}
+
+.achievement-actions {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+}
+
+/* Badges and Labels */
+.type-badge,
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.type-badge.type-static-collection {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.type-badge.type-dynamic-collection {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.type-badge.type-hidden-collection {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.type-badge.type-legacy {
+  background: #f5f5f5;
+  color: #616161;
+}
+
+.status-badge.active {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.inactive {
+  background: #ffebee;
+  color: #c62828;
+}
+
+/* Action Buttons */
+.btn-icon {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 5px 8px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: rgba(0, 0, 0, 0.05);
+  transform: scale(1.1);
+}
+
+.btn-icon.btn-delete:hover {
+  background: rgba(211, 47, 47, 0.1);
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.achievement-form-modal {
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 2px solid #e0e0e0;
+  position: sticky;
+  top: 0;
+  background: white;
+  z-index: 1;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #2c2c2c;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #999;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+/* Achievement Form */
+.achievement-form {
+  padding: 25px;
+}
+
+.form-section {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+}
+
+.form-section h4 {
+  margin: 0 0 20px 0;
+  color: #7b8b52;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+  font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #7b8b52;
+}
+
+.form-group textarea {
+  resize: vertical;
+  font-family: 'Courier New', monospace;
+}
+
+.form-group small {
+  display: block;
+  margin-top: 5px;
+  color: #666;
+  font-size: 12px;
+}
+
+.form-group input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 20px;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 2px solid #e0e0e0;
+  margin: 0 -25px -25px -25px;
+  padding: 20px 25px;
+}
+
+/* Button Styles */
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.btn-primary {
+  background: #7b8b52;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #6a7847;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
+}
+
+.btn-secondary {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background: #e0e0e0;
+}
+
+.btn-danger {
+  background: #d32f2f;
+  color: white;
+}
+
+.btn-danger:hover {
+  background: #c62828;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .tool-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+  
+  .tool-header-actions {
+    width: 100%;
+    justify-content: stretch;
+  }
+  
+  .tool-header-actions button {
+    flex: 1;
+  }
+  
+  .achievement-type-nav {
+    flex-direction: column;
+  }
+  
+  .achievement-type-btn {
+    width: 100%;
+  }
+}

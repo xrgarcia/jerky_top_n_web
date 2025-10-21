@@ -8,53 +8,11 @@ let allProducts = [];
 let filteredProducts = [];
 
 async function loadAchievementsTable() {
-  try {
-    const response = await fetch('/api/tools/achievements');
-    
-    if (!response.ok) {
-      if (response.status === 403) {
-        alert('Access denied. This section is for employees only.');
-        window.showPage('home');
-        return;
-      }
-      throw new Error('Failed to load achievements');
-    }
-
-    const data = await response.json();
-    const achievements = data.achievements || [];
-    
-    const tableBody = document.getElementById('achievementsTableBody');
-    if (!tableBody) return;
-    
-    tableBody.innerHTML = achievements.map(achievement => {
-      const requirement = formatRequirement(achievement.requirement);
-      
-      return `
-        <tr>
-          <td class="achievement-icon-cell">${achievement.icon}</td>
-          <td><strong>${achievement.name}</strong></td>
-          <td>${achievement.description}</td>
-          <td><span class="tier-badge tier-${achievement.tier}">${achievement.tier}</span></td>
-          <td><span class="category-badge">${achievement.category}</span></td>
-          <td>${requirement}</td>
-          <td><strong>${achievement.points}</strong></td>
-          <td><span class="earning-count">${achievement.earningCount || 0}</span></td>
-        </tr>
-      `;
-    }).join('');
-    
-  } catch (error) {
-    console.error('Error loading achievements table:', error);
-    const tableBody = document.getElementById('achievementsTableBody');
-    if (tableBody) {
-      tableBody.innerHTML = `
-        <tr>
-          <td colspan="8" style="text-align: center; color: #e74c3c; padding: 20px;">
-            Failed to load achievements. ${error.message}
-          </td>
-        </tr>
-      `;
-    }
+  // This function is now handled by toolsAdmin.js
+  if (window.initAchievementAdmin) {
+    window.initAchievementAdmin();
+  } else {
+    console.error('Achievement admin module not loaded');
   }
 }
 

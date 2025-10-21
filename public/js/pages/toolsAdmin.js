@@ -1,0 +1,416 @@
+/**
+ * Tools Admin - Achievement Management (Coin Book Admin Dashboard)
+ */
+
+let allAchievements = [];
+let filteredAchievements = [];
+let currentTypeFilter = 'all';
+let editingAchievementId = null;
+
+/**
+ * Load achievements from admin API
+ */
+async function loadAchievementsAdmin() {
+  try {
+    const response = await fetch('/api/admin/achievements');
+    
+    if (!response.ok) {
+      if (response.status === 403) {
+        alert('Access denied. This section is for employees only.');
+        window.showPage('home');
+        return;
+      }
+      throw new Error('Failed to load achievements');
+    }
+
+    const data = await response.json();
+    allAchievements = data.achievements || [];
+    applyAchievementTypeFilter();
+    
+  } catch (error) {
+    console.error('Error loading achievements:', error);
+    const tableBody = document.getElementById('achievementsTableBody');
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="8" style="text-align: center; color: #e74c3c; padding: 20px;">
+            Failed to load achievements. ${error.message}
+          </td>
+        </tr>
+      `;
+    }
+  }
+}
+
+/**
+ * Apply type filter to achievements
+ */
+function applyAchievementTypeFilter() {
+  if (currentTypeFilter === 'all') {
+    filteredAchievements = [...allAchievements];
+  } else {
+    filteredAchievements = allAchievements.filter(a => a.collectionType === currentTypeFilter);
+  }
+  
+  renderAchievementsTable();
+}
+
+/**
+ * Render achievements table
+ */
+function renderAchievementsTable() {
+  const tableBody = document.getElementById('achievementsTableBody');
+  if (!tableBody) return;
+  
+  if (filteredAchievements.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align: center; padding: 40px; color: #999;">
+          No achievements found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tableBody.innerHTML = filteredAchievements.map(achievement => {
+    const collectionTypeLabel = getCollectionTypeLabel(achievement.collectionType);
+    const categoryLabel = achievement.category || achievement.proteinCategory || '-';
+    const statusBadge = achievement.isActive === 1 
+      ? '<span class="status-badge active">Active</span>' 
+      : '<span class="status-badge inactive">Inactive</span>';
+    
+    return `
+      <tr data-achievement-id="${achievement.id}">
+        <td class="achievement-icon-cell">${achievement.icon}</td>
+        <td><strong>${achievement.name}</strong><br><small>${achievement.code}</small></td>
+        <td><span class="type-badge type-${achievement.collectionType.replace('_', '-')}">${collectionTypeLabel}</span></td>
+        <td>${categoryLabel}</td>
+        <td class="achievement-description">${achievement.description}</td>
+        <td><strong>${achievement.points}</strong></td>
+        <td>${statusBadge}</td>
+        <td class="achievement-actions">
+          <button class="btn-icon btn-edit" onclick="editAchievement(${achievement.id})" title="Edit">✏️</button>
+          <button class="btn-icon btn-toggle" onclick="toggleAchievementStatus(${achievement.id})" title="Toggle Active/Inactive">
+            ${achievement.isActive === 1 ? '👁️' : '🚫'}
+          </button>
+          <button class="btn-icon btn-delete" onclick="deleteAchievement(${achievement.id})" title="Delete">🗑️</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+/**
+ * Get human-readable collection type label
+ */
+function getCollectionTypeLabel(type) {
+  const labels = {
+    'static_collection': 'Static',
+    'dynamic_collection': 'Dynamic',
+    'hidden_collection': 'Hidden',
+    'legacy': 'Legacy'
+  };
+  return labels[type] || type;
+}
+
+/**
+ * Setup achievement type filter buttons
+ */
+function setupAchievementTypeFilters() {
+  const filterBtns = document.querySelectorAll('.achievement-type-btn');
+  
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const type = this.dataset.type;
+      
+      filterBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      currentTypeFilter = type === 'all' ? 'all' : 
+        type === 'static' ? 'static_collection' :
+        type === 'dynamic' ? 'dynamic_collection' :
+        type === 'hidden' ? 'hidden_collection' :
+        'legacy';
+      
+      applyAchievementTypeFilter();
+    });
+  });
+}
+
+/**
+ * Show achievement form modal for creating or editing
+ */
+window.showAchievementForm = function(achievementId = null) {
+  const modal = document.getElementById('achievementFormModal');
+  const form = document.getElementById('achievementForm');
+  const title = document.getElementById('achievementFormTitle');
+  
+  editingAchievementId = achievementId;
+  
+  if (achievementId) {
+    // Edit mode
+    title.textContent = 'Edit Achievement';
+    const achievement = allAchievements.find(a => a.id === achievementId);
+    if (achievement) {
+      populateAchievementForm(achievement);
+    }
+  } else {
+    // Create mode
+    title.textContent = 'Create Achievement';
+    form.reset();
+    document.getElementById('achievementId').value = '';
+    updateFormFieldsVisibility();
+  }
+  
+  modal.style.display = 'flex';
+};
+
+/**
+ * Populate form with achievement data
+ */
+function populateAchievementForm(achievement) {
+  document.getElementById('achievementId').value = achievement.id;
+  document.getElementById('achievementCode').value = achievement.code;
+  document.getElementById('achievementCode').readOnly = true; // Can't change code when editing
+  document.getElementById('achievementName').value = achievement.name;
+  document.getElementById('achievementDescription').value = achievement.description;
+  document.getElementById('achievementIcon').value = achievement.icon;
+  document.getElementById('achievementPoints').value = achievement.points;
+  document.getElementById('achievementIsActive').value = achievement.isActive;
+  document.getElementById('achievementCollectionType').value = achievement.collectionType;
+  document.getElementById('achievementProteinCategory').value = achievement.proteinCategory || '';
+  document.getElementById('achievementTier').value = achievement.tier || '';
+  document.getElementById('achievementCategory').value = achievement.category || '';
+  document.getElementById('achievementIsHidden').checked = achievement.isHidden === 1;
+  
+  // JSON fields
+  document.getElementById('achievementRequirement').value = JSON.stringify(achievement.requirement, null, 2);
+  if (achievement.tierThresholds) {
+    document.getElementById('achievementTierThresholds').value = JSON.stringify(achievement.tierThresholds, null, 2);
+  }
+  
+  updateFormFieldsVisibility();
+}
+
+/**
+ * Update form fields visibility based on collection type
+ */
+function updateFormFieldsVisibility() {
+  const collectionType = document.getElementById('achievementCollectionType').value;
+  
+  const proteinGroup = document.getElementById('proteinCategoryGroup');
+  const tierThresholdsGroup = document.getElementById('tierThresholdsGroup');
+  const legacyFieldsGroup = document.getElementById('legacyFieldsGroup');
+  const legacyCategoryGroup = document.getElementById('legacyCategoryGroup');
+  
+  // Hide all conditional fields first
+  proteinGroup.style.display = 'none';
+  tierThresholdsGroup.style.display = 'none';
+  legacyFieldsGroup.style.display = 'none';
+  legacyCategoryGroup.style.display = 'none';
+  
+  // Show relevant fields based on collection type
+  if (collectionType === 'dynamic_collection') {
+    proteinGroup.style.display = 'block';
+    tierThresholdsGroup.style.display = 'block';
+  } else if (collectionType === 'legacy') {
+    legacyFieldsGroup.style.display = 'block';
+    legacyCategoryGroup.style.display = 'block';
+  }
+}
+
+/**
+ * Close achievement form modal
+ */
+window.closeAchievementForm = function() {
+  const modal = document.getElementById('achievementFormModal');
+  modal.style.display = 'none';
+  editingAchievementId = null;
+  document.getElementById('achievementCode').readOnly = false;
+};
+
+/**
+ * Handle achievement form submission
+ */
+async function handleAchievementFormSubmit(event) {
+  event.preventDefault();
+  
+  const form = event.target;
+  const formData = new FormData(form);
+  
+  // Build achievement object
+  const achievementData = {
+    code: formData.get('code'),
+    name: formData.get('name'),
+    description: formData.get('description'),
+    icon: formData.get('icon'),
+    collectionType: formData.get('collectionType'),
+    points: parseInt(formData.get('points')) || 0,
+    isActive: parseInt(formData.get('isActive')),
+    isHidden: formData.get('isHidden') ? 1 : 0,
+  };
+  
+  // Optional fields
+  if (formData.get('proteinCategory')) {
+    achievementData.proteinCategory = formData.get('proteinCategory');
+  }
+  if (formData.get('tier')) {
+    achievementData.tier = formData.get('tier');
+  }
+  if (formData.get('category')) {
+    achievementData.category = formData.get('category');
+  }
+  
+  // Parse JSON fields
+  try {
+    achievementData.requirement = JSON.parse(formData.get('requirement'));
+  } catch (e) {
+    alert('Invalid JSON in Requirement field');
+    return;
+  }
+  
+  if (formData.get('tierThresholds')) {
+    try {
+      achievementData.tierThresholds = JSON.parse(formData.get('tierThresholds'));
+    } catch (e) {
+      alert('Invalid JSON in Tier Thresholds field');
+      return;
+    }
+  }
+  
+  try {
+    let response;
+    if (editingAchievementId) {
+      // Update existing achievement
+      response = await fetch(`/api/admin/achievements/${editingAchievementId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(achievementData)
+      });
+    } else {
+      // Create new achievement
+      response = await fetch('/api/admin/achievements', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(achievementData)
+      });
+    }
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to save achievement');
+    }
+    
+    const result = await response.json();
+    console.log('Achievement saved:', result);
+    
+    // Reload achievements and close modal
+    await loadAchievementsAdmin();
+    closeAchievementForm();
+    
+    alert(`✅ Achievement ${editingAchievementId ? 'updated' : 'created'} successfully!`);
+    
+  } catch (error) {
+    console.error('Error saving achievement:', error);
+    alert(`❌ Failed to save achievement: ${error.message}`);
+  }
+}
+
+/**
+ * Edit achievement
+ */
+window.editAchievement = function(achievementId) {
+  showAchievementForm(achievementId);
+};
+
+/**
+ * Toggle achievement active status
+ */
+window.toggleAchievementStatus = async function(achievementId) {
+  try {
+    const response = await fetch(`/api/admin/achievements/${achievementId}/toggle`, {
+      method: 'PATCH'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to toggle achievement status');
+    }
+    
+    await loadAchievementsAdmin();
+    console.log('Achievement status toggled successfully');
+    
+  } catch (error) {
+    console.error('Error toggling achievement status:', error);
+    alert(`❌ Failed to toggle achievement status: ${error.message}`);
+  }
+};
+
+/**
+ * Delete achievement
+ */
+window.deleteAchievement = function(achievementId) {
+  const achievement = allAchievements.find(a => a.id === achievementId);
+  if (!achievement) return;
+  
+  showConfirmationModal(
+    'Delete Achievement',
+    `Are you sure you want to delete "${achievement.name}"? This action cannot be undone.`,
+    async () => {
+      try {
+        const response = await fetch(`/api/admin/achievements/${achievementId}`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to delete achievement');
+        }
+        
+        await loadAchievementsAdmin();
+        alert(`✅ Achievement deleted successfully!`);
+        
+      } catch (error) {
+        console.error('Error deleting achievement:', error);
+        alert(`❌ Failed to delete achievement: ${error.message}`);
+      }
+    }
+  );
+};
+
+/**
+ * Initialize achievement admin UI
+ */
+window.initAchievementAdmin = function() {
+  // Setup type filter buttons
+  setupAchievementTypeFilters();
+  
+  // Setup create button
+  const createBtn = document.getElementById('createAchievementBtn');
+  if (createBtn) {
+    createBtn.addEventListener('click', () => showAchievementForm());
+  }
+  
+  // Setup form handlers
+  const form = document.getElementById('achievementForm');
+  if (form) {
+    form.addEventListener('submit', handleAchievementFormSubmit);
+  }
+  
+  const closeBtn = document.getElementById('closeAchievementFormBtn');
+  const cancelBtn = document.getElementById('cancelAchievementFormBtn');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeAchievementForm);
+  }
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', closeAchievementForm);
+  }
+  
+  // Setup collection type change handler
+  const collectionTypeSelect = document.getElementById('achievementCollectionType');
+  if (collectionTypeSelect) {
+    collectionTypeSelect.addEventListener('change', updateFormFieldsVisibility);
+  }
+  
+  // Load achievements
+  loadAchievementsAdmin();
+};
