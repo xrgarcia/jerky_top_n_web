@@ -1,6 +1,7 @@
 const express = require('express');
 const AchievementAdminRepository = require('../../repositories/AchievementAdminRepository');
 const AchievementCache = require('../../cache/AchievementCache');
+const { ObjectStorageService } = require('../../objectStorage');
 
 /**
  * Admin endpoints for achievement CRUD operations
@@ -231,6 +232,43 @@ router.get('/achievements/by-type/:type', requireEmployeeAuth, async (req, res) 
   } catch (error) {
     console.error(`Error fetching ${req.params.type} achievements:`, error);
     res.status(500).json({ error: 'Failed to fetch achievements' });
+  }
+});
+
+/**
+ * POST /api/admin/achievements/icon-upload-url
+ * Get presigned URL for uploading achievement icon
+ */
+router.post('/achievements/icon-upload-url', requireEmployeeAuth, async (req, res) => {
+  try {
+    const objectStorageService = new ObjectStorageService();
+    const uploadURL = await objectStorageService.getObjectEntityUploadURL();
+    res.json({ success: true, uploadURL });
+  } catch (error) {
+    console.error('Error generating upload URL:', error);
+    res.status(500).json({ error: 'Failed to generate upload URL', details: error.message });
+  }
+});
+
+/**
+ * POST /api/admin/achievements/confirm-icon-upload
+ * Confirm icon upload and make it publicly accessible
+ */
+router.post('/achievements/confirm-icon-upload', requireEmployeeAuth, async (req, res) => {
+  try {
+    const { uploadURL } = req.body;
+    
+    if (!uploadURL) {
+      return res.status(400).json({ error: 'Upload URL is required' });
+    }
+    
+    const objectStorageService = new ObjectStorageService();
+    const iconPath = await objectStorageService.setObjectPublic(uploadURL);
+    
+    res.json({ success: true, iconPath });
+  } catch (error) {
+    console.error('Error confirming icon upload:', error);
+    res.status(500).json({ error: 'Failed to confirm upload', details: error.message });
   }
 });
 

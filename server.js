@@ -2373,6 +2373,23 @@ if (databaseAvailable && storage) {
       app.use('/api/tools', toolsRouter);
       console.log('✅ Tools routes registered at /api/tools');
       
+      // Route for serving uploaded achievement icons from object storage
+      const { ObjectStorageService, ObjectNotFoundError } = require('./server/objectStorage');
+      app.get('/objects/:objectPath(*)', async (req, res) => {
+        const objectStorageService = new ObjectStorageService();
+        try {
+          const objectFile = await objectStorageService.getObjectEntityFile(req.path);
+          await objectStorageService.downloadObject(objectFile, res);
+        } catch (error) {
+          console.error('Error serving object:', error);
+          if (error instanceof ObjectNotFoundError) {
+            return res.sendStatus(404);
+          }
+          return res.sendStatus(500);
+        }
+      });
+      console.log('✅ Object storage route registered at /objects/*');
+      
       // Initialize admin routes for achievement management (employee admin only)
       const createAdminRoutes = require('./server/routes/admin/achievementsAdmin');
       const adminRouter = createAdminRoutes(storage, db);
