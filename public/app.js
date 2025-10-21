@@ -297,6 +297,19 @@ document.addEventListener('DOMContentLoaded', function() {
             loginPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.add('login-page-active');
+            
+            // Check for and display any login messages from sessionStorage
+            const loginMessage = sessionStorage.getItem('loginMessage');
+            const loginMessageEl = document.getElementById('loginMessage');
+            if (loginMessage && loginMessageEl) {
+                loginMessageEl.textContent = loginMessage;
+                loginMessageEl.style.display = 'block';
+                loginMessageEl.style.color = '#e74c3c';
+                loginMessageEl.style.marginTop = '15px';
+                sessionStorage.removeItem('loginMessage');
+            } else if (loginMessageEl) {
+                loginMessageEl.style.display = 'none';
+            }
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';

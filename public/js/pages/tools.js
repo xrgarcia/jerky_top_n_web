@@ -22,8 +22,9 @@ async function loadLiveUsers() {
     
     if (!response.ok) {
       if (response.status === 403) {
-        alert('Access denied. This section is for employees only.');
-        window.showPage('home');
+        sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+        window.location.hash = '#login';
+        window.showPage('login');
         return;
       }
       throw new Error('Failed to load live users');
@@ -151,8 +152,9 @@ async function loadProductsTable() {
     
     if (!response.ok) {
       if (response.status === 403) {
-        alert('Access denied. This section is for employees only.');
-        window.showPage('home');
+        sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+        window.location.hash = '#login';
+        window.showPage('login');
         return;
       }
       throw new Error('Failed to load products');
@@ -497,15 +499,28 @@ async function clearAllAchievements() {
 window.initToolsPage = async function() {
   console.log('🛠️ Initializing Tools page...');
   
-  const userEmail = localStorage.getItem('userEmail');
   const userRole = localStorage.getItem('userRole');
+  const customerInfo = localStorage.getItem('customerInfo');
+  let userEmail = null;
+  
+  // Extract email from customerInfo object
+  if (customerInfo) {
+    try {
+      const customer = JSON.parse(customerInfo);
+      userEmail = customer.email;
+    } catch (e) {
+      console.error('Failed to parse customerInfo:', e);
+    }
+  }
   
   // Allow access if user has employee_admin role OR email ends with @jerky.com
   const hasAccess = userRole === 'employee_admin' || (userEmail && userEmail.endsWith('@jerky.com'));
   
   if (!hasAccess) {
-    alert('Access denied. This section is for jerky.com employees only.');
-    window.showPage('home');
+    // Redirect to login page with access denied message
+    sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+    window.location.hash = '#login';
+    window.showPage('login');
     return;
   }
   
