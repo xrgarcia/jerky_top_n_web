@@ -46,10 +46,11 @@ The application features a modern web architecture designed for responsiveness, 
 - **Leaderboard**: Dedicated page showing top 50 jerky rankers with engagement scores, products ranked, achievement badges, and user position highlighting. Features medal emojis (🥇🥈🥉) for top 3 positions, sage green highlighting for current user, and gold gradient backgrounds for medal winners.
 - **User Profile**: Displays user information, ranking statistics, and links to update external profiles.
 - **Gamification**: Achievement tracking, user progress monitoring, streak tracking, real-time leaderboards, live activity feeds, and real-time notifications.
-- **Admin Tools**: Role-based access for @jerky.com employees with features to manage achievements and monitor live users with real-time WebSocket updates and privacy-preserving data sanitization.
+- **Admin Tools**: Role-based access for @jerky.com employees with features to manage achievements and monitor live users with real-time WebSocket updates and privacy-preserving data sanitization. Achievement admin includes custom icon upload functionality supporting PNG/JPG/WebP images (128x128px, max 500KB) via Replit Object Storage with file validation and preview capabilities.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM for data persistence. Utilizes a dual migration system (`db:push`, `db:migrate`) and performance indexes.
 - **Error Tracking**: Sentry.io for error monitoring and performance tracking.
 - **Real-time**: Socket.IO for WebSocket communication.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace for authentication magic links.
+- **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icon uploads with presigned URL upload flow and public access.

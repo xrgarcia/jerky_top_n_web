@@ -43,6 +43,7 @@ class AchievementRepository {
       name: achievements.name,
       description: achievements.description,
       icon: achievements.icon,
+      iconType: achievements.iconType,
       tier: achievements.tier,
       category: achievements.category,
       points: achievements.points,

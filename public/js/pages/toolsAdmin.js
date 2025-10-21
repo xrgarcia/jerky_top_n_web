@@ -167,6 +167,14 @@ window.showAchievementForm = function(achievementId = null) {
     title.textContent = 'Create Achievement';
     form.reset();
     document.getElementById('achievementId').value = '';
+    
+    // Reset icon type to emoji (default)
+    document.getElementById('iconTypeEmoji').checked = true;
+    document.getElementById('emojiIconSection').style.display = 'block';
+    document.getElementById('imageIconSection').style.display = 'none';
+    document.getElementById('achievementIcon').required = true;
+    clearIconPreview();
+    
     updateFormFieldsVisibility();
   }
   
@@ -261,6 +269,13 @@ window.closeAchievementForm = function() {
   modal.style.display = 'none';
   editingAchievementId = null;
   document.getElementById('achievementCode').readOnly = false;
+  
+  // Reset icon type selector
+  document.getElementById('iconTypeEmoji').checked = true;
+  document.getElementById('emojiIconSection').style.display = 'block';
+  document.getElementById('imageIconSection').style.display = 'none';
+  document.getElementById('achievementIcon').required = true;
+  clearIconPreview();
 };
 
 /**
@@ -272,12 +287,16 @@ async function handleAchievementFormSubmit(event) {
   const form = event.target;
   const formData = new FormData(form);
   
-  // Handle icon type and path
-  const iconType = formData.get('iconType');
+  // Handle icon type and path - explicitly check radio button state
+  const iconType = document.getElementById('iconTypeImage').checked ? 'image' : 'emoji';
   let iconValue = '';
   
   if (iconType === 'emoji') {
     iconValue = formData.get('icon');
+    if (!iconValue) {
+      alert('Please enter an emoji icon');
+      return;
+    }
   } else {
     iconValue = formData.get('customIconPath');
     if (!iconValue) {
