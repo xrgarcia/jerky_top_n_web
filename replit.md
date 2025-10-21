@@ -48,6 +48,66 @@ The application features a modern web architecture designed for responsiveness, 
 - **Gamification**: Achievement tracking, user progress monitoring, streak tracking, real-time leaderboards, live activity feeds, and real-time notifications.
 - **Admin Tools**: Role-based access for @jerky.com employees with features to manage achievements and monitor live users with real-time WebSocket updates and privacy-preserving data sanitization. Achievement admin includes custom icon upload functionality supporting PNG/JPG/WebP images (128x128px, max 500KB) via Replit Object Storage with file validation and preview capabilities.
 
+## Glossary of Terms
+
+### User-Facing Terms (Gamification System)
+
+**Coin Book**
+- The player's visual binder of all Flavor Coins, Collection Achievements, and Hidden Achievements. Designed to evoke the feel of a physical quarter-collection book — progress is tactile, gaps are visible, and completion feels rewarding.
+
+**Flavor Coin**
+- A coin earned when a user ranks a unique flavor for the first time. Appears on the Flavor Coins Page of the Coin Book. Each coin represents both participation (XP) and flavor history.
+
+**Static Collection Coin**
+- An achievement for completing a fixed, finite set of flavors (e.g., Classic Beef). These never change and can only be earned once.
+
+**Dynamic Collection Coin**
+- An achievement tied to a living flavor group that updates automatically as new flavors are released or retired (e.g., All Beef or All Poultry). Progress is measured by percentage of flavors ranked, determining the user's tier (Bronze → Diamond).
+
+**Hidden Collection Coin**
+- A secret or themed achievement that is hidden until the player unlocks it by meeting hidden criteria. Examples: BBQ Lovers, Sweet Tooth, Heat Seeker.
+
+**Dynamic Master Collection**
+- The umbrella term for the highest-level Dynamic Collections such as Beef Master, Exotic Master, Pork Master, and Poultry Master. Each represents an evolving mastery challenge that tracks every flavor within its protein category. Completion tiers follow the 5-tier system (Bronze 40%, Silver 60%, Gold 75%, Platinum 90%, Diamond 100%).
+
+**Tiered Achievement**
+- Any achievement that progresses through visible ranks (Bronze → Silver → Gold → Platinum → Diamond). Each tier unlocks automatically when the user passes the defined completion percentage.
+
+**Exploration** (Internal Term)
+- Internal behavior type tracking breadth — how many new things a user tries. Powers XP and achievement triggers but is never shown to players directly.
+
+**Discovery** (Internal Term)
+- Internal behavior type tracking depth — how much a user refines or defines their preferences (e.g., re-ranking favorites, curating their Top 10). Also invisible to players but used for balancing XP and achievement logic.
+
+### Technical Implementation Terms
+
+**collectionType**
+- Database field categorizing achievements: `'static_collection'`, `'dynamic_collection'`, `'hidden_collection'`, or `'legacy'`. Determines how the achievement behaves and displays in the Coin Book.
+
+**iconType**
+- Database field indicating icon format: `'emoji'` (text emoji) or `'image'` (URL to uploaded image). Allows achievements to use either emojis or custom uploaded images.
+
+**proteinCategory**
+- Database field for dynamic master collections: `'cattle'`, `'poultry'`, `'pork'`, `'fish'`, `'game'`, `'exotic'`. Used to group products by animal type for collection achievements.
+
+**tierThresholds**
+- JSONB field defining completion percentages for each tier: `{bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100}`. Applied to dynamic collections.
+
+**requirement**
+- JSONB field storing achievement unlock criteria: `{type: 'rank_count', value: 10}`, `{type: 'complete_animal_category', value: 1}`, etc. Evaluated by the AchievementManager.
+
+**engagementScore**
+- Calculated metric for leaderboards: achievements + page views + rankings + searches. Determines user ranking position.
+
+**streakType**
+- Valid values: `'daily_rank'` (ranking streak) or `'daily_login'` (login streak). Defined in `shared/constants.js` and validated server-side.
+
+**rankableProducts**
+- Products available for a user to rank. Filtered to exclude already-ranked products from the user's list.
+
+**rankingListId**
+- Identifier for different ranking contexts. Currently uses `'default'` for all operations. Future expansion may include `'topN'`, `'favorites'`, etc.
+
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM for data persistence. Utilizes a dual migration system (`db:push`, `db:migrate`) and performance indexes.
 - **Error Tracking**: Sentry.io for error monitoring and performance tracking.
