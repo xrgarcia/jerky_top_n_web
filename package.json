@@ -12,6 +12,7 @@
     "db:migrate": "node server/migrations/migrate.js"
   },
   "dependencies": {
+    "@google-cloud/storage": "^7.17.2",
     "@neondatabase/serverless": "^1.0.1",
     "@sentry/node": "^10.19.0",
     "@sentry/profiling-node": "^10.19.0",

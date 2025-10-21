@@ -91,7 +91,8 @@ const achievements = pgTable('achievements', {
   code: text('code').unique().notNull(), // e.g., 'first_rank', 'beef_master', 'bbq_lovers'
   name: text('name').notNull(), // Display name
   description: text('description').notNull(),
-  icon: text('icon').notNull(), // Emoji or icon identifier
+  icon: text('icon').notNull(), // Emoji or image URL
+  iconType: text('icon_type').default('emoji'), // 'emoji' or 'image'
   tier: text('tier'), // For legacy achievements: 'bronze', 'silver', 'gold', 'platinum' (nullable for new dynamic collections)
   collectionType: text('collection_type').notNull(), // 'static_collection', 'dynamic_collection', 'hidden_collection', 'legacy'
   category: text('category'), // 'ranking', 'social', 'discovery', 'streak' (for legacy achievements)
