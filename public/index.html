@@ -1022,10 +1022,40 @@
                             <label for="achievementCode">Code (unique identifier)*</label>
                             <input type="text" id="achievementCode" name="code" required placeholder="e.g., beef_master_bronze">
                         </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Icon*</label>
+                        <div class="icon-type-selector">
+                            <label class="icon-type-radio">
+                                <input type="radio" name="iconType" value="emoji" checked id="iconTypeEmoji">
+                                <span>Emoji</span>
+                            </label>
+                            <label class="icon-type-radio">
+                                <input type="radio" name="iconType" value="image" id="iconTypeImage">
+                                <span>Custom Image</span>
+                            </label>
+                        </div>
                         
-                        <div class="form-group">
-                            <label for="achievementIcon">Icon (emoji)*</label>
+                        <div id="emojiIconSection" class="icon-input-section">
                             <input type="text" id="achievementIcon" name="icon" required placeholder="e.g., 🥇" maxlength="4">
+                        </div>
+                        
+                        <div id="imageIconSection" class="icon-input-section" style="display: none;">
+                            <input type="file" id="customIconUpload" accept="image/png,image/jpeg,image/webp" style="display: none;">
+                            <button type="button" class="upload-icon-btn" id="uploadIconBtn">
+                                📁 Choose Image
+                            </button>
+                            <input type="hidden" id="customIconPath" name="customIconPath">
+                            <div id="iconPreview" class="icon-preview" style="display: none;">
+                                <img id="iconPreviewImg" alt="Icon preview">
+                                <button type="button" class="remove-icon-btn" id="removeIconBtn">✕</button>
+                            </div>
+                            <div class="icon-upload-help">
+                                <strong>Requirements:</strong> PNG, JPG, or WebP • 128x128 pixels (square) • Max 500KB<br>
+                                <em>Transparent PNG recommended for best results</em>
+                            </div>
+                            <div id="iconUploadStatus" class="icon-upload-status"></div>
                         </div>
                     </div>
                     

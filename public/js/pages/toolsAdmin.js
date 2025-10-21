@@ -81,9 +81,15 @@ function renderAchievementsTable() {
       ? '<span class="status-badge active">Active</span>' 
       : '<span class="status-badge inactive">Inactive</span>';
     
+    // Display icon based on type
+    let iconDisplay = achievement.icon;
+    if (achievement.iconType === 'image') {
+      iconDisplay = `<img src="${achievement.icon}" alt="Icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    
     return `
       <tr data-achievement-id="${achievement.id}">
-        <td class="achievement-icon-cell">${achievement.icon}</td>
+        <td class="achievement-icon-cell">${iconDisplay}</td>
         <td><strong>${achievement.name}</strong><br><small>${achievement.code}</small></td>
         <td><span class="type-badge type-${achievement.collectionType.replace('_', '-')}">${collectionTypeLabel}</span></td>
         <td>${categoryLabel}</td>
@@ -176,7 +182,6 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementCode').readOnly = true; // Can't change code when editing
   document.getElementById('achievementName').value = achievement.name;
   document.getElementById('achievementDescription').value = achievement.description;
-  document.getElementById('achievementIcon').value = achievement.icon;
   document.getElementById('achievementPoints').value = achievement.points;
   document.getElementById('achievementIsActive').value = achievement.isActive;
   document.getElementById('achievementCollectionType').value = achievement.collectionType;
@@ -184,6 +189,33 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementTier').value = achievement.tier || '';
   document.getElementById('achievementCategory').value = achievement.category || '';
   document.getElementById('achievementIsHidden').checked = achievement.isHidden === 1;
+  
+  // Handle icon type
+  const iconType = achievement.iconType || 'emoji';
+  const emojiRadio = document.getElementById('iconTypeEmoji');
+  const imageRadio = document.getElementById('iconTypeImage');
+  const emojiSection = document.getElementById('emojiIconSection');
+  const imageSection = document.getElementById('imageIconSection');
+  
+  if (iconType === 'emoji') {
+    emojiRadio.checked = true;
+    emojiSection.style.display = 'block';
+    imageSection.style.display = 'none';
+    document.getElementById('achievementIcon').value = achievement.icon;
+    document.getElementById('achievementIcon').required = true;
+  } else {
+    imageRadio.checked = true;
+    emojiSection.style.display = 'none';
+    imageSection.style.display = 'block';
+    document.getElementById('achievementIcon').required = false;
+    document.getElementById('customIconPath').value = achievement.icon;
+    
+    // Show preview of existing image
+    const preview = document.getElementById('iconPreview');
+    const previewImg = document.getElementById('iconPreviewImg');
+    previewImg.src = achievement.icon;
+    preview.style.display = 'block';
+  }
   
   // JSON fields
   document.getElementById('achievementRequirement').value = JSON.stringify(achievement.requirement, null, 2);
@@ -240,12 +272,27 @@ async function handleAchievementFormSubmit(event) {
   const form = event.target;
   const formData = new FormData(form);
   
+  // Handle icon type and path
+  const iconType = formData.get('iconType');
+  let iconValue = '';
+  
+  if (iconType === 'emoji') {
+    iconValue = formData.get('icon');
+  } else {
+    iconValue = formData.get('customIconPath');
+    if (!iconValue) {
+      alert('Please upload a custom icon or switch to emoji mode');
+      return;
+    }
+  }
+  
   // Build achievement object
   const achievementData = {
     code: formData.get('code'),
     name: formData.get('name'),
     description: formData.get('description'),
-    icon: formData.get('icon'),
+    icon: iconValue,
+    iconType: iconType,
     collectionType: formData.get('collectionType'),
     points: parseInt(formData.get('points')) || 0,
     isActive: parseInt(formData.get('isActive')),
@@ -379,6 +426,173 @@ window.deleteAchievement = function(achievementId) {
 };
 
 /**
+ * Handle icon type switching (emoji vs custom image)
+ */
+function setupIconTypeHandler() {
+  const emojiRadio = document.getElementById('iconTypeEmoji');
+  const imageRadio = document.getElementById('iconTypeImage');
+  const emojiSection = document.getElementById('emojiIconSection');
+  const imageSection = document.getElementById('imageIconSection');
+  
+  emojiRadio.addEventListener('change', () => {
+    if (emojiRadio.checked) {
+      emojiSection.style.display = 'block';
+      imageSection.style.display = 'none';
+      document.getElementById('achievementIcon').required = true;
+    }
+  });
+  
+  imageRadio.addEventListener('change', () => {
+    if (imageRadio.checked) {
+      emojiSection.style.display = 'none';
+      imageSection.style.display = 'block';
+      document.getElementById('achievementIcon').required = false;
+    }
+  });
+}
+
+/**
+ * Setup custom icon upload handler
+ */
+function setupIconUploadHandler() {
+  const uploadBtn = document.getElementById('uploadIconBtn');
+  const fileInput = document.getElementById('customIconUpload');
+  const removeBtn = document.getElementById('removeIconBtn');
+  
+  uploadBtn.addEventListener('click', () => {
+    fileInput.click();
+  });
+  
+  fileInput.addEventListener('change', async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    await handleIconFileUpload(file);
+  });
+  
+  removeBtn.addEventListener('click', () => {
+    clearIconPreview();
+    fileInput.value = '';
+  });
+}
+
+/**
+ * Validate and upload icon file
+ */
+async function handleIconFileUpload(file) {
+  const statusDiv = document.getElementById('iconUploadStatus');
+  const preview = document.getElementById('iconPreview');
+  const previewImg = document.getElementById('iconPreviewImg');
+  const customIconPath = document.getElementById('customIconPath');
+  
+  statusDiv.className = 'icon-upload-status';
+  statusDiv.textContent = '';
+  
+  const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+  if (!validTypes.includes(file.type)) {
+    statusDiv.className = 'icon-upload-status error';
+    statusDiv.textContent = 'Error: Only PNG, JPG, and WebP formats are allowed.';
+    return;
+  }
+  
+  if (file.size > 500 * 1024) {
+    statusDiv.className = 'icon-upload-status error';
+    statusDiv.textContent = 'Error: File size must be less than 500KB.';
+    return;
+  }
+  
+  return new Promise((resolve) => {
+    const img = new Image();
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      img.src = e.target.result;
+      
+      img.onload = async function() {
+        if (img.width !== 128 || img.height !== 128) {
+          statusDiv.className = 'icon-upload-status error';
+          statusDiv.textContent = `Error: Image must be exactly 128x128 pixels (got ${img.width}x${img.height}).`;
+          resolve();
+          return;
+        }
+        
+        statusDiv.className = 'icon-upload-status uploading';
+        statusDiv.textContent = 'Uploading...';
+        
+        try {
+          const uploadUrlResponse = await fetch('/api/admin/achievements/icon-upload-url', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          
+          if (!uploadUrlResponse.ok) {
+            throw new Error('Failed to get upload URL');
+          }
+          
+          const { uploadURL } = await uploadUrlResponse.json();
+          
+          const uploadResponse = await fetch(uploadURL, {
+            method: 'PUT',
+            body: file,
+            headers: {
+              'Content-Type': file.type
+            }
+          });
+          
+          if (!uploadResponse.ok) {
+            throw new Error('Failed to upload file');
+          }
+          
+          const confirmResponse = await fetch('/api/admin/achievements/confirm-icon-upload', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ uploadURL })
+          });
+          
+          if (!confirmResponse.ok) {
+            throw new Error('Failed to confirm upload');
+          }
+          
+          const { iconPath } = await confirmResponse.json();
+          
+          customIconPath.value = iconPath;
+          previewImg.src = e.target.result;
+          preview.style.display = 'block';
+          
+          statusDiv.className = 'icon-upload-status success';
+          statusDiv.textContent = '✓ Icon uploaded successfully!';
+          
+        } catch (error) {
+          console.error('Upload error:', error);
+          statusDiv.className = 'icon-upload-status error';
+          statusDiv.textContent = `Error: ${error.message}`;
+        }
+        
+        resolve();
+      };
+    };
+    
+    reader.readAsDataURL(file);
+  });
+}
+
+/**
+ * Clear icon preview
+ */
+function clearIconPreview() {
+  const preview = document.getElementById('iconPreview');
+  const previewImg = document.getElementById('iconPreviewImg');
+  const customIconPath = document.getElementById('customIconPath');
+  const statusDiv = document.getElementById('iconUploadStatus');
+  
+  preview.style.display = 'none';
+  previewImg.src = '';
+  customIconPath.value = '';
+  statusDiv.className = 'icon-upload-status';
+  statusDiv.textContent = '';
+}
+
+/**
  * Initialize achievement admin UI
  */
 window.initAchievementAdmin = function() {
@@ -411,6 +625,10 @@ window.initAchievementAdmin = function() {
   if (collectionTypeSelect) {
     collectionTypeSelect.addEventListener('change', updateFormFieldsVisibility);
   }
+  
+  // Setup icon type and upload handlers
+  setupIconTypeHandler();
+  setupIconUploadHandler();
   
   // Load achievements
   loadAchievementsAdmin();
