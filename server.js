@@ -2374,8 +2374,9 @@ if (databaseAvailable && storage) {
       console.log('✅ Tools routes registered at /api/tools');
       
       // Initialize admin routes for achievement management (employee admin only)
-      const achievementsAdminRouter = require('./server/routes/admin/achievementsAdmin');
-      app.use('/api/admin', achievementsAdminRouter);
+      const createAdminRoutes = require('./server/routes/admin/achievementsAdmin');
+      const adminRouter = createAdminRoutes(storage, db);
+      app.use('/api/admin', adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
       // Main route - serves SPA for all routes (MUST BE LAST)

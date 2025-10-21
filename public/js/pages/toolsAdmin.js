@@ -16,8 +16,9 @@ async function loadAchievementsAdmin() {
     
     if (!response.ok) {
       if (response.status === 403) {
-        alert('Access denied. This section is for employees only.');
-        window.showPage('home');
+        sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+        window.location.hash = '#login';
+        window.showPage('login');
         return;
       }
       throw new Error('Failed to load achievements');

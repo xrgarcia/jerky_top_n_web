@@ -1,5 +1,4 @@
 const express = require('express');
-const router = express.Router();
 const AchievementAdminRepository = require('../../repositories/AchievementAdminRepository');
 const AchievementCache = require('../../cache/AchievementCache');
 
@@ -8,19 +7,47 @@ const AchievementCache = require('../../cache/AchievementCache');
  * All endpoints require employee authentication
  */
 
-function requireEmployeeAuth(req, res, next) {
-  const userRole = req.session?.userRole;
-  const userEmail = req.session?.email;
-  
-  // Allow access if user has employee_admin role OR email ends with @jerky.com
-  const hasAccess = userRole === 'employee_admin' || (userEmail && userEmail.endsWith('@jerky.com'));
-  
-  if (!hasAccess) {
-    return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
+module.exports = function createAdminRoutes(storage, db) {
+  const router = express.Router();
+
+  async function requireEmployeeAuth(req, res, next) {
+    try {
+      const sessionId = req.cookies.session_id;
+      
+      if (!sessionId) {
+        return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
+      }
+
+      const session = await storage.getSession(sessionId);
+      if (!session) {
+        return res.status(403).json({ error: 'Access denied. Invalid session.' });
+      }
+
+      // Get user from database to check role and email
+      const user = await storage.getUserById(session.userId);
+      if (!user) {
+        return res.status(403).json({ error: 'Access denied. User not found.' });
+      }
+
+      // Allow access if user has employee_admin role OR email ends with @jerky.com
+      const hasAccess = user.role === 'employee_admin' || (user.email && user.email.endsWith('@jerky.com'));
+      
+      if (!hasAccess) {
+        return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
+      }
+      
+      // Attach user info to request for use in route handlers
+      req.session = session;
+      req.userId = session.userId;
+      req.user = user;
+      req.db = db;
+      
+      next();
+    } catch (error) {
+      console.error('Error in requireEmployeeAuth:', error);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
   }
-  
-  next();
-}
 
 /**
  * GET /api/admin/achievements
@@ -207,4 +234,5 @@ router.get('/achievements/by-type/:type', requireEmployeeAuth, async (req, res) 
   }
 });
 
-module.exports = router;
+  return router;
+};
