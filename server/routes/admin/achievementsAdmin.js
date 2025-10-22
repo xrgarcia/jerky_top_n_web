@@ -1,7 +1,25 @@
 const express = require('express');
+const multer = require('multer');
 const AchievementAdminRepository = require('../../repositories/AchievementAdminRepository');
 const AchievementCache = require('../../cache/AchievementCache');
 const { ObjectStorageService } = require('../../objectStorage');
+
+// Configure multer for memory storage
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 500 * 1024, // 500KB max
+  },
+  fileFilter: (req, file, cb) => {
+    // Accept only PNG, JPG, JPEG, WebP
+    const allowedMimes = ['image/png', 'image/jpeg', 'image/webp'];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only PNG, JPG, and WebP are allowed.'));
+    }
+  },
+});
 
 /**
  * Admin endpoints for achievement CRUD operations
@@ -236,17 +254,25 @@ router.get('/achievements/by-type/:type', requireEmployeeAuth, async (req, res) 
 });
 
 /**
- * POST /api/admin/achievements/icon-upload-url
- * Get presigned URL for uploading achievement icon
+ * POST /api/admin/achievements/upload-icon
+ * Upload achievement icon file
  */
-router.post('/achievements/icon-upload-url', requireEmployeeAuth, async (req, res) => {
+router.post('/achievements/upload-icon', requireEmployeeAuth, upload.single('icon'), async (req, res) => {
   try {
+    if (!req.file) {
+      return res.status(400).json({ error: 'No file uploaded' });
+    }
+
     const objectStorageService = new ObjectStorageService();
-    const uploadURL = await objectStorageService.getObjectEntityUploadURL();
-    res.json({ success: true, uploadURL });
+    const objectPath = await objectStorageService.uploadIconFromBuffer(
+      req.file.buffer,
+      req.file.originalname
+    );
+
+    res.json({ success: true, objectPath });
   } catch (error) {
-    console.error('Error generating upload URL:', error);
-    res.status(500).json({ error: 'Failed to generate upload URL', details: error.message });
+    console.error('Error uploading icon:', error);
+    res.status(500).json({ error: 'Failed to upload icon', details: error.message });
   }
 });
 

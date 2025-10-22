@@ -539,42 +539,24 @@ async function handleIconFileUpload(file) {
         statusDiv.textContent = 'Uploading...';
         
         try {
-          const uploadUrlResponse = await fetch('/api/admin/achievements/icon-upload-url', {
+          // Create FormData and upload directly to server
+          const formData = new FormData();
+          formData.append('icon', file);
+          
+          const uploadResponse = await fetch('/api/admin/achievements/upload-icon', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          
-          if (!uploadUrlResponse.ok) {
-            throw new Error('Failed to get upload URL');
-          }
-          
-          const { uploadURL } = await uploadUrlResponse.json();
-          
-          const uploadResponse = await fetch(uploadURL, {
-            method: 'PUT',
-            body: file,
-            headers: {
-              'Content-Type': file.type
-            }
+            body: formData
           });
           
           if (!uploadResponse.ok) {
-            throw new Error('Failed to upload file');
+            const errorData = await uploadResponse.json();
+            throw new Error(errorData.error || 'Failed to upload file');
           }
           
-          const confirmResponse = await fetch('/api/admin/achievements/confirm-icon-upload', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ uploadURL })
-          });
+          const { objectPath } = await uploadResponse.json();
           
-          if (!confirmResponse.ok) {
-            throw new Error('Failed to confirm upload');
-          }
-          
-          const { iconPath } = await confirmResponse.json();
-          
-          customIconPath.value = iconPath;
+          // Set the path and show preview
+          customIconPath.value = objectPath;
           previewImg.src = e.target.result;
           preview.style.display = 'block';
           

@@ -1,10 +1,15 @@
 // Reference: javascript_object_storage integration
 // Simplified object storage service for achievement icons
 const { Storage } = require('@google-cloud/storage');
+const { Client } = require('@replit/object-storage');
 const crypto = require('crypto');
 
 const REPLIT_SIDECAR_ENDPOINT = 'http://127.0.0.1:1106';
 
+// Official Replit Object Storage client (for uploads)
+const replitStorageClient = new Client();
+
+// Google Cloud Storage client (for serving/downloads)
 const objectStorageClient = new Storage({
   credentials: {
     audience: 'replit',
@@ -44,19 +49,21 @@ class ObjectStorageService {
     return dir;
   }
 
-  async getObjectEntityUploadURL() {
-    const privateObjectDir = this.getPrivateObjectDir();
+  async uploadIconFromBuffer(buffer, filename) {
+    // Generate unique filename with extension preserved
     const objectId = crypto.randomUUID();
-    const fullPath = `${privateObjectDir}/achievement-icons/${objectId}`;
+    const ext = filename.split('.').pop();
+    const objectPath = `achievement-icons/${objectId}.${ext}`;
 
-    const { bucketName, objectName } = parseObjectPath(fullPath);
+    // Upload using official Replit client
+    const { ok, error } = await replitStorageClient.uploadFromBytes(objectPath, buffer);
 
-    return signObjectURL({
-      bucketName,
-      objectName,
-      method: 'PUT',
-      ttlSec: 900,
-    });
+    if (!ok) {
+      throw new Error(`Failed to upload icon: ${error}`);
+    }
+
+    // Return normalized path for database storage
+    return `/objects/${objectPath}`;
   }
 
   async getObjectEntityFile(objectPath) {
