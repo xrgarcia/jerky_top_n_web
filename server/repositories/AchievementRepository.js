@@ -39,6 +39,9 @@ class AchievementRepository {
       achievementId: userAchievements.achievementId,
       earnedAt: userAchievements.earnedAt,
       progress: userAchievements.progress,
+      currentTier: userAchievements.currentTier,
+      percentageComplete: userAchievements.percentageComplete,
+      pointsAwarded: userAchievements.pointsAwarded,
       code: achievements.code,
       name: achievements.name,
       description: achievements.description,
@@ -47,6 +50,8 @@ class AchievementRepository {
       tier: achievements.tier,
       category: achievements.category,
       points: achievements.points,
+      collectionType: achievements.collectionType,
+      tierThresholds: achievements.tierThresholds,
     })
     .from(userAchievements)
     .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
@@ -54,12 +59,25 @@ class AchievementRepository {
     .orderBy(desc(userAchievements.earnedAt));
   }
 
-  async awardAchievement(userId, achievementId, progress = null) {
+  async awardAchievement(userId, achievementId, progress = null, pointsAwarded = null) {
+    // If pointsAwarded not provided, fetch the achievement's base points
+    let points = pointsAwarded;
+    
+    if (points === null) {
+      const achievement = await this.db.select()
+        .from(achievements)
+        .where(eq(achievements.id, achievementId))
+        .limit(1);
+      
+      points = achievement[0]?.points || 0;
+    }
+    
     const result = await this.db.insert(userAchievements)
       .values({
         userId,
         achievementId,
         progress,
+        pointsAwarded: points,
       })
       .returning();
     return result[0];

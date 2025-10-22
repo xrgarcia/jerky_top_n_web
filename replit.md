@@ -28,7 +28,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication for live updates and notifications.
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId, with WebSocket re-authentication.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics. Advanced filtering includes animal categories and flavor profiles.
-- **Gamification**: An event-driven system tracks 17 achievements (including dynamic "Complete Collection"), user progress with dynamic milestone tracking, streaks, and populates real-time leaderboards and activity feeds. Streak tracking runs asynchronously.
+- **Gamification**: An event-driven system tracks 17 achievements (including dynamic "Complete Collection"), user progress with dynamic milestone tracking, streaks, and populates real-time leaderboards and activity feeds. Streak tracking runs asynchronously. **Proportional Point System**: Dynamic collection achievements award points progressively based on tier completion percentage. For example, a 1000-point achievement awards 400 points at Bronze (40%), 600 points at Silver (60%), 750 points at Gold (75%), 900 points at Platinum (90%), and 1000 points at Diamond (100%). Only incremental points are awarded when advancing tiers (Silver → Gold awards +150 points, not the full 750). Legacy achievements award full points upon unlock.
 - **Page View Tracking**: Asynchronous tracking system for all pages using `PageViewService` (backend) and `PageViewTracker` (frontend) with data stored in a dedicated `page_views` table.
 - **Timestamp Handling**: All database timestamps are explicitly converted to ISO 8601 UTC format on the server, with client-side `getTimeAgo` function for relative time calculation.
 - **Top Rankers**: Calculated by an engagement score (achievements + page views + rankings + searches). Both home and community pages auto-refresh.
@@ -92,6 +92,9 @@ The application features a modern web architecture designed for responsiveness, 
 
 **tierThresholds**
 - JSONB field defining completion percentages for each tier: `{bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100}`. Applied to dynamic collections.
+
+**pointsAwarded**
+- Database field in `user_achievements` tracking actual points earned for an achievement. For tiered achievements (dynamic collections), points are awarded proportionally based on completion percentage (e.g., 75% completion of 1000-point achievement = 750 points). For legacy achievements, equals the full `points` value. Enables incremental point allocation as users advance through tiers.
 
 **requirement**
 - JSONB field storing achievement unlock criteria: `{type: 'rank_count', value: 10}`, `{type: 'complete_animal_category', value: 1}`, etc. Evaluated by the AchievementManager.
