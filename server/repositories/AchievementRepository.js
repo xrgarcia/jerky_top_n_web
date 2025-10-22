@@ -87,9 +87,16 @@ class AchievementRepository {
   }
 
   async getUserTotalPoints(userId) {
-    // Optimized: Use SQL aggregation instead of fetching all achievements
+    // Optimized: Use SQL aggregation for proportional point calculation
+    // For tiered achievements, use pointsAwarded (proportional to completion)
+    // For legacy achievements without pointsAwarded, fall back to achievements.points
     const result = await this.db.select({
-      totalPoints: sql`COALESCE(SUM(${achievements.points}), 0)::int`
+      totalPoints: sql`COALESCE(SUM(
+        CASE 
+          WHEN ${userAchievements.pointsAwarded} > 0 THEN ${userAchievements.pointsAwarded}
+          ELSE ${achievements.points}
+        END
+      ), 0)::int`
     })
     .from(userAchievements)
     .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))

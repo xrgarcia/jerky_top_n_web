@@ -103,6 +103,16 @@ class CollectionManager {
     return null;
   }
 
+  calculateProportionalPoints(percentage, maxPoints, tierThresholds) {
+    if (!tierThresholds) {
+      return maxPoints;
+    }
+
+    const thresholds = tierThresholds || this.DEFAULT_TIER_THRESHOLDS;
+    
+    return Math.round((percentage / 100) * maxPoints);
+  }
+
   async updateCollectionProgress(userId, collection, progress) {
     const { percentage, tier, totalAvailable, totalRanked } = progress;
 
@@ -124,6 +134,12 @@ class CollectionManager {
       percentage
     };
 
+    const pointsAwarded = this.calculateProportionalPoints(
+      percentage,
+      collection.points || 0,
+      collection.tierThresholds
+    );
+
     if (existing.length === 0) {
       const result = await this.db.insert(userAchievements)
         .values({
@@ -131,29 +147,39 @@ class CollectionManager {
           achievementId: collection.id,
           currentTier: tier,
           percentageComplete: percentage,
+          pointsAwarded,
           progress: progressData,
         })
         .returning();
+      
+      console.log(`🎉 New collection earned: ${collection.name} (${tier}) - ${pointsAwarded} points`);
       
       return {
         type: 'new',
         achievement: collection,
         tier,
         percentage,
+        pointsAwarded,
         userAchievement: result[0]
       };
     } else {
       const current = existing[0];
       
       if (current.currentTier !== tier || current.percentageComplete !== percentage) {
+        const previousPoints = current.pointsAwarded || 0;
+        const pointsGained = pointsAwarded - previousPoints;
+        
         await this.db.update(userAchievements)
           .set({
             currentTier: tier,
             percentageComplete: percentage,
+            pointsAwarded,
             progress: progressData,
             updatedAt: new Date(),
           })
           .where(eq(userAchievements.id, current.id));
+
+        console.log(`⬆️ Tier upgrade: ${collection.name} (${current.currentTier} → ${tier}) - +${pointsGained} points (total: ${pointsAwarded})`);
 
         return {
           type: 'tier_upgrade',
@@ -161,6 +187,8 @@ class CollectionManager {
           previousTier: current.currentTier,
           newTier: tier,
           percentage,
+          pointsAwarded,
+          pointsGained,
           userAchievement: current
         };
       }

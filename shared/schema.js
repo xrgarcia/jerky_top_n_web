@@ -114,6 +114,7 @@ const userAchievements = pgTable('user_achievements', {
   achievementId: integer('achievement_id').references(() => achievements.id).notNull(),
   currentTier: text('current_tier'), // For dynamic collections: 'bronze', 'silver', 'gold', 'platinum', 'diamond'
   percentageComplete: integer('percentage_complete').default(0), // For dynamic collections: 0-100
+  pointsAwarded: integer('points_awarded').default(0), // Actual points earned (proportional for tiered achievements)
   earnedAt: timestamp('earned_at').defaultNow(),
   progress: jsonb('progress'), // Track detailed progress toward achievement
   updatedAt: timestamp('updated_at').defaultNow(),
