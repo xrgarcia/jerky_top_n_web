@@ -1161,17 +1161,85 @@
                 </div>
                 
                 <div class="form-section">
-                    <h4>Requirements (JSON)*</h4>
+                    <h4>Unlock Requirements*</h4>
                     <div class="form-group">
-                        <label for="achievementRequirement">Requirement Configuration</label>
-                        <textarea id="achievementRequirement" name="requirement" required placeholder='{"type": "rank_count", "value": 10}' rows="4"></textarea>
-                        <small>Example: {"type": "rank_count", "value": 10} or {"type": "complete_flavor_set", "flavors": ["sweet", "spicy"]}</small>
+                        <label for="requirementType">How do users earn this achievement?</label>
+                        <select id="requirementType" name="requirementType" required>
+                            <option value="">-- Select Requirement Type --</option>
+                            <option value="rank_count">Rank a certain number of products</option>
+                            <option value="complete_animal_category">Complete all products in one or more animal categories</option>
+                            <option value="complete_flavor_set">Rank specific flavors</option>
+                            <option value="search_count">Perform searches</option>
+                            <option value="daily_login_streak">Login daily for consecutive days</option>
+                            <option value="daily_rank_streak">Rank products daily for consecutive days</option>
+                        </select>
                     </div>
                     
-                    <div class="form-group" id="tierThresholdsGroup" style="display: none;">
-                        <label for="achievementTierThresholds">Tier Thresholds (JSON, for dynamic collections)</label>
-                        <textarea id="achievementTierThresholds" name="tierThresholds" placeholder='{"bronze": 40, "silver": 60, "gold": 75, "platinum": 90, "diamond": 100}' rows="3"></textarea>
-                        <small>Percentage thresholds for each tier (Bronze to Diamond)</small>
+                    <div class="form-group" id="rankCountGroup" style="display: none;">
+                        <label for="rankCountValue">How many products must be ranked?</label>
+                        <input type="number" id="rankCountValue" name="rankCountValue" min="1" placeholder="e.g., 10">
+                    </div>
+                    
+                    <div class="form-group" id="animalCategoryCountGroup" style="display: none;">
+                        <label for="animalCategoryCount">How many animal categories must be completed?</label>
+                        <input type="number" id="animalCategoryCount" name="animalCategoryCount" min="1" max="6" placeholder="e.g., 1">
+                        <small>User must fully complete this many animal categories (e.g., all beef products)</small>
+                    </div>
+                    
+                    <div class="form-group" id="flavorSetGroup" style="display: none;">
+                        <label>Which flavors are required?</label>
+                        <div class="flavor-checkboxes">
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="sweet"> 🍯 Sweet</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="spicy"> 🌶️ Spicy</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="savory"> 🧂 Savory</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="smoky"> 💨 Smoky</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="tangy"> 🍋 Tangy</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="bbq"> 🍖 BBQ</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="teriyaki"> 🥢 Teriyaki</label>
+                            <label class="checkbox-label"><input type="checkbox" name="requiredFlavors" value="peppered"> ⚫ Peppered</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="searchCountGroup" style="display: none;">
+                        <label for="searchCountValue">How many searches must be performed?</label>
+                        <input type="number" id="searchCountValue" name="searchCountValue" min="1" placeholder="e.g., 50">
+                    </div>
+                    
+                    <div class="form-group" id="streakDaysGroup" style="display: none;">
+                        <label for="streakDaysValue">How many consecutive days?</label>
+                        <input type="number" id="streakDaysValue" name="streakDaysValue" min="1" placeholder="e.g., 7">
+                    </div>
+                </div>
+                
+                <div class="form-section" id="tierThresholdsSection" style="display: none;">
+                    <h4>Tier Thresholds (for Dynamic Collections)</h4>
+                    <p class="help-text">Set completion percentages for each tier. Users progress through tiers as they complete more items.</p>
+                    <div class="tier-inputs-grid">
+                        <div class="tier-input-group">
+                            <label for="tierBronze">🥉 Bronze</label>
+                            <input type="number" id="tierBronze" name="tierBronze" min="1" max="100" value="40" placeholder="40">
+                            <span class="tier-suffix">%</span>
+                        </div>
+                        <div class="tier-input-group">
+                            <label for="tierSilver">🥈 Silver</label>
+                            <input type="number" id="tierSilver" name="tierSilver" min="1" max="100" value="60" placeholder="60">
+                            <span class="tier-suffix">%</span>
+                        </div>
+                        <div class="tier-input-group">
+                            <label for="tierGold">🥇 Gold</label>
+                            <input type="number" id="tierGold" name="tierGold" min="1" max="100" value="75" placeholder="75">
+                            <span class="tier-suffix">%</span>
+                        </div>
+                        <div class="tier-input-group">
+                            <label for="tierPlatinum">💎 Platinum</label>
+                            <input type="number" id="tierPlatinum" name="tierPlatinum" min="1" max="100" value="90" placeholder="90">
+                            <span class="tier-suffix">%</span>
+                        </div>
+                        <div class="tier-input-group">
+                            <label for="tierDiamond">💠 Diamond</label>
+                            <input type="number" id="tierDiamond" name="tierDiamond" min="1" max="100" value="100" placeholder="100">
+                            <span class="tier-suffix">%</span>
+                        </div>
                     </div>
                 </div>
                 

@@ -177,6 +177,7 @@ window.showAchievementForm = function(achievementId = null) {
     title.textContent = 'Create Achievement';
     form.reset();
     document.getElementById('achievementId').value = '';
+    document.getElementById('achievementCode').readOnly = false; // Ensure code field is editable for new achievements
     
     // Reset icon type to emoji (default)
     document.getElementById('iconTypeEmoji').checked = true;
@@ -185,7 +186,28 @@ window.showAchievementForm = function(achievementId = null) {
     document.getElementById('achievementIcon').required = true;
     clearIconPreview();
     
+    // Reset requirement fields
+    document.getElementById('requirementType').value = '';
+    document.getElementById('rankCountValue').value = '';
+    document.getElementById('animalCategoryCount').value = '';
+    document.getElementById('searchCountValue').value = '';
+    document.getElementById('streakDaysValue').value = '';
+    document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    document.querySelectorAll('input[name="proteinCategories"]').forEach(checkbox => {
+      checkbox.checked = false;
+    });
+    
+    // Reset tier threshold fields to defaults
+    document.getElementById('tierBronze').value = 40;
+    document.getElementById('tierSilver').value = 60;
+    document.getElementById('tierGold').value = 75;
+    document.getElementById('tierPlatinum').value = 90;
+    document.getElementById('tierDiamond').value = 100;
+    
     updateFormFieldsVisibility();
+    updateRequirementFieldsVisibility();
   }
   
   modal.style.display = 'flex';
@@ -241,13 +263,39 @@ function populateAchievementForm(achievement) {
     preview.style.display = 'block';
   }
   
-  // JSON fields
-  document.getElementById('achievementRequirement').value = JSON.stringify(achievement.requirement, null, 2);
+  // Parse and populate requirement fields
+  if (achievement.requirement) {
+    const req = achievement.requirement;
+    document.getElementById('requirementType').value = req.type || '';
+    
+    // Populate specific requirement inputs based on type
+    if (req.type === 'rank_count') {
+      document.getElementById('rankCountValue').value = req.value || '';
+    } else if (req.type === 'complete_animal_category') {
+      document.getElementById('animalCategoryCount').value = req.value || '';
+    } else if (req.type === 'complete_flavor_set' && req.flavors) {
+      document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
+        checkbox.checked = req.flavors.includes(checkbox.value);
+      });
+    } else if (req.type === 'search_count') {
+      document.getElementById('searchCountValue').value = req.value || '';
+    } else if (req.type === 'daily_login_streak' || req.type === 'daily_rank_streak') {
+      document.getElementById('streakDaysValue').value = req.days || '';
+    }
+  }
+  
+  // Populate tier thresholds
   if (achievement.tierThresholds) {
-    document.getElementById('achievementTierThresholds').value = JSON.stringify(achievement.tierThresholds, null, 2);
+    const thresholds = achievement.tierThresholds;
+    document.getElementById('tierBronze').value = thresholds.bronze || 40;
+    document.getElementById('tierSilver').value = thresholds.silver || 60;
+    document.getElementById('tierGold').value = thresholds.gold || 75;
+    document.getElementById('tierPlatinum').value = thresholds.platinum || 90;
+    document.getElementById('tierDiamond').value = thresholds.diamond || 100;
   }
   
   updateFormFieldsVisibility();
+  updateRequirementFieldsVisibility();
 }
 
 /**
@@ -257,23 +305,57 @@ function updateFormFieldsVisibility() {
   const collectionType = document.getElementById('achievementCollectionType').value;
   
   const proteinGroup = document.getElementById('proteinCategoryGroup');
-  const tierThresholdsGroup = document.getElementById('tierThresholdsGroup');
+  const tierThresholdsSection = document.getElementById('tierThresholdsSection');
   const legacyFieldsGroup = document.getElementById('legacyFieldsGroup');
   const legacyCategoryGroup = document.getElementById('legacyCategoryGroup');
   
   // Hide all conditional fields first
   proteinGroup.style.display = 'none';
-  tierThresholdsGroup.style.display = 'none';
+  tierThresholdsSection.style.display = 'none';
   legacyFieldsGroup.style.display = 'none';
   legacyCategoryGroup.style.display = 'none';
   
   // Show relevant fields based on collection type
   if (collectionType === 'dynamic_collection') {
     proteinGroup.style.display = 'block';
-    tierThresholdsGroup.style.display = 'block';
+    tierThresholdsSection.style.display = 'block';
   } else if (collectionType === 'legacy') {
     legacyFieldsGroup.style.display = 'block';
     legacyCategoryGroup.style.display = 'block';
+  }
+}
+
+/**
+ * Update requirement fields visibility based on requirement type
+ */
+function updateRequirementFieldsVisibility() {
+  const requirementType = document.getElementById('requirementType').value;
+  
+  // Hide all requirement input groups
+  document.getElementById('rankCountGroup').style.display = 'none';
+  document.getElementById('animalCategoryCountGroup').style.display = 'none';
+  document.getElementById('flavorSetGroup').style.display = 'none';
+  document.getElementById('searchCountGroup').style.display = 'none';
+  document.getElementById('streakDaysGroup').style.display = 'none';
+  
+  // Show relevant group based on selection
+  switch(requirementType) {
+    case 'rank_count':
+      document.getElementById('rankCountGroup').style.display = 'block';
+      break;
+    case 'complete_animal_category':
+      document.getElementById('animalCategoryCountGroup').style.display = 'block';
+      break;
+    case 'complete_flavor_set':
+      document.getElementById('flavorSetGroup').style.display = 'block';
+      break;
+    case 'search_count':
+      document.getElementById('searchCountGroup').style.display = 'block';
+      break;
+    case 'daily_login_streak':
+    case 'daily_rank_streak':
+      document.getElementById('streakDaysGroup').style.display = 'block';
+      break;
   }
 }
 
@@ -351,21 +433,77 @@ async function handleAchievementFormSubmit(event) {
     achievementData.category = formData.get('category');
   }
   
-  // Parse JSON fields
-  try {
-    achievementData.requirement = JSON.parse(formData.get('requirement'));
-  } catch (e) {
-    alert('Invalid JSON in Requirement field');
+  // Build requirement object from user-friendly inputs
+  const requirementType = document.getElementById('requirementType').value;
+  if (!requirementType) {
+    alert('Please select a requirement type');
     return;
   }
   
-  if (formData.get('tierThresholds')) {
-    try {
-      achievementData.tierThresholds = JSON.parse(formData.get('tierThresholds'));
-    } catch (e) {
-      alert('Invalid JSON in Tier Thresholds field');
-      return;
-    }
+  const requirement = { type: requirementType };
+  
+  switch(requirementType) {
+    case 'rank_count':
+      const rankCount = parseInt(document.getElementById('rankCountValue').value);
+      if (!rankCount || rankCount < 1) {
+        alert('Please enter a valid number of products to rank');
+        return;
+      }
+      requirement.value = rankCount;
+      break;
+      
+    case 'complete_animal_category':
+      const categoryCount = parseInt(document.getElementById('animalCategoryCount').value);
+      if (!categoryCount || categoryCount < 1) {
+        alert('Please enter a valid number of categories');
+        return;
+      }
+      requirement.value = categoryCount;
+      break;
+      
+    case 'complete_flavor_set':
+      const selectedFlavors = [];
+      document.querySelectorAll('input[name="requiredFlavors"]:checked').forEach(checkbox => {
+        selectedFlavors.push(checkbox.value);
+      });
+      if (selectedFlavors.length === 0) {
+        alert('Please select at least one flavor');
+        return;
+      }
+      requirement.flavors = selectedFlavors;
+      break;
+      
+    case 'search_count':
+      const searchCount = parseInt(document.getElementById('searchCountValue').value);
+      if (!searchCount || searchCount < 1) {
+        alert('Please enter a valid number of searches');
+        return;
+      }
+      requirement.value = searchCount;
+      break;
+      
+    case 'daily_login_streak':
+    case 'daily_rank_streak':
+      const streakDays = parseInt(document.getElementById('streakDaysValue').value);
+      if (!streakDays || streakDays < 1) {
+        alert('Please enter a valid number of days');
+        return;
+      }
+      requirement.days = streakDays;
+      break;
+  }
+  
+  achievementData.requirement = requirement;
+  
+  // Build tier thresholds object for dynamic collections
+  if (achievementData.collectionType === 'dynamic_collection') {
+    achievementData.tierThresholds = {
+      bronze: parseInt(document.getElementById('tierBronze').value) || 40,
+      silver: parseInt(document.getElementById('tierSilver').value) || 60,
+      gold: parseInt(document.getElementById('tierGold').value) || 75,
+      platinum: parseInt(document.getElementById('tierPlatinum').value) || 90,
+      diamond: parseInt(document.getElementById('tierDiamond').value) || 100
+    };
   }
   
   try {
@@ -647,6 +785,12 @@ window.initAchievementAdmin = function() {
   const collectionTypeSelect = document.getElementById('achievementCollectionType');
   if (collectionTypeSelect) {
     collectionTypeSelect.addEventListener('change', updateFormFieldsVisibility);
+  }
+  
+  // Setup requirement type change handler
+  const requirementTypeSelect = document.getElementById('requirementType');
+  if (requirementTypeSelect) {
+    requirementTypeSelect.addEventListener('change', updateRequirementFieldsVisibility);
   }
   
   // Setup icon type and upload handlers
