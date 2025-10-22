@@ -163,7 +163,7 @@ class AchievementManager {
         
         // Upsert: insert or update if code already exists
         await db.execute(sql`
-          INSERT INTO achievements (code, name, description, icon, tier, category, requirement, points)
+          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, points)
           VALUES (
             ${definition.code},
             ${definition.name},
@@ -171,6 +171,7 @@ class AchievementManager {
             ${definition.icon},
             ${definition.tier},
             ${definition.category},
+            ${definition.collectionType || 'legacy'},
             ${requirementJson}::jsonb,
             ${definition.points}
           )
@@ -180,6 +181,7 @@ class AchievementManager {
             icon = EXCLUDED.icon,
             tier = EXCLUDED.tier,
             category = EXCLUDED.category,
+            collection_type = EXCLUDED.collection_type,
             requirement = EXCLUDED.requirement,
             points = EXCLUDED.points
         `);

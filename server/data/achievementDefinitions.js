@@ -13,6 +13,7 @@ const achievementDefinitions = [
     icon: '🎯',
     tier: 'bronze',
     category: 'ranking',
+    collectionType: 'legacy',
     requirement: { type: 'rank_count', value: 1 },
     points: 10
   },
@@ -23,6 +24,7 @@ const achievementDefinitions = [
     icon: '📊',
     tier: 'bronze',
     category: 'ranking',
+    collectionType: 'legacy',
     requirement: { type: 'rank_count', value: 10 },
     points: 50
   },
@@ -33,6 +35,7 @@ const achievementDefinitions = [
     icon: '🏅',
     tier: 'silver',
     category: 'ranking',
+    collectionType: 'legacy',
     requirement: { type: 'rank_count', value: 25 },
     points: 100
   },
@@ -43,6 +46,7 @@ const achievementDefinitions = [
     icon: '⭐',
     tier: 'gold',
     category: 'ranking',
+    collectionType: 'legacy',
     requirement: { type: 'rank_count', value: 50 },
     points: 200
   },
@@ -53,6 +57,7 @@ const achievementDefinitions = [
     icon: '💯',
     tier: 'platinum',
     category: 'ranking',
+    collectionType: 'legacy',
     requirement: { type: 'rank_all_products', value: 1 },
     points: 1000
   },
@@ -65,6 +70,7 @@ const achievementDefinitions = [
     icon: '🔥',
     tier: 'bronze',
     category: 'streak',
+    collectionType: 'legacy',
     requirement: { type: 'streak_days', value: 3 },
     points: 30
   },
@@ -75,6 +81,7 @@ const achievementDefinitions = [
     icon: '🔥',
     tier: 'silver',
     category: 'streak',
+    collectionType: 'legacy',
     requirement: { type: 'streak_days', value: 7 },
     points: 100
   },
@@ -85,6 +92,7 @@ const achievementDefinitions = [
     icon: '🔥',
     tier: 'gold',
     category: 'streak',
+    collectionType: 'legacy',
     requirement: { type: 'streak_days', value: 30 },
     points: 500
   },
@@ -95,6 +103,7 @@ const achievementDefinitions = [
     icon: '🔥',
     tier: 'platinum',
     category: 'streak',
+    collectionType: 'legacy',
     requirement: { type: 'streak_days', value: 100 },
     points: 1000
   },
@@ -107,6 +116,7 @@ const achievementDefinitions = [
     icon: '🗺️',
     tier: 'bronze',
     category: 'discovery',
+    collectionType: 'legacy',
     requirement: { type: 'unique_brands', value: 1 },
     points: 50
   },
@@ -117,6 +127,7 @@ const achievementDefinitions = [
     icon: '🌍',
     tier: 'silver',
     category: 'discovery',
+    collectionType: 'legacy',
     requirement: { type: 'unique_brands', value: 2 },
     points: 150
   },
@@ -127,6 +138,7 @@ const achievementDefinitions = [
     icon: '✈️',
     tier: 'gold',
     category: 'discovery',
+    collectionType: 'legacy',
     requirement: { type: 'unique_brands', value: 3 },
     points: 300
   },
@@ -137,6 +149,7 @@ const achievementDefinitions = [
     icon: '🎓',
     tier: 'silver',
     category: 'discovery',
+    collectionType: 'legacy',
     requirement: { type: 'complete_animal_category', value: 1 },
     points: 200
   },
@@ -149,6 +162,7 @@ const achievementDefinitions = [
     icon: '🏅',
     tier: 'gold',
     category: 'social',
+    collectionType: 'legacy',
     requirement: { type: 'leaderboard_position', value: 10 },
     points: 500
   },
@@ -159,6 +173,7 @@ const achievementDefinitions = [
     icon: '🥇',
     tier: 'platinum',
     category: 'social',
+    collectionType: 'legacy',
     requirement: { type: 'leaderboard_position', value: 3 },
     points: 1000
   },
@@ -169,6 +184,7 @@ const achievementDefinitions = [
     icon: '👥',
     tier: 'silver',
     category: 'social',
+    collectionType: 'legacy',
     requirement: { type: 'profile_views', value: 10 },
     points: 200
   },
@@ -181,6 +197,7 @@ const achievementDefinitions = [
     icon: '🚀',
     tier: 'gold',
     category: 'special',
+    collectionType: 'legacy',
     requirement: { type: 'join_before', value: '2025-11-10' },
     points: 250
   },
@@ -191,6 +208,7 @@ const achievementDefinitions = [
     icon: '👑',
     tier: 'platinum',
     category: 'special',
+    collectionType: 'legacy',
     requirement: { type: 'trendsetter', value: 10 },
     points: 500
   }
