@@ -1,6 +1,9 @@
 const { eq, and, desc, sql, isNull } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
 
+// Valid protein category values
+const VALID_PROTEIN_CATEGORIES = ['cattle', 'poultry', 'pork', 'fish', 'game', 'exotic'];
+
 /**
  * AchievementAdminRepository - Data access layer for admin achievement management
  * Handles CRUD operations for achievement definitions
@@ -8,6 +11,41 @@ const { achievements, userAchievements } = require('../../shared/schema');
 class AchievementAdminRepository {
   constructor(db) {
     this.db = db;
+  }
+
+  /**
+   * Validate protein categories array
+   */
+  validateProteinCategories(categories) {
+    if (!categories) return null;
+    
+    if (!Array.isArray(categories)) {
+      throw new Error('proteinCategories must be an array');
+    }
+    
+    if (categories.length === 0) {
+      return null; // Empty array treated as null
+    }
+    
+    // Check for invalid values
+    const invalid = categories.filter(c => !VALID_PROTEIN_CATEGORIES.includes(c));
+    if (invalid.length > 0) {
+      throw new Error(`Invalid protein categories: ${invalid.join(', ')}. Must be one of: ${VALID_PROTEIN_CATEGORIES.join(', ')}`);
+    }
+    
+    // Deduplicate
+    return [...new Set(categories)];
+  }
+
+  /**
+   * Normalize protein category fields (sync first element for backward compatibility)
+   */
+  normalizeProteinCategoryFields(proteinCategories) {
+    const normalized = this.validateProteinCategories(proteinCategories);
+    return {
+      proteinCategories: normalized,
+      proteinCategory: normalized && normalized.length > 0 ? normalized[0] : null
+    };
   }
 
   /**
@@ -26,6 +64,7 @@ class AchievementAdminRepository {
         collectionType: achievements.collectionType,
         category: achievements.category,
         proteinCategory: achievements.proteinCategory,
+        proteinCategories: achievements.proteinCategories,
         isHidden: achievements.isHidden,
         requirement: achievements.requirement,
         tierThresholds: achievements.tierThresholds,
@@ -42,6 +81,11 @@ class AchievementAdminRepository {
    * Create a new achievement definition
    */
   async createAchievement(achievementData) {
+    // Normalize protein categories and sync backward-compatible field
+    const { proteinCategories, proteinCategory } = this.normalizeProteinCategoryFields(
+      achievementData.proteinCategories
+    );
+    
     const result = await this.db
       .insert(achievements)
       .values({
@@ -53,7 +97,8 @@ class AchievementAdminRepository {
         tier: achievementData.tier || null,
         collectionType: achievementData.collectionType,
         category: achievementData.category || null,
-        proteinCategory: achievementData.proteinCategory || null,
+        proteinCategory: proteinCategory,
+        proteinCategories: proteinCategories,
         isHidden: achievementData.isHidden || 0,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,
@@ -69,6 +114,11 @@ class AchievementAdminRepository {
    * Update an existing achievement
    */
   async updateAchievement(id, achievementData) {
+    // Normalize protein categories and sync backward-compatible field
+    const { proteinCategories, proteinCategory } = this.normalizeProteinCategoryFields(
+      achievementData.proteinCategories
+    );
+    
     const result = await this.db
       .update(achievements)
       .set({
@@ -79,7 +129,8 @@ class AchievementAdminRepository {
         tier: achievementData.tier || null,
         collectionType: achievementData.collectionType,
         category: achievementData.category || null,
-        proteinCategory: achievementData.proteinCategory || null,
+        proteinCategory: proteinCategory,
+        proteinCategories: proteinCategories,
         isHidden: achievementData.isHidden || 0,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,

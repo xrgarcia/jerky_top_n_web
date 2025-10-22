@@ -76,7 +76,17 @@ function renderAchievementsTable() {
   
   tableBody.innerHTML = filteredAchievements.map(achievement => {
     const collectionTypeLabel = getCollectionTypeLabel(achievement.collectionType);
-    const categoryLabel = achievement.category || achievement.proteinCategory || '-';
+    
+    // Display protein categories or legacy category
+    let categoryLabel = '-';
+    if (achievement.proteinCategories && achievement.proteinCategories.length > 0) {
+      categoryLabel = achievement.proteinCategories.join(', ');
+    } else if (achievement.proteinCategory) {
+      categoryLabel = achievement.proteinCategory;
+    } else if (achievement.category) {
+      categoryLabel = achievement.category;
+    }
+    
     const statusBadge = achievement.isActive === 1 
       ? '<span class="status-badge active">Active</span>' 
       : '<span class="status-badge inactive">Inactive</span>';
@@ -193,7 +203,13 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementPoints').value = achievement.points;
   document.getElementById('achievementIsActive').value = achievement.isActive;
   document.getElementById('achievementCollectionType').value = achievement.collectionType;
-  document.getElementById('achievementProteinCategory').value = achievement.proteinCategory || '';
+  
+  // Handle multi-select protein categories
+  const proteinCategories = achievement.proteinCategories || (achievement.proteinCategory ? [achievement.proteinCategory] : []);
+  document.querySelectorAll('input[name="proteinCategories"]').forEach(checkbox => {
+    checkbox.checked = proteinCategories.includes(checkbox.value);
+  });
+  
   document.getElementById('achievementTier').value = achievement.tier || '';
   document.getElementById('achievementCategory').value = achievement.category || '';
   document.getElementById('achievementIsHidden').checked = achievement.isHidden === 1;
@@ -318,10 +334,16 @@ async function handleAchievementFormSubmit(event) {
     isHidden: formData.get('isHidden') ? 1 : 0,
   };
   
-  // Optional fields
-  if (formData.get('proteinCategory')) {
-    achievementData.proteinCategory = formData.get('proteinCategory');
+  // Collect selected protein categories as array
+  const selectedCategories = [];
+  document.querySelectorAll('input[name="proteinCategories"]:checked').forEach(checkbox => {
+    selectedCategories.push(checkbox.value);
+  });
+  if (selectedCategories.length > 0) {
+    achievementData.proteinCategories = selectedCategories;
   }
+  
+  // Optional fields
   if (formData.get('tier')) {
     achievementData.tier = formData.get('tier');
   }

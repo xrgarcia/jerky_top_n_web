@@ -1100,16 +1100,33 @@
                     </div>
                     
                     <div class="form-group" id="proteinCategoryGroup" style="display: none;">
-                        <label for="achievementProteinCategory">Protein Category (for dynamic collections)</label>
-                        <select id="achievementProteinCategory" name="proteinCategory">
-                            <option value="">None</option>
-                            <option value="cattle">Cattle (Beef)</option>
-                            <option value="poultry">Poultry (Chicken, Turkey)</option>
-                            <option value="pork">Pork</option>
-                            <option value="fish">Fish</option>
-                            <option value="game">Game (Deer, Elk, etc.)</option>
-                            <option value="exotic">Exotic (Alligator, etc.)</option>
-                        </select>
+                        <label>Protein Categories (select one or more)</label>
+                        <div class="protein-category-checkboxes">
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="cattle">
+                                <span>🐄 Cattle (Beef)</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="poultry">
+                                <span>🐔 Poultry (Chicken, Turkey)</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="pork">
+                                <span>🐷 Pork</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="fish">
+                                <span>🐟 Fish</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="game">
+                                <span>🦌 Game (Deer, Elk, etc.)</span>
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" name="proteinCategories" value="exotic">
+                                <span>🐊 Exotic (Alligator, etc.)</span>
+                            </label>
+                        </div>
                     </div>
                     
                     <div class="form-group" id="legacyFieldsGroup" style="display: none;">

@@ -38,23 +38,35 @@ class CollectionManager {
   }
 
   async calculateCollectionProgress(userId, collection) {
-    const { proteinCategory, requirement } = collection;
+    const { proteinCategory, proteinCategories, requirement } = collection;
     
-    if (!proteinCategory) {
-      console.warn(`Collection ${collection.code} has no protein category`);
+    // Support both multi-category (proteinCategories) and legacy single category (proteinCategory)
+    const categories = proteinCategories && Array.isArray(proteinCategories) && proteinCategories.length > 0
+      ? proteinCategories
+      : (proteinCategory ? [proteinCategory] : []);
+    
+    if (categories.length === 0) {
+      console.warn(`Collection ${collection.code} has no protein categories`);
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
 
-    const availableProducts = await this.productsMetadataRepo.getProductsByAnimalType(proteinCategory);
-    const totalAvailable = availableProducts.length;
+    // Fetch products from all categories and deduplicate
+    const allProducts = new Set();
+    for (const category of categories) {
+      const products = await this.productsMetadataRepo.getProductsByAnimalType(category);
+      products.forEach(p => allProducts.add(p.shopifyProductId));
+    }
+    
+    const totalAvailable = allProducts.size;
 
     if (totalAvailable === 0) {
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
 
     const { productRankings, productsMetadata } = require('../../shared/schema');
-    const { sql, count } = require('drizzle-orm');
+    const { sql, inArray } = require('drizzle-orm');
     
+    // Get user's ranked products that match ANY of the categories
     const rankedProducts = await this.db
       .select({ shopifyProductId: productRankings.shopifyProductId })
       .from(productRankings)
@@ -64,7 +76,7 @@ class CollectionManager {
       )
       .where(and(
         eq(productRankings.userId, userId),
-        eq(productsMetadata.animalType, proteinCategory)
+        inArray(productsMetadata.animalType, categories)
       ))
       .groupBy(productRankings.shopifyProductId);
 
@@ -75,7 +87,8 @@ class CollectionManager {
       percentage,
       totalAvailable,
       totalRanked,
-      tier: this.getTierFromPercentage(percentage, collection.tierThresholds)
+      tier: this.getTierFromPercentage(percentage, collection.tierThresholds),
+      categories // Include for debugging
     };
   }
 
@@ -181,16 +194,25 @@ class CollectionManager {
       eq(achievements.collectionType, 'dynamic_collection')
     ));
 
-    return collections;
+    // Include proteinCategories in the response for multi-category support
+    return collections.map(c => ({
+      ...c,
+      proteinCategories: c.proteinCategories || (c.proteinCategory ? [c.proteinCategory] : [])
+    }));
   }
 
   async getCollectionProgress(userId, proteinCategory) {
+    // This method still accepts single category for backward compatibility
+    // but will work with multi-category achievements too
+    const { sql } = require('drizzle-orm');
+    
     const collection = await this.db.select()
       .from(achievements)
       .where(and(
         eq(achievements.collectionType, 'dynamic_collection'),
-        eq(achievements.proteinCategory, proteinCategory),
-        eq(achievements.isActive, 1)
+        eq(achievements.isActive, 1),
+        // Match if proteinCategory matches OR if proteinCategory is in proteinCategories array
+        sql`(${achievements.proteinCategory} = ${proteinCategory} OR ${achievements.proteinCategories}::jsonb ? ${proteinCategory})`
       ))
       .limit(1);
 
