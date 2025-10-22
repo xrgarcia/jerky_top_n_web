@@ -266,21 +266,29 @@ function populateAchievementForm(achievement) {
   // Parse and populate requirement fields
   if (achievement.requirement) {
     const req = achievement.requirement;
-    document.getElementById('requirementType').value = req.type || '';
     
-    // Populate specific requirement inputs based on type
-    if (req.type === 'rank_count') {
-      document.getElementById('rankCountValue').value = req.value || '';
-    } else if (req.type === 'complete_animal_category') {
-      document.getElementById('animalCategoryCount').value = req.value || '';
-    } else if (req.type === 'complete_flavor_set' && req.flavors) {
-      document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
-        checkbox.checked = req.flavors.includes(checkbox.value);
-      });
-    } else if (req.type === 'search_count') {
-      document.getElementById('searchCountValue').value = req.value || '';
-    } else if (req.type === 'daily_login_streak' || req.type === 'daily_rank_streak') {
-      document.getElementById('streakDaysValue').value = req.days || '';
+    // Skip requirement population for dynamic collections (auto-generated)
+    if (req.type === 'complete_protein_category_percentage') {
+      // Dynamic collection - requirements are automatic, don't populate dropdown
+      document.getElementById('requirementType').value = '';
+    } else {
+      // Other achievement types - populate manual requirements
+      document.getElementById('requirementType').value = req.type || '';
+      
+      // Populate specific requirement inputs based on type
+      if (req.type === 'rank_count') {
+        document.getElementById('rankCountValue').value = req.value || '';
+      } else if (req.type === 'complete_animal_category') {
+        document.getElementById('animalCategoryCount').value = req.value || '';
+      } else if (req.type === 'complete_flavor_set' && req.flavors) {
+        document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
+          checkbox.checked = req.flavors.includes(checkbox.value);
+        });
+      } else if (req.type === 'search_count') {
+        document.getElementById('searchCountValue').value = req.value || '';
+      } else if (req.type === 'daily_login_streak' || req.type === 'daily_rank_streak') {
+        document.getElementById('streakDaysValue').value = req.days || '';
+      }
     }
   }
   
@@ -306,22 +314,31 @@ function updateFormFieldsVisibility() {
   
   const proteinGroup = document.getElementById('proteinCategoryGroup');
   const tierThresholdsSection = document.getElementById('tierThresholdsSection');
+  const unlockRequirementsSection = document.getElementById('unlockRequirementsSection');
   const legacyFieldsGroup = document.getElementById('legacyFieldsGroup');
   const legacyCategoryGroup = document.getElementById('legacyCategoryGroup');
   
   // Hide all conditional fields first
   proteinGroup.style.display = 'none';
   tierThresholdsSection.style.display = 'none';
+  unlockRequirementsSection.style.display = 'none';
   legacyFieldsGroup.style.display = 'none';
   legacyCategoryGroup.style.display = 'none';
   
   // Show relevant fields based on collection type
   if (collectionType === 'dynamic_collection') {
+    // Dynamic collections use protein categories + tier thresholds
     proteinGroup.style.display = 'block';
     tierThresholdsSection.style.display = 'block';
+    // Hide unlock requirements - they're automatic for dynamic collections
+    unlockRequirementsSection.style.display = 'none';
+  } else if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
+    // Static and hidden collections need manual unlock requirements
+    unlockRequirementsSection.style.display = 'block';
   } else if (collectionType === 'legacy') {
     legacyFieldsGroup.style.display = 'block';
     legacyCategoryGroup.style.display = 'block';
+    unlockRequirementsSection.style.display = 'block';
   }
 }
 
@@ -434,63 +451,82 @@ async function handleAchievementFormSubmit(event) {
   }
   
   // Build requirement object from user-friendly inputs
-  const requirementType = document.getElementById('requirementType').value;
-  if (!requirementType) {
-    alert('Please select a requirement type');
-    return;
-  }
+  let requirement;
   
-  const requirement = { type: requirementType };
+  // Dynamic collections have automatic requirements based on protein categories
+  if (achievementData.collectionType === 'dynamic_collection') {
+    const selectedCategories = achievementData.proteinCategories || [];
+    if (selectedCategories.length === 0) {
+      alert('Please select at least one protein category for this Dynamic Collection');
+      return;
+    }
+    
+    // Auto-generate requirement for dynamic collections
+    requirement = {
+      type: 'complete_protein_category_percentage',
+      categories: selectedCategories
+    };
+  } else {
+    // Other collection types need manual requirement selection
+    const requirementType = document.getElementById('requirementType').value;
+    if (!requirementType) {
+      alert('Please select a requirement type');
+      return;
+    }
+    
+    requirement = { type: requirementType };
   
-  switch(requirementType) {
-    case 'rank_count':
-      const rankCount = parseInt(document.getElementById('rankCountValue').value);
-      if (!rankCount || rankCount < 1) {
-        alert('Please enter a valid number of products to rank');
-        return;
-      }
-      requirement.value = rankCount;
-      break;
-      
-    case 'complete_animal_category':
-      const categoryCount = parseInt(document.getElementById('animalCategoryCount').value);
-      if (!categoryCount || categoryCount < 1) {
-        alert('Please enter a valid number of categories');
-        return;
-      }
-      requirement.value = categoryCount;
-      break;
-      
-    case 'complete_flavor_set':
-      const selectedFlavors = [];
-      document.querySelectorAll('input[name="requiredFlavors"]:checked').forEach(checkbox => {
-        selectedFlavors.push(checkbox.value);
-      });
-      if (selectedFlavors.length === 0) {
-        alert('Please select at least one flavor');
-        return;
-      }
-      requirement.flavors = selectedFlavors;
-      break;
-      
-    case 'search_count':
-      const searchCount = parseInt(document.getElementById('searchCountValue').value);
-      if (!searchCount || searchCount < 1) {
-        alert('Please enter a valid number of searches');
-        return;
-      }
-      requirement.value = searchCount;
-      break;
-      
-    case 'daily_login_streak':
-    case 'daily_rank_streak':
-      const streakDays = parseInt(document.getElementById('streakDaysValue').value);
-      if (!streakDays || streakDays < 1) {
-        alert('Please enter a valid number of days');
-        return;
-      }
-      requirement.days = streakDays;
-      break;
+    // Only process requirement details for non-dynamic collections
+    switch(requirementType) {
+      case 'rank_count':
+        const rankCount = parseInt(document.getElementById('rankCountValue').value);
+        if (!rankCount || rankCount < 1) {
+          alert('Please enter a valid number of products to rank');
+          return;
+        }
+        requirement.value = rankCount;
+        break;
+        
+      case 'complete_animal_category':
+        const categoryCount = parseInt(document.getElementById('animalCategoryCount').value);
+        if (!categoryCount || categoryCount < 1) {
+          alert('Please enter a valid number of categories');
+          return;
+        }
+        requirement.value = categoryCount;
+        break;
+        
+      case 'complete_flavor_set':
+        const selectedFlavors = [];
+        document.querySelectorAll('input[name="requiredFlavors"]:checked').forEach(checkbox => {
+          selectedFlavors.push(checkbox.value);
+        });
+        if (selectedFlavors.length === 0) {
+          alert('Please select at least one flavor');
+          return;
+        }
+        requirement.flavors = selectedFlavors;
+        break;
+        
+      case 'search_count':
+        const searchCount = parseInt(document.getElementById('searchCountValue').value);
+        if (!searchCount || searchCount < 1) {
+          alert('Please enter a valid number of searches');
+          return;
+        }
+        requirement.value = searchCount;
+        break;
+        
+      case 'daily_login_streak':
+      case 'daily_rank_streak':
+        const streakDays = parseInt(document.getElementById('streakDaysValue').value);
+        if (!streakDays || streakDays < 1) {
+          alert('Please enter a valid number of days');
+          return;
+        }
+        requirement.days = streakDays;
+        break;
+    }
   }
   
   achievementData.requirement = requirement;
