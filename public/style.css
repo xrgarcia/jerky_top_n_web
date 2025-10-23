@@ -5317,6 +5317,26 @@ body.login-page-active .hero {
     padding: 15px;
 }
 
+.btn-edit-product {
+    background: #7b8b52;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-weight: 500;
+}
+
+.btn-edit-product:hover {
+    background: #6a7845;
+}
+
+.btn-edit-product:active {
+    transform: scale(0.98);
+}
+
 /* Confirmation Modal */
 .modal-overlay {
     position: fixed;

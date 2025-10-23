@@ -369,7 +369,7 @@ function renderProductsTable() {
   if (filteredProducts.length === 0) {
     tableBody.innerHTML = `
       <tr>
-        <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+        <td colspan="10" style="text-align: center; padding: 40px; color: #999;">
           No products match the current filters
         </td>
       </tr>
@@ -393,9 +393,16 @@ function renderProductsTable() {
         <td>${price}</td>
         <td>${product.rankingCount || 0}</td>
         <td>${avgRank}</td>
+        <td>
+          <button class="btn-edit-product" data-product-id="${product.shopifyProductId}" data-product-title="${product.title}" data-animal-type="${product.animalType || ''}" data-animal-display="${product.animalDisplay || ''}" data-animal-icon="${product.animalIcon || ''}" title="Edit metadata">
+            ✏️ Edit
+          </button>
+        </td>
       </tr>
     `;
   }).join('');
+  
+  setupProductEditButtons();
 }
 
 function setupProductFilters() {
@@ -594,4 +601,193 @@ window.initToolsPage = async function() {
       }
     });
   }
+  
+  await loadAvailableAnimalsForProducts();
+  setupProductEditModal();
 };
+
+let availableAnimalsForProducts = [];
+
+async function loadAvailableAnimalsForProducts() {
+  try {
+    const response = await fetch('/api/admin/animal-categories/with-counts');
+    if (!response.ok) {
+      throw new Error('Failed to load animal categories');
+    }
+    const data = await response.json();
+    availableAnimalsForProducts = data.animals || [];
+    populateAnimalDropdown();
+  } catch (error) {
+    console.error('Error loading animals for products:', error);
+  }
+}
+
+function populateAnimalDropdown() {
+  const select = document.getElementById('editAnimalSelect');
+  if (!select) return;
+  
+  const optionsHTML = availableAnimalsForProducts.map(animal => {
+    return `<option value="${animal.display}" data-type="${animal.type}" data-icon="${animal.icon}">${animal.icon} ${animal.display} (${animal.type})</option>`;
+  }).join('');
+  
+  select.innerHTML = `<option value="">Select an animal...</option>${optionsHTML}`;
+}
+
+function setupProductEditButtons() {
+  const editButtons = document.querySelectorAll('.btn-edit-product');
+  editButtons.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productId = this.dataset.productId;
+      const productTitle = this.dataset.productTitle;
+      const animalType = this.dataset.animalType;
+      const animalDisplay = this.dataset.animalDisplay;
+      const animalIcon = this.dataset.animalIcon;
+      
+      openProductEditModal(productId, productTitle, animalType, animalDisplay, animalIcon);
+    });
+  });
+}
+
+function openProductEditModal(productId, productTitle, animalType, animalDisplay, animalIcon) {
+  const modal = document.getElementById('productEditModal');
+  const productNameEl = document.getElementById('editProductName');
+  const productIdInput = document.getElementById('editProductId');
+  const animalSelect = document.getElementById('editAnimalSelect');
+  const previewContainer = document.getElementById('animalPreview');
+  
+  if (!modal) return;
+  
+  productNameEl.textContent = productTitle;
+  productIdInput.value = productId;
+  
+  if (animalDisplay) {
+    animalSelect.value = animalDisplay;
+    updateAnimalPreview(animalType, animalDisplay, animalIcon);
+  } else {
+    animalSelect.value = '';
+    previewContainer.style.display = 'none';
+  }
+  
+  modal.style.display = 'flex';
+}
+
+function updateAnimalPreview(type, display, icon) {
+  const previewContainer = document.getElementById('animalPreview');
+  const previewIcon = document.getElementById('previewIcon');
+  const previewDisplay = document.getElementById('previewDisplay');
+  const previewType = document.getElementById('previewType');
+  
+  if (!previewContainer) return;
+  
+  previewIcon.textContent = icon || '';
+  previewDisplay.textContent = display || '';
+  previewType.textContent = type || '';
+  
+  previewContainer.style.display = 'block';
+}
+
+function setupProductEditModal() {
+  const modal = document.getElementById('productEditModal');
+  const closeBtn = document.getElementById('closeProductEditBtn');
+  const cancelBtn = document.getElementById('cancelProductEditBtn');
+  const saveBtn = document.getElementById('saveProductEditBtn');
+  const animalSelect = document.getElementById('editAnimalSelect');
+  
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+  
+  if (cancelBtn) {
+    cancelBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+  }
+  
+  if (saveBtn) {
+    saveBtn.addEventListener('click', saveProductEdit);
+  }
+  
+  if (animalSelect) {
+    animalSelect.addEventListener('change', function() {
+      const selectedOption = this.options[this.selectedIndex];
+      if (this.value) {
+        const type = selectedOption.dataset.type;
+        const display = this.value;
+        const icon = selectedOption.dataset.icon;
+        updateAnimalPreview(type, display, icon);
+      } else {
+        document.getElementById('animalPreview').style.display = 'none';
+      }
+    });
+  }
+  
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+}
+
+async function saveProductEdit() {
+  const productId = document.getElementById('editProductId').value;
+  const animalSelect = document.getElementById('editAnimalSelect');
+  const selectedOption = animalSelect.options[animalSelect.selectedIndex];
+  const saveBtn = document.getElementById('saveProductEditBtn');
+  
+  if (!animalSelect.value) {
+    alert('Please select an animal category');
+    return;
+  }
+  
+  const animalType = selectedOption.dataset.type;
+  const animalDisplay = animalSelect.value;
+  const animalIcon = selectedOption.dataset.icon;
+  
+  saveBtn.disabled = true;
+  saveBtn.textContent = 'Saving...';
+  
+  try {
+    const response = await fetch(`/api/admin/products/${productId}/metadata`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        animalType,
+        animalDisplay,
+        animalIcon,
+      }),
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to update product');
+    }
+    
+    const modal = document.getElementById('productEditModal');
+    modal.style.display = 'none';
+    
+    showToast({
+      type: 'success',
+      icon: '✅',
+      title: 'Success',
+      message: 'Product metadata updated successfully',
+    });
+    
+    await loadProductsTable();
+    
+  } catch (error) {
+    console.error('Error updating product:', error);
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: error.message || 'Failed to update product',
+    });
+  } finally {
+    saveBtn.disabled = false;
+    saveBtn.textContent = 'Save Changes';
+  }
+}
