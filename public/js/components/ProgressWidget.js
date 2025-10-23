@@ -157,7 +157,9 @@ class ProgressWidget {
             <div class="progress-stats">
               ${lastAchievement ? `
                 <span class="stat stat-achievement" data-action="expand" title="${lastAchievement.name}">
-                  ${lastAchievement.icon}
+                  ${lastAchievement.iconType === 'image' 
+                    ? `<img src="${lastAchievement.icon}" alt="${lastAchievement.name}" style="width: 20px; height: 20px; object-fit: contain;">` 
+                    : lastAchievement.icon}
                 </span>
               ` : ''}
               <span class="stat">${progress.totalRankings} Ranked</span>
@@ -189,9 +191,13 @@ class ProgressWidget {
                   ? `<strong>${achievement.name}</strong><br>${achievement.description}<br><em>Unlocked!</em>`
                   : `<strong>???</strong><br>${mysteriousDesc}<br><span class="requirement-hint">${this.getRequirementHint(achievement)}</span>`;
                 
+                const iconHtml = achievement.iconType === 'image'
+                  ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px; object-fit: contain;">`
+                  : achievement.icon;
+                
                 return `
                   <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}" tabindex="0">
-                    <span class="achievement-icon">${achievement.icon}</span>
+                    <span class="achievement-icon">${iconHtml}</span>
                     <span class="achievement-name">${achievement.earned ? achievement.name : '???'}</span>
                     <div class="achievement-tooltip" role="tooltip">${tooltipText}</div>
                   </div>
