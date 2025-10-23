@@ -217,17 +217,27 @@ class HomeDashboard {
       return;
     }
 
-    container.innerHTML = recentAchievements.map(achievement => `
-      <div class="dashboard-item achievement-item">
-        <div class="achievement-icon ${achievement.achievementTier}">${achievement.achievementIcon}</div>
-        <div class="achievement-info">
-          <div class="achievement-name">${achievement.achievementName}</div>
-          <div class="achievement-earned">
-            ${achievement.userName} • ${this.getTimeAgo(achievement.earnedAt)}
+    container.innerHTML = recentAchievements.map(achievement => {
+      const iconHtml = this.renderIcon(achievement.achievementIcon);
+      return `
+        <div class="dashboard-item achievement-item">
+          <div class="achievement-icon ${achievement.achievementTier}">${iconHtml}</div>
+          <div class="achievement-info">
+            <div class="achievement-name">${achievement.achievementName}</div>
+            <div class="achievement-earned">
+              ${achievement.userName} • ${this.getTimeAgo(achievement.earnedAt)}
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `;
+    }).join('');
+  }
+
+  renderIcon(icon) {
+    if (typeof icon === 'string' && (icon.startsWith('/') || icon.startsWith('http'))) {
+      return `<img src="${icon}" alt="Achievement Icon" style="width: 48px; height: 48px; object-fit: contain;">`;
+    }
+    return icon;
   }
 
   getTimeAgo(dateString) {

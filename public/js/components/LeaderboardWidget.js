@@ -65,9 +65,10 @@ class LeaderboardWidget {
               </div>
               ${entry.badges && entry.badges.length > 0 ? `
                 <div class="entry-badges">
-                  ${entry.badges.slice(0, 3).map(badge => `
-                    <span class="badge-mini tier-${badge.tier}" title="${badge.name}">${badge.icon}</span>
-                  `).join('')}
+                  ${entry.badges.slice(0, 3).map(badge => {
+                    const iconHtml = this.renderBadgeIcon(badge.icon);
+                    return `<span class="badge-mini tier-${badge.tier}" title="${badge.name}">${iconHtml}</span>`;
+                  }).join('')}
                 </div>
               ` : ''}
             </div>
@@ -75,6 +76,13 @@ class LeaderboardWidget {
         </div>
       </div>
     `;
+  }
+
+  renderBadgeIcon(icon) {
+    if (typeof icon === 'string' && (icon.startsWith('/') || icon.startsWith('http'))) {
+      return `<img src="${icon}" alt="Badge" style="width: 24px; height: 24px; object-fit: contain;">`;
+    }
+    return icon;
   }
 
   destroy() {

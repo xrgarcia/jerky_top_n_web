@@ -105,11 +105,14 @@ class FullLeaderboardWidget {
                 </div>
                 ${entry.badges && entry.badges.length > 0 ? `
                   <div class="entry-badges-section">
-                    ${entry.badges.slice(0, 5).map(badge => `
-                      <span class="badge-display tier-${badge.tier}" title="${badge.name}">
-                        <span class="badge-icon">${badge.icon}</span>
-                      </span>
-                    `).join('')}
+                    ${entry.badges.slice(0, 5).map(badge => {
+                      const iconHtml = this.renderBadgeIcon(badge.icon);
+                      return `
+                        <span class="badge-display tier-${badge.tier}" title="${badge.name}">
+                          <span class="badge-icon">${iconHtml}</span>
+                        </span>
+                      `;
+                    }).join('')}
                     ${entry.badges.length > 5 ? `<span class="badge-more">+${entry.badges.length - 5}</span>` : ''}
                   </div>
                 ` : ''}
@@ -125,6 +128,13 @@ class FullLeaderboardWidget {
         </div>
       </div>
     `;
+  }
+
+  renderBadgeIcon(icon) {
+    if (typeof icon === 'string' && (icon.startsWith('/') || icon.startsWith('http'))) {
+      return `<img src="${icon}" alt="Badge" style="width: 32px; height: 32px; object-fit: contain;">`;
+    }
+    return icon;
   }
 
   destroy() {
