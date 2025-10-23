@@ -2422,6 +2422,10 @@ if (databaseAvailable && storage) {
       const animalCategoriesRouter = require('./server/routes/admin/animalCategories');
       adminRouter.use(animalCategoriesRouter);
       
+      // Add products admin route
+      const productsAdminRouter = require('./server/routes/admin/products');
+      adminRouter.use(productsAdminRouter);
+      
       app.use('/api/admin', adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
