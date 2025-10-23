@@ -21,6 +21,21 @@ class NotificationWidget {
     document.body.appendChild(this.container);
   }
 
+  createIconElement(icon) {
+    if (typeof icon === 'string' && (icon.startsWith('/') || icon.startsWith('http'))) {
+      const img = DOMHelpers.createElement('img', {
+        src: icon,
+        alt: 'Achievement Icon',
+        className: 'notification-icon-image'
+      });
+      img.style.width = '48px';
+      img.style.height = '48px';
+      img.style.objectFit = 'contain';
+      return img;
+    }
+    return icon;
+  }
+
   setupEventListeners() {
     this.eventBus.on('notification:show', (notification) => {
       this.show(notification);
@@ -36,12 +51,14 @@ class NotificationWidget {
   }
 
   show(notification) {
+    const iconElement = this.createIconElement(notification.icon || '🔔');
+    
     const notificationEl = DOMHelpers.createElement('div', {
       className: `notification notification-${notification.type || 'info'} ${notification.tier ? `tier-${notification.tier}` : ''}`
     }, [
       DOMHelpers.createElement('div', {
         className: 'notification-icon'
-      }, notification.icon || '🔔'),
+      }, iconElement),
       DOMHelpers.createElement('div', {
         className: 'notification-content'
       }, [
