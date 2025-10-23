@@ -1489,11 +1489,22 @@ app.post('/api/rankings/products', async (req, res) => {
           }
           
           // Update dynamic collection progress
+          const newCollectionAchievements = [];
           if (collectionManager) {
             const collectionUpdates = await collectionManager.checkAndUpdateDynamicCollections(userId);
             
             if (collectionUpdates.length > 0) {
               console.log(`📚 User ${userId} updated ${collectionUpdates.length} collection(s)`);
+              
+              // Convert collection updates into achievement format for toasts
+              for (const update of collectionUpdates) {
+                if (update.type === 'new') {
+                  // New collection earned - emit as achievement
+                  newCollectionAchievements.push(update.achievement);
+                }
+              }
+              
+              // Still emit collections:updated for progress tracking
               if (io) {
                 io.to(`user:${userId}`).emit('collections:updated', { updates: collectionUpdates });
               }
@@ -1503,21 +1514,24 @@ app.post('/api/rankings/products', async (req, res) => {
           // Check for new achievements
           const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
           
+          // Combine regular achievements and new collection achievements
+          const allNewAchievements = [...newAchievements, ...newCollectionAchievements];
+          
           // Invalidate home stats cache if achievements were earned (affects recent achievements)
-          if (newAchievements.length > 0 && gamificationServices?.homeStatsService) {
+          if (allNewAchievements.length > 0 && gamificationServices?.homeStatsService) {
             gamificationServices.homeStatsService.invalidateCache();
           }
           
           // Invalidate leaderboard cache if achievements were earned (affects engagement scores)
-          if (newAchievements.length > 0 && gamificationServices?.leaderboardManager) {
+          if (allNewAchievements.length > 0 && gamificationServices?.leaderboardManager) {
             gamificationServices.leaderboardManager.leaderboardCache.invalidate();
           }
           
-          // Broadcast new achievements via WebSocket
-          if (newAchievements.length > 0 && io) {
-            io.to(`user:${userId}`).emit('achievements:earned', { achievements: newAchievements });
-            console.log(`🏆 User ${userId} earned ${newAchievements.length} new achievement(s):`, 
-              newAchievements.map(a => a.name).join(', '));
+          // Broadcast new achievements via WebSocket (includes both regular and collection achievements)
+          if (allNewAchievements.length > 0 && io) {
+            io.to(`user:${userId}`).emit('achievements:earned', { achievements: allNewAchievements });
+            console.log(`🏆 User ${userId} earned ${allNewAchievements.length} new achievement(s):`, 
+              allNewAchievements.map(a => a.name).join(', '));
           }
         } catch (gamificationError) {
           console.error('Error processing gamification:', gamificationError);
