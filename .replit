@@ -35,10 +35,6 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 37891
-externalPort = 3001
-
-[[ports]]
 localPort = 43457
 externalPort = 3000
 
@@ -48,4 +44,4 @@ run = ["npm", "start"]
 build = ["node", "server/migrations/migrate.js"]
 
 [objectStorage]
-defaultBucketID = "replit-objstore-ce3c6ebd-71dc-43c6-85e1-3aaf6bd7fc7b"
+defaultBucketID = "replit-objstore-34844072-dfc9-470d-a75e-4cc381e322d8"

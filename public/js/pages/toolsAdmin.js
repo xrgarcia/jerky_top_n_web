@@ -819,12 +819,16 @@ function setupIconUploadHandler() {
  */
 async function handleIconFileUpload(file) {
   const statusDiv = document.getElementById('iconUploadStatus');
+  const progressContainer = document.getElementById('iconUploadProgress');
+  const progressBar = document.getElementById('iconUploadProgressBar');
+  const progressText = document.getElementById('iconUploadProgressText');
   const preview = document.getElementById('iconPreview');
   const previewImg = document.getElementById('iconPreviewImg');
   const customIconPath = document.getElementById('customIconPath');
   
   statusDiv.className = 'icon-upload-status';
   statusDiv.textContent = '';
+  progressContainer.style.display = 'none';
   
   const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
   if (!validTypes.includes(file.type)) {
@@ -846,7 +850,7 @@ async function handleIconFileUpload(file) {
     reader.onload = function(e) {
       img.src = e.target.result;
       
-      img.onload = async function() {
+      img.onload = function() {
         if (img.width !== 128 || img.height !== 128) {
           statusDiv.className = 'icon-upload-status error';
           statusDiv.textContent = `Error: Image must be exactly 128x128 pixels (got ${img.width}x${img.height}).`;
@@ -854,41 +858,86 @@ async function handleIconFileUpload(file) {
           return;
         }
         
-        statusDiv.className = 'icon-upload-status uploading';
-        statusDiv.textContent = 'Uploading...';
+        // Show progress bar
+        progressContainer.style.display = 'block';
+        progressBar.style.width = '0%';
+        progressText.textContent = 'Uploading... 0%';
         
-        try {
-          // Create FormData and upload directly to server
-          const formData = new FormData();
-          formData.append('icon', file);
-          
-          const uploadResponse = await fetch('/api/admin/achievements/upload-icon', {
-            method: 'POST',
-            body: formData
-          });
-          
-          if (!uploadResponse.ok) {
-            const errorData = await uploadResponse.json();
-            throw new Error(errorData.error || 'Failed to upload file');
+        // Create FormData
+        const formData = new FormData();
+        formData.append('icon', file);
+        
+        // Use XMLHttpRequest for progress tracking
+        const xhr = new XMLHttpRequest();
+        
+        // Track upload progress
+        xhr.upload.addEventListener('progress', (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            progressBar.style.width = percentComplete + '%';
+            progressText.textContent = `Uploading... ${percentComplete}%`;
           }
-          
-          const { objectPath } = await uploadResponse.json();
-          
-          // Set the path and show preview
-          customIconPath.value = objectPath;
-          previewImg.src = e.target.result;
-          preview.style.display = 'block';
-          
-          statusDiv.className = 'icon-upload-status success';
-          statusDiv.textContent = '✓ Icon uploaded successfully!';
-          
-        } catch (error) {
-          console.error('Upload error:', error);
-          statusDiv.className = 'icon-upload-status error';
-          statusDiv.textContent = `Error: ${error.message}`;
-        }
+        });
         
-        resolve();
+        // Handle successful upload
+        xhr.addEventListener('load', () => {
+          if (xhr.status === 200) {
+            try {
+              const response = JSON.parse(xhr.responseText);
+              const { objectPath } = response;
+              
+              // Set the path and show preview
+              customIconPath.value = objectPath;
+              previewImg.src = e.target.result;
+              preview.style.display = 'block';
+              
+              // Hide progress, show success
+              progressContainer.style.display = 'none';
+              statusDiv.className = 'icon-upload-status success';
+              statusDiv.textContent = '✓ Icon uploaded successfully!';
+              
+              resolve();
+            } catch (error) {
+              console.error('Upload response error:', error);
+              progressContainer.style.display = 'none';
+              statusDiv.className = 'icon-upload-status error';
+              statusDiv.textContent = `Error: Invalid server response`;
+              resolve();
+            }
+          } else {
+            try {
+              const errorData = JSON.parse(xhr.responseText);
+              progressContainer.style.display = 'none';
+              statusDiv.className = 'icon-upload-status error';
+              statusDiv.textContent = `Error: ${errorData.error || 'Upload failed'}`;
+            } catch {
+              progressContainer.style.display = 'none';
+              statusDiv.className = 'icon-upload-status error';
+              statusDiv.textContent = `Error: Upload failed (${xhr.status})`;
+            }
+            resolve();
+          }
+        });
+        
+        // Handle upload errors
+        xhr.addEventListener('error', () => {
+          progressContainer.style.display = 'none';
+          statusDiv.className = 'icon-upload-status error';
+          statusDiv.textContent = 'Error: Network error during upload';
+          resolve();
+        });
+        
+        // Handle upload abort
+        xhr.addEventListener('abort', () => {
+          progressContainer.style.display = 'none';
+          statusDiv.className = 'icon-upload-status error';
+          statusDiv.textContent = 'Error: Upload cancelled';
+          resolve();
+        });
+        
+        // Send the request
+        xhr.open('POST', '/api/admin/achievements/upload-icon');
+        xhr.send(formData);
       };
     };
     
@@ -904,12 +953,14 @@ function clearIconPreview() {
   const previewImg = document.getElementById('iconPreviewImg');
   const customIconPath = document.getElementById('customIconPath');
   const statusDiv = document.getElementById('iconUploadStatus');
+  const progressContainer = document.getElementById('iconUploadProgress');
   
   preview.style.display = 'none';
   previewImg.src = '';
   customIconPath.value = '';
   statusDiv.className = 'icon-upload-status';
   statusDiv.textContent = '';
+  progressContainer.style.display = 'none';
 }
 
 /**
