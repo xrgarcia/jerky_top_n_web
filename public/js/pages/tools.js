@@ -7,6 +7,40 @@ let currentToolTab = 'achievements';
 let allProducts = [];
 let filteredProducts = [];
 
+/**
+ * Show toast notification
+ */
+function showToast({ type = 'info', icon = '🔔', title = '', message = '', duration = 5000 }) {
+  const container = document.getElementById('toast-container') || createToastContainer();
+  
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-content">
+      ${title ? `<div class="toast-title">${title}</div>` : ''}
+      <div class="toast-message">${message}</div>
+    </div>
+  `;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+function createToastContainer() {
+  const container = document.createElement('div');
+  container.id = 'toast-container';
+  container.className = 'toast-container';
+  document.body.appendChild(container);
+  return container;
+}
+
 async function loadAchievementsTable() {
   // This function is now handled by toolsAdmin.js
   if (window.initAchievementAdmin) {
@@ -486,12 +520,26 @@ async function clearAllAchievements() {
     }
     
     const data = await response.json();
-    alert(`✅ Successfully cleared ${data.achievements} achievement(s) and ${data.streaks} streak(s) for all users`);
+    
+    showToast({
+      type: 'success',
+      icon: '✅',
+      title: 'Success',
+      message: `Successfully cleared ${data.achievements} achievement(s) and ${data.streaks} streak(s) for all users`,
+      duration: 5000
+    });
     
     await loadAchievementsTable();
   } catch (error) {
     console.error('Error clearing achievements:', error);
-    alert(`❌ Failed to clear achievements: ${error.message}`);
+    
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: `Failed to clear achievements: ${error.message}`,
+      duration: 5000
+    });
   }
 }
 
