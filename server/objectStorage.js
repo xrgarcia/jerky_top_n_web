@@ -124,6 +124,29 @@ class ObjectStorageService {
     return normalizedPath;
   }
 
+  async deleteIcon(iconPath) {
+    if (!iconPath || !iconPath.startsWith('/objects/')) {
+      throw new Error('Invalid icon path');
+    }
+
+    try {
+      // Extract the file path from the normalized path
+      const entityId = iconPath.slice('/objects/'.length);
+      
+      // Delete using official Replit client
+      const { ok, error } = await replitStorageClient.delete(entityId);
+      
+      if (!ok) {
+        throw new Error(`Failed to delete icon: ${error}`);
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Error deleting icon from storage:', error);
+      throw error;
+    }
+  }
+
   async downloadObject(file, res, cacheTtlSec = 3600) {
     try {
       const [metadata] = await file.getMetadata();

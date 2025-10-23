@@ -193,6 +193,7 @@ router.patch('/achievements/:id/toggle', requireEmployeeAuth, async (req, res) =
 /**
  * DELETE /api/admin/achievements/:id
  * Delete an achievement (soft delete if users have earned it)
+ * Automatically cleans up orphaned icon files from Object Storage
  */
 router.delete('/achievements/:id', requireEmployeeAuth, async (req, res) => {
   try {
@@ -203,10 +204,38 @@ router.delete('/achievements/:id', requireEmployeeAuth, async (req, res) => {
       return res.status(400).json({ error: 'Invalid achievement ID' });
     }
     
+    // Get achievement data before deletion to check icon
+    const achievement = await adminRepo.getAchievementById(achievementId);
+    
+    if (!achievement) {
+      return res.status(404).json({ error: 'Achievement not found' });
+    }
+    
+    // Delete the achievement
     const result = await adminRepo.deleteAchievement(achievementId);
     
     if (!result || result.length === 0) {
       return res.status(404).json({ error: 'Achievement not found' });
+    }
+    
+    // Check if icon should be deleted (only for image icons)
+    if (achievement.iconType === 'image' && achievement.icon && achievement.icon.startsWith('/objects/')) {
+      try {
+        // Check if any other achievements use this icon
+        const iconUsageCount = await adminRepo.countAchievementsUsingIcon(achievement.icon, achievementId);
+        
+        if (iconUsageCount === 0) {
+          // No other achievements use this icon - safe to delete
+          const objectStorage = new ObjectStorageService();
+          await objectStorage.deleteIcon(achievement.icon);
+          console.log('🗑️ Deleted orphaned icon from storage:', achievement.icon);
+        } else {
+          console.log(`ℹ️ Icon still in use by ${iconUsageCount} other achievement(s), keeping: ${achievement.icon}`);
+        }
+      } catch (iconError) {
+        // Log error but don't fail the achievement deletion
+        console.error('⚠️ Error cleaning up icon, continuing:', iconError.message);
+      }
     }
     
     // Invalidate cache

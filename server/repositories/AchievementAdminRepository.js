@@ -170,6 +170,36 @@ class AchievementAdminRepository {
   }
 
   /**
+   * Check if any other achievements use the same icon path
+   */
+  async countAchievementsUsingIcon(iconPath, excludeId = null) {
+    let query = this.db
+      .select({ count: sql`COUNT(*)::int` })
+      .from(achievements)
+      .where(eq(achievements.icon, iconPath));
+    
+    if (excludeId !== null) {
+      query = query.where(sql`${achievements.id} != ${excludeId}`);
+    }
+    
+    const result = await query;
+    return result[0].count;
+  }
+
+  /**
+   * Get achievement by ID
+   */
+  async getAchievementById(id) {
+    const result = await this.db
+      .select()
+      .from(achievements)
+      .where(eq(achievements.id, id))
+      .limit(1);
+    
+    return result[0] || null;
+  }
+
+  /**
    * Delete an achievement (soft delete via isActive)
    */
   async deleteAchievement(id) {
