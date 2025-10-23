@@ -2393,6 +2393,11 @@ if (databaseAvailable && storage) {
       // Initialize admin routes for achievement management (employee admin only)
       const createAdminRoutes = require('./server/routes/admin/achievementsAdmin');
       const adminRouter = createAdminRoutes(storage, db);
+      
+      // Add animal categories route
+      const animalCategoriesRouter = require('./server/routes/admin/animalCategories');
+      adminRouter.use(animalCategoriesRouter);
+      
       app.use('/api/admin', adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       

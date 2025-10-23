@@ -6,6 +6,7 @@ let allAchievements = [];
 let filteredAchievements = [];
 let currentTypeFilter = 'all';
 let editingAchievementId = null;
+let availableAnimals = []; // Loaded dynamically from database
 
 /**
  * Show toast notification
@@ -75,6 +76,59 @@ async function loadAchievementsAdmin() {
       `;
     }
   }
+}
+
+/**
+ * Load available animals from database
+ */
+async function loadAvailableAnimals() {
+  try {
+    const response = await fetch('/api/admin/animal-categories/with-counts');
+    
+    if (!response.ok) {
+      throw new Error('Failed to load animals');
+    }
+
+    const data = await response.json();
+    availableAnimals = data.animals || [];
+    
+    // Populate the animal checkboxes
+    populateAnimalCheckboxes();
+    
+  } catch (error) {
+    console.error('Error loading animals:', error);
+    const container = document.getElementById('animalCategoriesContainer');
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px; color: #e74c3c;">
+          Failed to load animals. ${error.message}
+        </div>
+      `;
+    }
+  }
+}
+
+/**
+ * Populate animal category checkboxes dynamically
+ */
+function populateAnimalCheckboxes() {
+  const container = document.getElementById('animalCategoriesContainer');
+  if (!container || availableAnimals.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 20px; color: #999;">
+        No animals found in database
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = availableAnimals.map(animal => `
+    <label class="checkbox-label">
+      <input type="checkbox" name="animalCategories" value="${animal.display}">
+      <span>${animal.icon} ${animal.display}</span>
+      <small style="color: #999; margin-left: 8px;">(${animal.productCount} products)</small>
+    </label>
+  `).join('');
 }
 
 /**
@@ -229,7 +283,7 @@ window.showAchievementForm = function(achievementId = null) {
     document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
       checkbox.checked = false;
     });
-    document.querySelectorAll('input[name="proteinCategories"]').forEach(checkbox => {
+    document.querySelectorAll('input[name="animalCategories"]').forEach(checkbox => {
       checkbox.checked = false;
     });
     
@@ -260,10 +314,10 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementIsActive').value = achievement.isActive;
   document.getElementById('achievementCollectionType').value = achievement.collectionType;
   
-  // Handle multi-select protein categories
-  const proteinCategories = achievement.proteinCategories || (achievement.proteinCategory ? [achievement.proteinCategory] : []);
-  document.querySelectorAll('input[name="proteinCategories"]').forEach(checkbox => {
-    checkbox.checked = proteinCategories.includes(checkbox.value);
+  // Handle multi-select animal categories
+  const animalCategories = achievement.proteinCategories || (achievement.proteinCategory ? [achievement.proteinCategory] : []);
+  document.querySelectorAll('input[name="animalCategories"]').forEach(checkbox => {
+    checkbox.checked = animalCategories.includes(checkbox.value);
   });
   
   document.getElementById('achievementTier').value = achievement.tier || '';
@@ -479,9 +533,9 @@ async function handleAchievementFormSubmit(event) {
     isHidden: formData.get('isHidden') ? 1 : 0,
   };
   
-  // Collect selected protein categories as array
+  // Collect selected animal categories as array
   const selectedCategories = [];
-  document.querySelectorAll('input[name="proteinCategories"]:checked').forEach(checkbox => {
+  document.querySelectorAll('input[name="animalCategories"]:checked').forEach(checkbox => {
     selectedCategories.push(checkbox.value);
   });
   if (selectedCategories.length > 0) {
@@ -1007,6 +1061,7 @@ window.initAchievementAdmin = function() {
   setupIconTypeHandler();
   setupIconUploadHandler();
   
-  // Load achievements
+  // Load achievements and animals
   loadAchievementsAdmin();
+  loadAvailableAnimals();
 };
