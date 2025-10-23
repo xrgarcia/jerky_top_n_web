@@ -71,25 +71,11 @@ class ObjectStorageService {
       throw new ObjectNotFoundError();
     }
 
-    const parts = objectPath.slice(1).split('/');
-    if (parts.length < 2) {
-      throw new ObjectNotFoundError();
-    }
-
-    const entityId = parts.slice(1).join('/');
-    let entityDir = this.getPrivateObjectDir();
-    if (!entityDir.endsWith('/')) {
-      entityDir = `${entityDir}/`;
-    }
-    const objectEntityPath = `${entityDir}${entityId}`;
-    const { bucketName, objectName } = parseObjectPath(objectEntityPath);
-    const bucket = objectStorageClient.bucket(bucketName);
-    const objectFile = bucket.file(objectName);
-    const [exists] = await objectFile.exists();
-    if (!exists) {
-      throw new ObjectNotFoundError();
-    }
-    return objectFile;
+    // Extract the path without '/objects/' prefix
+    const objectName = objectPath.slice('/objects/'.length);
+    
+    // Return the object name for use with Replit client
+    return objectName;
   }
 
   normalizeObjectEntityPath(rawPath) {
@@ -114,14 +100,9 @@ class ObjectStorageService {
   }
 
   async setObjectPublic(rawPath) {
-    const normalizedPath = this.normalizeObjectEntityPath(rawPath);
-    if (!normalizedPath.startsWith('/objects/')) {
-      return normalizedPath;
-    }
-
-    const objectFile = await this.getObjectEntityFile(normalizedPath);
-    await objectFile.makePublic();
-    return normalizedPath;
+    // With Replit client, files are accessible through our Express route
+    // No need to explicitly make them public
+    return rawPath;
   }
 
   async deleteIcon(iconPath) {
@@ -147,24 +128,27 @@ class ObjectStorageService {
     }
   }
 
-  async downloadObject(file, res, cacheTtlSec = 3600) {
+  async downloadObject(objectName, res, cacheTtlSec = 3600) {
     try {
-      const [metadata] = await file.getMetadata();
+      // Use Replit client to download as stream
+      // Note: downloadAsStream returns a Readable stream directly, not a Result type
+      const stream = replitStorageClient.downloadAsStream(objectName);
+
+      // Set response headers
       res.set({
-        'Content-Type': metadata.contentType || 'application/octet-stream',
-        'Content-Length': metadata.size,
+        'Content-Type': 'image/png', // Default for achievement icons
         'Cache-Control': `public, max-age=${cacheTtlSec}`,
       });
 
-      const stream = file.createReadStream();
-
+      // Handle stream errors (file not found, etc.)
       stream.on('error', (err) => {
         console.error('Stream error:', err);
         if (!res.headersSent) {
-          res.status(500).json({ error: 'Error streaming file' });
+          res.status(404).json({ error: 'Object not found' });
         }
       });
 
+      // Pipe the stream to response
       stream.pipe(res);
     } catch (error) {
       console.error('Error downloading file:', error);
