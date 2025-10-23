@@ -315,7 +315,16 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementCollectionType').value = achievement.collectionType;
   
   // Handle multi-select animal categories
-  const animalCategories = achievement.proteinCategories || (achievement.proteinCategory ? [achievement.proteinCategory] : []);
+  // Priority: requirement.categories (new) > proteinCategories (legacy) > proteinCategory (legacy)
+  let animalCategories = [];
+  if (achievement.requirement && achievement.requirement.categories && Array.isArray(achievement.requirement.categories)) {
+    animalCategories = achievement.requirement.categories;
+  } else if (achievement.proteinCategories) {
+    animalCategories = achievement.proteinCategories;
+  } else if (achievement.proteinCategory) {
+    animalCategories = [achievement.proteinCategory];
+  }
+  
   document.querySelectorAll('input[name="animalCategories"]').forEach(checkbox => {
     checkbox.checked = animalCategories.includes(checkbox.value);
   });
