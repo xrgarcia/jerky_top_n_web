@@ -8,6 +8,40 @@ let currentTypeFilter = 'all';
 let editingAchievementId = null;
 
 /**
+ * Show toast notification
+ */
+function showToast({ type = 'info', icon = '🔔', title = '', message = '', duration = 5000 }) {
+  const container = document.getElementById('toast-container') || createToastContainer();
+  
+  const toast = document.createElement('div');
+  toast.className = `toast toast-${type}`;
+  toast.innerHTML = `
+    <div class="toast-icon">${icon}</div>
+    <div class="toast-content">
+      ${title ? `<div class="toast-title">${title}</div>` : ''}
+      <div class="toast-message">${message}</div>
+    </div>
+  `;
+  
+  container.appendChild(toast);
+  
+  setTimeout(() => toast.classList.add('show'), 10);
+  
+  setTimeout(() => {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+  }, duration);
+}
+
+function createToastContainer() {
+  const container = document.createElement('div');
+  container.id = 'toast-container';
+  container.className = 'toast-container';
+  document.body.appendChild(container);
+  return container;
+}
+
+/**
  * Load achievements from admin API
  */
 async function loadAchievementsAdmin() {
@@ -409,13 +443,25 @@ async function handleAchievementFormSubmit(event) {
   if (iconType === 'emoji') {
     iconValue = formData.get('icon');
     if (!iconValue) {
-      alert('Please enter an emoji icon');
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'Missing Icon',
+        message: 'Please enter an emoji icon',
+        duration: 5000
+      });
       return;
     }
   } else {
     iconValue = formData.get('customIconPath');
     if (!iconValue) {
-      alert('Please upload a custom icon or switch to emoji mode');
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'Missing Icon',
+        message: 'Please upload a custom icon or switch to emoji mode',
+        duration: 5000
+      });
       return;
     }
   }
@@ -457,7 +503,13 @@ async function handleAchievementFormSubmit(event) {
   if (achievementData.collectionType === 'dynamic_collection') {
     const selectedCategories = achievementData.proteinCategories || [];
     if (selectedCategories.length === 0) {
-      alert('Please select at least one protein category for this Dynamic Collection');
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'Missing Categories',
+        message: 'Please select at least one protein category for this Dynamic Collection',
+        duration: 5000
+      });
       return;
     }
     
@@ -470,7 +522,13 @@ async function handleAchievementFormSubmit(event) {
     // Other collection types need manual requirement selection
     const requirementType = document.getElementById('requirementType').value;
     if (!requirementType) {
-      alert('Please select a requirement type');
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'Missing Requirement',
+        message: 'Please select a requirement type',
+        duration: 5000
+      });
       return;
     }
     
@@ -481,7 +539,13 @@ async function handleAchievementFormSubmit(event) {
       case 'rank_count':
         const rankCount = parseInt(document.getElementById('rankCountValue').value);
         if (!rankCount || rankCount < 1) {
-          alert('Please enter a valid number of products to rank');
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of products to rank',
+            duration: 5000
+          });
           return;
         }
         requirement.value = rankCount;
@@ -490,7 +554,13 @@ async function handleAchievementFormSubmit(event) {
       case 'complete_animal_category':
         const categoryCount = parseInt(document.getElementById('animalCategoryCount').value);
         if (!categoryCount || categoryCount < 1) {
-          alert('Please enter a valid number of categories');
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of categories',
+            duration: 5000
+          });
           return;
         }
         requirement.value = categoryCount;
@@ -502,7 +572,13 @@ async function handleAchievementFormSubmit(event) {
           selectedFlavors.push(checkbox.value);
         });
         if (selectedFlavors.length === 0) {
-          alert('Please select at least one flavor');
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'No Flavors Selected',
+            message: 'Please select at least one flavor',
+            duration: 5000
+          });
           return;
         }
         requirement.flavors = selectedFlavors;
@@ -511,7 +587,13 @@ async function handleAchievementFormSubmit(event) {
       case 'search_count':
         const searchCount = parseInt(document.getElementById('searchCountValue').value);
         if (!searchCount || searchCount < 1) {
-          alert('Please enter a valid number of searches');
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of searches',
+            duration: 5000
+          });
           return;
         }
         requirement.value = searchCount;
@@ -521,7 +603,13 @@ async function handleAchievementFormSubmit(event) {
       case 'daily_rank_streak':
         const streakDays = parseInt(document.getElementById('streakDaysValue').value);
         if (!streakDays || streakDays < 1) {
-          alert('Please enter a valid number of days');
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of days',
+            duration: 5000
+          });
           return;
         }
         requirement.days = streakDays;
@@ -568,15 +656,32 @@ async function handleAchievementFormSubmit(event) {
     const result = await response.json();
     console.log('Achievement saved:', result);
     
-    // Reload achievements and close modal
+    // Reload achievements
     await loadAchievementsAdmin();
-    closeAchievementForm();
     
-    alert(`✅ Achievement ${editingAchievementId ? 'updated' : 'created'} successfully!`);
+    // Show success toast notification
+    showToast({
+      type: 'success',
+      icon: '✅',
+      title: 'Success!',
+      message: `Achievement ${editingAchievementId ? 'updated' : 'created'} successfully!`,
+      duration: 5000
+    });
+    
+    // Close modal on success
+    closeAchievementForm();
     
   } catch (error) {
     console.error('Error saving achievement:', error);
-    alert(`❌ Failed to save achievement: ${error.message}`);
+    
+    // Show error toast but keep modal open
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: `Failed to save achievement: ${error.message}`,
+      duration: 7000
+    });
   }
 }
 
@@ -605,7 +710,13 @@ window.toggleAchievementStatus = async function(achievementId) {
     
   } catch (error) {
     console.error('Error toggling achievement status:', error);
-    alert(`❌ Failed to toggle achievement status: ${error.message}`);
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: `Failed to toggle achievement status: ${error.message}`,
+      duration: 7000
+    });
   }
 };
 
@@ -630,11 +741,23 @@ window.deleteAchievement = function(achievementId) {
         }
         
         await loadAchievementsAdmin();
-        alert(`✅ Achievement deleted successfully!`);
+        showToast({
+          type: 'success',
+          icon: '✅',
+          title: 'Deleted',
+          message: 'Achievement deleted successfully!',
+          duration: 5000
+        });
         
       } catch (error) {
         console.error('Error deleting achievement:', error);
-        alert(`❌ Failed to delete achievement: ${error.message}`);
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Error',
+          message: `Failed to delete achievement: ${error.message}`,
+          duration: 7000
+        });
       }
     }
   );
