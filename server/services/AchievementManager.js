@@ -118,6 +118,10 @@ class AchievementManager {
         earned: !!earned,
         earnedAt: earned?.earnedAt || null,
         progress,
+        // Include tier information for dynamic collections
+        currentTier: earned?.currentTier || null,
+        percentageComplete: earned?.percentageComplete || 0,
+        pointsAwarded: earned?.pointsAwarded || 0,
       };
     });
   }
