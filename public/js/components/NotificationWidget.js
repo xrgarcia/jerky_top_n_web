@@ -89,12 +89,35 @@ class NotificationWidget {
   }
 
   showAchievement(achievement) {
+    const isTierUpgrade = achievement.isTierUpgrade;
+    const tierEmojis = {
+      bronze: '🥉',
+      silver: '🥈',
+      gold: '🥇',
+      platinum: '💎',
+      diamond: '💠'
+    };
+    
+    let title = '🎉 Achievement Unlocked!';
+    let message = achievement.name;
+    let description = achievement.description;
+    
+    if (isTierUpgrade) {
+      const tierEmoji = tierEmojis[achievement.tier] || '⭐';
+      title = `⬆️ Tier Upgraded!`;
+      message = `${achievement.name} - ${tierEmoji} ${achievement.tier.charAt(0).toUpperCase() + achievement.tier.slice(1)}`;
+      
+      if (achievement.pointsGained) {
+        description = `+${achievement.pointsGained} points earned! ${achievement.description || ''}`;
+      }
+    }
+    
     this.show({
       type: 'achievement',
       icon: achievement.icon,
-      title: '🎉 Achievement Unlocked!',
-      message: achievement.name,
-      description: achievement.description,
+      title,
+      message,
+      description,
       tier: achievement.tier,
       duration: 6000
     });

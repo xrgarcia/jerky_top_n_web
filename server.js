@@ -1501,6 +1501,16 @@ app.post('/api/rankings/products', async (req, res) => {
                 if (update.type === 'new') {
                   // New collection earned - emit as achievement
                   newCollectionAchievements.push(update.achievement);
+                } else if (update.type === 'tier_upgrade') {
+                  // Tier upgrade - emit as achievement with tier info
+                  newCollectionAchievements.push({
+                    ...update.achievement,
+                    tier: update.newTier,
+                    previousTier: update.previousTier,
+                    pointsGained: update.pointsGained,
+                    isTierUpgrade: true
+                  });
+                  console.log(`⬆️ Tier upgrade toast: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
                 }
               }
               
