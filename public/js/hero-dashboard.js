@@ -150,10 +150,13 @@ class HeroDashboard {
     // Format time ago
     const timeAgo = this.getTimeAgo(achievement.earnedAt);
     
+    // Render icon (supports both emoji and image URLs)
+    const iconHtml = this.renderIcon(achievement.achievementIcon);
+    
     // Build achievement HTML
     const html = `
       <div class="slider-item">
-        <span class="achievement-badge">${achievement.achievementIcon}</span>
+        <span class="achievement-badge">${iconHtml}</span>
         <div class="achievement-text">
           <span class="achievement-user">${achievement.userName}</span>
           earned
@@ -165,6 +168,16 @@ class HeroDashboard {
     `;
     
     slider.innerHTML = html;
+  }
+
+  /**
+   * Render achievement icon (supports both emoji and images)
+   */
+  renderIcon(icon) {
+    if (typeof icon === 'string' && (icon.startsWith('/') || icon.startsWith('http'))) {
+      return `<img src="${icon}" alt="Achievement Icon" style="width: 48px; height: 48px; object-fit: contain;">`;
+    }
+    return icon;
   }
 
   /**
