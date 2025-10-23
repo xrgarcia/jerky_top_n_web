@@ -45,6 +45,11 @@ class AchievementManager {
         // Check if user has completed at least one animal category (with >2 products)
         return userStats.completedAnimalCategories && userStats.completedAnimalCategories.length >= requirement.value;
       },
+      complete_protein_category_percentage: (userStats, requirement) => {
+        // Dynamic collections are handled by CollectionManager, not here
+        // This evaluator should never award the achievement
+        return false;
+      },
     };
   }
 

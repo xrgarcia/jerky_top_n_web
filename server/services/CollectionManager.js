@@ -40,31 +40,43 @@ class CollectionManager {
   async calculateCollectionProgress(userId, collection) {
     const { proteinCategory, proteinCategories, requirement } = collection;
     
-    // Support both multi-category (proteinCategories) and legacy single category (proteinCategory)
-    const categories = proteinCategories && Array.isArray(proteinCategories) && proteinCategories.length > 0
-      ? proteinCategories
-      : (proteinCategory ? [proteinCategory] : []);
+    // Priority order for categories:
+    // 1. requirement.categories (new dynamic collections with animal display names)
+    // 2. proteinCategories (legacy multi-category)
+    // 3. proteinCategory (legacy single category)
+    let categories = [];
+    
+    if (requirement && requirement.categories && Array.isArray(requirement.categories) && requirement.categories.length > 0) {
+      categories = requirement.categories;
+    } else if (proteinCategories && Array.isArray(proteinCategories) && proteinCategories.length > 0) {
+      categories = proteinCategories;
+    } else if (proteinCategory) {
+      categories = [proteinCategory];
+    }
     
     if (categories.length === 0) {
       console.warn(`Collection ${collection.code} has no protein categories`);
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
 
+    const { productRankings, productsMetadata } = require('../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+
     // Fetch products from all categories and deduplicate
-    const allProducts = new Set();
-    for (const category of categories) {
-      const products = await this.productsMetadataRepo.getProductsByAnimalType(category);
-      products.forEach(p => allProducts.add(p.shopifyProductId));
-    }
+    // For new dynamic collections, categories are animal display names (Alligator, Beef, etc.)
+    // Query by animalDisplay field
+    const allProducts = await this.db
+      .select({ shopifyProductId: productsMetadata.shopifyProductId })
+      .from(productsMetadata)
+      .where(inArray(productsMetadata.animalDisplay, categories))
+      .groupBy(productsMetadata.shopifyProductId);
     
-    const totalAvailable = allProducts.size;
+    const totalAvailable = allProducts.length;
 
     if (totalAvailable === 0) {
+      console.warn(`Collection ${collection.code} found 0 products for categories:`, categories);
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
-
-    const { productRankings, productsMetadata } = require('../../shared/schema');
-    const { sql, inArray } = require('drizzle-orm');
     
     // Get user's ranked products that match ANY of the categories
     const rankedProducts = await this.db
@@ -76,7 +88,7 @@ class CollectionManager {
       )
       .where(and(
         eq(productRankings.userId, userId),
-        inArray(productsMetadata.animalType, categories)
+        inArray(productsMetadata.animalDisplay, categories)
       ))
       .groupBy(productRankings.shopifyProductId);
 
