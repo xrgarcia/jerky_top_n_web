@@ -72,6 +72,8 @@ class CollectionManager {
       .groupBy(productsMetadata.shopifyProductId);
     
     const totalAvailable = allProducts.length;
+    
+    console.log(`📊 Collection ${collection.code}: Found ${totalAvailable} products for ${categories.length} animals:`, categories);
 
     if (totalAvailable === 0) {
       console.warn(`Collection ${collection.code} found 0 products for categories:`, categories);
@@ -94,6 +96,8 @@ class CollectionManager {
 
     const totalRanked = rankedProducts.length;
     const percentage = Math.round((totalRanked / totalAvailable) * 100);
+    
+    console.log(`📊 Collection ${collection.code}: User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
 
     return {
       percentage,
