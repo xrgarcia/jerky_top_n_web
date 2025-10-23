@@ -1,8 +1,6 @@
 const { eq, and, desc, sql, isNull } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
-
-// Valid protein category values
-const VALID_PROTEIN_CATEGORIES = ['cattle', 'poultry', 'pork', 'fish', 'game', 'exotic'];
+const animalCategoryService = require('../services/AnimalCategoryService');
 
 /**
  * AchievementAdminRepository - Data access layer for admin achievement management
@@ -14,9 +12,10 @@ class AchievementAdminRepository {
   }
 
   /**
-   * Validate protein categories array
+   * Validate protein categories array.
+   * Now validates against actual animal display names from the database.
    */
-  validateProteinCategories(categories) {
+  async validateProteinCategories(categories) {
     if (!categories) return null;
     
     if (!Array.isArray(categories)) {
@@ -27,10 +26,12 @@ class AchievementAdminRepository {
       return null; // Empty array treated as null
     }
     
-    // Check for invalid values
-    const invalid = categories.filter(c => !VALID_PROTEIN_CATEGORIES.includes(c));
-    if (invalid.length > 0) {
-      throw new Error(`Invalid protein categories: ${invalid.join(', ')}. Must be one of: ${VALID_PROTEIN_CATEGORIES.join(', ')}`);
+    // Validate categories against actual animal display names in database
+    const isValid = await animalCategoryService.validateAnimalDisplays(categories);
+    if (!isValid) {
+      const availableAnimals = await animalCategoryService.getAllUniqueAnimals();
+      const validNames = availableAnimals.map(a => a.display).join(', ');
+      throw new Error(`Invalid animal categories: ${categories.join(', ')}. Must be valid animal names from your product catalog. Available: ${validNames}`);
     }
     
     // Deduplicate
@@ -40,8 +41,8 @@ class AchievementAdminRepository {
   /**
    * Normalize protein category fields (sync first element for backward compatibility)
    */
-  normalizeProteinCategoryFields(proteinCategories) {
-    const normalized = this.validateProteinCategories(proteinCategories);
+  async normalizeProteinCategoryFields(proteinCategories) {
+    const normalized = await this.validateProteinCategories(proteinCategories);
     return {
       proteinCategories: normalized,
       proteinCategory: normalized && normalized.length > 0 ? normalized[0] : null

@@ -151,7 +151,7 @@ function createToolsRoutes(services) {
         return res.status(503).json({ error: 'Achievement service unavailable' });
       }
 
-      const result = await achievementManager.clearAllAchievements();
+      const result = await achievementManager.clearAllAchievements(req.user.id);
       
       console.log(`🗑️ Cleared ${result.achievements} achievements and ${result.streaks} streaks by ${req.user.email}`);
       

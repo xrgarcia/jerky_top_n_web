@@ -227,9 +227,10 @@ class AchievementManager {
 
   /**
    * Clear all achievements and streaks for all users (admin only)
+   * @param {number} adminUserId - ID of the admin performing the action
    * @returns {Object} Count of deleted achievements and streaks
    */
-  async clearAllAchievements() {
+  async clearAllAchievements(adminUserId) {
     const deletedAchievements = await this.achievementRepo.deleteAllAchievements();
     
     // Also clear all streaks
@@ -237,15 +238,18 @@ class AchievementManager {
     const streakRepo = new StreakRepository(this.achievementRepo.db);
     const deletedStreaks = await streakRepo.deleteAllStreaks();
     
+    // Log activity with admin user ID (required for activity_logs table)
     if (deletedAchievements > 0 || deletedStreaks > 0) {
-      await this.activityLogRepo.logActivity(
-        null,
-        'all_achievements_cleared',
-        { 
-          deletedAchievements,
-          deletedStreaks 
-        }
-      );
+      if (adminUserId) {
+        await this.activityLogRepo.logActivity(
+          adminUserId,
+          'all_achievements_cleared',
+          { 
+            deletedAchievements,
+            deletedStreaks 
+          }
+        );
+      }
     }
     
     return {
