@@ -187,8 +187,15 @@ class ProgressWidget {
             <div class="achievements-grid">
               ${achievements.map(achievement => {
                 const mysteriousDesc = this.mysteriousDescriptions[achievement.code] || achievement.description;
+                
+                // Get tier for display (currentTier for dynamic collections, tier for legacy)
+                const displayTier = achievement.currentTier || achievement.tier;
+                const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+                const tierEmoji = displayTier ? tierEmojis[displayTier] || '' : '';
+                const tierLabel = displayTier ? `${displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}` : '';
+                
                 const tooltipText = achievement.earned 
-                  ? `<strong>${achievement.name}</strong><br>${achievement.description}<br><em>Unlocked!</em>`
+                  ? `<strong>${achievement.name}</strong>${tierLabel ? ` - ${tierEmoji} ${tierLabel}` : ''}<br>${achievement.description}<br><em>Unlocked!</em>`
                   : `<strong>???</strong><br>${mysteriousDesc}<br><span class="requirement-hint">${this.getRequirementHint(achievement)}</span>`;
                 
                 const iconHtml = achievement.iconType === 'image'
@@ -196,9 +203,9 @@ class ProgressWidget {
                   : achievement.icon;
                 
                 return `
-                  <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${achievement.tier}" tabindex="0">
+                  <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} tier-${displayTier || 'none'}" tabindex="0">
                     <span class="achievement-icon">${iconHtml}</span>
-                    <span class="achievement-name">${achievement.earned ? achievement.name : '???'}</span>
+                    <span class="achievement-name">${achievement.earned ? achievement.name : '???'}${tierEmoji ? ` ${tierEmoji}` : ''}</span>
                     <div class="achievement-tooltip" role="tooltip">${tooltipText}</div>
                   </div>
                 `;

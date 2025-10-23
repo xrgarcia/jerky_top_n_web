@@ -3149,11 +3149,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     userAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet</div>';
                 } else {
                     userAchievementsList.innerHTML = achievements.map(achievement => {
+                        // Get tier for display (currentTier for dynamic collections, tier for legacy)
+                        const displayTier = achievement.currentTier || achievement.tier;
+                        const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+                        const tierEmoji = displayTier ? tierEmojis[displayTier] || '' : '';
+                        const tierLabel = displayTier ? `${displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}` : '';
+                        
+                        const iconHtml = achievement.iconType === 'image'
+                            ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px; object-fit: contain;">`
+                            : achievement.icon;
+                        
                         return `
-                            <div class="user-achievement-badge tier-${achievement.tier}">
-                                <span class="user-achievement-icon">${achievement.icon}</span>
-                                <span class="user-achievement-name">${achievement.name}</span>
-                                <div class="user-achievement-tooltip">${achievement.description}</div>
+                            <div class="user-achievement-badge tier-${displayTier || 'none'}">
+                                <span class="user-achievement-icon">${iconHtml}</span>
+                                <span class="user-achievement-name">${achievement.name}${tierEmoji ? ` ${tierEmoji}` : ''}</span>
+                                <div class="user-achievement-tooltip">${achievement.description}${tierLabel ? `<br><strong>${tierEmoji} ${tierLabel}</strong>` : ''}</div>
                             </div>
                         `;
                     }).join('');
@@ -3543,11 +3553,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             profileAchievementsList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666;">No achievements earned yet. Start ranking to unlock achievements!</div>';
                         } else {
                             profileAchievementsList.innerHTML = achievements.map(achievement => {
+                                // Get tier for display (currentTier for dynamic collections, tier for legacy)
+                                const displayTier = achievement.currentTier || achievement.tier;
+                                const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+                                const tierEmoji = displayTier ? tierEmojis[displayTier] || '' : '';
+                                const tierLabel = displayTier ? `${displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}` : '';
+                                
+                                const iconHtml = achievement.iconType === 'image'
+                                    ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 48px; height: 48px; object-fit: contain;">`
+                                    : achievement.icon;
+                                
                                 return `
-                                    <div class="user-achievement-badge tier-${achievement.tier}">
-                                        <span class="user-achievement-icon">${achievement.icon}</span>
-                                        <span class="user-achievement-name">${achievement.name}</span>
-                                        <div class="user-achievement-tooltip">${achievement.description}</div>
+                                    <div class="user-achievement-badge tier-${displayTier || 'none'}">
+                                        <span class="user-achievement-icon">${iconHtml}</span>
+                                        <span class="user-achievement-name">${achievement.name}${tierEmoji ? ` ${tierEmoji}` : ''}</span>
+                                        <div class="user-achievement-tooltip">${achievement.description}${tierLabel ? `<br><strong>${tierEmoji} ${tierLabel}</strong>` : ''}</div>
                                     </div>
                                 `;
                             }).join('');
