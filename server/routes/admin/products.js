@@ -5,6 +5,81 @@ const { productsMetadata } = require('../../../shared/schema');
 const { eq } = require('drizzle-orm');
 
 /**
+ * Middleware to require employee authentication
+ */
+async function requireEmployeeAuth(req, res, next) {
+  try {
+    const sessionId = req.cookies.session_id;
+    
+    if (!sessionId) {
+      return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
+    }
+
+    const session = await storage.getSession(sessionId);
+    if (!session) {
+      return res.status(403).json({ error: 'Access denied. Invalid session.' });
+    }
+
+    // Get user from database to check role and email
+    const user = await storage.getUserById(session.userId);
+    if (!user) {
+      return res.status(403).json({ error: 'Access denied. User not found.' });
+    }
+
+    // Allow access if user has employee_admin role OR email ends with @jerky.com
+    const hasAccess = user.role === 'employee_admin' || (user.email && user.email.endsWith('@jerky.com'));
+    
+    if (!hasAccess) {
+      return res.status(403).json({ error: 'Access denied. Employee authentication required.' });
+    }
+    
+    // Attach user info to request for use in route handlers
+    req.session = session;
+    req.userId = session.userId;
+    req.user = user;
+    
+    next();
+  } catch (error) {
+    console.error('Error in requireEmployeeAuth:', error);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+/**
+ * GET /api/admin/products
+ * Fetch all products for admin product selector
+ */
+router.get('/products', requireEmployeeAuth, async (req, res) => {
+  try {
+    const { limit = 500 } = req.query;
+    
+    // Get ProductsService singleton
+    const ProductsService = require('../../services/ProductsService');
+    const productsService = ProductsService.getInstance();
+    
+    // Fetch all rankable products from cache
+    const products = await productsService.getAllProducts();
+    
+    // Limit results
+    const limitedProducts = products.slice(0, parseInt(limit));
+    
+    console.log(`📦 Admin products endpoint: Returning ${limitedProducts.length} products`);
+    
+    res.json({
+      success: true,
+      products: limitedProducts,
+      total: products.length
+    });
+  } catch (error) {
+    console.error('Error fetching products for admin:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch products'
+    });
+  }
+});
+
+/**
  * PATCH /api/admin/products/:productId/metadata
  * Update product metadata (animal_type, animal_display, animal_icon)
  */

@@ -1112,7 +1112,7 @@ async function loadProductsForSelector() {
   availableList.innerHTML = '<div class="loading-state">Loading products...</div>';
   
   try {
-    const response = await fetch('/api/products?limit=500');
+    const response = await fetch('/api/admin/products?limit=500');
     if (!response.ok) throw new Error('Failed to load products');
     
     const data = await response.json();
