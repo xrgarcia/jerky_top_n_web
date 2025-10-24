@@ -16,7 +16,11 @@ const io = new Server(httpServer, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
-  }
+  },
+  // Increase connection limits for high concurrency
+  maxHttpBufferSize: 1e6, // 1MB
+  pingTimeout: 60000, // 60s
+  pingInterval: 25000 // 25s
 });
 
 // Detect environment and URL for Sentry tracking
@@ -387,8 +391,26 @@ app.get('/customer-login', (req, res) => {
   `);
 });
 
+// Initialize rate limiters early for authentication endpoints
+let rateLimiters = null;
+(async () => {
+  const { createRateLimiters } = require('./server/middleware/rateLimiter');
+  rateLimiters = await createRateLimiters();
+  console.log('✅ Rate limiters initialized for authentication endpoints');
+})();
+
+// Helper to get auth rate limiter (wait if not yet loaded)
+async function getAuthLimiter() {
+  while (!rateLimiters) {
+    await new Promise(resolve => setTimeout(resolve, 50));
+  }
+  return rateLimiters.authLimiter;
+}
+
 // Magic link email authentication endpoint
-app.post('/api/customer/email-login', async (req, res) => {
+app.post('/api/customer/email-login', async (req, res, next) => {
+  const limiter = await getAuthLimiter();
+  return limiter(req, res, async () => {
   try {
     if (!shopifyAvailable) {
       console.error('🚫 Login unavailable: Shopify credentials not configured');
@@ -494,6 +516,7 @@ app.post('/api/customer/email-login', async (req, res) => {
     console.error('Magic link generation error:', error);
     res.status(500).json({ error: 'Failed to send login link. Please try again.' });
   }
+  });
 });
 
 // Magic link verification endpoint
@@ -2438,15 +2461,28 @@ if (databaseAvailable && storage) {
     rankingStatsCache
   );
   
-  initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService)
-    .then(services => {
-      gamificationServices = services;
-      console.log('✅ Gamification services available for achievements');
+  // Wait for rate limiters to be ready before initializing gamification
+  const waitForRateLimiters = async () => {
+    while (!rateLimiters) {
+      await new Promise(resolve => setTimeout(resolve, 50));
+    }
+    return rateLimiters;
+  };
+
+  waitForRateLimiters().then(async limiters => {
+    // Initialize gamification with rate limiters
+    const services = await initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService, limiters);
+    gamificationServices = services;
+    console.log('✅ Gamification services available for achievements');
+    
+    // Apply rate limiting to other API routes
+    app.use('/api/products', limiters.apiLimiter);
+    app.use('/api/rankings', limiters.rankingLimiter); // Stricter for ranking submissions
       
       // Initialize tools routes (employee admin only)
       const createToolsRoutes = require('./server/routes/tools');
       const toolsRouter = createToolsRoutes(services);
-      app.use('/api/tools', toolsRouter);
+      app.use('/api/tools', limiters.adminLimiter, toolsRouter);
       console.log('✅ Tools routes registered at /api/tools');
       
       // Route for serving uploaded achievement icons from object storage
@@ -2488,7 +2524,7 @@ if (databaseAvailable && storage) {
       const dataRouter = createDataManagementRoutes(storage, db);
       adminRouter.use(dataRouter);
       
-      app.use('/api/admin', adminRouter);
+      app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
       // Main route - serves SPA for all routes (MUST BE LAST)

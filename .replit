@@ -41,7 +41,7 @@ externalPort = 3000
 [deployment]
 deploymentTarget = "autoscale"
 run = ["npm", "start"]
-build = ["node", "server/migrations/migrate.js"]
+build = ["npm", "install"]
 
 [objectStorage]
 defaultBucketID = "replit-objstore-34844072-dfc9-470d-a75e-4cc381e322d8"

@@ -27,7 +27,7 @@ const HomeStatsCache = require('../cache/HomeStatsCache');
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
 
-async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null) {
+async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null) {
   console.log('🎮 Initializing gamification system...');
 
   const achievementRepo = new AchievementRepository(db);
@@ -77,7 +77,13 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   };
 
   const gamificationRouter = createGamificationRoutes(services);
-  app.use('/api/gamification', gamificationRouter);
+  
+  // Apply rate limiting middleware if provided
+  if (rateLimiters) {
+    app.use('/api/gamification', rateLimiters.apiLimiter, gamificationRouter);
+  } else {
+    app.use('/api/gamification', gamificationRouter);
+  }
   console.log('✅ Gamification routes registered at /api/gamification');
 
   const wsGateway = new WebSocketGateway(io, services);
