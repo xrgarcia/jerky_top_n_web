@@ -1494,7 +1494,7 @@ app.post('/api/rankings/products', async (req, res) => {
             const collectionUpdates = await collectionManager.checkAndUpdateDynamicCollections(userId);
             
             if (collectionUpdates.length > 0) {
-              console.log(`📚 User ${userId} updated ${collectionUpdates.length} collection(s)`);
+              console.log(`📚 User ${userId} updated ${collectionUpdates.length} dynamic collection(s)`);
               
               // Convert collection updates into achievement format for toasts
               for (const update of collectionUpdates) {
@@ -1517,6 +1517,36 @@ app.post('/api/rankings/products', async (req, res) => {
               // Still emit collections:updated for progress tracking
               if (io) {
                 io.to(`user:${userId}`).emit('collections:updated', { updates: collectionUpdates });
+              }
+            }
+            
+            // Update custom product list collection progress
+            const customCollectionUpdates = await collectionManager.checkAndUpdateCustomProductCollections(userId);
+            
+            if (customCollectionUpdates.length > 0) {
+              console.log(`📚 User ${userId} updated ${customCollectionUpdates.length} custom product collection(s)`);
+              
+              // Convert collection updates into achievement format for toasts
+              for (const update of customCollectionUpdates) {
+                if (update.type === 'new') {
+                  // New collection earned - emit as achievement
+                  newCollectionAchievements.push(update.achievement);
+                } else if (update.type === 'tier_upgrade') {
+                  // Tier upgrade - emit as achievement with tier info
+                  newCollectionAchievements.push({
+                    ...update.achievement,
+                    tier: update.newTier,
+                    previousTier: update.previousTier,
+                    pointsGained: update.pointsGained,
+                    isTierUpgrade: true
+                  });
+                  console.log(`⬆️ Tier upgrade toast: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
+                }
+              }
+              
+              // Still emit collections:updated for progress tracking
+              if (io) {
+                io.to(`user:${userId}`).emit('collections:updated', { updates: customCollectionUpdates });
               }
             }
           }

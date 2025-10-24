@@ -37,6 +37,76 @@ class CollectionManager {
     return updates;
   }
 
+  async checkAndUpdateCustomProductCollections(userId) {
+    const customCollections = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'static_collection'),
+        eq(achievements.isActive, 1)
+      ));
+
+    // Filter to only those with custom product list requirement
+    const customProductCollections = customCollections.filter(c => 
+      c.requirement && c.requirement.type === 'custom_product_list' && 
+      Array.isArray(c.requirement.productIds) && c.requirement.productIds.length > 0
+    );
+
+    const updates = [];
+
+    for (const collection of customProductCollections) {
+      const progress = await this.calculateCustomProductProgress(userId, collection);
+      const update = await this.updateCollectionProgress(userId, collection, progress);
+      if (update) {
+        updates.push(update);
+      }
+    }
+
+    return updates;
+  }
+
+  async calculateCustomProductProgress(userId, collection) {
+    const { requirement } = collection;
+    
+    if (!requirement || !requirement.productIds || !Array.isArray(requirement.productIds)) {
+      console.warn(`Collection ${collection.code} has no product IDs`);
+      return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
+    }
+
+    const productIds = requirement.productIds;
+    const totalAvailable = productIds.length;
+    
+    if (totalAvailable === 0) {
+      console.warn(`Collection ${collection.code} has empty product list`);
+      return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
+    }
+
+    const { productRankings } = require('../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+
+    // Get user's ranked products that match the custom product list
+    const rankedProducts = await this.db
+      .select({ shopifyProductId: productRankings.shopifyProductId })
+      .from(productRankings)
+      .where(and(
+        eq(productRankings.userId, userId),
+        inArray(productRankings.shopifyProductId, productIds)
+      ))
+      .groupBy(productRankings.shopifyProductId);
+
+    const totalRanked = rankedProducts.length;
+    const percentage = Math.round((totalRanked / totalAvailable) * 100);
+    
+    console.log(`📊 Custom Collection ${collection.code}: User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
+
+    return {
+      percentage,
+      totalAvailable,
+      totalRanked,
+      tier: this.getTierFromPercentage(percentage, collection.tierThresholds),
+      productIds // Include for debugging
+    };
+  }
+
   async calculateCollectionProgress(userId, collection) {
     const { proteinCategory, proteinCategories, requirement } = collection;
     
