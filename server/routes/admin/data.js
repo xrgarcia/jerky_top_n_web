@@ -107,10 +107,15 @@ module.exports = function createDataManagementRoutes(storage, db) {
     try {
       console.log(`⚠️ Super admin ${req.user.email} clearing ALL achievement data...`);
 
-      const { userAchievements } = require('../../../shared/schema');
+      const { userAchievements, productRankings } = require('../../../shared/schema');
 
       // Delete all user achievements
-      const result = await db.delete(userAchievements);
+      const achievementsResult = await db.delete(userAchievements);
+      console.log(`🗑️ Deleted ${achievementsResult.rowCount || 0} user achievements`);
+      
+      // Delete all product rankings
+      const rankingsResult = await db.delete(productRankings);
+      console.log(`🗑️ Deleted ${rankingsResult.rowCount || 0} product rankings`);
       
       // Clear all caches after deletion
       const AchievementCache = require('../../cache/AchievementCache');
