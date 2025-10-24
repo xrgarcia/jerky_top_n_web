@@ -181,7 +181,12 @@ class CollectionManager {
     } else {
       const current = existing[0];
       
-      if (current.currentTier !== tier || current.percentageComplete !== percentage) {
+      // Check if tier has actually changed for notifications
+      const tierChanged = current.currentTier !== tier;
+      const percentageChanged = current.percentageComplete !== percentage;
+      
+      // Always update the database if there's any progress change
+      if (tierChanged || percentageChanged) {
         const previousPoints = current.pointsAwarded || 0;
         const pointsGained = pointsAwarded - previousPoints;
         
@@ -195,18 +200,24 @@ class CollectionManager {
           })
           .where(eq(userAchievements.id, current.id));
 
-        console.log(`⬆️ Tier upgrade: ${collection.name} (${current.currentTier} → ${tier}) - +${pointsGained} points (total: ${pointsAwarded})`);
+        // Only trigger notification if tier actually changed
+        if (tierChanged) {
+          console.log(`⬆️ Tier upgrade: ${collection.name} (${current.currentTier} → ${tier}) - +${pointsGained} points (total: ${pointsAwarded})`);
 
-        return {
-          type: 'tier_upgrade',
-          achievement: collection,
-          previousTier: current.currentTier,
-          newTier: tier,
-          percentage,
-          pointsAwarded,
-          pointsGained,
-          userAchievement: current
-        };
+          return {
+            type: 'tier_upgrade',
+            achievement: collection,
+            previousTier: current.currentTier,
+            newTier: tier,
+            percentage,
+            pointsAwarded,
+            pointsGained,
+            userAchievement: current
+          };
+        } else {
+          // Progress updated but tier didn't change - no notification
+          console.log(`📊 Progress updated: ${collection.name} (${tier}) ${current.percentageComplete}% → ${percentage}% - +${pointsGained} points (total: ${pointsAwarded})`);
+        }
       }
     }
 
