@@ -88,8 +88,9 @@
     }
     
     // Reload rankings to ensure fresh data (e.g., after clearing data)
-    if (window.reloadRankings) {
-      window.reloadRankings();
+    // This calls the main loadRankPageData function which handles both initial load and reload
+    if (window.reloadRankPageData) {
+      window.reloadRankPageData();
     }
     
     if (gamificationService || progressService) {

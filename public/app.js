@@ -759,6 +759,18 @@ document.addEventListener('DOMContentLoaded', function() {
         initializeRouting();
     }
 
+    // Helper function to clear a ranking slot
+    function clearSlot(slot) {
+        const rank = parseInt(slot.dataset.rank);
+        slot.classList.remove('filled');
+        slot.innerHTML = `
+            <div class="slot-number">${rank}</div>
+            <div class="slot-placeholder">Drop a product here to rank #${rank}</div>
+        `;
+        delete slot.dataset.productId;
+        delete slot.dataset.productData;
+    }
+
     // Load rank page data (rankings + products)
     async function loadRankPageData() {
         if (!document.getElementById('rankingSlots')) return;
@@ -767,6 +779,13 @@ document.addEventListener('DOMContentLoaded', function() {
         if (rankingSlots.length === 0) {
             generateRankingSlots(10); // Start with 10 slots
             setupEventListeners();
+        } else {
+            // Clear existing rankings on reload to show fresh data
+            rankingSlots.forEach(slot => {
+                clearSlot(slot);
+            });
+            lastSavedProductIds = new Set();
+            console.log('🗑️ Cleared existing rankings for reload');
         }
         
         showRankingLoadStatus(); // Show loading indicator
@@ -860,15 +879,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Clear existing rankings first to avoid showing stale data (only if slots exist)
-            if (rankingSlots && rankingSlots.length > 0) {
-                rankingSlots.forEach(slot => {
-                    clearSlot(slot);
-                });
-                lastSavedProductIds = new Set();
-                console.log('🗑️ Cleared existing rankings before reload');
-            }
-
             const response = await fetch(`/api/rankings/products?sessionId=${sessionData.sessionId}&rankingListId=default`);
             const data = await response.json();
 
@@ -911,7 +921,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Expose globally for page navigation reloads
-    window.reloadRankings = loadUserRankings;
+    window.reloadRankPageData = loadRankPageData;
 
     // Generate ranking slots
     function generateRankingSlots(count) {
