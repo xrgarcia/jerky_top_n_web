@@ -199,6 +199,7 @@ function renderAchievementsTable() {
           <button class="btn-icon btn-toggle" onclick="toggleAchievementStatus(${achievement.id})" title="Toggle Active/Inactive">
             ${achievement.isActive === 1 ? '👁️' : '🚫'}
           </button>
+          <button class="btn-icon btn-recalculate" onclick="recalculateAchievement(${achievement.id})" title="Recalculate & Award to Qualifying Users">🔄</button>
           <button class="btn-icon btn-delete" onclick="deleteAchievement(${achievement.id})" title="Delete">🗑️</button>
         </td>
       </tr>
@@ -830,6 +831,67 @@ window.toggleAchievementStatus = async function(achievementId) {
       duration: 7000
     });
   }
+};
+
+/**
+ * Recalculate and award achievement to all qualifying users
+ */
+window.recalculateAchievement = async function(achievementId) {
+  const achievement = allAchievements.find(a => a.id === achievementId);
+  if (!achievement) return;
+  
+  showConfirmationModal(
+    'Recalculate Achievement',
+    `This will calculate and award "${achievement.name}" to all qualifying users. This process may take a few seconds for each user in the database. Continue?`,
+    async () => {
+      try {
+        // Show loading toast
+        const loadingToast = showToast({
+          type: 'info',
+          icon: '⏳',
+          title: 'Processing...',
+          message: `Recalculating "${achievement.name}" for all users...`,
+          duration: 0 // Don't auto-dismiss
+        });
+        
+        const response = await fetch(`/api/admin/achievements/${achievementId}/recalculate`, {
+          method: 'POST'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to recalculate achievement');
+        }
+        
+        const result = await response.json();
+        
+        // Hide loading toast
+        if (loadingToast && loadingToast.remove) {
+          loadingToast.remove();
+        }
+        
+        console.log('Achievement recalculated successfully:', result);
+        
+        // Show success with stats
+        showToast({
+          type: 'success',
+          icon: '✅',
+          title: 'Recalculation Complete',
+          message: `${achievement.name}: ${result.stats.newAwards} newly awarded, ${result.stats.tierUpgrades} upgraded (${result.stats.processed} users processed)`,
+          duration: 10000
+        });
+        
+      } catch (error) {
+        console.error('Error recalculating achievement:', error);
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Error',
+          message: `Failed to recalculate achievement: ${error.message}`,
+          duration: 7000
+        });
+      }
+    }
+  );
 };
 
 /**

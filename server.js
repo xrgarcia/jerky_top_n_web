@@ -2456,6 +2456,11 @@ if (databaseAvailable && storage) {
       const productsAdminRouter = require('./server/routes/admin/products');
       adminRouter.use(productsAdminRouter);
       
+      // Add recalculate route for retroactive achievement awards
+      const createRecalculateRoutes = require('./server/routes/admin/recalculate');
+      const recalculateRouter = createRecalculateRoutes(storage, db);
+      adminRouter.use(recalculateRouter);
+      
       app.use('/api/admin', adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
