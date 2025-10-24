@@ -448,8 +448,9 @@ function updateFormFieldsVisibility() {
     tierThresholdsSection.style.display = 'block';
     unlockRequirementsSection.style.display = 'none';
     productSelectorSection.style.display = 'block';
-    // Initialize product selector
-    initializeProductSelector();
+    // Initialize product selector - preserve selection if editing
+    const isEditing = document.getElementById('achievementId').value !== '';
+    initializeProductSelector(isEditing);
   } else if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
     // Static and hidden collections need manual unlock requirements
     unlockRequirementsSection.style.display = 'block';
@@ -1084,20 +1085,24 @@ let searchTerm = '';
 /**
  * Initialize product selector
  */
-async function initializeProductSelector() {
+async function initializeProductSelector(preserveSelection = false) {
   // Only load products if not already loaded
   if (adminAllProducts.length === 0) {
     await loadProductsForSelector();
   }
   
-  // Reset state
-  selectedProductIds.clear();
+  // Reset state only if not preserving selection
+  if (!preserveSelection) {
+    selectedProductIds.clear();
+  }
   searchTerm = '';
   document.getElementById('productSearchInput').value = '';
   
-  // Set up search handler
+  // Set up search handler (remove any existing listeners first)
   const searchInput = document.getElementById('productSearchInput');
-  searchInput.addEventListener('input', handleProductSearch);
+  const newSearchInput = searchInput.cloneNode(true);
+  searchInput.parentNode.replaceChild(newSearchInput, searchInput);
+  newSearchInput.addEventListener('input', handleProductSearch);
   
   // Render initial state
   renderAvailableProducts();
