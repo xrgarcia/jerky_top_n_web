@@ -105,36 +105,29 @@ module.exports = function createDataManagementRoutes(storage, db) {
     try {
       console.log(`⚠️ Super admin ${req.user.email} clearing ALL DATA...`);
 
-      const { 
-        pageViews, 
-        rankings, 
-        userProductSearches, 
-        activityLogs, 
-        productRankings,
-        productViews,
-        userAchievements
-      } = require('../../../shared/schema');
+      const { sql } = require('drizzle-orm');
 
-      // Truncate all data tables
-      await db.delete(pageViews);
+      // Truncate all data tables using SQL TRUNCATE (faster and resets sequences)
+      // NOTE: db.delete() without WHERE clause doesn't work in Drizzle
+      await db.execute(sql`TRUNCATE TABLE page_views CASCADE`);
       console.log('🗑️ Truncated page_views');
       
-      await db.delete(rankings);
+      await db.execute(sql`TRUNCATE TABLE rankings CASCADE`);
       console.log('🗑️ Truncated rankings');
       
-      await db.delete(userProductSearches);
+      await db.execute(sql`TRUNCATE TABLE user_product_searches CASCADE`);
       console.log('🗑️ Truncated user_product_searches');
       
-      await db.delete(activityLogs);
+      await db.execute(sql`TRUNCATE TABLE activity_logs CASCADE`);
       console.log('🗑️ Truncated activity_logs');
       
-      await db.delete(productRankings);
+      await db.execute(sql`TRUNCATE TABLE product_rankings CASCADE`);
       console.log('🗑️ Truncated product_rankings');
       
-      await db.delete(productViews);
+      await db.execute(sql`TRUNCATE TABLE product_views CASCADE`);
       console.log('🗑️ Truncated product_views');
       
-      await db.delete(userAchievements);
+      await db.execute(sql`TRUNCATE TABLE user_achievements CASCADE`);
       console.log('🗑️ Truncated user_achievements');
 
       
