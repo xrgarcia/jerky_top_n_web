@@ -53,7 +53,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
     try {
       console.log(`🗑️ Super admin ${req.user.email} clearing all caches...`);
 
-      // Import and clear all caches
+      // Clear all 6 system caches
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
@@ -61,25 +61,23 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
 
-      const achievementCache = AchievementCache.getInstance();
-      achievementCache.invalidate();
+      AchievementCache.getInstance().invalidate();
+      console.log('🗑️ Cleared AchievementCache');
       
-      const homeStatsCache = HomeStatsCache.getInstance();
-      homeStatsCache.invalidate();
+      HomeStatsCache.getInstance().invalidate();
+      console.log('🗑️ Cleared HomeStatsCache (metrics)');
       
-      const leaderboardCache = LeaderboardCache.getInstance();
-      leaderboardCache.invalidate(); // null = invalidate all
+      LeaderboardCache.getInstance().invalidate();
+      console.log('🗑️ Cleared LeaderboardCache');
       
-      const metadataCache = new MetadataCache();
-      metadataCache.invalidate();
+      new MetadataCache().invalidate();
+      console.log('🗑️ Cleared MetadataCache (products)');
       
-      const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
-      leaderboardPositionCache.invalidateAll();
+      LeaderboardPositionCache.getInstance().invalidateAll();
+      console.log('🗑️ Cleared LeaderboardPositionCache');
       
-      const rankingStatsCache = new RankingStatsCache();
-      rankingStatsCache.invalidate();
-
-      console.log('✅ All caches cleared successfully');
+      new RankingStatsCache().invalidate();
+      console.log('🗑️ Cleared RankingStatsCache (rankings)');
 
       res.json({ 
         success: true, 
@@ -105,19 +103,42 @@ module.exports = function createDataManagementRoutes(storage, db) {
    */
   router.delete('/data/clear-all', requireSuperAdmin, async (req, res) => {
     try {
-      console.log(`⚠️ Super admin ${req.user.email} clearing ALL achievement data...`);
+      console.log(`⚠️ Super admin ${req.user.email} clearing ALL DATA...`);
 
-      const { userAchievements, productRankings } = require('../../../shared/schema');
+      const { 
+        pageViews, 
+        rankings, 
+        userProductSearches, 
+        activityLogs, 
+        productRankings,
+        productViews,
+        userAchievements
+      } = require('../../../shared/schema');
 
-      // Delete all user achievements
-      const achievementsResult = await db.delete(userAchievements);
-      console.log(`🗑️ Deleted ${achievementsResult.rowCount || 0} user achievements`);
+      // Truncate all data tables
+      await db.delete(pageViews);
+      console.log('🗑️ Truncated page_views');
       
-      // Delete all product rankings
-      const rankingsResult = await db.delete(productRankings);
-      console.log(`🗑️ Deleted ${rankingsResult.rowCount || 0} product rankings`);
+      await db.delete(rankings);
+      console.log('🗑️ Truncated rankings');
       
-      // Clear all caches after deletion
+      await db.delete(userProductSearches);
+      console.log('🗑️ Truncated user_product_searches');
+      
+      await db.delete(activityLogs);
+      console.log('🗑️ Truncated activity_logs');
+      
+      await db.delete(productRankings);
+      console.log('🗑️ Truncated product_rankings');
+      
+      await db.delete(productViews);
+      console.log('🗑️ Truncated product_views');
+      
+      await db.delete(userAchievements);
+      console.log('🗑️ Truncated user_achievements');
+
+      
+      // Clear all 6 system caches after deletion
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
@@ -125,25 +146,14 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
 
-      const achievementCache = AchievementCache.getInstance();
-      achievementCache.invalidate();
-      
-      const homeStatsCache = HomeStatsCache.getInstance();
-      homeStatsCache.invalidate();
-      
-      const leaderboardCache = LeaderboardCache.getInstance();
-      leaderboardCache.invalidate(); // null = invalidate all
-      
-      const metadataCache = new MetadataCache();
-      metadataCache.invalidate();
-      
-      const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
-      leaderboardPositionCache.invalidateAll();
-      
-      const rankingStatsCache = new RankingStatsCache();
-      rankingStatsCache.invalidate();
+      AchievementCache.getInstance().invalidate();
+      HomeStatsCache.getInstance().invalidate();
+      LeaderboardCache.getInstance().invalidate();
+      new MetadataCache().invalidate();
+      LeaderboardPositionCache.getInstance().invalidateAll();
+      new RankingStatsCache().invalidate();
 
-      console.log('✅ All achievement data cleared successfully');
+      console.log('✅ All data and caches cleared successfully');
 
       res.json({ 
         success: true, 
