@@ -69,7 +69,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const leaderboardCache = LeaderboardCache.getInstance();
       leaderboardCache.invalidate(); // null = invalidate all
       
-      const metadataCache = MetadataCache.getInstance();
+      const metadataCache = new MetadataCache();
       metadataCache.invalidate();
       
       const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
@@ -123,7 +123,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const leaderboardCache = LeaderboardCache.getInstance();
       leaderboardCache.invalidate(); // null = invalidate all
       
-      const metadataCache = MetadataCache.getInstance();
+      const metadataCache = new MetadataCache();
       metadataCache.invalidate();
       
       const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
