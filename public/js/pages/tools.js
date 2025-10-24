@@ -494,18 +494,46 @@ function setupToolNavigation() {
 }
 
 // Modal helper functions
-function showConfirmationModal(title, message, onConfirm) {
+function showConfirmationModal(title, message, onConfirm, requiredText = null) {
   const modal = document.getElementById('confirmationModal');
   const modalTitle = document.getElementById('modalTitle');
   const modalMessage = document.getElementById('modalMessage');
   const confirmBtn = document.getElementById('modalConfirmBtn');
   const cancelBtn = document.getElementById('modalCancelBtn');
+  const inputContainer = document.getElementById('modalInputContainer');
+  const requiredTextEl = document.getElementById('modalRequiredText');
+  const confirmInput = document.getElementById('modalConfirmInput');
   
   modalTitle.textContent = title;
   modalMessage.textContent = message;
+  
+  // Handle text confirmation requirement
+  if (requiredText) {
+    inputContainer.style.display = 'block';
+    requiredTextEl.textContent = requiredText;
+    confirmInput.placeholder = `Type "${requiredText}" here`;
+    confirmInput.value = '';
+    confirmBtn.disabled = true;
+    
+    // Enable confirm button only when text matches exactly
+    const handleInput = () => {
+      confirmBtn.disabled = confirmInput.value !== requiredText;
+    };
+    
+    confirmInput.addEventListener('input', handleInput);
+    confirmInput.focus();
+  } else {
+    inputContainer.style.display = 'none';
+    confirmBtn.disabled = false;
+  }
+  
   modal.style.display = 'flex';
   
   const handleConfirm = async () => {
+    // Double-check text matches if required
+    if (requiredText && confirmInput.value !== requiredText) {
+      return;
+    }
     cleanup();
     await onConfirm();
   };
@@ -518,6 +546,10 @@ function showConfirmationModal(title, message, onConfirm) {
     modal.style.display = 'none';
     confirmBtn.removeEventListener('click', handleConfirm);
     cancelBtn.removeEventListener('click', handleCancel);
+    if (requiredText) {
+      confirmInput.removeEventListener('input', handleInput);
+      confirmInput.value = '';
+    }
   };
   
   confirmBtn.addEventListener('click', handleConfirm);
@@ -683,8 +715,9 @@ window.initToolsPage = async function() {
     clearAllBtn.addEventListener('click', () => {
       showConfirmationModal(
         'Clear All Data',
-        '⚠️ This will permanently delete ALL data for ALL users including: achievements, streaks, rankings, page views, and searches. This action cannot be undone. Are you absolutely sure?',
-        clearAllAchievements
+        '⚠️ This will permanently delete ALL data for ALL users including: achievements, streaks, rankings, page views, and searches. This action cannot be undone.',
+        clearAllAchievements,
+        'delete all data'
       );
     });
   }
@@ -694,8 +727,9 @@ window.initToolsPage = async function() {
     clearCacheBtn.addEventListener('click', () => {
       showConfirmationModal(
         'Clear All Cache',
-        '⚠️ This will clear all cached data including achievements, leaderboards, product metadata, and home stats. The cache will automatically rebuild on next request. Continue?',
-        clearAllCache
+        '⚠️ This will clear all cached data including achievements, leaderboards, product metadata, and home stats. The cache will automatically rebuild on next request.',
+        clearAllCache,
+        'delete cache'
       );
     });
   }

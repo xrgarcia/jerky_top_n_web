@@ -57,14 +57,20 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const AchievementCache = require('../../cache/AchievementCache');
       const { HomeStatsCache } = require('../../cache/HomeStatsCache');
       const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-      const { RankingStatsCache } = require('../../cache/RankingStatsCache');
+      const { MetadataCache } = require('../../cache/MetadataCache');
       const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
-      HomeStatsCache.invalidate();
+      
+      const homeStatsCache = HomeStatsCache.getInstance();
+      homeStatsCache.invalidate();
+      
       LeaderboardCache.invalidateAll();
-      RankingStatsCache.invalidate();
+      
+      const metadataCache = MetadataCache.getInstance();
+      metadataCache.invalidate();
+      
       LeaderboardPositionCache.invalidateAll();
 
       console.log('✅ All caches cleared successfully');
@@ -76,7 +82,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
           'AchievementCache',
           'HomeStatsCache',
           'LeaderboardCache',
-          'RankingStatsCache',
+          'MetadataCache',
           'LeaderboardPositionCache'
         ]
       });
@@ -103,14 +109,20 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const AchievementCache = require('../../cache/AchievementCache');
       const { HomeStatsCache } = require('../../cache/HomeStatsCache');
       const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-      const { RankingStatsCache } = require('../../cache/RankingStatsCache');
+      const { MetadataCache } = require('../../cache/MetadataCache');
       const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
-      HomeStatsCache.invalidate();
+      
+      const homeStatsCache = HomeStatsCache.getInstance();
+      homeStatsCache.invalidate();
+      
       LeaderboardCache.invalidateAll();
-      RankingStatsCache.invalidate();
+      
+      const metadataCache = MetadataCache.getInstance();
+      metadataCache.invalidate();
+      
       LeaderboardPositionCache.invalidateAll();
 
       console.log('✅ All achievement data cleared successfully');

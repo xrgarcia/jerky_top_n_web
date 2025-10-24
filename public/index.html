@@ -1035,6 +1035,10 @@
         <div class="modal-content">
             <h3 id="modalTitle">Confirm Action</h3>
             <p id="modalMessage">Are you sure you want to proceed?</p>
+            <div id="modalInputContainer" style="display: none; margin-top: 20px;">
+                <p id="modalInputLabel" style="margin-bottom: 10px; font-size: 14px; color: #666;">Type <strong id="modalRequiredText" style="color: #c4a962;"></strong> to confirm:</p>
+                <input type="text" id="modalConfirmInput" style="width: 100%; padding: 10px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px; font-family: monospace;" placeholder="" />
+            </div>
             <div class="modal-actions">
                 <button class="btn-secondary" id="modalCancelBtn">Cancel</button>
                 <button class="btn-danger" id="modalConfirmBtn">Confirm</button>
