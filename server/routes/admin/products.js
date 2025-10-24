@@ -53,44 +53,41 @@ router.get('/products', requireEmployeeAuth, async (req, res) => {
   try {
     const { limit = 500 } = req.query;
     
-    // Import required services
-    const ProductsService = require('../../services/ProductsService');
-    const ProductsMetadataService = require('../../services/ProductsMetadataService');
-    const MetadataCache = require('../../cache/MetadataCache');
-    const RankingStatsCache = require('../../cache/RankingStatsCache');
-    const { fetchAllShopifyProducts } = require('../../shopify/products');
+    console.log(`📦 Admin products endpoint called, limit: ${limit}`);
     
-    // Create service instances
-    const metadataService = new ProductsMetadataService(db);
-    const metadataCache = new MetadataCache();
-    const rankingStatsCache = new RankingStatsCache();
+    // Simple approach: make an internal request to the existing /api/products/all endpoint
+    // This reuses all the existing logic without duplication (Node 20+ has native fetch)
+    const baseUrl = `http://localhost:5000`;
     
-    const productsService = new ProductsService(
-      db,
-      fetchAllShopifyProducts,
-      (products) => metadataService.syncProductsMetadata(products),
-      metadataCache,
-      rankingStatsCache
-    );
+    const response = await fetch(`${baseUrl}/api/products/all`, {
+      headers: {
+        'Cookie': req.headers.cookie || ''
+      }
+    });
     
-    // Fetch all rankable products from cache
-    const products = await productsService.getAllProducts();
+    if (!response.ok) {
+      throw new Error(`Failed to fetch products: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    const allProducts = data.products || [];
     
     // Limit results
-    const limitedProducts = products.slice(0, parseInt(limit));
+    const limitedProducts = allProducts.slice(0, parseInt(limit));
     
     console.log(`📦 Admin products endpoint: Returning ${limitedProducts.length} products`);
     
     res.json({
       success: true,
       products: limitedProducts,
-      total: products.length
+      total: allProducts.length
     });
   } catch (error) {
     console.error('Error fetching products for admin:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to fetch products'
+      error: 'Failed to fetch products',
+      message: error.message
     });
   }
 });
