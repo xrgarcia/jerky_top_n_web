@@ -9,6 +9,8 @@ class GamificationService extends BaseService {
     this.achievements = [];
     this.userStats = null;
     this.streaks = [];
+    // Track shown notifications to prevent duplicates
+    this.shownNotifications = new Set();
   }
 
   async initialize() {
@@ -31,15 +33,36 @@ class GamificationService extends BaseService {
     this.socket.on('achievements:earned', (data) => {
       console.log('🏆 Received achievements:earned event', data);
       if (data.achievements && data.achievements.length > 0) {
-        // Filter out redundant achievements - keep only the best of each type
-        const filtered = this.filterDuplicateAchievements(data.achievements);
-        
-        filtered.forEach(achievement => {
-          this.achievements.push(achievement);
-          this.emit('achievement:new', achievement);
+        // Filter out already-shown notifications using unique keys
+        const newAchievements = data.achievements.filter(achievement => {
+          // Create unique key: use notificationKey if available, otherwise code + tier
+          const key = achievement.notificationKey || 
+                     `${achievement.code}_${achievement.tier || 'base'}`;
+          
+          // Check if we've already shown this notification
+          if (this.shownNotifications.has(key)) {
+            console.log(`⏭️ Skipping duplicate notification: ${achievement.name} (${key})`);
+            return false;
+          }
+          
+          // Mark as shown
+          this.shownNotifications.add(key);
+          return true;
         });
-        // Reload achievements to get updated progress
-        this.loadAchievements();
+        
+        // Only process and show truly new notifications
+        if (newAchievements.length > 0) {
+          console.log(`🎉 Showing ${newAchievements.length} new notification(s):`, 
+                     newAchievements.map(a => a.name).join(', '));
+          
+          newAchievements.forEach(achievement => {
+            this.achievements.push(achievement);
+            this.emit('achievement:new', achievement);
+          });
+          
+          // Reload achievements to get updated progress
+          this.loadAchievements();
+        }
       }
     });
 
