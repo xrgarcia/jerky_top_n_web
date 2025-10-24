@@ -41,7 +41,7 @@ class CollectionManager {
     const customCollections = await this.db.select()
       .from(achievements)
       .where(and(
-        eq(achievements.collectionType, 'static_collection'),
+        eq(achievements.collectionType, 'custom_product_list'),
         eq(achievements.isActive, 1)
       ));
 

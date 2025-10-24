@@ -1077,7 +1077,7 @@ function clearIconPreview() {
 /**
  * Product Selector State
  */
-let allProducts = [];
+let adminAllProducts = [];
 let selectedProductIds = new Set();
 let searchTerm = '';
 
@@ -1086,7 +1086,7 @@ let searchTerm = '';
  */
 async function initializeProductSelector() {
   // Only load products if not already loaded
-  if (allProducts.length === 0) {
+  if (adminAllProducts.length === 0) {
     await loadProductsForSelector();
   }
   
@@ -1116,7 +1116,7 @@ async function loadProductsForSelector() {
     if (!response.ok) throw new Error('Failed to load products');
     
     const data = await response.json();
-    allProducts = data.products || [];
+    adminAllProducts = data.products || [];
     
     renderAvailableProducts();
   } catch (error) {
@@ -1140,7 +1140,7 @@ function renderAvailableProducts() {
   const availableList = document.getElementById('availableProductsList');
   
   // Filter products by search term and exclude already selected
-  const filteredProducts = allProducts.filter(product => {
+  const filteredProducts = adminAllProducts.filter(product => {
     const matchesSearch = !searchTerm || 
       product.title.toLowerCase().includes(searchTerm) ||
       product.vendor.toLowerCase().includes(searchTerm);
@@ -1184,8 +1184,8 @@ function renderSelectedProducts() {
     return;
   }
   
-  // Get selected products from allProducts
-  const selectedProducts = allProducts.filter(p => selectedProductIds.has(p.id));
+  // Get selected products from adminAllProducts
+  const selectedProducts = adminAllProducts.filter(p => selectedProductIds.has(p.id));
   
   selectedList.innerHTML = selectedProducts.map(product => `
     <div class="product-selector-item selected" data-product-id="${product.id}" onclick="removeProduct('${product.id}')">
