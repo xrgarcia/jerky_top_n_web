@@ -523,28 +523,36 @@ async function clearAllAchievements() {
     });
     
     if (!response.ok) {
-      throw new Error('Failed to clear achievements');
+      throw new Error('Failed to clear all data');
     }
     
     const data = await response.json();
+    
+    const clearSummary = [
+      `${data.achievements} achievement(s)`,
+      `${data.streaks} streak(s)`,
+      `${data.rankings} ranking(s)`,
+      `${data.pageViews} page view(s)`,
+      `${data.searches} search(es)`
+    ].join(', ');
     
     showToast({
       type: 'success',
       icon: '✅',
       title: 'Success',
-      message: `Successfully cleared ${data.achievements} achievement(s) and ${data.streaks} streak(s) for all users`,
-      duration: 5000
+      message: `Successfully cleared all data for all users: ${clearSummary}`,
+      duration: 7000
     });
     
     await loadAchievementsTable();
   } catch (error) {
-    console.error('Error clearing achievements:', error);
+    console.error('Error clearing all data:', error);
     
     showToast({
       type: 'error',
       icon: '❌',
       title: 'Error',
-      message: `Failed to clear achievements: ${error.message}`,
+      message: `Failed to clear all data: ${error.message}`,
       duration: 5000
     });
   }
@@ -587,8 +595,8 @@ window.initToolsPage = async function() {
   if (clearAllBtn) {
     clearAllBtn.addEventListener('click', () => {
       showConfirmationModal(
-        'Clear All Achievements & Streaks',
-        '⚠️ This will permanently delete ALL achievement and streak data for ALL users. This action cannot be undone. Are you absolutely sure?',
+        'Clear All Data',
+        '⚠️ This will permanently delete ALL data for ALL users including: achievements, streaks, rankings, page views, and searches. This action cannot be undone. Are you absolutely sure?',
         clearAllAchievements
       );
     });

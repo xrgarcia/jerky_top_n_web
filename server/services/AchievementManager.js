@@ -240,22 +240,40 @@ class AchievementManager {
    * @returns {Object} Count of deleted achievements and streaks
    */
   async clearAllAchievements(adminUserId) {
+    const { sql } = require('drizzle-orm');
+    const db = this.achievementRepo.db;
+    
     const deletedAchievements = await this.achievementRepo.deleteAllAchievements();
     
     // Also clear all streaks
     const StreakRepository = require('../repositories/StreakRepository');
-    const streakRepo = new StreakRepository(this.achievementRepo.db);
+    const streakRepo = new StreakRepository(db);
     const deletedStreaks = await streakRepo.deleteAllStreaks();
     
+    // Clear page views
+    const pageViewsResult = await db.execute(sql`DELETE FROM page_views`);
+    const deletedPageViews = pageViewsResult.rowCount || 0;
+    
+    // Clear user product searches
+    const searchesResult = await db.execute(sql`DELETE FROM user_product_searches`);
+    const deletedSearches = searchesResult.rowCount || 0;
+    
+    // Clear product rankings
+    const rankingsResult = await db.execute(sql`DELETE FROM product_rankings`);
+    const deletedRankings = rankingsResult.rowCount || 0;
+    
     // Log activity with admin user ID (required for activity_logs table)
-    if (deletedAchievements > 0 || deletedStreaks > 0) {
+    if (deletedAchievements > 0 || deletedStreaks > 0 || deletedPageViews > 0 || deletedSearches > 0 || deletedRankings > 0) {
       if (adminUserId) {
         await this.activityLogRepo.logActivity(
           adminUserId,
-          'all_achievements_cleared',
+          'all_data_cleared',
           { 
             deletedAchievements,
-            deletedStreaks 
+            deletedStreaks,
+            deletedPageViews,
+            deletedSearches,
+            deletedRankings
           }
         );
       }
@@ -264,7 +282,10 @@ class AchievementManager {
     return {
       achievements: deletedAchievements,
       streaks: deletedStreaks,
-      total: deletedAchievements + deletedStreaks
+      pageViews: deletedPageViews,
+      searches: deletedSearches,
+      rankings: deletedRankings,
+      total: deletedAchievements + deletedStreaks + deletedPageViews + deletedSearches + deletedRankings
     };
   }
 }
