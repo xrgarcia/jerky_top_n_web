@@ -1548,15 +1548,30 @@ app.post('/api/rankings/products', async (req, res) => {
           const combinedAchievements = [...newAchievements, ...newCollectionAchievements];
           
           // Server-side deduplication: ensure each achievement appears only once
-          // Use Map keyed by achievement code + tier to guarantee uniqueness
+          // Use Map to deduplicate by achievement code + tier (if present)
           const achievementMap = new Map();
+          
           for (const achievement of combinedAchievements) {
-            const key = achievement.isTierUpgrade 
-              ? `${achievement.code}_${achievement.tier}` 
-              : achievement.code;
+            // Determine unique key based on available tier metadata
+            let key = achievement.code;
+            if (achievement.tier || achievement.newTier || achievement.isTierUpgrade) {
+              const tierValue = achievement.tier || achievement.newTier || 'upgrade';
+              key = `${achievement.code}_${tierValue}`;
+            }
             
-            // Keep first occurrence (or latest if multiple)
-            if (!achievementMap.has(key)) {
+            // Score metadata completeness (higher = better)
+            const getScore = (ach) => {
+              let score = 0;
+              if (ach.isTierUpgrade) score += 10;
+              if (ach.pointsGained !== undefined) score += 5;
+              if (ach.previousTier) score += 3;
+              if (ach.newTier || ach.tier) score += 2;
+              return score;
+            };
+            
+            // Keep achievement with richest metadata
+            const existing = achievementMap.get(key);
+            if (!existing || getScore(achievement) > getScore(existing)) {
               achievementMap.set(key, achievement);
             }
           }
