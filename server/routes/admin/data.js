@@ -55,10 +55,10 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
       // Import and clear all caches
       const AchievementCache = require('../../cache/AchievementCache');
-      const { HomeStatsCache } = require('../../cache/HomeStatsCache');
-      const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-      const { MetadataCache } = require('../../cache/MetadataCache');
-      const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
+      const HomeStatsCache = require('../../cache/HomeStatsCache');
+      const LeaderboardCache = require('../../cache/LeaderboardCache');
+      const MetadataCache = require('../../cache/MetadataCache');
+      const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
@@ -107,10 +107,10 @@ module.exports = function createDataManagementRoutes(storage, db) {
       
       // Clear all caches after deletion
       const AchievementCache = require('../../cache/AchievementCache');
-      const { HomeStatsCache } = require('../../cache/HomeStatsCache');
-      const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-      const { MetadataCache } = require('../../cache/MetadataCache');
-      const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
+      const HomeStatsCache = require('../../cache/HomeStatsCache');
+      const LeaderboardCache = require('../../cache/LeaderboardCache');
+      const MetadataCache = require('../../cache/MetadataCache');
+      const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
