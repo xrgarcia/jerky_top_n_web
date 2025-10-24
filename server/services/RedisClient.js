@@ -7,7 +7,9 @@ class RedisClient {
   }
 
   async connect() {
-    if (this.isConnected && this.client) {
+    // Return existing connection if already connected
+    if (this.isConnected && this.client && this.client.status === 'ready') {
+      console.log('💾 Redis: Using existing connection (connection pool)');
       return this.client;
     }
 
@@ -19,10 +21,18 @@ class RedisClient {
     }
 
     try {
+      console.log('🔌 Establishing Redis connection pool...');
+      
       this.client = new Redis(redisUrl, {
         maxRetriesPerRequest: 3,
+        enableReadyCheck: true,
+        lazyConnect: false, // Connect immediately
         retryStrategy(times) {
-          const delay = Math.min(times * 50, 2000);
+          if (times > 3) {
+            console.log('❌ Redis retry limit exceeded, using in-memory fallback');
+            return null; // Stop retrying
+          }
+          const delay = Math.min(times * 100, 2000);
           return delay;
         },
         reconnectOnError(err) {
@@ -35,7 +45,12 @@ class RedisClient {
       });
 
       this.client.on('connect', () => {
-        console.log('✅ Redis connected successfully');
+        console.log('✅ Redis connection pool established');
+        this.isConnected = true;
+      });
+
+      this.client.on('ready', () => {
+        console.log('✅ Redis ready for commands');
         this.isConnected = true;
       });
 
@@ -51,12 +66,12 @@ class RedisClient {
 
       // Test the connection
       await this.client.ping();
-      console.log('🏓 Redis PING successful');
+      console.log('🏓 Redis PING successful - connection pool active');
       this.isConnected = true;
 
       return this.client;
     } catch (error) {
-      console.error('❌ Failed to connect to Redis:', error.message);
+      console.error('❌ Failed to establish Redis connection pool:', error.message);
       this.isConnected = false;
       return null;
     }

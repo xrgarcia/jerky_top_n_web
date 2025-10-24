@@ -19,6 +19,11 @@ class CacheService {
 
     console.log('🚀 Initializing distributed cache service...');
     
+    // Initialize shared Redis connection ONCE before setting up caches
+    const redisClient = require('./RedisClient');
+    await redisClient.connect();
+    
+    // Now initialize all caches (they'll check if Redis is available)
     await Promise.all([
       this.homeStats.initialize(),
       this.leaderboard.initialize(),

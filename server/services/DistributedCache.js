@@ -9,8 +9,9 @@ class DistributedCache {
   }
 
   async initialize() {
-    const client = await redisClient.connect();
-    this.redisAvailable = !!client;
+    // Check if Redis is already connected (shared connection)
+    const client = redisClient.getClient();
+    this.redisAvailable = !!(client && client.status === 'ready');
     
     if (this.redisAvailable) {
       console.log(`✅ ${this.cacheName}: Using Redis for distributed caching`);

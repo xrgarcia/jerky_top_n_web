@@ -5,14 +5,16 @@ const { createAdapter } = require('@socket.io/redis-adapter');
 async function initializeScalability(io) {
   console.log('🚀 Initializing scalability features...');
   
-  // Initialize Redis cache service
+  // Initialize Redis cache service (establishes shared connection pool)
   await cacheService.initialize();
   
   // Setup Socket.IO Redis adapter for cross-instance communication
   const client = redisClient.getClient();
   if (client && client.status === 'ready') {
     try {
-      // Create a duplicate connection for pub/sub
+      console.log('🔌 Setting up Socket.IO Redis adapter with shared connection...');
+      
+      // Create duplicate connections for pub/sub (Socket.IO requirement)
       const pubClient = client.duplicate();
       const subClient = client.duplicate();
       
