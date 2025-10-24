@@ -860,11 +860,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Clear existing rankings first to avoid showing stale data
-            rankingSlots.forEach(slot => {
-                clearSlot(slot);
-            });
-            lastSavedProductIds = new Set();
+            // Clear existing rankings first to avoid showing stale data (only if slots exist)
+            if (rankingSlots && rankingSlots.length > 0) {
+                rankingSlots.forEach(slot => {
+                    clearSlot(slot);
+                });
+                lastSavedProductIds = new Set();
+                console.log('🗑️ Cleared existing rankings before reload');
+            }
 
             const response = await fetch(`/api/rankings/products?sessionId=${sessionData.sessionId}&rankingListId=default`);
             const data = await response.json();
