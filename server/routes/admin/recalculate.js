@@ -74,7 +74,12 @@ module.exports = function createRecalculateRoutes(storage, db) {
     
     // Get the CollectionManager for custom collections
     const CollectionManager = require('../../services/CollectionManager');
-    const collectionManager = new CollectionManager(db);
+    const AchievementRepository = require('../../services/AchievementRepository');
+    const ProductsMetadataRepository = require('../../services/ProductsMetadataRepository');
+    
+    const achievementRepo = new AchievementRepository(db);
+    const productsMetadataRepo = new ProductsMetadataRepository(db);
+    const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, db);
     
     // Process users in batches to avoid overload
     const BATCH_SIZE = 5;
@@ -131,11 +136,19 @@ module.exports = function createRecalculateRoutes(storage, db) {
     console.log(`✅ Recalculation complete: ${awardedCount} newly awarded, ${upgradedCount} upgraded, ${errorCount} errors`);
     
     // Invalidate caches after recalculation
+    const AchievementCache = require('../../cache/AchievementCache');
     const { HomeStatsCache } = require('../../cache/HomeStatsCache');
     const { LeaderboardCache } = require('../../cache/LeaderboardCache');
+    const { RankingStatsCache } = require('../../cache/RankingStatsCache');
+    const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
+    
+    const achievementCache = AchievementCache.getInstance();
+    achievementCache.invalidate();
     HomeStatsCache.invalidate();
     LeaderboardCache.invalidateAll();
-    console.log(`🗑️ Caches invalidated after recalculation`);
+    RankingStatsCache.invalidate();
+    LeaderboardPositionCache.invalidateAll();
+    console.log(`🗑️ All caches invalidated after recalculation`);
     
     res.json({
       success: true,
