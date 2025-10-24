@@ -2563,7 +2563,7 @@ if (storage) {
 }
 
 // Start server on all interfaces (required for Replit)
-const server = httpServer.listen(PORT, '0.0.0.0', () => {
+const server = httpServer.listen(PORT, '0.0.0.0', async () => {
   console.log(`✅ Server successfully started!`);
   console.log(`🥩 Jerky Top N Web server running on http://0.0.0.0:${PORT}`);
   console.log(`Visit the app at: http://localhost:${PORT}`);
@@ -2571,6 +2571,11 @@ const server = httpServer.listen(PORT, '0.0.0.0', () => {
   console.log('📊 Service Status:');
   console.log(`   Shopify Integration: ${shopifyAvailable ? '✅ Available' : '⚠️  Unavailable (missing credentials)'}`);
   console.log(`   Database: ${databaseAvailable ? '✅ Connected' : '⚠️  Unavailable'}`);
+  console.log('');
+  
+  // Initialize scalability features (Redis cache, Socket.IO adapter)
+  const { initializeScalability } = require('./server/init-scalability');
+  await initializeScalability(io);
   console.log('');
   if (!shopifyAvailable) {
     console.log('⚠️  To enable full functionality, configure these secrets in Deployment settings:');
