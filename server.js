@@ -1496,18 +1496,27 @@ app.post('/api/rankings/products', async (req, res) => {
             if (collectionUpdates.length > 0) {
               console.log(`📚 User ${userId} updated ${collectionUpdates.length} dynamic collection(s)`);
               
-              // Only add NEW collections to achievements (tier upgrades handled separately)
+              // Convert collection updates into achievement format for toasts
               for (const update of collectionUpdates) {
                 if (update.type === 'new') {
                   // New collection earned - emit as achievement
                   newCollectionAchievements.push(update.achievement);
                 } else if (update.type === 'tier_upgrade') {
-                  // Tier upgrades are sent via collections:updated event only (no duplicate toast)
+                  // Tier upgrade - emit as achievement with tier info and unique key for deduplication
+                  newCollectionAchievements.push({
+                    ...update.achievement,
+                    tier: update.newTier,
+                    previousTier: update.previousTier,
+                    pointsGained: update.pointsGained,
+                    isTierUpgrade: true,
+                    // Add unique notification key for client-side deduplication
+                    notificationKey: `${update.achievement.code}_${update.newTier}`
+                  });
                   console.log(`⬆️ Tier upgrade: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
                 }
               }
               
-              // Emit collections:updated for both new and tier upgrade progress
+              // Also emit collections:updated for progress tracking (separate from toasts)
               if (io) {
                 io.to(`user:${userId}`).emit('collections:updated', { updates: collectionUpdates });
               }
@@ -1519,18 +1528,27 @@ app.post('/api/rankings/products', async (req, res) => {
             if (customCollectionUpdates.length > 0) {
               console.log(`📚 User ${userId} updated ${customCollectionUpdates.length} custom product collection(s)`);
               
-              // Only add NEW collections to achievements (tier upgrades handled separately)
+              // Convert collection updates into achievement format for toasts
               for (const update of customCollectionUpdates) {
                 if (update.type === 'new') {
                   // New collection earned - emit as achievement
                   newCollectionAchievements.push(update.achievement);
                 } else if (update.type === 'tier_upgrade') {
-                  // Tier upgrades are sent via collections:updated event only (no duplicate toast)
+                  // Tier upgrade - emit as achievement with tier info and unique key for deduplication
+                  newCollectionAchievements.push({
+                    ...update.achievement,
+                    tier: update.newTier,
+                    previousTier: update.previousTier,
+                    pointsGained: update.pointsGained,
+                    isTierUpgrade: true,
+                    // Add unique notification key for client-side deduplication
+                    notificationKey: `${update.achievement.code}_${update.newTier}`
+                  });
                   console.log(`⬆️ Tier upgrade: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
                 }
               }
               
-              // Emit collections:updated for both new and tier upgrade progress
+              // Also emit collections:updated for progress tracking (separate from toasts)
               if (io) {
                 io.to(`user:${userId}`).emit('collections:updated', { updates: customCollectionUpdates });
               }
