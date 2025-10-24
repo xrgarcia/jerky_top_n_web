@@ -369,6 +369,17 @@ function populateAchievementForm(achievement) {
     if (req.type === 'complete_protein_category_percentage') {
       // Dynamic collection - requirements are automatic, don't populate dropdown
       document.getElementById('requirementType').value = '';
+    } else if (req.type === 'custom_product_list') {
+      // Custom product list - load selected products
+      document.getElementById('requirementType').value = '';
+      if (req.productIds && Array.isArray(req.productIds)) {
+        // Populate selectedProductIds Set
+        selectedProductIds.clear();
+        req.productIds.forEach(id => selectedProductIds.add(id));
+        
+        // Store in hidden field
+        document.getElementById('selectedProductIds').value = JSON.stringify(req.productIds);
+      }
     } else {
       // Other achievement types - populate manual requirements
       document.getElementById('requirementType').value = req.type || '';
@@ -415,6 +426,7 @@ function updateFormFieldsVisibility() {
   const unlockRequirementsSection = document.getElementById('unlockRequirementsSection');
   const legacyFieldsGroup = document.getElementById('legacyFieldsGroup');
   const legacyCategoryGroup = document.getElementById('legacyCategoryGroup');
+  const productSelectorSection = document.getElementById('productSelectorSection');
   
   // Hide all conditional fields first
   proteinGroup.style.display = 'none';
@@ -422,6 +434,7 @@ function updateFormFieldsVisibility() {
   unlockRequirementsSection.style.display = 'none';
   legacyFieldsGroup.style.display = 'none';
   legacyCategoryGroup.style.display = 'none';
+  productSelectorSection.style.display = 'none';
   
   // Show relevant fields based on collection type
   if (collectionType === 'dynamic_collection') {
@@ -434,7 +447,9 @@ function updateFormFieldsVisibility() {
     // Custom product lists show tier thresholds and product selector (no unlock requirements)
     tierThresholdsSection.style.display = 'block';
     unlockRequirementsSection.style.display = 'none';
-    // TODO: Show product selector UI (will be implemented in next task)
+    productSelectorSection.style.display = 'block';
+    // Initialize product selector
+    initializeProductSelector();
   } else if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
     // Static and hidden collections need manual unlock requirements
     unlockRequirementsSection.style.display = 'block';
@@ -587,6 +602,33 @@ async function handleAchievementFormSubmit(event) {
       type: 'complete_protein_category_percentage',
       categories: selectedCategories
     };
+  } else if (achievementData.collectionType === 'custom_product_list') {
+    // Custom product lists have automatic requirements based on selected products
+    const selectedProductIdsJson = document.getElementById('selectedProductIds').value;
+    let productIds = [];
+    
+    try {
+      productIds = selectedProductIdsJson ? JSON.parse(selectedProductIdsJson) : [];
+    } catch (e) {
+      console.error('Failed to parse product IDs:', e);
+    }
+    
+    if (productIds.length === 0) {
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'No Products Selected',
+        message: 'Please select at least one product for this custom collection',
+        duration: 5000
+      });
+      return;
+    }
+    
+    // Auto-generate requirement for custom product lists
+    requirement = {
+      type: 'custom_product_list',
+      productIds: productIds
+    };
   } else {
     // Other collection types need manual requirement selection
     const requirementType = document.getElementById('requirementType').value;
@@ -688,8 +730,8 @@ async function handleAchievementFormSubmit(event) {
   
   achievementData.requirement = requirement;
   
-  // Build tier thresholds object for dynamic collections
-  if (achievementData.collectionType === 'dynamic_collection') {
+  // Build tier thresholds object for dynamic collections and custom product lists
+  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'custom_product_list') {
     achievementData.tierThresholds = {
       bronze: parseInt(document.getElementById('tierBronze').value) || 40,
       silver: parseInt(document.getElementById('tierSilver').value) || 60,
@@ -1031,6 +1073,153 @@ function clearIconPreview() {
   statusDiv.textContent = '';
   progressContainer.style.display = 'none';
 }
+
+/**
+ * Product Selector State
+ */
+let allProducts = [];
+let selectedProductIds = new Set();
+let searchTerm = '';
+
+/**
+ * Initialize product selector
+ */
+async function initializeProductSelector() {
+  // Only load products if not already loaded
+  if (allProducts.length === 0) {
+    await loadProductsForSelector();
+  }
+  
+  // Reset state
+  selectedProductIds.clear();
+  searchTerm = '';
+  document.getElementById('productSearchInput').value = '';
+  
+  // Set up search handler
+  const searchInput = document.getElementById('productSearchInput');
+  searchInput.addEventListener('input', handleProductSearch);
+  
+  // Render initial state
+  renderAvailableProducts();
+  renderSelectedProducts();
+}
+
+/**
+ * Load products for selector
+ */
+async function loadProductsForSelector() {
+  const availableList = document.getElementById('availableProductsList');
+  availableList.innerHTML = '<div class="loading-state">Loading products...</div>';
+  
+  try {
+    const response = await fetch('/api/products?limit=500');
+    if (!response.ok) throw new Error('Failed to load products');
+    
+    const data = await response.json();
+    allProducts = data.products || [];
+    
+    renderAvailableProducts();
+  } catch (error) {
+    console.error('Error loading products:', error);
+    availableList.innerHTML = '<div class="no-results-state">Error loading products</div>';
+  }
+}
+
+/**
+ * Handle product search
+ */
+function handleProductSearch(e) {
+  searchTerm = e.target.value.toLowerCase();
+  renderAvailableProducts();
+}
+
+/**
+ * Render available products list
+ */
+function renderAvailableProducts() {
+  const availableList = document.getElementById('availableProductsList');
+  
+  // Filter products by search term and exclude already selected
+  const filteredProducts = allProducts.filter(product => {
+    const matchesSearch = !searchTerm || 
+      product.title.toLowerCase().includes(searchTerm) ||
+      product.vendor.toLowerCase().includes(searchTerm);
+    return matchesSearch && !selectedProductIds.has(product.id);
+  });
+  
+  if (filteredProducts.length === 0) {
+    availableList.innerHTML = '<div class="no-results-state">No products found</div>';
+    return;
+  }
+  
+  availableList.innerHTML = filteredProducts.map(product => `
+    <div class="product-selector-item" data-product-id="${product.id}" onclick="addProduct('${product.id}')">
+      <img src="${product.image || '/placeholder.jpg'}" alt="${product.title}" class="product-selector-item-image">
+      <div class="product-selector-item-info">
+        <p class="product-selector-item-title">${product.title}</p>
+        <p class="product-selector-item-vendor">${product.vendor}</p>
+        <p class="product-selector-item-price">$${product.price}</p>
+      </div>
+      <div class="product-selector-item-action">+</div>
+    </div>
+  `).join('');
+}
+
+/**
+ * Render selected products list
+ */
+function renderSelectedProducts() {
+  const selectedList = document.getElementById('selectedProductsList');
+  const countSpan = document.getElementById('selectedProductCount');
+  
+  countSpan.textContent = selectedProductIds.size;
+  
+  if (selectedProductIds.size === 0) {
+    selectedList.innerHTML = `
+      <div class="empty-state">
+        <p>No products selected yet</p>
+        <small>Search and click products on the right to add them</small>
+      </div>
+    `;
+    return;
+  }
+  
+  // Get selected products from allProducts
+  const selectedProducts = allProducts.filter(p => selectedProductIds.has(p.id));
+  
+  selectedList.innerHTML = selectedProducts.map(product => `
+    <div class="product-selector-item selected" data-product-id="${product.id}" onclick="removeProduct('${product.id}')">
+      <img src="${product.image || '/placeholder.jpg'}" alt="${product.title}" class="product-selector-item-image">
+      <div class="product-selector-item-info">
+        <p class="product-selector-item-title">${product.title}</p>
+        <p class="product-selector-item-vendor">${product.vendor}</p>
+        <p class="product-selector-item-price">$${product.price}</p>
+      </div>
+      <div class="product-selector-item-action">−</div>
+    </div>
+  `).join('');
+  
+  // Update hidden field
+  document.getElementById('selectedProductIds').value = JSON.stringify([...selectedProductIds]);
+}
+
+/**
+ * Add product to selection
+ */
+window.addProduct = function(productId) {
+  selectedProductIds.add(productId);
+  renderAvailableProducts();
+  renderSelectedProducts();
+};
+
+/**
+ * Remove product from selection
+ */
+window.removeProduct = function(productId) {
+  selectedProductIds.delete(productId);
+  renderAvailableProducts();
+  renderSelectedProducts();
+};
 
 /**
  * Initialize achievement admin UI

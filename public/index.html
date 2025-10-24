@@ -1232,6 +1232,41 @@
                     </div>
                 </div>
                 
+                <div class="form-section" id="productSelectorSection" style="display: none;">
+                    <h4>Select Products for Collection</h4>
+                    <p class="help-text">Search and select products to include in this custom collection. Users will earn tiers based on how many of these products they rank.</p>
+                    
+                    <div class="product-selector-split-view">
+                        <!-- Left: Selected Products -->
+                        <div class="product-selector-left">
+                            <div class="selected-products-header">
+                                <h5>Selected Products (<span id="selectedProductCount">0</span>)</h5>
+                            </div>
+                            <div id="selectedProductsList" class="selected-products-list">
+                                <div class="empty-state">
+                                    <p>No products selected yet</p>
+                                    <small>Search and click products on the right to add them</small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Product Browser -->
+                        <div class="product-selector-right">
+                            <div class="product-search-header">
+                                <input type="text" id="productSearchInput" placeholder="Search products..." class="product-search-input">
+                            </div>
+                            <div id="availableProductsList" class="available-products-list">
+                                <div class="loading-state" style="text-align: center; padding: 40px; color: #999;">
+                                    Loading products...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Hidden input to store selected product IDs -->
+                    <input type="hidden" id="selectedProductIds" name="selectedProductIds" value="">
+                </div>
+                
                 <div class="form-actions">
                     <button type="button" class="btn-secondary" id="cancelAchievementFormBtn">Cancel</button>
                     <button type="submit" class="btn-primary" id="saveAchievementBtn">Save Achievement</button>
