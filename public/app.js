@@ -860,6 +860,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
+            // Clear existing rankings first to avoid showing stale data
+            rankingSlots.forEach(slot => {
+                clearSlot(slot);
+            });
+            lastSavedProductIds = new Set();
+
             const response = await fetch(`/api/rankings/products?sessionId=${sessionData.sessionId}&rankingListId=default`);
             const data = await response.json();
 
@@ -900,6 +906,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('❌ Error loading user rankings:', error);
         }
     }
+
+    // Expose globally for page navigation reloads
+    window.reloadRankings = loadUserRankings;
 
     // Generate ranking slots
     function generateRankingSlots(count) {

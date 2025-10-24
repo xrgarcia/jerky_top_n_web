@@ -76,7 +76,7 @@
       console.log('✅ Progress widget integrated into Rank page');
     }
     
-    // Always reload progress, achievements and streaks when rank page is shown
+    // Always reload progress, achievements, streaks, and rankings when rank page is shown
     const gamificationService = services.get('gamification');
     const progressService = services.get('progressTracking');
     if (gamificationService) {
@@ -86,8 +86,14 @@
     if (progressService) {
       progressService.loadProgress();
     }
+    
+    // Reload rankings to ensure fresh data (e.g., after clearing data)
+    if (window.reloadRankings) {
+      window.reloadRankings();
+    }
+    
     if (gamificationService || progressService) {
-      console.log('🔄 Reloading achievements, streaks, and progress for rank page');
+      console.log('🔄 Reloading achievements, streaks, progress, and rankings for rank page');
     }
   }
 
