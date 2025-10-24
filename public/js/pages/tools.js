@@ -507,6 +507,9 @@ function showConfirmationModal(title, message, onConfirm, requiredText = null) {
   modalTitle.textContent = title;
   modalMessage.textContent = message;
   
+  // Store cleanup handler reference
+  let handleInput = null;
+  
   // Handle text confirmation requirement
   if (requiredText) {
     inputContainer.style.display = 'block';
@@ -514,17 +517,26 @@ function showConfirmationModal(title, message, onConfirm, requiredText = null) {
     confirmInput.placeholder = `Type "${requiredText}" here`;
     confirmInput.value = '';
     confirmBtn.disabled = true;
+    confirmBtn.style.opacity = '0.5';
+    confirmBtn.style.cursor = 'not-allowed';
     
     // Enable confirm button only when text matches exactly
-    const handleInput = () => {
-      confirmBtn.disabled = confirmInput.value !== requiredText;
+    handleInput = () => {
+      const matches = confirmInput.value === requiredText;
+      confirmBtn.disabled = !matches;
+      confirmBtn.style.opacity = matches ? '1' : '0.5';
+      confirmBtn.style.cursor = matches ? 'pointer' : 'not-allowed';
     };
     
     confirmInput.addEventListener('input', handleInput);
-    confirmInput.focus();
+    
+    // Focus after a small delay to ensure modal is rendered
+    setTimeout(() => confirmInput.focus(), 100);
   } else {
     inputContainer.style.display = 'none';
     confirmBtn.disabled = false;
+    confirmBtn.style.opacity = '1';
+    confirmBtn.style.cursor = 'pointer';
   }
   
   modal.style.display = 'flex';
@@ -546,10 +558,14 @@ function showConfirmationModal(title, message, onConfirm, requiredText = null) {
     modal.style.display = 'none';
     confirmBtn.removeEventListener('click', handleConfirm);
     cancelBtn.removeEventListener('click', handleCancel);
-    if (requiredText) {
+    if (requiredText && handleInput) {
       confirmInput.removeEventListener('input', handleInput);
       confirmInput.value = '';
     }
+    // Reset button state
+    confirmBtn.disabled = false;
+    confirmBtn.style.opacity = '1';
+    confirmBtn.style.cursor = 'pointer';
   };
   
   confirmBtn.addEventListener('click', handleConfirm);
