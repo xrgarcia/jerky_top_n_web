@@ -38,14 +38,17 @@ class NotificationWidget {
 
   setupEventListeners() {
     this.eventBus.on('notification:show', (notification) => {
+      console.log('🔔 NotificationWidget received notification:show event', notification);
       this.show(notification);
     });
 
     this.eventBus.on('achievement:new', (achievement) => {
+      console.log('🏆 NotificationWidget received achievement:new event', achievement);
       this.showAchievement(achievement);
     });
 
     this.eventBus.on('milestone:reached', (milestone) => {
+      console.log('🎯 NotificationWidget received milestone:reached event', milestone);
       this.showMilestone(milestone);
     });
   }
@@ -89,6 +92,7 @@ class NotificationWidget {
   }
 
   showAchievement(achievement) {
+    console.log('💬 NotificationWidget.showAchievement() called with:', achievement);
     const isTierUpgrade = achievement.isTierUpgrade;
     const tierEmojis = {
       bronze: '🥉',
@@ -111,6 +115,8 @@ class NotificationWidget {
         description = `+${achievement.pointsGained} points earned! ${achievement.description || ''}`;
       }
     }
+    
+    console.log(`✨ Showing toast: ${title} - ${message}`);
     
     this.show({
       type: 'achievement',
