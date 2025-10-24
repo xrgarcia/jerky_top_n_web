@@ -169,11 +169,11 @@ class ProductsService {
     const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
     
     return products.filter(product => {
+      // Only search in user-visible fields (not tags or internal metadata)
       const searchableText = [
         product.title,
         product.vendor,
-        product.product_type,
-        product.tags || ''
+        product.product_type
       ].join(' ').toLowerCase();
       
       return searchWords.every(word => searchableText.includes(word));
