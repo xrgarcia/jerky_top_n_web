@@ -257,9 +257,19 @@ function applyProductFilters() {
   const primaryFlavorFilter = document.getElementById('primaryFlavorFilter')?.value || '';
   
   filteredProducts = allProducts.filter(product => {
+    // Search only in user-visible fields (not tags, IDs, or metadata)
+    const searchableFields = [
+      product.title,
+      product.vendor,
+      product.animalType,
+      product.animalDisplay,
+      product.primaryFlavor,
+      product.flavorDisplay
+    ];
+    
     const matchesSearch = searchTerm === '' || 
-      Object.values(product).some(val => 
-        val && val.toString().toLowerCase().includes(searchTerm)
+      searchableFields.some(field => 
+        field && field.toString().toLowerCase().includes(searchTerm)
       );
     
     const matchesVendor = vendorFilter === '' || product.vendor === vendorFilter;
