@@ -212,6 +212,7 @@ function renderAchievementsTable() {
 function getCollectionTypeLabel(type) {
   const labels = {
     'static_collection': 'Static',
+    'custom_product_list': 'Custom List',
     'dynamic_collection': 'Dynamic',
     'hidden_collection': 'Hidden',
     'legacy': 'Legacy'
@@ -429,6 +430,11 @@ function updateFormFieldsVisibility() {
     tierThresholdsSection.style.display = 'block';
     // Hide unlock requirements - they're automatic for dynamic collections
     unlockRequirementsSection.style.display = 'none';
+  } else if (collectionType === 'custom_product_list') {
+    // Custom product lists show tier thresholds and product selector (no unlock requirements)
+    tierThresholdsSection.style.display = 'block';
+    unlockRequirementsSection.style.display = 'none';
+    // TODO: Show product selector UI (will be implemented in next task)
   } else if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
     // Static and hidden collections need manual unlock requirements
     unlockRequirementsSection.style.display = 'block';
