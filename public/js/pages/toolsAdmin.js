@@ -1207,11 +1207,15 @@ function renderAvailableProducts() {
   const availableList = document.getElementById('availableProductsList');
   const countInfo = document.getElementById('availableProductsCount');
   
-  // Filter products by search term and exclude already selected
+  // Filter products by search term (includes metadata) and exclude already selected
   const filteredProducts = adminAllProducts.filter(product => {
     const matchesSearch = !searchTerm || 
       product.title.toLowerCase().includes(searchTerm) ||
-      product.vendor.toLowerCase().includes(searchTerm);
+      product.vendor.toLowerCase().includes(searchTerm) ||
+      (product.animalType && product.animalType.toLowerCase().includes(searchTerm)) ||
+      (product.animalDisplay && product.animalDisplay.toLowerCase().includes(searchTerm)) ||
+      (product.primaryFlavor && product.primaryFlavor.toLowerCase().includes(searchTerm)) ||
+      (product.flavorDisplay && product.flavorDisplay.toLowerCase().includes(searchTerm));
     return matchesSearch && !selectedProductIds.has(product.id);
   });
   

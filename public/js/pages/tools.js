@@ -257,14 +257,14 @@ function applyProductFilters() {
   const primaryFlavorFilter = document.getElementById('primaryFlavorFilter')?.value || '';
   
   filteredProducts = allProducts.filter(product => {
-    // Search only in user-visible fields (not tags, IDs, or metadata)
+    // Search in user-visible fields including metadata (animal type, flavor)
     const searchableFields = [
       product.title,
       product.vendor,
-      product.animalType,
-      product.animalDisplay,
-      product.primaryFlavor,
-      product.flavorDisplay
+      product.animalType,       // e.g., "cattle", "poultry", "exotic"
+      product.animalDisplay,    // e.g., "Beef", "Chicken", "Alligator"
+      product.primaryFlavor,    // e.g., "spicy", "sweet", "savory"
+      product.flavorDisplay     // e.g., "Spicy", "Sweet & Spicy"
     ];
     
     const matchesSearch = searchTerm === '' || 

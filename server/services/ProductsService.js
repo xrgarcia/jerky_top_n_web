@@ -58,19 +58,19 @@ class ProductsService {
       metadataMap = await this._getMetadata();
     }
     
-    // 5. Apply search filter if query provided
-    let filteredProducts = products;
-    if (query && query.trim()) {
-      filteredProducts = this._applySearchFilter(products, query);
-      console.log(`🔍 Filtered to ${filteredProducts.length} products matching "${query}"`);
-    }
-    
-    // 6. Transform products with all data merged
-    const enrichedProducts = filteredProducts.map(product => 
+    // 5. Transform products with all data merged FIRST (so we can search on metadata)
+    const enrichedProducts = products.map(product => 
       this._enrichProduct(product, rankingStats, metadataMap)
     );
     
-    return enrichedProducts;
+    // 6. Apply search filter on enriched products (includes metadata fields)
+    let filteredProducts = enrichedProducts;
+    if (query && query.trim()) {
+      filteredProducts = this._applySearchFilter(enrichedProducts, query);
+      console.log(`🔍 Filtered to ${filteredProducts.length} products matching "${query}"`);
+    }
+    
+    return filteredProducts;
   }
   
   /**
@@ -163,18 +163,24 @@ class ProductsService {
   
   /**
    * Apply intelligent multi-word search filter
+   * Searches user-visible fields including metadata (animal type, flavor)
+   * NOTE: This operates on enriched products, so use camelCase field names
    */
   _applySearchFilter(products, query) {
     const searchTerm = query.trim().toLowerCase();
     const searchWords = searchTerm.split(/\s+/).filter(word => word.length > 0);
     
     return products.filter(product => {
-      // Only search in user-visible fields (not tags or internal metadata)
+      // Search in user-visible fields including metadata
       const searchableText = [
         product.title,
         product.vendor,
-        product.product_type
-      ].join(' ').toLowerCase();
+        product.productType,      // Enriched field (was product_type)
+        product.animalType,       // e.g., "cattle", "poultry", "exotic"
+        product.animalDisplay,    // e.g., "Beef", "Chicken", "Alligator"
+        product.primaryFlavor,    // e.g., "spicy", "sweet", "savory"
+        product.flavorDisplay     // e.g., "Spicy", "Sweet & Spicy"
+      ].filter(Boolean).join(' ').toLowerCase();
       
       return searchWords.every(word => searchableText.includes(word));
     });
