@@ -83,6 +83,8 @@ class CollectionManager {
     const { productRankings } = require('../../shared/schema');
     const { inArray } = require('drizzle-orm');
 
+    console.log(`🔍 [${collection.code}] Required products (${totalAvailable}):`, productIds);
+
     // Get user's ranked products that match the custom product list
     const rankedProducts = await this.db
       .select({ shopifyProductId: productRankings.shopifyProductId })
@@ -93,10 +95,12 @@ class CollectionManager {
       ))
       .groupBy(productRankings.shopifyProductId);
 
+    const rankedProductIds = rankedProducts.map(p => p.shopifyProductId);
     const totalRanked = rankedProducts.length;
     const percentage = Math.round((totalRanked / totalAvailable) * 100);
     
-    console.log(`📊 Custom Collection ${collection.code}: User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
+    console.log(`✅ [${collection.code}] User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
+    console.log(`📋 [${collection.code}] Ranked product IDs:`, rankedProductIds);
 
     return {
       percentage,
