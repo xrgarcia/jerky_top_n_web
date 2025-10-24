@@ -59,6 +59,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const LeaderboardCache = require('../../cache/LeaderboardCache');
       const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
+      const RankingStatsCache = require('../../cache/RankingStatsCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
@@ -74,6 +75,9 @@ module.exports = function createDataManagementRoutes(storage, db) {
       
       const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
       leaderboardPositionCache.invalidateAll();
+      
+      const rankingStatsCache = new RankingStatsCache();
+      rankingStatsCache.invalidate();
 
       console.log('✅ All caches cleared successfully');
 
@@ -85,7 +89,8 @@ module.exports = function createDataManagementRoutes(storage, db) {
           'HomeStatsCache',
           'LeaderboardCache',
           'MetadataCache',
-          'LeaderboardPositionCache'
+          'LeaderboardPositionCache',
+          'RankingStatsCache'
         ]
       });
     } catch (error) {
@@ -113,6 +118,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const LeaderboardCache = require('../../cache/LeaderboardCache');
       const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
+      const RankingStatsCache = require('../../cache/RankingStatsCache');
 
       const achievementCache = AchievementCache.getInstance();
       achievementCache.invalidate();
@@ -128,6 +134,9 @@ module.exports = function createDataManagementRoutes(storage, db) {
       
       const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
       leaderboardPositionCache.invalidateAll();
+      
+      const rankingStatsCache = new RankingStatsCache();
+      rankingStatsCache.invalidate();
 
       console.log('✅ All achievement data cleared successfully');
 
