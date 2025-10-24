@@ -1138,6 +1138,7 @@ function handleProductSearch(e) {
  */
 function renderAvailableProducts() {
   const availableList = document.getElementById('availableProductsList');
+  const countInfo = document.getElementById('availableProductsCount');
   
   // Filter products by search term and exclude already selected
   const filteredProducts = adminAllProducts.filter(product => {
@@ -1146,6 +1147,19 @@ function renderAvailableProducts() {
       product.vendor.toLowerCase().includes(searchTerm);
     return matchesSearch && !selectedProductIds.has(product.id);
   });
+  
+  // Calculate products with rankings
+  const productsWithRankings = adminAllProducts.filter(p => p.rankingCount && p.rankingCount > 0).length;
+  
+  // Update count display
+  const totalProducts = adminAllProducts.length;
+  const showingCount = filteredProducts.length;
+  
+  if (searchTerm) {
+    countInfo.textContent = `Showing ${showingCount} of ${totalProducts} products • ${productsWithRankings} have been ranked`;
+  } else {
+    countInfo.textContent = `${totalProducts} products available • ${productsWithRankings} have been ranked`;
+  }
   
   if (filteredProducts.length === 0) {
     availableList.innerHTML = '<div class="no-results-state">No products found</div>';
