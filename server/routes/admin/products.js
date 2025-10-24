@@ -56,20 +56,20 @@ router.get('/products', requireEmployeeAuth, async (req, res) => {
     // Import required services
     const ProductsService = require('../../services/ProductsService');
     const ProductsMetadataService = require('../../services/ProductsMetadataService');
-    const ProductsCacheService = require('../../cache/ProductsCacheService');
-    const RankingStatsCacheService = require('../../cache/RankingStatsCacheService');
+    const MetadataCache = require('../../cache/MetadataCache');
+    const RankingStatsCache = require('../../cache/RankingStatsCache');
     const { fetchAllShopifyProducts } = require('../../shopify/products');
     
     // Create service instances
     const metadataService = new ProductsMetadataService(db);
-    const productsCache = new ProductsCacheService();
-    const rankingStatsCache = new RankingStatsCacheService();
+    const metadataCache = new MetadataCache();
+    const rankingStatsCache = new RankingStatsCache();
     
     const productsService = new ProductsService(
       db,
       fetchAllShopifyProducts,
       (products) => metadataService.syncProductsMetadata(products),
-      productsCache,
+      metadataCache,
       rankingStatsCache
     );
     
