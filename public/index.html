@@ -820,6 +820,7 @@
                     <button class="tools-nav-btn active" data-tool="achievements">Manage Achievements</button>
                     <button class="tools-nav-btn" data-tool="live-users">Live Users</button>
                     <button class="tools-nav-btn" data-tool="products">Manage Products</button>
+                    <button class="tools-nav-btn" data-tool="data" id="manageDataTabBtn" style="display: none;">🔐 Manage Data</button>
                 </div>
 
                 <!-- Manage Achievements Tool -->
@@ -828,8 +829,6 @@
                         <h3>🏆 Coin Book Admin Dashboard</h3>
                         <div class="tool-header-actions">
                             <button class="btn-primary" id="createAchievementBtn">+ Create Achievement</button>
-                            <button class="btn-warning" id="clearAllCacheBtn">🗑️ Clear All Cache</button>
-                            <button class="btn-danger" id="clearAllAchievementsBtn">Clear All Data</button>
                         </div>
                     </div>
                     
@@ -959,6 +958,43 @@
                         </table>
                     </div>
                 </div>
+
+                <!-- Manage Data Tool (Super Admin Only - ray@jerky.com) -->
+                <div class="tool-section" id="dataTool" style="display: none;">
+                    <div class="tool-header">
+                        <h3>🔐 Data Management (Super Admin Only)</h3>
+                        <div class="tool-header-subtitle">
+                            <span style="color: #c4a962;">⚠️ Destructive operations - Use with caution</span>
+                        </div>
+                    </div>
+                    
+                    <div class="data-management-container">
+                        <div class="data-action-section">
+                            <div class="data-action-card">
+                                <div class="data-action-header">
+                                    <span class="data-action-icon">🗑️</span>
+                                    <div>
+                                        <h4>Clear All Cache</h4>
+                                        <p>Clears all cached data including achievements, leaderboards, product metadata, and home stats. Cache will rebuild automatically on next request.</p>
+                                    </div>
+                                </div>
+                                <button class="btn-warning" id="clearAllCacheBtn">🗑️ Clear All Cache</button>
+                            </div>
+                            
+                            <div class="data-action-card danger">
+                                <div class="data-action-header">
+                                    <span class="data-action-icon">⚠️</span>
+                                    <div>
+                                        <h4>Clear All Achievement Data</h4>
+                                        <p><strong>DANGER:</strong> This permanently deletes all user achievement progress, points, and tiers. This action cannot be undone!</p>
+                                    </div>
+                                </div>
+                                <button class="btn-danger" id="clearAllAchievementsBtn">⚠️ Clear All Data</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </main>

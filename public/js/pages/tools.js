@@ -6,6 +6,7 @@ let liveUsersSubscribed = false;
 let currentToolTab = 'achievements';
 let allProducts = [];
 let filteredProducts = [];
+let hasSuperAdminAccess = false;
 
 /**
  * Show toast notification
@@ -464,6 +465,13 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+      } else if (tool === 'data') {
+        document.getElementById('dataTool').style.display = 'block';
+        
+        if (liveUsersSubscribed && window.socket) {
+          window.socket.emit('unsubscribe:live-users');
+          liveUsersSubscribed = false;
+        }
       } else if (tool === 'live-users') {
         document.getElementById('liveUsersTool').style.display = 'block';
         await loadLiveUsers();
@@ -518,29 +526,31 @@ function showConfirmationModal(title, message, onConfirm) {
 
 async function clearAllAchievements() {
   try {
-    const response = await fetch('/api/tools/achievements/all', {
+    const response = await fetch('/api/admin/data/clear-all', {
       method: 'DELETE'
     });
     
     if (!response.ok) {
+      if (response.status === 403) {
+        showToast({
+          type: 'error',
+          icon: '🔐',
+          title: 'Access Denied',
+          message: 'Super admin privileges required (ray@jerky.com only).',
+          duration: 5000
+        });
+        return;
+      }
       throw new Error('Failed to clear all data');
     }
     
     const data = await response.json();
     
-    const clearSummary = [
-      `${data.achievements} achievement(s)`,
-      `${data.streaks} streak(s)`,
-      `${data.rankings} ranking(s)`,
-      `${data.pageViews} page view(s)`,
-      `${data.searches} search(es)`
-    ].join(', ');
-    
     showToast({
       type: 'success',
       icon: '✅',
       title: 'Success',
-      message: `Successfully cleared all data for all users: ${clearSummary}`,
+      message: data.message || 'Successfully cleared all achievement data',
       duration: 7000
     });
     
@@ -558,28 +568,64 @@ async function clearAllAchievements() {
   }
 }
 
+/**
+ * Check if current user has super admin access (ray@jerky.com only)
+ */
+async function checkSuperAdminAccess() {
+  try {
+    const response = await fetch('/api/admin/data/check-access');
+    
+    if (!response.ok) {
+      hasSuperAdminAccess = false;
+      return;
+    }
+
+    const data = await response.json();
+    hasSuperAdminAccess = data.hasSuperAdminAccess || false;
+    
+    // Show/hide the Manage Data tab based on super admin access
+    const manageDataTab = document.getElementById('manageDataTabBtn');
+    if (manageDataTab) {
+      manageDataTab.style.display = hasSuperAdminAccess ? 'block' : 'none';
+    }
+    
+    console.log('🔐 Super admin access:', hasSuperAdminAccess);
+  } catch (error) {
+    console.error('Error checking super admin access:', error);
+    hasSuperAdminAccess = false;
+  }
+}
+
 async function clearAllCache() {
   try {
-    const response = await fetch('/api/tools/cache/clear', {
+    const response = await fetch('/api/admin/data/clear-cache', {
       method: 'POST'
     });
     
     if (!response.ok) {
+      if (response.status === 403) {
+        showToast({
+          type: 'error',
+          icon: '🔐',
+          title: 'Access Denied',
+          message: 'Super admin privileges required (ray@jerky.com only).',
+          duration: 5000
+        });
+        return;
+      }
       throw new Error('Failed to clear cache');
     }
     
     const data = await response.json();
     
     if (data.success) {
-      const cacheNames = Object.keys(data.caches)
-        .filter(key => data.caches[key] === 'cleared')
-        .join(', ');
+      const cacheNames = data.clearedCaches ? data.clearedCaches.join(', ') : 'all caches';
       
       showToast({
         type: 'success',
         icon: '🗑️',
         title: 'Cache Cleared',
-        message: `Successfully cleared all caches: ${cacheNames}`,
+        message: `Successfully cleared: ${cacheNames}`,
         duration: 5000
       });
     } else {
@@ -629,6 +675,7 @@ window.initToolsPage = async function() {
   
   setupToolNavigation();
   setupProductFilters();
+  await checkSuperAdminAccess(); // Check super admin access and show/hide Manage Data tab
   await loadAchievementsTable();
   
   const clearAllBtn = document.getElementById('clearAllAchievementsBtn');

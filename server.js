@@ -2461,6 +2461,11 @@ if (databaseAvailable && storage) {
       const recalculateRouter = createRecalculateRoutes(storage, db);
       adminRouter.use(recalculateRouter);
       
+      // Add data management route (super admin only - ray@jerky.com)
+      const createDataManagementRoutes = require('./server/routes/admin/data');
+      const dataRouter = createDataManagementRoutes(storage, db);
+      adminRouter.use(dataRouter);
+      
       app.use('/api/admin', adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       

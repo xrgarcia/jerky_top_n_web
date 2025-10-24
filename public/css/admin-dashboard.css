@@ -966,3 +966,92 @@
     height: 400px;
   }
 }
+
+/* Data Management Section */
+.data-management-container {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.data-action-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.data-action-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 25px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(123, 139, 82, 0.02), rgba(196, 169, 98, 0.02));
+  transition: all 0.3s ease;
+}
+
+.data-action-card:hover {
+  border-color: #7b8b52;
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.1);
+}
+
+.data-action-card.danger {
+  background: linear-gradient(135deg, rgba(231, 76, 60, 0.02), rgba(192, 57, 43, 0.02));
+  border-color: rgba(231, 76, 60, 0.3);
+}
+
+.data-action-card.danger:hover {
+  border-color: #e74c3c;
+  box-shadow: 0 4px 12px rgba(231, 76, 60, 0.15);
+}
+
+.data-action-header {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+  flex: 1;
+}
+
+.data-action-icon {
+  font-size: 36px;
+  line-height: 1;
+}
+
+.data-action-header h4 {
+  margin: 0 0 8px 0;
+  color: #3b2f25;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.data-action-header p {
+  margin: 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.data-action-card button {
+  flex-shrink: 0;
+  min-width: 180px;
+}
+
+.tool-header-subtitle {
+  margin-top: 8px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+@media (max-width: 768px) {
+  .data-action-card {
+    flex-direction: column;
+    gap: 20px;
+    align-items: stretch;
+  }
+  
+  .data-action-card button {
+    width: 100%;
+  }
+}
