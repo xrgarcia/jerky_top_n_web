@@ -66,12 +66,14 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const homeStatsCache = HomeStatsCache.getInstance();
       homeStatsCache.invalidate();
       
-      LeaderboardCache.invalidateAll();
+      const leaderboardCache = LeaderboardCache.getInstance();
+      leaderboardCache.invalidate(); // null = invalidate all
       
       const metadataCache = MetadataCache.getInstance();
       metadataCache.invalidate();
       
-      LeaderboardPositionCache.invalidateAll();
+      const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
+      leaderboardPositionCache.invalidateAll();
 
       console.log('✅ All caches cleared successfully');
 
@@ -118,12 +120,14 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const homeStatsCache = HomeStatsCache.getInstance();
       homeStatsCache.invalidate();
       
-      LeaderboardCache.invalidateAll();
+      const leaderboardCache = LeaderboardCache.getInstance();
+      leaderboardCache.invalidate(); // null = invalidate all
       
       const metadataCache = MetadataCache.getInstance();
       metadataCache.invalidate();
       
-      LeaderboardPositionCache.invalidateAll();
+      const leaderboardPositionCache = LeaderboardPositionCache.getInstance();
+      leaderboardPositionCache.invalidateAll();
 
       console.log('✅ All achievement data cleared successfully');
 
