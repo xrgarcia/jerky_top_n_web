@@ -5408,6 +5408,21 @@ body.login-page-active .hero {
     background: #c0392b;
 }
 
+.btn-warning {
+    background: #f39c12;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-warning:hover {
+    background: #e67e22;
+}
+
 /* Clear All Achievements Button */
 .tool-header {
     display: flex;

@@ -160,11 +160,69 @@ function createToolsRoutes(services) {
         deletedCount: result.total,
         achievements: result.achievements,
         streaks: result.streaks,
+        rankings: result.rankings,
+        pageViews: result.pageViews,
+        searches: result.searches,
         message: `Cleared ${result.achievements} achievement(s) and ${result.streaks} streak(s) for all users`
       });
     } catch (error) {
       console.error('Error clearing all achievements and streaks:', error);
       res.status(500).json({ error: 'Failed to clear all achievements and streaks' });
+    }
+  });
+
+  // Clear all cache data
+  router.post('/cache/clear', checkEmployeeRole, async (req, res) => {
+    try {
+      const cacheStatus = {};
+      
+      // Import cache classes
+      const AchievementCache = require('../cache/AchievementCache');
+      const HomeStatsCache = require('../cache/HomeStatsCache');
+      const LeaderboardCache = require('../cache/LeaderboardCache');
+      const LeaderboardPositionCache = require('../cache/LeaderboardPositionCache');
+      
+      // Clear singleton caches
+      AchievementCache.getInstance().invalidate();
+      cacheStatus.achievementCache = 'cleared';
+      
+      HomeStatsCache.getInstance().invalidate();
+      cacheStatus.homeStatsCache = 'cleared';
+      
+      LeaderboardCache.getInstance().invalidate();
+      cacheStatus.leaderboardCache = 'cleared';
+      
+      LeaderboardPositionCache.getInstance().invalidateAll();
+      cacheStatus.leaderboardPositionCache = 'cleared';
+      
+      // Clear ProductsService caches (accessible through services if available)
+      if (services.productsService) {
+        services.productsService.rankingStatsCache.invalidate();
+        cacheStatus.rankingStatsCache = 'cleared';
+        
+        services.productsService.metadataCache.invalidate();
+        cacheStatus.metadataCache = 'cleared';
+      } else {
+        cacheStatus.productsServiceCaches = 'unavailable';
+      }
+      
+      // Note: productCache in server.js can't be cleared from here (module-level variable)
+      cacheStatus.productCache = 'cannot_clear_from_tools_route';
+      
+      console.log(`🗑️ All caches cleared by ${req.user.email}:`, cacheStatus);
+      
+      res.json({ 
+        success: true,
+        caches: cacheStatus,
+        message: 'All caches cleared successfully'
+      });
+    } catch (error) {
+      console.error('Error clearing caches:', error);
+      res.status(500).json({ 
+        success: false,
+        error: 'Failed to clear caches',
+        details: error.message 
+      });
     }
   });
 

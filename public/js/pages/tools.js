@@ -558,6 +558,46 @@ async function clearAllAchievements() {
   }
 }
 
+async function clearAllCache() {
+  try {
+    const response = await fetch('/api/tools/cache/clear', {
+      method: 'POST'
+    });
+    
+    if (!response.ok) {
+      throw new Error('Failed to clear cache');
+    }
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      const cacheNames = Object.keys(data.caches)
+        .filter(key => data.caches[key] === 'cleared')
+        .join(', ');
+      
+      showToast({
+        type: 'success',
+        icon: '🗑️',
+        title: 'Cache Cleared',
+        message: `Successfully cleared all caches: ${cacheNames}`,
+        duration: 5000
+      });
+    } else {
+      throw new Error(data.error || 'Unknown error');
+    }
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+    
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: `Failed to clear cache: ${error.message}`,
+      duration: 5000
+    });
+  }
+}
+
 // Initialize tools page when it's shown
 window.initToolsPage = async function() {
   console.log('🛠️ Initializing Tools page...');
@@ -598,6 +638,17 @@ window.initToolsPage = async function() {
         'Clear All Data',
         '⚠️ This will permanently delete ALL data for ALL users including: achievements, streaks, rankings, page views, and searches. This action cannot be undone. Are you absolutely sure?',
         clearAllAchievements
+      );
+    });
+  }
+  
+  const clearCacheBtn = document.getElementById('clearAllCacheBtn');
+  if (clearCacheBtn) {
+    clearCacheBtn.addEventListener('click', () => {
+      showConfirmationModal(
+        'Clear All Cache',
+        '⚠️ This will clear all cached data including achievements, leaderboards, product metadata, and home stats. The cache will automatically rebuild on next request. Continue?',
+        clearAllCache
       );
     });
   }
