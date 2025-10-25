@@ -196,6 +196,10 @@ document.addEventListener('DOMContentLoaded', function() {
             if (window.homeDashboard && typeof window.homeDashboard.loadStats === 'function') {
                 window.homeDashboard.loadStats();
             }
+            // Refresh hero dashboard data when navigating to home
+            if (window.heroDashboard && typeof window.heroDashboard.loadStats === 'function') {
+                window.heroDashboard.loadStats();
+            }
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
