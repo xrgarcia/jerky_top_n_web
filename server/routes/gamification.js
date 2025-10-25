@@ -518,13 +518,12 @@ function createGamificationRoutes(services) {
       // Get product details and mark which are ranked
       const { products: allProducts } = await services.fetchAllShopifyProducts();
       
-      // Debug: log first 3 Shopify product IDs to see format
-      console.log(`🔍 Sample Shopify product IDs:`, allProducts.slice(0, 3).map(p => ({ id: p.id, type: typeof p.id })));
-      
       const products = productIds.map(productId => {
-        const product = allProducts.find(p => p.id === productId || p.id === String(productId));
+        // Convert string IDs to numbers for comparison (Shopify returns numbers)
+        const numericId = typeof productId === 'string' ? parseInt(productId, 10) : productId;
+        const product = allProducts.find(p => p.id === numericId);
         if (!product) {
-          console.log(`❌ Product ID ${productId} not found in Shopify products`);
+          console.log(`❌ Product ID ${productId} (${numericId}) not found in Shopify products`);
           return null;
         }
         
