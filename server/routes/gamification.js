@@ -496,7 +496,7 @@ function createGamificationRoutes(services) {
         // Categories can be in requirement.categories array
         const categories = achievement.requirement?.categories || [];
         if (categories.length > 0) {
-          const allProducts = services.getAllProducts();
+          const { products: allProducts } = await services.fetchAllShopifyProducts();
           const categoryProducts = allProducts.filter(product => {
             const productCategories = product.tags?.split(',').map(t => t.trim().toLowerCase()) || [];
             return categories.some(cat => 
@@ -512,7 +512,7 @@ function createGamificationRoutes(services) {
       const rankedProductIds = new Set(userRankings.map(r => r.productId));
 
       // Get product details and mark which are ranked
-      const allProducts = services.getAllProducts();
+      const { products: allProducts } = await services.fetchAllShopifyProducts();
       const products = productIds.map(productId => {
         const product = allProducts.find(p => p.id === productId);
         if (!product) return null;
