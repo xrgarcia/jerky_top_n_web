@@ -459,63 +459,6 @@ function createGamificationRoutes(services) {
     }
   });
 
-  // Get achievements collection (coin book page)
-  router.get('/achievements/collection', async (req, res) => {
-    try {
-      console.log('📚 Achievements collection endpoint called');
-      
-      const sessionId = req.cookies.session_id;
-      if (!sessionId) {
-        return res.status(401).json({ error: 'Not authenticated' });
-      }
-
-      const session = await services.storage.getSession(sessionId);
-      if (!session) {
-        return res.status(401).json({ error: 'Invalid session' });
-      }
-
-      const userId = session.userId;
-      console.log(`📊 Fetching achievement collection for user ${userId}`);
-
-      // Get total rankable products count
-      const totalRankableProducts = services.getRankableProductCount();
-
-      // Get user stats
-      const stats = await userStatsAggregator.getStatsForAchievements(userId, totalRankableProducts);
-
-      // Get all achievements with progress
-      const achievementsData = await achievementManager.getAchievementsWithProgress(userId, stats);
-      
-      // Get user's total achievement stats
-      const totalUnlocked = achievementsData.filter(a => a.isCompleted).length;
-      const totalAchievements = achievementsData.length;
-      const totalPoints = achievementsData
-        .filter(a => a.isCompleted)
-        .reduce((sum, a) => sum + (a.pointsAwarded || 0), 0);
-      
-      // Calculate rarity for each achievement (% of users who have it)
-      // For now, skip rarity calculation - can add later
-      const rarityData = {};
-
-      console.log(`✅ Collection fetched: ${totalUnlocked}/${totalAchievements} unlocked, ${totalPoints} points`);
-
-      res.json({
-        achievements: achievementsData,
-        stats: {
-          totalUnlocked,
-          totalAchievements,
-          totalPoints,
-          percentage: totalAchievements > 0 ? Math.round((totalUnlocked / totalAchievements) * 100) : 0
-        },
-        rarity: rarityData
-      });
-    } catch (error) {
-      console.error('❌ Error fetching achievements collection:', error);
-      console.error('Error stack:', error.stack);
-      res.status(500).json({ error: 'Failed to fetch achievements collection' });
-    }
-  });
-
   return router;
 }
 

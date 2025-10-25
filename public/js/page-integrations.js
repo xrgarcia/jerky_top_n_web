@@ -11,14 +11,12 @@
   let progressWidget = null;
   let leaderboardWidget = null;
   let fullLeaderboardWidget = null;
-  let achievementsPage = null;
   
   // Expose widgets globally for router access
   window.pageWidgets = {
     get fullLeaderboard() { return fullLeaderboardWidget; },
     get leaderboard() { return leaderboardWidget; },
-    get progress() { return progressWidget; },
-    get achievements() { return achievementsPage; }
+    get progress() { return progressWidget; }
   };
 
   function initializeCommunityPage() {
@@ -107,19 +105,6 @@
     }
   }
 
-  function initializeAchievementsPage() {
-    const achievementsPageEl = document.getElementById('achievementsPage');
-    if (!achievementsPageEl) return;
-
-    if (!achievementsPage) {
-      achievementsPage = new AchievementsPage(eventBus);
-      console.log('✅ Achievements page initialized');
-    }
-    
-    // Emit page event to load data
-    eventBus.emit('page:achievements');
-  }
-
   eventBus.on('page:shown', (data) => {
     if (data.page === 'community') {
       initializeCommunityPage();
@@ -127,8 +112,6 @@
       initializeLeaderboardPage();
     } else if (data.page === 'rank') {
       initializeRankPage();
-    } else if (data.page === 'achievements') {
-      initializeAchievementsPage();
     }
   });
 
@@ -140,8 +123,6 @@
       initializeLeaderboardPage();
     } else if (currentPage === 'rank') {
       initializeRankPage();
-    } else if (currentPage === 'achievements') {
-      initializeAchievementsPage();
     }
   });
 
