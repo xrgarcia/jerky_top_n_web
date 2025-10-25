@@ -27,6 +27,8 @@ const HomeStatsCache = require('../cache/HomeStatsCache');
 const createGamificationRoutes = require('../routes/gamification');
 const WebSocketGateway = require('../websocket/gateway');
 
+const { primaryDb } = require('../db-primary');
+
 async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null) {
   console.log('🎮 Initializing gamification system...');
 
@@ -49,7 +51,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService, homeStatsCache);
   const userStatsAggregator = new UserStatsAggregator(leaderboardManager, streakManager, productsService);
   const flavorCoinManager = new FlavorCoinManager(flavorCoinRepo, productsMetadataRepo, activityLogRepo);
-  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, db);
+  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
 
   const services = {
     db,

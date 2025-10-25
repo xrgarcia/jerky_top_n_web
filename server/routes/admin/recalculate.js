@@ -76,10 +76,11 @@ module.exports = function createRecalculateRoutes(storage, db) {
     const CollectionManager = require('../../services/CollectionManager');
     const AchievementRepository = require('../../services/AchievementRepository');
     const ProductsMetadataRepository = require('../../services/ProductsMetadataRepository');
+    const { primaryDb } = require('../../db-primary');
     
     const achievementRepo = new AchievementRepository(db);
     const productsMetadataRepo = new ProductsMetadataRepository(db);
-    const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, db);
+    const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
     
     // Process users in batches to avoid overload
     const BATCH_SIZE = 5;

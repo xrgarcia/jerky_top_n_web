@@ -11,10 +11,11 @@ async function testTierUpgrade() {
   const AchievementRepository = require('./server/repositories/AchievementRepository');
   const ProductsMetadataRepository = require('./server/repositories/ProductsMetadataRepository');
   const CollectionManager = require('./server/services/CollectionManager');
+  const { primaryDb } = require('./server/db-primary');
   
   const achievementRepo = new AchievementRepository(db);
   const productsMetadataRepo = new ProductsMetadataRepository(db);
-  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, db);
+  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
   
   const userId = 2; // User with existing achievements
   
