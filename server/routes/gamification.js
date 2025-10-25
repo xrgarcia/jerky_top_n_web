@@ -444,7 +444,7 @@ function createGamificationRoutes(services) {
         }
         
         // For static and hidden achievements, check if user has earned them
-        const hasAchievement = await services.achievementManager.hasAchievement(userId, achievement.id);
+        const hasAchievement = await services.achievementRepo.hasAchievement(userId, achievement.id);
         userProgress[achievement.id] = {
           completed: hasAchievement,
           unlocked: hasAchievement,
@@ -508,7 +508,7 @@ function createGamificationRoutes(services) {
       }
 
       // Get user's rankings
-      const userRankings = await services.storage.getAllRankings(userId);
+      const userRankings = await services.storage.getUserRankings(userId);
       const rankedProductIds = new Set(userRankings.map(r => r.productId));
 
       // Get product details and mark which are ranked
