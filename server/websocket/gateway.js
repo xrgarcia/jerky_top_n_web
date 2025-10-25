@@ -20,6 +20,19 @@ class WebSocketGateway {
         if (data.sessionId) {
           const session = await this.services.storage.getSession(data.sessionId);
           if (session) {
+            // Guard: Check if socket is already authenticated
+            if (socket.userId && socket.userId === session.userId) {
+              console.log(`⚠️ Socket ${socket.id} already authenticated for user ${session.userId}, skipping re-auth`);
+              socket.emit('authenticated', { userId: session.userId });
+              return;
+            }
+            
+            // Clean state: Leave old room if re-authenticating as different user
+            if (socket.userId && socket.userId !== session.userId) {
+              console.log(`🔄 Socket ${socket.id} switching users: ${socket.userId} → ${session.userId}`);
+              socket.leave(`user:${socket.userId}`);
+            }
+            
             socket.userId = session.userId;
             socket.join(`user:${session.userId}`);
             console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id}`);
@@ -45,7 +58,10 @@ class WebSocketGateway {
               // Update or create user entry (aggregated view)
               if (this.activeUsers.has(user.id)) {
                 const existingUser = this.activeUsers.get(user.id);
-                existingUser.socketIds.push(socket.id);
+                // Only add socket if not already tracked
+                if (!existingUser.socketIds.includes(socket.id)) {
+                  existingUser.socketIds.push(socket.id);
+                }
                 existingUser.lastActivity = new Date().toISOString();
               } else {
                 this.activeUsers.set(user.id, {
