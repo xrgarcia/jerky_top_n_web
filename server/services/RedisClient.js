@@ -13,15 +13,33 @@ class RedisClient {
       return this.client;
     }
 
-    const redisUrl = process.env.UPSTASH_REDIS_URL;
+    // Detect environment: production deployment vs development
+    const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+    const environment = isProduction ? 'production' : 'development';
     
+    // Select appropriate Redis URL based on environment
+    const redisUrl = isProduction 
+      ? process.env.UPSTASH_REDIS_URL_PROD 
+      : process.env.UPSTASH_REDIS_URL;
+    
+    const urlSource = isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL';
+    
+    // Production safety: NEVER fall back to dev Redis (causes cache pollution/data leaks)
     if (!redisUrl) {
-      console.warn('⚠️ UPSTASH_REDIS_URL not found, using in-memory cache (not recommended for production)');
+      if (isProduction) {
+        console.error('❌ CRITICAL: UPSTASH_REDIS_URL_PROD not found in production!');
+        console.error('❌ Production MUST have its own Redis database for data isolation.');
+        console.error('❌ Falling back to in-memory cache (single-instance only).');
+        console.error('❌ ADD UPSTASH_REDIS_URL_PROD SECRET IMMEDIATELY!');
+      } else {
+        console.warn(`⚠️ ${urlSource} not found for ${environment}, using in-memory cache`);
+      }
       return null;
     }
 
     try {
-      console.log('🔌 Establishing Redis connection pool...');
+      console.log(`🔌 Establishing Redis connection pool for ${environment}...`);
+      console.log(`📍 Using Redis database: ${urlSource}`);
       
       this.client = new Redis(redisUrl, {
         maxRetriesPerRequest: 3,
@@ -66,7 +84,7 @@ class RedisClient {
 
       // Test the connection
       await this.client.ping();
-      console.log('🏓 Redis PING successful - connection pool active');
+      console.log(`🏓 Redis PING successful - connection pool active (${environment})`);
       this.isConnected = true;
 
       return this.client;

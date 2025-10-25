@@ -9,6 +9,7 @@ This application is now optimized to handle 1,000-5,000 concurrent users through
 **Location**: `server/services/RedisClient.js`, `server/services/DistributedCache.js`, `server/services/CacheService.js`
 
 **Features**:
+- Single shared Redis connection pool (not 7 separate connections)
 - Distributed cache shared across all server instances
 - Automatic fallback to in-memory cache if Redis unavailable
 - Support for all existing cache types:
@@ -21,9 +22,27 @@ This application is now optimized to handle 1,000-5,000 concurrent users through
   - Products (30min TTL)
 
 **Configuration**:
-- Requires `UPSTASH_REDIS_URL` environment variable
-- Uses Upstash Redis (free tier supports up to 10,000 requests/day)
+- **Development**: Uses `UPSTASH_REDIS_URL` environment variable
+- **Production**: Uses `UPSTASH_REDIS_URL_PROD` environment variable
+- Environment detection: Checks `REPLIT_DEPLOYMENT === '1'` to determine production
+- Uses Upstash Redis (free tier supports up to 10,000 requests/day per database)
 - Graceful degradation if Redis unavailable
+- Connection pool prevents Upstash free tier connection limits from being exceeded
+
+**Dual Redis Setup** (Dev/Prod Separation):
+- Separate Redis databases for development and production
+- Prevents dev testing from consuming production bandwidth/usage
+- Automatic environment-based selection (no manual configuration needed)
+- Clear startup logging shows which database is being used:
+  - Development: `🔌 Establishing Redis connection pool for development...`
+  - Production: `🔌 Establishing Redis connection pool for production...`
+
+**🚨 CRITICAL - Production Secret Required**:
+- You **MUST** add `UPSTASH_REDIS_URL_PROD` secret before deploying to production
+- If missing, production will fall back to **in-memory cache** (single-instance only)
+- Look for error logs: `❌ CRITICAL: UPSTASH_REDIS_URL_PROD not found in production!`
+- **Never share dev and prod Redis databases** - this causes cache pollution and data leakage
+- Production without Redis = no cross-instance coordination, degraded performance
 
 ### 2. Database Connection Pooling
 **Location**: `server/db.js`
