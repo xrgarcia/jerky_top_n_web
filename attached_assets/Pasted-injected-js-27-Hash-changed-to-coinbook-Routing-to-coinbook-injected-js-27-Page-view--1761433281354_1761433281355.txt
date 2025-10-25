@@ -1,0 +1,1871 @@
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 📊 Page view tracked: coinbook
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ⏳ Products already loading, skipping duplicate call
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 🔀 Hash changed to: "products" → Routing to: "products"
+injected.js:27 📊 Page view tracked: products
+injected.js:27 ✅ Loaded 20 products (page 1), total: 20, hasMore: true
+injected.js:27 🔀 Hash changed to: "product/11971533199" → Routing to: "product/11971533199"
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 🔀 Hash changed to: "products" → Routing to: "products"
+injected.js:27 ✅ Loaded 20 products (page 1), total: 20, hasMore: true
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 📊 Page view tracked: coinbook
+injected.js:27 ❌ WebSocket disconnected
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+framework-e2116584665050d4.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-e2116584665050d4.js:1
+(anonymous) @ framework-e2116584665050d4.js:1
+uD @ framework-e2116584665050d4.js:1
+uI @ framework-e2116584665050d4.js:1
+uM @ framework-e2116584665050d4.js:1
+uS @ framework-e2116584665050d4.js:1
+C @ framework-e2116584665050d4.js:1
+z @ framework-e2116584665050d4.js:1
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+framework-e2116584665050d4.js:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+framework-e2116584665050d4.js:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+framework-e2116584665050d4.js:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 🔀 Hash changed to: "home" → Routing to: "home"
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 📊 Page view tracked: home
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ⏳ Products already loading, skipping duplicate call
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 📈 Adding 30 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 40
+injected.js:27 📈 Pre-expanded slots to 40 to accommodate rank 37
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 🔀 Hash changed to: "achievement/3582" → Routing to: "achievement/3582"
+injected.js:27 🏆 Initializing Achievement Detail page for achievement 3582...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/achievement/3582/products 500 (Internal Server Error)
+apply @ VM363 injected.js:204
+loadAchievementDetail @ VM383 achievementDetail.js:26
+window.initAchievementDetailPage @ VM383 achievementDetail.js:18
+showPage @ VM379 app.js:159
+handleRouting @ VM379 app.js:786
+hashchange
+window.navigateToAchievementDetail @ VM380 coinbook.js:374
+onclick @ VM394 :1
+injected.js:27 Error loading achievement details: Error: Failed to load achievement details
+    at loadAchievementDetail (achievementDetail.js:29:13)
+    at async window.initAchievementDetailPage (achievementDetail.js:18:3)
+    at async showPage (app.js?v=20251012b:159:17)
+(anonymous) @ VM363 injected.js:27
+loadAchievementDetail @ VM383 achievementDetail.js:41
+await in loadAchievementDetail
+window.initAchievementDetailPage @ VM383 achievementDetail.js:18
+showPage @ VM379 app.js:159
+handleRouting @ VM379 app.js:786
+hashchange
+window.navigateToAchievementDetail @ VM380 coinbook.js:374
+onclick @ VM394 :1
+injected.js:27 ❌ WebSocket disconnected
+framework-e2116584665050d4.js:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+framework-e2116584665050d4.js:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+framework-e2116584665050d4.js:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+e @ framework-e2116584665050d4.js:1
+oK @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+oQ @ framework-e2116584665050d4.js:1
+oq @ framework-e2116584665050d4.js:1
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 🔀 Hash changed to: "home" → Routing to: "home"
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 📊 Loading initial home stats...
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 🏆 Initializing Coin Book page...
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 🔀 Hash changed to: "home" → Routing to: "home"
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 📊 Page view tracked: home
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 🏆 Initializing Coin Book page...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ injected.js:204
+loadCollections @ coinbook.js:135
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ injected.js:204
+loadCollections @ coinbook.js:135
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+injected.js:27 Error loading collections: Error: Failed to load collections
+    at loadCollections (coinbook.js:138:13)
+    at async Promise.all (e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/index 1)
+    at async window.initCoinbookPage (coinbook.js:29:3)
+    at async showPage (app.js?v=20251012b:389:17)
+(anonymous) @ injected.js:27
+loadCollections @ coinbook.js:150
+await in loadCollections
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+injected.js:27 📊 Page view tracked: coinbook
+injected.js:27 🔀 Hash changed to: "community" → Routing to: "community"
+injected.js:27 ✅ Leaderboard widget integrated into Community page
+injected.js:27 📊 Page view tracked: community
+injected.js:27 ✅ Loaded 2 community members
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ⏳ Products already loading, skipping duplicate call
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 📈 Adding 30 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 40
+injected.js:27 📈 Pre-expanded slots to 40 to accommodate rank 37
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 🏆 Initializing Coin Book page...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ injected.js:204
+loadCollections @ coinbook.js:135
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+injected.js:27 Error loading collections: Error: Failed to load collections
+    at loadCollections (coinbook.js:138:13)
+    at async Promise.all (e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/index 1)
+    at async window.initCoinbookPage (coinbook.js:29:3)
+    at async showPage (app.js?v=20251012b:389:17)
+(anonymous) @ injected.js:27
+loadCollections @ coinbook.js:150
+await in loadCollections
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+injected.js:27 📊 Page view tracked: coinbook
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 🔀 Hash changed to: "home" → Routing to: "home"
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ WebSocket connected
+injected.js:27 📊 Loading initial home stats...
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 🔀 Hash changed to: "products" → Routing to: "products"
+injected.js:27 📊 Page view tracked: products
+injected.js:27 ✅ Loaded 20 products (page 1), total: 20, hasMore: true
+injected.js:27 🔀 Hash changed to: "coinbook" → Routing to: "coinbook"
+injected.js:27 🏆 Initializing Coin Book page...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ injected.js:204
+loadCollections @ coinbook.js:135
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/collections-progress 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadCollections @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:135
+window.initCoinbookPage @ e4c74dfc-6d9f-4ca0-b…ages/coinbook.js:31
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:389
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+injected.js:27 Error loading collections: Error: Failed to load collections
+    at loadCollections (coinbook.js:138:13)
+    at async Promise.all (e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/index 1)
+    at async window.initCoinbookPage (coinbook.js:29:3)
+    at async showPage (app.js?v=20251012b:389:17)
+(anonymous) @ injected.js:27
+loadCollections @ coinbook.js:150
+await in loadCollections
+window.initCoinbookPage @ coinbook.js:31
+showPage @ app.js?v=20251012b:389
+handleRouting @ app.js?v=20251012b:812
+injected.js:27 📊 Page view tracked: coinbook
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ⏳ Products already loading, skipping duplicate call
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 📈 Adding 30 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 40
+injected.js:27 📈 Pre-expanded slots to 40 to accommodate rank 37
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 🔀 Hash changed to: "achievement/3582" → Routing to: "achievement/3582"
+injected.js:27 🏆 Initializing Achievement Detail page for achievement 3582...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/achievement/3582/products 500 (Internal Server Error)
+apply @ injected.js:204
+loadAchievementDetail @ achievementDetail.js:26
+window.initAchievementDetailPage @ achievementDetail.js:18
+showPage @ app.js?v=20251012b:159
+handleRouting @ app.js?v=20251012b:812
+hashchange
+window.navigateToAchievementDetail @ coinbook.js:374
+onclick @ (index):1
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/achievement/3582/products 500 (Internal Server Error)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+loadAchievementDetail @ e4c74dfc-6d9f-4ca0-b…evementDetail.js:26
+window.initAchievementDetailPage @ e4c74dfc-6d9f-4ca0-b…evementDetail.js:18
+showPage @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:159
+handleRouting @ e4c74dfc-6d9f-4ca0-b….js?v=20251012b:812
+hashchange
+window.navigateToAchievementDetail @ e4c74dfc-6d9f-4ca0-b…ges/coinbook.js:374
+onclick @ e4c74dfc-6d9f-4ca0-b….replit.dev/#rank:1
+injected.js:27 Error loading achievement details: Error: Failed to load achievement details
+    at loadAchievementDetail (achievementDetail.js:29:13)
+    at async window.initAchievementDetailPage (achievementDetail.js:18:3)
+    at async showPage (app.js?v=20251012b:159:17)
+(anonymous) @ injected.js:27
+loadAchievementDetail @ achievementDetail.js:41
+await in loadAchievementDetail
+window.initAchievementDetailPage @ achievementDetail.js:18
+showPage @ app.js?v=20251012b:159
+handleRouting @ app.js?v=20251012b:812
+hashchange
+window.navigateToAchievementDetail @ coinbook.js:374
+onclick @ (index):1
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: false, hasMilestone: false, achievementsCount: 0, totalRankings: undefined, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 12, totalRankings: 37, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: false, hasMilestone: false, achievementsCount: 21, totalRankings: undefined, isCollapsed: false}
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ Loaded 37 saved rankings
+injected.js:27 📈 Adding 30 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 40
+injected.js:27 📈 Pre-expanded slots to 40 to accommodate rank 37
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Progress data loaded: {totalRankings: 37, uniqueProducts: 37, achievementsEarned: 12, totalPoints: 4960, currentStreak: 2, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}
+injected.js:27 ✅ GamificationService: Loaded 21 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 21, totalRankings: 37, isCollapsed: false}achievementsCount: 21hasMilestone: truehasProgress: trueisCollapsed: falsetotalRankings: 37[[Prototype]]: Object
+injected.js:27 🔀 Hash changed to: "achievement/4833" → Routing to: "achievement/4833"
+injected.js:27 🏆 Initializing Achievement Detail page for achievement 4833...
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/gamification/achievement/4833/products 500 (Internal Server Error)
+apply @ injected.js:204
+loadAchievementDetail @ achievementDetail.js:26
+window.initAchievementDetailPage @ achievementDetail.js:18
+showPage @ app.js?v=20251012b:159
+handleRouting @ app.js?v=20251012b:812
+hashchange
+window.navigateToAchievementDetail @ coinbook.js:374
+onclick @ (index):1
+injected.js:27 Error loading achievement details: Error: Failed to load achievement details
+    at loadAchievementDetail (achievementDetail.js:29:13)
+    at async window.initAchievementDetailPage (achievementDetail.js:18:3)
+    at async showPage (app.js?v=20251012b:159:17)
+(anonymous) @ injected.js:27
+loadAchievementDetail @ achievementDetail.js:41
+await in loadAchievementDetail
+window.initAchievementDetailPage @ achievementDetail.js:18
+showPage @ app.js?v=20251012b:159
+handleRouting @ app.js?v=20251012b:812
+hashchange
+window.navigateToAchievementDetail @ coinbook.js:374
+onclick @ (index):1
