@@ -1,10 +1,14 @@
 /**
  * NotificationWidget - Displays toast notifications for achievements and events
+ * Now with queue support for sequential display
  */
 class NotificationWidget {
   constructor(eventBus) {
     this.eventBus = eventBus;
     this.container = null;
+    this.queue = [];
+    this.isShowing = false;
+    this.currentNotification = null;
     this.init();
   }
 
@@ -54,6 +58,28 @@ class NotificationWidget {
   }
 
   show(notification) {
+    // Add to queue instead of showing immediately
+    this.queue.push(notification);
+    console.log(`📥 Toast added to queue (${this.queue.length} in queue)`);
+    
+    // Process queue if nothing is currently showing
+    if (!this.isShowing) {
+      this.processQueue();
+    }
+  }
+
+  processQueue() {
+    // If queue is empty or already showing, do nothing
+    if (this.queue.length === 0 || this.isShowing) {
+      return;
+    }
+
+    // Get next notification from queue
+    const notification = this.queue.shift();
+    this.isShowing = true;
+    
+    console.log(`🎬 Showing toast: ${notification.title} (${this.queue.length} remaining in queue)`);
+
     const iconElement = this.createIconElement(notification.icon || '🔔');
     
     const notificationEl = DOMHelpers.createElement('div', {
@@ -77,18 +103,27 @@ class NotificationWidget {
       ].filter(Boolean))
     ]);
 
+    this.currentNotification = notificationEl;
     this.container.appendChild(notificationEl);
 
+    // Show animation
     setTimeout(() => {
       notificationEl.classList.add('show');
     }, 10);
 
+    // Auto-dismiss after 3 seconds and show next
     setTimeout(() => {
       notificationEl.classList.remove('show');
       setTimeout(() => {
         notificationEl.remove();
-      }, 300);
-    }, notification.duration || 5000);
+        this.currentNotification = null;
+        this.isShowing = false;
+        
+        // Process next notification in queue
+        console.log(`✅ Toast dismissed, processing next (${this.queue.length} in queue)`);
+        this.processQueue();
+      }, 300); // Wait for fade-out animation
+    }, 3000); // 3-second display duration
   }
 
   showAchievement(achievement) {
