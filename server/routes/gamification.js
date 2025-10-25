@@ -488,9 +488,13 @@ function createGamificationRoutes(services) {
       // Get all products for this achievement based on its type
       let productIds = [];
       
+      console.log(`🔍 Achievement type: ${achievement.collectionType}`);
+      console.log(`🔍 Achievement requirement:`, JSON.stringify(achievement.requirement));
+      
       if (achievement.collectionType === 'static_collection' || achievement.collectionType === 'custom_product_list') {
         // Static collection or custom list - get specific products from requirement
         productIds = achievement.requirement.productIds || [];
+        console.log(`📋 Product IDs from requirement:`, productIds);
       } else if (achievement.collectionType === 'dynamic_collection') {
         // Dynamic collection - get all products from specified protein categories
         // Categories can be in requirement.categories array
