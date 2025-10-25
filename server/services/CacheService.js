@@ -92,10 +92,16 @@ class CacheService {
     return await this.leaderboardPosition.set(key, data, ttlSeconds);
   }
 
-  async invalidateLeaderboardPosition(userId) {
-    const periods = ['all_time', 'week', 'month'];
-    for (const period of periods) {
-      await this.leaderboardPosition.del(`${userId}:${period}`);
+  async invalidateLeaderboardPosition(userId = null) {
+    if (userId) {
+      // Clear specific user's position cache for all periods
+      const periods = ['all_time', 'week', 'month'];
+      for (const period of periods) {
+        await this.leaderboardPosition.del(`${userId}:${period}`);
+      }
+    } else {
+      // Clear ALL leaderboard position entries (for admin cache clear)
+      await this.leaderboardPosition.clear();
     }
   }
 

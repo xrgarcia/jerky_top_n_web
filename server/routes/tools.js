@@ -176,45 +176,69 @@ function createToolsRoutes(services) {
     try {
       const cacheStatus = {};
       
-      // Import cache classes
+      // Clear NEW distributed cache system (Redis + in-memory fallback)
+      const { cacheService } = require('../init-scalability');
+      if (cacheService) {
+        await cacheService.invalidateHomeStats();
+        cacheStatus.distributedCache_homeStats = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateLeaderboard();
+        cacheStatus.distributedCache_leaderboard = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateLeaderboardPosition();
+        cacheStatus.distributedCache_leaderboardPosition = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateAchievements();
+        cacheStatus.distributedCache_achievements = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateMetadata();
+        cacheStatus.distributedCache_metadata = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateRankingStats();
+        cacheStatus.distributedCache_rankingStats = 'cleared (Redis + in-memory)';
+        
+        await cacheService.invalidateProducts();
+        cacheStatus.distributedCache_products = 'cleared (Redis + in-memory)';
+      } else {
+        cacheStatus.distributedCache = 'unavailable (scalability not initialized)';
+      }
+      
+      // Import OLD singleton cache classes (legacy support)
       const AchievementCache = require('../cache/AchievementCache');
       const HomeStatsCache = require('../cache/HomeStatsCache');
       const LeaderboardCache = require('../cache/LeaderboardCache');
       const LeaderboardPositionCache = require('../cache/LeaderboardPositionCache');
       
-      // Clear singleton caches
+      // Clear OLD singleton caches (legacy)
       AchievementCache.getInstance().invalidate();
-      cacheStatus.achievementCache = 'cleared';
+      cacheStatus.legacy_achievementCache = 'cleared';
       
       HomeStatsCache.getInstance().invalidate();
-      cacheStatus.homeStatsCache = 'cleared';
+      cacheStatus.legacy_homeStatsCache = 'cleared';
       
       LeaderboardCache.getInstance().invalidate();
-      cacheStatus.leaderboardCache = 'cleared';
+      cacheStatus.legacy_leaderboardCache = 'cleared';
       
       LeaderboardPositionCache.getInstance().invalidateAll();
-      cacheStatus.leaderboardPositionCache = 'cleared';
+      cacheStatus.legacy_leaderboardPositionCache = 'cleared';
       
       // Clear ProductsService caches (accessible through services if available)
       if (services.productsService) {
         services.productsService.rankingStatsCache.invalidate();
-        cacheStatus.rankingStatsCache = 'cleared';
+        cacheStatus.legacy_rankingStatsCache = 'cleared';
         
         services.productsService.metadataCache.invalidate();
-        cacheStatus.metadataCache = 'cleared';
+        cacheStatus.legacy_metadataCache = 'cleared';
       } else {
         cacheStatus.productsServiceCaches = 'unavailable';
       }
-      
-      // Note: productCache in server.js can't be cleared from here (module-level variable)
-      cacheStatus.productCache = 'cannot_clear_from_tools_route';
       
       console.log(`🗑️ All caches cleared by ${req.user.email}:`, cacheStatus);
       
       res.json({ 
         success: true,
         caches: cacheStatus,
-        message: 'All caches cleared successfully'
+        message: 'All caches cleared successfully (Redis + in-memory + legacy)'
       });
     } catch (error) {
       console.error('Error clearing caches:', error);
