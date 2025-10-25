@@ -485,23 +485,21 @@ function createGamificationRoutes(services) {
         return res.status(404).json({ error: 'Achievement not found' });
       }
 
+      // Get all enriched products using ProductsService (includes proper pricing, metadata, etc.)
+      const allEnrichedProducts = await services.productsService.getAllProducts();
+      
       // Get all products for this achievement based on its type
       let productIds = [];
       
-      console.log(`🔍 Achievement type: ${achievement.collectionType}`);
-      console.log(`🔍 Achievement requirement:`, JSON.stringify(achievement.requirement));
-      
       if (achievement.collectionType === 'static_collection' || achievement.collectionType === 'custom_product_list') {
         // Static collection or custom list - get specific products from requirement
-        productIds = achievement.requirement.productIds || [];
-        console.log(`📋 Product IDs from requirement:`, productIds);
+        // ProductsService returns IDs as strings, so ensure achievement IDs are strings too
+        productIds = (achievement.requirement.productIds || []).map(id => String(id));
       } else if (achievement.collectionType === 'dynamic_collection') {
-        // Dynamic collection - get all products from specified protein categories
-        // Categories can be in requirement.categories array
+        // Dynamic collection - filter products by categories
         const categories = achievement.requirement?.categories || [];
         if (categories.length > 0) {
-          const { products: allProducts } = await services.fetchAllShopifyProducts();
-          const categoryProducts = allProducts.filter(product => {
+          const categoryProducts = allEnrichedProducts.filter(product => {
             const productCategories = product.tags?.split(',').map(t => t.trim().toLowerCase()) || [];
             return categories.some(cat => 
               productCategories.includes(cat.toLowerCase())
@@ -511,19 +509,15 @@ function createGamificationRoutes(services) {
         }
       }
 
-      // Get user's rankings
+      // Get user's rankings (productId is stored as string in database)
       const userRankings = await services.storage.getUserRankings(userId);
-      const rankedProductIds = new Set(userRankings.map(r => r.productId));
+      const rankedProductIds = new Set(userRankings.map(r => String(r.productId)));
 
-      // Get product details and mark which are ranked
-      const { products: allProducts } = await services.fetchAllShopifyProducts();
-      
+      // Filter enriched products to only those in this achievement and mark ranking status
       const products = productIds.map(productId => {
-        // Convert string IDs to numbers for comparison (Shopify returns numbers)
-        const numericId = typeof productId === 'string' ? parseInt(productId, 10) : productId;
-        const product = allProducts.find(p => p.id === numericId);
+        const product = allEnrichedProducts.find(p => p.id === productId);
         if (!product) {
-          console.log(`❌ Product ID ${productId} (${numericId}) not found in Shopify products`);
+          console.log(`❌ Product ID ${productId} not found in enriched products`);
           return null;
         }
         
@@ -532,6 +526,7 @@ function createGamificationRoutes(services) {
           title: product.title,
           image: product.image,
           price: product.price,
+          handle: product.handle,
           isRanked: rankedProductIds.has(productId)
         };
       }).filter(p => p !== null);
