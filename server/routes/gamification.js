@@ -429,7 +429,7 @@ function createGamificationRoutes(services) {
       const userId = session.userId;
       
       // Get all achievements
-      const achievements = await services.achievementManager.getAllAchievements();
+      const achievements = await services.achievementRepo.getAllAchievements();
       
       // Get user progress for collections
       const userProgress = {};
@@ -478,8 +478,9 @@ function createGamificationRoutes(services) {
       const userId = session.userId;
       console.log(`📊 Fetching products for achievement ${achievementId}, user ${userId}`);
 
-      // Get achievement details
-      const achievement = await services.achievementManager.getAchievementById(achievementId);
+      // Get achievement details from all achievements (cached)
+      const allAchievements = await services.achievementRepo.getAllAchievements();
+      const achievement = allAchievements.find(a => a.id === achievementId);
       if (!achievement) {
         return res.status(404).json({ error: 'Achievement not found' });
       }

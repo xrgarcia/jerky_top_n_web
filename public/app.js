@@ -362,6 +362,32 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (loginMessageEl) {
                 loginMessageEl.style.display = 'none';
             }
+        } else if (page === 'coinbook') {
+            const coinbookPage = document.getElementById('coinbookPage');
+            
+            // Hide all other pages
+            if (homePage) homePage.style.display = 'none';
+            if (rankPage) rankPage.style.display = 'none';
+            if (productsPage) productsPage.style.display = 'none';
+            if (communityPage) communityPage.style.display = 'none';
+            if (leaderboardPage) leaderboardPage.style.display = 'none';
+            if (profilePage) profilePage.style.display = 'none';
+            if (productDetailPage) productDetailPage.style.display = 'none';
+            if (loginPage) loginPage.style.display = 'none';
+            if (userProfilePage) userProfilePage.style.display = 'none';
+            if (toolsPage) toolsPage.style.display = 'none';
+            
+            // Show coinbook page
+            if (coinbookPage) {
+                coinbookPage.style.display = 'block';
+            }
+            if (heroSection) heroSection.style.display = 'none';
+            document.body.classList.remove('login-page-active');
+            
+            // Initialize coinbook page
+            if (window.initCoinbookPage && typeof window.initCoinbookPage === 'function') {
+                await window.initCoinbookPage();
+            }
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
