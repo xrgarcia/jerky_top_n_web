@@ -1600,6 +1600,18 @@ app.post('/api/rankings/products', async (req, res) => {
           // Convert back to array
           const allNewAchievements = Array.from(achievementMap.values());
           
+          // Filter out recently emitted achievements to prevent duplicate toasts
+          let achievementsToEmit = allNewAchievements;
+          if (allNewAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
+            const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, allNewAchievements);
+            achievementsToEmit = filtered;
+            
+            if (skipped.length > 0) {
+              console.log(`🔇 Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}:`, 
+                skipped.map(a => `${a.name} (${a.tier || a.newTier || 'base'})`).join(', '));
+            }
+          }
+          
           // Invalidate home stats cache if achievements were earned (affects recent achievements)
           if (allNewAchievements.length > 0 && gamificationServices?.homeStatsService) {
             gamificationServices.homeStatsService.invalidateCache();
@@ -1611,10 +1623,10 @@ app.post('/api/rankings/products', async (req, res) => {
           }
           
           // Broadcast new achievements via WebSocket (single source of truth for toasts)
-          if (allNewAchievements.length > 0 && io) {
-            io.to(`user:${userId}`).emit('achievements:earned', { achievements: allNewAchievements });
-            console.log(`🏆 User ${userId} earned ${allNewAchievements.length} new achievement(s):`, 
-              allNewAchievements.map(a => a.name).join(', '));
+          if (achievementsToEmit.length > 0 && io) {
+            io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+            console.log(`🏆 User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
+              achievementsToEmit.map(a => a.name).join(', '));
           }
         } catch (gamificationError) {
           console.error('Error processing gamification:', gamificationError);

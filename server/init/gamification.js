@@ -21,6 +21,7 @@ const UserStatsAggregator = require('../services/UserStatsAggregator');
 const CacheWarmer = require('../services/CacheWarmer');
 const FlavorCoinManager = require('../services/FlavorCoinManager');
 const CollectionManager = require('../services/CollectionManager');
+const RecentAchievementTracker = require('../services/RecentAchievementTracker');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -52,6 +53,10 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const userStatsAggregator = new UserStatsAggregator(leaderboardManager, streakManager, productsService);
   const flavorCoinManager = new FlavorCoinManager(flavorCoinRepo, productsMetadataRepo, activityLogRepo);
   const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
+  const recentAchievementTracker = RecentAchievementTracker;
+
+  // Initialize RecentAchievementTracker for duplicate toast prevention
+  await recentAchievementTracker.initialize();
 
   const services = {
     db,
@@ -72,6 +77,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     userStatsAggregator,
     flavorCoinManager,
     collectionManager,
+    recentAchievementTracker,
     fetchAllShopifyProducts,
     getRankableProductCount,
     productsService,
