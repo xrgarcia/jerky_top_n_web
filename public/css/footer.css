@@ -89,6 +89,14 @@
   font-size: 13px;
 }
 
+/* Desktop: Reduced spacing for rank page */
+@media (min-width: 769px) {
+  .site-footer {
+    margin-top: 20px;
+    padding: 30px 0 0 0;
+  }
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .site-footer {
