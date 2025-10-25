@@ -271,17 +271,10 @@ class HomeDashboard {
 // Initialize and wire up to page events
 const homeDashboard = new HomeDashboard();
 
-// Load stats when home page is shown
-if (window.appEventBus) {
-  window.appEventBus.on('page:shown', (data) => {
-    if (data.page === 'home') {
-      console.log('📊 Loading home stats...');
-      homeDashboard.loadStats();
-    }
-  });
-}
+// Expose globally for router access
+window.homeDashboard = homeDashboard;
 
-// Also check if we're already on the home page (for initial load)
+// Initial load check - router will handle subsequent loads via showPage
 setTimeout(() => {
   const homePage = document.getElementById('homePage');
   if (homePage && homePage.style.display !== 'none') {

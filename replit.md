@@ -19,7 +19,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Unified Product Cards**: Consistent card styling across Products and Rank pages for visual consistency.
 - **Home Page Dashboard**: Dynamic Bento Box layout with engaging micro-copy and interactive CTAs within widgets.
 - **Interactive Ranking**: Dual ranking system supporting drag-and-drop for desktop and dropdown selection for mobile with visual cues, badges, and animated sorting icons.
-- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking. Features a dropdown menu under Community for quick access.
+- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking. Features a dropdown menu under Community for quick access. All pages automatically refresh their data when navigated to, ensuring users always see current information without requiring manual page reloads.
 
 ### Technical Implementations
 - **Frontend**: Built with Vanilla JavaScript, an event-driven architecture using `EventBus` for pub/sub, and `ServiceRegistry` for dependency injection.

@@ -192,6 +192,10 @@ document.addEventListener('DOMContentLoaded', function() {
             homePage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'block';
             document.body.classList.remove('login-page-active');
+            // Refresh home dashboard data when navigating to home
+            if (window.homeDashboard && typeof window.homeDashboard.loadStats === 'function') {
+                window.homeDashboard.loadStats();
+            }
         } else if (page === 'rank' && rankPage) {
             rankPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
@@ -275,7 +279,10 @@ document.addEventListener('DOMContentLoaded', function() {
             leaderboardPage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
-            // Leaderboard widget will be initialized by page-integrations.js
+            // Refresh leaderboard data when navigating to leaderboard
+            if (window.pageWidgets && window.pageWidgets.fullLeaderboard && typeof window.pageWidgets.fullLeaderboard.load === 'function') {
+                window.pageWidgets.fullLeaderboard.load();
+            }
         } else if (page === 'profile' && profilePage) {
             profilePage.style.display = 'block';
             if (heroSection) heroSection.style.display = 'none';

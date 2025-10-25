@@ -11,6 +11,13 @@
   let progressWidget = null;
   let leaderboardWidget = null;
   let fullLeaderboardWidget = null;
+  
+  // Expose widgets globally for router access
+  window.pageWidgets = {
+    get fullLeaderboard() { return fullLeaderboardWidget; },
+    get leaderboard() { return leaderboardWidget; },
+    get progress() { return progressWidget; }
+  };
 
   function initializeCommunityPage() {
     const communityPage = document.getElementById('communityPage');
