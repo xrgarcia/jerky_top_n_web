@@ -173,6 +173,14 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
 
+.collection-card.clickable {
+  cursor: pointer;
+}
+
+.dynamic-collection-card.clickable {
+  cursor: pointer;
+}
+
 .collection-header {
   display: flex;
   align-items: center;

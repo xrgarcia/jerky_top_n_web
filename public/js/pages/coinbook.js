@@ -182,7 +182,7 @@ function renderStaticCollections() {
     const statusLabel = progress.completed ? 'Completed' : (progress.percentage > 0 ? 'In Progress' : 'Not Started');
     
     return `
-      <div class="collection-card">
+      <div class="collection-card clickable" data-achievement-id="${collection.id}" onclick="navigateToAchievementDetail(${collection.id})">
         <div class="collection-header">
           ${renderIcon(collection.icon, collection.iconType, 'collection-icon', '48px')}
           <div class="collection-info">
@@ -262,7 +262,7 @@ function renderDynamicCollections() {
     }).join('');
     
     return `
-      <div class="dynamic-collection-card tier-${progress.currentTier || 'none'}">
+      <div class="dynamic-collection-card clickable tier-${progress.currentTier || 'none'}" data-achievement-id="${collections[0].id}" onclick="navigateToAchievementDetail(${collections[0].id})">
         <div class="collection-header">
           ${renderIcon(collections[0].icon, collections[0].iconType, 'collection-icon', '48px')}
           <div class="collection-info">
@@ -366,3 +366,10 @@ function formatDate(dateString) {
   const date = new Date(dateString);
   return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
 }
+
+/**
+ * Navigate to achievement detail page
+ */
+window.navigateToAchievementDetail = function(achievementId) {
+  window.location.hash = `#achievement/${achievementId}`;
+};
