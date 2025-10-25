@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/admin-dashboard.css">
     <link rel="stylesheet" href="css/coinbook.css">
+    <link rel="stylesheet" href="css/achievements.css">
 </head>
 <body>
     <!-- Green Announcement Banner -->
@@ -32,7 +33,7 @@
             <div class="nav-links">
                 <a href="#home" class="nav-link" data-page="home">HOME</a>
                 <a href="#products" class="nav-link" data-page="products">PRODUCTS</a>
-                <a href="#coinbook" class="nav-link" data-page="coinbook">🏆 COIN BOOK</a>
+                <a href="#achievements" class="nav-link" data-page="achievements">🏆 ACHIEVEMENTS</a>
                 <div class="nav-item-with-dropdown">
                     <a href="#community" class="nav-link nav-dropdown-trigger" data-page="community">
                         <span>COMMUNITY</span>
@@ -443,6 +444,83 @@
             
             <div id="fullLeaderboard" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
                 <div class="loading">Loading leaderboard...</div>
+            </div>
+        </div>
+
+        <!-- Achievements Collection Page -->
+        <div class="page-content" id="achievementsPage" style="display: none;">
+            <div class="page-header-minimal">
+                <div class="page-header-content">
+                    <div class="page-header-text">
+                        <div class="page-header-breadcrumbs">
+                            <a href="#home">Home</a>
+                            <span>›</span>
+                            <span>Achievements</span>
+                        </div>
+                        <h1 class="page-header-title">
+                            <span class="page-header-icon">🏆</span>
+                            <span>Achievement Collection</span>
+                        </h1>
+                        <p class="page-header-subtitle">Your jerky tasting coin book - collect them all! 🎯</p>
+                    </div>
+                    <div class="page-header-action">
+                        <a href="#rank" class="page-action-btn">
+                            <span class="icon">⭐</span>
+                            <span>Rank Products</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Collection Stats -->
+            <div class="collection-stats">
+                <div class="collection-stat-card">
+                    <div class="collection-stat-icon">🎯</div>
+                    <div class="collection-stat-content">
+                        <div class="collection-stat-value" id="achievementsUnlocked">0/0</div>
+                        <div class="collection-stat-label">Unlocked</div>
+                    </div>
+                </div>
+                <div class="collection-stat-card">
+                    <div class="collection-stat-icon">💎</div>
+                    <div class="collection-stat-content">
+                        <div class="collection-stat-value" id="achievementsPoints">0</div>
+                        <div class="collection-stat-label">Points Earned</div>
+                    </div>
+                </div>
+                <div class="collection-stat-card">
+                    <div class="collection-stat-icon">📊</div>
+                    <div class="collection-stat-content">
+                        <div class="collection-stat-value" id="achievementsPercentage">0%</div>
+                        <div class="collection-stat-label">Completion</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search and Filters -->
+            <div class="achievements-controls">
+                <div class="search-container">
+                    <input 
+                        type="text" 
+                        id="achievementsSearchInput" 
+                        placeholder="Search achievements..."
+                        autocomplete="off"
+                    >
+                </div>
+                <div class="achievements-filters">
+                    <button class="filter-btn active" data-category="all">All</button>
+                    <button class="filter-btn" data-category="ranking">Ranking</button>
+                    <button class="filter-btn" data-category="social">Social</button>
+                    <button class="filter-btn" data-category="discovery">Discovery</button>
+                    <button class="filter-btn" data-category="streak">Streak</button>
+                    <button class="filter-btn" data-category="unlocked">Unlocked Only</button>
+                    <button class="filter-btn" data-category="locked">Locked Only</button>
+                </div>
+            </div>
+
+            <!-- Achievements Grid -->
+            <div id="achievementsGrid" class="achievements-grid">
+                <div class="loading">Loading your collection...</div>
             </div>
         </div>
 
@@ -1387,6 +1465,7 @@
     
     <!-- Page Scripts -->
     <script src="js/pages/coinbook.js"></script>
+    <script src="js/pages/achievements.js"></script>
     <script src="js/pages/toolsAdmin.js"></script>
     <script src="js/pages/tools.js"></script>
     
