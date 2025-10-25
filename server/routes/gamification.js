@@ -459,6 +459,91 @@ function createGamificationRoutes(services) {
     }
   });
 
+  // Get products for a specific achievement (for detail page)
+  router.get('/achievement/:id/products', async (req, res) => {
+    try {
+      console.log('📦 Achievement products endpoint called');
+      const achievementId = parseInt(req.params.id);
+      
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      console.log(`📊 Fetching products for achievement ${achievementId}, user ${userId}`);
+
+      // Get achievement details
+      const achievement = await services.achievementManager.getAchievementById(achievementId);
+      if (!achievement) {
+        return res.status(404).json({ error: 'Achievement not found' });
+      }
+
+      // Get all products for this achievement based on its type
+      let productIds = [];
+      
+      if (achievement.collectionType === 'static_collection' || achievement.collectionType === 'custom_product_list') {
+        // Static collection or custom list - get specific products from requirement
+        productIds = achievement.requirement.productIds || [];
+      } else if (achievement.collectionType === 'dynamic_collection') {
+        // Dynamic collection - get all products from specified protein categories
+        // Categories can be in requirement.categories array
+        const categories = achievement.requirement?.categories || [];
+        if (categories.length > 0) {
+          const allProducts = services.getAllProducts();
+          const categoryProducts = allProducts.filter(product => {
+            const productCategories = product.tags?.split(',').map(t => t.trim().toLowerCase()) || [];
+            return categories.some(cat => 
+              productCategories.includes(cat.toLowerCase())
+            );
+          });
+          productIds = categoryProducts.map(p => p.id);
+        }
+      }
+
+      // Get user's rankings
+      const userRankings = await services.storage.getAllRankings(userId);
+      const rankedProductIds = new Set(userRankings.map(r => r.productId));
+
+      // Get product details and mark which are ranked
+      const allProducts = services.getAllProducts();
+      const products = productIds.map(productId => {
+        const product = allProducts.find(p => p.id === productId);
+        if (!product) return null;
+        
+        return {
+          id: product.id,
+          title: product.title,
+          image: product.image,
+          price: product.price,
+          isRanked: rankedProductIds.has(productId)
+        };
+      }).filter(p => p !== null);
+
+      console.log(`✅ Found ${products.length} products for achievement, ${products.filter(p => p.isRanked).length} ranked`);
+
+      res.json({
+        achievement: {
+          id: achievement.id,
+          name: achievement.name,
+          description: achievement.description,
+          icon: achievement.icon,
+          iconType: achievement.iconType
+        },
+        products
+      });
+    } catch (error) {
+      console.error('❌ Error fetching achievement products:', error);
+      console.error('Error stack:', error.stack);
+      res.status(500).json({ error: 'Failed to fetch achievement products' });
+    }
+  });
+
   return router;
 }
 

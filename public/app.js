@@ -131,6 +131,47 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Check if this is an achievement detail route
+        if (page.startsWith('achievement/')) {
+            const achievementId = page.split('/')[1];
+            
+            // Update URL hash if needed
+            if (updateURL && window.location.hash !== `#${page}`) {
+                window.location.hash = `#${page}`;
+            }
+            
+            // Hide all pages
+            const achievementDetailPage = document.getElementById('achievementDetailPage');
+            if (homePage) homePage.style.display = 'none';
+            if (rankPage) rankPage.style.display = 'none';
+            if (productsPage) productsPage.style.display = 'none';
+            if (communityPage) communityPage.style.display = 'none';
+            if (leaderboardPage) leaderboardPage.style.display = 'none';
+            if (profilePage) profilePage.style.display = 'none';
+            if (productDetailPage) productDetailPage.style.display = 'none';
+            if (loginPage) loginPage.style.display = 'none';
+            if (userProfilePage) userProfilePage.style.display = 'none';
+            if (achievementDetailPage) achievementDetailPage.style.display = 'block';
+            if (heroSection) heroSection.style.display = 'none';
+            
+            // Load achievement detail
+            if (window.initAchievementDetailPage) {
+                await window.initAchievementDetailPage(achievementId);
+            }
+            
+            // Update active nav link (coinbook should be active)
+            navLinks.forEach(navLink => navLink.classList.remove('active'));
+            const coinbookLink = document.querySelector('[data-page="coinbook"]');
+            if (coinbookLink) coinbookLink.classList.add('active');
+            
+            // Track page view for live user monitoring
+            if (window.socket && window.socket.connected) {
+                window.socket.emit('page:view', { page: 'achievement' });
+            }
+            
+            return;
+        }
+        
         // Check if rank page requires authentication
         if (page === 'rank') {
             // First try quick sync check, then async if needed
