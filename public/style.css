@@ -2092,7 +2092,7 @@ body.login-page-active .hero {
     .ranking-container {
         display: flex;
         gap: 20px;
-        height: 70vh; /* Fixed height based on viewport */
+        height: calc(99vh - 280px); /* 99% of viewport minus header/progress widget space */
         margin-top: 20px;
     }
 
@@ -2104,7 +2104,7 @@ body.login-page-active .hero {
         overflow: hidden;
         display: flex;
         flex-direction: column;
-        height: 70vh; /* Match container height exactly */
+        height: 100%; /* Fill container height */
     }
 }
 
