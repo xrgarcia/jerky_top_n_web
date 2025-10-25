@@ -1533,7 +1533,6 @@ app.post('/api/rankings/products', async (req, res) => {
                     pointsGained: update.pointsGained,
                     isTierUpgrade: true
                   });
-                  console.log(`⬆️ Tier upgrade: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
                 }
               }
             }
@@ -1558,7 +1557,6 @@ app.post('/api/rankings/products', async (req, res) => {
                     pointsGained: update.pointsGained,
                     isTierUpgrade: true
                   });
-                  console.log(`⬆️ Tier upgrade: ${update.achievement.name} (${update.previousTier} → ${update.newTier})`);
                 }
               }
             }
