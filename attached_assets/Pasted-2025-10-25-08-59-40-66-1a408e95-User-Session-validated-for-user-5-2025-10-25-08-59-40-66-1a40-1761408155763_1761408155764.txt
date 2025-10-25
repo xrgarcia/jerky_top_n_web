@@ -1,0 +1,144 @@
+2025-10-25 08:59:40.66
+1a408e95
+User
+✅ Session validated for user 5
+2025-10-25 08:59:40.66
+1a408e95
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-25 08:59:40.66
+1a408e95
+User
+🔄 Batching user stats queries...
+2025-10-25 08:59:40.66
+1a408e95
+User
+💾 LeaderboardPositionCache HIT: User 5 (all_time) position 2 (age: 4s)
+2025-10-25 08:59:40.71
+1a408e95
+User
+💾 Cache HIT: Returning 162 products from cache (age: 5 minutes)
+2025-10-25 08:59:40.71
+1a408e95
+User
+💾 Metadata Cache HIT: Returning data (age: 5 minutes)
+2025-10-25 08:59:40.75
+1a408e95
+User
+⏱️ Batch 2 completed in 45ms (getCompletedAnimalCategories)
+2025-10-25 08:59:40.75
+1a408e95
+User
+⏱️ Total aggregation time: 89ms
+2025-10-25 08:59:40.75
+1a408e95
+User
+✅ User stats aggregated: position 2, streak 1
+2025-10-25 08:59:40.75
+1a408e95
+User
+🔄 Getting achievements with progress...
+2025-10-25 08:59:40.75
+1a408e95
+User
+💾 AchievementCache HIT: Returning 20 definitions (age: 14 minutes)
+2025-10-25 08:59:42.63
+1a408e95
+User
+🗑️ RankingStats cache invalidated
+2025-10-25 08:59:42.63
+1a408e95
+User
+🗑️ LeaderboardCache INVALIDATE: All entries
+2025-10-25 08:59:42.63
+1a408e95
+User
+🎮 Starting async gamification for user 5
+2025-10-25 08:59:42.68
+1a408e95
+User
+id: 3429,
+2025-10-25 08:59:42.68
+1a408e95
+User
+userId: 5,
+2025-10-25 08:59:42.68
+1a408e95
+User
+streakType: 'daily_rank',
+2025-10-25 08:59:42.68
+1a408e95
+User
+currentStreak: 1,
+2025-10-25 08:59:42.68
+1a408e95
+User
+longestStreak: 1,
+2025-10-25 08:59:42.68
+1a408e95
+User
+lastActivityDate: 2025-10-25T15:55:29.657Z,
+2025-10-25 08:59:42.68
+1a408e95
+User
+createdAt: 2025-10-18T17:54:58.812Z,
+2025-10-25 08:59:42.68
+1a408e95
+User
+continued: false,
+2025-10-25 08:59:42.68
+1a408e95
+User
+broken: false,
+2025-10-25 08:59:42.68
+1a408e95
+User
+}
+2025-10-25 08:59:42.78
+1a408e95
+User
+💾 Cache HIT: Returning 162 products from cache (age: 5 minutes)
+2025-10-25 08:59:42.81
+1a408e95
+User
+✅ LeaderboardPositionCache SET: User 5 (all_time) rank 2
+2025-10-25 08:59:42.85
+1a408e95
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 5
+2025-10-25 08:59:42.85
+1a408e95
+User
+💾 Cache HIT: Returning 162 products from cache (age: 5 minutes)
+2025-10-25 08:59:43.16
+1a408e95
+User
+🪙 Awarded Peppery Flavor Coin to user 5
+2025-10-25 08:59:40.25
+1a408e95
+User
+🔍 [original_flavor_enthusiast] Required products (19): [
+2025-10-25 08:59:40.25
+1a408e95
+User
+'11971533199', '11821170447',
+2025-10-25 08:59:40.25
+1a408e95
+User
+'11821175439', '11821164431',
+2025-10-25 08:59:40.25
+1a408e95
+User
+'11821168399', '11821165775',
+2025-10-25 08:59:40.25
+1a408e95
+User
+'11821167695', '9902440087866',
+2025-10-25 08:59:03.87
+1a408e95
+User
+💾 Metadata Cache HIT: Returning data (age: 5 minutes)
+2025-10-25 08:59:03.96
+1a408e95
+User
+⏱️ Batch 2 completed in 86ms (getCompletedAnimalCategories)

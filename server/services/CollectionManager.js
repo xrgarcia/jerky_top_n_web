@@ -83,7 +83,7 @@ class CollectionManager {
     const { productRankings } = require('../../shared/schema');
     const { inArray } = require('drizzle-orm');
 
-    console.log(`🔍 [${collection.code}] Required products (${totalAvailable}):`, productIds);
+    console.log(`🔍 [${collection.code}] CALC START - User ${userId}, Required products: ${totalAvailable}`, productIds);
 
     // Get user's ranked products that match the custom product list
     const rankedProducts = await this.db
@@ -98,15 +98,16 @@ class CollectionManager {
     const rankedProductIds = rankedProducts.map(p => p.shopifyProductId);
     const totalRanked = rankedProducts.length;
     const percentage = Math.round((totalRanked / totalAvailable) * 100);
+    const tier = this.getTierFromPercentage(percentage, collection.tierThresholds);
     
-    console.log(`✅ [${collection.code}] User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
+    console.log(`✅ [${collection.code}] CALC RESULT - User ${userId}: ${totalRanked}/${totalAvailable} (${percentage}%) → TIER: ${tier}`);
     console.log(`📋 [${collection.code}] Ranked product IDs:`, rankedProductIds);
 
     return {
       percentage,
       totalAvailable,
       totalRanked,
-      tier: this.getTierFromPercentage(percentage, collection.tierThresholds),
+      tier,
       productIds // Include for debugging
     };
   }
@@ -206,7 +207,10 @@ class CollectionManager {
   async updateCollectionProgress(userId, collection, progress) {
     const { percentage, tier, totalAvailable, totalRanked } = progress;
 
+    console.log(`🔄 [${collection.code}] UPDATE START - User ${userId}: New calc shows ${tier} (${percentage}%)`);
+
     if (!tier) {
+      console.log(`⚠️ [${collection.code}] No tier calculated, skipping update`);
       return null;
     }
 
@@ -217,6 +221,8 @@ class CollectionManager {
         eq(userAchievements.achievementId, collection.id)
       ))
       .limit(1);
+    
+    console.log(`📊 [${collection.code}] DB STATE - User ${userId}: Current tier in DB: ${existing.length > 0 ? existing[0].currentTier : 'NONE'}`);
 
     const progressData = {
       totalAvailable,
