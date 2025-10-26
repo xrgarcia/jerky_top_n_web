@@ -3,7 +3,7 @@
  */
 
 let userProgress = null;
-let allAchievements = [];
+let coinbookAchievements = [];
 const mysteriousDescriptions = {
   first_rank: "Every legend begins with a single choice...",
   rank_10: "The path reveals itself to those who persist...",
@@ -52,7 +52,7 @@ async function loadCoinbookData() {
     const achievementsData = await achievementsResponse.json();
     
     userProgress = progressData.progress;
-    allAchievements = achievementsData.achievements || [];
+    coinbookAchievements = achievementsData.achievements || [];
     
   } catch (error) {
     console.error('Error loading coinbook data:', error);
@@ -71,7 +71,7 @@ function renderCoinbook() {
     return;
   }
   
-  if (!userProgress || !allAchievements) {
+  if (!userProgress || !coinbookAchievements) {
     container.innerHTML = '<div class="progress-loading">Loading achievements...</div>';
     return;
   }
@@ -108,11 +108,11 @@ function renderCoinbook() {
         </div>
       ` : ''}
 
-      ${allAchievements.length > 0 ? `
+      ${coinbookAchievements.length > 0 ? `
         <div class="all-achievements">
           <div class="achievements-label">All Achievements:</div>
           <div class="achievements-grid coinbook-grid">
-            ${allAchievements.map(achievement => renderAchievementBadge(achievement)).join('')}
+            ${coinbookAchievements.map(achievement => renderAchievementBadge(achievement)).join('')}
           </div>
         </div>
       ` : ''}
