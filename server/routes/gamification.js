@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const ProductRankingRepository = require('../repositories/ProductRankingRepository');
 
 /**
  * Gamification API Routes
@@ -509,29 +510,38 @@ function createGamificationRoutes(services) {
         }
       }
 
-      // Get user's rankings (productId is stored as string in database)
-      const userRankings = await services.storage.getUserRankings(userId);
-      const rankedProductIds = new Set(userRankings.map(r => String(r.productId)));
+      // Get user's ranked product IDs (same method used by ProductsService.getRankableProductsForUser)
+      const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'topN');
+      const rankedSet = new Set(rankedProductIds);
 
-      // Filter enriched products to only those in this achievement and mark ranking status
-      const products = productIds.map(productId => {
-        const product = allEnrichedProducts.find(p => p.id === productId);
-        if (!product) {
-          console.log(`❌ Product ID ${productId} not found in enriched products`);
-          return null;
-        }
-        
-        return {
-          id: product.id,
-          title: product.title,
-          image: product.image,
-          price: product.price,
-          handle: product.handle,
-          isRanked: rankedProductIds.has(productId)
-        };
-      }).filter(p => p !== null);
+      // Filter enriched products to those in this achievement, then exclude already-ranked products
+      const unrankedProducts = productIds
+        .map(productId => {
+          const product = allEnrichedProducts.find(p => p.id === productId);
+          if (!product) {
+            console.log(`❌ Product ID ${productId} not found in enriched products`);
+            return null;
+          }
+          return product;
+        })
+        .filter(p => p !== null)
+        .filter(product => !rankedSet.has(product.id)); // Exclude already-ranked products
 
-      console.log(`✅ Found ${products.length} products for achievement, ${products.filter(p => p.isRanked).length} ranked`);
+      // Return only unranked products (available to rank)
+      const products = unrankedProducts.map(product => ({
+        id: product.id,
+        title: product.title,
+        image: product.image,
+        price: product.price,
+        handle: product.handle
+      }));
+
+      const totalProducts = productIds.length;
+      const rankedCount = productIds.filter(id => rankedSet.has(id)).length;
+      const unrankedCount = products.length;
+      const percentage = totalProducts > 0 ? Math.round((rankedCount / totalProducts) * 100) : 0;
+
+      console.log(`✅ Achievement: ${totalProducts} total products, ${rankedCount} ranked, showing ${unrankedCount} unranked products`);
 
       res.json({
         achievement: {
@@ -541,7 +551,13 @@ function createGamificationRoutes(services) {
           icon: achievement.icon,
           iconType: achievement.iconType
         },
-        products
+        products,
+        stats: {
+          total: totalProducts,
+          ranked: rankedCount,
+          unranked: unrankedCount,
+          percentage: percentage
+        }
       });
     } catch (error) {
       console.error('❌ Error fetching achievement products:', error);

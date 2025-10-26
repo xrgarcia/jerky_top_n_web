@@ -5,6 +5,7 @@
 let currentAchievementId = null;
 let achievementData = null;
 let achievementProducts = [];
+let achievementStats = null;
 
 /**
  * Initialize Achievement Detail page
@@ -32,6 +33,7 @@ async function loadAchievementDetail(achievementId) {
     const data = await response.json();
     achievementData = data.achievement;
     achievementProducts = data.products;
+    achievementStats = data.stats; // Backend provides stats since we filter on backend
     
     updatePageHeader();
     updateStats();
@@ -64,14 +66,10 @@ function updatePageHeader() {
  * Update stats cards
  */
 function updateStats() {
-  const rankedProducts = achievementProducts.filter(p => p.isRanked);
-  const unrankedProducts = achievementProducts.filter(p => !p.isRanked);
-  const totalProducts = achievementProducts.length;
-  const percentage = totalProducts > 0 ? Math.round((rankedProducts.length / totalProducts) * 100) : 0;
-  
-  document.getElementById('achievementRankedCount').textContent = rankedProducts.length;
-  document.getElementById('achievementUnrankedCount').textContent = unrankedProducts.length;
-  document.getElementById('achievementProgressPercentage').textContent = `${percentage}%`;
+  // Use stats from backend (we filter on backend, so frontend only sees unranked products)
+  document.getElementById('achievementRankedCount').textContent = achievementStats.ranked;
+  document.getElementById('achievementUnrankedCount').textContent = achievementStats.unranked;
+  document.getElementById('achievementProgressPercentage').textContent = `${achievementStats.percentage}%`;
 }
 
 /**
@@ -92,14 +90,12 @@ function renderProducts() {
   }
   
   grid.innerHTML = achievementProducts.map(product => {
-    const isRanked = product.isRanked;
-    const cardClass = isRanked ? 'ranked' : 'unranked';
-    
+    // All products shown are unranked (backend filters out ranked products)
     return `
-      <div class="achievement-product-card ${cardClass}">
+      <div class="achievement-product-card">
         <div class="achievement-product-image">
           <img src="${product.image}" alt="${product.title}" loading="lazy">
-          ${isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
+          <div class="unranked-badge">Not Ranked</div>
         </div>
         <div class="achievement-product-info">
           <div class="achievement-product-title">${product.title}</div>
