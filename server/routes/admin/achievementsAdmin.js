@@ -22,6 +22,81 @@ const upload = multer({
 });
 
 /**
+ * Trigger background achievement recalculation
+ * Awards achievements to users who already meet the requirements
+ */
+async function triggerAchievementRecalculation(achievementId, database) {
+  const { users, achievements } = require('../../shared/schema');
+  const { eq } = require('drizzle-orm');
+  const { primaryDb } = require('../../db-primary');
+  
+  // Get the achievement
+  const achievement = await database.select()
+    .from(achievements)
+    .where(eq(achievements.id, achievementId))
+    .limit(1);
+    
+  if (achievement.length === 0) {
+    throw new Error('Achievement not found');
+  }
+  
+  const ach = achievement[0];
+  console.log(`🔄 Background recalculation started: ${ach.name} (${ach.code})`);
+  
+  // Get all users
+  const allUsers = await database.select({ id: users.id }).from(users);
+  console.log(`👥 Processing ${allUsers.length} users in background...`);
+  
+  // Get the CollectionManager
+  const CollectionManager = require('../../services/CollectionManager');
+  const AchievementRepository = require('../../services/AchievementRepository');
+  const ProductsMetadataRepository = require('../../services/ProductsMetadataRepository');
+  
+  const achievementRepo = new AchievementRepository(database);
+  const productsMetadataRepo = new ProductsMetadataRepository(database);
+  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
+  
+  // Process users in batches
+  const BATCH_SIZE = 5;
+  let awardedCount = 0;
+  
+  for (let i = 0; i < allUsers.length; i += BATCH_SIZE) {
+    const batch = allUsers.slice(i, i + BATCH_SIZE);
+    
+    const batchPromises = batch.map(async (user) => {
+      try {
+        let result = null;
+        
+        if (ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
+          const progress = await collectionManager.calculateCustomProductProgress(user.id, ach);
+          if (progress.tier) {
+            result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
+          }
+        }
+        
+        if (result && result.type === 'new') {
+          awardedCount++;
+          console.log(`   ✨ User ${user.id}: ${ach.name} awarded (${result.tier})`);
+        }
+      } catch (error) {
+        console.error(`❌ Error processing user ${user.id}:`, error);
+      }
+    });
+    
+    await Promise.all(batchPromises);
+  }
+  
+  console.log(`✅ Background recalculation complete: ${awardedCount} newly awarded`);
+  
+  // Invalidate caches
+  AchievementCache.getInstance().invalidate();
+  const { HomeStatsCache } = require('../../cache/HomeStatsCache');
+  const { LeaderboardCache } = require('../../cache/LeaderboardCache');
+  HomeStatsCache.invalidate();
+  LeaderboardCache.invalidateAll();
+}
+
+/**
  * Admin endpoints for achievement CRUD operations
  * All endpoints require employee authentication
  */
@@ -114,6 +189,17 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
     const cache = AchievementCache.getInstance();
     cache.invalidate();
     console.log('🗑️ AchievementCache invalidated after creating achievement:', achievement.code);
+    
+    // Trigger background recalculation for product-based achievements
+    // This awards the achievement to users who have already ranked the required products
+    if (achievement.collectionType === 'flavor_coin' || achievement.collectionType === 'custom_product_list') {
+      console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
+      
+      // Run recalculation asynchronously (don't await - runs in background)
+      triggerAchievementRecalculation(achievement.id, req.db).catch(err => {
+        console.error(`❌ Background recalculation failed for achievement ${achievement.id}:`, err);
+      });
+    }
     
     res.status(201).json({ success: true, achievement });
   } catch (error) {
