@@ -511,7 +511,7 @@ function createGamificationRoutes(services) {
       }
 
       // Get user's ranked product IDs to mark which are ranked
-      const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'topN');
+      const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'default');
       const rankedSet = new Set(rankedProductIds);
       
       // DEBUG: Log ID formats to identify mismatch
