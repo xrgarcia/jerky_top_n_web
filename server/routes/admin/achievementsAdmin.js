@@ -49,8 +49,8 @@ async function triggerAchievementRecalculation(achievementId, database) {
   
   // Get the CollectionManager
   const CollectionManager = require('../../services/CollectionManager');
-  const AchievementRepository = require('../../services/AchievementRepository');
-  const ProductsMetadataRepository = require('../../services/ProductsMetadataRepository');
+  const AchievementRepository = require('../../repositories/AchievementRepository');
+  const ProductsMetadataRepository = require('../../repositories/ProductsMetadataRepository');
   
   const achievementRepo = new AchievementRepository(database);
   const productsMetadataRepo = new ProductsMetadataRepository(database);

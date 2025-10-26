@@ -74,8 +74,8 @@ module.exports = function createRecalculateRoutes(storage, db) {
     
     // Get the CollectionManager for custom collections
     const CollectionManager = require('../../services/CollectionManager');
-    const AchievementRepository = require('../../services/AchievementRepository');
-    const ProductsMetadataRepository = require('../../services/ProductsMetadataRepository');
+    const AchievementRepository = require('../../repositories/AchievementRepository');
+    const ProductsMetadataRepository = require('../../repositories/ProductsMetadataRepository');
     const { primaryDb } = require('../../db-primary');
     
     const achievementRepo = new AchievementRepository(db);
