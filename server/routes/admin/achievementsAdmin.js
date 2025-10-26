@@ -92,8 +92,10 @@ async function triggerAchievementRecalculation(achievementId, database) {
   AchievementCache.getInstance().invalidate();
   const { HomeStatsCache } = require('../../cache/HomeStatsCache');
   const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-  HomeStatsCache.invalidate();
-  LeaderboardCache.invalidateAll();
+  const homeStatsCache = HomeStatsCache.getInstance();
+  const leaderboardCache = LeaderboardCache.getInstance();
+  homeStatsCache.invalidate();
+  leaderboardCache.invalidateAll();
 }
 
 /**
