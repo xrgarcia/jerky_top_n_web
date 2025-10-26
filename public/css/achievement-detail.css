@@ -76,7 +76,33 @@
 .achievement-product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+.achievement-product-card.ranked {
   border-color: #7b8b52;
+  background: white;
+}
+
+.achievement-product-card.ranked .achievement-product-image img {
+  opacity: 1;
+  filter: none;
+}
+
+.achievement-product-card.unranked {
+  border-color: #ddd;
+}
+
+.achievement-product-card.unranked .achievement-product-image img {
+  filter: grayscale(100%) brightness(1.1);
+  opacity: 0.5;
+}
+
+.achievement-product-card.unranked .achievement-product-info {
+  opacity: 0.7;
+}
+
+.achievement-product-card.unranked {
+  background: #f9f9f9;
 }
 
 .achievement-product-image {
@@ -95,6 +121,20 @@
   height: 100%;
   object-fit: cover;
   transition: all 0.3s ease;
+}
+
+.ranked-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: #7b8b52;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .unranked-badge {

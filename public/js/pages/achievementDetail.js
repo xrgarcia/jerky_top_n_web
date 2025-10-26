@@ -66,7 +66,7 @@ function updatePageHeader() {
  * Update stats cards
  */
 function updateStats() {
-  // Use stats from backend (we filter on backend, so frontend only sees unranked products)
+  // Backend provides complete collection stats
   document.getElementById('achievementRankedCount').textContent = achievementStats.ranked;
   document.getElementById('achievementUnrankedCount').textContent = achievementStats.unranked;
   document.getElementById('achievementProgressPercentage').textContent = `${achievementStats.percentage}%`;
@@ -90,12 +90,15 @@ function renderProducts() {
   }
   
   grid.innerHTML = achievementProducts.map(product => {
-    // All products shown are unranked (backend filters out ranked products)
+    // Show full collection: ranked products in color, unranked in greyscale
+    const isRanked = product.isRanked;
+    const cardClass = isRanked ? 'ranked' : 'unranked';
+    
     return `
-      <div class="achievement-product-card">
+      <div class="achievement-product-card ${cardClass}">
         <div class="achievement-product-image">
           <img src="${product.image}" alt="${product.title}" loading="lazy">
-          <div class="unranked-badge">Not Ranked</div>
+          ${isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
         </div>
         <div class="achievement-product-info">
           <div class="achievement-product-title">${product.title}</div>
