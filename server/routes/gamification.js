@@ -463,7 +463,6 @@ function createGamificationRoutes(services) {
   // Get products for a specific achievement (for detail page)
   router.get('/achievement/:id/products', async (req, res) => {
     try {
-      console.log('📦 Achievement products endpoint called');
       const achievementId = parseInt(req.params.id);
       
       const sessionId = req.cookies.session_id;
@@ -477,7 +476,6 @@ function createGamificationRoutes(services) {
       }
 
       const userId = session.userId;
-      console.log(`📊 Fetching products for achievement ${achievementId}, user ${userId}`);
 
       // Get achievement details from all achievements (cached)
       const allAchievements = await services.achievementRepo.getAllAchievements();
@@ -519,7 +517,6 @@ function createGamificationRoutes(services) {
         .map(productId => {
           const product = allEnrichedProducts.find(p => p.id === productId);
           if (!product) {
-            console.log(`❌ Product ID ${productId} not found in enriched products`);
             return null;
           }
           
@@ -540,8 +537,6 @@ function createGamificationRoutes(services) {
       const rankedCount = products.filter(p => p.isRanked).length;
       const unrankedCount = products.filter(p => !p.isRanked).length;
       const percentage = totalProducts > 0 ? Math.round((rankedCount / totalProducts) * 100) : 0;
-
-      console.log(`✅ Achievement collection: ${totalProducts} total products, ${rankedCount} ranked (color), ${unrankedCount} unranked (greyscale)`);
 
       res.json({
         achievement: {
