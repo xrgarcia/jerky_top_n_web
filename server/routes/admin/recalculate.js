@@ -151,7 +151,7 @@ module.exports = function createRecalculateRoutes(storage, db) {
     
     achievementCache.invalidate();
     homeStatsCache.invalidate();
-    leaderboardCache.invalidateAll();
+    leaderboardCache.invalidate(); // invalidate() with no params clears all
     rankingStatsCache.invalidate();
     leaderboardPositionCache.invalidateAll();
     console.log(`🗑️ All caches invalidated after recalculation`);

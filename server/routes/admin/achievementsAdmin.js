@@ -95,7 +95,7 @@ async function triggerAchievementRecalculation(achievementId, database) {
   const homeStatsCache = HomeStatsCache.getInstance();
   const leaderboardCache = LeaderboardCache.getInstance();
   homeStatsCache.invalidate();
-  leaderboardCache.invalidateAll();
+  leaderboardCache.invalidate(); // invalidate() with no params clears all
 }
 
 /**
