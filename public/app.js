@@ -107,9 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.hash = `#${page}`;
             }
             
-            // Hide all pages
+            // Hide all pages - explicitly hide achievement/coinbook pages
             const achievementDetailPage = document.getElementById('achievementDetailPage');
             const coinbookPage = document.getElementById('coinbookPage');
+            
             if (homePage) homePage.style.display = 'none';
             if (rankPage) rankPage.style.display = 'none';
             if (productsPage) productsPage.style.display = 'none';

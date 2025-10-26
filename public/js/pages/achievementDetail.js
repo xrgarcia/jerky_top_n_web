@@ -31,6 +31,15 @@ async function loadAchievementDetail(achievementId) {
     }
     
     const data = await response.json();
+    
+    // Route guard: Only update DOM if we're still on this achievement page
+    // This prevents the achievement page from showing after navigating away
+    const currentHash = window.location.hash;
+    if (!currentHash.startsWith(`#achievement/${achievementId}`)) {
+      console.log('🚫 Navigation changed, aborting achievement detail render');
+      return;
+    }
+    
     achievementData = data.achievement;
     achievementProducts = data.products;
     achievementStats = data.stats; // Backend provides stats since we filter on backend
