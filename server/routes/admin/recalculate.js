@@ -138,10 +138,10 @@ module.exports = function createRecalculateRoutes(storage, db) {
     
     // Invalidate caches after recalculation
     const AchievementCache = require('../../cache/AchievementCache');
-    const { HomeStatsCache } = require('../../cache/HomeStatsCache');
-    const { LeaderboardCache } = require('../../cache/LeaderboardCache');
-    const { RankingStatsCache } = require('../../cache/RankingStatsCache');
-    const { LeaderboardPositionCache } = require('../../cache/LeaderboardPositionCache');
+    const HomeStatsCache = require('../../cache/HomeStatsCache');
+    const LeaderboardCache = require('../../cache/LeaderboardCache');
+    const RankingStatsCache = require('../../cache/RankingStatsCache');
+    const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
     
     const achievementCache = AchievementCache.getInstance();
     const homeStatsCache = HomeStatsCache.getInstance();

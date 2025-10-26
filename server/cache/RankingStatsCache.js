@@ -100,6 +100,19 @@ class RankingStatsCache {
       itemCount: this.data ? Object.keys(this.data).length : 0
     };
   }
+
+  /**
+   * Get singleton instance
+   */
+  static getInstance() {
+    if (!RankingStatsCache.instance) {
+      RankingStatsCache.instance = new RankingStatsCache();
+    }
+    return RankingStatsCache.instance;
+  }
 }
+
+// Ensure singleton instance
+RankingStatsCache.instance = null;
 
 module.exports = RankingStatsCache;
