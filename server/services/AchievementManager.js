@@ -172,7 +172,7 @@ class AchievementManager {
         
         // Upsert: insert or update if code already exists
         await db.execute(sql`
-          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, points)
+          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
           VALUES (
             ${definition.code},
             ${definition.name},
@@ -182,6 +182,7 @@ class AchievementManager {
             ${definition.category},
             ${definition.collectionType || 'legacy'},
             ${requirementJson}::jsonb,
+            ${definition.hasTiers ? 1 : 0},
             ${definition.points}
           )
           ON CONFLICT (code) DO UPDATE SET
@@ -192,6 +193,7 @@ class AchievementManager {
             category = EXCLUDED.category,
             collection_type = EXCLUDED.collection_type,
             requirement = EXCLUDED.requirement,
+            has_tiers = EXCLUDED.has_tiers,
             points = EXCLUDED.points
         `);
         seededCount++;

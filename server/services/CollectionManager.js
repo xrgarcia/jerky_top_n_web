@@ -98,9 +98,11 @@ class CollectionManager {
     const rankedProductIds = rankedProducts.map(p => p.shopifyProductId);
     const totalRanked = rankedProducts.length;
     const percentage = Math.round((totalRanked / totalAvailable) * 100);
-    const tier = this.getTierFromPercentage(percentage, collection.tierThresholds);
     
-    console.log(`✅ [${collection.code}] CALC RESULT - User ${userId}: ${totalRanked}/${totalAvailable} (${percentage}%) → TIER: ${tier}`);
+    // Only calculate tier if achievement has tiers enabled
+    const tier = collection.hasTiers ? this.getTierFromPercentage(percentage, collection.tierThresholds) : (percentage === 100 ? 'complete' : null);
+    
+    console.log(`✅ [${collection.code}] CALC RESULT - User ${userId}: ${totalRanked}/${totalAvailable} (${percentage}%) → TIER: ${tier} (hasTiers: ${collection.hasTiers})`);
     console.log(`📋 [${collection.code}] Ranked product IDs:`, rankedProductIds);
 
     return {
@@ -172,13 +174,16 @@ class CollectionManager {
     const totalRanked = rankedProducts.length;
     const percentage = Math.round((totalRanked / totalAvailable) * 100);
     
-    console.log(`📊 Collection ${collection.code}: User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%)`);
+    // Only calculate tier if achievement has tiers enabled
+    const tier = collection.hasTiers ? this.getTierFromPercentage(percentage, collection.tierThresholds) : (percentage === 100 ? 'complete' : null);
+    
+    console.log(`📊 Collection ${collection.code}: User ${userId} ranked ${totalRanked}/${totalAvailable} products (${percentage}%) → TIER: ${tier} (hasTiers: ${collection.hasTiers})`);
 
     return {
       percentage,
       totalAvailable,
       totalRanked,
-      tier: this.getTierFromPercentage(percentage, collection.tierThresholds),
+      tier,
       categories // Include for debugging
     };
   }

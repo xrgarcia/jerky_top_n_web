@@ -69,6 +69,7 @@ class AchievementAdminRepository {
         isHidden: achievements.isHidden,
         requirement: achievements.requirement,
         tierThresholds: achievements.tierThresholds,
+        hasTiers: achievements.hasTiers,
         points: achievements.points,
         isActive: achievements.isActive,
         createdAt: achievements.createdAt,
@@ -103,6 +104,7 @@ class AchievementAdminRepository {
         isHidden: achievementData.isHidden || 0,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,
+        hasTiers: achievementData.hasTiers !== undefined ? achievementData.hasTiers : 0,
         points: achievementData.points || 0,
         isActive: achievementData.isActive !== undefined ? achievementData.isActive : 1,
       })
@@ -135,6 +137,7 @@ class AchievementAdminRepository {
         isHidden: achievementData.isHidden || 0,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,
+        hasTiers: achievementData.hasTiers !== undefined ? achievementData.hasTiers : 0,
         points: achievementData.points || 0,
         isActive: achievementData.isActive !== undefined ? achievementData.isActive : 1,
         updatedAt: sql`NOW()`,
