@@ -101,6 +101,7 @@ const achievements = pgTable('achievements', {
   isHidden: integer('is_hidden').default(0), // 0 = visible, 1 = hidden until unlocked
   requirement: jsonb('requirement').notNull(), // Criteria for earning (e.g., {type: 'complete_flavor_set', flavors: ['sweet', 'spicy']})
   tierThresholds: jsonb('tier_thresholds'), // For dynamic collections: {bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100}
+  hasTiers: integer('has_tiers').default(0), // 0 = no tiers (single achievement), 1 = has tiers (bronze/silver/gold/etc)
   points: integer('points').default(0), // Points awarded for earning
   isActive: integer('is_active').default(1), // 0 = inactive, 1 = active (for admin control)
   createdAt: timestamp('created_at').defaultNow(),
