@@ -1134,6 +1134,7 @@
                             <option value="">Select Type</option>
                             <option value="static_collection">Static Collection</option>
                             <option value="custom_product_list">Pre-Defined List of Products</option>
+                            <option value="flavor_coin">Flavor Coin (Single Product)</option>
                             <option value="dynamic_collection">Dynamic Collection</option>
                             <option value="hidden_collection">Hidden Achievement</option>
                             <option value="legacy">Legacy Achievement</option>
@@ -1270,9 +1271,17 @@
                 </div>
                 
                 <div class="form-section" id="tierThresholdsSection" style="display: none;">
-                    <h4>Tier Thresholds (for Dynamic Collections)</h4>
-                    <p class="help-text">Set completion percentages for each tier. Users progress through tiers as they complete more items.</p>
-                    <div class="tier-inputs-grid">
+                    <h4>Tier Configuration</h4>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="achievementHasTiers" name="hasTiers" value="1">
+                            Enable Tiers (bronze, silver, gold, etc.)
+                        </label>
+                        <p class="help-text" style="margin-top: 8px;">Uncheck for single-completion achievements (like Flavor Coins) where users either earn it or don't - no progression tiers.</p>
+                    </div>
+                    <div id="tierThresholdsInputs" style="display: none;">
+                        <p class="help-text">Set completion percentages for each tier. Users progress through tiers as they complete more items.</p>
+                        <div class="tier-inputs-grid">
                         <div class="tier-input-group">
                             <label for="tierBronze">🥉 Bronze</label>
                             <input type="number" id="tierBronze" name="tierBronze" min="1" max="100" value="40" placeholder="40">
@@ -1298,6 +1307,7 @@
                             <input type="number" id="tierDiamond" name="tierDiamond" min="1" max="100" value="100" placeholder="100">
                             <span class="tier-suffix">%</span>
                         </div>
+                    </div>
                     </div>
                 </div>
                 

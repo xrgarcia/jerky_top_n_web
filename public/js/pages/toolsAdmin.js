@@ -216,6 +216,7 @@ function getCollectionTypeLabel(type) {
     'custom_product_list': 'Custom List',
     'dynamic_collection': 'Dynamic',
     'hidden_collection': 'Hidden',
+    'flavor_coin': 'Flavor Coin',
     'legacy': 'Legacy'
   };
   return labels[type] || type;
@@ -335,6 +336,17 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementCategory').value = achievement.category || '';
   document.getElementById('achievementIsHidden').checked = achievement.isHidden === 1;
   
+  // Set hasTiers checkbox
+  const hasTiersCheckbox = document.getElementById('achievementHasTiers');
+  if (hasTiersCheckbox) {
+    hasTiersCheckbox.checked = achievement.hasTiers === 1;
+    // Trigger visibility update for tier threshold inputs
+    const tierThresholdsInputs = document.getElementById('tierThresholdsInputs');
+    if (tierThresholdsInputs) {
+      tierThresholdsInputs.style.display = hasTiersCheckbox.checked ? 'block' : 'none';
+    }
+  }
+  
   // Handle icon type
   const iconType = achievement.iconType || 'emoji';
   const emojiRadio = document.getElementById('iconTypeEmoji');
@@ -372,6 +384,17 @@ function populateAchievementForm(achievement) {
       document.getElementById('requirementType').value = '';
     } else if (req.type === 'custom_product_list') {
       // Custom product list - load selected products
+      document.getElementById('requirementType').value = '';
+      if (req.productIds && Array.isArray(req.productIds)) {
+        // Populate selectedProductIds Set
+        selectedProductIds.clear();
+        req.productIds.forEach(id => selectedProductIds.add(id));
+        
+        // Store in hidden field
+        document.getElementById('selectedProductIds').value = JSON.stringify(req.productIds);
+      }
+    } else if (req.type === 'flavor_coin') {
+      // Flavor coin - load selected product (max 1)
       document.getElementById('requirementType').value = '';
       if (req.productIds && Array.isArray(req.productIds)) {
         // Populate selectedProductIds Set
@@ -446,6 +469,14 @@ function updateFormFieldsVisibility() {
     unlockRequirementsSection.style.display = 'none';
   } else if (collectionType === 'custom_product_list') {
     // Custom product lists show tier thresholds and product selector (no unlock requirements)
+    tierThresholdsSection.style.display = 'block';
+    unlockRequirementsSection.style.display = 'none';
+    productSelectorSection.style.display = 'block';
+    // Initialize product selector - preserve selection if editing
+    const isEditing = document.getElementById('achievementId').value !== '';
+    initializeProductSelector(isEditing);
+  } else if (collectionType === 'flavor_coin') {
+    // Flavor coins show tier thresholds and product selector (no unlock requirements, max 1 product)
     tierThresholdsSection.style.display = 'block';
     unlockRequirementsSection.style.display = 'none';
     productSelectorSection.style.display = 'block';
@@ -563,6 +594,7 @@ async function handleAchievementFormSubmit(event) {
     points: parseInt(formData.get('points')) || 0,
     isActive: parseInt(formData.get('isActive')),
     isHidden: formData.get('isHidden') ? 1 : 0,
+    hasTiers: formData.get('hasTiers') ? 1 : 0,
   };
   
   // Collect selected animal categories as array
@@ -629,6 +661,44 @@ async function handleAchievementFormSubmit(event) {
     // Auto-generate requirement for custom product lists
     requirement = {
       type: 'custom_product_list',
+      productIds: productIds
+    };
+  } else if (achievementData.collectionType === 'flavor_coin') {
+    // Flavor coins have automatic requirements based on selected product (max 1)
+    const selectedProductIdsJson = document.getElementById('selectedProductIds').value;
+    let productIds = [];
+    
+    try {
+      productIds = selectedProductIdsJson ? JSON.parse(selectedProductIdsJson) : [];
+    } catch (e) {
+      console.error('Failed to parse product IDs:', e);
+    }
+    
+    if (productIds.length === 0) {
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'No Product Selected',
+        message: 'Please select exactly 1 product for this Flavor Coin',
+        duration: 5000
+      });
+      return;
+    }
+    
+    if (productIds.length > 1) {
+      showToast({
+        type: 'warning',
+        icon: '⚠️',
+        title: 'Too Many Products',
+        message: 'Flavor Coins can only have 1 product. Please remove extra products.',
+        duration: 5000
+      });
+      return;
+    }
+    
+    // Auto-generate requirement for flavor coins
+    requirement = {
+      type: 'flavor_coin',
       productIds: productIds
     };
   } else {
@@ -732,8 +802,8 @@ async function handleAchievementFormSubmit(event) {
   
   achievementData.requirement = requirement;
   
-  // Build tier thresholds object for dynamic collections and custom product lists
-  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'custom_product_list') {
+  // Build tier thresholds object for dynamic collections, custom product lists, and flavor coins
+  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'custom_product_list' || achievementData.collectionType === 'flavor_coin') {
     achievementData.tierThresholds = {
       bronze: parseInt(document.getElementById('tierBronze').value) || 40,
       silver: parseInt(document.getElementById('tierSilver').value) || 60,
@@ -1206,6 +1276,25 @@ function handleProductSearch(e) {
 function renderAvailableProducts() {
   const availableList = document.getElementById('availableProductsList');
   const countInfo = document.getElementById('availableProductsCount');
+  const searchInput = document.getElementById('productSearchInput');
+  const collectionType = document.getElementById('achievementCollectionType').value;
+  
+  // For flavor_coin, disable search if one product is already selected
+  if (collectionType === 'flavor_coin' && selectedProductIds.size >= 1) {
+    if (searchInput) {
+      searchInput.disabled = true;
+      searchInput.style.opacity = '0.5';
+      searchInput.style.cursor = 'not-allowed';
+      searchInput.placeholder = 'Maximum 1 product for Flavor Coins';
+    }
+  } else {
+    if (searchInput) {
+      searchInput.disabled = false;
+      searchInput.style.opacity = '1';
+      searchInput.style.cursor = 'text';
+      searchInput.placeholder = 'Search jerky products...';
+    }
+  }
   
   // Filter products by search term (includes metadata) and exclude already selected
   const filteredProducts = adminAllProducts.filter(product => {
@@ -1230,6 +1319,12 @@ function renderAvailableProducts() {
     countInfo.textContent = `Showing ${showingCount} of ${totalProducts} products • ${productsWithRankings} have been ranked`;
   } else {
     countInfo.textContent = `${totalProducts} products available • ${productsWithRankings} have been ranked`;
+  }
+  
+  // For flavor_coin with max products selected, show message
+  if (collectionType === 'flavor_coin' && selectedProductIds.size >= 1) {
+    availableList.innerHTML = '<div class="no-results-state">Maximum 1 product allowed for Flavor Coins</div>';
+    return;
   }
   
   if (filteredProducts.length === 0) {
@@ -1292,6 +1387,20 @@ function renderSelectedProducts() {
  * Add product to selection
  */
 window.addProduct = function(productId) {
+  const collectionType = document.getElementById('achievementCollectionType').value;
+  
+  // For flavor_coin, enforce max 1 product
+  if (collectionType === 'flavor_coin' && selectedProductIds.size >= 1) {
+    showToast({
+      type: 'warning',
+      icon: '⚠️',
+      title: 'Maximum Reached',
+      message: 'Flavor Coins can only have 1 product. Remove the current product first.',
+      duration: 5000
+    });
+    return;
+  }
+  
   selectedProductIds.add(productId);
   renderAvailableProducts();
   renderSelectedProducts();
@@ -1344,6 +1453,17 @@ window.initAchievementAdmin = function() {
   const requirementTypeSelect = document.getElementById('requirementType');
   if (requirementTypeSelect) {
     requirementTypeSelect.addEventListener('change', updateRequirementFieldsVisibility);
+  }
+  
+  // Setup hasTiers checkbox handler
+  const hasTiersCheckbox = document.getElementById('achievementHasTiers');
+  if (hasTiersCheckbox) {
+    hasTiersCheckbox.addEventListener('change', function() {
+      const tierThresholdsInputs = document.getElementById('tierThresholdsInputs');
+      if (tierThresholdsInputs) {
+        tierThresholdsInputs.style.display = this.checked ? 'block' : 'none';
+      }
+    });
   }
   
   // Setup icon type and upload handlers
