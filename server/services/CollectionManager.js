@@ -45,9 +45,19 @@ class CollectionManager {
         eq(achievements.isActive, 1)
       ));
 
-    // Filter to only those with custom product list requirement
-    const customProductCollections = customCollections.filter(c => 
-      c.requirement && c.requirement.type === 'custom_product_list' && 
+    // Also check for flavor_coin type
+    const flavorCoinCollections = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'flavor_coin'),
+        eq(achievements.isActive, 1)
+      ));
+
+    // Combine and filter to only those with custom product list or flavor_coin requirement
+    const allCollections = [...customCollections, ...flavorCoinCollections];
+    const customProductCollections = allCollections.filter(c => 
+      c.requirement && 
+      (c.requirement.type === 'custom_product_list' || c.requirement.type === 'flavor_coin') && 
       Array.isArray(c.requirement.productIds) && c.requirement.productIds.length > 0
     );
 
