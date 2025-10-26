@@ -513,12 +513,6 @@ function createGamificationRoutes(services) {
       // Get user's ranked product IDs to mark which are ranked
       const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'default');
       const rankedSet = new Set(rankedProductIds);
-      
-      // DEBUG: Log ID formats to identify mismatch
-      console.log(`🔍 DEBUG - Achievement productIds (first 3):`, productIds.slice(0, 3));
-      console.log(`🔍 DEBUG - Ranked productIds (first 3):`, rankedProductIds.slice(0, 3));
-      console.log(`🔍 DEBUG - Achievement productIds types:`, productIds.slice(0, 3).map(id => typeof id));
-      console.log(`🔍 DEBUG - Ranked productIds types:`, rankedProductIds.slice(0, 3).map(id => typeof id));
 
       // Map ALL products in achievement with isRanked status (collection book view)
       const products = productIds
@@ -530,15 +524,6 @@ function createGamificationRoutes(services) {
           }
           
           const isRanked = rankedSet.has(product.id);
-          
-          // DEBUG: Log first product to see ID format
-          if (productId === productIds[0]) {
-            console.log(`🔍 DEBUG - First product check:`);
-            console.log(`  - productId from achievement: "${productId}" (${typeof productId})`);
-            console.log(`  - product.id from enriched: "${product.id}" (${typeof product.id})`);
-            console.log(`  - rankedSet.has(product.id): ${isRanked}`);
-            console.log(`  - rankedSet size: ${rankedSet.size}`);
-          }
           
           return {
             id: product.id,

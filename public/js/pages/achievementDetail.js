@@ -95,7 +95,7 @@ function renderProducts() {
     const cardClass = isRanked ? 'ranked' : 'unranked';
     
     return `
-      <div class="achievement-product-card ${cardClass}">
+      <div class="achievement-product-card ${cardClass}" onclick="navigateToProduct('${product.id}')">
         <div class="achievement-product-image">
           <img src="${product.image}" alt="${product.title}" loading="lazy">
           ${isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
