@@ -67,6 +67,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Hide all pages
+            const achievementDetailPage = document.getElementById('achievementDetailPage');
+            const coinbookPage = document.getElementById('coinbookPage');
             if (homePage) homePage.style.display = 'none';
             if (rankPage) rankPage.style.display = 'none';
             if (productsPage) productsPage.style.display = 'none';
@@ -76,6 +78,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'none';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'block';
+            if (achievementDetailPage) achievementDetailPage.style.display = 'none';
+            if (coinbookPage) coinbookPage.style.display = 'none';
             if (heroSection) heroSection.style.display = 'none';
             
             // Load user profile
@@ -104,6 +108,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Hide all pages
+            const achievementDetailPage = document.getElementById('achievementDetailPage');
+            const coinbookPage = document.getElementById('coinbookPage');
             if (homePage) homePage.style.display = 'none';
             if (rankPage) rankPage.style.display = 'none';
             if (productsPage) productsPage.style.display = 'none';
@@ -113,6 +119,8 @@ document.addEventListener('DOMContentLoaded', function() {
             if (productDetailPage) productDetailPage.style.display = 'block';
             if (loginPage) loginPage.style.display = 'none';
             if (userProfilePage) userProfilePage.style.display = 'none';
+            if (achievementDetailPage) achievementDetailPage.style.display = 'none';
+            if (coinbookPage) coinbookPage.style.display = 'none';
             if (heroSection) heroSection.style.display = 'none';
             
             // Load product detail
@@ -219,6 +227,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         // Hide all pages
+        const achievementDetailPage = document.getElementById('achievementDetailPage');
+        const coinbookPage = document.getElementById('coinbookPage');
         if (homePage) homePage.style.display = 'none';
         if (rankPage) rankPage.style.display = 'none';
         if (productsPage) productsPage.style.display = 'none';
@@ -228,6 +238,8 @@ document.addEventListener('DOMContentLoaded', function() {
         if (productDetailPage) productDetailPage.style.display = 'none';
         if (userProfilePage) userProfilePage.style.display = 'none';
         if (loginPage) loginPage.style.display = 'none';
+        if (achievementDetailPage) achievementDetailPage.style.display = 'none';
+        if (coinbookPage) coinbookPage.style.display = 'none';
         if (toolsPage) toolsPage.style.display = 'none';
         
         // Show selected page (sessionStorage removed - URL is single source of truth)
