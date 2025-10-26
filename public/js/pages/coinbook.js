@@ -1,20 +1,28 @@
 /**
- * Coin Book Page - Flavor Coins and Collections Display
+ * Coin Book Page - Simplified achievement display matching ProgressWidget design
  */
 
-let userFlavorCoins = [];
-let allAchievementsData = [];
-let userCollectionProgress = {};
-
-/**
- * Helper function to render an icon (emoji or image)
- */
-function renderIcon(iconValue, iconType, cssClass = '', size = '48px') {
-  if (iconType === 'image') {
-    return `<img src="${iconValue}" alt="Icon" class="${cssClass}" style="width: ${size}; height: ${size}; object-fit: contain;">`;
-  }
-  return `<span class="${cssClass}">${iconValue}</span>`;
-}
+let userProgress = null;
+let allAchievements = [];
+const mysteriousDescriptions = {
+  first_rank: "Every legend begins with a single choice...",
+  rank_10: "The path reveals itself to those who persist...",
+  rank_25: "Power grows with dedication. Keep going...",
+  rank_50: "You're halfway to something extraordinary...",
+  complete_collection: "The ultimate completionist. Rank them all...",
+  streak_3: "The flame ignites. Feed it daily...",
+  streak_7: "Seven suns have witnessed your devotion...",
+  streak_30: "The calendar bends to your will. Don't break...",
+  streak_100: "Legends speak of those who reached this height...",
+  explorer: "Variety is the spice of discovery...",
+  adventurer: "The world is vast. Taste it all...",
+  globe_trotter: "Few have wandered this far. Continue...",
+  top_10: "Rise above the masses. The podium awaits...",
+  top_3: "Bronze, silver, or gold? Claim your throne...",
+  community_leader: "Influence spreads like wildfire. Be the spark...",
+  early_adopter: "The pioneers inherit the earth...",
+  taste_maker: "Shape the future. Others will follow..."
+};
 
 /**
  * Initialize Coin Book page
@@ -22,349 +30,192 @@ function renderIcon(iconValue, iconType, cssClass = '', size = '48px') {
 window.initCoinbookPage = async function() {
   console.log('🏆 Initializing Coin Book page...');
   
-  // Setup tab navigation
-  setupCoinbookTabs();
-  
-  // Load all data in parallel
-  await Promise.all([
-    loadFlavorCoins(),
-    loadCollections()
-  ]);
+  await loadCoinbookData();
+  renderCoinbook();
 };
 
 /**
- * Setup tab navigation
+ * Load user progress and achievements data
  */
-function setupCoinbookTabs() {
-  const tabs = document.querySelectorAll('.coinbook-tab');
-  
-  // Map tab data-tab values to content element IDs
-  const tabContentMap = {
-    'flavor-coins': 'flavorCoinsContent',
-    'static-collections': 'staticCollectionsContent',
-    'dynamic-collections': 'dynamicCollectionsContent',
-    'hidden-achievements': 'hiddenAchievementsContent'
-  };
-  
-  tabs.forEach(tab => {
-    tab.addEventListener('click', function() {
-      const tabId = this.dataset.tab;
-      
-      // Update tab buttons
-      tabs.forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
-      
-      // Update tab content
-      document.querySelectorAll('.coinbook-tab-content').forEach(content => {
-        content.classList.remove('active');
-        content.style.display = 'none';
-      });
-      
-      const contentId = tabContentMap[tabId];
-      const activeContent = document.getElementById(contentId);
-      if (activeContent) {
-        activeContent.style.display = 'block';
-        activeContent.classList.add('active');
-      } else {
-        console.error(`Content element not found for tab: ${tabId} (looking for #${contentId})`);
-      }
-    });
-  });
-}
-
-/**
- * Load user's flavor coins
- */
-async function loadFlavorCoins() {
+async function loadCoinbookData() {
   try {
-    const response = await fetch('/api/gamification/flavor-coins');
+    const [progressResponse, achievementsResponse] = await Promise.all([
+      fetch('/api/gamification/progress'),
+      fetch('/api/gamification/achievements')
+    ]);
     
-    if (!response.ok) {
-      throw new Error('Failed to load flavor coins');
+    if (!progressResponse.ok || !achievementsResponse.ok) {
+      throw new Error('Failed to load coinbook data');
     }
     
-    const data = await response.json();
-    userFlavorCoins = data.flavorCoins || [];
+    const progressData = await progressResponse.json();
+    const achievementsData = await achievementsResponse.json();
     
-    renderFlavorCoins();
-    updateTabBadge('flavorCoinsBadge', userFlavorCoins.length);
+    userProgress = progressData.progress;
+    allAchievements = achievementsData.achievements || [];
     
   } catch (error) {
-    console.error('Error loading flavor coins:', error);
-    document.getElementById('flavorCoinsGrid').innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🪙</div>
-        <div class="empty-state-title">No Flavor Coins Yet</div>
-        <div class="empty-state-message">Start ranking products with different flavors to earn your first coins!</div>
-      </div>
-    `;
+    console.error('Error loading coinbook data:', error);
+    showError();
   }
 }
 
 /**
- * Render flavor coins grid
+ * Render the coinbook widget
  */
-function renderFlavorCoins() {
-  const grid = document.getElementById('flavorCoinsGrid');
+function renderCoinbook() {
+  const container = document.getElementById('coinbookProgressWidget');
   
-  if (userFlavorCoins.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🪙</div>
-        <div class="empty-state-title">No Flavor Coins Yet</div>
-        <div class="empty-state-message">Start ranking products with different flavors to earn your first coins!</div>
-      </div>
-    `;
+  if (!container) {
+    console.error('❌ Coinbook container not found');
     return;
   }
   
-  grid.innerHTML = userFlavorCoins.map(coin => `
-    <div class="flavor-coin-card">
-      <span class="flavor-coin-icon">${coin.flavorIcon}</span>
-      <div class="flavor-coin-name">${coin.flavorDisplay}</div>
-      <div class="flavor-coin-earned">Earned: ${formatDate(coin.earnedAt)}</div>
-    </div>
-  `).join('');
-}
-
-/**
- * Load collections and user progress
- */
-async function loadCollections() {
-  try {
-    const response = await fetch('/api/gamification/collections-progress');
-    
-    if (!response.ok) {
-      throw new Error('Failed to load collections');
-    }
-    
-    const data = await response.json();
-    allAchievementsData = data.achievements || [];
-    userCollectionProgress = data.userProgress || {};
-    
-    renderStaticCollections();
-    renderDynamicCollections();
-    renderHiddenAchievements();
-    
-  } catch (error) {
-    console.error('Error loading collections:', error);
-    showCollectionError();
-  }
-}
-
-/**
- * Render static collections
- */
-function renderStaticCollections() {
-  const container = document.getElementById('staticCollectionsList');
-  const staticCollections = allAchievementsData.filter(a => a.collectionType === 'static_collection');
-  
-  if (staticCollections.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">📚</div>
-        <div class="empty-state-title">No Static Collections</div>
-        <div class="empty-state-message">Check back later for new collection challenges!</div>
-      </div>
-    `;
-    updateTabBadge('staticCollectionsBadge', 0);
+  if (!userProgress || !allAchievements) {
+    container.innerHTML = '<div class="progress-loading">Loading achievements...</div>';
     return;
   }
   
-  const completedCount = staticCollections.filter(c => {
-    const progress = userCollectionProgress[c.id];
-    return progress && progress.completed;
-  }).length;
+  const nextMilestone = getNextMilestone();
+  const lastAchievement = userProgress?.recentAchievements?.[0];
   
-  container.innerHTML = staticCollections.map(collection => {
-    const progress = userCollectionProgress[collection.id] || { completed: false, percentage: 0 };
-    const status = progress.completed ? 'completed' : (progress.percentage > 0 ? 'in-progress' : 'not-started');
-    const statusLabel = progress.completed ? 'Completed' : (progress.percentage > 0 ? 'In Progress' : 'Not Started');
-    
-    return `
-      <div class="collection-card clickable" data-achievement-id="${collection.id}" onclick="navigateToAchievementDetail(${collection.id})">
-        <div class="collection-header">
-          ${renderIcon(collection.icon, collection.iconType, 'collection-icon', '48px')}
-          <div class="collection-info">
-            <div class="collection-name">${collection.name}</div>
-            <div class="collection-description">${collection.description}</div>
-          </div>
-          <span class="collection-status ${status}">${statusLabel}</span>
+  container.innerHTML = `
+    <div class="coinbook-progress-widget">
+      <div class="progress-header-section">
+        <div class="progress-title-section">
+          <span class="progress-title">Your Progress</span>
         </div>
-        <div class="collection-progress">
-          <div class="collection-progress-header">
-            <span class="collection-progress-label">Progress</span>
-            <span class="collection-progress-value">${progress.percentage}%</span>
-          </div>
-          <div class="collection-progress-bar">
-            <div class="collection-progress-fill" style="width: ${progress.percentage}%"></div>
-          </div>
+        <div class="progress-stats">
+          ${lastAchievement ? `
+            <span class="stat stat-achievement" title="${lastAchievement.name}">
+              ${lastAchievement.iconType === 'image' 
+                ? `<img src="${lastAchievement.icon}" alt="${lastAchievement.name}" style="width: 20px; height: 20px; object-fit: contain;">` 
+                : lastAchievement.icon}
+            </span>
+          ` : ''}
+          <span class="stat">${userProgress.totalRankings || 0} Ranked</span>
+          ${userProgress.currentStreak > 0 ? `<span class="stat">🔥 ${userProgress.currentStreak} Day Streak</span>` : ''}
         </div>
       </div>
-    `;
-  }).join('');
-  
-  updateTabBadge('staticCollectionsBadge', completedCount);
-}
-
-/**
- * Render dynamic collections with tier progression
- */
-function renderDynamicCollections() {
-  const container = document.getElementById('dynamicCollectionsList');
-  const dynamicCollections = allAchievementsData.filter(a => a.collectionType === 'dynamic_collection');
-  
-  if (dynamicCollections.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">📊</div>
-        <div class="empty-state-title">No Dynamic Collections</div>
-        <div class="empty-state-message">Check back later for protein category master challenges!</div>
-      </div>
-    `;
-    updateTabBadge('dynamicCollectionsBadge', 0);
-    return;
-  }
-  
-  // Group by protein category
-  const groupedByCategory = dynamicCollections.reduce((acc, collection) => {
-    const category = collection.proteinCategory || 'other';
-    if (!acc[category]) {
-      acc[category] = [];
-    }
-    acc[category].push(collection);
-    return acc;
-  }, {});
-  
-  let totalUnlocked = 0;
-  
-  container.innerHTML = Object.entries(groupedByCategory).map(([category, collections]) => {
-    const progress = userCollectionProgress[category] || { percentage: 0, currentTier: null };
-    const tierThresholds = collections[0]?.tierThresholds || { bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100 };
-    
-    const tiers = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
-    const currentTierIndex = tiers.indexOf(progress.currentTier);
-    
-    if (progress.currentTier) {
-      totalUnlocked++;
-    }
-    
-    const tierBadges = tiers.map((tier, index) => {
-      const threshold = tierThresholds[tier];
-      const isUnlocked = progress.percentage >= threshold;
-      const isCurrent = tier === progress.currentTier;
       
-      return `
-        <div class="tier-badge ${tier} ${isUnlocked ? '' : 'locked'} ${isCurrent ? 'current' : ''}">
-          ${tier.toUpperCase()} (${threshold}%)
+      ${nextMilestone ? `
+        <div class="progress-milestone">
+          <div class="milestone-label">${nextMilestone.achievementIcon || '🎯'} ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width: ${nextMilestone.progress}%"></div>
+          </div>
+          <div class="milestone-status">${nextMilestone.remaining} more to go!</div>
         </div>
-      `;
-    }).join('');
-    
-    return `
-      <div class="dynamic-collection-card clickable tier-${progress.currentTier || 'none'}" data-achievement-id="${collections[0].id}" onclick="navigateToAchievementDetail(${collections[0].id})">
-        <div class="collection-header">
-          ${renderIcon(collections[0].icon, collections[0].iconType, 'collection-icon', '48px')}
-          <div class="collection-info">
-            <div class="collection-name">${collections[0].name}</div>
-            <div class="collection-description">${collections[0].description}</div>
+      ` : ''}
+
+      ${allAchievements.length > 0 ? `
+        <div class="all-achievements">
+          <div class="achievements-label">All Achievements:</div>
+          <div class="achievements-grid coinbook-grid">
+            ${allAchievements.map(achievement => renderAchievementBadge(achievement)).join('')}
           </div>
         </div>
-        <div class="collection-progress">
-          <div class="collection-progress-header">
-            <span class="collection-progress-label">Progress</span>
-            <span class="collection-progress-value">${progress.percentage}%</span>
-          </div>
-          <div class="collection-progress-bar">
-            <div class="collection-progress-fill" style="width: ${progress.percentage}%"></div>
-          </div>
-        </div>
-        <div class="tier-badges">
-          ${tierBadges}
-        </div>
-      </div>
-    `;
-  }).join('');
-  
-  updateTabBadge('dynamicCollectionsBadge', totalUnlocked);
-}
-
-/**
- * Render hidden achievements
- */
-function renderHiddenAchievements() {
-  const container = document.getElementById('hiddenAchievementsList');
-  const hiddenAchievements = allAchievementsData.filter(a => a.isHidden === 1);
-  
-  if (hiddenAchievements.length === 0) {
-    container.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-state-icon">🔒</div>
-        <div class="empty-state-title">No Hidden Achievements</div>
-        <div class="empty-state-message">Check back later for secret challenges!</div>
-      </div>
-    `;
-    updateTabBadge('hiddenAchievementsBadge', 0);
-    return;
-  }
-  
-  const unlockedCount = hiddenAchievements.filter(a => {
-    const progress = userCollectionProgress[a.id];
-    return progress && progress.unlocked;
-  }).length;
-  
-  container.innerHTML = hiddenAchievements.map(achievement => {
-    const progress = userCollectionProgress[achievement.id] || { unlocked: false };
-    const isLocked = !progress.unlocked;
-    
-    return `
-      <div class="hidden-achievement-card ${isLocked ? 'locked' : ''}">
-        <div class="hidden-achievement-icon">${renderIcon(achievement.icon, achievement.iconType, '', '64px')}</div>
-        <div class="hidden-achievement-name">${isLocked ? '???' : achievement.name}</div>
-        <div class="hidden-achievement-description">
-          ${isLocked ? 'Complete secret requirements to unlock' : achievement.description}
-        </div>
-        ${!isLocked ? '<span class="hidden-achievement-unlocked">Unlocked!</span>' : ''}
-      </div>
-    `;
-  }).join('');
-  
-  updateTabBadge('hiddenAchievementsBadge', unlockedCount);
-}
-
-/**
- * Update tab badge count
- */
-function updateTabBadge(badgeId, count) {
-  const badge = document.getElementById(badgeId);
-  if (badge) {
-    badge.textContent = count;
-  }
-}
-
-/**
- * Show error in collections
- */
-function showCollectionError() {
-  const errorHtml = `
-    <div class="empty-state">
-      <div class="empty-state-icon">⚠️</div>
-      <div class="empty-state-title">Failed to Load</div>
-      <div class="empty-state-message">Please try refreshing the page</div>
+      ` : ''}
     </div>
   `;
-  
-  document.getElementById('staticCollectionsList').innerHTML = errorHtml;
-  document.getElementById('dynamicCollectionsList').innerHTML = errorHtml;
-  document.getElementById('hiddenAchievementsList').innerHTML = errorHtml;
 }
 
 /**
- * Format date helper
+ * Render a single achievement badge
  */
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+function renderAchievementBadge(achievement) {
+  const mysteriousDesc = mysteriousDescriptions[achievement.code] || achievement.description;
+  
+  const displayTier = achievement.currentTier || achievement.tier;
+  const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+  const tierEmoji = displayTier ? tierEmojis[displayTier] || '' : '';
+  const tierLabel = displayTier ? `${displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}` : '';
+  
+  const tooltipText = achievement.earned 
+    ? `<strong>${achievement.name}</strong>${tierLabel ? ` - ${tierEmoji} ${tierLabel}` : ''}<br>${achievement.description}<br><em>Unlocked!</em>`
+    : `<strong>???</strong><br>${mysteriousDesc}<br><span class="requirement-hint">${getRequirementHint(achievement)}</span>`;
+  
+  const iconHtml = achievement.iconType === 'image'
+    ? `<img src="${achievement.icon}" alt="${achievement.name}" style="width: 56px; height: 56px; object-fit: contain;">`
+    : achievement.icon;
+  
+  return `
+    <div class="achievement-badge ${achievement.earned ? 'earned clickable' : 'locked'} tier-${displayTier || 'none'}" tabindex="0" ${achievement.earned ? `onclick="navigateToAchievementDetail(${achievement.id})"` : ''}>
+      <span class="achievement-icon">${iconHtml}</span>
+      <span class="achievement-name">${achievement.earned ? achievement.name : '???'}${tierEmoji ? ` ${tierEmoji}` : ''}</span>
+      <div class="achievement-tooltip" role="tooltip">${tooltipText}</div>
+    </div>
+  `;
+}
+
+/**
+ * Get requirement hint for locked achievements
+ */
+function getRequirementHint(achievement) {
+  const { type, value } = achievement.requirement;
+  const progress = achievement.progress || { current: 0, required: value };
+  
+  const hints = {
+    rank_count: `Progress: ${progress.current}/${progress.required}`,
+    streak_days: `Current streak: ${progress.current}/${progress.required} days`,
+    unique_brands: `Brands explored: ${progress.current}/${progress.required}`,
+    leaderboard_position: `Rank higher to unlock...`,
+    profile_views: `Views: ${progress.current}/${progress.required}`,
+    join_before: `Time-limited achievement`,
+    trendsetter: `Rank trending products...`,
+    rank_all_products: `Products ranked: ${progress.current}/${progress.required}`
+  };
+  
+  return hints[type] || 'Complete to unlock...';
+}
+
+/**
+ * Get next milestone for progress bar
+ */
+function getNextMilestone() {
+  if (!userProgress) return null;
+  
+  const currentCount = userProgress.totalRankings || 0;
+  const milestones = [
+    { target: 1, label: 'First rank', achievementName: 'First Steps', achievementIcon: '🎯' },
+    { target: 10, label: '10 rankings', achievementName: 'Getting Started', achievementIcon: '📊' },
+    { target: 25, label: '25 rankings', achievementName: 'Quarter Century', achievementIcon: '🏅' },
+    { target: 50, label: '50 rankings', achievementName: 'Half Century', achievementIcon: '⭐' },
+    { target: 100, label: '100 rankings', achievementName: 'Complete Collection', achievementIcon: '💯' }
+  ];
+  
+  for (const milestone of milestones) {
+    if (currentCount < milestone.target) {
+      const progress = (currentCount / milestone.target) * 100;
+      const remaining = milestone.target - currentCount;
+      return { ...milestone, progress, remaining };
+    }
+  }
+  
+  return {
+    target: currentCount + 10,
+    label: `${currentCount + 10} rankings`,
+    achievementName: 'Keep Going',
+    achievementIcon: '🚀',
+    progress: 0,
+    remaining: 10
+  };
+}
+
+/**
+ * Show error message
+ */
+function showError() {
+  const container = document.getElementById('coinbookProgressWidget');
+  if (container) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-state-icon">⚠️</div>
+        <div class="empty-state-title">Failed to Load</div>
+        <div class="empty-state-message">Please try refreshing the page</div>
+      </div>
+    `;
+  }
 }
 
 /**
