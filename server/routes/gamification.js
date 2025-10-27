@@ -470,7 +470,7 @@ function createGamificationRoutes(services) {
     }
   });
 
-  // Get products for a specific achievement (for detail page)
+  // Get detail data for a specific achievement (for detail page)
   router.get('/achievement/:id/products', async (req, res) => {
     try {
       const achievementId = parseInt(req.params.id);
@@ -503,18 +503,88 @@ function createGamificationRoutes(services) {
         }
       }
 
-      // Get all enriched products using ProductsService (includes proper pricing, metadata, etc.)
+      const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
+      const isEngagementAchievement = achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT;
+
+      // Engagement achievements: Return progress data instead of products
+      if (isEngagementAchievement) {
+        // Get user's achievement record
+        const userAchievement = await services.achievementRepo.getUserAchievement(userId, achievementId);
+        
+        // Calculate current progress
+        const requirementType = achievement.requirement?.type;
+        const requirementValue = achievement.requirement?.value || achievement.requirement?.days || 1;
+        
+        // Fetch user stats based on requirement type
+        let currentValue = 0;
+        if (requirementType === 'search_count') {
+          const searches = await services.activityLogRepo.getUserSearchCount(userId);
+          currentValue = searches;
+        } else if (requirementType === 'page_view_count') {
+          const { pageViews } = require('../../shared/schema');
+          const { count } = require('drizzle-orm');
+          const result = await services.db.select({ count: count() })
+            .from(pageViews)
+            .where(require('drizzle-orm').eq(pageViews.userId, userId));
+          currentValue = result[0]?.count || 0;
+        } else if (requirementType === 'product_view_count') {
+          const productViews = await services.pageViewService.getProductViewEngagement(userId);
+          currentValue = productViews.totalProductViews;
+        } else if (requirementType === 'unique_product_view_count') {
+          const productViews = await services.pageViewService.getProductViewEngagement(userId);
+          currentValue = productViews.uniqueProductViews;
+        } else if (requirementType === 'profile_view_count') {
+          const profileViews = await services.pageViewService.getProfileViewEngagement(userId);
+          currentValue = profileViews.totalProfileViews;
+        } else if (requirementType === 'unique_profile_view_count') {
+          const profileViews = await services.pageViewService.getProfileViewEngagement(userId);
+          currentValue = profileViews.uniqueProfileViews;
+        } else if (requirementType === 'streak_days' || requirementType === 'daily_login_streak') {
+          const streakData = await services.streakTracker.getCurrentStreak(userId);
+          currentValue = requirementType === 'daily_login_streak' ? streakData.loginStreak : streakData.currentStreak;
+        }
+
+        const percentage = Math.min(Math.round((currentValue / requirementValue) * 100), 100);
+        
+        return res.json({
+          achievement: {
+            id: achievement.id,
+            name: achievement.name,
+            description: achievement.description,
+            icon: achievement.icon,
+            iconType: achievement.iconType,
+            collectionType: achievement.collectionType,
+            hasTiers: achievement.hasTiers,
+            tierThresholds: achievement.tierThresholds,
+            points: achievement.points
+          },
+          type: 'engagement',
+          progress: {
+            currentValue,
+            requiredValue,
+            percentage,
+            currentTier: userAchievement?.currentTier || null,
+            pointsEarned: userAchievement?.pointsAwarded || 0,
+            requirementType,
+            requirementLabel: getRequirementLabel(requirementType)
+          },
+          stats: {
+            percentage,
+            earned: userAchievement !== null
+          }
+        });
+      }
+
+      // Product-based achievements: Return products
       const allEnrichedProducts = await services.productsService.getAllProducts();
       
       // Get all products for this achievement based on its type
       let productIds = [];
       
-      const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
-      if (achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT || 
-          achievement.collectionType === COLLECTION_TYPES.STATIC ||
+      if (achievement.collectionType === COLLECTION_TYPES.STATIC ||
           achievement.collectionType === COLLECTION_TYPES.FLAVOR_COIN ||
           achievement.collectionType === 'custom_product_list') { // Legacy support
-        // Engagement collection, static collection, or flavor coin - get specific products from requirement
+        // Static collection or flavor coin - get specific products from requirement
         // ProductsService returns IDs as strings, so ensure achievement IDs are strings too
         productIds = (achievement.requirement.productIds || []).map(id => String(id));
       } else if (achievement.collectionType === 'dynamic_collection') {
@@ -567,8 +637,13 @@ function createGamificationRoutes(services) {
           name: achievement.name,
           description: achievement.description,
           icon: achievement.icon,
-          iconType: achievement.iconType
+          iconType: achievement.iconType,
+          collectionType: achievement.collectionType,
+          hasTiers: achievement.hasTiers,
+          tierThresholds: achievement.tierThresholds,
+          points: achievement.points
         },
+        type: 'collection',
         products,
         stats: {
           total: totalProducts,
@@ -583,6 +658,21 @@ function createGamificationRoutes(services) {
       res.status(500).json({ error: 'Failed to fetch achievement products' });
     }
   });
+
+  // Helper function to get user-friendly labels for requirement types
+  function getRequirementLabel(requirementType) {
+    const labels = {
+      'search_count': 'Searches',
+      'page_view_count': 'Page Views',
+      'streak_days': 'Streak Days',
+      'daily_login_streak': 'Login Streak Days',
+      'product_view_count': 'Product Views',
+      'unique_product_view_count': 'Unique Products Viewed',
+      'profile_view_count': 'Profile Views',
+      'unique_profile_view_count': 'Unique Profiles Viewed'
+    };
+    return labels[requirementType] || requirementType;
+  }
 
   return router;
 }

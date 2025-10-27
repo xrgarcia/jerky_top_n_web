@@ -173,6 +173,217 @@
   color: #7b8b52;
 }
 
+/* Engagement Achievement Styles */
+.achievement-engagement-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 40px;
+}
+
+.engagement-progress-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 2px solid #7b8b52;
+}
+
+.engagement-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.engagement-progress-header h3 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0;
+}
+
+.current-tier-badge {
+  background: linear-gradient(135deg, #c9a142 0%, #b8860b 100%);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 8px rgba(201, 161, 66, 0.3);
+}
+
+.engagement-progress-bar-container {
+  margin-bottom: 32px;
+}
+
+.engagement-progress-bar {
+  width: 100%;
+  height: 24px;
+  background: #e9ecef;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.engagement-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7b8b52 0%, #98ab6a 100%);
+  border-radius: 12px;
+  transition: width 0.5s ease;
+  box-shadow: 0 2px 4px rgba(123, 139, 82, 0.4);
+}
+
+.engagement-progress-text {
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #666;
+}
+
+.tier-progression {
+  margin: 32px 0;
+  padding-top: 32px;
+  border-top: 2px solid #e9ecef;
+}
+
+.tier-progression h4 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin-bottom: 20px;
+}
+
+.tier-badges {
+  display: flex;
+  justify-content: space-around;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tier-badge {
+  flex: 1;
+  min-width: 80px;
+  text-align: center;
+  padding: 16px 12px;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.tier-badge.earned {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-color: #7b8b52;
+}
+
+.tier-badge.locked {
+  background: #f8f9fa;
+  opacity: 0.4;
+  border-color: #dee2e6;
+}
+
+.tier-badge.current {
+  border-color: #c9a142;
+  box-shadow: 0 4px 12px rgba(201, 161, 66, 0.3);
+  transform: scale(1.05);
+}
+
+.tier-icon {
+  font-size: 36px;
+  margin-bottom: 8px;
+}
+
+.tier-name {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #495057;
+}
+
+.tier-badge.locked .tier-name {
+  color: #adb5bd;
+}
+
+.engagement-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.engagement-stat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 12px;
+  border: 2px solid #e9ecef;
+}
+
+.engagement-stat-icon {
+  font-size: 32px;
+  line-height: 1;
+}
+
+.engagement-stat-content {
+  flex: 1;
+}
+
+.engagement-stat-label {
+  font-size: 12px;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.engagement-stat-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c2c2c;
+}
+
+.engagement-cta {
+  margin-top: 24px;
+  padding: 20px;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  border-radius: 12px;
+  border: 2px solid #fed7aa;
+  text-align: center;
+}
+
+.engagement-cta p {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #92400e;
+}
+
+.engagement-complete {
+  margin-top: 24px;
+  padding: 24px;
+  background: linear-gradient(135deg, #d1f5d3 0%, #a7f3d0 100%);
+  border-radius: 12px;
+  border: 2px solid #6ee7b7;
+  text-align: center;
+}
+
+.complete-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.engagement-complete p {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #065f46;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .achievement-detail-stats {
@@ -199,5 +410,36 @@
   
   .achievement-product-image {
     height: 180px;
+  }
+  
+  .engagement-progress-card {
+    padding: 20px;
+  }
+  
+  .engagement-progress-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  
+  .tier-badges {
+    gap: 8px;
+  }
+  
+  .tier-badge {
+    min-width: 60px;
+    padding: 12px 8px;
+  }
+  
+  .tier-icon {
+    font-size: 28px;
+  }
+  
+  .tier-name {
+    font-size: 11px;
+  }
+  
+  .engagement-stats-grid {
+    grid-template-columns: 1fr;
   }
 }

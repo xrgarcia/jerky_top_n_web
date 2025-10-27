@@ -4,6 +4,15 @@
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
 ## Recent Changes (October 27, 2025)
+- **FEATURE**: Unified achievement detail pages for all coin types (collection and engagement)
+  - Backend: `/api/gamification/achievement/:id/products` now detects achievement type and returns appropriate data
+  - Engagement achievements return progress data (current value, required value, percentage, tier, points earned)
+  - Collection achievements return product grids (ranked vs unranked products)
+  - Frontend: `achievementDetail.js` dynamically renders based on achievement type
+  - Engagement detail pages show progress bars, tier badges (bronze→silver→gold→platinum→diamond), goal stats, and points earned
+  - Collection detail pages maintain existing product grid functionality with ranked/unranked visual distinction
+  - Consistent user experience across all 26 achievement types (4 engagement types × N coins + 3 collection types)
+  - Mobile-responsive design with tier badge scaling and flexible layouts
 - **FEATURE ENHANCEMENT**: Unique product and profile view engagement tracking
   - Added `calculateProductViewEngagement()` and `calculateProfileViewEngagement()` to EngagementManager
   - New engagement achievement types: `product_view_count`, `unique_product_view_count`, `profile_view_count`, `unique_profile_view_count`
