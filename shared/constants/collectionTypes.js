@@ -33,11 +33,11 @@ const COLLECTION_TYPES = {
  * Human-readable labels for collection types
  */
 const COLLECTION_TYPE_LABELS = {
-  [COLLECTION_TYPES.ENGAGEMENT]: 'Engagement',
-  [COLLECTION_TYPES.DYNAMIC]: 'Dynamic',
-  [COLLECTION_TYPES.STATIC]: 'Static Collection',
+  [COLLECTION_TYPES.ENGAGEMENT]: 'Engagement Coin',
+  [COLLECTION_TYPES.DYNAMIC]: 'Dynamic Collection Coin',
+  [COLLECTION_TYPES.STATIC]: 'Static Collection Coin',
   [COLLECTION_TYPES.FLAVOR_COIN]: 'Flavor Coin',
-  [COLLECTION_TYPES.HIDDEN]: 'Hidden',
+  [COLLECTION_TYPES.HIDDEN]: 'Hidden Collection Coin',
   [COLLECTION_TYPES.LEGACY]: 'Legacy'
 };
 

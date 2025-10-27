@@ -212,11 +212,11 @@ function renderAchievementsTable() {
  */
 function getCollectionTypeLabel(type) {
   const labels = {
-    'engagement_collection': 'Engagement',
-    'static_collection': 'Static Collection',
-    'custom_product_list': 'Static Collection', // Legacy - automatically converted to static_collection
-    'dynamic_collection': 'Dynamic',
-    'hidden_collection': 'Hidden',
+    'engagement_collection': 'Engagement Coin',
+    'static_collection': 'Static Collection Coin',
+    'custom_product_list': 'Static Collection Coin', // Legacy - automatically converted to static_collection
+    'dynamic_collection': 'Dynamic Collection Coin',
+    'hidden_collection': 'Hidden Collection Coin',
     'flavor_coin': 'Flavor Coin',
     'legacy': 'Legacy'
   };
@@ -238,7 +238,8 @@ function setupAchievementTypeFilters() {
       
       currentTypeFilter = type === 'all' ? 'all' : 
         type === 'engagement' ? 'engagement_collection' :
-        type === 'static' ? 'engagement_collection' : // Backward compatibility
+        type === 'static' ? 'static_collection' :
+        type === 'flavor_coin' ? 'flavor_coin' :
         type === 'dynamic' ? 'dynamic_collection' :
         type === 'hidden' ? 'hidden_collection' :
         'legacy';

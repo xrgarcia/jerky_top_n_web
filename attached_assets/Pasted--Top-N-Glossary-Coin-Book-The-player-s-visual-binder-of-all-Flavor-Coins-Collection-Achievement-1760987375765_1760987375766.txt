@@ -2,8 +2,16 @@
 
 Coin Book
 
-The player’s visual binder of all Flavor Coins, Collection Achievements, and Hidden Achievements.
+The player's visual binder of all coins: Engagement Coins, Flavor Coins, Static Collection Coins, Dynamic Collection Coins, and Hidden Collection Coins.
 Designed to evoke the feel of a physical quarter-collection book — progress is tactile, gaps are visible, and completion feels rewarding.
+
+⸻
+
+Engagement Coin
+
+A coin earned through user site engagement activities that demonstrate both exploration (breadth of trying new things) and discovery (depth of refining preferences).
+Includes activities like searches, logins, ranking streaks, and ranking milestones.
+While the underlying mechanics track exploration and discovery, these are presented to users as unified "Engagement Coins."
 
 ⸻
 
@@ -17,21 +25,21 @@ Each coin represents both participation (XP) and flavor history.
 
 Static Collection Coin
 
-An achievement for completing a fixed, finite set of flavors (e.g., Classic Beef).
+A coin earned for completing a fixed, finite set of flavors (e.g., Classic Beef, Original Master).
 These never change and can only be earned once.
 
 ⸻
 
 Dynamic Collection Coin
 
-An achievement tied to a living flavor group that updates automatically as new flavors are released or retired (e.g., All Beef or All Poultry).
-Progress is measured by percentage of flavors ranked, determining the user’s tier (Bronze → Diamond).
+A coin tied to a living flavor group that updates automatically as new flavors are released or retired (e.g., All Beef or All Poultry).
+Progress is measured by percentage of flavors ranked, determining the user's tier (Bronze → Diamond).
 
 ⸻
 
 Hidden Collection Coin
 
-A secret or themed achievement that is hidden until the player unlocks it by meeting hidden criteria.
+A secret or themed coin that is hidden until the player unlocks it by meeting hidden criteria.
 Examples: BBQ Lovers, Sweet Tooth, Heat Seeker.
 
 ⸻
@@ -55,6 +63,7 @@ Exploration (Internal Term)
 
 Internal behavior type tracking breadth — how many new things a user tries.
 Powers XP and achievement triggers but is never shown to players directly.
+Part of the underlying mechanics for Engagement Coins.
 
 ⸻
 
@@ -62,3 +71,4 @@ Discovery (Internal Term)
 
 Internal behavior type tracking depth — how much a user refines or defines their preferences (e.g., re-ranking favorites, curating their Top 10).
 Also invisible to players but used for balancing XP and achievement logic.
+Part of the underlying mechanics for Engagement Coins.

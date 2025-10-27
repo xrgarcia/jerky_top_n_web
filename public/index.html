@@ -826,10 +826,12 @@
                     
                     <!-- Achievement Type Filters -->
                     <div class="achievement-type-nav">
-                        <button class="achievement-type-btn active" data-type="all">All Achievements</button>
-                        <button class="achievement-type-btn" data-type="engagement">📚 Engagement Collections</button>
-                        <button class="achievement-type-btn" data-type="dynamic">📊 Dynamic Collections</button>
-                        <button class="achievement-type-btn" data-type="hidden">🔒 Hidden Achievements</button>
+                        <button class="achievement-type-btn active" data-type="all">All Coins</button>
+                        <button class="achievement-type-btn" data-type="engagement">📚 Engagement Coins</button>
+                        <button class="achievement-type-btn" data-type="static">🏛️ Static Collection Coins</button>
+                        <button class="achievement-type-btn" data-type="flavor_coin">🪙 Flavor Coins</button>
+                        <button class="achievement-type-btn" data-type="dynamic">📊 Dynamic Collection Coins</button>
+                        <button class="achievement-type-btn" data-type="hidden">🔒 Hidden Collection Coins</button>
                         <button class="achievement-type-btn" data-type="legacy">⚙️ Legacy</button>
                     </div>
                     
@@ -1129,14 +1131,14 @@
                     <h4>Collection Type</h4>
                     
                     <div class="form-group">
-                        <label for="achievementCollectionType">Collection Type*</label>
+                        <label for="achievementCollectionType">Coin Type*</label>
                         <select id="achievementCollectionType" name="collectionType" required>
                             <option value="">Select Type</option>
-                            <option value="engagement_collection">Engagement Collection</option>
-                            <option value="static_collection">Static Collection</option>
-                            <option value="flavor_coin">Flavor Coin (Single Product)</option>
-                            <option value="dynamic_collection">Dynamic Collection</option>
-                            <option value="hidden_collection">Hidden Achievement</option>
+                            <option value="engagement_collection">Engagement Coin</option>
+                            <option value="static_collection">Static Collection Coin</option>
+                            <option value="flavor_coin">Flavor Coin</option>
+                            <option value="dynamic_collection">Dynamic Collection Coin</option>
+                            <option value="hidden_collection">Hidden Collection Coin</option>
                             <option value="custom_product_list" style="display:none;">Pre-Defined List of Products (Legacy)</option>
                             <option value="legacy">Legacy Achievement</option>
                         </select>
