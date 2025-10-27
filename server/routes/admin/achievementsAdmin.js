@@ -67,7 +67,7 @@ async function triggerAchievementRecalculation(achievementId, database) {
       try {
         let result = null;
         
-        if (ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
+        if (ach.collectionType === 'static_collection' || ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
           const progress = await collectionManager.calculateCustomProductProgress(user.id, ach);
           if (progress.tier) {
             result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
@@ -354,14 +354,17 @@ router.get('/achievements/by-type/:type', requireEmployeeAuth, async (req, res) 
         achievements = await adminRepo.getDynamicCollections();
         break;
       case 'engagement':
-      case 'static': // Backward compatibility
         achievements = await adminRepo.getEngagementCollections();
+        break;
+      case 'static':
+      case 'custom': // Backward compatibility (custom_product_list → static_collection)
+        achievements = await adminRepo.getStaticCollections();
         break;
       case 'hidden':
         achievements = await adminRepo.getHiddenAchievements();
         break;
       default:
-        return res.status(400).json({ error: 'Invalid type. Use: dynamic, engagement, or hidden' });
+        return res.status(400).json({ error: 'Invalid type. Use: dynamic, engagement, static, or hidden' });
     }
     
     res.json({ success: true, achievements });

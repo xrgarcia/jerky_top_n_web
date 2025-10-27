@@ -268,27 +268,39 @@ class AchievementAdminRepository {
   /**
    * Get all engagement collection achievements
    * (Achievements based on user site engagement: searches, logins, ranking activity, streaks)
-   * Includes legacy "static_collection" records for backward compatibility
    */
   async getEngagementCollections() {
     return await this.db
       .select()
       .from(achievements)
+      .where(eq(achievements.collectionType, COLLECTION_TYPES.ENGAGEMENT))
+      .orderBy(achievements.name);
+  }
+  
+  /**
+   * Get all static collection achievements
+   * (Pre-defined product lists: specific flavor collections, curated product sets)
+   * Includes legacy "custom_product_list" records for backward compatibility
+   */
+  async getStaticCollections() {
+    return await this.db
+      .select()
+      .from(achievements)
       .where(
         or(
-          eq(achievements.collectionType, COLLECTION_TYPES.ENGAGEMENT),
-          eq(achievements.collectionType, 'static_collection') // Legacy support
+          eq(achievements.collectionType, COLLECTION_TYPES.STATIC),
+          eq(achievements.collectionType, 'custom_product_list') // Legacy support
         )
       )
       .orderBy(achievements.name);
   }
   
   /**
-   * @deprecated Use getEngagementCollections() instead
+   * @deprecated Use getStaticCollections() instead
    * Kept for backward compatibility
    */
-  async getStaticCollections() {
-    return this.getEngagementCollections();
+  async getCustomProductLists() {
+    return this.getStaticCollections();
   }
 }
 
