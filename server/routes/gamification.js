@@ -471,10 +471,10 @@ function createGamificationRoutes(services) {
   });
 
   // Get detail data for a specific achievement (for detail page)
-  // Accepts achievement code (slug) instead of ID for clean URLs
+  // Accepts achievement code (slug) or ID for backward compatibility
   router.get('/achievement/:code/products', async (req, res) => {
     try {
-      const achievementCode = req.params.code;
+      const codeOrId = req.params.code;
       
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
@@ -490,7 +490,16 @@ function createGamificationRoutes(services) {
 
       // Get achievement details from all achievements (cached)
       const allAchievements = await services.achievementRepo.getAllAchievements();
-      const achievement = allAchievements.find(a => a.code === achievementCode);
+      
+      // Try to find by code first (new format: #coins/be_curious)
+      let achievement = allAchievements.find(a => a.code === codeOrId);
+      
+      // If not found and parameter is numeric, try to find by ID (legacy format: #achievement/6474)
+      if (!achievement && !isNaN(codeOrId)) {
+        const achievementId = parseInt(codeOrId);
+        achievement = allAchievements.find(a => a.id === achievementId);
+      }
+      
       if (!achievement) {
         return res.status(404).json({ error: 'Achievement not found' });
       }

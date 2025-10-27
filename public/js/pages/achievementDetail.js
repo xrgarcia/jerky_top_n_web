@@ -37,8 +37,11 @@ async function loadAchievementDetail(achievementCode) {
     
     // Route guard: Only update DOM if we're still on this achievement page
     // This prevents the achievement page from showing after navigating away
+    // Support both new (#coins/code) and legacy (#achievement/id) URL formats
     const currentHash = window.location.hash;
-    if (!currentHash.startsWith(`#coins/${achievementCode}`)) {
+    const isCoinsRoute = currentHash.startsWith(`#coins/${achievementCode}`);
+    const isLegacyRoute = currentHash.startsWith(`#achievement/${achievementCode}`);
+    if (!isCoinsRoute && !isLegacyRoute) {
       console.log('🚫 Navigation changed, aborting achievement detail render');
       return;
     }
