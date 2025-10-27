@@ -375,6 +375,10 @@ window.showAchievementForm = function(achievementId = null) {
     document.getElementById('rankCountValue').value = '';
     document.getElementById('animalCategoryCount').value = '';
     document.getElementById('searchCountValue').value = '';
+    document.getElementById('productViewCountValue').value = '';
+    document.getElementById('uniqueProductViewCountValue').value = '';
+    document.getElementById('profileViewCountValue').value = '';
+    document.getElementById('uniqueProfileViewCountValue').value = '';
     document.getElementById('streakDaysValue').value = '';
     document.querySelectorAll('input[name="requiredFlavors"]').forEach(checkbox => {
       checkbox.checked = false;
@@ -513,6 +517,14 @@ function populateAchievementForm(achievement) {
         });
       } else if (req.type === 'search_count') {
         document.getElementById('searchCountValue').value = req.value || '';
+      } else if (req.type === 'product_view_count') {
+        document.getElementById('productViewCountValue').value = req.value || '';
+      } else if (req.type === 'unique_product_view_count') {
+        document.getElementById('uniqueProductViewCountValue').value = req.value || '';
+      } else if (req.type === 'profile_view_count') {
+        document.getElementById('profileViewCountValue').value = req.value || '';
+      } else if (req.type === 'unique_profile_view_count') {
+        document.getElementById('uniqueProfileViewCountValue').value = req.value || '';
       } else if (req.type === 'daily_login_streak' || req.type === 'daily_rank_streak') {
         document.getElementById('streakDaysValue').value = req.days || '';
       }
@@ -541,8 +553,8 @@ function filterRequirementTypeOptions() {
   const requirementTypeSelect = document.getElementById('requirementType');
   
   // Define which requirement types are available for each collection type
-  const engagementCollectionTypes = ['rank_count', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
-  const legacyTypes = ['rank_count', 'complete_animal_category', 'complete_flavor_set', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
+  const engagementCollectionTypes = ['rank_count', 'search_count', 'product_view_count', 'unique_product_view_count', 'profile_view_count', 'unique_profile_view_count', 'daily_login_streak', 'daily_rank_streak'];
+  const legacyTypes = ['rank_count', 'complete_animal_category', 'complete_flavor_set', 'search_count', 'product_view_count', 'unique_product_view_count', 'profile_view_count', 'unique_profile_view_count', 'daily_login_streak', 'daily_rank_streak'];
   
   // Get all option elements
   const options = requirementTypeSelect.querySelectorAll('option');
@@ -648,6 +660,10 @@ function updateRequirementFieldsVisibility() {
   document.getElementById('animalCategoryCountGroup').style.display = 'none';
   document.getElementById('flavorSetGroup').style.display = 'none';
   document.getElementById('searchCountGroup').style.display = 'none';
+  document.getElementById('productViewCountGroup').style.display = 'none';
+  document.getElementById('uniqueProductViewCountGroup').style.display = 'none';
+  document.getElementById('profileViewCountGroup').style.display = 'none';
+  document.getElementById('uniqueProfileViewCountGroup').style.display = 'none';
   document.getElementById('streakDaysGroup').style.display = 'none';
   
   // Show relevant group based on selection
@@ -663,6 +679,18 @@ function updateRequirementFieldsVisibility() {
       break;
     case 'search_count':
       document.getElementById('searchCountGroup').style.display = 'block';
+      break;
+    case 'product_view_count':
+      document.getElementById('productViewCountGroup').style.display = 'block';
+      break;
+    case 'unique_product_view_count':
+      document.getElementById('uniqueProductViewCountGroup').style.display = 'block';
+      break;
+    case 'profile_view_count':
+      document.getElementById('profileViewCountGroup').style.display = 'block';
+      break;
+    case 'unique_profile_view_count':
+      document.getElementById('uniqueProfileViewCountGroup').style.display = 'block';
       break;
     case 'daily_login_streak':
     case 'daily_rank_streak':
@@ -932,6 +960,66 @@ async function handleAchievementFormSubmit(event) {
           return;
         }
         requirement.value = searchCount;
+        break;
+        
+      case 'product_view_count':
+        const productViewCount = parseInt(document.getElementById('productViewCountValue').value);
+        if (!productViewCount || productViewCount < 1) {
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of product views',
+            duration: 5000
+          });
+          return;
+        }
+        requirement.value = productViewCount;
+        break;
+        
+      case 'unique_product_view_count':
+        const uniqueProductViewCount = parseInt(document.getElementById('uniqueProductViewCountValue').value);
+        if (!uniqueProductViewCount || uniqueProductViewCount < 1) {
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of unique products',
+            duration: 5000
+          });
+          return;
+        }
+        requirement.value = uniqueProductViewCount;
+        break;
+        
+      case 'profile_view_count':
+        const profileViewCount = parseInt(document.getElementById('profileViewCountValue').value);
+        if (!profileViewCount || profileViewCount < 1) {
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of profile views',
+            duration: 5000
+          });
+          return;
+        }
+        requirement.value = profileViewCount;
+        break;
+        
+      case 'unique_profile_view_count':
+        const uniqueProfileViewCount = parseInt(document.getElementById('uniqueProfileViewCountValue').value);
+        if (!uniqueProfileViewCount || uniqueProfileViewCount < 1) {
+          showToast({
+            type: 'warning',
+            icon: '⚠️',
+            title: 'Invalid Value',
+            message: 'Please enter a valid number of unique profiles',
+            duration: 5000
+          });
+          return;
+        }
+        requirement.value = uniqueProfileViewCount;
         break;
         
       case 'daily_login_streak':

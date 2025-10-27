@@ -1213,6 +1213,10 @@
                             <option value="complete_animal_category">Complete all products in one or more animal categories</option>
                             <option value="complete_flavor_set">Rank specific flavors</option>
                             <option value="search_count">Perform searches</option>
+                            <option value="product_view_count">View product detail pages</option>
+                            <option value="unique_product_view_count">Browse unique products</option>
+                            <option value="profile_view_count">View user profiles</option>
+                            <option value="unique_profile_view_count">Visit unique user profiles</option>
                             <option value="daily_login_streak">Login daily for consecutive days</option>
                             <option value="daily_rank_streak">Rank products daily for consecutive days</option>
                         </select>
@@ -1246,6 +1250,30 @@
                     <div class="form-group" id="searchCountGroup" style="display: none;">
                         <label for="searchCountValue">How many searches must be performed?</label>
                         <input type="number" id="searchCountValue" name="searchCountValue" min="1" placeholder="e.g., 50">
+                    </div>
+                    
+                    <div class="form-group" id="productViewCountGroup" style="display: none;">
+                        <label for="productViewCountValue">How many product views are required?</label>
+                        <input type="number" id="productViewCountValue" name="productViewCountValue" min="1" placeholder="e.g., 100">
+                        <small>Counts total product detail page views (same product can be counted multiple times)</small>
+                    </div>
+                    
+                    <div class="form-group" id="uniqueProductViewCountGroup" style="display: none;">
+                        <label for="uniqueProductViewCountValue">How many unique products must be viewed?</label>
+                        <input type="number" id="uniqueProductViewCountValue" name="uniqueProductViewCountValue" min="1" placeholder="e.g., 25">
+                        <small>Counts unique products browsed (each product counted only once)</small>
+                    </div>
+                    
+                    <div class="form-group" id="profileViewCountGroup" style="display: none;">
+                        <label for="profileViewCountValue">How many profile views are required?</label>
+                        <input type="number" id="profileViewCountValue" name="profileViewCountValue" min="1" placeholder="e.g., 50">
+                        <small>Counts total user profile page views (same profile can be counted multiple times)</small>
+                    </div>
+                    
+                    <div class="form-group" id="uniqueProfileViewCountGroup" style="display: none;">
+                        <label for="uniqueProfileViewCountValue">How many unique profiles must be visited?</label>
+                        <input type="number" id="uniqueProfileViewCountValue" name="uniqueProfileViewCountValue" min="1" placeholder="e.g., 10">
+                        <small>Counts unique user profiles visited (each user counted only once)</small>
                     </div>
                     
                     <div class="form-group" id="streakDaysGroup" style="display: none;">

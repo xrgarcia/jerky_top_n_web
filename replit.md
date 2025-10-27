@@ -94,7 +94,7 @@ The application features a modern web architecture designed for responsiveness, 
   - **Dynamic Collections**: Protein-category-based with tier progression
   - **Flavor Coins**: Single product achievements with optional tier progression
   - User progress tracking, streak tracking, real-time leaderboards, activity feeds, and notifications.
-- **Admin Tools**: Role-based access for managing achievements and monitoring live users with real-time updates. Includes custom icon upload functionality.
+- **Admin Tools**: Role-based access for managing achievements and monitoring live users with real-time updates. Includes custom icon upload functionality. Supports all engagement achievement types including product view tracking, unique product browsing, profile views, and unique profile visits.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
