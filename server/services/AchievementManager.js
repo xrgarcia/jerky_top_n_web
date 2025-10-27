@@ -121,28 +121,36 @@ class AchievementManager {
   /**
    * Get all achievements with user's progress
    * @param {number} userId - User ID
-   * @returns {Array} Achievements with progress
+   * @returns {Array} Achievements with progress (excludes hidden achievements not yet earned)
    */
   async getAchievementsWithProgress(userId, userStats) {
     const allAchievements = await this.achievementRepo.getAllAchievements();
     const userAchievements = await this.achievementRepo.getUserAchievements(userId);
     const earnedMap = new Map(userAchievements.map(a => [a.achievementId, a]));
 
-    return allAchievements.map(achievement => {
-      const earned = earnedMap.get(achievement.id);
-      const progress = this.calculateProgress(achievement, userStats);
+    return allAchievements
+      .map(achievement => {
+        const earned = earnedMap.get(achievement.id);
+        const progress = this.calculateProgress(achievement, userStats);
 
-      return {
-        ...achievement,
-        earned: !!earned,
-        earnedAt: earned?.earnedAt || null,
-        progress,
-        // Include tier information for dynamic collections
-        currentTier: earned?.currentTier || null,
-        percentageComplete: earned?.percentageComplete || 0,
-        pointsAwarded: earned?.pointsAwarded || 0,
-      };
-    });
+        return {
+          ...achievement,
+          earned: !!earned,
+          earnedAt: earned?.earnedAt || null,
+          progress,
+          // Include tier information for dynamic collections
+          currentTier: earned?.currentTier || null,
+          percentageComplete: earned?.percentageComplete || 0,
+          pointsAwarded: earned?.pointsAwarded || 0,
+        };
+      })
+      .filter(achievement => {
+        // An achievement is hidden if isHidden === 1 OR collectionType === 'hidden_collection'
+        const isHidden = achievement.isHidden === 1 || achievement.collectionType === 'hidden_collection';
+        
+        // Show if: NOT hidden, OR earned
+        return !isHidden || achievement.earned;
+      });
   }
 
   /**

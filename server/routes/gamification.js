@@ -430,7 +430,17 @@ function createGamificationRoutes(services) {
       const userId = session.userId;
       
       // Get all achievements
-      const achievements = await services.achievementRepo.getAllAchievements();
+      const allAchievements = await services.achievementRepo.getAllAchievements();
+      
+      // Get user's earned achievements to filter hidden ones
+      const userAchievements = await services.achievementRepo.getUserAchievements(userId);
+      const earnedIds = new Set(userAchievements.map(a => a.achievementId));
+      
+      // Filter out hidden achievements that haven't been earned
+      const achievements = allAchievements.filter(achievement => {
+        const isHidden = achievement.isHidden === 1 || achievement.collectionType === 'hidden_collection';
+        return !isHidden || earnedIds.has(achievement.id);
+      });
       
       // Get user progress for collections
       const userProgress = {};
@@ -482,6 +492,15 @@ function createGamificationRoutes(services) {
       const achievement = allAchievements.find(a => a.id === achievementId);
       if (!achievement) {
         return res.status(404).json({ error: 'Achievement not found' });
+      }
+
+      // Check if achievement is hidden and user hasn't earned it
+      const isHidden = achievement.isHidden === 1 || achievement.collectionType === 'hidden_collection';
+      if (isHidden) {
+        const hasEarned = await services.achievementRepo.hasAchievement(userId, achievementId);
+        if (!hasEarned) {
+          return res.status(404).json({ error: 'Achievement not found' });
+        }
       }
 
       // Get all enriched products using ProductsService (includes proper pricing, metadata, etc.)
