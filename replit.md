@@ -4,6 +4,12 @@
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
 ## Recent Changes (October 27, 2025)
+- **CRITICAL BUG FIX**: Fixed engagement achievements not being evaluated
+  - **Root Cause**: EngagementManager queried for `collection_type = 'engagement'` but database stores `'engagement_collection'`
+  - **Fix**: Updated query in `EngagementManager.checkAndUpdateEngagementAchievements()` to use `'engagement_collection'`
+  - **Impact**: Engagement achievements (e.g., "Be Curious" for 10+ searches) now properly trigger and award points with toast notifications
+  - Search logging already working correctly - 36 searches tracked for test user
+  - Verified database query now successfully finds engagement achievements
 - **ARCHITECTURAL REFACTORING**: Renamed AchievementManager to EngagementManager for clearer separation of concerns
   - **EngagementManager**: Handles engagement-based achievements (searches, page views, streaks, logins)
   - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins)
