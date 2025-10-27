@@ -266,14 +266,14 @@ window.showAchievementForm = function(achievementId = null) {
   
   if (achievementId) {
     // Edit mode
-    title.textContent = 'Edit Achievement';
+    title.textContent = 'Edit Coin';
     const achievement = allAchievements.find(a => a.id === achievementId);
     if (achievement) {
       populateAchievementForm(achievement);
     }
   } else {
     // Create mode
-    title.textContent = 'Create Achievement';
+    title.textContent = 'Create Coin';
     form.reset();
     document.getElementById('achievementId').value = '';
     document.getElementById('achievementCode').readOnly = false; // Ensure code field is editable for new achievements
