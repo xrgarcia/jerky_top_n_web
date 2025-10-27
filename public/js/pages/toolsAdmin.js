@@ -137,6 +137,11 @@ function populateAnimalCheckboxes() {
 function applyAchievementTypeFilter() {
   if (currentTypeFilter === 'all') {
     filteredAchievements = [...allAchievements];
+  } else if (currentTypeFilter === 'static_collection') {
+    // Show both static_collection (new) and custom_product_list (legacy)
+    filteredAchievements = allAchievements.filter(a => 
+      a.collectionType === 'static_collection' || a.collectionType === 'custom_product_list'
+    );
   } else {
     filteredAchievements = allAchievements.filter(a => a.collectionType === currentTypeFilter);
   }
