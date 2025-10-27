@@ -131,7 +131,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
       console.log('🗑️ Truncated user_achievements');
 
       
-      // Clear all 6 system caches after deletion
+      // Clear all system caches after deletion
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
@@ -145,6 +145,13 @@ module.exports = function createDataManagementRoutes(storage, db) {
       new MetadataCache().invalidate();
       LeaderboardPositionCache.getInstance().invalidateAll();
       new RankingStatsCache().invalidate();
+
+      // Clear recent achievement tracker to prevent false "recently emitted" blocks
+      const gamificationServices = req.app.get('gamificationServices');
+      if (gamificationServices?.recentAchievementTracker) {
+        await gamificationServices.recentAchievementTracker.clearAll();
+        console.log('🗑️ Cleared RecentAchievementTracker');
+      }
 
       console.log('✅ All data and caches cleared successfully');
 
