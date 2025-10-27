@@ -461,7 +461,7 @@ class EngagementManager {
     const engagementAchievements = await this.db.select()
       .from(achievements)
       .where(and(
-        eq(achievements.collectionType, 'engagement'),
+        eq(achievements.collectionType, 'engagement_collection'),
         eq(achievements.isActive, 1)
       ));
 
