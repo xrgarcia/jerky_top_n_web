@@ -30,7 +30,8 @@
 }
 
 .achievement-type-btn,
-.achievement-hidden-btn {
+.achievement-hidden-btn,
+.achievement-dependency-btn {
   padding: 10px 20px;
   border: 2px solid #e0e0e0;
   background: white;
@@ -42,13 +43,15 @@
 }
 
 .achievement-type-btn:hover,
-.achievement-hidden-btn:hover {
+.achievement-hidden-btn:hover,
+.achievement-dependency-btn:hover {
   border-color: #7b8b52;
   background: rgba(123, 139, 82, 0.05);
 }
 
 .achievement-type-btn.active,
-.achievement-hidden-btn.active {
+.achievement-hidden-btn.active,
+.achievement-dependency-btn.active {
   background: #7b8b52;
   color: white;
   border-color: #7b8b52;

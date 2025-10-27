@@ -6,6 +6,7 @@ let allAchievements = [];
 let filteredAchievements = [];
 let currentTypeFilter = 'all';
 let currentHiddenFilter = 'all';
+let currentDependencyFilter = 'all';
 let editingAchievementId = null;
 let availableAnimals = []; // Loaded dynamically from database
 
@@ -133,7 +134,7 @@ function populateAnimalCheckboxes() {
 }
 
 /**
- * Apply type and hidden filters to achievements
+ * Apply type, hidden, and dependency filters to achievements
  */
 function applyAchievementTypeFilter() {
   // First filter by type
@@ -150,12 +151,22 @@ function applyAchievementTypeFilter() {
   }
   
   // Then filter by hidden status
+  let hiddenFiltered;
   if (currentHiddenFilter === 'all') {
-    filteredAchievements = typeFiltered;
+    hiddenFiltered = typeFiltered;
   } else if (currentHiddenFilter === 'hidden') {
-    filteredAchievements = typeFiltered.filter(a => a.isHidden === 1);
+    hiddenFiltered = typeFiltered.filter(a => a.isHidden === 1);
   } else if (currentHiddenFilter === 'visible') {
-    filteredAchievements = typeFiltered.filter(a => a.isHidden === 0 || a.isHidden === null);
+    hiddenFiltered = typeFiltered.filter(a => a.isHidden === 0 || a.isHidden === null);
+  }
+  
+  // Finally filter by dependency status
+  if (currentDependencyFilter === 'all') {
+    filteredAchievements = hiddenFiltered;
+  } else if (currentDependencyFilter === 'has') {
+    filteredAchievements = hiddenFiltered.filter(a => a.prerequisiteAchievementId !== null && a.prerequisiteAchievementId !== undefined);
+  } else if (currentDependencyFilter === 'none') {
+    filteredAchievements = hiddenFiltered.filter(a => a.prerequisiteAchievementId === null || a.prerequisiteAchievementId === undefined);
   }
   
   renderAchievementsTable();
@@ -278,6 +289,26 @@ function setupAchievementHiddenFilters() {
       this.classList.add('active');
       
       currentHiddenFilter = hiddenFilter;
+      
+      applyAchievementTypeFilter();
+    });
+  });
+}
+
+/**
+ * Setup achievement dependency filter buttons
+ */
+function setupAchievementDependencyFilters() {
+  const dependencyBtns = document.querySelectorAll('.achievement-dependency-btn');
+  
+  dependencyBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const dependencyFilter = this.dataset.dependency;
+      
+      dependencyBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      currentDependencyFilter = dependencyFilter;
       
       applyAchievementTypeFilter();
     });
@@ -1564,6 +1595,9 @@ window.initAchievementAdmin = function() {
   
   // Setup hidden filter buttons
   setupAchievementHiddenFilters();
+  
+  // Setup dependency filter buttons
+  setupAchievementDependencyFilters();
   
   // Setup create button
   const createBtn = document.getElementById('createAchievementBtn');
