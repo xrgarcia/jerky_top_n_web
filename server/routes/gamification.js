@@ -509,7 +509,16 @@ function createGamificationRoutes(services) {
       // Engagement achievements: Return progress data instead of products
       if (isEngagementAchievement) {
         // Get user's achievement record
-        const userAchievement = await services.achievementRepo.getUserAchievement(userId, achievementId);
+        const { userAchievements } = require('../../shared/schema');
+        const { eq, and } = require('drizzle-orm');
+        const userAchievementResult = await services.db.select()
+          .from(userAchievements)
+          .where(and(
+            eq(userAchievements.userId, userId),
+            eq(userAchievements.achievementId, achievementId)
+          ))
+          .limit(1);
+        const userAchievement = userAchievementResult[0] || null;
         
         // Calculate current progress
         const requirementType = achievement.requirement?.type;

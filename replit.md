@@ -11,8 +11,9 @@ A web application for ranking jerky products, inspired by jerky.com's design. Th
   - Frontend: `achievementDetail.js` dynamically renders based on achievement type
   - Engagement detail pages show progress bars, tier badges (bronze→silver→gold→platinum→diamond), goal stats, and points earned
   - Collection detail pages maintain existing product grid functionality with ranked/unranked visual distinction
-  - Consistent user experience across all 26 achievement types (4 engagement types × N coins + 3 collection types)
+  - Consistent user experience across all 26 achievement types (8 engagement types + 18 collection types)
   - Mobile-responsive design with tier badge scaling and flexible layouts
+  - Supports all engagement types: searches, page views, product views, unique product views, profile views, unique profile views, streaks, login streaks
 - **FEATURE ENHANCEMENT**: Unique product and profile view engagement tracking
   - Added `calculateProductViewEngagement()` and `calculateProfileViewEngagement()` to EngagementManager
   - New engagement achievement types: `product_view_count`, `unique_product_view_count`, `profile_view_count`, `unique_profile_view_count`
