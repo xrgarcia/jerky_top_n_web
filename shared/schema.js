@@ -94,7 +94,7 @@ const achievements = pgTable('achievements', {
   icon: text('icon').notNull(), // Emoji or image URL
   iconType: text('icon_type').default('emoji'), // 'emoji' or 'image'
   tier: text('tier'), // For legacy achievements: 'bronze', 'silver', 'gold', 'platinum' (nullable for new dynamic collections)
-  collectionType: text('collection_type').notNull(), // 'engagement_collection', 'dynamic_collection', 'hidden_collection', 'custom_product_list', 'flavor_coin', 'legacy'
+  collectionType: text('collection_type').notNull(), // 'engagement_collection', 'dynamic_collection', 'static_collection', 'hidden_collection', 'flavor_coin', 'legacy' (legacy: 'custom_product_list')
   category: text('category'), // 'ranking', 'social', 'discovery', 'streak' (for legacy achievements)
   proteinCategory: text('protein_category'), // LEGACY: For backward compatibility (stores first category)
   proteinCategories: jsonb('protein_categories'), // For multi-category collections: ['cattle', 'poultry', ...] (nullable for legacy)
