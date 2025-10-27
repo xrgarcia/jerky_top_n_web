@@ -440,6 +440,53 @@ function populateAchievementForm(achievement) {
 }
 
 /**
+ * Filter requirement type dropdown options based on collection type
+ */
+function filterRequirementTypeOptions() {
+  const collectionType = document.getElementById('achievementCollectionType').value;
+  const requirementTypeSelect = document.getElementById('requirementType');
+  
+  // Define which requirement types are available for each collection type
+  const staticCollectionTypes = ['rank_count', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
+  const legacyTypes = ['rank_count', 'complete_animal_category', 'complete_flavor_set', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
+  
+  // Get all option elements
+  const options = requirementTypeSelect.querySelectorAll('option');
+  
+  options.forEach(option => {
+    const value = option.value;
+    
+    // Always show the placeholder option
+    if (value === '') {
+      option.style.display = '';
+      return;
+    }
+    
+    // Filter based on collection type
+    if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
+      // Static/Hidden: Only exploration and engagement types
+      option.style.display = staticCollectionTypes.includes(value) ? '' : 'none';
+    } else if (collectionType === 'legacy') {
+      // Legacy: All types available
+      option.style.display = legacyTypes.includes(value) ? '' : 'none';
+    } else {
+      // Other types (dynamic, custom_product_list, flavor_coin): No requirements dropdown shown
+      option.style.display = '';
+    }
+  });
+  
+  // Reset selection if current value is now hidden
+  const currentValue = requirementTypeSelect.value;
+  if (currentValue && currentValue !== '') {
+    const currentOption = requirementTypeSelect.querySelector(`option[value="${currentValue}"]`);
+    if (currentOption && currentOption.style.display === 'none') {
+      requirementTypeSelect.value = '';
+      updateRequirementFieldsVisibility();
+    }
+  }
+}
+
+/**
  * Update form fields visibility based on collection type
  */
 function updateFormFieldsVisibility() {
@@ -491,6 +538,9 @@ function updateFormFieldsVisibility() {
     legacyCategoryGroup.style.display = 'block';
     unlockRequirementsSection.style.display = 'block';
   }
+  
+  // Filter requirement type options based on collection type
+  filterRequirementTypeOptions();
 }
 
 /**
