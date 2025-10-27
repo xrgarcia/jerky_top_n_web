@@ -1,5 +1,6 @@
-const { eq, and, desc, sql, isNull } = require('drizzle-orm');
+const { eq, and, desc, sql, isNull, or, inArray } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
+const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
 const animalCategoryService = require('../services/AnimalCategoryService');
 
 /**
@@ -249,7 +250,7 @@ class AchievementAdminRepository {
     return await this.db
       .select()
       .from(achievements)
-      .where(eq(achievements.collectionType, 'dynamic_collection'))
+      .where(eq(achievements.collectionType, COLLECTION_TYPES.DYNAMIC))
       .orderBy(achievements.proteinCategory, achievements.name);
   }
 
@@ -265,14 +266,29 @@ class AchievementAdminRepository {
   }
 
   /**
-   * Get all static collections
+   * Get all engagement collection achievements
+   * (Achievements based on user site engagement: searches, logins, ranking activity, streaks)
+   * Includes legacy "static_collection" records for backward compatibility
    */
-  async getStaticCollections() {
+  async getEngagementCollections() {
     return await this.db
       .select()
       .from(achievements)
-      .where(eq(achievements.collectionType, 'static_collection'))
+      .where(
+        or(
+          eq(achievements.collectionType, COLLECTION_TYPES.ENGAGEMENT),
+          eq(achievements.collectionType, 'static_collection') // Legacy support
+        )
+      )
       .orderBy(achievements.name);
+  }
+  
+  /**
+   * @deprecated Use getEngagementCollections() instead
+   * Kept for backward compatibility
+   */
+  async getStaticCollections() {
+    return this.getEngagementCollections();
   }
 }
 

@@ -212,7 +212,8 @@ function renderAchievementsTable() {
  */
 function getCollectionTypeLabel(type) {
   const labels = {
-    'static_collection': 'Static',
+    'engagement_collection': 'Engagement',
+    'static_collection': 'Engagement', // Legacy - automatically converted to engagement_collection
     'custom_product_list': 'Custom List',
     'dynamic_collection': 'Dynamic',
     'hidden_collection': 'Hidden',
@@ -236,7 +237,8 @@ function setupAchievementTypeFilters() {
       this.classList.add('active');
       
       currentTypeFilter = type === 'all' ? 'all' : 
-        type === 'static' ? 'static_collection' :
+        type === 'engagement' ? 'engagement_collection' :
+        type === 'static' ? 'engagement_collection' : // Backward compatibility
         type === 'dynamic' ? 'dynamic_collection' :
         type === 'hidden' ? 'hidden_collection' :
         'legacy';
@@ -447,7 +449,7 @@ function filterRequirementTypeOptions() {
   const requirementTypeSelect = document.getElementById('requirementType');
   
   // Define which requirement types are available for each collection type
-  const staticCollectionTypes = ['rank_count', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
+  const engagementCollectionTypes = ['rank_count', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
   const legacyTypes = ['rank_count', 'complete_animal_category', 'complete_flavor_set', 'search_count', 'daily_login_streak', 'daily_rank_streak'];
   
   // Get all option elements
@@ -463,9 +465,9 @@ function filterRequirementTypeOptions() {
     }
     
     // Filter based on collection type
-    if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
-      // Static/Hidden: Only exploration and engagement types
-      option.style.display = staticCollectionTypes.includes(value) ? '' : 'none';
+    if (collectionType === 'engagement_collection' || collectionType === 'static_collection' || collectionType === 'hidden_collection') {
+      // Engagement/Hidden (including legacy static): Only exploration and engagement types
+      option.style.display = engagementCollectionTypes.includes(value) ? '' : 'none';
     } else if (collectionType === 'legacy') {
       // Legacy: All types available
       option.style.display = legacyTypes.includes(value) ? '' : 'none';
@@ -530,8 +532,8 @@ function updateFormFieldsVisibility() {
     // Initialize product selector - preserve selection if editing
     const isEditing = document.getElementById('achievementId').value !== '';
     initializeProductSelector(isEditing);
-  } else if (collectionType === 'static_collection' || collectionType === 'hidden_collection') {
-    // Static and hidden collections need manual unlock requirements
+  } else if (collectionType === 'engagement_collection' || collectionType === 'static_collection' || collectionType === 'hidden_collection') {
+    // Engagement (including legacy static) and hidden collections need manual unlock requirements
     unlockRequirementsSection.style.display = 'block';
   } else if (collectionType === 'legacy') {
     legacyFieldsGroup.style.display = 'block';

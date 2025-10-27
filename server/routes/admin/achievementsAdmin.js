@@ -353,14 +353,15 @@ router.get('/achievements/by-type/:type', requireEmployeeAuth, async (req, res) 
       case 'dynamic':
         achievements = await adminRepo.getDynamicCollections();
         break;
-      case 'static':
-        achievements = await adminRepo.getStaticCollections();
+      case 'engagement':
+      case 'static': // Backward compatibility
+        achievements = await adminRepo.getEngagementCollections();
         break;
       case 'hidden':
         achievements = await adminRepo.getHiddenAchievements();
         break;
       default:
-        return res.status(400).json({ error: 'Invalid type. Use: dynamic, static, or hidden' });
+        return res.status(400).json({ error: 'Invalid type. Use: dynamic, engagement, or hidden' });
     }
     
     res.json({ success: true, achievements });

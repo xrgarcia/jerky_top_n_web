@@ -827,7 +827,7 @@
                     <!-- Achievement Type Filters -->
                     <div class="achievement-type-nav">
                         <button class="achievement-type-btn active" data-type="all">All Achievements</button>
-                        <button class="achievement-type-btn" data-type="static">📚 Static Collections</button>
+                        <button class="achievement-type-btn" data-type="engagement">📚 Engagement Collections</button>
                         <button class="achievement-type-btn" data-type="dynamic">📊 Dynamic Collections</button>
                         <button class="achievement-type-btn" data-type="hidden">🔒 Hidden Achievements</button>
                         <button class="achievement-type-btn" data-type="legacy">⚙️ Legacy</button>
@@ -1132,11 +1132,12 @@
                         <label for="achievementCollectionType">Collection Type*</label>
                         <select id="achievementCollectionType" name="collectionType" required>
                             <option value="">Select Type</option>
-                            <option value="static_collection">Static Collection</option>
+                            <option value="engagement_collection">Engagement Collection</option>
                             <option value="custom_product_list">Pre-Defined List of Products</option>
                             <option value="flavor_coin">Flavor Coin (Single Product)</option>
                             <option value="dynamic_collection">Dynamic Collection</option>
                             <option value="hidden_collection">Hidden Achievement</option>
+                            <option value="static_collection" style="display:none;">Static Collection (Legacy - use Engagement)</option>
                             <option value="legacy">Legacy Achievement</option>
                         </select>
                     </div>

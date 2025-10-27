@@ -490,10 +490,12 @@ function createGamificationRoutes(services) {
       // Get all products for this achievement based on its type
       let productIds = [];
       
-      if (achievement.collectionType === 'static_collection' || 
-          achievement.collectionType === 'custom_product_list' ||
-          achievement.collectionType === 'flavor_coin') {
-        // Static collection, custom list, or flavor coin - get specific products from requirement
+      const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
+      if (achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT || 
+          achievement.collectionType === COLLECTION_TYPES.CUSTOM_PRODUCT_LIST ||
+          achievement.collectionType === COLLECTION_TYPES.FLAVOR_COIN ||
+          achievement.collectionType === 'static_collection') { // Legacy support
+        // Engagement collection, custom list, or flavor coin - get specific products from requirement
         // ProductsService returns IDs as strings, so ensure achievement IDs are strings too
         productIds = (achievement.requirement.productIds || []).map(id => String(id));
       } else if (achievement.collectionType === 'dynamic_collection') {
