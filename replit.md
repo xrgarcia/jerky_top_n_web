@@ -66,10 +66,10 @@ The application features a modern web architecture designed for responsiveness, 
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
-  - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins). Mirrors CollectionManager pattern with calculation methods and update flow. Supports unique view tracking for products and profiles using SQL `COUNT(DISTINCT ...)`.
+  - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins). Mirrors CollectionManager pattern with calculation methods, tier progression, and update flow. Supports unique view tracking for products and profiles using SQL `COUNT(DISTINCT ...)`. Fully supports tiered achievements with bronze→silver→gold→platinum→diamond progression.
   - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins) with tier progression.
   - Event-driven system tracks achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.
-  - Proportional point system awards points dynamically for tiered achievements.
+  - Proportional point system awards points dynamically for tiered achievements across both managers.
   - Toast notifications emitted via WebSocket for all achievement types with duplicate prevention.
 - **Page View Tracking**: Asynchronous tracking for all pages with data stored in a dedicated `page_views` table. Tracks `pageType` (e.g., 'product_detail', 'profile') and `pageIdentifier` (e.g., productId, userId) for detailed analytics and unique view calculations.
 - **Timestamp Handling**: All database timestamps converted to ISO 8601 UTC on the server, with client-side relative time calculation.

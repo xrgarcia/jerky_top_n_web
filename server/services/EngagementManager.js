@@ -11,6 +11,14 @@ class EngagementManager {
     this.achievementRepo = achievementRepo;
     this.activityLogRepo = activityLogRepo;
     this.db = db;
+    
+    this.DEFAULT_TIER_THRESHOLDS = {
+      bronze: 40,
+      silver: 60,
+      gold: 75,
+      platinum: 90,
+      diamond: 100
+    };
     this.evaluators = this.initializeEvaluators();
   }
 
@@ -664,7 +672,62 @@ class EngagementManager {
   }
 
   /**
-   * Check and award a single engagement achievement
+   * Get tier from percentage - mirrors CollectionManager
+   * @param {number} percentage - Completion percentage
+   * @param {Object} customThresholds - Optional custom tier thresholds
+   * @returns {string|null} Tier name or null
+   */
+  getTierFromPercentage(percentage, customThresholds = null) {
+    const thresholds = customThresholds || this.DEFAULT_TIER_THRESHOLDS;
+    
+    if (percentage >= thresholds.diamond) return 'diamond';
+    if (percentage >= thresholds.platinum) return 'platinum';
+    if (percentage >= thresholds.gold) return 'gold';
+    if (percentage >= thresholds.silver) return 'silver';
+    if (percentage >= thresholds.bronze) return 'bronze';
+    return null;
+  }
+
+  /**
+   * Get all intermediate tiers up to final tier - mirrors CollectionManager
+   * @param {string} finalTier - The final tier achieved
+   * @param {Object} tierThresholds - Tier threshold configuration
+   * @returns {Array<string>} Array of tier names
+   */
+  getIntermediateTiers(finalTier, tierThresholds) {
+    if (!finalTier || !tierThresholds) {
+      return [finalTier].filter(Boolean);
+    }
+
+    const tierOrder = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+    const finalTierIndex = tierOrder.indexOf(finalTier);
+    
+    if (finalTierIndex === -1) {
+      return [finalTier];
+    }
+
+    return tierOrder.slice(0, finalTierIndex + 1);
+  }
+
+  /**
+   * Calculate proportional points based on tier percentage - mirrors CollectionManager
+   * @param {number} percentage - Current completion percentage
+   * @param {number} maxPoints - Maximum points for 100% completion
+   * @param {Object} tierThresholds - Tier threshold configuration
+   * @returns {number} Proportional points for current tier
+   */
+  calculateProportionalPoints(percentage, maxPoints, tierThresholds = null) {
+    const thresholds = tierThresholds || this.DEFAULT_TIER_THRESHOLDS;
+    
+    if (percentage >= thresholds.diamond) {
+      return maxPoints;
+    }
+    
+    return Math.round((percentage / 100) * maxPoints);
+  }
+
+  /**
+   * Check and award a single engagement achievement with tier support
    * Returns update notification(s) in same format as CollectionManager
    * @param {number} userId - User ID
    * @param {Object} achievement - Achievement definition
@@ -675,17 +738,23 @@ class EngagementManager {
     const { eq, and } = require('drizzle-orm');
     const { userAchievements } = require('../../shared/schema');
 
-    const evaluator = this.evaluators[achievement.requirement.type];
-    
-    if (!evaluator) {
-      console.warn(`⚠️ No evaluator for requirement type: ${achievement.requirement.type}`);
-      return null;
+    // Calculate current value and percentage
+    const currentValue = userStats[this.getStatKey(achievement.requirement.type)] || 0;
+    const requiredValue = achievement.requirement.value || achievement.requirement.days || 1;
+    const percentage = Math.min(Math.round((currentValue / requiredValue) * 100), 100);
+
+    // Determine tier from percentage
+    let tier;
+    if (achievement.hasTiers) {
+      tier = this.getTierFromPercentage(percentage, achievement.tierThresholds);
+    } else {
+      // Non-tiered: either complete (100%) or null
+      tier = percentage === 100 ? 'complete' : null;
     }
 
-    // Check if achievement requirement is met
-    const requirementMet = evaluator(userStats, achievement.requirement);
+    console.log(`🔄 [${achievement.code}] User ${userId}: ${currentValue}/${requiredValue} (${percentage}%) → TIER: ${tier} (hasTiers: ${achievement.hasTiers})`);
 
-    if (!requirementMet) {
+    if (!tier) {
       return null;
     }
 
@@ -697,6 +766,18 @@ class EngagementManager {
         eq(userAchievements.achievementId, achievement.id)
       ))
       .limit(1);
+
+    const progressData = {
+      metric: achievement.requirement.type,
+      value: currentValue,
+      required: requiredValue
+    };
+
+    const pointsAwarded = this.calculateProportionalPoints(
+      percentage,
+      achievement.points || 0,
+      achievement.tierThresholds
+    );
 
     if (existing.length === 0) {
       // Check prerequisite before awarding
@@ -715,51 +796,137 @@ class EngagementManager {
         }
       }
 
-      // Award new achievement
-      const pointsAwarded = achievement.points || 0;
+      // For tiered achievements, award all intermediate tiers
+      const tiersToAward = achievement.hasTiers ? 
+        this.getIntermediateTiers(tier, achievement.tierThresholds) : 
+        [tier];
       
-      const result = await this.db.insert(userAchievements)
-        .values({
+      console.log(`🎯 [${achievement.code}] Awarding ${tiersToAward.length} tier(s): ${tiersToAward.join(' → ')}`);
+      
+      const notifications = [];
+      let currentRecord = null;
+      
+      for (let i = 0; i < tiersToAward.length; i++) {
+        const currentTier = tiersToAward[i];
+        const thresholds = achievement.tierThresholds || this.DEFAULT_TIER_THRESHOLDS;
+        
+        let tierPercentage, tierPoints;
+        if (!achievement.hasTiers || currentTier === 'complete') {
+          tierPercentage = percentage;
+          tierPoints = achievement.points || 0;
+        } else {
+          tierPercentage = thresholds[currentTier];
+          tierPoints = this.calculateProportionalPoints(tierPercentage, achievement.points || 0, thresholds);
+        }
+        
+        if (i === 0) {
+          // First tier: insert
+          const result = await this.db.insert(userAchievements)
+            .values({
+              userId,
+              achievementId: achievement.id,
+              currentTier,
+              percentageComplete: tierPercentage,
+              pointsAwarded: tierPoints,
+              progress: progressData
+            })
+            .returning();
+          
+          currentRecord = result[0];
+        } else {
+          // Subsequent tiers: update
+          const result = await this.db.update(userAchievements)
+            .set({
+              currentTier,
+              percentageComplete: tierPercentage,
+              pointsAwarded: tierPoints,
+              progress: progressData
+            })
+            .where(eq(userAchievements.id, currentRecord.id))
+            .returning();
+          
+          currentRecord = result[0];
+        }
+        
+        // Log activity for each tier
+        await this.activityLogRepo.logActivity(
           userId,
-          achievementId: achievement.id,
-          currentTier: 'complete',
-          percentageComplete: 100,
-          pointsAwarded,
-          progress: {
-            metric: achievement.requirement.type,
-            value: userStats[this.getStatKey(achievement.requirement.type)],
-            required: achievement.requirement.value
+          i === 0 ? 'earn_badge' : 'tier_upgrade',
+          {
+            achievementCode: achievement.code,
+            achievementName: achievement.name,
+            achievementIcon: achievement.icon,
+            achievementTier: currentTier
           }
+        );
+        
+        notifications.push({
+          type: i === 0 ? 'new' : 'tier_upgrade',
+          achievement,
+          tier: currentTier,
+          percentage: tierPercentage,
+          pointsAwarded: tierPoints,
+          userAchievement: currentRecord
+        });
+        
+        console.log(`🎉 [${achievement.code}] ${i === 0 ? 'New achievement' : 'Tier upgrade'}: ${currentTier} - ${tierPoints} points`);
+      }
+      
+      return tiersToAward.length > 1 ? notifications : notifications[0];
+    }
+
+    // Achievement exists - check for tier upgrade
+    const existingRecord = existing[0];
+    
+    if (existingRecord.currentTier !== tier) {
+      // Tier upgrade
+      const result = await this.db.update(userAchievements)
+        .set({
+          currentTier: tier,
+          percentageComplete: percentage,
+          pointsAwarded,
+          progress: progressData
         })
+        .where(eq(userAchievements.id, existingRecord.id))
         .returning();
-
-      const userAchievement = result[0];
-
-      // Log activity
+      
+      const updatedRecord = result[0];
+      
       await this.activityLogRepo.logActivity(
         userId,
-        'earn_badge',
+        'tier_upgrade',
         {
           achievementCode: achievement.code,
           achievementName: achievement.name,
           achievementIcon: achievement.icon,
-          achievementTier: 'complete'
+          achievementTier: tier
         }
       );
-
-      console.log(`🎉 [${achievement.code}] New engagement achievement earned: ${achievement.name} - ${pointsAwarded} points`);
-
+      
+      console.log(`⬆️ [${achievement.code}] Tier upgrade: ${existingRecord.currentTier} → ${tier} - ${pointsAwarded} points`);
+      
       return {
-        type: 'new',
+        type: 'tier_upgrade',
         achievement,
-        tier: 'complete',
-        percentage: 100,
+        tier,
+        percentage,
         pointsAwarded,
-        userAchievement
+        userAchievement: updatedRecord
       };
     }
-
-    // Achievement already earned, no update needed
+    
+    // Tier unchanged - update percentage only if changed
+    if (existingRecord.percentageComplete !== percentage) {
+      await this.db.update(userAchievements)
+        .set({
+          percentageComplete: percentage,
+          progress: progressData
+        })
+        .where(eq(userAchievements.id, existingRecord.id));
+      
+      console.log(`📊 [${achievement.code}] Progress updated: ${percentage}% (tier unchanged: ${tier})`);
+    }
+    
     return null;
   }
 

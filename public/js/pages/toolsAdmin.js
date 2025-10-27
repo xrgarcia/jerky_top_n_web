@@ -637,8 +637,9 @@ function updateFormFieldsVisibility() {
     const isEditing = document.getElementById('achievementId').value !== '';
     initializeProductSelector(isEditing);
   } else if (collectionType === 'engagement_collection' || collectionType === 'hidden_collection') {
-    // Engagement and hidden collections need manual unlock requirements
+    // Engagement and hidden collections need manual unlock requirements + tier thresholds
     unlockRequirementsSection.style.display = 'block';
+    tierThresholdsSection.style.display = 'block';
   } else if (collectionType === 'legacy') {
     legacyFieldsGroup.style.display = 'block';
     legacyCategoryGroup.style.display = 'block';
@@ -1042,8 +1043,13 @@ async function handleAchievementFormSubmit(event) {
   
   achievementData.requirement = requirement;
   
-  // Build tier thresholds object for dynamic collections, static collections, and flavor coins
-  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'static_collection' || achievementData.collectionType === 'custom_product_list' || achievementData.collectionType === 'flavor_coin') {
+  // Build tier thresholds object for collections that support tiers
+  if (achievementData.collectionType === 'dynamic_collection' || 
+      achievementData.collectionType === 'static_collection' || 
+      achievementData.collectionType === 'custom_product_list' || 
+      achievementData.collectionType === 'flavor_coin' ||
+      achievementData.collectionType === 'engagement_collection' ||
+      achievementData.collectionType === 'hidden_collection') {
     achievementData.tierThresholds = {
       bronze: parseInt(document.getElementById('tierBronze').value) || 40,
       silver: parseInt(document.getElementById('tierSilver').value) || 60,
