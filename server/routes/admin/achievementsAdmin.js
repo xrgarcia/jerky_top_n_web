@@ -194,7 +194,7 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
     
     // Trigger background recalculation for product-based achievements
     // This awards the achievement to users who have already ranked the required products
-    if (achievement.collectionType === 'flavor_coin' || achievement.collectionType === 'custom_product_list') {
+    if (achievement.collectionType === 'flavor_coin' || achievement.collectionType === 'static_collection' || achievement.collectionType === 'custom_product_list') {
       console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
       
       // Run recalculation asynchronously (don't await - runs in background)

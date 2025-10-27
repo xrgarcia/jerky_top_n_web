@@ -3,6 +3,13 @@
 ## Overview
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
+## Recent Changes (October 27, 2025)
+- **CRITICAL BUG FIX**: Fixed static collection achievements not being evaluated at runtime
+  - Updated `CollectionManager.checkAndUpdateCustomProductCollections()` to include `'static_collection'` type in database queries
+  - Updated `achievementsAdmin.js` to trigger background recalculation for new `'static_collection'` achievements
+  - Static collections now properly award achievements when users rank required products
+  - Maintains backward compatibility with legacy `'custom_product_list'` naming
+
 ## User Preferences
 - Clean, professional design aesthetic
 - Focus on user interaction and ranking functionality

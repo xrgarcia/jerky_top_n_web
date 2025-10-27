@@ -38,26 +38,20 @@ class CollectionManager {
   }
 
   async checkAndUpdateCustomProductCollections(userId) {
-    const customCollections = await this.db.select()
+    const { inArray } = require('drizzle-orm');
+    
+    // Query for all product-list-based collections: static_collection (new), custom_product_list (legacy), and flavor_coin
+    const allCollections = await this.db.select()
       .from(achievements)
       .where(and(
-        eq(achievements.collectionType, 'custom_product_list'),
+        inArray(achievements.collectionType, ['static_collection', 'custom_product_list', 'flavor_coin']),
         eq(achievements.isActive, 1)
       ));
 
-    // Also check for flavor_coin type
-    const flavorCoinCollections = await this.db.select()
-      .from(achievements)
-      .where(and(
-        eq(achievements.collectionType, 'flavor_coin'),
-        eq(achievements.isActive, 1)
-      ));
-
-    // Combine and filter to only those with custom product list or flavor_coin requirement
-    const allCollections = [...customCollections, ...flavorCoinCollections];
+    // Filter to only those with custom product list or flavor_coin requirement
     const customProductCollections = allCollections.filter(c => 
       c.requirement && 
-      (c.requirement.type === 'custom_product_list' || c.requirement.type === 'flavor_coin') && 
+      (c.requirement.type === 'static_collection' || c.requirement.type === 'custom_product_list' || c.requirement.type === 'flavor_coin') && 
       Array.isArray(c.requirement.productIds) && c.requirement.productIds.length > 0
     );
 
