@@ -548,24 +548,20 @@ function createGamificationRoutes(services) {
           const searchData = await services.engagementManager.calculateSearchEngagement(userId);
           currentValue = searchData.totalSearches;
         } else if (requirementType === 'page_view_count') {
-          const { pageViews } = require('../../shared/schema');
-          const { count } = require('drizzle-orm');
-          const result = await services.db.select({ count: count() })
-            .from(pageViews)
-            .where(require('drizzle-orm').eq(pageViews.userId, userId));
-          currentValue = result[0]?.count || 0;
+          const pageViewData = await services.engagementManager.calculatePageViewEngagement(userId);
+          currentValue = pageViewData.totalPageViews;
         } else if (requirementType === 'product_view_count') {
-          const productViews = await services.pageViewService.getProductViewEngagement(userId);
-          currentValue = productViews.totalProductViews;
+          const productViewData = await services.engagementManager.calculateProductViewEngagement(userId, false);
+          currentValue = productViewData.totalProductViews;
         } else if (requirementType === 'unique_product_view_count') {
-          const productViews = await services.pageViewService.getProductViewEngagement(userId);
-          currentValue = productViews.uniqueProductViews;
+          const productViewData = await services.engagementManager.calculateProductViewEngagement(userId, true);
+          currentValue = productViewData.uniqueProductViews;
         } else if (requirementType === 'profile_view_count') {
-          const profileViews = await services.pageViewService.getProfileViewEngagement(userId);
-          currentValue = profileViews.totalProfileViews;
+          const profileViewData = await services.engagementManager.calculateProfileViewEngagement(userId, false);
+          currentValue = profileViewData.totalProfileViews;
         } else if (requirementType === 'unique_profile_view_count') {
-          const profileViews = await services.pageViewService.getProfileViewEngagement(userId);
-          currentValue = profileViews.uniqueProfileViews;
+          const profileViewData = await services.engagementManager.calculateProfileViewEngagement(userId, true);
+          currentValue = profileViewData.uniqueProfileViews;
         } else if (requirementType === 'streak_days' || requirementType === 'daily_login_streak') {
           const streakData = await services.streakTracker.getCurrentStreak(userId);
           currentValue = requirementType === 'daily_login_streak' ? streakData.loginStreak : streakData.currentStreak;
