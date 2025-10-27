@@ -68,6 +68,7 @@ class AchievementAdminRepository {
         proteinCategory: achievements.proteinCategory,
         proteinCategories: achievements.proteinCategories,
         isHidden: achievements.isHidden,
+        prerequisiteAchievementId: achievements.prerequisiteAchievementId,
         requirement: achievements.requirement,
         tierThresholds: achievements.tierThresholds,
         hasTiers: achievements.hasTiers,
@@ -81,6 +82,85 @@ class AchievementAdminRepository {
   }
 
   /**
+   * Check for circular dependencies in achievement prerequisites
+   * Returns an error message if circular dependency detected, null otherwise
+   */
+  async checkCircularDependency(achievementId, prerequisiteId) {
+    if (!prerequisiteId) {
+      return null; // No prerequisite, no circular dependency possible
+    }
+
+    if (achievementId === prerequisiteId) {
+      return 'An achievement cannot be its own prerequisite';
+    }
+
+    // Traverse the prerequisite chain to detect cycles
+    const visited = new Set();
+    const chain = [];
+    let currentId = prerequisiteId;
+
+    while (currentId) {
+      if (visited.has(currentId)) {
+        // Circular dependency detected
+        const cycleStart = chain.indexOf(currentId);
+        const cycle = chain.slice(cycleStart);
+        
+        // Get achievement names for error message
+        const cycleNames = await Promise.all(
+          cycle.map(async id => {
+            const ach = await this.db
+              .select({ name: achievements.name })
+              .from(achievements)
+              .where(eq(achievements.id, id))
+              .limit(1);
+            return ach[0]?.name || `ID ${id}`;
+          })
+        );
+        
+        return `Circular dependency detected: ${cycleNames.join(' → ')} → ${cycleNames[0]}. Remove the prerequisite from one of these achievements to fix.`;
+      }
+
+      if (currentId === achievementId) {
+        // This would create a cycle back to the achievement being updated
+        const chainNames = await Promise.all(
+          chain.map(async id => {
+            const ach = await this.db
+              .select({ name: achievements.name })
+              .from(achievements)
+              .where(eq(achievements.id, id))
+              .limit(1);
+            return ach[0]?.name || `ID ${id}`;
+          })
+        );
+        
+        const currentAch = await this.db
+          .select({ name: achievements.name })
+          .from(achievements)
+          .where(eq(achievements.id, achievementId))
+          .limit(1);
+        
+        const currentName = currentAch[0]?.name || `ID ${achievementId}`;
+        
+        return `Circular dependency detected: ${currentName} → ${chainNames.join(' → ')} → ${currentName}. Remove the prerequisite to fix.`;
+      }
+
+      visited.add(currentId);
+      chain.push(currentId);
+
+      // Get the prerequisite of the current achievement
+      const nextPrereq = await this.db
+        .select({ prerequisiteAchievementId: achievements.prerequisiteAchievementId })
+        .from(achievements)
+        .where(eq(achievements.id, currentId))
+        .limit(1);
+
+      currentId = nextPrereq[0]?.prerequisiteAchievementId || null;
+    }
+
+    return null; // No circular dependency
+  }
+
+  /**
    * Create a new achievement definition
    */
   async createAchievement(achievementData) {
@@ -88,6 +168,25 @@ class AchievementAdminRepository {
     const { proteinCategories, proteinCategory } = this.normalizeProteinCategoryFields(
       achievementData.proteinCategories
     );
+    
+    const prerequisiteId = achievementData.prerequisiteAchievementId || null;
+    
+    // Check for circular dependencies if prerequisite is set
+    // For new achievements, we create a temporary ID to check
+    if (prerequisiteId) {
+      // We can't check circular dependency for new achievements yet since they don't have an ID
+      // We'll rely on update validation to catch any issues
+      // Just verify the prerequisite exists
+      const prereqExists = await this.db
+        .select({ id: achievements.id })
+        .from(achievements)
+        .where(eq(achievements.id, prerequisiteId))
+        .limit(1);
+      
+      if (!prereqExists[0]) {
+        throw new Error('Prerequisite achievement not found');
+      }
+    }
     
     const result = await this.db
       .insert(achievements)
@@ -103,6 +202,7 @@ class AchievementAdminRepository {
         proteinCategory: proteinCategory,
         proteinCategories: proteinCategories,
         isHidden: achievementData.isHidden || 0,
+        prerequisiteAchievementId: prerequisiteId,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,
         hasTiers: achievementData.hasTiers !== undefined ? achievementData.hasTiers : 0,
@@ -123,6 +223,16 @@ class AchievementAdminRepository {
       achievementData.proteinCategories
     );
     
+    const prerequisiteId = achievementData.prerequisiteAchievementId || null;
+    
+    // Check for circular dependencies if prerequisite is set
+    if (prerequisiteId) {
+      const circularError = await this.checkCircularDependency(id, prerequisiteId);
+      if (circularError) {
+        throw new Error(circularError);
+      }
+    }
+    
     const result = await this.db
       .update(achievements)
       .set({
@@ -136,6 +246,7 @@ class AchievementAdminRepository {
         proteinCategory: proteinCategory,
         proteinCategories: proteinCategories,
         isHidden: achievementData.isHidden || 0,
+        prerequisiteAchievementId: prerequisiteId,
         requirement: achievementData.requirement,
         tierThresholds: achievementData.tierThresholds || null,
         hasTiers: achievementData.hasTiers !== undefined ? achievementData.hasTiers : 0,
