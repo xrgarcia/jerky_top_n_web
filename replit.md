@@ -4,6 +4,15 @@
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
 ## Recent Changes (October 27, 2025)
+- **FEATURE ENHANCEMENT**: Unique product and profile view engagement tracking
+  - Added `calculateProductViewEngagement()` and `calculateProfileViewEngagement()` to EngagementManager
+  - New engagement achievement types: `product_view_count`, `unique_product_view_count`, `profile_view_count`, `unique_profile_view_count`
+  - Unique views tracked using `COUNT(DISTINCT page_identifier)` for accurate deduplication
+  - Leverages existing page view infrastructure: `pageType` and `pageIdentifier` fields automatically logged by frontend
+  - Product detail views (`#product/123`) and profile views (`#user/456`) tracked via app.js page routing
+  - Updated progress metadata handling in `calculateProgress()` and `getStatKey()` for accurate UI display
+  - Achievement evaluators support both total and unique view requirements
+  - Enables achievements like "Browse 50 unique products" or "Visit 10 different user profiles"
 - **FEATURE ENHANCEMENT**: Real-time engagement achievement awards on search actions
   - Added engagement achievement checking to `/api/products/search` (Products page) and `/api/search/global` (navigation bar)
   - Users now receive instant toast notifications when earning search-based achievements (e.g., "Be Curious" for 10+ searches)
@@ -57,12 +66,12 @@ The application features a modern web architecture designed for responsiveness, 
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
-  - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins). Mirrors CollectionManager pattern with calculation methods and update flow.
+  - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins). Mirrors CollectionManager pattern with calculation methods and update flow. Supports unique view tracking for products and profiles using SQL `COUNT(DISTINCT ...)`.
   - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins) with tier progression.
   - Event-driven system tracks achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.
   - Proportional point system awards points dynamically for tiered achievements.
   - Toast notifications emitted via WebSocket for all achievement types with duplicate prevention.
-- **Page View Tracking**: Asynchronous tracking for all pages with data stored in a dedicated `page_views` table.
+- **Page View Tracking**: Asynchronous tracking for all pages with data stored in a dedicated `page_views` table. Tracks `pageType` (e.g., 'product_detail', 'profile') and `pageIdentifier` (e.g., productId, userId) for detailed analytics and unique view calculations.
 - **Timestamp Handling**: All database timestamps converted to ISO 8601 UTC on the server, with client-side relative time calculation.
 - **Top Rankers**: Calculated by an engagement score (achievements + page views + rankings + searches).
 - **Most Debated Products**: Identifies products with the highest ranking variance using PostgreSQL STDDEV.
