@@ -295,8 +295,16 @@ class CollectionManager {
       for (let i = 0; i < tiersToAward.length; i++) {
         const currentTier = tiersToAward[i];
         const thresholds = collection.tierThresholds || this.DEFAULT_TIER_THRESHOLDS;
-        const tierPercentage = thresholds[currentTier];
-        const tierPoints = this.calculateProportionalPoints(tierPercentage, collection.points || 0, collection.tierThresholds);
+        
+        // For non-tiered achievements (flavor coins, etc), use actual percentage and full points
+        let tierPercentage, tierPoints;
+        if (!collection.hasTiers || currentTier === 'complete') {
+          tierPercentage = percentage;
+          tierPoints = collection.points || 0;
+        } else {
+          tierPercentage = thresholds[currentTier];
+          tierPoints = this.calculateProportionalPoints(tierPercentage, collection.points || 0, collection.tierThresholds);
+        }
         
         if (i === 0) {
           // Insert the first tier
