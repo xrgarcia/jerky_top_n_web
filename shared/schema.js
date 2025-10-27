@@ -99,6 +99,7 @@ const achievements = pgTable('achievements', {
   proteinCategory: text('protein_category'), // LEGACY: For backward compatibility (stores first category)
   proteinCategories: jsonb('protein_categories'), // For multi-category collections: ['cattle', 'poultry', ...] (nullable for legacy)
   isHidden: integer('is_hidden').default(0), // 0 = visible, 1 = hidden until unlocked
+  prerequisiteAchievementId: integer('prerequisite_achievement_id').references(() => achievements.id), // Required achievement that must be earned first
   requirement: jsonb('requirement').notNull(), // Criteria for earning (e.g., {type: 'complete_flavor_set', flavors: ['sweet', 'spicy']})
   tierThresholds: jsonb('tier_thresholds'), // For dynamic collections: {bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100}
   hasTiers: integer('has_tiers').default(0), // 0 = no tiers (single achievement), 1 = has tiers (bronze/silver/gold/etc)
