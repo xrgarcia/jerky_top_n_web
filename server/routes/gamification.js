@@ -492,10 +492,10 @@ function createGamificationRoutes(services) {
       
       const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
       if (achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT || 
-          achievement.collectionType === COLLECTION_TYPES.CUSTOM_PRODUCT_LIST ||
+          achievement.collectionType === COLLECTION_TYPES.STATIC ||
           achievement.collectionType === COLLECTION_TYPES.FLAVOR_COIN ||
-          achievement.collectionType === 'static_collection') { // Legacy support
-        // Engagement collection, custom list, or flavor coin - get specific products from requirement
+          achievement.collectionType === 'custom_product_list') { // Legacy support
+        // Engagement collection, static collection, or flavor coin - get specific products from requirement
         // ProductsService returns IDs as strings, so ensure achievement IDs are strings too
         productIds = (achievement.requirement.productIds || []).map(id => String(id));
       } else if (achievement.collectionType === 'dynamic_collection') {
