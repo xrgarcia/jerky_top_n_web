@@ -1569,6 +1569,32 @@ app.post('/api/rankings/products', async (req, res) => {
                   }
                 }
               }
+              
+              // Second pass: Check for dependent achievements that may now be unlocked
+              // This handles cases where a prerequisite was just earned in the first pass
+              const secondPassUpdates = await collectionManager.checkAndUpdateCustomProductCollections(userId);
+              
+              if (secondPassUpdates.length > 0) {
+                console.log(`🔄 Second pass: User ${userId} updated ${secondPassUpdates.length} dependent achievement(s)`);
+                
+                for (const update of secondPassUpdates) {
+                  const updates = Array.isArray(update) ? update : [update];
+                  
+                  for (const singleUpdate of updates) {
+                    if (singleUpdate.type === 'new') {
+                      newCollectionAchievements.push(singleUpdate.achievement);
+                    } else if (singleUpdate.type === 'tier_upgrade') {
+                      newCollectionAchievements.push({
+                        ...singleUpdate.achievement,
+                        tier: singleUpdate.newTier,
+                        previousTier: singleUpdate.previousTier,
+                        pointsGained: singleUpdate.pointsGained,
+                        isTierUpgrade: true
+                      });
+                    }
+                  }
+                }
+              }
             }
           }
           
