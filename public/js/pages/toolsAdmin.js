@@ -5,6 +5,7 @@
 let allAchievements = [];
 let filteredAchievements = [];
 let currentTypeFilter = 'all';
+let currentHiddenFilter = 'all';
 let editingAchievementId = null;
 let availableAnimals = []; // Loaded dynamically from database
 
@@ -132,18 +133,29 @@ function populateAnimalCheckboxes() {
 }
 
 /**
- * Apply type filter to achievements
+ * Apply type and hidden filters to achievements
  */
 function applyAchievementTypeFilter() {
+  // First filter by type
+  let typeFiltered;
   if (currentTypeFilter === 'all') {
-    filteredAchievements = [...allAchievements];
+    typeFiltered = [...allAchievements];
   } else if (currentTypeFilter === 'static_collection') {
     // Show both static_collection (new) and custom_product_list (legacy)
-    filteredAchievements = allAchievements.filter(a => 
+    typeFiltered = allAchievements.filter(a => 
       a.collectionType === 'static_collection' || a.collectionType === 'custom_product_list'
     );
   } else {
-    filteredAchievements = allAchievements.filter(a => a.collectionType === currentTypeFilter);
+    typeFiltered = allAchievements.filter(a => a.collectionType === currentTypeFilter);
+  }
+  
+  // Then filter by hidden status
+  if (currentHiddenFilter === 'all') {
+    filteredAchievements = typeFiltered;
+  } else if (currentHiddenFilter === 'hidden') {
+    filteredAchievements = typeFiltered.filter(a => a.isHidden === 1);
+  } else if (currentHiddenFilter === 'visible') {
+    filteredAchievements = typeFiltered.filter(a => a.isHidden === 0 || a.isHidden === null);
   }
   
   renderAchievementsTable();
@@ -246,6 +258,26 @@ function setupAchievementTypeFilters() {
         type === 'static' ? 'static_collection' :
         type === 'flavor_coin' ? 'flavor_coin' :
         'legacy';
+      
+      applyAchievementTypeFilter();
+    });
+  });
+}
+
+/**
+ * Setup achievement hidden filter buttons
+ */
+function setupAchievementHiddenFilters() {
+  const hiddenBtns = document.querySelectorAll('.achievement-hidden-btn');
+  
+  hiddenBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+      const hiddenFilter = this.dataset.hidden;
+      
+      hiddenBtns.forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      
+      currentHiddenFilter = hiddenFilter;
       
       applyAchievementTypeFilter();
     });
@@ -1529,6 +1561,9 @@ window.removeProduct = function(productId) {
 window.initAchievementAdmin = function() {
   // Setup type filter buttons
   setupAchievementTypeFilters();
+  
+  // Setup hidden filter buttons
+  setupAchievementHiddenFilters();
   
   // Setup create button
   const createBtn = document.getElementById('createAchievementBtn');

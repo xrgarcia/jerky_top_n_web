@@ -29,7 +29,8 @@
   flex-wrap: wrap;
 }
 
-.achievement-type-btn {
+.achievement-type-btn,
+.achievement-hidden-btn {
   padding: 10px 20px;
   border: 2px solid #e0e0e0;
   background: white;
@@ -40,12 +41,14 @@
   transition: all 0.2s ease;
 }
 
-.achievement-type-btn:hover {
+.achievement-type-btn:hover,
+.achievement-hidden-btn:hover {
   border-color: #7b8b52;
   background: rgba(123, 139, 82, 0.05);
 }
 
-.achievement-type-btn.active {
+.achievement-type-btn.active,
+.achievement-hidden-btn.active {
   background: #7b8b52;
   color: white;
   border-color: #7b8b52;
