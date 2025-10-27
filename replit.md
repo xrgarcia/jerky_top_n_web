@@ -46,7 +46,12 @@ The application features a modern web architecture designed for responsiveness, 
 - **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
 - **Leaderboard**: Dedicated page showing top 50 rankers with engagement scores, badges, and user position highlighting.
 - **User Profile**: Displays user information and ranking statistics.
-- **Gamification**: Achievement tracking, user progress, streak tracking, real-time leaderboards, activity feeds, and notifications.
+- **Gamification**: Achievement tracking with four collection types:
+  - **Engagement Collections**: User site engagement (searches, logins, ranking streaks, ranking activity)
+  - **Static Collections**: Pre-defined product lists (curated flavor collections, specific product sets)
+  - **Dynamic Collections**: Protein-category-based with tier progression
+  - **Flavor Coins**: Single product achievements with optional tier progression
+  - User progress tracking, streak tracking, real-time leaderboards, activity feeds, and notifications.
 - **Admin Tools**: Role-based access for managing achievements and monitoring live users with real-time updates. Includes custom icon upload functionality.
 
 ## External Dependencies
