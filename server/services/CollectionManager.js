@@ -213,6 +213,26 @@ class CollectionManager {
     return Math.round((percentage / 100) * maxPoints);
   }
 
+  /**
+   * Get all intermediate tiers that should be awarded when first earning a tiered achievement
+   * For example, if user hits 80% (gold), they should get bronze, silver, then gold
+   */
+  getIntermediateTiers(finalTier, tierThresholds) {
+    if (!finalTier || !tierThresholds) {
+      return [finalTier].filter(Boolean);
+    }
+
+    const tierOrder = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+    const finalTierIndex = tierOrder.indexOf(finalTier);
+    
+    if (finalTierIndex === -1) {
+      return [finalTier];
+    }
+
+    // Return all tiers up to and including the final tier
+    return tierOrder.slice(0, finalTierIndex + 1);
+  }
+
   async updateCollectionProgress(userId, collection, progress) {
     const { percentage, tier, totalAvailable, totalRanked } = progress;
 
@@ -262,27 +282,81 @@ class CollectionManager {
         }
       }
       
-      const result = await this.db.insert(userAchievements)
-        .values({
-          userId,
-          achievementId: collection.id,
-          currentTier: tier,
-          percentageComplete: percentage,
-          pointsAwarded,
-          progress: progressData,
-        })
-        .returning();
+      // For tiered achievements, award all intermediate tiers
+      const tiersToAward = collection.hasTiers ? 
+        this.getIntermediateTiers(tier, collection.tierThresholds) : 
+        [tier];
       
-      console.log(`🎉 New collection earned: ${collection.name} (${tier}) - ${pointsAwarded} points`);
+      console.log(`🎯 [${collection.code}] Awarding ${tiersToAward.length} tier(s): ${tiersToAward.join(' → ')}`);
       
-      return {
-        type: 'new',
-        achievement: collection,
-        tier,
-        percentage,
-        pointsAwarded,
-        userAchievement: result[0]
-      };
+      const notifications = [];
+      let currentRecord = null;
+      
+      for (let i = 0; i < tiersToAward.length; i++) {
+        const currentTier = tiersToAward[i];
+        const thresholds = collection.tierThresholds || this.DEFAULT_TIER_THRESHOLDS;
+        const tierPercentage = thresholds[currentTier];
+        const tierPoints = this.calculateProportionalPoints(tierPercentage, collection.points || 0, collection.tierThresholds);
+        
+        if (i === 0) {
+          // Insert the first tier
+          const result = await this.db.insert(userAchievements)
+            .values({
+              userId,
+              achievementId: collection.id,
+              currentTier,
+              percentageComplete: tierPercentage,
+              pointsAwarded: tierPoints,
+              progress: progressData,
+            })
+            .returning();
+          
+          currentRecord = result[0];
+          console.log(`🎉 New collection earned: ${collection.name} (${currentTier}) - ${tierPoints} points`);
+          
+          notifications.push({
+            type: 'new',
+            achievement: collection,
+            tier: currentTier,
+            percentage: tierPercentage,
+            pointsAwarded: tierPoints,
+            userAchievement: currentRecord
+          });
+        } else {
+          // Update to the next tier
+          const previousTier = tiersToAward[i - 1];
+          const previousThreshold = thresholds[previousTier];
+          const previousPoints = this.calculateProportionalPoints(previousThreshold, collection.points || 0, collection.tierThresholds);
+          const pointsGained = tierPoints - previousPoints;
+          
+          await this.db.update(userAchievements)
+            .set({
+              currentTier,
+              percentageComplete: tierPercentage,
+              pointsAwarded: tierPoints,
+              progress: progressData,
+              updatedAt: new Date(),
+            })
+            .where(eq(userAchievements.id, currentRecord.id));
+          
+          console.log(`⬆️ Tier upgrade: ${collection.name} (${previousTier} → ${currentTier}) - +${pointsGained} points (total: ${tierPoints})`);
+          
+          notifications.push({
+            type: 'tier_upgrade',
+            achievement: collection,
+            previousTier,
+            newTier: currentTier,
+            percentage: tierPercentage,
+            pointsAwarded: tierPoints,
+            pointsGained,
+            userAchievement: currentRecord
+          });
+        }
+      }
+      
+      // If we only awarded one tier, return single notification for backward compatibility
+      // Otherwise return all notifications
+      return notifications.length === 1 ? notifications[0] : notifications;
     } else {
       const current = existing[0];
       

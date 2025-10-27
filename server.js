@@ -1521,18 +1521,23 @@ app.post('/api/rankings/products', async (req, res) => {
               
               // Convert collection updates into achievement format for notifications
               for (const update of collectionUpdates) {
-                if (update.type === 'new') {
-                  // New collection earned
-                  newCollectionAchievements.push(update.achievement);
-                } else if (update.type === 'tier_upgrade') {
-                  // Tier upgrade - add tier metadata for notification
-                  newCollectionAchievements.push({
-                    ...update.achievement,
-                    tier: update.newTier,
-                    previousTier: update.previousTier,
-                    pointsGained: update.pointsGained,
-                    isTierUpgrade: true
-                  });
+                // Handle both single update objects and arrays of updates (for multi-tier awards)
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    // New collection earned
+                    newCollectionAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    // Tier upgrade - add tier metadata for notification
+                    newCollectionAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
                 }
               }
             }
@@ -1545,18 +1550,23 @@ app.post('/api/rankings/products', async (req, res) => {
               
               // Convert collection updates into achievement format for notifications
               for (const update of customCollectionUpdates) {
-                if (update.type === 'new') {
-                  // New collection earned
-                  newCollectionAchievements.push(update.achievement);
-                } else if (update.type === 'tier_upgrade') {
-                  // Tier upgrade - add tier metadata for notification
-                  newCollectionAchievements.push({
-                    ...update.achievement,
-                    tier: update.newTier,
-                    previousTier: update.previousTier,
-                    pointsGained: update.pointsGained,
-                    isTierUpgrade: true
-                  });
+                // Handle both single update objects and arrays of updates (for multi-tier awards)
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    // New collection earned
+                    newCollectionAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    // Tier upgrade - add tier metadata for notification
+                    newCollectionAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
                 }
               }
             }
