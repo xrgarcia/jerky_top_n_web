@@ -528,16 +528,9 @@ function createGamificationRoutes(services) {
         // Fetch user stats based on requirement type
         let currentValue = 0;
         if (requirementType === 'search_count') {
-          // Direct database query for search count
-          const { activityLog } = require('../../shared/schema');
-          const { count } = require('drizzle-orm');
-          const result = await services.db.select({ count: count() })
-            .from(activityLog)
-            .where(and(
-              eq(activityLog.userId, userId),
-              eq(activityLog.action, 'search')
-            ));
-          currentValue = result[0]?.count || 0;
+          // Use EngagementManager to get search count
+          const searchData = await services.engagementManager.calculateSearchEngagement(userId);
+          currentValue = searchData.totalSearches;
         } else if (requirementType === 'page_view_count') {
           const { pageViews } = require('../../shared/schema');
           const { count } = require('drizzle-orm');
