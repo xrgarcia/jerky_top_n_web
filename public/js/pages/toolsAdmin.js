@@ -902,6 +902,15 @@ async function handleAchievementFormSubmit(event) {
     };
   }
   
+  // Disable save button and show spinner
+  const saveBtn = document.getElementById('saveAchievementBtn');
+  const saveBtnText = document.getElementById('saveAchievementBtnText');
+  const saveBtnSpinner = document.getElementById('saveAchievementBtnSpinner');
+  
+  saveBtn.disabled = true;
+  saveBtnText.style.display = 'none';
+  saveBtnSpinner.style.display = 'inline';
+  
   try {
     let response;
     if (editingAchievementId) {
@@ -940,11 +949,21 @@ async function handleAchievementFormSubmit(event) {
       duration: 5000
     });
     
+    // Re-enable button (will be hidden by modal close)
+    saveBtn.disabled = false;
+    saveBtnText.style.display = 'inline';
+    saveBtnSpinner.style.display = 'none';
+    
     // Close modal on success
     closeAchievementForm();
     
   } catch (error) {
     console.error('Error saving achievement:', error);
+    
+    // Re-enable save button on error
+    saveBtn.disabled = false;
+    saveBtnText.style.display = 'inline';
+    saveBtnSpinner.style.display = 'none';
     
     // Show error toast but keep modal open
     showToast({
