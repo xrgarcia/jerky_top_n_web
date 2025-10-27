@@ -98,8 +98,8 @@ module.exports = function createRecalculateRoutes(storage, db) {
           let result = null;
           
           // Handle different achievement types
-          if (ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
-            // Custom product list or flavor coin - calculate progress
+          if (ach.collectionType === 'static_collection' || ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
+            // Static collection (product list) or flavor coin - calculate progress
             const progress = await collectionManager.calculateCustomProductProgress(user.id, ach);
             if (progress.tier) {
               result = await collectionManager.updateCollectionProgress(user.id, ach, progress);

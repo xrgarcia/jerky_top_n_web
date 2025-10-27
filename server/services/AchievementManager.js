@@ -50,6 +50,25 @@ class AchievementManager {
         // This evaluator should never award the achievement
         return false;
       },
+      static_collection: (userStats, requirement) => {
+        // Static collections (product lists) are handled by CollectionManager, not here
+        // This evaluator should never award the achievement
+        return false;
+      },
+      custom_product_list: (userStats, requirement) => {
+        // Legacy name for static collections, handled by CollectionManager
+        // This evaluator should never award the achievement
+        return false;
+      },
+      flavor_coin: (userStats, requirement) => {
+        // Flavor coins (single product) are handled by CollectionManager, not here
+        // This evaluator should never award the achievement
+        return false;
+      },
+      search_count: (userStats, requirement) => {
+        // Check if user has performed enough searches
+        return userStats.totalSearches >= requirement.value;
+      },
     };
   }
 
