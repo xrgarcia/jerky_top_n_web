@@ -88,6 +88,14 @@ class AchievementManager {
     for (const achievement of allAchievements) {
       if (earnedIds.has(achievement.id)) continue;
 
+      // Check prerequisite: user must have earned the prerequisite achievement first
+      if (achievement.prerequisiteAchievementId) {
+        if (!earnedIds.has(achievement.prerequisiteAchievementId)) {
+          // User hasn't earned the prerequisite yet, skip this achievement
+          continue;
+        }
+      }
+
       const evaluator = this.evaluators[achievement.requirement.type];
       if (!evaluator) {
         console.warn(`No evaluator for requirement type: ${achievement.requirement.type}`);

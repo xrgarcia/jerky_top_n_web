@@ -246,6 +246,22 @@ class CollectionManager {
     );
 
     if (existing.length === 0) {
+      // Check prerequisite before awarding new achievement
+      if (collection.prerequisiteAchievementId) {
+        const prerequisiteEarned = await this.db.select()
+          .from(userAchievements)
+          .where(and(
+            eq(userAchievements.userId, userId),
+            eq(userAchievements.achievementId, collection.prerequisiteAchievementId)
+          ))
+          .limit(1);
+        
+        if (prerequisiteEarned.length === 0) {
+          console.log(`⚠️ [${collection.code}] Prerequisite achievement not earned yet, skipping award`);
+          return null;
+        }
+      }
+      
       const result = await this.db.insert(userAchievements)
         .values({
           userId,
