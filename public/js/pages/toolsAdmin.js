@@ -246,7 +246,6 @@ function setupAchievementTypeFilters() {
         type === 'static' ? 'static_collection' :
         type === 'flavor_coin' ? 'flavor_coin' :
         type === 'dynamic' ? 'dynamic_collection' :
-        type === 'hidden' ? 'hidden_collection' :
         'legacy';
       
       applyAchievementTypeFilter();
