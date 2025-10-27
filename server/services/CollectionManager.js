@@ -275,6 +275,9 @@ class CollectionManager {
       
       console.log(`🎉 New collection earned: ${collection.name} (${tier}) - ${pointsAwarded} points`);
       
+      // Check if any achievements depend on this one as a prerequisite
+      await this.unlockDependentAchievements(userId, collection.id);
+      
       return {
         type: 'new',
         achievement: collection,
@@ -327,6 +330,62 @@ class CollectionManager {
     }
 
     return null;
+  }
+
+  /**
+   * Check and unlock achievements that depend on this achievement as a prerequisite
+   */
+  async unlockDependentAchievements(userId, unlockedAchievementId) {
+    const { inArray } = require('drizzle-orm');
+    
+    // Find all achievements that have this achievement as a prerequisite
+    const dependentAchievements = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.prerequisiteAchievementId, unlockedAchievementId),
+        eq(achievements.isActive, 1)
+      ));
+
+    if (dependentAchievements.length === 0) {
+      return;
+    }
+
+    console.log(`🔓 Unlocking ${dependentAchievements.length} dependent achievement(s) for prerequisite ${unlockedAchievementId}`);
+
+    for (const dependent of dependentAchievements) {
+      // Check if user already has this achievement
+      const existing = await this.db.select()
+        .from(userAchievements)
+        .where(and(
+          eq(userAchievements.userId, userId),
+          eq(userAchievements.achievementId, dependent.id)
+        ))
+        .limit(1);
+
+      if (existing.length > 0) {
+        // User already has this achievement, skip
+        continue;
+      }
+
+      // Calculate progress for this dependent achievement
+      let progress;
+      if (dependent.requirement.type === 'static_collection' || 
+          dependent.requirement.type === 'custom_product_list' ||
+          dependent.requirement.type === 'flavor_coin') {
+        progress = await this.calculateCustomProductProgress(userId, dependent);
+      } else if (dependent.requirement.type === 'complete_protein_category_percentage') {
+        progress = await this.calculateCollectionProgress(userId, dependent);
+      } else {
+        // Skip non-collection achievements (handled by AchievementManager)
+        continue;
+      }
+
+      // Award if requirements are met
+      if (progress.tier) {
+        console.log(`🔓 Dependent achievement ${dependent.code} can now be awarded (prerequisite met)`);
+        await this.updateCollectionProgress(userId, dependent, progress);
+      }
+    }
   }
 
   async getUserCollections(userId) {
