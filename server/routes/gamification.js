@@ -572,7 +572,7 @@ function createGamificationRoutes(services) {
           type: 'engagement',
           progress: {
             currentValue,
-            requiredValue,
+            requiredValue: requirementValue,
             percentage,
             currentTier: userAchievement?.currentTier || null,
             pointsEarned: userAchievement?.pointsAwarded || 0,
