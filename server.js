@@ -1171,7 +1171,7 @@ app.get('/api/products/search', async (req, res) => {
     const transformedProducts = products.slice(startIndex, endIndex);
     const totalProducts = products.length;
     
-    // Log search asynchronously (non-blocking)
+    // Log search asynchronously (non-blocking) and check for engagement achievements
     if (query && query.trim() && storage) {
       const searchTerm = query.trim();
       const resultCount = transformedProducts.length;
@@ -1190,10 +1190,72 @@ app.get('/api/products/search', async (req, res) => {
         // Continue without userId
       }
       
-      // Fire-and-forget logging
-      storage.logProductSearch(searchTerm, resultCount, userId, 'product_rankings').catch(err => {
-        console.error('Failed to log search:', err);
-      });
+      // Fire-and-forget logging and achievement checking
+      (async () => {
+        try {
+          // Log the search
+          await storage.logProductSearch(searchTerm, resultCount, userId, 'product_rankings');
+          
+          // Check for engagement achievements if user is authenticated
+          if (userId && gamificationServices?.engagementManager) {
+            const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
+            
+            if (engagementUpdates.length > 0) {
+              console.log(`🎯 [SEARCH] User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+              
+              // Convert engagement updates into achievement format for notifications
+              const newEngagementAchievements = [];
+              for (const update of engagementUpdates) {
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    newEngagementAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    newEngagementAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
+                }
+              }
+              
+              // Filter out recently emitted achievements to prevent duplicate toasts
+              let achievementsToEmit = newEngagementAchievements;
+              if (newEngagementAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
+                const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, newEngagementAchievements);
+                achievementsToEmit = filtered;
+                
+                if (skipped.length > 0) {
+                  console.log(`🔇 [SEARCH] Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}`);
+                }
+              }
+              
+              // Invalidate caches if achievements were earned
+              if (newEngagementAchievements.length > 0) {
+                if (gamificationServices?.homeStatsService) {
+                  gamificationServices.homeStatsService.invalidateCache();
+                }
+                if (gamificationServices?.leaderboardManager) {
+                  gamificationServices.leaderboardManager.leaderboardCache.invalidate();
+                }
+              }
+              
+              // Broadcast new achievements via WebSocket
+              if (achievementsToEmit.length > 0 && io) {
+                io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+                console.log(`🏆 [SEARCH] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
+                  achievementsToEmit.map(a => a.name).join(', '));
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to log search or check achievements:', err);
+        }
+      })();
     }
     
     res.json({ 
@@ -2490,6 +2552,93 @@ app.get('/api/search/global', async (req, res) => {
         type: 'user'
       };
     });
+    
+    // Log search asynchronously (non-blocking) and check for engagement achievements
+    if (query && query.trim() && storage) {
+      const searchQuery = query.trim();
+      const resultCount = products.length;
+      
+      // Try to get userId from session
+      let userId = null;
+      try {
+        const sessionId = req.cookies.session_id || req.query.sessionId;
+        if (sessionId) {
+          const session = await storage.getSession(sessionId);
+          if (session) {
+            userId = session.userId;
+          }
+        }
+      } catch (err) {
+        // Continue without userId
+      }
+      
+      // Fire-and-forget logging and achievement checking
+      (async () => {
+        try {
+          // Log the search
+          await storage.logProductSearch(searchQuery, resultCount, userId, 'global_search');
+          
+          // Check for engagement achievements if user is authenticated
+          if (userId && gamificationServices?.engagementManager) {
+            const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
+            
+            if (engagementUpdates.length > 0) {
+              console.log(`🎯 [GLOBAL SEARCH] User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+              
+              // Convert engagement updates into achievement format for notifications
+              const newEngagementAchievements = [];
+              for (const update of engagementUpdates) {
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    newEngagementAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    newEngagementAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
+                }
+              }
+              
+              // Filter out recently emitted achievements to prevent duplicate toasts
+              let achievementsToEmit = newEngagementAchievements;
+              if (newEngagementAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
+                const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, newEngagementAchievements);
+                achievementsToEmit = filtered;
+                
+                if (skipped.length > 0) {
+                  console.log(`🔇 [GLOBAL SEARCH] Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}`);
+                }
+              }
+              
+              // Invalidate caches if achievements were earned
+              if (newEngagementAchievements.length > 0) {
+                if (gamificationServices?.homeStatsService) {
+                  gamificationServices.homeStatsService.invalidateCache();
+                }
+                if (gamificationServices?.leaderboardManager) {
+                  gamificationServices.leaderboardManager.leaderboardCache.invalidate();
+                }
+              }
+              
+              // Broadcast new achievements via WebSocket
+              if (achievementsToEmit.length > 0 && io) {
+                io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+                console.log(`🏆 [GLOBAL SEARCH] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
+                  achievementsToEmit.map(a => a.name).join(', '));
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to log search or check achievements:', err);
+        }
+      })();
+    }
     
     res.json({
       products,
