@@ -140,9 +140,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Check if this is an achievement detail route
-        if (page.startsWith('achievement/')) {
-            const achievementId = page.split('/')[1];
+        // Check if this is a coin detail route (new clean URL structure)
+        if (page.startsWith('coins/')) {
+            const achievementCode = page.split('/')[1];
             
             // Update URL hash if needed
             if (updateURL && window.location.hash !== `#${page}`) {
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Load achievement detail
             if (window.initAchievementDetailPage) {
-                await window.initAchievementDetailPage(achievementId);
+                await window.initAchievementDetailPage(achievementCode);
             }
             
             // Update active nav link (coinbook should be active)
@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Track page view for live user monitoring
             if (window.socket && window.socket.connected) {
-                window.socket.emit('page:view', { page: 'achievement' });
+                window.socket.emit('page:view', { page: 'coinbook' });
             }
             
             return;

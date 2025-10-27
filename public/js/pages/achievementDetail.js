@@ -3,7 +3,7 @@
  * Supports both collection-based (products) and engagement-based (activity) achievements
  */
 
-let currentAchievementId = null;
+let currentAchievementCode = null;
 let achievementData = null;
 let achievementType = null;
 let achievementProducts = [];
@@ -13,21 +13,21 @@ let achievementProgress = null;
 /**
  * Initialize Achievement Detail page
  */
-window.initAchievementDetailPage = async function(achievementId) {
-  console.log(`🏆 Initializing Achievement Detail page for achievement ${achievementId}...`);
+window.initAchievementDetailPage = async function(achievementCode) {
+  console.log(`🏆 Initializing Achievement Detail page for achievement ${achievementCode}...`);
   
-  currentAchievementId = achievementId;
+  currentAchievementCode = achievementCode;
   
   // Load achievement data
-  await loadAchievementDetail(achievementId);
+  await loadAchievementDetail(achievementCode);
 };
 
 /**
  * Load achievement detail data
  */
-async function loadAchievementDetail(achievementId) {
+async function loadAchievementDetail(achievementCode) {
   try {
-    const response = await fetch(`/api/gamification/achievement/${achievementId}/products`);
+    const response = await fetch(`/api/gamification/achievement/${achievementCode}/products`);
     
     if (!response.ok) {
       throw new Error('Failed to load achievement details');
@@ -38,7 +38,7 @@ async function loadAchievementDetail(achievementId) {
     // Route guard: Only update DOM if we're still on this achievement page
     // This prevents the achievement page from showing after navigating away
     const currentHash = window.location.hash;
-    if (!currentHash.startsWith(`#achievement/${achievementId}`)) {
+    if (!currentHash.startsWith(`#coins/${achievementCode}`)) {
       console.log('🚫 Navigation changed, aborting achievement detail render');
       return;
     }

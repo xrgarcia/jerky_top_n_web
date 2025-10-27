@@ -471,9 +471,10 @@ function createGamificationRoutes(services) {
   });
 
   // Get detail data for a specific achievement (for detail page)
-  router.get('/achievement/:id/products', async (req, res) => {
+  // Accepts achievement code (slug) instead of ID for clean URLs
+  router.get('/achievement/:code/products', async (req, res) => {
     try {
-      const achievementId = parseInt(req.params.id);
+      const achievementCode = req.params.code;
       
       const sessionId = req.cookies.session_id;
       if (!sessionId) {
@@ -489,7 +490,7 @@ function createGamificationRoutes(services) {
 
       // Get achievement details from all achievements (cached)
       const allAchievements = await services.achievementRepo.getAllAchievements();
-      const achievement = allAchievements.find(a => a.id === achievementId);
+      const achievement = allAchievements.find(a => a.code === achievementCode);
       if (!achievement) {
         return res.status(404).json({ error: 'Achievement not found' });
       }
@@ -497,7 +498,7 @@ function createGamificationRoutes(services) {
       // Check if achievement is hidden and user hasn't earned it
       const isHidden = achievement.isHidden === 1 || achievement.collectionType === 'hidden_collection';
       if (isHidden) {
-        const hasEarned = await services.achievementRepo.hasAchievement(userId, achievementId);
+        const hasEarned = await services.achievementRepo.hasAchievement(userId, achievement.id);
         if (!hasEarned) {
           return res.status(404).json({ error: 'Achievement not found' });
         }
@@ -515,7 +516,7 @@ function createGamificationRoutes(services) {
           .from(userAchievements)
           .where(and(
             eq(userAchievements.userId, userId),
-            eq(userAchievements.achievementId, achievementId)
+            eq(userAchievements.achievementId, achievement.id)
           ))
           .limit(1);
         const userAchievement = userAchievementResult[0] || null;
@@ -527,8 +528,16 @@ function createGamificationRoutes(services) {
         // Fetch user stats based on requirement type
         let currentValue = 0;
         if (requirementType === 'search_count') {
-          const searches = await services.activityLogRepo.getUserSearchCount(userId);
-          currentValue = searches;
+          // Direct database query for search count
+          const { activityLog } = require('../../shared/schema');
+          const { count } = require('drizzle-orm');
+          const result = await services.db.select({ count: count() })
+            .from(activityLog)
+            .where(and(
+              eq(activityLog.userId, userId),
+              eq(activityLog.action, 'search')
+            ));
+          currentValue = result[0]?.count || 0;
         } else if (requirementType === 'page_view_count') {
           const { pageViews } = require('../../shared/schema');
           const { count } = require('drizzle-orm');
