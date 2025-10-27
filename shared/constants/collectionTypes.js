@@ -14,9 +14,9 @@ const COLLECTION_TYPES = {
   // (e.g., Cattle Connoisseur with bronze/silver/gold tiers)
   DYNAMIC: 'dynamic_collection',
   
-  // Custom Product Lists: Pre-defined product sets with tier progression
-  // (e.g., specific flavor collections)
-  CUSTOM_PRODUCT_LIST: 'custom_product_list',
+  // Static Collections: Pre-defined product lists
+  // (e.g., specific flavor collections, curated product sets)
+  STATIC: 'static_collection',
   
   // Flavor Coins: Single product achievements
   // (can be all-or-nothing or have tier progression)
@@ -35,7 +35,7 @@ const COLLECTION_TYPES = {
 const COLLECTION_TYPE_LABELS = {
   [COLLECTION_TYPES.ENGAGEMENT]: 'Engagement',
   [COLLECTION_TYPES.DYNAMIC]: 'Dynamic',
-  [COLLECTION_TYPES.CUSTOM_PRODUCT_LIST]: 'Custom List',
+  [COLLECTION_TYPES.STATIC]: 'Static Collection',
   [COLLECTION_TYPES.FLAVOR_COIN]: 'Flavor Coin',
   [COLLECTION_TYPES.HIDDEN]: 'Hidden',
   [COLLECTION_TYPES.LEGACY]: 'Legacy'
@@ -47,9 +47,10 @@ const COLLECTION_TYPE_LABELS = {
 const API_ROUTE_FILTERS = {
   engagement: COLLECTION_TYPES.ENGAGEMENT,
   dynamic: COLLECTION_TYPES.DYNAMIC,
+  static: COLLECTION_TYPES.STATIC,
   hidden: COLLECTION_TYPES.HIDDEN,
-  // Legacy support
-  static: COLLECTION_TYPES.ENGAGEMENT
+  // Legacy support for old naming
+  custom: COLLECTION_TYPES.STATIC  // custom_product_list → static_collection
 };
 
 module.exports = {
