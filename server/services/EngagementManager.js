@@ -72,6 +72,22 @@ class EngagementManager {
         // Check if user has performed enough searches
         return userStats.totalSearches >= requirement.value;
       },
+      product_view_count: (userStats, requirement) => {
+        // Check if user has viewed enough products (total views)
+        return userStats.totalProductViews >= requirement.value;
+      },
+      unique_product_view_count: (userStats, requirement) => {
+        // Check if user has viewed enough unique products
+        return userStats.uniqueProductViews >= requirement.value;
+      },
+      profile_view_count: (userStats, requirement) => {
+        // Check if user has viewed enough profiles (total views)
+        return userStats.totalProfileViews >= requirement.value;
+      },
+      unique_profile_view_count: (userStats, requirement) => {
+        // Check if user has viewed enough unique profiles
+        return userStats.uniqueProfileViews >= requirement.value;
+      },
     };
   }
 
@@ -448,6 +464,94 @@ class EngagementManager {
   }
 
   /**
+   * Calculate product view engagement metrics for a user
+   * @param {number} userId - User ID
+   * @param {boolean} unique - If true, count unique products; if false, count total views
+   * @returns {Promise<Object>} Product view engagement data
+   */
+  async calculateProductViewEngagement(userId, unique = false) {
+    const { sql } = require('drizzle-orm');
+    const { pageViews } = require('../../shared/schema');
+    const { eq, and } = require('drizzle-orm');
+
+    let result;
+    if (unique) {
+      // Count distinct product identifiers
+      result = await this.db
+        .select({ count: sql`count(distinct page_identifier)::int` })
+        .from(pageViews)
+        .where(and(
+          eq(pageViews.userId, userId),
+          eq(pageViews.pageType, 'product_detail')
+        ));
+    } else {
+      // Count total product views
+      result = await this.db
+        .select({ count: sql`count(*)::int` })
+        .from(pageViews)
+        .where(and(
+          eq(pageViews.userId, userId),
+          eq(pageViews.pageType, 'product_detail')
+        ));
+    }
+
+    const productViews = result[0]?.count || 0;
+
+    console.log(`📦 [PRODUCT VIEW ENGAGEMENT] User ${userId}: ${productViews} ${unique ? 'unique' : 'total'} product views`);
+
+    return {
+      totalProductViews: unique ? 0 : productViews,
+      uniqueProductViews: unique ? productViews : 0,
+      metric: unique ? 'unique_product_view_count' : 'product_view_count',
+      value: productViews
+    };
+  }
+
+  /**
+   * Calculate profile view engagement metrics for a user
+   * @param {number} userId - User ID
+   * @param {boolean} unique - If true, count unique profiles; if false, count total views
+   * @returns {Promise<Object>} Profile view engagement data
+   */
+  async calculateProfileViewEngagement(userId, unique = false) {
+    const { sql } = require('drizzle-orm');
+    const { pageViews } = require('../../shared/schema');
+    const { eq, and } = require('drizzle-orm');
+
+    let result;
+    if (unique) {
+      // Count distinct profile identifiers
+      result = await this.db
+        .select({ count: sql`count(distinct page_identifier)::int` })
+        .from(pageViews)
+        .where(and(
+          eq(pageViews.userId, userId),
+          eq(pageViews.pageType, 'profile')
+        ));
+    } else {
+      // Count total profile views
+      result = await this.db
+        .select({ count: sql`count(*)::int` })
+        .from(pageViews)
+        .where(and(
+          eq(pageViews.userId, userId),
+          eq(pageViews.pageType, 'profile')
+        ));
+    }
+
+    const profileViews = result[0]?.count || 0;
+
+    console.log(`👤 [PROFILE VIEW ENGAGEMENT] User ${userId}: ${profileViews} ${unique ? 'unique' : 'total'} profile views`);
+
+    return {
+      totalProfileViews: unique ? 0 : profileViews,
+      uniqueProfileViews: unique ? profileViews : 0,
+      metric: unique ? 'unique_profile_view_count' : 'profile_view_count',
+      value: profileViews
+    };
+  }
+
+  /**
    * Check and update engagement-based achievements for a user
    * Mirrors CollectionManager.checkAndUpdateDynamicCollections() pattern
    * @param {number} userId - User ID
@@ -467,13 +571,46 @@ class EngagementManager {
 
     console.log(`🎯 [ENGAGEMENT CHECK] User ${userId}: Checking ${engagementAchievements.length} engagement achievements`);
 
-    // Calculate all engagement metrics upfront
-    const [searchData, pageViewData, streakData, loginData] = await Promise.all([
+    // Determine which metrics need to be calculated based on achievement requirements
+    const requiredMetrics = new Set();
+    const uniqueProductViews = engagementAchievements.some(a => a.requirement.type === 'unique_product_view_count');
+    const totalProductViews = engagementAchievements.some(a => a.requirement.type === 'product_view_count');
+    const uniqueProfileViews = engagementAchievements.some(a => a.requirement.type === 'unique_profile_view_count');
+    const totalProfileViews = engagementAchievements.some(a => a.requirement.type === 'profile_view_count');
+
+    for (const achievement of engagementAchievements) {
+      requiredMetrics.add(achievement.requirement.type);
+    }
+
+    // Build array of calculations to run in parallel
+    const calculations = [
       this.calculateSearchEngagement(userId),
       this.calculatePageViewEngagement(userId),
       this.calculateStreakEngagement(userId),
       this.calculateLoginEngagement(userId)
-    ]);
+    ];
+
+    // Add product view calculations if needed
+    if (uniqueProductViews) {
+      calculations.push(this.calculateProductViewEngagement(userId, true));
+    }
+    if (totalProductViews) {
+      calculations.push(this.calculateProductViewEngagement(userId, false));
+    }
+
+    // Add profile view calculations if needed
+    if (uniqueProfileViews) {
+      calculations.push(this.calculateProfileViewEngagement(userId, true));
+    }
+    if (totalProfileViews) {
+      calculations.push(this.calculateProfileViewEngagement(userId, false));
+    }
+
+    // Calculate all engagement metrics upfront in parallel
+    const results = await Promise.all(calculations);
+
+    // Extract results (first 4 are always the same)
+    const [searchData, pageViewData, streakData, loginData, ...additionalData] = results;
 
     // Build user stats object (compatible with existing evaluator functions)
     const userStats = {
@@ -484,6 +621,22 @@ class EngagementManager {
       currentLoginStreak: loginData.currentLoginStreak,
       longestLoginStreak: loginData.longestLoginStreak
     };
+
+    // Add product and profile view stats from additional calculations
+    for (const data of additionalData) {
+      if (data.uniqueProductViews !== undefined && data.uniqueProductViews > 0) {
+        userStats.uniqueProductViews = data.uniqueProductViews;
+      }
+      if (data.totalProductViews !== undefined && data.totalProductViews > 0) {
+        userStats.totalProductViews = data.totalProductViews;
+      }
+      if (data.uniqueProfileViews !== undefined && data.uniqueProfileViews > 0) {
+        userStats.uniqueProfileViews = data.uniqueProfileViews;
+      }
+      if (data.totalProfileViews !== undefined && data.totalProfileViews > 0) {
+        userStats.totalProfileViews = data.totalProfileViews;
+      }
+    }
 
     const updates = [];
 
