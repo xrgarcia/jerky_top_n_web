@@ -200,6 +200,11 @@ class EngagementManager {
         current: userStats.completedAnimalCategories?.length || 0, 
         required: value 
       }),
+      search_count: () => ({ current: userStats.totalSearches || 0, required: value }),
+      product_view_count: () => ({ current: userStats.totalProductViews || 0, required: value }),
+      unique_product_view_count: () => ({ current: userStats.uniqueProductViews || 0, required: value }),
+      profile_view_count: () => ({ current: userStats.totalProfileViews || 0, required: value }),
+      unique_profile_view_count: () => ({ current: userStats.uniqueProfileViews || 0, required: value }),
     };
 
     const calculator = progressMap[type];
@@ -768,7 +773,11 @@ class EngagementManager {
       'search_count': 'totalSearches',
       'page_view_count': 'totalPageViews',
       'streak_days': 'currentStreak',
-      'daily_login_streak': 'currentLoginStreak'
+      'daily_login_streak': 'currentLoginStreak',
+      'product_view_count': 'totalProductViews',
+      'unique_product_view_count': 'uniqueProductViews',
+      'profile_view_count': 'totalProfileViews',
+      'unique_profile_view_count': 'uniqueProfileViews'
     };
     return mapping[requirementType] || requirementType;
   }
