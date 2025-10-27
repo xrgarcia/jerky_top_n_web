@@ -213,8 +213,8 @@ function renderAchievementsTable() {
 function getCollectionTypeLabel(type) {
   const labels = {
     'engagement_collection': 'Engagement',
-    'static_collection': 'Engagement', // Legacy - automatically converted to engagement_collection
-    'custom_product_list': 'Custom List',
+    'static_collection': 'Static Collection',
+    'custom_product_list': 'Static Collection', // Legacy - automatically converted to static_collection
     'dynamic_collection': 'Dynamic',
     'hidden_collection': 'Hidden',
     'flavor_coin': 'Flavor Coin',
@@ -384,8 +384,8 @@ function populateAchievementForm(achievement) {
     if (req.type === 'complete_protein_category_percentage') {
       // Dynamic collection - requirements are automatic, don't populate dropdown
       document.getElementById('requirementType').value = '';
-    } else if (req.type === 'custom_product_list') {
-      // Custom product list - load selected products
+    } else if (req.type === 'static_collection' || req.type === 'custom_product_list') {
+      // Static collection - load selected products
       document.getElementById('requirementType').value = '';
       if (req.productIds && Array.isArray(req.productIds)) {
         // Populate selectedProductIds Set
@@ -516,8 +516,8 @@ function updateFormFieldsVisibility() {
     tierThresholdsSection.style.display = 'block';
     // Hide unlock requirements - they're automatic for dynamic collections
     unlockRequirementsSection.style.display = 'none';
-  } else if (collectionType === 'custom_product_list') {
-    // Custom product lists show tier thresholds and product selector (no unlock requirements)
+  } else if (collectionType === 'static_collection' || collectionType === 'custom_product_list') {
+    // Static collections show tier thresholds and product selector (no unlock requirements)
     tierThresholdsSection.style.display = 'block';
     unlockRequirementsSection.style.display = 'none';
     productSelectorSection.style.display = 'block';
@@ -532,8 +532,8 @@ function updateFormFieldsVisibility() {
     // Initialize product selector - preserve selection if editing
     const isEditing = document.getElementById('achievementId').value !== '';
     initializeProductSelector(isEditing);
-  } else if (collectionType === 'engagement_collection' || collectionType === 'static_collection' || collectionType === 'hidden_collection') {
-    // Engagement (including legacy static) and hidden collections need manual unlock requirements
+  } else if (collectionType === 'engagement_collection' || collectionType === 'hidden_collection') {
+    // Engagement and hidden collections need manual unlock requirements
     unlockRequirementsSection.style.display = 'block';
   } else if (collectionType === 'legacy') {
     legacyFieldsGroup.style.display = 'block';
@@ -688,8 +688,8 @@ async function handleAchievementFormSubmit(event) {
       type: 'complete_protein_category_percentage',
       categories: selectedCategories
     };
-  } else if (achievementData.collectionType === 'custom_product_list') {
-    // Custom product lists have automatic requirements based on selected products
+  } else if (achievementData.collectionType === 'static_collection' || achievementData.collectionType === 'custom_product_list') {
+    // Static collections have automatic requirements based on selected products
     const selectedProductIdsJson = document.getElementById('selectedProductIds').value;
     let productIds = [];
     
@@ -704,15 +704,15 @@ async function handleAchievementFormSubmit(event) {
         type: 'warning',
         icon: '⚠️',
         title: 'No Products Selected',
-        message: 'Please select at least one product for this custom collection',
+        message: 'Please select at least one product for this static collection',
         duration: 5000
       });
       return;
     }
     
-    // Auto-generate requirement for custom product lists
+    // Auto-generate requirement for static collections
     requirement = {
-      type: 'custom_product_list',
+      type: 'static_collection',
       productIds: productIds
     };
   } else if (achievementData.collectionType === 'flavor_coin') {
@@ -854,8 +854,8 @@ async function handleAchievementFormSubmit(event) {
   
   achievementData.requirement = requirement;
   
-  // Build tier thresholds object for dynamic collections, custom product lists, and flavor coins
-  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'custom_product_list' || achievementData.collectionType === 'flavor_coin') {
+  // Build tier thresholds object for dynamic collections, static collections, and flavor coins
+  if (achievementData.collectionType === 'dynamic_collection' || achievementData.collectionType === 'static_collection' || achievementData.collectionType === 'custom_product_list' || achievementData.collectionType === 'flavor_coin') {
     achievementData.tierThresholds = {
       bronze: parseInt(document.getElementById('tierBronze').value) || 40,
       silver: parseInt(document.getElementById('tierSilver').value) || 60,
