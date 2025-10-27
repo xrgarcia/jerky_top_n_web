@@ -1,13 +1,16 @@
 const achievementDefinitions = require('../data/achievementDefinitions');
 
 /**
- * AchievementManager - Domain service for achievement evaluation and awarding
+ * EngagementManager - Domain service for engagement-based achievement evaluation and awarding
+ * Handles user activity achievements (searches, page views, streaks, logins, etc.)
+ * Mirrors CollectionManager pattern for product-based achievements
  * Implements Strategy pattern for extensible achievement rules
  */
-class AchievementManager {
-  constructor(achievementRepo, activityLogRepo) {
+class EngagementManager {
+  constructor(achievementRepo, activityLogRepo, db) {
     this.achievementRepo = achievementRepo;
     this.activityLogRepo = activityLogRepo;
+    this.db = db;
     this.evaluators = this.initializeEvaluators();
   }
 
@@ -325,6 +328,297 @@ class AchievementManager {
       total: deletedAchievements + deletedStreaks + deletedPageViews + deletedSearches + deletedRankings
     };
   }
+
+  /**
+   * ENGAGEMENT CALCULATION METHODS (Following CollectionManager Pattern)
+   */
+
+  /**
+   * Calculate search engagement metrics for a user
+   * @param {number} userId - User ID
+   * @returns {Promise<Object>} Search engagement data
+   */
+  async calculateSearchEngagement(userId) {
+    const { sql } = require('drizzle-orm');
+    const { userProductSearches } = require('../../shared/schema');
+    const { eq } = require('drizzle-orm');
+
+    const result = await this.db
+      .select({ count: sql`count(*)::int` })
+      .from(userProductSearches)
+      .where(eq(userProductSearches.userId, userId));
+
+    const totalSearches = result[0]?.count || 0;
+
+    console.log(`🔍 [SEARCH ENGAGEMENT] User ${userId}: ${totalSearches} total searches`);
+
+    return {
+      totalSearches,
+      metric: 'search_count',
+      value: totalSearches
+    };
+  }
+
+  /**
+   * Calculate page view engagement metrics for a user
+   * @param {number} userId - User ID
+   * @returns {Promise<Object>} Page view engagement data
+   */
+  async calculatePageViewEngagement(userId) {
+    const { sql } = require('drizzle-orm');
+    const { pageViews } = require('../../shared/schema');
+    const { eq } = require('drizzle-orm');
+
+    const result = await this.db
+      .select({ count: sql`count(*)::int` })
+      .from(pageViews)
+      .where(eq(pageViews.userId, userId));
+
+    const totalPageViews = result[0]?.count || 0;
+
+    console.log(`📄 [PAGE VIEW ENGAGEMENT] User ${userId}: ${totalPageViews} total page views`);
+
+    return {
+      totalPageViews,
+      metric: 'page_view_count',
+      value: totalPageViews
+    };
+  }
+
+  /**
+   * Calculate ranking streak engagement metrics for a user
+   * @param {number} userId - User ID
+   * @returns {Promise<Object>} Ranking streak engagement data
+   */
+  async calculateStreakEngagement(userId) {
+    const { streaks } = require('../../shared/schema');
+    const { eq, and } = require('drizzle-orm');
+
+    const result = await this.db
+      .select()
+      .from(streaks)
+      .where(and(
+        eq(streaks.userId, userId),
+        eq(streaks.streakType, 'ranking')
+      ))
+      .limit(1);
+
+    const currentStreak = result[0]?.currentStreak || 0;
+    const longestStreak = result[0]?.longestStreak || 0;
+
+    console.log(`🔥 [STREAK ENGAGEMENT] User ${userId}: Current streak ${currentStreak} days (longest: ${longestStreak})`);
+
+    return {
+      currentStreak,
+      longestStreak,
+      metric: 'streak_days',
+      value: currentStreak
+    };
+  }
+
+  /**
+   * Calculate login streak engagement metrics for a user
+   * @param {number} userId - User ID
+   * @returns {Promise<Object>} Login streak engagement data
+   */
+  async calculateLoginEngagement(userId) {
+    const { streaks } = require('../../shared/schema');
+    const { eq, and } = require('drizzle-orm');
+
+    const result = await this.db
+      .select()
+      .from(streaks)
+      .where(and(
+        eq(streaks.userId, userId),
+        eq(streaks.streakType, 'login')
+      ))
+      .limit(1);
+
+    const currentLoginStreak = result[0]?.currentStreak || 0;
+    const longestLoginStreak = result[0]?.longestStreak || 0;
+
+    console.log(`🔐 [LOGIN ENGAGEMENT] User ${userId}: Current login streak ${currentLoginStreak} days (longest: ${longestLoginStreak})`);
+
+    return {
+      currentLoginStreak,
+      longestLoginStreak,
+      metric: 'daily_login_streak',
+      value: currentLoginStreak
+    };
+  }
+
+  /**
+   * Check and update engagement-based achievements for a user
+   * Mirrors CollectionManager.checkAndUpdateDynamicCollections() pattern
+   * @param {number} userId - User ID
+   * @returns {Promise<Array>} Array of achievement updates (new achievements or tier upgrades)
+   */
+  async checkAndUpdateEngagementAchievements(userId) {
+    const { eq, and, inArray } = require('drizzle-orm');
+    const { achievements, userAchievements } = require('../../shared/schema');
+
+    // Get all engagement-type achievements
+    const engagementAchievements = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'engagement'),
+        eq(achievements.isActive, 1)
+      ));
+
+    console.log(`🎯 [ENGAGEMENT CHECK] User ${userId}: Checking ${engagementAchievements.length} engagement achievements`);
+
+    // Calculate all engagement metrics upfront
+    const [searchData, pageViewData, streakData, loginData] = await Promise.all([
+      this.calculateSearchEngagement(userId),
+      this.calculatePageViewEngagement(userId),
+      this.calculateStreakEngagement(userId),
+      this.calculateLoginEngagement(userId)
+    ]);
+
+    // Build user stats object (compatible with existing evaluator functions)
+    const userStats = {
+      totalSearches: searchData.totalSearches,
+      totalPageViews: pageViewData.totalPageViews,
+      currentStreak: streakData.currentStreak,
+      longestStreak: streakData.longestStreak,
+      currentLoginStreak: loginData.currentLoginStreak,
+      longestLoginStreak: loginData.longestLoginStreak
+    };
+
+    const updates = [];
+
+    // Check each engagement achievement
+    for (const achievement of engagementAchievements) {
+      const update = await this.checkAndAwardEngagementAchievement(userId, achievement, userStats);
+      if (update) {
+        // Handle both single updates and arrays of updates (multi-tier awards)
+        if (Array.isArray(update)) {
+          updates.push(...update);
+        } else {
+          updates.push(update);
+        }
+      }
+    }
+
+    console.log(`✅ [ENGAGEMENT CHECK] User ${userId}: ${updates.length} achievement update(s)`);
+
+    return updates;
+  }
+
+  /**
+   * Check and award a single engagement achievement
+   * Returns update notification(s) in same format as CollectionManager
+   * @param {number} userId - User ID
+   * @param {Object} achievement - Achievement definition
+   * @param {Object} userStats - Pre-calculated user stats
+   * @returns {Promise<Object|Array|null>} Update notification(s) or null
+   */
+  async checkAndAwardEngagementAchievement(userId, achievement, userStats) {
+    const { eq, and } = require('drizzle-orm');
+    const { userAchievements } = require('../../shared/schema');
+
+    const evaluator = this.evaluators[achievement.requirement.type];
+    
+    if (!evaluator) {
+      console.warn(`⚠️ No evaluator for requirement type: ${achievement.requirement.type}`);
+      return null;
+    }
+
+    // Check if achievement requirement is met
+    const requirementMet = evaluator(userStats, achievement.requirement);
+
+    if (!requirementMet) {
+      return null;
+    }
+
+    // Check if user already has this achievement
+    const existing = await this.db.select()
+      .from(userAchievements)
+      .where(and(
+        eq(userAchievements.userId, userId),
+        eq(userAchievements.achievementId, achievement.id)
+      ))
+      .limit(1);
+
+    if (existing.length === 0) {
+      // Check prerequisite before awarding
+      if (achievement.prerequisiteAchievementId) {
+        const prerequisiteEarned = await this.db.select()
+          .from(userAchievements)
+          .where(and(
+            eq(userAchievements.userId, userId),
+            eq(userAchievements.achievementId, achievement.prerequisiteAchievementId)
+          ))
+          .limit(1);
+        
+        if (prerequisiteEarned.length === 0) {
+          console.log(`⚠️ [${achievement.code}] Prerequisite not earned yet, skipping`);
+          return null;
+        }
+      }
+
+      // Award new achievement
+      const pointsAwarded = achievement.points || 0;
+      
+      const result = await this.db.insert(userAchievements)
+        .values({
+          userId,
+          achievementId: achievement.id,
+          currentTier: 'complete',
+          percentageComplete: 100,
+          pointsAwarded,
+          progress: {
+            metric: achievement.requirement.type,
+            value: userStats[this.getStatKey(achievement.requirement.type)],
+            required: achievement.requirement.value
+          }
+        })
+        .returning();
+
+      const userAchievement = result[0];
+
+      // Log activity
+      await this.activityLogRepo.logActivity(
+        userId,
+        'earn_badge',
+        {
+          achievementCode: achievement.code,
+          achievementName: achievement.name,
+          achievementIcon: achievement.icon,
+          achievementTier: 'complete'
+        }
+      );
+
+      console.log(`🎉 [${achievement.code}] New engagement achievement earned: ${achievement.name} - ${pointsAwarded} points`);
+
+      return {
+        type: 'new',
+        achievement,
+        tier: 'complete',
+        percentage: 100,
+        pointsAwarded,
+        userAchievement
+      };
+    }
+
+    // Achievement already earned, no update needed
+    return null;
+  }
+
+  /**
+   * Helper method to map requirement types to userStats keys
+   * @param {string} requirementType - The requirement type
+   * @returns {string} The corresponding userStats key
+   */
+  getStatKey(requirementType) {
+    const mapping = {
+      'search_count': 'totalSearches',
+      'page_view_count': 'totalPageViews',
+      'streak_days': 'currentStreak',
+      'daily_login_streak': 'currentLoginStreak'
+    };
+    return mapping[requirementType] || requirementType;
+  }
 }
 
-module.exports = AchievementManager;
+module.exports = EngagementManager;

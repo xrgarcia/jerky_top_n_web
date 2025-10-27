@@ -111,7 +111,7 @@ module.exports = function createRecalculateRoutes(storage, db) {
               result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
             }
           }
-          // Legacy achievements would require different handling via AchievementManager
+          // Legacy achievements would require different handling via EngagementManager
           
           processedCount++;
           

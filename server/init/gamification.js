@@ -10,7 +10,7 @@ const ProductViewRepository = require('../repositories/ProductViewRepository');
 const FlavorCoinRepository = require('../repositories/FlavorCoinRepository');
 const ProductsMetadataRepository = require('../repositories/ProductsMetadataRepository');
 
-const AchievementManager = require('../services/AchievementManager');
+const EngagementManager = require('../services/EngagementManager');
 const StreakManager = require('../services/StreakManager');
 const LeaderboardManager = require('../services/LeaderboardManager');
 const ProgressTracker = require('../services/ProgressTracker');
@@ -44,7 +44,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const homeStatsCache = HomeStatsCache.getInstance();
 
   const communityService = new CommunityService(db);
-  const achievementManager = new AchievementManager(achievementRepo, activityLogRepo);
+  const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
@@ -68,7 +68,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     flavorCoinRepo,
     productsMetadataRepo,
     communityService,
-    achievementManager,
+    engagementManager,
     streakManager,
     leaderboardManager,
     progressTracker,
@@ -100,7 +100,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   services.wsGateway = wsGateway;
 
   // Seed achievements (this also warms AchievementCache)
-  achievementManager.seedAchievements().then(() => {
+  engagementManager.seedAchievements().then(() => {
     console.log('✅ Achievements seeded');
   }).catch(err => {
     console.error('❌ Failed to seed achievements:', err);

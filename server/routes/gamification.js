@@ -9,7 +9,7 @@ const ProductRankingRepository = require('../repositories/ProductRankingReposito
 
 function createGamificationRoutes(services) {
   const { 
-    achievementManager, 
+    engagementManager, 
     streakManager, 
     leaderboardManager, 
     progressTracker,
@@ -52,7 +52,7 @@ function createGamificationRoutes(services) {
       console.log(`✅ User stats aggregated: position ${stats.leaderboardPosition}, streak ${stats.currentStreak}`);
 
       console.log(`🔄 Getting achievements with progress...`);
-      const achievements = await achievementManager.getAchievementsWithProgress(userId, stats);
+      const achievements = await engagementManager.getAchievementsWithProgress(userId, stats);
       console.log(`✅ Achievements fetched successfully for user ${userId}: ${achievements.length} achievement(s)`);
 
       res.json({ achievements, stats });

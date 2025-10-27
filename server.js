@@ -1451,7 +1451,7 @@ app.post('/api/rankings/products', async (req, res) => {
       (async () => {
         try {
           console.log(`🎮 Starting async gamification for user ${userId}`);
-          const { achievementManager, leaderboardManager, streakManager } = gamificationServices;
+          const { engagementManager, leaderboardManager, streakManager } = gamificationServices;
           
           // Update daily ranking streak
           console.log(`🔥 Updating streak for user ${userId}...`);
@@ -1598,11 +1598,38 @@ app.post('/api/rankings/products', async (req, res) => {
             }
           }
           
-          // Check for new achievements
-          const newAchievements = await achievementManager.checkAndAwardAchievements(userId, stats);
+          // Check for engagement-based achievements (searches, page views, streaks, etc.)
+          const engagementUpdates = await engagementManager.checkAndUpdateEngagementAchievements(userId);
+          const newEngagementAchievements = [];
           
-          // Combine regular achievements and new collection achievements
-          const combinedAchievements = [...newAchievements, ...newCollectionAchievements];
+          if (engagementUpdates.length > 0) {
+            console.log(`🎯 User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+            
+            // Convert engagement updates into achievement format for notifications
+            for (const update of engagementUpdates) {
+              const updates = Array.isArray(update) ? update : [update];
+              
+              for (const singleUpdate of updates) {
+                if (singleUpdate.type === 'new') {
+                  newEngagementAchievements.push(singleUpdate.achievement);
+                } else if (singleUpdate.type === 'tier_upgrade') {
+                  newEngagementAchievements.push({
+                    ...singleUpdate.achievement,
+                    tier: singleUpdate.newTier,
+                    previousTier: singleUpdate.previousTier,
+                    pointsGained: singleUpdate.pointsGained,
+                    isTierUpgrade: true
+                  });
+                }
+              }
+            }
+          }
+          
+          // Check for new achievements (legacy evaluator-based achievements)
+          const newAchievements = await engagementManager.checkAndAwardAchievements(userId, stats);
+          
+          // Combine all achievements: legacy, collections, and engagement
+          const combinedAchievements = [...newAchievements, ...newCollectionAchievements, ...newEngagementAchievements];
           
           // Server-side deduplication: ensure each achievement appears only once
           // Use Map to deduplicate by achievement code + tier (if present)

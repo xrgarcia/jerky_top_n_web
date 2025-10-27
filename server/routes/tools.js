@@ -6,7 +6,7 @@ const express = require('express');
  */
 function createToolsRoutes(services) {
   const router = express.Router();
-  const { storage, achievementRepo, achievementManager } = services;
+  const { storage, achievementRepo, engagementManager } = services;
 
   // Middleware to check employee role
   async function checkEmployeeRole(req, res, next) {
@@ -119,7 +119,7 @@ function createToolsRoutes(services) {
   // Clear achievements for a specific user
   router.delete('/achievements/user/:userId', checkEmployeeRole, async (req, res) => {
     try {
-      if (!achievementManager) {
+      if (!engagementManager) {
         return res.status(503).json({ error: 'Achievement service unavailable' });
       }
 
@@ -128,7 +128,7 @@ function createToolsRoutes(services) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
-      const deletedCount = await achievementManager.clearUserAchievements(userId);
+      const deletedCount = await engagementManager.clearUserAchievements(userId);
       
       console.log(`🗑️ Cleared ${deletedCount} achievements for user ${userId} by ${req.user.email}`);
       
@@ -147,11 +147,11 @@ function createToolsRoutes(services) {
   // Clear all achievements and streaks for all users
   router.delete('/achievements/all', checkEmployeeRole, async (req, res) => {
     try {
-      if (!achievementManager) {
+      if (!engagementManager) {
         return res.status(503).json({ error: 'Achievement service unavailable' });
       }
 
-      const result = await achievementManager.clearAllAchievements(req.user.id);
+      const result = await engagementManager.clearAllAchievements(req.user.id);
       
       console.log(`🗑️ Cleared ${result.achievements} achievements and ${result.streaks} streaks by ${req.user.email}`);
       
