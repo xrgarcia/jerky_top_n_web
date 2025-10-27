@@ -3310,65 +3310,27 @@ document.addEventListener('DOMContentLoaded', function() {
     if (productsSearchInput) {
         let searchTimeout;
         productsSearchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim().toLowerCase();
+            const query = e.target.value.trim();
             
             // Debounce search to avoid too many API calls
             clearTimeout(searchTimeout);
             searchTimeout = setTimeout(() => {
-                // Check if search query matches an animal name
+                // Reset animal filter when searching
+                selectedAnimal = null;
                 const animalCategories = document.getElementById('animalCategories');
-                let matchedAnimal = null;
-                
-                if (query && animalCategories) {
-                    const categoryElements = animalCategories.querySelectorAll('.animal-category');
-                    categoryElements.forEach(el => {
-                        const animalName = el.getAttribute('data-animal').toLowerCase();
-                        if (animalName === query || animalName.includes(query) || query.includes(animalName)) {
-                            matchedAnimal = el.getAttribute('data-animal');
-                        }
-                    });
+                if (animalCategories) {
+                    animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
                 }
                 
-                // If matched an animal, activate it and filter by animal
-                if (matchedAnimal) {
-                    selectedAnimal = matchedAnimal;
-                    if (animalCategories) {
-                        animalCategories.querySelectorAll('.animal-category').forEach(el => {
-                            if (el.getAttribute('data-animal') === matchedAnimal) {
-                                el.classList.add('active');
-                            } else {
-                                el.classList.remove('active');
-                            }
-                        });
-                    }
-                    
-                    // Update URL with animal filter
-                    const params = new URLSearchParams();
-                    if (query) params.set('q', query);
-                    if (currentSort !== 'name-asc') params.set('sort', currentSort);
-                    params.set('animal', matchedAnimal);
-                    const hash = params.toString() ? `#products?${params.toString()}` : '#products';
-                    history.replaceState(null, '', hash);
-                    
-                    // Filter by animal
-                    filterProductsByAnimal(matchedAnimal);
-                } else {
-                    // Reset animal filter when searching normally
-                    selectedAnimal = null;
-                    if (animalCategories) {
-                        animalCategories.querySelectorAll('.animal-category').forEach(el => el.classList.remove('active'));
-                    }
-                    
-                    // Update URL to remove animal filter
-                    const params = new URLSearchParams();
-                    if (query) params.set('q', query);
-                    if (currentSort !== 'name-asc') params.set('sort', currentSort);
-                    const hash = params.toString() ? `#products?${params.toString()}` : '#products';
-                    history.replaceState(null, '', hash);
-                    
-                    // Load products from server with search query
-                    loadAllProducts(query, getCurrentSort(), true);
-                }
+                // Update URL with search query
+                const params = new URLSearchParams();
+                if (query) params.set('q', query);
+                if (currentSort !== 'name-asc') params.set('sort', currentSort);
+                const hash = params.toString() ? `#products?${params.toString()}` : '#products';
+                history.replaceState(null, '', hash);
+                
+                // Load products from server with search query
+                loadAllProducts(query, getCurrentSort(), true);
             }, 300); // Debounce 300ms
         });
     }
