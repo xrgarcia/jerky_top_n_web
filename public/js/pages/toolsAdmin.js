@@ -695,6 +695,14 @@ async function handleAchievementFormSubmit(event) {
     achievementData.category = formData.get('category');
   }
   
+  // Prerequisite achievement (optional)
+  const prerequisiteId = formData.get('prerequisiteAchievementId');
+  if (prerequisiteId && prerequisiteId !== '') {
+    achievementData.prerequisiteAchievementId = parseInt(prerequisiteId);
+  } else {
+    achievementData.prerequisiteAchievementId = null;
+  }
+  
   // Build requirement object from user-friendly inputs
   let requirement;
   
