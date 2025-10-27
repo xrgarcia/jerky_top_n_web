@@ -253,6 +253,27 @@ function setupAchievementTypeFilters() {
 }
 
 /**
+ * Populate prerequisite achievement dropdown
+ */
+function populatePrerequisiteDropdown(excludeId = null) {
+  const dropdown = document.getElementById('achievementPrerequisite');
+  
+  // Clear existing options except the first "None" option
+  dropdown.innerHTML = '<option value="">None - No prerequisite required</option>';
+  
+  // Add all achievements except the one being edited
+  allAchievements
+    .filter(a => a.id !== excludeId)
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .forEach(achievement => {
+      const option = document.createElement('option');
+      option.value = achievement.id;
+      option.textContent = `${achievement.name} (${achievement.code})`;
+      dropdown.appendChild(option);
+    });
+}
+
+/**
  * Show achievement form modal for creating or editing
  */
 window.showAchievementForm = function(achievementId = null) {
@@ -261,6 +282,9 @@ window.showAchievementForm = function(achievementId = null) {
   const title = document.getElementById('achievementFormTitle');
   
   editingAchievementId = achievementId;
+  
+  // Populate prerequisite dropdown (exclude current achievement if editing)
+  populatePrerequisiteDropdown(achievementId);
   
   if (achievementId) {
     // Edit mode
@@ -341,6 +365,7 @@ function populateAchievementForm(achievement) {
   document.getElementById('achievementTier').value = achievement.tier || '';
   document.getElementById('achievementCategory').value = achievement.category || '';
   document.getElementById('achievementIsHidden').checked = achievement.isHidden === 1;
+  document.getElementById('achievementPrerequisite').value = achievement.prerequisiteAchievementId || '';
   
   // Set hasTiers checkbox
   const hasTiersCheckbox = document.getElementById('achievementHasTiers');
