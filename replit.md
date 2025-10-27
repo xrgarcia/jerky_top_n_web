@@ -4,6 +4,14 @@
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
 ## Recent Changes (October 27, 2025)
+- **ARCHITECTURAL REFACTORING**: Renamed AchievementManager to EngagementManager for clearer separation of concerns
+  - **EngagementManager**: Handles engagement-based achievements (searches, page views, streaks, logins)
+  - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins)
+  - Added engagement calculation methods following CollectionManager pattern: `calculateSearchEngagement()`, `calculatePageViewEngagement()`, `calculateStreakEngagement()`, `calculateLoginEngagement()`
+  - New `checkAndUpdateEngagementAchievements()` method mirrors CollectionManager's structure for consistent achievement processing
+  - Updated ranking flow to check engagement achievements and emit toast notifications
+  - All service references updated across codebase (gamification.js, server.js, routes)
+  - Follows senior-level OOP principles: Single Responsibility, Encapsulation, Dependency Injection
 - **CRITICAL BUG FIX**: Fixed static collection achievements not being evaluated at runtime
   - Updated `CollectionManager.checkAndUpdateCustomProductCollections()` to include `'static_collection'` type in database queries
   - Updated `achievementsAdmin.js` to trigger background recalculation for new `'static_collection'` achievements
@@ -35,7 +43,12 @@ The application features a modern web architecture designed for responsiveness, 
 - **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication.
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
-- **Gamification**: An event-driven system tracks 17 achievements (including dynamic "Complete Collection"), user progress, streaks, and populates real-time leaderboards and activity feeds. A proportional point system awards points dynamically for tiered achievements.
+- **Gamification Architecture**: Dual-manager pattern for achievement processing:
+  - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins). Mirrors CollectionManager pattern with calculation methods and update flow.
+  - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins) with tier progression.
+  - Event-driven system tracks achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.
+  - Proportional point system awards points dynamically for tiered achievements.
+  - Toast notifications emitted via WebSocket for all achievement types with duplicate prevention.
 - **Page View Tracking**: Asynchronous tracking for all pages with data stored in a dedicated `page_views` table.
 - **Timestamp Handling**: All database timestamps converted to ISO 8601 UTC on the server, with client-side relative time calculation.
 - **Top Rankers**: Calculated by an engagement score (achievements + page views + rankings + searches).
