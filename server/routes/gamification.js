@@ -514,7 +514,14 @@ function createGamificationRoutes(services) {
       }
 
       const { COLLECTION_TYPES } = require('../../shared/constants/collectionTypes');
-      const isEngagementAchievement = achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT;
+      
+      // Check if this is an engagement achievement
+      // Support both new format (collectionType = 'engagement_collection') and legacy format (requirement type indicates engagement)
+      const engagementRequirementTypes = ['search_count', 'page_view_count', 'product_view_count', 'unique_product_view_count', 
+                                          'profile_view_count', 'unique_profile_view_count', 'streak_days', 'daily_login_streak'];
+      const isEngagementAchievement = achievement.collectionType === COLLECTION_TYPES.ENGAGEMENT ||
+                                      (achievement.collectionType === COLLECTION_TYPES.LEGACY && 
+                                       engagementRequirementTypes.includes(achievement.requirement?.type));
 
       // Engagement achievements: Return progress data instead of products
       if (isEngagementAchievement) {
