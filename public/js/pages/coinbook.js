@@ -140,7 +140,7 @@ function renderAchievementBadge(achievement) {
     : achievement.icon;
   
   return `
-    <div class="achievement-badge ${achievement.earned ? 'earned clickable' : 'locked'} tier-${displayTier || 'none'}" tabindex="0" ${achievement.earned ? `onclick="navigateToAchievementDetail('${achievement.code}')"` : ''}>
+    <div class="achievement-badge ${achievement.earned ? 'earned' : 'locked'} clickable tier-${displayTier || 'none'}" tabindex="0" onclick="navigateToAchievementDetail('${achievement.code}')">
       <span class="achievement-icon">${iconHtml}</span>
       <span class="achievement-name">${achievement.earned ? achievement.name : '???'}${tierEmoji ? ` ${tierEmoji}` : ''}</span>
       <div class="achievement-tooltip" role="tooltip">${tooltipText}</div>
