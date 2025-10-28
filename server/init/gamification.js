@@ -47,12 +47,12 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
-  const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db);
+  const flavorCoinManager = new FlavorCoinManager(flavorCoinRepo, productsMetadataRepo, activityLogRepo);
+  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
+  const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db, collectionManager, engagementManager);
   const pageViewService = new PageViewService(db, productViewRepo);
   const homeStatsService = new HomeStatsService(db, leaderboardManager, activityLogRepo, productViewRepo, communityService, homeStatsCache);
   const userStatsAggregator = new UserStatsAggregator(leaderboardManager, streakManager, productsService);
-  const flavorCoinManager = new FlavorCoinManager(flavorCoinRepo, productsMetadataRepo, activityLogRepo);
-  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
   const recentAchievementTracker = RecentAchievementTracker;
 
   // Initialize RecentAchievementTracker for duplicate toast prevention

@@ -2,10 +2,12 @@
  * ProgressTracker - Domain service for tracking user progress and milestones
  */
 class ProgressTracker {
-  constructor(achievementRepo, streakRepo, db) {
+  constructor(achievementRepo, streakRepo, db, collectionManager, engagementManager) {
     this.achievementRepo = achievementRepo;
     this.streakRepo = streakRepo;
     this.db = db;
+    this.collectionManager = collectionManager;
+    this.engagementManager = engagementManager;
   }
 
   /**
