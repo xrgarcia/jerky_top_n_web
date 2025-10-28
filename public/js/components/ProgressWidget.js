@@ -164,7 +164,12 @@ class ProgressWidget {
         
         ${nextMilestone ? `
           <div class="progress-milestone">
-            <div class="milestone-label">${nextMilestone.achievementIcon || '🎯'} ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}</div>
+            <div class="milestone-label">
+              ${nextMilestone.achievementIconType === 'image' 
+                ? `<img src="${nextMilestone.achievementIcon}" alt="${nextMilestone.achievementName}" style="width: 20px; height: 20px; object-fit: contain; vertical-align: middle; margin-right: 4px;">` 
+                : (nextMilestone.achievementIcon || '🎯')}
+              ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}
+            </div>
             <div class="progress-bar">
               <div class="progress-fill" style="width: ${nextMilestone.progress}%"></div>
             </div>
