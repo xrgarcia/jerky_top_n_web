@@ -123,14 +123,8 @@ class ProgressWidget {
     });
 
     // For new users with 0 rankings, don't show loading - just hide the widget
-    if (!progress || (progress.totalRankings === 0 && !nextMilestone)) {
+    if (!progress || (progress.totalRankings === 0 && achievements.length === 0)) {
       this.container.innerHTML = '';
-      return;
-    }
-    
-    // Only show loading if we're actually waiting for data to load
-    if (!nextMilestone && progress.totalRankings > 0) {
-      this.container.innerHTML = '<div class="progress-loading">Loading progress...</div>';
       return;
     }
 
@@ -168,13 +162,19 @@ class ProgressWidget {
           </button>
         </div>
         
-        <div class="progress-milestone">
-          <div class="milestone-label">${nextMilestone.achievementIcon || '🎯'} ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}</div>
-          <div class="progress-bar">
-            <div class="progress-fill" style="width: ${nextMilestone.progress}%"></div>
+        ${nextMilestone ? `
+          <div class="progress-milestone">
+            <div class="milestone-label">${nextMilestone.achievementIcon || '🎯'} ${nextMilestone.achievementName || 'Next Milestone'}: ${nextMilestone.label || nextMilestone.target + ' rankings'}</div>
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: ${nextMilestone.progress}%"></div>
+            </div>
+            <div class="milestone-status">${nextMilestone.remaining} more to go!</div>
           </div>
-          <div class="milestone-status">${nextMilestone.remaining} more to go!</div>
-        </div>
+        ` : `
+          <div class="progress-milestone">
+            <div class="milestone-label">🎉 All milestones completed! Keep exploring to find more achievements.</div>
+          </div>
+        `}
 
         ${achievements.length > 0 ? `
           <div 
