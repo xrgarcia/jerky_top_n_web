@@ -24,6 +24,7 @@ class ProductsMetadataService {
         animalType: animal?.type || null,
         animalDisplay: animal?.display || null,
         animalIcon: animal?.icon || null,
+        vendor: product.vendor || null,
         primaryFlavor: flavors?.primary || null,
         secondaryFlavors: flavors?.secondary ? JSON.stringify(flavors.secondary) : null,
         flavorDisplay: flavors?.display || null,

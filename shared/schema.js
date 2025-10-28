@@ -159,6 +159,7 @@ const productsMetadata = pgTable('products_metadata', {
   animalType: text('animal_type'), // e.g., 'fish', 'cattle', 'poultry', 'game', 'exotic'
   animalDisplay: text('animal_display'), // e.g., 'Beef', 'Chicken', 'Salmon'
   animalIcon: text('animal_icon'), // Emoji icon
+  vendor: text('vendor'), // Brand/vendor name (e.g., 'Jerky.com', 'Wild Bill's')
   primaryFlavor: text('primary_flavor'), // e.g., 'sweet', 'spicy', 'savory', 'smoky'
   secondaryFlavors: text('secondary_flavors'), // JSON array of secondary flavor types
   flavorDisplay: text('flavor_display'), // e.g., 'Sweet & Spicy', 'Savory'
