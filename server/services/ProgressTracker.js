@@ -75,29 +75,58 @@ class ProgressTracker {
       // Get all achievements with their current progress (both collection and engagement)
       const achievements = await this.engagementManager.getAchievementsWithProgress(userId, stats);
       
+      console.log(`📊 ProgressTracker: Found ${achievements.length} total achievements for user ${userId}`);
+      const earnedCount = achievements.filter(a => a.earned).length;
+      const unearnedCount = achievements.filter(a => !a.earned).length;
+      console.log(`   ✅ Earned: ${earnedCount} | 🔒 Unearned: ${unearnedCount}`);
+      
       // Filter to only unearned achievements with progress data
       const unearnedAchievements = achievements
-        .filter(a => !a.earned && a.progress && a.progress.percentage !== undefined)
-        .map(a => ({
-          achievementId: a.id,
-          achievementName: a.name,
-          achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
-          achievementIconType: a.iconType,
-          current: a.progress.current || 0,
-          target: a.progress.required || 1,
-          remaining: Math.max(0, (a.progress.required || 1) - (a.progress.current || 0)),
-          progress: Math.min(100, a.progress.percentage || 0),
-          type: a.requirement?.type || 'unknown',
-          label: this.getAchievementLabel(a),
-          collectionType: a.collectionType,
-          category: a.category,
-        }));
+        .filter(a => {
+          if (a.earned || !a.progress) return false;
+          // Accept if has either engagement format (current/required) OR collection format (totalRanked/totalAvailable)
+          return (a.progress.required !== undefined) || (a.progress.totalAvailable !== undefined);
+        })
+        .map(a => {
+          // Collection achievements use totalRanked/totalAvailable/percentage
+          // Engagement achievements use current/required (need to calculate percentage)
+          const isCollection = a.progress.totalAvailable !== undefined;
+          
+          const current = isCollection ? (a.progress.totalRanked || 0) : (a.progress.current || 0);
+          const required = isCollection ? (a.progress.totalAvailable || 1) : (a.progress.required || 1);
+          const percentage = isCollection && a.progress.percentage !== undefined 
+            ? a.progress.percentage 
+            : Math.min(100, (current / required) * 100);
+          
+          return {
+            achievementId: a.id,
+            achievementName: a.name,
+            achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
+            achievementIconType: a.iconType,
+            current,
+            target: required,
+            remaining: Math.max(0, required - current),
+            progress: percentage,
+            type: a.requirement?.type || 'unknown',
+            label: this.getAchievementLabel(a),
+            collectionType: a.collectionType,
+            category: a.category,
+          };
+        });
+      
+      console.log(`📊 ProgressTracker: ${unearnedAchievements.length} unearned achievements have progress data`);
       
       // Sort by progress percentage (descending) to get the closest one
       const sortedByProgress = unearnedAchievements.sort((a, b) => b.progress - a.progress);
       
-      // Return the closest one (highest progress percentage)
-      return sortedByProgress[0] || null;
+      if (sortedByProgress.length > 0) {
+        const closest = sortedByProgress[0];
+        console.log(`🎯 Closest unearned achievement: ${closest.achievementName} (${closest.progress.toFixed(1)}% complete - ${closest.current}/${closest.target})`);
+        return closest;
+      } else {
+        console.log(`✅ ProgressTracker: No unearned achievements with progress data (user may have earned all available achievements)`);
+        return null;
+      }
     } catch (error) {
       console.error('❌ Error getting closest unearned achievement:', error);
       return null;
