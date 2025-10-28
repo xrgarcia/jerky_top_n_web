@@ -1176,8 +1176,44 @@ document.addEventListener('DOMContentLoaded', function() {
 
         productList.innerHTML = '';
 
-        // Server now filters out ranked products, so we can display all returned products
-        currentProducts.forEach(product => {
+        // Get currently ranked product IDs from slots (client-side filter)
+        const rankedProductIds = new Set();
+        rankingSlots.forEach(slot => {
+            if (slot.classList.contains('filled') && slot.dataset.productData) {
+                const productData = JSON.parse(slot.dataset.productData);
+                rankedProductIds.add(productData.id);
+            }
+        });
+
+        // Filter out products that are already ranked in slots
+        const unrankedProducts = currentProducts.filter(product => !rankedProductIds.has(product.id));
+
+        // Show message if no products available
+        if (unrankedProducts.length === 0) {
+            // If currently loading, show loading indicator
+            if (isLoading) {
+                productList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666; font-size: 16px;">⏳ Loading more products...</div>';
+                return;
+            }
+            
+            // If more products are available, auto-load them (works for both search and default)
+            if (hasMoreProducts) {
+                console.log('🚀 Auto-loading more products - all visible products have been ranked');
+                loadProducts(currentSearchQuery, false); // Load next page (maintains current search)
+                productList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666; font-size: 16px;">⏳ Loading more products...</div>';
+                return;
+            }
+            
+            // No more products to load, show completion message
+            const message = currentSearchQuery 
+                ? `✅ No more unranked "${currentSearchQuery}" products<br><span style="font-size: 14px; color: #999; margin-top: 8px; display: block;">All matching products have been ranked!</span>`
+                : '✅ No unranked products found<br><span style="font-size: 14px; color: #999; margin-top: 8px; display: block;">All products have been ranked!</span>';
+            productList.innerHTML = `<div style="text-align: center; padding: 40px; color: #666; font-size: 16px;">${message}</div>`;
+            return;
+        }
+
+        // Display unranked products
+        unrankedProducts.forEach(product => {
             const productCard = document.createElement('div');
             productCard.className = 'product-card';
             
@@ -1211,19 +1247,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             productList.appendChild(productCard);
         });
-    }
-
-    // Auto-load more products if list is empty and more are available
-    function checkAndAutoLoadProducts() {
-        // Only auto-load if:
-        // 1. Current products list is empty (all ranked)
-        // 2. More products are available
-        // 3. Not currently loading
-        // 4. Not in search mode (only auto-load for full catalog)
-        if (currentProducts.length === 0 && hasMoreProducts && !isLoading && !currentSearchQuery) {
-            console.log('🚀 Auto-loading more products - list is empty and more products available');
-            loadProducts('', false); // Load next page without resetting
-        }
     }
 
     // Setup event listeners for ranking system
@@ -1634,10 +1657,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const removedProduct = currentProducts.splice(productIndex, 1)[0];
             optimisticallyRemovedProducts.push(removedProduct);
             console.log(`⚡ Optimistically removed product ${productData.id} from display`);
-            displayProducts(); // Re-render immediately
-            
-            // Auto-load more products if list is now empty and more products are available
-            checkAndAutoLoadProducts();
+            displayProducts(); // Re-render immediately (includes auto-load check)
         }
 
         // Collect all items at and after the target rank (to be pushed down)
@@ -1905,10 +1925,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const removedProduct = currentProducts.splice(productIndex, 1)[0];
             optimisticallyRemovedProducts.push(removedProduct);
             console.log(`⚡ Optimistically removed product ${productData.id} from display`);
-            displayProducts(); // Re-render immediately
-            
-            // Auto-load more products if list is now empty and more products are available
-            checkAndAutoLoadProducts();
+            displayProducts(); // Re-render immediately (includes auto-load check)
         }
         
         // Simply fill the slot, overwriting whatever was there
