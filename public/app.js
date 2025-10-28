@@ -1213,6 +1213,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Auto-load more products if list is empty and more are available
+    function checkAndAutoLoadProducts() {
+        // Only auto-load if:
+        // 1. Current products list is empty (all ranked)
+        // 2. More products are available
+        // 3. Not currently loading
+        // 4. Not in search mode (only auto-load for full catalog)
+        if (currentProducts.length === 0 && hasMoreProducts && !isLoading && !currentSearchQuery) {
+            console.log('🚀 Auto-loading more products - list is empty and more products available');
+            loadProducts('', false); // Load next page without resetting
+        }
+    }
+
     // Setup event listeners for ranking system
     function setupEventListeners() {
         const productSearch = document.getElementById('productSearch');
@@ -1622,6 +1635,9 @@ document.addEventListener('DOMContentLoaded', function() {
             optimisticallyRemovedProducts.push(removedProduct);
             console.log(`⚡ Optimistically removed product ${productData.id} from display`);
             displayProducts(); // Re-render immediately
+            
+            // Auto-load more products if list is now empty and more products are available
+            checkAndAutoLoadProducts();
         }
 
         // Collect all items at and after the target rank (to be pushed down)
@@ -1890,6 +1906,9 @@ document.addEventListener('DOMContentLoaded', function() {
             optimisticallyRemovedProducts.push(removedProduct);
             console.log(`⚡ Optimistically removed product ${productData.id} from display`);
             displayProducts(); // Re-render immediately
+            
+            // Auto-load more products if list is now empty and more products are available
+            checkAndAutoLoadProducts();
         }
         
         // Simply fill the slot, overwriting whatever was there
