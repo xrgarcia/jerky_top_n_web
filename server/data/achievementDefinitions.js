@@ -50,17 +50,6 @@ const achievementDefinitions = [
     requirement: { type: 'rank_count', value: 50 },
     points: 200
   },
-  {
-    code: 'complete_collection',
-    name: 'Complete Collection',
-    description: 'Rank all available products',
-    icon: '💯',
-    tier: 'platinum',
-    category: 'ranking',
-    collectionType: 'dynamic_collection',
-    requirement: { type: 'complete_collection' },
-    points: 1000
-  },
 
   // Streak Achievements
   {
