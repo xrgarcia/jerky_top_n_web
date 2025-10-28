@@ -2,7 +2,7 @@ const express = require('express');
 const { achievements, users } = require('../../../shared/schema');
 const { eq } = require('drizzle-orm');
 
-module.exports = function createRecalculateRoutes(storage, db) {
+module.exports = function createRecalculateRoutes(storage, db, productsService = null) {
   const router = express.Router();
 
   /**
@@ -80,7 +80,7 @@ module.exports = function createRecalculateRoutes(storage, db) {
     
     const achievementRepo = new AchievementRepository(db);
     const productsMetadataRepo = new ProductsMetadataRepository(db);
-    const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
+    const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
     
     // Process users in batches to avoid overload
     const BATCH_SIZE = 5;

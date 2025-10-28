@@ -2726,7 +2726,7 @@ if (databaseAvailable && storage) {
       
       // Initialize admin routes for achievement management (employee admin only)
       const createAdminRoutes = require('./server/routes/admin/achievementsAdmin');
-      const adminRouter = createAdminRoutes(storage, db);
+      const adminRouter = createAdminRoutes(storage, db, productsService);
       
       // Add animal categories route
       const animalCategoriesRouter = require('./server/routes/admin/animalCategories');
@@ -2742,7 +2742,7 @@ if (databaseAvailable && storage) {
       
       // Add recalculate route for retroactive achievement awards
       const createRecalculateRoutes = require('./server/routes/admin/recalculate');
-      const recalculateRouter = createRecalculateRoutes(storage, db);
+      const recalculateRouter = createRecalculateRoutes(storage, db, productsService);
       adminRouter.use(recalculateRouter);
       
       // Add data management route (super admin only - ray@jerky.com)

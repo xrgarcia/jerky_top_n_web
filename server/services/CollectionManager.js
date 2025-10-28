@@ -2,10 +2,11 @@ const { eq, and } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
 
 class CollectionManager {
-  constructor(achievementRepo, productsMetadataRepo, db) {
+  constructor(achievementRepo, productsMetadataRepo, db, productsService = null) {
     this.achievementRepo = achievementRepo;
     this.productsMetadataRepo = productsMetadataRepo;
     this.db = db;
+    this.productsService = productsService; // Injected to get rankable products
     
     this.DEFAULT_TIER_THRESHOLDS = {
       bronze: 40,
@@ -207,10 +208,33 @@ class CollectionManager {
   }
 
   /**
-   * Get ALL rankable products from products_metadata
+   * Get ALL rankable products using ProductsService (respects "rankable" tag filtering)
+   * Falls back to querying products_metadata if ProductsService not available
    * @returns {Promise<Array<string>>} - Array of Shopify product IDs
    */
   async getAllRankableProducts() {
+    console.log(`🔍 CollectionManager.getAllRankableProducts() START`);
+    
+    // Use ProductsService if available (recommended - respects rankable tag)
+    if (this.productsService) {
+      console.log(`✅ Using ProductsService to get rankable products`);
+      try {
+        const products = await this.productsService.getAllProducts({ 
+          includeMetadata: false, 
+          includeRankingStats: false 
+        });
+        const productIds = products.map(p => p.id);
+        console.log(`✅ ProductsService returned ${productIds.length} rankable products`);
+        console.log(`📋 Sample product IDs:`, productIds.slice(0, 5));
+        return productIds;
+      } catch (error) {
+        console.error(`❌ Error using ProductsService, falling back to products_metadata:`, error.message);
+        // Fall through to fallback method
+      }
+    }
+    
+    // Fallback: Query products_metadata (may include non-rankable products)
+    console.log(`⚠️ Using products_metadata fallback (may include non-rankable products)`);
     const { productsMetadata } = require('../../shared/schema');
     
     const products = await this.db
@@ -218,7 +242,9 @@ class CollectionManager {
       .from(productsMetadata)
       .groupBy(productsMetadata.shopifyProductId);
     
-    return products.map(p => p.shopifyProductId);
+    const productIds = products.map(p => p.shopifyProductId);
+    console.log(`⚠️ products_metadata returned ${productIds.length} products (WARNING: may not all be rankable)`);
+    return productIds;
   }
 
   /**

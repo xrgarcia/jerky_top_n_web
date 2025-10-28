@@ -25,7 +25,7 @@ const upload = multer({
  * Trigger background achievement recalculation
  * Awards achievements to users who already meet the requirements
  */
-async function triggerAchievementRecalculation(achievementId, database) {
+async function triggerAchievementRecalculation(achievementId, database, productsService = null) {
   const { users, achievements } = require('../../shared/schema');
   const { eq } = require('drizzle-orm');
   const { primaryDb } = require('../../db-primary');
@@ -54,7 +54,7 @@ async function triggerAchievementRecalculation(achievementId, database) {
   
   const achievementRepo = new AchievementRepository(database);
   const productsMetadataRepo = new ProductsMetadataRepository(database);
-  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb);
+  const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
   
   // Process users in batches
   const BATCH_SIZE = 5;
@@ -103,7 +103,7 @@ async function triggerAchievementRecalculation(achievementId, database) {
  * All endpoints require employee authentication
  */
 
-module.exports = function createAdminRoutes(storage, db) {
+module.exports = function createAdminRoutes(storage, db, productsService = null) {
   const router = express.Router();
 
   async function requireEmployeeAuth(req, res, next) {
@@ -198,7 +198,7 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
       console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
       
       // Run recalculation asynchronously (don't await - runs in background)
-      triggerAchievementRecalculation(achievement.id, req.db).catch(err => {
+      triggerAchievementRecalculation(achievement.id, req.db, productsService).catch(err => {
         console.error(`❌ Background recalculation failed for achievement ${achievement.id}:`, err);
       });
     }
