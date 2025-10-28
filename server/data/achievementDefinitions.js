@@ -57,8 +57,8 @@ const achievementDefinitions = [
     icon: '💯',
     tier: 'platinum',
     category: 'ranking',
-    collectionType: 'legacy',
-    requirement: { type: 'rank_all_products', value: 1 },
+    collectionType: 'dynamic_collection',
+    requirement: { type: 'complete_collection' },
     points: 1000
   },
 
