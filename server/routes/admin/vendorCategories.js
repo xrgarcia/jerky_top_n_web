@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const storage = require('../../storage');
+const { db } = require('../../db');
 const { productsMetadata } = require('../../../shared/schema');
 const { sql } = require('drizzle-orm');
 
@@ -12,7 +12,7 @@ const { sql } = require('drizzle-orm');
 router.get('/vendor-categories/with-counts', async (req, res) => {
   try {
     // Fetch vendors with product counts from products_metadata
-    const vendorCounts = await storage.db
+    const vendorCounts = await db
       .select({
         vendor: productsMetadata.vendor,
         productCount: sql<number>`COUNT(DISTINCT ${productsMetadata.shopifyProductId})::int`,
