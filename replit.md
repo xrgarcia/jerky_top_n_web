@@ -3,6 +3,20 @@
 ## Overview
 A web application for ranking jerky products, inspired by jerky.com's design. This application allows users to view top-rated jerky products and create personal rankings through an interactive interface. The project aims to provide a comprehensive and engaging platform for jerky enthusiasts, featuring advanced product filtering, gamification, and real-time social interaction capabilities. The business vision is to create a leading platform for jerky enthusiasts, leveraging gamification and social features to drive engagement and establish a vibrant community around jerky tasting and ranking.
 
+## Recent Changes (October 28, 2025)
+- **ARCHITECTURAL ENHANCEMENT**: Implemented polymorphic dynamic collection system supporting three collection types
+  - **Complete Collection**: Tracks progress across ALL rankable products in the catalog (165 total products)
+  - **Brand Collection**: Filters by vendor/brand names (e.g., 'Jerky.com', 'Wild Bills', 'Country Archer')
+  - **Animal Collection**: Filters by animal categories using existing animalDisplay field
+  - Added `vendor` field to `products_metadata` schema, auto-populated from Shopify product data
+  - Completely rewrote `CollectionManager.calculateCollectionProgress()` with requirement.type-based routing
+  - Three new helper methods: `getAllRankableProducts()`, `getProductsByVendors()`, `getProductsByAnimals()`
+  - Backward compatibility maintained for legacy achievements using proteinCategory/proteinCategories
+  - Collections automatically adapt to product catalog changes (additions/removals) without manual intervention
+  - ProductsMetadataService now syncs vendor field during product cache refreshes (every 30 minutes)
+  - Defensive error handling with warnings for missing vendors/categories
+  - Lightweight queries using GROUP BY for deduplication, ensuring performance at scale
+
 ## Recent Changes (October 27, 2025)
 - **FEATURE**: Unified achievement detail pages for all coin types (collection and engagement)
   - Backend: `/api/gamification/achievement/:id/products` now detects achievement type and returns appropriate data
