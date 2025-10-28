@@ -1161,11 +1161,31 @@
                         </select>
                     </div>
                     
+                    <div class="form-group" id="dynamicCollectionTypeGroup" style="display: none;">
+                        <label for="dynamicCollectionType">Dynamic Collection Type*</label>
+                        <select id="dynamicCollectionType" name="dynamicCollectionType">
+                            <option value="">-- Select Filter Type --</option>
+                            <option value="complete_collection">Complete Collection (all products)</option>
+                            <option value="brand_collection">By Brand/Vendor</option>
+                            <option value="animal_collection">By Animal Category</option>
+                        </select>
+                        <small>Choose how products are filtered for this dynamic collection</small>
+                    </div>
+                    
                     <div class="form-group" id="proteinCategoryGroup" style="display: none;">
                         <label>Animal Categories (select one or more)</label>
                         <div id="animalCategoriesContainer" class="protein-category-checkboxes">
                             <div style="text-align: center; padding: 20px; color: #999;">
                                 Loading animals...
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" id="vendorCategoryGroup" style="display: none;">
+                        <label>Brands/Vendors (select one or more)</label>
+                        <div id="vendorCategoriesContainer" class="protein-category-checkboxes">
+                            <div style="text-align: center; padding: 20px; color: #999;">
+                                Loading vendors...
                             </div>
                         </div>
                     </div>
