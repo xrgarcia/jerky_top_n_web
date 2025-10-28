@@ -2732,6 +2732,10 @@ if (databaseAvailable && storage) {
       const animalCategoriesRouter = require('./server/routes/admin/animalCategories');
       adminRouter.use(animalCategoriesRouter);
       
+      // Add vendor categories route
+      const vendorCategoriesRouter = require('./server/routes/admin/vendorCategories');
+      adminRouter.use(vendorCategoriesRouter);
+      
       // Add products admin route
       const productsAdminRouter = require('./server/routes/admin/products');
       adminRouter.use(productsAdminRouter);
