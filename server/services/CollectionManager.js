@@ -119,59 +119,73 @@ class CollectionManager {
   }
 
   async calculateCollectionProgress(userId, collection) {
-    const { proteinCategory, proteinCategories, requirement } = collection;
+    const { requirement } = collection;
+    const requirementType = requirement?.type;
     
-    // Priority order for categories:
-    // 1. requirement.categories (new dynamic collections with animal display names)
-    // 2. proteinCategories (legacy multi-category)
-    // 3. proteinCategory (legacy single category)
-    let categories = [];
+    // Route to different product fetchers based on requirement type
+    let allProductIds = [];
+    let filterInfo = '';
     
-    if (requirement && requirement.categories && Array.isArray(requirement.categories) && requirement.categories.length > 0) {
-      categories = requirement.categories;
-    } else if (proteinCategories && Array.isArray(proteinCategories) && proteinCategories.length > 0) {
-      categories = proteinCategories;
-    } else if (proteinCategory) {
-      categories = [proteinCategory];
+    if (requirementType === 'complete_collection') {
+      // Complete Collection: ALL rankable products
+      allProductIds = await this.getAllRankableProducts();
+      filterInfo = 'all products';
+    } 
+    else if (requirementType === 'brand_collection') {
+      // Brand Collection: Filter by vendors
+      const vendors = requirement?.vendors || [];
+      if (vendors.length === 0) {
+        console.warn(`Collection ${collection.code} has no vendors specified`);
+        return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
+      }
+      allProductIds = await this.getProductsByVendors(vendors);
+      filterInfo = `${vendors.length} brand(s): ${vendors.join(', ')}`;
+    } 
+    else if (requirementType === 'animal_collection' || requirement?.categories) {
+      // Animal Collection: Filter by animal categories
+      // Support both requirement.categories and legacy proteinCategory/proteinCategories
+      let categories = [];
+      
+      if (requirement?.categories && Array.isArray(requirement.categories) && requirement.categories.length > 0) {
+        categories = requirement.categories;
+      } else if (collection.proteinCategories && Array.isArray(collection.proteinCategories) && collection.proteinCategories.length > 0) {
+        categories = collection.proteinCategories;
+      } else if (collection.proteinCategory) {
+        categories = [collection.proteinCategory];
+      }
+      
+      if (categories.length === 0) {
+        console.warn(`Collection ${collection.code} has no animal categories`);
+        return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
+      }
+      
+      allProductIds = await this.getProductsByAnimals(categories);
+      filterInfo = `${categories.length} animal(s): ${categories.join(', ')}`;
     }
-    
-    if (categories.length === 0) {
-      console.warn(`Collection ${collection.code} has no protein categories`);
+    else {
+      console.warn(`Collection ${collection.code} has unknown requirement type: ${requirementType}`);
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
-
-    const { productRankings, productsMetadata } = require('../../shared/schema');
-    const { inArray } = require('drizzle-orm');
-
-    // Fetch products from all categories and deduplicate
-    // For new dynamic collections, categories are animal display names (Alligator, Beef, etc.)
-    // Query by animalDisplay field
-    const allProducts = await this.db
-      .select({ shopifyProductId: productsMetadata.shopifyProductId })
-      .from(productsMetadata)
-      .where(inArray(productsMetadata.animalDisplay, categories))
-      .groupBy(productsMetadata.shopifyProductId);
     
-    const totalAvailable = allProducts.length;
+    const totalAvailable = allProductIds.length;
     
-    console.log(`📊 Collection ${collection.code}: Found ${totalAvailable} products for ${categories.length} animals:`, categories);
+    console.log(`📊 Collection ${collection.code}: Found ${totalAvailable} products for ${filterInfo}`);
 
     if (totalAvailable === 0) {
-      console.warn(`Collection ${collection.code} found 0 products for categories:`, categories);
+      console.warn(`Collection ${collection.code} found 0 products`);
       return { percentage: 0, totalAvailable: 0, totalRanked: 0 };
     }
     
-    // Get user's ranked products that match ANY of the categories
+    // Get user's ranked products that match the collection
+    const { productRankings } = require('../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+    
     const rankedProducts = await this.db
       .select({ shopifyProductId: productRankings.shopifyProductId })
       .from(productRankings)
-      .innerJoin(
-        productsMetadata,
-        eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId)
-      )
       .where(and(
         eq(productRankings.userId, userId),
-        inArray(productsMetadata.animalDisplay, categories)
+        inArray(productRankings.shopifyProductId, allProductIds)
       ))
       .groupBy(productRankings.shopifyProductId);
 
@@ -188,8 +202,59 @@ class CollectionManager {
       totalAvailable,
       totalRanked,
       tier,
-      categories // Include for debugging
+      requirementType // Include for debugging
     };
+  }
+
+  /**
+   * Get ALL rankable products from products_metadata
+   * @returns {Promise<Array<string>>} - Array of Shopify product IDs
+   */
+  async getAllRankableProducts() {
+    const { productsMetadata } = require('../../shared/schema');
+    
+    const products = await this.db
+      .select({ shopifyProductId: productsMetadata.shopifyProductId })
+      .from(productsMetadata)
+      .groupBy(productsMetadata.shopifyProductId);
+    
+    return products.map(p => p.shopifyProductId);
+  }
+
+  /**
+   * Get products filtered by vendor/brand names
+   * @param {Array<string>} vendors - Array of vendor names (e.g., ['Jerky.com', 'Wild Bill\'s'])
+   * @returns {Promise<Array<string>>} - Array of Shopify product IDs
+   */
+  async getProductsByVendors(vendors) {
+    const { productsMetadata } = require('../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+    
+    const products = await this.db
+      .select({ shopifyProductId: productsMetadata.shopifyProductId })
+      .from(productsMetadata)
+      .where(inArray(productsMetadata.vendor, vendors))
+      .groupBy(productsMetadata.shopifyProductId);
+    
+    return products.map(p => p.shopifyProductId);
+  }
+
+  /**
+   * Get products filtered by animal categories
+   * @param {Array<string>} categories - Array of animal display names (e.g., ['Beef', 'Pork', 'Turkey'])
+   * @returns {Promise<Array<string>>} - Array of Shopify product IDs
+   */
+  async getProductsByAnimals(categories) {
+    const { productsMetadata } = require('../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+    
+    const products = await this.db
+      .select({ shopifyProductId: productsMetadata.shopifyProductId })
+      .from(productsMetadata)
+      .where(inArray(productsMetadata.animalDisplay, categories))
+      .groupBy(productsMetadata.shopifyProductId);
+    
+    return products.map(p => p.shopifyProductId);
   }
 
   getTierFromPercentage(percentage, customThresholds = null) {
