@@ -15,7 +15,7 @@ router.get('/vendor-categories/with-counts', async (req, res) => {
     const vendorCounts = await db
       .select({
         vendor: productsMetadata.vendor,
-        productCount: sql<number>`COUNT(DISTINCT ${productsMetadata.shopifyProductId})::int`,
+        productCount: sql`COUNT(DISTINCT ${productsMetadata.shopifyProductId})::int`,
       })
       .from(productsMetadata)
       .where(sql`${productsMetadata.vendor} IS NOT NULL`)
