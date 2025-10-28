@@ -37,12 +37,20 @@ class ProgressTracker {
     const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
     const totalPoints = await this.achievementRepo.getUserTotalPoints(userId);
 
-    const nextMilestones = this.getNextMilestones(
-      stats.totalRankings, 
-      stats.uniqueProducts,
-      allAchievements,
-      totalRankableProducts
-    );
+    // Build stats object for getClosestUnearnedAchievement
+    const userStats = {
+      totalRankings: stats.totalRankings,
+      uniqueProducts: stats.uniqueProducts,
+      currentStreak: dailyStreak?.currentStreak || 0,
+      totalRankableProducts,
+      leaderboardPosition: 0, // Will be fetched if needed by managers
+    };
+
+    // Get closest unearned achievement (supports all types: collection & engagement)
+    const closestAchievement = await this.getClosestUnearnedAchievement(userId, userStats);
+    
+    // Build nextMilestones array with the closest achievement
+    const nextMilestones = closestAchievement ? [closestAchievement] : [];
 
     return {
       totalRankings: stats.totalRankings,
