@@ -267,6 +267,7 @@ function setupAchievementTypeFilters() {
       currentTypeFilter = type === 'all' ? 'all' : 
         type === 'engagement' ? 'engagement_collection' :
         type === 'static' ? 'static_collection' :
+        type === 'dynamic' ? 'dynamic_collection' :
         type === 'flavor_coin' ? 'flavor_coin' :
         'legacy';
       
