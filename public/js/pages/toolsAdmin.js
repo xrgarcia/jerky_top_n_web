@@ -880,25 +880,67 @@ async function handleAchievementFormSubmit(event) {
   // Build requirement object from user-friendly inputs
   let requirement;
   
-  // Dynamic collections have automatic requirements based on protein categories
+  // Dynamic collections have automatic requirements based on type
   if (achievementData.collectionType === 'dynamic_collection') {
-    const selectedCategories = achievementData.proteinCategories || [];
-    if (selectedCategories.length === 0) {
+    const dynamicType = formData.get('dynamicCollectionType');
+    
+    if (!dynamicType) {
       showToast({
         type: 'warning',
         icon: '⚠️',
-        title: 'Missing Categories',
-        message: 'Please select at least one protein category for this Dynamic Collection',
+        title: 'Missing Dynamic Collection Type',
+        message: 'Please select a dynamic collection type (Complete Collection, By Brand, or By Animal)',
         duration: 5000
       });
       return;
     }
     
-    // Auto-generate requirement for dynamic collections
-    requirement = {
-      type: 'complete_protein_category_percentage',
-      categories: selectedCategories
-    };
+    if (dynamicType === 'complete_collection') {
+      // Complete collection - tracks all products, no filters needed
+      requirement = {
+        type: 'complete_collection'
+      };
+    } else if (dynamicType === 'animal_collection') {
+      // Animal collection - requires animal categories
+      const selectedCategories = achievementData.proteinCategories || [];
+      if (selectedCategories.length === 0) {
+        showToast({
+          type: 'warning',
+          icon: '⚠️',
+          title: 'Missing Animal Categories',
+          message: 'Please select at least one animal category for this Animal Collection',
+          duration: 5000
+        });
+        return;
+      }
+      
+      requirement = {
+        type: 'animal_collection',
+        categories: selectedCategories
+      };
+    } else if (dynamicType === 'brand_collection') {
+      // Brand collection - requires vendors
+      const selectedVendors = [];
+      document.querySelectorAll('input[name="vendorCategories"]:checked').forEach(checkbox => {
+        selectedVendors.push(checkbox.value);
+      });
+      
+      if (selectedVendors.length === 0) {
+        showToast({
+          type: 'warning',
+          icon: '⚠️',
+          title: 'Missing Vendors',
+          message: 'Please select at least one brand/vendor for this Brand Collection',
+          duration: 5000
+        });
+        return;
+      }
+      
+      requirement = {
+        type: 'brand_collection',
+        vendors: selectedVendors
+      };
+    }
   } else if (achievementData.collectionType === 'static_collection' || achievementData.collectionType === 'custom_product_list') {
     // Static collections have automatic requirements based on selected products
     const selectedProductIdsJson = document.getElementById('selectedProductIds').value;
