@@ -31,6 +31,7 @@ The application features a modern web architecture designed for responsiveness, 
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
   - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins) with tiered progression (bronze→silver→gold→platinum→diamond). Supports unique view tracking for products and profiles.
   - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins) with tier progression.
+  - **ProgressTracker**: Calculates comprehensive progress across all achievement types, finding the closest unearned achievement by percentage complete. Supports both collection format (`totalRanked/totalAvailable`) and engagement format (`current/required`) for unified progress tracking.
   - Event-driven system tracks achievements, user progress, streaks, and populates real-time leaderboards and activity feeds.
   - Proportional point system awards points dynamically for tiered achievements across both managers.
   - Toast notifications emitted via WebSocket for all achievement types with duplicate prevention.
