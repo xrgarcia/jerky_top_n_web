@@ -9,6 +9,7 @@ let currentHiddenFilter = 'all';
 let currentDependencyFilter = 'all';
 let editingAchievementId = null;
 let availableAnimals = []; // Loaded dynamically from database
+let availableVendors = []; // Loaded dynamically from database
 
 /**
  * Show toast notification
@@ -129,6 +130,59 @@ function populateAnimalCheckboxes() {
       <input type="checkbox" name="animalCategories" value="${animal.display}">
       <span>${animal.icon} ${animal.display}</span>
       <small style="color: #999; margin-left: 8px;">(${animal.productCount} products)</small>
+    </label>
+  `).join('');
+}
+
+/**
+ * Load available vendors from database
+ */
+async function loadAvailableVendors() {
+  try {
+    const response = await fetch('/api/admin/vendor-categories/with-counts');
+    
+    if (!response.ok) {
+      throw new Error('Failed to load vendors');
+    }
+
+    const data = await response.json();
+    availableVendors = data.vendors || [];
+    
+    // Populate the vendor checkboxes
+    populateVendorCheckboxes();
+    
+  } catch (error) {
+    console.error('Error loading vendors:', error);
+    const container = document.getElementById('vendorCategoriesContainer');
+    if (container) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px; color: #e74c3c;">
+          Failed to load vendors. ${error.message}
+        </div>
+      `;
+    }
+  }
+}
+
+/**
+ * Populate vendor category checkboxes dynamically
+ */
+function populateVendorCheckboxes() {
+  const container = document.getElementById('vendorCategoriesContainer');
+  if (!container || availableVendors.length === 0) {
+    container.innerHTML = `
+      <div style="text-align: center; padding: 20px; color: #999;">
+        No vendors found in database
+      </div>
+    `;
+    return;
+  }
+  
+  container.innerHTML = availableVendors.map(vendor => `
+    <label class="checkbox-label">
+      <input type="checkbox" name="vendorCategories" value="${vendor.name}">
+      <span>🏪 ${vendor.name}</span>
+      <small style="color: #999; margin-left: 8px;">(${vendor.productCount} products)</small>
     </label>
   `).join('');
 }
@@ -594,12 +648,35 @@ function filterRequirementTypeOptions() {
 }
 
 /**
+ * Update dynamic collection specific fields based on selected type
+ */
+function updateDynamicCollectionFields() {
+  const dynamicType = document.getElementById('dynamicCollectionType').value;
+  const proteinGroup = document.getElementById('proteinCategoryGroup');
+  const vendorGroup = document.getElementById('vendorCategoryGroup');
+  
+  // Hide both by default
+  proteinGroup.style.display = 'none';
+  vendorGroup.style.display = 'none';
+  
+  // Show relevant field based on dynamic collection type
+  if (dynamicType === 'animal_collection') {
+    proteinGroup.style.display = 'block';
+  } else if (dynamicType === 'brand_collection') {
+    vendorGroup.style.display = 'block';
+  }
+  // complete_collection doesn't need any additional fields
+}
+
+/**
  * Update form fields visibility based on collection type
  */
 function updateFormFieldsVisibility() {
   const collectionType = document.getElementById('achievementCollectionType').value;
   
   const proteinGroup = document.getElementById('proteinCategoryGroup');
+  const vendorGroup = document.getElementById('vendorCategoryGroup');
+  const dynamicCollectionTypeGroup = document.getElementById('dynamicCollectionTypeGroup');
   const tierThresholdsSection = document.getElementById('tierThresholdsSection');
   const unlockRequirementsSection = document.getElementById('unlockRequirementsSection');
   const legacyFieldsGroup = document.getElementById('legacyFieldsGroup');
@@ -608,6 +685,8 @@ function updateFormFieldsVisibility() {
   
   // Hide all conditional fields first
   proteinGroup.style.display = 'none';
+  vendorGroup.style.display = 'none';
+  dynamicCollectionTypeGroup.style.display = 'none';
   tierThresholdsSection.style.display = 'none';
   unlockRequirementsSection.style.display = 'none';
   legacyFieldsGroup.style.display = 'none';
@@ -616,11 +695,13 @@ function updateFormFieldsVisibility() {
   
   // Show relevant fields based on collection type
   if (collectionType === 'dynamic_collection') {
-    // Dynamic collections use protein categories + tier thresholds
-    proteinGroup.style.display = 'block';
+    // Dynamic collections: Show type dropdown and tier thresholds
+    dynamicCollectionTypeGroup.style.display = 'block';
     tierThresholdsSection.style.display = 'block';
-    // Hide unlock requirements - they're automatic for dynamic collections
     unlockRequirementsSection.style.display = 'none';
+    
+    // Update dynamic collection specific fields
+    updateDynamicCollectionFields();
   } else if (collectionType === 'static_collection' || collectionType === 'custom_product_list') {
     // Static collections show tier thresholds and product selector (no unlock requirements)
     tierThresholdsSection.style.display = 'block';
@@ -1721,6 +1802,12 @@ window.initAchievementAdmin = function() {
     collectionTypeSelect.addEventListener('change', updateFormFieldsVisibility);
   }
   
+  // Setup dynamic collection type change handler
+  const dynamicCollectionTypeSelect = document.getElementById('dynamicCollectionType');
+  if (dynamicCollectionTypeSelect) {
+    dynamicCollectionTypeSelect.addEventListener('change', updateDynamicCollectionFields);
+  }
+  
   // Setup requirement type change handler
   const requirementTypeSelect = document.getElementById('requirementType');
   if (requirementTypeSelect) {
@@ -1742,7 +1829,8 @@ window.initAchievementAdmin = function() {
   setupIconTypeHandler();
   setupIconUploadHandler();
   
-  // Load achievements and animals
+  // Load achievements, animals, and vendors
   loadAchievementsAdmin();
   loadAvailableAnimals();
+  loadAvailableVendors();
 };
