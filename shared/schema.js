@@ -1,4 +1,4 @@
-const { pgTable, serial, text, timestamp, integer, jsonb } = require('drizzle-orm/pg-core');
+const { pgTable, serial, text, timestamp, integer, jsonb, unique } = require('drizzle-orm/pg-core');
 const { relations } = require('drizzle-orm');
 
 // User profiles from jerky.com customer accounts
@@ -62,7 +62,10 @@ const productRankings = pgTable('product_rankings', {
   rankingListId: text('ranking_list_id').notNull(), // Groups rankings into lists
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  // Unique constraint: each user can only rank a product once per ranking list
+  uniqueUserProductList: unique().on(table.userId, table.shopifyProductId, table.rankingListId),
+}));
 
 // User product searches - tracks search queries for analytics
 const userProductSearches = pgTable('user_product_searches', {
