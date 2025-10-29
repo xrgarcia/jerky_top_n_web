@@ -223,6 +223,9 @@ class WebhookOrderService {
     const customerEmail = orderData.customer?.email || orderData.email;
     const shopifyCustomerId = orderData.customer?.id?.toString();
 
+    // Log order processing (minimal)
+    console.log(`📦 Processing order ${orderNumber}: ${orderData.line_items?.length || 0} line items`);
+
     if (!orderNumber || !orderDate) {
       console.warn('⚠️ Cannot process order: missing order number or date');
       return { success: false, reason: 'missing_order_data' };
@@ -244,6 +247,7 @@ class WebhookOrderService {
     const lineItems = orderData.line_items || [];
     const orderItems = [];
     const currentLineItemKeys = new Set();
+    let skippedItems = 0;
 
     for (const item of lineItems) {
       let productId = item.product_id?.toString();
@@ -253,7 +257,15 @@ class WebhookOrderService {
       }
 
       if (!productId) {
-        console.warn('⚠️ Skipping line item with missing product ID:', item.id);
+        skippedItems++;
+        // Only log if product_id is actually missing (not just null/undefined)
+        console.warn(`⚠️ Skipped line item - missing product_id:`, {
+          lineItemId: item.id,
+          product_id_type: typeof item.product_id,
+          product_id_value: item.product_id,
+          sku: item.sku,
+          variant_id: item.variant_id
+        });
         continue;
       }
 
@@ -300,8 +312,13 @@ class WebhookOrderService {
       console.log(`🗑️ Removed ${itemsToDelete.length} orphaned line items from order ${orderNumber}`);
     }
 
+    // Log summary if items were skipped
+    if (skippedItems > 0) {
+      console.warn(`⚠️ Order ${orderNumber}: Skipped ${skippedItems}/${lineItems.length} items (missing product_id)`);
+    }
+
     if (orderItems.length === 0) {
-      console.log(`ℹ️ No line items to process for order ${orderNumber}`);
+      console.warn(`⚠️ No valid items for order ${orderNumber}`);
       
       // Still broadcast if we deleted items (state changed)
       if (this.webSocketGateway && itemsToDelete.length > 0) {

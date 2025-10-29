@@ -1592,7 +1592,7 @@ app.post('/api/rankings/product', async (req, res) => {
     if (operationId) {
       const existingOperation = await storage.checkOperationExists(operationId);
       if (existingOperation) {
-        console.log(`🔄 Duplicate operation detected: ${operationId} - returning success (idempotent)`);
+        console.log(`🔄 Duplicate operation: ${operationId.substring(0, 8)}`);
         return res.json({ success: true, ranking: existingOperation, isDuplicate: true });
       }
     }
@@ -1618,29 +1618,30 @@ app.post('/api/rankings/product', async (req, res) => {
           status: 'completed'
         });
       } catch (error) {
-        console.error('⚠️ Failed to record operation (non-critical):', error);
+        console.error('⚠️ Failed to record operation:', error.message);
       }
     }
     
-    // Invalidate ranking stats cache since data changed
+    // Invalidate caches
     rankingStatsCache.invalidate();
-    
-    // Invalidate home stats cache since rankings affect home page stats
     if (gamificationServices?.homeStatsService) {
       gamificationServices.homeStatsService.invalidateCache();
     }
-    
-    // Invalidate leaderboard cache since rankings affect top rankers
     if (gamificationServices?.leaderboardManager) {
       gamificationServices.leaderboardManager.leaderboardCache.invalidate();
     }
     
-    console.log(`✅ Product ranking saved: ${productData.title} at rank ${ranking}${operationId ? ` (opId: ${operationId.substring(0, 8)})` : ''}`);
+    console.log(`✅ Ranking saved: user ${session.userId}, product ${productId}, rank ${ranking}`);
     
     res.json({ success: true, ranking: productRanking });
     
   } catch (error) {
-    console.error('Save product ranking error:', error);
+    console.error('❌ Ranking save error:', {
+      message: error.message,
+      code: error.code,
+      productId: req.body.productId,
+      userId: req.body.sessionId?.substring(0, 8)
+    });
     Sentry.captureException(error, {
       tags: { service: 'rankings', endpoint: '/api/rankings/product' },
       extra: { productId: req.body.productId, ranking: req.body.ranking, operationId: req.body.operationId }

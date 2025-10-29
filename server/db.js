@@ -45,6 +45,55 @@ const pool = new Pool({
   connectionTimeoutMillis: 5000, // Timeout if connection takes >5s
 });
 
+// Add pool error handling to prevent uncaught exceptions
+pool.on('error', (err) => {
+  console.error('❌ Unexpected database pool error:', {
+    message: err.message,
+    code: err.code,
+    stack: err.stack,
+    timestamp: new Date().toISOString()
+  });
+  
+  // Log to Sentry if available
+  if (typeof Sentry !== 'undefined' && Sentry.captureException) {
+    Sentry.captureException(err, {
+      tags: { service: 'database_pool' },
+      contexts: {
+        database: {
+          pool_size: pool.totalCount,
+          idle_count: pool.idleCount,
+          waiting_count: pool.waitingCount
+        }
+      }
+    });
+  }
+});
+
+// Add connection monitoring
+pool.on('connect', (client) => {
+  console.log('🔌 Database client connected to pool', {
+    totalConnections: pool.totalCount,
+    idleConnections: pool.idleCount,
+    waitingRequests: pool.waitingCount
+  });
+  
+  // Add error handler to individual clients
+  client.on('error', (err) => {
+    console.error('❌ Database client error:', {
+      message: err.message,
+      code: err.code,
+      timestamp: new Date().toISOString()
+    });
+  });
+});
+
+pool.on('remove', () => {
+  console.log('🔌 Database client removed from pool', {
+    totalConnections: pool.totalCount,
+    idleConnections: pool.idleCount
+  });
+});
+
 const db = drizzle({ client: pool, schema });
 
 console.log('💾 Database connection pool configured with pooler endpoint');

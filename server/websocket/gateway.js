@@ -286,9 +286,8 @@ class WebSocketGateway {
       const roomName = `user:${userId}`;
       const room = this.io.sockets.adapter.rooms.get(roomName);
       const socketsInRoom = room ? room.size : 0;
-      console.log(`🔊 Emitting ${achievements.length} achievement(s) to room "${roomName}" (${socketsInRoom} socket(s))`);
+      console.log(`🔊 Emitting ${achievements.length} achievement(s) to user ${userId} (${socketsInRoom} socket(s))`);
       this.io.to(roomName).emit('achievements:earned', { achievements });
-      console.log(`✅ Emitted ${achievements.length} achievement(s) to authenticated user ${userId}`);
     } else {
       // No authenticated socket, queue for later delivery
       const pendingKey = userId;
@@ -302,9 +301,7 @@ class WebSocketGateway {
         existingData.achievements.push(...newAchievements);
         existingData.timestamp = Date.now(); // Update timestamp
         this.pendingAchievements.set(pendingKey, existingData);
-        console.log(`📥 Queued ${newAchievements.length} achievement(s) for user ${userId} (no authenticated socket)`);
-      } else {
-        console.log(`⚠️ Skipped duplicate achievements for user ${userId} (already in queue)`);
+        console.log(`📥 Queued ${newAchievements.length} achievement(s) for user ${userId} (no socket)`);
       }
     }
   }
