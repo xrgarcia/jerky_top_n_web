@@ -61,7 +61,7 @@ The application employs a modern web architecture for responsiveness, scalabilit
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
-- **Error Tracking**: Sentry.io.
+- **Error Tracking**: Sentry.io for both backend (Node.js SDK) and frontend (Browser SDK with session replay).
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
 - **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icon uploads.

@@ -1139,6 +1139,17 @@ async function loadCustomerOrders(page = 1) {
     
   } catch (error) {
     console.error('Error loading customer orders:', error);
+    
+    // Log to Sentry
+    if (window.ErrorTracking) {
+      window.ErrorTracking.captureException(error, {
+        endpoint: '/api/admin/customer-orders',
+        filters: currentOrdersFilters,
+        sort: currentOrdersSort,
+        page: currentOrdersPage
+      });
+    }
+    
     const tableBody = document.getElementById('customerOrdersTableBody');
     if (tableBody) {
       tableBody.innerHTML = `

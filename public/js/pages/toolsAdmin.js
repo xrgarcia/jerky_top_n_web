@@ -82,6 +82,15 @@ async function loadAchievementsAdmin() {
     
   } catch (error) {
     console.error('Error loading achievements:', error);
+    
+    // Log to Sentry
+    if (window.ErrorTracking) {
+      window.ErrorTracking.captureException(error, {
+        endpoint: '/api/admin/achievements',
+        context: 'loadAchievementsAdmin'
+      });
+    }
+    
     const tableBody = document.getElementById('achievementsTableBody');
     if (tableBody) {
       tableBody.innerHTML = `

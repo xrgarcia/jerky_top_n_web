@@ -2915,6 +2915,14 @@ app.get('/health', (req, res) => {
   res.status(200).json(health);
 });
 
+// Config endpoint - provides public configuration to frontend
+app.get('/api/config', (req, res) => {
+  res.json({
+    sentryDsn: process.env.SENTRY_DSN || null,
+    environment: ENVIRONMENT
+  });
+});
+
 // Initialize gamification system BEFORE catch-all route if database is available
 let gamificationServices = null;
 if (databaseAvailable && storage) {
