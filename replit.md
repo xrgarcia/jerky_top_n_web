@@ -25,7 +25,13 @@ The application features a modern web architecture designed for responsiveness, 
 - **Frontend**: Built with Vanilla JavaScript, an event-driven architecture using `EventBus` for pub/sub, and `ServiceRegistry` for dependency injection.
 - **Backend**: Implemented with Node.js and Express.js, following a repository pattern.
 - **User Privacy**: `CommunityService` centralizes user data handling, truncating last names.
-- **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication.
+- **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication with robust achievement notification delivery:
+  - **Pending Achievement Queue**: WebSocketGateway maintains a temporary queue for achievements earned before socket authentication
+  - **Race Condition Prevention**: `activeUsers` populated synchronously during auth to ensure `hasAuthenticatedSocket()` returns true immediately
+  - **Multi-device Support**: Pending achievements flushed to entire `user:${userId}` room on authentication, reaching all connected devices
+  - **Memory Management**: Periodic 5-minute cleanup removes stale pending entries older than 5-minute TTL
+  - **Flavor Coin Accumulation**: All flavor coins accumulated without deduplication to preserve multiple drops of same flavor
+  - **Reliable Delivery**: Achievements queued if socket not authenticated, then replayed on next authentication within 5-minute window
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Shopify Synchronization**: Automatic synchronization system ensures products and metadata stay in sync with Shopify:
