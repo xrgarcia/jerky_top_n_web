@@ -1,3 +1,5 @@
+const Sentry = require('@sentry/node');
+
 /**
  * CacheWarmer - Centralized cache warming on server startup
  * 
@@ -7,6 +9,7 @@
  * - Fail-Safe: Errors don't crash the server, only log warnings
  * - Non-Blocking: Runs asynchronously after server starts
  * - Observable: Clear logging for monitoring and debugging
+ * - Alerting: Sends errors to Sentry with environment context
  */
 class CacheWarmer {
   constructor() {
@@ -47,6 +50,24 @@ class CacheWarmer {
         } catch (error) {
           const duration = Date.now() - cacheStartTime;
           console.warn(`⚠️ CacheWarmer: ${name} failed to warm (${duration}ms):`, error.message);
+          
+          // Send error to Sentry for monitoring
+          Sentry.captureException(error, {
+            level: 'warning',
+            tags: {
+              service: 'cache_warmer',
+              cache_name: name,
+              operation: 'cache_warming',
+              duration_ms: duration
+            },
+            extra: {
+              cacheName: name,
+              duration,
+              errorMessage: error.message,
+              stackTrace: error.stack
+            }
+          });
+          
           return { name, success: false, duration, error: error.message };
         }
       })
@@ -75,6 +96,19 @@ class CacheWarmer {
     // Don't await - let it run in background
     this.warmAll().catch(err => {
       console.error('❌ CacheWarmer: Unexpected error during cache warming:', err);
+      
+      // Send critical error to Sentry
+      Sentry.captureException(err, {
+        level: 'error',
+        tags: {
+          service: 'cache_warmer',
+          operation: 'cache_warming_orchestration'
+        },
+        extra: {
+          errorMessage: err.message,
+          stackTrace: err.stack
+        }
+      });
     });
   }
 }
