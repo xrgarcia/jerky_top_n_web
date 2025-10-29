@@ -1,5 +1,5 @@
 const { customerOrders, users } = require('../../shared/schema');
-const { eq, and, gte, lte, like, sql } = require('drizzle-orm');
+const { eq, and, gte, lte, like, sql, asc, desc } = require('drizzle-orm');
 
 class CustomerOrdersRepository {
   constructor(database) {
@@ -17,6 +17,8 @@ class CustomerOrdersRepository {
    * @param {string} filters.dateTo - Filter by date to (ISO string)
    * @param {number} filters.limit - Limit results (default 100)
    * @param {number} filters.offset - Offset for pagination
+   * @param {string} filters.sortBy - Column to sort by
+   * @param {string} filters.sortOrder - Sort direction ('asc' or 'desc')
    * @returns {Promise<Array>} Customer orders with user information
    */
   async getOrders(filters = {}) {
@@ -28,7 +30,9 @@ class CustomerOrdersRepository {
       dateFrom,
       dateTo,
       limit = 100,
-      offset = 0
+      offset = 0,
+      sortBy = 'orderDate',
+      sortOrder = 'desc'
     } = filters;
 
     // Build query conditions
@@ -84,14 +88,37 @@ class CustomerOrdersRepository {
       query = query.where(and(...conditions));
     }
 
+    // Apply sorting
+    const sortColumn = this.getSortColumn(sortBy);
+    const sortDirection = sortOrder.toLowerCase() === 'asc' ? asc : desc;
+    
     query = query
-      .orderBy(sql`${customerOrders.orderDate} DESC`)
+      .orderBy(sortDirection(sortColumn))
       .limit(limit)
       .offset(offset);
 
     const orders = await query;
 
     return orders;
+  }
+
+  /**
+   * Get the column to sort by
+   * @param {string} sortBy - Column name
+   * @returns {Object} Drizzle column reference
+   */
+  getSortColumn(sortBy) {
+    const sortableColumns = {
+      'orderNumber': customerOrders.orderNumber,
+      'orderDate': customerOrders.orderDate,
+      'customerEmail': customerOrders.customerEmail,
+      'sku': customerOrders.sku,
+      'quantity': customerOrders.quantity,
+      'userFirstName': users.firstName,
+      'userLastName': users.lastName
+    };
+
+    return sortableColumns[sortBy] || customerOrders.orderDate;
   }
 
   /**
