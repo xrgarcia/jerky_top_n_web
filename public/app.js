@@ -442,9 +442,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             
-            // Initialize coinbook page
+            // Initialize coinbook page (legacy compatibility)
             if (window.initCoinbookPage && typeof window.initCoinbookPage === 'function') {
                 await window.initCoinbookPage();
+            }
+            
+            // Emit page:shown event for ProgressWidget integration
+            if (window.appEventBus) {
+                window.appEventBus.emit('page:shown', { page: 'coinbook' });
             }
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';

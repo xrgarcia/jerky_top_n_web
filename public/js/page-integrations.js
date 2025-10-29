@@ -9,6 +9,7 @@
   const services = window.appServices;
 
   let progressWidget = null;
+  let coinbookProgressWidget = null;
   let leaderboardWidget = null;
   let fullLeaderboardWidget = null;
   
@@ -16,7 +17,8 @@
   window.pageWidgets = {
     get fullLeaderboard() { return fullLeaderboardWidget; },
     get leaderboard() { return leaderboardWidget; },
-    get progress() { return progressWidget; }
+    get progress() { return progressWidget; },
+    get coinbookProgress() { return coinbookProgressWidget; }
   };
 
   function initializeCommunityPage() {
@@ -105,6 +107,41 @@
     }
   }
 
+  function initializeCoinbookPage() {
+    const coinbookPage = document.getElementById('coinbookPage');
+    if (!coinbookPage) {
+      console.warn('⚠️ Coin Book page not found, skipping progress widget initialization');
+      return;
+    }
+
+    const coinbookContainer = document.getElementById('coinbookProgressWidget');
+    if (!coinbookContainer) {
+      console.warn('⚠️ Coin Book progress container not found');
+      return;
+    }
+
+    if (!coinbookProgressWidget) {
+      const progressService = services.get('progressTracking');
+      coinbookProgressWidget = new ProgressWidget('coinbookProgressWidget', progressService, eventBus);
+      console.log('✅ Progress widget integrated into Coin Book page');
+    }
+    
+    // Reload progress and achievements when coin book page is shown
+    const gamificationService = services.get('gamification');
+    const progressService = services.get('progressTracking');
+    if (gamificationService) {
+      gamificationService.loadAchievements();
+      gamificationService.loadStreaks();
+    }
+    if (progressService) {
+      progressService.loadProgress();
+    }
+    
+    if (gamificationService || progressService) {
+      console.log('🔄 Reloading achievements and progress for Coin Book page');
+    }
+  }
+
   eventBus.on('page:shown', (data) => {
     if (data.page === 'community') {
       initializeCommunityPage();
@@ -112,6 +149,8 @@
       initializeLeaderboardPage();
     } else if (data.page === 'rank') {
       initializeRankPage();
+    } else if (data.page === 'coinbook') {
+      initializeCoinbookPage();
     }
   });
 
@@ -123,6 +162,8 @@
       initializeLeaderboardPage();
     } else if (currentPage === 'rank') {
       initializeRankPage();
+    } else if (currentPage === 'coinbook') {
+      initializeCoinbookPage();
     }
   });
 
