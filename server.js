@@ -732,6 +732,40 @@ const rankingStatsCache = new RankingStatsCache(30);
 // 30-minute metadata cache (OOP implementation)
 const metadataCache = new MetadataCache(30);
 
+// Helper to get cache staleness threshold from database (cached for performance)
+let cacheStaleThresholdCache = {
+  value: 48, // Default 48 hours
+  timestamp: null,
+  TTL: 5 * 60 * 1000 // Refresh every 5 minutes
+};
+
+async function getCacheStaleThresholdHours() {
+  // Return cached value if still valid
+  if (cacheStaleThresholdCache.timestamp && 
+      Date.now() - cacheStaleThresholdCache.timestamp < cacheStaleThresholdCache.TTL) {
+    return cacheStaleThresholdCache.value;
+  }
+  
+  try {
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const result = await db.execute(sql`
+      SELECT value FROM system_config WHERE key = 'cache_stale_hours' LIMIT 1
+    `);
+    
+    if (result.rows.length > 0) {
+      cacheStaleThresholdCache.value = parseInt(result.rows[0].value);
+      cacheStaleThresholdCache.timestamp = Date.now();
+    }
+  } catch (error) {
+    console.error('Error fetching cache stale threshold:', error);
+    // Keep using existing cached value or default
+  }
+  
+  return cacheStaleThresholdCache.value;
+}
+
 // Check if cache is valid (within 30-minute TTL)
 function isCacheValid() {
   if (!productCache.data || !productCache.timestamp) {
@@ -746,6 +780,17 @@ function isCacheValid() {
 function getCacheAgeMinutes() {
   if (!productCache.timestamp) return 0;
   return Math.floor((Date.now() - productCache.timestamp) / (60 * 1000));
+}
+
+// Check if cache is "very old" and should trigger alerts
+async function isCacheVeryOld() {
+  const cacheAgeMinutes = getCacheAgeMinutes();
+  if (cacheAgeMinutes === 0) return false;
+  
+  const thresholdHours = await getCacheStaleThresholdHours();
+  const thresholdMinutes = thresholdHours * 60;
+  
+  return cacheAgeMinutes >= thresholdMinutes;
 }
 
 // Start background cache rehydration
@@ -914,6 +959,23 @@ async function fetchAllShopifyProducts() {
     if (productCache.data) {
       const cacheAge = getCacheAgeMinutes();
       console.log(`⚠️ Load timed out, using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
+      
+      // Check if cache is very old and alert to Sentry
+      if (await isCacheVeryOld()) {
+        const thresholdHours = await getCacheStaleThresholdHours();
+        const message = `Serving very old product cache: ${cacheAge} minutes old (threshold: ${thresholdHours} hours)`;
+        console.error(`🚨 ${message}`);
+        Sentry.captureMessage(message, {
+          level: 'warning',
+          tags: { 
+            service: 'products', 
+            cache_age_minutes: cacheAge,
+            threshold_hours: thresholdHours,
+            product_count: productCache.data.length
+          }
+        });
+      }
+      
       return { products: productCache.data, fromCache: true };
     }
   }
@@ -941,10 +1003,41 @@ async function fetchAllShopifyProducts() {
     productCache.isLoading = false;
     console.error('❌ Failed to fetch products from Shopify:', error);
     
+    // Send error to Sentry
+    Sentry.captureException(error, {
+      level: 'error',
+      tags: { 
+        service: 'products', 
+        operation: 'fetch_shopify_products',
+        has_fallback_cache: !!productCache.data
+      },
+      extra: {
+        cache_age_minutes: getCacheAgeMinutes(),
+        product_count_in_cache: productCache.data?.length || 0
+      }
+    });
+    
     // If we have stale cache data, return it as fallback
     if (productCache.data) {
       const cacheAge = getCacheAgeMinutes();
       console.log(`⚠️ Using stale cache as fallback (age: ${cacheAge} minutes, ${productCache.data.length} products)`);
+      
+      // Check if cache is very old and alert to Sentry
+      if (await isCacheVeryOld()) {
+        const thresholdHours = await getCacheStaleThresholdHours();
+        const message = `Serving very old product cache after fetch failure: ${cacheAge} minutes old (threshold: ${thresholdHours} hours)`;
+        console.error(`🚨 ${message}`);
+        Sentry.captureMessage(message, {
+          level: 'warning',
+          tags: { 
+            service: 'products', 
+            cache_age_minutes: cacheAge,
+            threshold_hours: thresholdHours,
+            product_count: productCache.data.length
+          }
+        });
+      }
+      
       return { products: productCache.data, fromCache: true };
     }
     
@@ -2703,7 +2796,13 @@ if (databaseAvailable && storage) {
   const productsService = new ProductsService(
     db,
     fetchAllShopifyProducts,
-    (products) => metadataService.syncProductsMetadata(products),
+    async (products) => {
+      // Sync metadata for current products
+      await metadataService.syncProductsMetadata(products);
+      
+      // Clean up orphaned products that are no longer rankable
+      await metadataService.cleanupOrphanedProducts(products);
+    },
     metadataCache,
     rankingStatsCache
   );

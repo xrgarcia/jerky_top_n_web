@@ -760,6 +760,62 @@ window.initToolsPage = async function() {
     });
   }
   
+  const saveCacheConfigBtn = document.getElementById('saveCacheConfigBtn');
+  if (saveCacheConfigBtn) {
+    saveCacheConfigBtn.addEventListener('click', async () => {
+      const hoursInput = document.getElementById('cacheStaleHours');
+      const hours = parseInt(hoursInput.value);
+      
+      if (isNaN(hours) || hours < 1 || hours > 168) {
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Invalid Input',
+          message: 'Please enter a value between 1 and 168 hours (7 days).'
+        });
+        return;
+      }
+      
+      saveCacheConfigBtn.disabled = true;
+      saveCacheConfigBtn.textContent = '💾 Saving...';
+      
+      try {
+        const response = await fetch('/api/admin/cache-config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ cacheStaleHours: hours })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to save configuration');
+        }
+        
+        const data = await response.json();
+        document.getElementById('currentCacheStaleHours').textContent = hours;
+        
+        showToast({
+          type: 'success',
+          icon: '✅',
+          title: 'Configuration Saved',
+          message: `Cache staleness threshold updated to ${hours} hours.`
+        });
+      } catch (error) {
+        console.error('Error saving cache config:', error);
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Save Failed',
+          message: 'Failed to save configuration. Please try again.'
+        });
+      } finally {
+        saveCacheConfigBtn.disabled = false;
+        saveCacheConfigBtn.textContent = '💾 Save Configuration';
+      }
+    });
+  }
+  
+  await loadCacheConfig();
+  
   if (window.socket) {
     window.socket.on('live-users:update', (data) => {
       if (currentToolTab === 'live-users') {
@@ -955,5 +1011,28 @@ async function saveProductEdit() {
   } finally {
     saveBtn.disabled = false;
     saveBtn.textContent = 'Save Changes';
+  }
+}
+
+async function loadCacheConfig() {
+  try {
+    const response = await fetch('/api/admin/cache-config');
+    
+    if (!response.ok) {
+      console.error('Failed to load cache config');
+      return;
+    }
+    
+    const data = await response.json();
+    const hours = data.cacheStaleHours || 48;
+    
+    const input = document.getElementById('cacheStaleHours');
+    const currentDisplay = document.getElementById('currentCacheStaleHours');
+    
+    if (input) input.value = hours;
+    if (currentDisplay) currentDisplay.textContent = hours;
+    
+  } catch (error) {
+    console.error('Error loading cache config:', error);
   }
 }

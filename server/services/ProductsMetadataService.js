@@ -54,6 +54,73 @@ class ProductsMetadataService {
   async getProductMetadata(shopifyProductId) {
     return await this.repository.getByShopifyProductId(shopifyProductId);
   }
+
+  /**
+   * Clean up orphaned products from metadata table
+   * Products that are no longer rankable in Shopify will be removed
+   * @param {Array<object>} currentRankableProducts - Array of current rankable Shopify products
+   * @returns {Promise<{deletedCount: number, deletedIds: Array<string>}>}
+   */
+  async cleanupOrphanedProducts(currentRankableProducts) {
+    const Sentry = require('@sentry/node');
+    
+    // Extract product IDs from current rankable products
+    const currentProductIds = currentRankableProducts.map(p => p.id);
+    
+    if (currentProductIds.length === 0) {
+      console.log('⚠️ No current products to sync, skipping cleanup');
+      return { deletedCount: 0, deletedIds: [] };
+    }
+    
+    console.log(`🧹 Checking for orphaned products in metadata table...`);
+    console.log(`   Current rankable products: ${currentProductIds.length}`);
+    
+    try {
+      const result = await this.repository.cleanupOrphanedProducts(currentProductIds);
+      
+      if (result.deletedCount > 0) {
+        console.log(`🗑️ Cleaned up ${result.deletedCount} orphaned products from metadata table`);
+        
+        // Log to Sentry
+        const deletedTitles = result.deletedProducts.map(p => p.title);
+        Sentry.captureMessage(`Cleaned up ${result.deletedCount} orphaned products from metadata`, {
+          level: 'warning',
+          tags: { 
+            service: 'products', 
+            operation: 'metadata_cleanup',
+            deleted_count: result.deletedCount
+          },
+          extra: {
+            deleted_product_ids: result.deletedIds,
+            deleted_product_titles: deletedTitles,
+            current_rankable_count: currentProductIds.length
+          }
+        });
+      } else {
+        console.log(`✅ No orphaned products found in metadata table`);
+      }
+      
+      return result;
+      
+    } catch (error) {
+      console.error('Error cleaning up orphaned products:', error);
+      
+      // Log error to Sentry
+      Sentry.captureException(error, {
+        level: 'error',
+        tags: { 
+          service: 'products', 
+          operation: 'metadata_cleanup'
+        },
+        extra: {
+          current_rankable_count: currentProductIds.length
+        }
+      });
+      
+      // Don't fail the sync if cleanup fails
+      return { deletedCount: 0, deletedIds: [] };
+    }
+  }
 }
 
 module.exports = ProductsMetadataService;

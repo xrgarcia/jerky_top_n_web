@@ -254,6 +254,16 @@ const activityLogsRelations = relations(activityLogs, ({ one }) => ({
   }),
 }));
 
+// System configuration table - stores application-level settings
+const systemConfig = pgTable('system_config', {
+  id: serial('id').primaryKey(),
+  key: text('key').unique().notNull(), // Configuration key (e.g., 'cache_stale_hours')
+  value: text('value').notNull(), // Configuration value (stored as string)
+  description: text('description'), // Human-readable description
+  updatedAt: timestamp('updated_at').defaultNow(),
+  updatedBy: text('updated_by'), // Email of admin who last updated
+});
+
 module.exports = {
   users,
   sessions,
@@ -270,6 +280,7 @@ module.exports = {
   productsMetadata,
   pageViews,
   rankingOperations,
+  systemConfig,
   usersRelations,
   sessionsRelations,
   rankingsRelations,

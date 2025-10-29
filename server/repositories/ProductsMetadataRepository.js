@@ -71,6 +71,44 @@ class ProductsMetadataRepository {
       .from(productsMetadata)
       .where(eq(productsMetadata.animalType, animalType));
   }
+
+  /**
+   * Delete products from metadata table that are not in the provided list of product IDs
+   * @param {Array<string>} currentProductIds - Array of current rankable Shopify product IDs
+   * @returns {Promise<{deletedCount: number, deletedIds: Array<string>, deletedProducts: Array}>}
+   */
+  async cleanupOrphanedProducts(currentProductIds) {
+    const { sql, notInArray } = require('drizzle-orm');
+    
+    // If no current products, don't delete everything (safety check)
+    if (!currentProductIds || currentProductIds.length === 0) {
+      console.warn('⚠️ cleanupOrphanedProducts called with empty product list, skipping cleanup');
+      return { deletedCount: 0, deletedIds: [], deletedProducts: [] };
+    }
+    
+    // Find orphaned products (products in DB but not in current list)
+    const orphaned = await this.db
+      .select({ shopifyProductId: productsMetadata.shopifyProductId, title: productsMetadata.title })
+      .from(productsMetadata)
+      .where(notInArray(productsMetadata.shopifyProductId, currentProductIds));
+    
+    if (orphaned.length === 0) {
+      return { deletedCount: 0, deletedIds: [], deletedProducts: [] };
+    }
+    
+    const orphanedIds = orphaned.map(p => p.shopifyProductId);
+    
+    // Delete orphaned products
+    await this.db
+      .delete(productsMetadata)
+      .where(notInArray(productsMetadata.shopifyProductId, currentProductIds));
+    
+    return {
+      deletedCount: orphaned.length,
+      deletedIds: orphanedIds,
+      deletedProducts: orphaned
+    };
+  }
 }
 
 module.exports = ProductsMetadataRepository;

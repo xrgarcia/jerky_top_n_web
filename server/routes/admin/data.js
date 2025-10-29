@@ -208,5 +208,63 @@ module.exports = function createDataManagementRoutes(storage, db) {
     }
   });
 
+  /**
+   * GET /api/admin/cache-config
+   * Get cache staleness configuration
+   */
+  router.get('/cache-config', requireSuperAdmin, async (req, res) => {
+    try {
+      const { sql } = require('drizzle-orm');
+      
+      const result = await db.execute(sql`
+        SELECT value FROM system_config WHERE key = 'cache_stale_hours' LIMIT 1
+      `);
+      
+      const cacheStaleHours = result.rows.length > 0 
+        ? parseInt(result.rows[0].value) 
+        : 48; // Default 48 hours
+      
+      res.json({ cacheStaleHours });
+    } catch (error) {
+      console.error('Error getting cache config:', error);
+      res.status(500).json({ error: 'Failed to get cache configuration' });
+    }
+  });
+
+  /**
+   * POST /api/admin/cache-config
+   * Set cache staleness configuration
+   */
+  router.post('/cache-config', requireSuperAdmin, async (req, res) => {
+    try {
+      const { cacheStaleHours } = req.body;
+      
+      if (!cacheStaleHours || cacheStaleHours < 1 || cacheStaleHours > 168) {
+        return res.status(400).json({ error: 'Cache stale hours must be between 1 and 168' });
+      }
+      
+      const { sql } = require('drizzle-orm');
+      
+      // Upsert the configuration
+      await db.execute(sql`
+        INSERT INTO system_config (key, value, description, updated_at, updated_by)
+        VALUES ('cache_stale_hours', ${cacheStaleHours.toString()}, 'Maximum age in hours before cache is considered very old and triggers Sentry alert', NOW(), ${req.user.email})
+        ON CONFLICT (key) 
+        DO UPDATE SET value = ${cacheStaleHours.toString()}, updated_at = NOW(), updated_by = ${req.user.email}
+      `);
+      
+      console.log(`✅ Cache staleness threshold updated to ${cacheStaleHours} hours by ${req.user.email}`);
+      
+      res.json({ 
+        success: true,
+        cacheStaleHours,
+        message: `Cache staleness threshold set to ${cacheStaleHours} hours`
+      });
+    } catch (error) {
+      console.error('Error saving cache config:', error);
+      res.status(500).json({ error: 'Failed to save cache configuration' });
+    }
+  });
+
   return router;
 };
