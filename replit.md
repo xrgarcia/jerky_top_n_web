@@ -43,11 +43,12 @@ The application features a modern web architecture designed for responsiveness, 
   - **Server Startup**: CacheWarmer automatically fetches products, syncs metadata, and cleans orphaned products on every server restart (non-blocking, ~7s)
   - **Cache Strategy**: MetadataCache and RankingStatsCache never expire - cache warms on startup and stays warm forever
   - **Selective Cache Updates**: Webhooks update only affected products instead of invalidating entire cache
-    - Product webhooks update single product in MetadataCache using `updateProduct(shopifyProductId, metadata)`
-    - Order webhooks recalculate stats for affected products only using `updateProducts(statsMap)`
+    - Product webhooks update single product in MetadataCache using `updateProduct(shopifyProductId, metadata)` and reset timestamp
+    - Order webhooks recalculate stats for affected products only using `updateProducts(statsMap)` and reset timestamp
   - **Shared Cache Instances**: Webhook routes receive shared cache instances from server.js to ensure consistency
   - **Orphan Cleanup**: Products removed from "rankable" tag in Shopify are automatically deleted from products_metadata during sync
-  - **Configurable Staleness Threshold**: Admin dashboard allows setting custom threshold (default 48 hours) for cache age warnings
+  - **Cache Age Tracking**: Cache timestamp resets on both full loads (server startup) and partial updates (webhooks), tracking time since last activity
+  - **Configurable Staleness Threshold**: Admin dashboard allows setting custom threshold (default 48 hours) for cache age warnings when no updates occur
   - **Sentry Monitoring**: Alerts triggered for very old cache usage, Shopify API failures, and orphaned product cleanup
   - **Fallback Handling**: Stale cache served as fallback when Shopify unavailable, with warning alerts
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
