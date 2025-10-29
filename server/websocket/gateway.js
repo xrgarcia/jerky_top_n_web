@@ -60,6 +60,10 @@ class WebSocketGateway {
             socket.join(`user:${session.userId}`);
             console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id}`);
             
+            // TEST: Emit a test event immediately to verify socket communication
+            socket.emit('test:ping', { message: 'Socket is working!', timestamp: Date.now() });
+            console.log(`📡 TEST: Sent test:ping to socket ${socket.id}`);
+            
             // Register user in activeUsers IMMEDIATELY before async work
             // This prevents the race where achievements earned during getUserById() are queued
             if (this.activeUsers.has(session.userId)) {

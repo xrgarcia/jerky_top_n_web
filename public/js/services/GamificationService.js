@@ -23,6 +23,11 @@ class GamificationService extends BaseService {
   }
 
   setupSocketListeners() {
+    // TEST: Listen for test ping to verify socket communication
+    this.socket.on('test:ping', (data) => {
+      console.log('✅ TEST: Received test:ping from server!', data);
+    });
+    
     this.socket.on('achievement:earned', (achievement) => {
       this.achievements.push(achievement);
       this.emit('achievement:new', achievement);
