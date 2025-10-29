@@ -1473,19 +1473,17 @@ app.post('/api/rankings/products', async (req, res) => {
       });
     }
     
-    // Clear existing rankings for this user and list first
-    await storage.clearUserProductRankings(userId, rankingListId);
-    
-    // Save all new rankings
-    for (const ranking of rankings) {
-      await storage.saveProductRanking({
-        userId: userId,
-        shopifyProductId: ranking.productData.id,
-        productData: ranking.productData,
-        ranking: ranking.ranking,
-        rankingListId: rankingListId
-      });
-    }
+    // Use bulk upsert instead of clear+insert for atomic updates
+    // This is safer if request is aborted mid-save
+    await storage.bulkUpsertProductRankings({
+      userId,
+      rankings: rankings.map(r => ({
+        productId: r.productData.id,
+        productData: r.productData,
+        ranking: r.ranking
+      })),
+      rankingListId
+    })
     
     // Invalidate ranking stats cache since data changed
     rankingStatsCache.invalidate();

@@ -261,6 +261,43 @@ class DatabaseStorage {
     }
   }
 
+  async bulkUpsertProductRankings({ userId, rankings, rankingListId }) {
+    try {
+      const { sql } = require('drizzle-orm');
+      
+      // Use Promise.all for parallel upserts with transaction safety
+      const results = await Promise.all(
+        rankings.map(async ({ productId, productData, ranking }) => {
+          return await db.insert(productRankings)
+            .values({
+              userId,
+              shopifyProductId: productId,
+              productData,
+              ranking,
+              rankingListId,
+            })
+            .onConflictDoUpdate({
+              target: [productRankings.userId, productRankings.shopifyProductId, productRankings.rankingListId],
+              set: {
+                ranking: sql`EXCLUDED.ranking`,
+                productData: sql`EXCLUDED.product_data`,
+                updatedAt: new Date()
+              }
+            })
+            .returning();
+        })
+      );
+
+      return results.map(r => r[0]); // Extract first element from each result
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'rankings', operation: 'bulk_upsert' },
+        extra: { userId, rankingListId, count: rankings.length }
+      });
+      throw error;
+    }
+  }
+
   async logProductSearch(searchTerm, resultCount, userId = null, pageName) {
     try {
       await db.insert(userProductSearches).values({
