@@ -36,8 +36,11 @@ The application features a modern web architecture designed for responsiveness, 
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Shopify Synchronization**: Automatic synchronization system ensures products and metadata stay in sync with Shopify:
   - **Server Startup**: CacheWarmer automatically fetches products, syncs metadata, and cleans orphaned products on every server restart (non-blocking, ~7s)
-  - **Cache Strategy**: MetadataCache and RankingStatsCache use webhook-only invalidation (no TTL expiration) for real-time synchronization
-  - **Webhook Invalidation**: Product webhooks invalidate MetadataCache, order webhooks invalidate RankingStatsCache
+  - **Cache Strategy**: MetadataCache and RankingStatsCache never expire - cache warms on startup and stays warm forever
+  - **Selective Cache Updates**: Webhooks update only affected products instead of invalidating entire cache
+    - Product webhooks update single product in MetadataCache using `updateProduct(shopifyProductId, metadata)`
+    - Order webhooks recalculate stats for affected products only using `updateProducts(statsMap)`
+  - **Shared Cache Instances**: Webhook routes receive shared cache instances from server.js to ensure consistency
   - **Orphan Cleanup**: Products removed from "rankable" tag in Shopify are automatically deleted from products_metadata during sync
   - **Configurable Staleness Threshold**: Admin dashboard allows setting custom threshold (default 48 hours) for cache age warnings
   - **Sentry Monitoring**: Alerts triggered for very old cache usage, Shopify API failures, and orphaned product cleanup
