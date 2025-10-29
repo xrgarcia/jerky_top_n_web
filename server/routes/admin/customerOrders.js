@@ -19,7 +19,9 @@ module.exports = function createCustomerOrdersRoutes(db) {
         dateFrom,
         dateTo,
         limit = 100,
-        offset = 0
+        offset = 0,
+        sortBy = 'orderDate',
+        sortOrder = 'desc'
       } = req.query;
 
       const filters = {
@@ -30,7 +32,9 @@ module.exports = function createCustomerOrdersRoutes(db) {
         dateFrom,
         dateTo,
         limit: parseInt(limit),
-        offset: parseInt(offset)
+        offset: parseInt(offset),
+        sortBy,
+        sortOrder
       };
 
       const [orders, total] = await Promise.all([
