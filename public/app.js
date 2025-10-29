@@ -2366,13 +2366,58 @@ document.addEventListener('DOMContentLoaded', function() {
         hideStatus();
     }
 
-    function scheduleAutoSave() {
-        // Clear any pending auto-save
+    // Fixed operation ID for current session to avoid duplicates
+    let currentSessionOperationId = null;
+    
+    async function scheduleAutoSave() {
+        // CRITICAL FIX: Immediately persist current rankings to survive page refresh
+        // This ensures no data loss even if user refreshes before the 800ms timer fires
+        const persistentQueue = rankingSaveQueue.persistentQueue;
+        if (persistentQueue) {
+            try {
+                const rankings = collectRankingData();
+                if (rankings.length > 0) {
+                    // Use a fixed operation ID for current session to avoid creating duplicates
+                    // This way, rapid ranking changes update the same queue entry instead of creating multiple entries
+                    if (!currentSessionOperationId) {
+                        currentSessionOperationId = typeof generateUUID === 'function' ? generateUUID() : `session-${Date.now()}`;
+                    }
+                    
+                    // Check if operation already exists (update it), otherwise enqueue new
+                    const existing = await persistentQueue.get(currentSessionOperationId);
+                    if (existing) {
+                        await persistentQueue.update(currentSessionOperationId, {
+                            rankings: rankings,
+                            timestamp: Date.now()
+                        });
+                        console.log(`💾 Updated persisted rankings (${rankings.length} total)`);
+                    } else {
+                        await persistentQueue.enqueue({
+                            operationId: currentSessionOperationId,
+                            rankings: rankings,
+                            rankingListId: 'default',
+                            timestamp: Date.now()
+                        });
+                        console.log(`💾 Immediately persisted ${rankings.length} ranking(s) to survive refresh`);
+                    }
+                } else if (currentSessionOperationId) {
+                    // EDGE CASE FIX: User removed all rankings before autosave fired
+                    // Clear the persisted operation to prevent stale data resurrection on refresh
+                    await persistentQueue.complete(currentSessionOperationId);
+                    console.log(`🗑️ Cleared persisted operation (all rankings removed)`);
+                    currentSessionOperationId = null;
+                }
+            } catch (error) {
+                console.error('❌ Failed to persist rankings immediately:', error);
+            }
+        }
+        
+        // Clear any pending auto-save timer
         if (autoSaveTimeout) {
             clearTimeout(autoSaveTimeout);
         }
         
-        // Schedule auto-save after 800ms of no ranking changes
+        // Schedule batched API call after 800ms of no ranking changes (for performance)
         autoSaveTimeout = setTimeout(async () => {
             if (isSaving) return; // Prevent concurrent saves
             
@@ -2414,6 +2459,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 const filledSlots = rankingSlots.filter(slot => slot.classList.contains('filled'));
                 if (filledSlots.length === 0) {
+                    // EDGE CASE FIX: User removed all rankings
+                    // Clear the persisted operation to prevent stale data resurrection
+                    const persistentQueue = rankingSaveQueue.persistentQueue;
+                    if (persistentQueue && currentSessionOperationId) {
+                        try {
+                            await persistentQueue.complete(currentSessionOperationId);
+                            console.log(`🗑️ Cleared persisted operation in autoSave (all rankings removed)`);
+                            currentSessionOperationId = null;
+                        } catch (error) {
+                            console.error('❌ Failed to clear persisted operation:', error);
+                        }
+                    }
                     updateAutoSaveStatus('', '');
                     return;
                 }
@@ -2444,6 +2501,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // Clear optimistically removed products on successful save
                     optimisticallyRemovedProducts = [];
+                    
+                    // CRITICAL FIX: Clear the persisted operation from IndexedDB after successful save
+                    // This prevents duplicate saves when page reloads after successful save
+                    const persistentQueue = rankingSaveQueue.persistentQueue;
+                    if (persistentQueue && currentSessionOperationId) {
+                        try {
+                            await persistentQueue.complete(currentSessionOperationId);
+                            console.log(`✅ Cleared persisted operation ${currentSessionOperationId.substring(0, 8)} after successful save`);
+                            currentSessionOperationId = null; // Reset for next batch
+                        } catch (error) {
+                            console.error('❌ Failed to clear persisted operation:', error);
+                        }
+                    }
                     
                     // Emit event to update progress widget and other reactive components
                     if (window.appEventBus) {
