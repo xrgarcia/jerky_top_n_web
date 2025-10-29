@@ -1,0 +1,140 @@
+2025-10-28 19:06:32.26
+7c31548f
+User
+👤 User 4 still has 1 active socket(s)
+2025-10-28 19:06:33.79
+7c31548f
+User
+✅ WebSocket client connected: W0j-1gw2xPLSSEFfAAAp
+2025-10-28 19:06:33.91
+7c31548f
+User
+🔐 User 4 authenticated on socket W0j-1gw2xPLSSEFfAAAp
+2025-10-28 19:06:34.02
+7c31548f
+User
+🔍 Achievements endpoint called
+2025-10-28 19:06:34.02
+7c31548f
+User
+🔑 Session ID present: 16b08afc...
+2025-10-28 19:06:34.06
+7c31548f
+User
+✅ Session validated for user 4
+2025-10-28 19:06:34.06
+7c31548f
+User
+📊 Fetching achievements for user 4
+2025-10-28 19:06:34.06
+7c31548f
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-28 19:06:34.06
+7c31548f
+User
+🔄 Batching user stats queries...
+2025-10-28 19:06:34.06
+7c31548f
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 35s)
+2025-10-28 19:06:34.06
+7c31548f
+User
+🔍 Streaks endpoint called
+2025-10-28 19:06:34.06
+7c31548f
+User
+🔑 Session ID present: 16b08afc...
+2025-10-28 19:06:34.08
+7c31548f
+User
+💾 Cache HIT: Returning 162 products from cache (age: 17 minutes)
+2025-10-28 19:06:34.08
+7c31548f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 9 minutes)
+2025-10-28 19:06:34.26
+7c31548f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-28 19:06:34.26
+7c31548f
+User
+✅ Session validated for user 4
+2025-10-28 19:06:34.26
+7c31548f
+User
+📊 Fetching streaks for user 4
+2025-10-28 19:06:34.26
+7c31548f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-28 19:06:34.30
+7c31548f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-28 19:06:34.30
+7c31548f
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-28 19:06:34.30
+7c31548f
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-28 19:06:34.30
+7c31548f
+User
+⏱️ Batch 1 completed in 242ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-28 19:06:34.30
+7c31548f
+User
+💾 Cache HIT: Returning 162 products from cache (age: 17 minutes)
+2025-10-28 19:06:34.30
+7c31548f
+User
+💾 Metadata Cache HIT: Returning data (age: 17 minutes)
+2025-10-28 19:06:34.30
+7c31548f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 9 minutes)
+2025-10-28 19:06:34.38
+7c31548f
+User
+📊 ProgressTracker: Found 21 total achievements for user 4
+2025-10-28 19:06:34.38
+7c31548f
+User
+✅ Earned: 14 | 🔒 Unearned: 7
+2025-10-28 19:06:34.38
+7c31548f
+User
+📊 ProgressTracker: 6 unearned achievements have progress data
+2025-10-28 19:06:34.38
+7c31548f
+User
+🎯 Closest unearned achievement: Week Warrior (42.9% complete - 3/7)
+2025-10-28 19:06:34.54
+7c31548f
+User
+⏱️ Batch 2 completed in 236ms (getCompletedAnimalCategories)
+2025-10-28 19:06:34.54
+7c31548f
+User
+⏱️ Total aggregation time: 478ms
+2025-10-28 19:06:34.54
+7c31548f
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-28 19:06:34.54
+7c31548f
+User
+🔄 Getting achievements with progress...
+2025-10-28 19:06:34.54
+7c31548f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 9 minutes)
+2025-10-28 19:06:34.58
+7c31548f
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
