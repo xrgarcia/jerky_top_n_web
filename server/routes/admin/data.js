@@ -147,10 +147,19 @@ module.exports = function createDataManagementRoutes(storage, db) {
       new RankingStatsCache().invalidate();
 
       // Clear recent achievement tracker to prevent false "recently emitted" blocks
-      const gamificationServices = req.app.get('gamificationServices');
-      if (gamificationServices?.recentAchievementTracker) {
-        await gamificationServices.recentAchievementTracker.clearAll();
-        console.log('🗑️ Cleared RecentAchievementTracker');
+      try {
+        const gamificationServices = req.app.get('gamificationServices');
+        if (gamificationServices?.recentAchievementTracker) {
+          // Call clearAll() method if it exists
+          if (typeof gamificationServices.recentAchievementTracker.clearAll === 'function') {
+            await gamificationServices.recentAchievementTracker.clearAll();
+            console.log('🗑️ Cleared RecentAchievementTracker');
+          } else {
+            console.log('ℹ️ RecentAchievementTracker does not have clearAll method, skipping');
+          }
+        }
+      } catch (trackerError) {
+        console.log('⚠️ Could not clear RecentAchievementTracker:', trackerError.message);
       }
 
       console.log('✅ All data and caches cleared successfully');
