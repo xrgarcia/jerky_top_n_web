@@ -1,0 +1,206 @@
+2025-10-29 18:19:13.95
+931f0c8f
+User
+🔍 Achievements endpoint called
+2025-10-29 18:19:13.95
+931f0c8f
+User
+🔑 Session ID present: 5118586e...
+2025-10-29 18:19:13.99
+931f0c8f
+User
+✅ Session validated for user 4
+2025-10-29 18:19:13.99
+931f0c8f
+User
+📊 Fetching achievements for user 4
+2025-10-29 18:19:13.99
+931f0c8f
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-29 18:19:13.99
+931f0c8f
+User
+🔄 Batching user stats queries...
+2025-10-29 18:19:13.99
+931f0c8f
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 101s)
+2025-10-29 18:19:13.99
+931f0c8f
+User
+✅ Session validated for user 4
+2025-10-29 18:19:13.99
+931f0c8f
+User
+📊 Fetching streaks for user 4
+2025-10-29 18:19:14.04
+931f0c8f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:19:14.04
+931f0c8f
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-29 18:19:14.04
+931f0c8f
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-29 18:19:14.08
+931f0c8f
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 2, waitingRequests: 0 }
+2025-10-29 18:19:14.12
+931f0c8f
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 2, waitingRequests: 0 }
+2025-10-29 18:19:14.13
+931f0c8f
+User
+💾 Cache HIT: Returning 162 products from cache (age: 1 minutes)
+2025-10-29 18:19:14.13
+931f0c8f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 1 minutes)
+2025-10-29 18:19:14.17
+931f0c8f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:19:14.18
+931f0c8f
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:19:14.18
+931f0c8f
+User
+⏱️ Batch 1 completed in 185ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-29 18:19:14.18
+931f0c8f
+User
+💾 Cache HIT: Returning 162 products from cache (age: 1 minutes)
+2025-10-29 18:19:14.18
+931f0c8f
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-29 18:19:14.22
+931f0c8f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 1 minutes)
+2025-10-29 18:19:14.26
+931f0c8f
+User
+📊 ProgressTracker: Found 21 total achievements for user 4
+2025-10-29 18:19:14.26
+931f0c8f
+User
+✅ Earned: 7 | 🔒 Unearned: 14
+2025-10-29 18:19:14.26
+931f0c8f
+User
+📊 ProgressTracker: 10 unearned achievements have progress data
+2025-10-29 18:19:14.26
+931f0c8f
+User
+🎯 Closest unearned achievement: Half Century (20.0% complete - 10/50)
+2025-10-29 18:19:14.26
+931f0c8f
+User
+⏱️ Batch 2 completed in 87ms (getCompletedAnimalCategories)
+2025-10-29 18:19:14.26
+931f0c8f
+User
+⏱️ Total aggregation time: 272ms
+2025-10-29 18:19:14.26
+931f0c8f
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-29 18:19:14.26
+931f0c8f
+User
+🔄 Getting achievements with progress...
+2025-10-29 18:19:14.26
+931f0c8f
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 1 minutes)
+2025-10-29 18:19:14.31
+931f0c8f
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
+2025-10-29 18:19:44.17
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-29 18:19:44.17
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-29 18:19:44.31
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-10-29 18:19:44.34
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-10-29 18:19:46.10
+931f0c8f
+User
+📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+2025-10-29 18:19:46.10
+931f0c8f
+User
+✅ Webhook signature verified
+2025-10-29 18:19:46.10
+931f0c8f
+User
+🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+2025-10-29 18:19:46.23
+931f0c8f
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:19:46.40
+931f0c8f
+User
+✅ Updated metadata for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+2025-10-29 18:19:46.40
+931f0c8f
+User
+✅ MetadataCache: Updated product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime)) - timestamp reset
+2025-10-29 18:20:16.40
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-10-29 18:20:18.97
+931f0c8f
+User
+📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+2025-10-29 18:20:18.97
+931f0c8f
+User
+✅ Webhook signature verified
+2025-10-29 18:20:18.97
+931f0c8f
+User
+🏷️ Processing products/update webhook for product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime))
+2025-10-29 18:20:19.09
+931f0c8f
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:20:19.18
+931f0c8f
+User
+✅ Updated metadata for product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime))
+2025-10-29 18:20:19.18
+931f0c8f
+User
+✅ MetadataCache: Updated product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime)) - timestamp reset
+2025-10-29 18:20:49.18
+931f0c8f
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors
