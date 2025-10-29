@@ -67,7 +67,10 @@ async function triggerAchievementRecalculation(achievementId, database, products
       try {
         let result = null;
         
-        if (ach.collectionType === 'static_collection' || ach.collectionType === 'custom_product_list' || ach.collectionType === 'flavor_coin') {
+        if (ach.collectionType === 'static_collection' || 
+            ach.collectionType === 'custom_product_list' || 
+            ach.collectionType === 'flavor_coin' ||
+            ach.collectionType === 'dynamic_collection') {
           const progress = await collectionManager.calculateCustomProductProgress(user.id, ach);
           if (progress.tier) {
             result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
@@ -194,7 +197,10 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
     
     // Trigger background recalculation for product-based achievements
     // This awards the achievement to users who have already ranked the required products
-    if (achievement.collectionType === 'flavor_coin' || achievement.collectionType === 'static_collection' || achievement.collectionType === 'custom_product_list') {
+    if (achievement.collectionType === 'flavor_coin' || 
+        achievement.collectionType === 'static_collection' || 
+        achievement.collectionType === 'custom_product_list' ||
+        achievement.collectionType === 'dynamic_collection') {
       console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
       
       // Run recalculation asynchronously (don't await - runs in background)
