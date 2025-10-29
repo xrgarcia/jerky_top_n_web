@@ -210,21 +210,33 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
   /**
    * GET /api/admin/cache-config
-   * Get cache staleness configuration
+   * Get cache staleness configuration for both caches
    */
   router.get('/cache-config', requireSuperAdmin, async (req, res) => {
     try {
       const { sql } = require('drizzle-orm');
       
       const result = await db.execute(sql`
-        SELECT value FROM system_config WHERE key = 'cache_stale_hours' LIMIT 1
+        SELECT key, value FROM system_config 
+        WHERE key IN ('metadata_cache_stale_hours', 'ranking_stats_cache_stale_hours')
       `);
       
-      const cacheStaleHours = result.rows.length > 0 
-        ? parseInt(result.rows[0].value) 
-        : 48; // Default 48 hours
+      // Build config object with defaults
+      const config = {
+        metadataCacheStaleHours: 168, // Default 7 days (products rarely change)
+        rankingStatsCacheStaleHours: 48  // Default 2 days (stats update with orders)
+      };
       
-      res.json({ cacheStaleHours });
+      // Update with database values if present
+      for (const row of result.rows) {
+        if (row.key === 'metadata_cache_stale_hours') {
+          config.metadataCacheStaleHours = parseInt(row.value);
+        } else if (row.key === 'ranking_stats_cache_stale_hours') {
+          config.rankingStatsCacheStaleHours = parseInt(row.value);
+        }
+      }
+      
+      res.json(config);
     } catch (error) {
       console.error('Error getting cache config:', error);
       res.status(500).json({ error: 'Failed to get cache configuration' });
@@ -233,32 +245,47 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
   /**
    * POST /api/admin/cache-config
-   * Set cache staleness configuration
+   * Set cache staleness configuration for both caches
    */
   router.post('/cache-config', requireSuperAdmin, async (req, res) => {
     try {
-      const { cacheStaleHours } = req.body;
+      const { metadataCacheStaleHours, rankingStatsCacheStaleHours } = req.body;
       
-      if (!cacheStaleHours || cacheStaleHours < 1 || cacheStaleHours > 168) {
-        return res.status(400).json({ error: 'Cache stale hours must be between 1 and 168' });
+      // Validate both inputs
+      if (!metadataCacheStaleHours || metadataCacheStaleHours < 1 || metadataCacheStaleHours > 720) {
+        return res.status(400).json({ error: 'Metadata cache stale hours must be between 1 and 720 (30 days)' });
+      }
+      
+      if (!rankingStatsCacheStaleHours || rankingStatsCacheStaleHours < 1 || rankingStatsCacheStaleHours > 720) {
+        return res.status(400).json({ error: 'Ranking stats cache stale hours must be between 1 and 720 (30 days)' });
       }
       
       const { sql } = require('drizzle-orm');
       
-      // Upsert the configuration
+      // Upsert both configurations
       await db.execute(sql`
         INSERT INTO system_config (key, value, description, updated_at, updated_by)
-        VALUES ('cache_stale_hours', ${cacheStaleHours.toString()}, 'Maximum age in hours before cache is considered very old and triggers Sentry alert', NOW(), ${req.user.email})
+        VALUES ('metadata_cache_stale_hours', ${metadataCacheStaleHours.toString()}, 'Maximum age in hours before metadata cache triggers Sentry alert', NOW(), ${req.user.email})
         ON CONFLICT (key) 
-        DO UPDATE SET value = ${cacheStaleHours.toString()}, updated_at = NOW(), updated_by = ${req.user.email}
+        DO UPDATE SET value = ${metadataCacheStaleHours.toString()}, updated_at = NOW(), updated_by = ${req.user.email}
       `);
       
-      console.log(`✅ Cache staleness threshold updated to ${cacheStaleHours} hours by ${req.user.email}`);
+      await db.execute(sql`
+        INSERT INTO system_config (key, value, description, updated_at, updated_by)
+        VALUES ('ranking_stats_cache_stale_hours', ${rankingStatsCacheStaleHours.toString()}, 'Maximum age in hours before ranking stats cache triggers Sentry alert', NOW(), ${req.user.email})
+        ON CONFLICT (key) 
+        DO UPDATE SET value = ${rankingStatsCacheStaleHours.toString()}, updated_at = NOW(), updated_by = ${req.user.email}
+      `);
+      
+      console.log(`✅ Cache staleness thresholds updated by ${req.user.email}:`);
+      console.log(`   - Metadata cache: ${metadataCacheStaleHours} hours`);
+      console.log(`   - Ranking stats cache: ${rankingStatsCacheStaleHours} hours`);
       
       res.json({ 
         success: true,
-        cacheStaleHours,
-        message: `Cache staleness threshold set to ${cacheStaleHours} hours`
+        metadataCacheStaleHours,
+        rankingStatsCacheStaleHours,
+        message: `Cache staleness thresholds updated successfully`
       });
     } catch (error) {
       console.error('Error saving cache config:', error);
