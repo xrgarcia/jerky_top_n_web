@@ -770,18 +770,22 @@ const metadataCache = new MetadataCache(30);
 // Shared purchase history service (singleton with persistent cache)
 const purchaseHistoryService = new PurchaseHistoryService();
 
-// Helper to get cache staleness threshold from database (cached for performance)
-let cacheStaleThresholdCache = {
-  value: 48, // Default 48 hours
+// Helper to get cache staleness thresholds from database (cached for performance)
+let cacheStaleThresholdsCache = {
+  metadataHours: 168, // Default 7 days (products rarely change)
+  rankingStatsHours: 48, // Default 2 days (stats update with orders)
   timestamp: null,
   TTL: 5 * 60 * 1000 // Refresh every 5 minutes
 };
 
-async function getCacheStaleThresholdHours() {
-  // Return cached value if still valid
-  if (cacheStaleThresholdCache.timestamp && 
-      Date.now() - cacheStaleThresholdCache.timestamp < cacheStaleThresholdCache.TTL) {
-    return cacheStaleThresholdCache.value;
+async function getCacheStaleThresholds() {
+  // Return cached values if still valid
+  if (cacheStaleThresholdsCache.timestamp && 
+      Date.now() - cacheStaleThresholdsCache.timestamp < cacheStaleThresholdsCache.TTL) {
+    return {
+      metadata: cacheStaleThresholdsCache.metadataHours,
+      rankingStats: cacheStaleThresholdsCache.rankingStatsHours
+    };
   }
   
   try {
@@ -789,19 +793,35 @@ async function getCacheStaleThresholdHours() {
     const { sql } = require('drizzle-orm');
     
     const result = await db.execute(sql`
-      SELECT value FROM system_config WHERE key = 'cache_stale_hours' LIMIT 1
+      SELECT key, value FROM system_config 
+      WHERE key IN ('metadata_cache_stale_hours', 'ranking_stats_cache_stale_hours')
     `);
     
-    if (result.rows.length > 0) {
-      cacheStaleThresholdCache.value = parseInt(result.rows[0].value);
-      cacheStaleThresholdCache.timestamp = Date.now();
+    // Update cached values from database
+    for (const row of result.rows) {
+      if (row.key === 'metadata_cache_stale_hours') {
+        cacheStaleThresholdsCache.metadataHours = parseInt(row.value);
+      } else if (row.key === 'ranking_stats_cache_stale_hours') {
+        cacheStaleThresholdsCache.rankingStatsHours = parseInt(row.value);
+      }
     }
+    
+    cacheStaleThresholdsCache.timestamp = Date.now();
   } catch (error) {
-    console.error('Error fetching cache stale threshold:', error);
-    // Keep using existing cached value or default
+    console.error('Error fetching cache stale thresholds:', error);
+    // Keep using existing cached values or defaults
   }
   
-  return cacheStaleThresholdCache.value;
+  return {
+    metadata: cacheStaleThresholdsCache.metadataHours,
+    rankingStats: cacheStaleThresholdsCache.rankingStatsHours
+  };
+}
+
+// Helper function for backwards compatibility (checks metadata cache)
+async function getCacheStaleThresholdHours() {
+  const thresholds = await getCacheStaleThresholds();
+  return thresholds.metadata;
 }
 
 // Check if cache is valid (within 30-minute TTL)
@@ -820,13 +840,35 @@ function getCacheAgeMinutes() {
   return Math.floor((Date.now() - productCache.timestamp) / (60 * 1000));
 }
 
-// Check if cache is "very old" and should trigger alerts
+// Check if cache is "very old" and should trigger alerts (backwards compatibility - checks metadata cache)
 async function isCacheVeryOld() {
   const cacheAgeMinutes = getCacheAgeMinutes();
   if (cacheAgeMinutes === 0) return false;
   
   const thresholdHours = await getCacheStaleThresholdHours();
   const thresholdMinutes = thresholdHours * 60;
+  
+  return cacheAgeMinutes >= thresholdMinutes;
+}
+
+// Check if metadata cache is "very old" and should trigger alerts
+async function isMetadataCacheVeryOld() {
+  const cacheAgeMinutes = metadataCache.getAge();
+  if (cacheAgeMinutes === null || cacheAgeMinutes < 0) return false;
+  
+  const thresholds = await getCacheStaleThresholds();
+  const thresholdMinutes = thresholds.metadata * 60;
+  
+  return cacheAgeMinutes >= thresholdMinutes;
+}
+
+// Check if ranking stats cache is "very old" and should trigger alerts
+async function isRankingStatsCacheVeryOld() {
+  const cacheAgeMinutes = rankingStatsCache.getAge();
+  if (cacheAgeMinutes === null || cacheAgeMinutes < 0) return false;
+  
+  const thresholds = await getCacheStaleThresholds();
+  const thresholdMinutes = thresholds.rankingStats * 60;
   
   return cacheAgeMinutes >= thresholdMinutes;
 }
@@ -3006,6 +3048,49 @@ if (storage) {
     }
   }, 60 * 60 * 1000); // Every hour
 }
+
+// Periodic cache staleness monitoring (every hour)
+setInterval(async () => {
+  try {
+    const thresholds = await getCacheStaleThresholds();
+    
+    // Check metadata cache
+    if (await isMetadataCacheVeryOld()) {
+      const cacheAgeMinutes = metadataCache.getAge();
+      const cacheAgeHours = Math.floor(cacheAgeMinutes / 60);
+      const message = `Metadata cache is very old: ${cacheAgeHours} hours (threshold: ${thresholds.metadata} hours)`;
+      console.error(`🚨 ${message}`);
+      Sentry.captureMessage(message, {
+        level: 'warning',
+        tags: { 
+          service: 'cache_monitoring',
+          cache_type: 'metadata',
+          cache_age_hours: cacheAgeHours,
+          threshold_hours: thresholds.metadata
+        }
+      });
+    }
+    
+    // Check ranking stats cache
+    if (await isRankingStatsCacheVeryOld()) {
+      const cacheAgeMinutes = rankingStatsCache.getAge();
+      const cacheAgeHours = Math.floor(cacheAgeMinutes / 60);
+      const message = `Ranking stats cache is very old: ${cacheAgeHours} hours (threshold: ${thresholds.rankingStats} hours)`;
+      console.error(`🚨 ${message}`);
+      Sentry.captureMessage(message, {
+        level: 'warning',
+        tags: { 
+          service: 'cache_monitoring',
+          cache_type: 'ranking_stats',
+          cache_age_hours: cacheAgeHours,
+          threshold_hours: thresholds.rankingStats
+        }
+      });
+    }
+  } catch (error) {
+    console.error('Error monitoring cache staleness:', error);
+  }
+}, 60 * 60 * 1000); // Every hour
 
 // Start server on all interfaces (required for Replit)
 const server = httpServer.listen(PORT, '0.0.0.0', async () => {
