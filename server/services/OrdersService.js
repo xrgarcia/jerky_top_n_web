@@ -171,6 +171,65 @@ class OrdersService {
   }
 
   /**
+   * Fetch customer data from Shopify by customer ID
+   * @param {string} shopifyCustomerId - The Shopify customer ID
+   * @returns {Promise<Object|null>} Customer data or null if not found
+   */
+  async fetchCustomer(shopifyCustomerId) {
+    if (!this.accessToken) {
+      console.warn('⚠️ Shopify Admin Access Token not configured - cannot fetch customer');
+      return null;
+    }
+
+    try {
+      console.log(`👤 Fetching customer ${shopifyCustomerId} from Shopify`);
+      
+      const url = `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers/${shopifyCustomerId}.json`;
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-Shopify-Access-Token': this.accessToken,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        if (response.status === 404) {
+          console.warn(`⚠️ Customer ${shopifyCustomerId} not found in Shopify`);
+          return null;
+        }
+        
+        const errorText = await response.text();
+        console.error(`❌ Shopify Customer API error (${response.status}):`, errorText);
+        
+        Sentry.captureMessage(`Shopify Customer API error: ${response.status}`, {
+          level: 'warning',
+          tags: { service: 'orders-service', shopify_status: response.status },
+          extra: { shopifyCustomerId, errorText }
+        });
+        
+        return null;
+      }
+
+      const data = await response.json();
+      const customer = data.customer;
+      
+      console.log(`✅ Fetched customer ${shopifyCustomerId}: ${customer.email}`);
+      return customer;
+      
+    } catch (error) {
+      console.error('❌ Error fetching customer from Shopify:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'orders-service' },
+        extra: { shopifyCustomerId }
+      });
+      
+      return null;
+    }
+  }
+
+  /**
    * Check if Shopify API is available
    * @returns {boolean} True if configured
    */
