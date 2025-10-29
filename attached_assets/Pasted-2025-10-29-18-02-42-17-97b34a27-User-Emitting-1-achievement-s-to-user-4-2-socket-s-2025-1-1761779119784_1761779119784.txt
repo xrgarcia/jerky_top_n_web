@@ -1,0 +1,206 @@
+2025-10-29 18:02:42.17
+97b34a27
+User
+🔊 Emitting 1 achievement(s) to user 4 (2 socket(s))
+2025-10-29 18:02:42.17
+97b34a27
+User
+🏆 User 4 earned 1 new achievement(s): Getting Started
+2025-10-29 18:02:42.20
+97b34a27
+User
+🔍 Achievements endpoint called
+2025-10-29 18:02:42.20
+97b34a27
+User
+🔑 Session ID present: 5118586e...
+2025-10-29 18:02:42.25
+97b34a27
+User
+✅ Session validated for user 4
+2025-10-29 18:02:42.25
+97b34a27
+User
+📊 Fetching achievements for user 4
+2025-10-29 18:02:42.25
+97b34a27
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-29 18:02:42.25
+97b34a27
+User
+🔄 Batching user stats queries...
+2025-10-29 18:02:42.25
+97b34a27
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 1s)
+2025-10-29 18:02:42.29
+97b34a27
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:02:42.29
+97b34a27
+User
+⏱️ Batch 1 completed in 44ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-29 18:02:42.29
+97b34a27
+User
+💾 Cache HIT: Returning 162 products from cache (age: 1 minutes)
+2025-10-29 18:02:42.29
+97b34a27
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-10-29 18:02:42.33
+97b34a27
+User
+⏱️ Batch 2 completed in 44ms (getCompletedAnimalCategories)
+2025-10-29 18:02:42.33
+97b34a27
+User
+⏱️ Total aggregation time: 88ms
+2025-10-29 18:02:42.33
+97b34a27
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-29 18:02:42.33
+97b34a27
+User
+🔄 Getting achievements with progress...
+2025-10-29 18:02:42.33
+97b34a27
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 0 minutes)
+2025-10-29 18:02:42.38
+97b34a27
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
+2025-10-29 18:02:42.44
+97b34a27
+User
+🔍 Achievements endpoint called
+2025-10-29 18:02:42.44
+97b34a27
+User
+🔑 Session ID present: 5118586e...
+2025-10-29 18:02:42.48
+97b34a27
+User
+✅ Session validated for user 4
+2025-10-29 18:02:42.48
+97b34a27
+User
+📊 Fetching achievements for user 4
+2025-10-29 18:02:42.48
+97b34a27
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-29 18:02:42.48
+97b34a27
+User
+🔄 Batching user stats queries...
+2025-10-29 18:02:42.48
+97b34a27
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 2s)
+2025-10-29 18:02:42.52
+97b34a27
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:02:42.53
+97b34a27
+User
+⏱️ Batch 1 completed in 45ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-29 18:02:42.53
+97b34a27
+User
+💾 Cache HIT: Returning 162 products from cache (age: 1 minutes)
+2025-10-29 18:02:42.53
+97b34a27
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-10-29 18:02:42.57
+97b34a27
+User
+⏱️ Batch 2 completed in 44ms (getCompletedAnimalCategories)
+2025-10-29 18:02:42.57
+97b34a27
+User
+⏱️ Total aggregation time: 89ms
+2025-10-29 18:02:42.57
+97b34a27
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-29 18:02:42.57
+97b34a27
+User
+🔄 Getting achievements with progress...
+2025-10-29 18:02:42.57
+97b34a27
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 0 minutes)
+2025-10-29 18:02:42.61
+97b34a27
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
+2025-10-29 18:02:47.35
+97b34a27
+User
+📊 Page view tracked: tools by user 4
+2025-10-29 18:03:04.29
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 11, idleConnections: 11 }
+2025-10-29 18:03:04.32
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 10, idleConnections: 10 }
+2025-10-29 18:03:04.33
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 9, idleConnections: 9 }
+2025-10-29 18:03:04.33
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 8, idleConnections: 8 }
+2025-10-29 18:03:04.33
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 7, idleConnections: 7 }
+2025-10-29 18:03:04.34
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 6, idleConnections: 6 }
+2025-10-29 18:03:04.65
+97b34a27
+User
+📦 Socket xFxfwtav8tjNokKLAAAF subscribed to customer orders updates
+2025-10-29 18:03:04.68
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-10-29 18:03:17.43
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-10-29 18:03:17.43
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-29 18:03:17.44
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-29 18:03:34.58
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-10-29 18:03:34.62
+97b34a27
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors
