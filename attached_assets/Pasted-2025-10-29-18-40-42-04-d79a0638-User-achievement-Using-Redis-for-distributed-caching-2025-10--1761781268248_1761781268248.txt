@@ -1,0 +1,200 @@
+2025-10-29 18:40:42.04
+d79a0638
+User
+✅ achievement: Using Redis for distributed caching
+2025-10-29 18:40:42.04
+d79a0638
+User
+✅ metadata: Using Redis for distributed caching
+2025-10-29 18:40:42.04
+d79a0638
+User
+✅ rankingStats: Using Redis for distributed caching
+2025-10-29 18:40:42.04
+d79a0638
+User
+✅ products: Using Redis for distributed caching
+2025-10-29 18:40:42.04
+d79a0638
+User
+✅ All caches using Redis for distributed caching
+2025-10-29 18:40:42.04
+d79a0638
+User
+🔌 Setting up Socket.IO Redis adapter with shared connection...
+2025-10-29 18:40:42.05
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.06
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.06
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.09
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.09
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.09
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.10
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.10
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.10
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.10
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.11
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.11
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 12, idleConnections: 0, waitingRequests: 0 }
+2025-10-29 18:40:42.14
+d79a0638
+User
+✅ Socket.IO using Redis adapter for cross-instance communication
+2025-10-29 18:40:42.14
+d79a0638
+User
+✅ Scalability initialization complete
+2025-10-29 18:40:42.21
+d79a0638
+User
+✅ LeaderboardCache SET: all_time:5 cached 2 entries
+2025-10-29 18:40:42.21
+d79a0638
+User
+⏱️ Leaderboard fetched in 442ms (cache MISS, period: all_time, limit: 5)
+2025-10-29 18:40:42.21
+d79a0638
+User
+🚫 LeaderboardCache MISS: all_time:50
+2025-10-29 18:40:42.26
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 13, idleConnections: 10, waitingRequests: 0 }
+2025-10-29 18:40:42.30
+d79a0638
+User
+✅ LeaderboardCache SET: all_time:5 cached 2 entries
+2025-10-29 18:40:42.30
+d79a0638
+User
+⏱️ Leaderboard fetched in 716ms (cache MISS, period: all_time, limit: 5)
+2025-10-29 18:40:42.30
+d79a0638
+User
+✅ HomeStatsCache SET: Cached home stats, valid for 300s
+2025-10-29 18:40:42.30
+d79a0638
+User
+⏱️ Home stats fetched in 717ms (cache MISS)
+2025-10-29 18:40:42.30
+d79a0638
+User
+✅ CacheWarmer: HomeStatsCache warmed in 717ms
+2025-10-29 18:40:42.31
+d79a0638
+User
+✅ LeaderboardCache SET: all_time:50 cached 2 entries
+2025-10-29 18:40:42.31
+d79a0638
+User
+⏱️ Leaderboard fetched in 93ms (cache MISS, period: all_time, limit: 50)
+2025-10-29 18:40:42.31
+d79a0638
+User
+✅ CacheWarmer: LeaderboardCache warmed in 539ms
+2025-10-29 18:40:42.44
+d79a0638
+User
+✓ Webhook already registered: orders/create -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+2025-10-29 18:40:42.46
+d79a0638
+User
+📄 Fetched page 1: 250 products (total so far: 250)
+2025-10-29 18:40:42.76
+d79a0638
+User
+✅ Registered webhook: orders/updated -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+2025-10-29 18:40:42.76
+d79a0638
+User
+✓ Webhook already registered: orders/cancelled -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+2025-10-29 18:40:42.76
+d79a0638
+User
+✓ Webhook already registered: products/update -> https://jerkyrankings.replit.app/api/webhooks/shopify/products
+2025-10-29 18:40:42.76
+d79a0638
+User
+✓ Webhook already registered: products/create -> https://jerkyrankings.replit.app/api/webhooks/shopify/products
+2025-10-29 18:40:42.76
+d79a0638
+User
+✅ Webhook registration complete: 1 new, 4 existing, 0 failed
+2025-10-29 18:40:42.76
+d79a0638
+User
+✅ Shopify webhooks registered: 1 new, 4 existing
+2025-10-29 18:40:42.77
+d79a0638
+User
+📄 Fetched page 2: 226 products (total so far: 476)
+2025-10-29 18:40:42.77
+d79a0638
+User
+🛍️ Total products fetched from Shopify: 476
+2025-10-29 18:40:42.78
+d79a0638
+User
+✅ Filtered to 162 rankable products (out of 476 total)
+2025-10-29 18:40:42.78
+d79a0638
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-29 18:40:42.78
+d79a0638
+User
+✅ Cache UPDATED: Loaded 162 products, valid for 30 minutes
+2025-10-29 18:40:42.83
+d79a0638
+User
+✅ Seeded/updated 17/17 achievements
+2025-10-29 18:40:42.83
+d79a0638
+User
+🗑️ AchievementCache INVALIDATE: Clearing cache
+2025-10-29 18:40:42.83
+d79a0638
+User
+🚫 AchievementCache MISS: Data expired or not found
+2025-10-29 18:40:42.91
+d79a0638
+User
+✅ AchievementCache SET: Cached 21 definitions
+2025-10-29 18:40:42.91
+d79a0638
+User
+✅ Achievements seeded
