@@ -55,20 +55,6 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}) {
         console.log('✅ Caches updated');
       }
 
-      Sentry.captureMessage(`Shopify order webhook processed: ${topic}`, {
-        level: 'info',
-        tags: { 
-          service: 'webhook', 
-          topic,
-          action: result.action 
-        },
-        extra: { 
-          orderNumber: result.orderNumber,
-          userId: result.userId,
-          itemsProcessed: result.itemsProcessed || result.recordsDeleted
-        }
-      });
-
       res.status(200).json({ 
         success: true,
         message: 'Webhook processed successfully',
@@ -111,18 +97,6 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}) {
         // Update just this product in the cache instead of invalidating everything
         metadataCache.updateProduct(result.productId, result.metadata);
       }
-
-      Sentry.captureMessage(`Shopify product webhook processed: ${topic}`, {
-        level: 'info',
-        tags: { 
-          service: 'webhook', 
-          topic,
-          action: result.action 
-        },
-        extra: { 
-          productId: result.productId
-        }
-      });
 
       res.status(200).json({ 
         success: true,
