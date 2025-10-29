@@ -86,16 +86,37 @@ class PurchaseHistoryRepository {
     }
 
     try {
-      const values = orderItems.map(item => ({
-        orderNumber: item.orderNumber,
-        orderDate: item.orderDate,
-        shopifyProductId: item.shopifyProductId,
-        sku: item.sku || null,
-        quantity: item.quantity || 1,
-        userId: item.userId,
-        customerEmail: item.customerEmail,
-        lineItemData: item.lineItemData || null,
-      }));
+      // Deduplicate items by unique constraint (orderNumber, shopifyProductId, sku)
+      // Sum quantities for duplicates
+      const deduplicatedMap = new Map();
+      
+      for (const item of orderItems) {
+        const key = `${item.orderNumber}:${item.shopifyProductId}:${item.sku || 'null'}`;
+        
+        if (deduplicatedMap.has(key)) {
+          // Duplicate found - sum the quantities
+          const existing = deduplicatedMap.get(key);
+          existing.quantity += (item.quantity || 1);
+        } else {
+          // First occurrence - add to map
+          deduplicatedMap.set(key, {
+            orderNumber: item.orderNumber,
+            orderDate: item.orderDate,
+            shopifyProductId: item.shopifyProductId,
+            sku: item.sku || null,
+            quantity: item.quantity || 1,
+            userId: item.userId,
+            customerEmail: item.customerEmail,
+            lineItemData: item.lineItemData || null,
+          });
+        }
+      }
+      
+      const values = Array.from(deduplicatedMap.values());
+      
+      if (orderItems.length !== values.length) {
+        console.log(`📦 Deduplicated ${orderItems.length} items to ${values.length} unique items`);
+      }
 
       const result = await db
         .insert(customerOrders)
