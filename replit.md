@@ -73,6 +73,16 @@ The application features a modern web architecture designed for responsiveness, 
   - **Database Indexes**: Optimized indexes on `user_id`, `(user_id, shopify_product_id)`, and `(user_id, order_date)` for efficient lookups
   - **Employee Bypass**: Users with @jerky.com email or employee_admin role can rank all products without purchase restriction
   - **Graceful Degradation**: If purchase history is empty (during initial sync or no orders), users see all unranked products to prevent empty state
+  - **Real-time Webhook Updates**: Shopify webhooks maintain real-time synchronization of customer orders and product metadata
+- **Shopify Webhook Integration**: Real-time synchronization system for customer orders and product data:
+  - **Order Webhooks**: Automated handlers for orders/create, orders/updated, and orders/cancelled events that update `customer_orders` table
+  - **Product Webhooks**: Handlers for products/update and products/create events that sync `products_metadata` with latest animal types and flavors
+  - **Security**: HMAC SHA-256 signature verification with fail-closed policy and timing-safe comparison using crypto.timingSafeEqual
+  - **Orphan Cleanup**: Automatic removal of customer_orders records for cancelled orders or line items removed from order updates
+  - **Zero-Quantity Handling**: Line items with quantity 0 are automatically deleted from customer_orders
+  - **Cache Invalidation**: User-specific (PurchaseHistoryService) and global caches (MetadataCache, RankingStatsCache) invalidated on all modifying webhooks
+  - **Automatic Registration**: All 5 webhooks automatically registered with Shopify Admin API on server startup with deduplication
+  - **Error Monitoring**: Comprehensive Sentry logging for webhook failures and processing errors
 - **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
 - **Leaderboard**: Dedicated page showing top 50 rankers with engagement scores, badges, and user position highlighting.
 - **User Profile**: Displays user information and ranking statistics.

@@ -1,5 +1,5 @@
 const Sentry = require('@sentry/node');
-const { db } = require('../storage');
+const { db } = require('../db');
 const { customerOrders, users } = require('../../shared/schema');
 const { eq, and } = require('drizzle-orm');
 
