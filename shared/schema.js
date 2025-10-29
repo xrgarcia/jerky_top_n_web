@@ -1,4 +1,4 @@
-const { pgTable, serial, text, timestamp, integer, jsonb, unique, index } = require('drizzle-orm/pg-core');
+const { pgTable, serial, text, timestamp, integer, jsonb, unique, index, boolean } = require('drizzle-orm/pg-core');
 const { relations } = require('drizzle-orm');
 
 // User profiles from jerky.com customer accounts
@@ -10,6 +10,7 @@ const users = pgTable('users', {
   lastName: text('last_name'),
   displayName: text('display_name'),
   role: text('role').default('user').notNull(), // 'user' or 'employee_admin'
+  active: boolean('active').default(false).notNull(), // true if user has logged in at least once
   accessToken: text('access_token'),
   refreshToken: text('refresh_token'),
   tokenExpiry: timestamp('token_expiry'),
