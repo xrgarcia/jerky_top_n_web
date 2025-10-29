@@ -1114,7 +1114,21 @@ async function loadCustomerOrders(page = 1) {
         window.showPage('login');
         return;
       }
-      throw new Error('Failed to load customer orders');
+      
+      // Handle rate limit errors
+      if (response.status === 429) {
+        throw new Error('Too many requests. Please wait a moment and try again.');
+      }
+      
+      // Try to get error message from response
+      const contentType = response.headers.get('content-type');
+      if (contentType && contentType.includes('application/json')) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to load customer orders');
+      } else {
+        const errorText = await response.text();
+        throw new Error(errorText || 'Failed to load customer orders');
+      }
     }
 
     const data = await response.json();

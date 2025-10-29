@@ -1,0 +1,206 @@
+2025-10-29 18:47:51.97
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:47:51.97
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:48:00.30
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:48:00.30
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:48:00.30
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341020
+2025-10-29 18:48:00.30
+d79a0638
+User
+📦 Processing order JK3825341020: 2 line items
+2025-10-29 18:48:00.38
+d79a0638
+User
+👤 User not found, fetching from Shopify: 2823982678104
+2025-10-29 18:48:00.38
+d79a0638
+User
+👤 Fetching customer 2823982678104 from Shopify
+2025-10-29 18:48:00.60
+d79a0638
+User
+✅ Fetched customer 2823982678104: cynsir@midco.net
+2025-10-29 18:48:00.64
+d79a0638
+User
+✨ Created new user 62 from Shopify: cynsir@midco.net (Cynthia Siragusa)
+2025-10-29 18:48:00.86
+d79a0638
+User
+✅ Processed 2 line items for order JK3825341020 (user: 62)
+2025-10-29 18:48:00.86
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341020
+2025-10-29 18:48:00.86
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 62
+2025-10-29 18:48:00.86
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 62
+2025-10-29 18:48:00.86
+d79a0638
+User
+🔄 Recalculating ranking stats for 2 product(s)
+2025-10-29 18:48:00.90
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:48:00.90
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:48:18.04
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 6, idleConnections: 6 }
+2025-10-29 18:48:18.08
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-10-29 18:48:18.16
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-10-29 18:48:18.17
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-29 18:48:18.17
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-29 18:48:18.31
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-10-29 18:48:20.74
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:48:20.74
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:48:20.74
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341344
+2025-10-29 18:48:20.74
+d79a0638
+User
+📦 Processing order JK3825341344: 2 line items
+2025-10-29 18:48:20.78
+d79a0638
+User
+✅ Found existing user by Shopify ID: 44 (brenns58@gmail.com)
+2025-10-29 18:48:21.00
+d79a0638
+User
+✅ Processed 2 line items for order JK3825341344 (user: 44)
+2025-10-29 18:48:21.00
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341344
+2025-10-29 18:48:21.00
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 44
+2025-10-29 18:48:21.00
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 44
+2025-10-29 18:48:21.00
+d79a0638
+User
+🔄 Recalculating ranking stats for 2 product(s)
+2025-10-29 18:48:21.04
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:48:21.04
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:48:30.71
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:48:30.71
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:48:30.71
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341142
+2025-10-29 18:48:30.71
+d79a0638
+User
+📦 Processing order JK3825341142: 2 line items
+2025-10-29 18:48:30.79
+d79a0638
+User
+👤 User not found, fetching from Shopify: 9518154645818
+2025-10-29 18:48:30.79
+d79a0638
+User
+👤 Fetching customer 9518154645818 from Shopify
+2025-10-29 18:48:30.98
+d79a0638
+User
+✅ Fetched customer 9518154645818: sprtwolf@hotmail.com
+2025-10-29 18:48:31.02
+d79a0638
+User
+✨ Created new user 63 from Shopify: sprtwolf@hotmail.com (Darren Diehr)
+2025-10-29 18:48:31.24
+d79a0638
+User
+✅ Processed 2 line items for order JK3825341142 (user: 63)
+2025-10-29 18:48:31.24
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341142
+2025-10-29 18:48:31.24
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 63
+2025-10-29 18:48:31.24
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 63
+2025-10-29 18:48:31.24
+d79a0638
+User
+🔄 Recalculating ranking stats for 2 product(s)
+2025-10-29 18:48:31.28
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:48:31.28
+d79a0638
+User
+✅ Caches updated
+
+Collapse
+
+Wrap
+
+Colors
