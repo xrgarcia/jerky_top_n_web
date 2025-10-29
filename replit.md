@@ -59,7 +59,14 @@ The application features a modern web architecture designed for responsiveness, 
   - **Automatic retry**: Exponential backoff (1s → 30s max, 5 attempts) with network detection
   - **Recovery**: Pending operations automatically processed on page reload
 - **Products Page**: Advanced sorting, animal and flavor filtering, client-side instant search, and server-side pagination.
-- **Rank Page Products**: Server-side filtering to exclude already-ranked products before pagination.
+- **Rank Page Products**: Server-side filtering to exclude already-ranked products before pagination. **Purchase-based restriction**: Non-employee users can only rank products they've purchased from Shopify, with automatic order synchronization on login and graceful fallback during sync.
+- **Purchase History System**: Automatic background synchronization of Shopify orders on user login:
+  - **Order Sync**: Background job fetches user's Shopify orders and stores purchase history in `customer_orders` table
+  - **Caching Strategy**: 30-minute TTL cache reduces API calls and database queries
+  - **Singleton Service**: Shared PurchaseHistoryService instance ensures cache persistence across requests
+  - **Database Indexes**: Optimized indexes on `user_id`, `(user_id, shopify_product_id)`, and `(user_id, order_date)` for efficient lookups
+  - **Employee Bypass**: Users with @jerky.com email or employee_admin role can rank all products without purchase restriction
+  - **Graceful Degradation**: If purchase history is empty (during initial sync or no orders), users see all unranked products to prevent empty state
 - **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
 - **Leaderboard**: Dedicated page showing top 50 rankers with engagement scores, badges, and user position highlighting.
 - **User Profile**: Displays user information and ranking statistics.
