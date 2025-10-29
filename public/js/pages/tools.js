@@ -511,6 +511,15 @@ function setupToolNavigation() {
           liveUsersSubscribed = false;
         }
         subscribeToCustomerOrdersUpdates();
+      } else if (tool === 'sentry-issues') {
+        document.getElementById('sentryIssuesTool').style.display = 'block';
+        await loadSentryIssues();
+        
+        if (liveUsersSubscribed && window.socket) {
+          window.socket.emit('unsubscribe:live-users');
+          liveUsersSubscribed = false;
+        }
+        unsubscribeFromCustomerOrdersUpdates();
       }
     });
   });
@@ -1363,4 +1372,179 @@ function unsubscribeFromCustomerOrdersUpdates() {
   window.socket.off('customer-orders:updated');
   customerOrdersSocketSubscribed = false;
   console.log('📦 Unsubscribed from customer orders updates');
+}
+
+async function loadSentryIssues() {
+  const tableBody = document.getElementById('sentryIssuesTableBody');
+  const countSpan = document.getElementById('sentryIssuesCount');
+  const environmentFilter = document.getElementById('sentryEnvironmentFilter');
+  const statusFilter = document.getElementById('sentryStatusFilter');
+  const applyFiltersBtn = document.getElementById('sentryApplyFiltersBtn');
+  const refreshBtn = document.getElementById('sentryRefreshBtn');
+  
+  const fetchIssues = async () => {
+    try {
+      countSpan.textContent = 'Loading...';
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+            <div style="display: inline-block; width: 24px; height: 24px; border: 3px solid #7b8b52; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div style="margin-top: 10px;">Loading Sentry issues...</div>
+          </td>
+        </tr>
+      `;
+      
+      const environment = environmentFilter.value;
+      const status = statusFilter.value;
+      
+      const params = new URLSearchParams({ environment, status, limit: 50 });
+      const response = await fetch(`/api/admin/sentry/issues?${params.toString()}`);
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || errorData.error || 'Failed to fetch Sentry issues');
+      }
+      
+      const data = await response.json();
+      const issues = data.issues || [];
+      
+      countSpan.textContent = `${issues.length} issue(s) found`;
+      
+      if (issues.length === 0) {
+        tableBody.innerHTML = `
+          <tr>
+            <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+              <div style="font-size: 48px; margin-bottom: 10px;">✅</div>
+              <div>No ${status === 'all' ? '' : status} issues found!</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+      
+      tableBody.innerHTML = issues.map(issue => {
+        const levelColors = {
+          error: '#e74c3c',
+          warning: '#f39c12',
+          info: '#3498db',
+          debug: '#95a5a6'
+        };
+        
+        const statusColors = {
+          unresolved: '#e74c3c',
+          resolved: '#27ae60',
+          ignored: '#95a5a6'
+        };
+        
+        return `
+          <tr style="border-bottom: 1px solid #f0f0f0; transition: background 0.2s;" 
+              onmouseover="this.style.background='rgba(123, 139, 82, 0.03)'" 
+              onmouseout="this.style.background='white'">
+            <td style="padding: 12px 15px;">
+              <span style="
+                background: ${levelColors[issue.level] || '#95a5a6'}; 
+                color: white; 
+                padding: 4px 8px; 
+                border-radius: 4px; 
+                font-size: 11px; 
+                font-weight: 600; 
+                text-transform: uppercase;
+              ">${issue.level}</span>
+            </td>
+            <td style="padding: 12px 15px;">
+              <div style="font-weight: 500; margin-bottom: 4px;">${issue.title}</div>
+              <div style="font-size: 12px; color: #666;">${issue.culprit || 'Unknown location'}</div>
+              ${issue.metadata.type ? `<div style="font-size: 11px; color: #999; margin-top: 2px;">${issue.metadata.type}</div>` : ''}
+            </td>
+            <td style="padding: 12px 15px;">
+              <span style="
+                background: ${issue.environment === 'production' ? '#e74c3c' : '#3498db'}; 
+                color: white; 
+                padding: 3px 6px; 
+                border-radius: 3px; 
+                font-size: 11px;
+              ">${issue.environment}</span>
+            </td>
+            <td style="padding: 12px 15px;">
+              <strong>${issue.count.toLocaleString()}</strong>
+            </td>
+            <td style="padding: 12px 15px;">
+              ${issue.userCount.toLocaleString()}
+            </td>
+            <td style="padding: 12px 15px; font-size: 12px; color: #666;">
+              ${formatRelativeTime(issue.firstSeen)}
+            </td>
+            <td style="padding: 12px 15px; font-size: 12px; color: #666;">
+              ${formatRelativeTime(issue.lastSeen)}
+            </td>
+            <td style="padding: 12px 15px;">
+              <span style="
+                background: ${statusColors[issue.status] || '#95a5a6'}; 
+                color: white; 
+                padding: 3px 8px; 
+                border-radius: 3px; 
+                font-size: 11px;
+              ">${issue.status}</span>
+            </td>
+            <td style="padding: 12px 15px;">
+              <a href="${issue.permalink}" 
+                 target="_blank" 
+                 rel="noopener noreferrer"
+                 style="
+                   color: #7b8b52; 
+                   text-decoration: none; 
+                   font-weight: 500;
+                   font-size: 13px;
+                 "
+                 onmouseover="this.style.textDecoration='underline'"
+                 onmouseout="this.style.textDecoration='none'">
+                View Details →
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join('');
+      
+    } catch (error) {
+      console.error('❌ Error loading Sentry issues:', error);
+      countSpan.textContent = 'Error loading issues';
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="9" style="text-align: center; padding: 40px; color: #e74c3c;">
+            <div style="font-size: 48px; margin-bottom: 10px;">⚠️</div>
+            <div style="font-weight: 500; margin-bottom: 5px;">Failed to load Sentry issues</div>
+            <div style="font-size: 13px; color: #999;">${error.message}</div>
+          </td>
+        </tr>
+      `;
+    }
+  };
+  
+  if (applyFiltersBtn) {
+    applyFiltersBtn.addEventListener('click', fetchIssues);
+  }
+  
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', fetchIssues);
+  }
+  
+  await fetchIssues();
+}
+
+function formatRelativeTime(timestamp) {
+  if (!timestamp) return 'Unknown';
+  
+  const date = new Date(timestamp);
+  const now = new Date();
+  const diffMs = now - date;
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMs / 3600000);
+  const diffDays = Math.floor(diffMs / 86400000);
+  
+  if (diffMins < 1) return 'Just now';
+  if (diffMins < 60) return `${diffMins}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffDays < 30) return `${diffDays}d ago`;
+  
+  return date.toLocaleDateString();
 }

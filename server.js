@@ -3012,6 +3012,11 @@ if (databaseAvailable && storage) {
       const customerOrdersRouter = createCustomerOrdersRoutes(db);
       adminRouter.use(customerOrdersRouter);
       
+      // Add Sentry monitoring route
+      const createSentryRoutes = require('./server/routes/admin/sentry');
+      const sentryRouter = createSentryRoutes(storage);
+      adminRouter.use(sentryRouter);
+      
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
