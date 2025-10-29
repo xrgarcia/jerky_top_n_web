@@ -169,10 +169,23 @@ class WebhookOrderService {
 
     if (orderItems.length === 0) {
       console.log(`ℹ️ No line items to process for order ${orderNumber}`);
+      
+      // Still broadcast if we deleted items (state changed)
+      if (this.webSocketGateway && itemsToDelete.length > 0) {
+        this.webSocketGateway.broadcastCustomerOrdersUpdate({
+          action: 'updated',
+          orderNumber,
+          itemsCount: 0,
+          deletedCount: itemsToDelete.length
+        });
+      }
+      
       return { success: true, action: 'skipped', reason: 'no_line_items', orderNumber, userId: user.id };
     }
 
     const upserted = [];
+    let deletedInLoop = 0;
+    
     for (const item of orderItems) {
       const existing = await this.db
         .select()
@@ -191,6 +204,7 @@ class WebhookOrderService {
           await this.db
             .delete(customerOrders)
             .where(eq(customerOrders.id, existing[0].id));
+          deletedInLoop++;
           console.log(`🗑️ Removed line item with quantity 0: ${item.shopifyProductId}`);
         } else {
           const [updated] = await this.db
@@ -215,11 +229,15 @@ class WebhookOrderService {
 
     console.log(`✅ Processed ${upserted.length} line items for order ${orderNumber} (user: ${user.id})`);
 
-    if (this.webSocketGateway && upserted.length > 0) {
+    // Broadcast if any state changed (upserts OR deletions in loop OR orphaned deletions)
+    const totalDeletions = deletedInLoop + itemsToDelete.length;
+    if (this.webSocketGateway && (upserted.length > 0 || totalDeletions > 0)) {
+      const action = upserted.length > 0 ? 'upserted' : 'updated';
       this.webSocketGateway.broadcastCustomerOrdersUpdate({
-        action: 'upserted',
+        action,
         orderNumber,
-        itemsCount: upserted.length
+        itemsCount: upserted.length,
+        deletedCount: totalDeletions
       });
     }
 
