@@ -2086,11 +2086,32 @@ document.addEventListener('DOMContentLoaded', function() {
             this.queue = [];
             this.processing = false;
             this.pendingSavePromise = null;
+            this.coalescingEnabled = true;
         }
 
-        async enqueue(saveFunction) {
+        async enqueue(saveFunction, options = {}) {
             return new Promise((resolve, reject) => {
-                this.queue.push({ saveFunction, resolve, reject });
+                const queueItem = { saveFunction, resolve, reject, options };
+                
+                // Coalescing: if this is a ranking save and there's already one pending,
+                // cancel the old one and use this new one (it has the latest state)
+                if (this.coalescingEnabled && options.type === 'ranking_save') {
+                    const existingIndex = this.queue.findIndex(item => 
+                        item.options?.type === 'ranking_save'
+                    );
+                    
+                    if (existingIndex >= 0) {
+                        // Cancel the old save and replace with new one
+                        const oldItem = this.queue[existingIndex];
+                        this.queue.splice(existingIndex, 1);
+                        console.log('🔄 Coalesced duplicate ranking save (queue optimization)');
+                        
+                        // Resolve the old promise with a special value
+                        oldItem.resolve({ coalesced: true });
+                    }
+                }
+                
+                this.queue.push(queueItem);
                 this.process();
             });
         }
@@ -2126,6 +2147,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         get hasPendingSaves() {
             return this.processing || this.queue.length > 0;
+        }
+
+        get queueLength() {
+            return this.queue.length;
         }
     }
 
@@ -2234,6 +2259,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function autoSaveRankings() {
         // Enqueue the save operation to prevent concurrent requests
+        // Using type 'ranking_save' enables queue coalescing for performance
         return rankingSaveQueue.enqueue(async () => {
             try {
                 isSaving = true;
@@ -2340,7 +2366,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } finally {
                 isSaving = false;
             }
-        });
+        }, { type: 'ranking_save' });
     }
 
     async function saveRankings() {
