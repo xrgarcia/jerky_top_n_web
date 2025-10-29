@@ -39,6 +39,7 @@ class DatabaseStorage {
           lastName: userData.lastName,
           displayName: userData.displayName,
           role: role, // Update role on login to handle promotions
+          active: true, // Mark user as active on login
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
@@ -59,6 +60,7 @@ class DatabaseStorage {
           lastName: userData.lastName,
           displayName: userData.displayName,
           role: role,
+          active: true, // Mark user as active on first login
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
