@@ -28,6 +28,13 @@ The application features a modern web architecture designed for responsiveness, 
 - **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication.
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
+- **Shopify Synchronization**: Automatic synchronization system ensures products and metadata stay in sync with Shopify:
+  - **Server Startup**: CacheWarmer automatically fetches products, syncs metadata, and cleans orphaned products on every server restart (non-blocking, ~7s)
+  - **Cache Expiration**: 30-minute cache TTL triggers automatic background rehydration
+  - **Orphan Cleanup**: Products removed from "rankable" tag in Shopify are automatically deleted from products_metadata during sync
+  - **Configurable Staleness Threshold**: Admin dashboard allows setting custom threshold (default 48 hours) for cache age warnings
+  - **Sentry Monitoring**: Alerts triggered for very old cache usage, Shopify API failures, and orphaned product cleanup
+  - **Fallback Handling**: Stale cache served as fallback when Shopify unavailable, with warning alerts
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
   - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins) with tiered progression (bronze→silver→gold→platinum→diamond). Supports unique view tracking for products and profiles.
   - **CollectionManager**: Handles product-based achievements (static collections, dynamic collections, flavor coins) with tier progression.
