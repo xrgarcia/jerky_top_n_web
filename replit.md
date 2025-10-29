@@ -103,8 +103,9 @@ The application features a modern web architecture designed for responsiveness, 
   - User progress tracking, streak tracking, real-time leaderboards, activity feeds, and notifications.
 - **Admin Tools**: Role-based access for managing achievements and monitoring live users with real-time updates, including custom icon upload functionality. **Customer Orders dashboard** displays all Shopify orders synced via webhooks:
   - **Filterable Table**: Filter by order number, customer email, product ID, SKU, and date range with server-side pagination (50 orders per page)
+  - **Sortable Columns**: Click column headers to sort by order number, customer email, SKU, quantity, or order date with visual indicators (▲/▼ arrows and gold highlighting)
   - **Data Display**: Shows order details, customer information, product IDs, quantities, and line item data from `customer_orders` table
-  - **Repository Pattern**: CustomerOrdersRepository with dynamic filtering using Drizzle ORM's immutable query builder
+  - **Repository Pattern**: CustomerOrdersRepository with dynamic filtering and sorting using Drizzle ORM's immutable query builder
   - **Access Control**: Requires employee_admin role or @jerky.com email to view synced orders
 
 ## External Dependencies
