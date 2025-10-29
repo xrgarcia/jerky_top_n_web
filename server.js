@@ -177,10 +177,8 @@ app.use(express.static('public', {
   }
 }));
 
-// Mount Shopify webhook routes
-const createWebhookRoutes = require('./server/routes/webhooks');
-app.use('/api/webhooks/shopify', createWebhookRoutes());
-console.log('📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*');
+// Note: Shopify webhook routes are mounted after gamification initialization
+// to ensure WebSocket gateway is available for real-time order updates
 
 // Sample jerky data
 const jerkyData = [
@@ -2880,6 +2878,11 @@ if (databaseAvailable && storage) {
     const services = await initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService, limiters);
     gamificationServices = services;
     console.log('✅ Gamification services available for achievements');
+    
+    // Mount Shopify webhook routes with WebSocket gateway for real-time updates
+    const createWebhookRoutes = require('./server/routes/webhooks');
+    app.use('/api/webhooks/shopify', createWebhookRoutes(services.wsGateway));
+    console.log('📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*');
     
     // Register Shopify webhooks if credentials are available
     if (shopifyAvailable && process.env.SHOPIFY_ADMIN_ACCESS_TOKEN) {

@@ -175,6 +175,21 @@ class WebSocketGateway {
         console.log(`📰 Socket ${socket.id} subscribed to activity feed`);
       });
 
+      socket.on('subscribe:customer-orders', () => {
+        // Only allow admin users to subscribe to customer orders updates
+        if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
+          socket.join('admin:customer-orders');
+          console.log(`📦 Socket ${socket.id} subscribed to customer orders updates`);
+        } else {
+          console.warn(`⚠️ Socket ${socket.id} attempted to subscribe to customer orders without admin access`);
+        }
+      });
+
+      socket.on('unsubscribe:customer-orders', () => {
+        socket.leave('admin:customer-orders');
+        console.log(`📦 Socket ${socket.id} unsubscribed from customer orders updates`);
+      });
+
       socket.on('subscribe:live-users', async () => {
         if (!socket.userData || socket.userData.role !== 'employee_admin') {
           console.warn(`🚫 Unauthorized live-users subscription attempt from socket ${socket.id}`);
@@ -363,6 +378,14 @@ class WebSocketGateway {
       viewCount,
       timestamp: new Date().toISOString(),
     });
+  }
+
+  broadcastCustomerOrdersUpdate(data) {
+    this.io.to('admin:customer-orders').emit('customer-orders:updated', {
+      ...data,
+      timestamp: new Date().toISOString(),
+    });
+    console.log(`📦 Broadcasting customer orders update to admin room: ${data.action} - ${data.orderNumber}`);
   }
 }
 

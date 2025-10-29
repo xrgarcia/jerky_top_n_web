@@ -4,8 +4,9 @@ const { customerOrders, users } = require('../../shared/schema');
 const { eq, and } = require('drizzle-orm');
 
 class WebhookOrderService {
-  constructor() {
+  constructor(webSocketGateway = null) {
     this.db = db;
+    this.webSocketGateway = webSocketGateway;
   }
 
   async processOrderWebhook(orderData, topic) {
@@ -48,6 +49,14 @@ class WebhookOrderService {
     console.log(`✅ Deleted ${deleted.length} customer_orders records for order ${orderNumber}`);
 
     const userId = deleted.length > 0 ? deleted[0].userId : null;
+
+    if (this.webSocketGateway && deleted.length > 0) {
+      this.webSocketGateway.broadcastCustomerOrdersUpdate({
+        action: 'deleted',
+        orderNumber,
+        recordsCount: deleted.length
+      });
+    }
 
     return {
       success: true,
@@ -205,6 +214,14 @@ class WebhookOrderService {
     }
 
     console.log(`✅ Processed ${upserted.length} line items for order ${orderNumber} (user: ${user.id})`);
+
+    if (this.webSocketGateway && upserted.length > 0) {
+      this.webSocketGateway.broadcastCustomerOrdersUpdate({
+        action: 'upserted',
+        orderNumber,
+        itemsCount: upserted.length
+      });
+    }
 
     return {
       success: true,

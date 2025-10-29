@@ -8,11 +8,11 @@ const MetadataCache = require('../cache/MetadataCache');
 const RankingStatsCache = require('../cache/RankingStatsCache');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 
-function createWebhookRoutes() {
+function createWebhookRoutes(webSocketGateway = null) {
   const router = express.Router();
   
   const verifier = new ShopifyWebhookVerifier(process.env.SHOPIFY_API_SECRET);
-  const orderService = new WebhookOrderService();
+  const orderService = new WebhookOrderService(webSocketGateway);
   const productService = new WebhookProductService(db);
   const metadataCache = new MetadataCache();
   const rankingStatsCache = new RankingStatsCache();
