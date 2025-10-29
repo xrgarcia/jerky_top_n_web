@@ -265,10 +265,12 @@ class DatabaseStorage {
     try {
       const { sql } = require('drizzle-orm');
       
-      // Use Promise.all for parallel upserts with transaction safety
-      const results = await Promise.all(
-        rankings.map(async ({ productId, productData, ranking }) => {
-          return await db.insert(productRankings)
+      // Use transaction to ensure atomicity - all rankings save or none do
+      const results = await db.transaction(async (tx) => {
+        const savedRankings = [];
+        
+        for (const { productId, productData, ranking } of rankings) {
+          const [savedRanking] = await tx.insert(productRankings)
             .values({
               userId,
               shopifyProductId: productId,
@@ -285,10 +287,14 @@ class DatabaseStorage {
               }
             })
             .returning();
-        })
-      );
+          
+          savedRankings.push(savedRanking);
+        }
+        
+        return savedRankings;
+      });
 
-      return results.map(r => r[0]); // Extract first element from each result
+      return results;
     } catch (error) {
       Sentry.captureException(error, {
         tags: { service: 'rankings', operation: 'bulk_upsert' },
