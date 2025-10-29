@@ -381,7 +381,7 @@ class WebhookOrderService {
       userId: user.id,
       itemsProcessed: upserted.length,
       items: upserted,
-      affectedProductIds: [...new Set(validItems.map(item => item.shopifyProductId))] // unique product IDs
+      affectedProductIds: [...new Set(upserted.map(item => item.shopifyProductId))] // unique product IDs
     };
   }
 
