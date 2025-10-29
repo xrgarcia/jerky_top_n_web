@@ -424,7 +424,7 @@ class WebhookOrderService {
           AVG(ranking) as avg_rank,
           MIN(ranking) as best_rank,
           MAX(ranking) as worst_rank,
-          MAX(ranked_at) as last_ranked_at
+          MAX(created_at) as last_ranked_at
         FROM product_rankings
         WHERE shopify_product_id IN (${sql.join(productIds.map(id => sql`${id}`), sql`, `)})
         GROUP BY shopify_product_id
