@@ -144,6 +144,14 @@ const emailService = require('./server/services/EmailService.js');
 // Configure Express to trust proxy (required for Replit)
 app.set('trust proxy', true);
 
+// Webhook raw body middleware - must come BEFORE express.json()
+// This preserves the raw body for HMAC verification
+app.use('/api/webhooks/shopify', express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString('utf8');
+  }
+}));
+
 // Parse JSON bodies and cookies
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
@@ -168,6 +176,11 @@ app.use(express.static('public', {
     }
   }
 }));
+
+// Mount Shopify webhook routes
+const createWebhookRoutes = require('./server/routes/webhooks');
+app.use('/api/webhooks/shopify', createWebhookRoutes());
+console.log('📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*');
 
 // Sample jerky data
 const jerkyData = [
@@ -2867,6 +2880,30 @@ if (databaseAvailable && storage) {
     const services = await initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService, limiters);
     gamificationServices = services;
     console.log('✅ Gamification services available for achievements');
+    
+    // Register Shopify webhooks if credentials are available
+    if (shopifyAvailable && process.env.SHOPIFY_ADMIN_ACCESS_TOKEN) {
+      const ShopifyWebhookRegistrar = require('./server/utils/shopifyWebhookRegistrar');
+      const registrar = new ShopifyWebhookRegistrar(
+        JERKY_SHOP_DOMAIN,
+        process.env.SHOPIFY_ADMIN_ACCESS_TOKEN
+      );
+      
+      // Register webhooks asynchronously (non-blocking)
+      setImmediate(async () => {
+        try {
+          const result = await registrar.registerWebhooks(APP_DOMAIN);
+          if (result.success) {
+            console.log(`✅ Shopify webhooks registered: ${result.registered} new, ${result.existing} existing`);
+          }
+        } catch (error) {
+          console.error('❌ Failed to register Shopify webhooks:', error);
+          Sentry.captureException(error, {
+            tags: { service: 'webhook-registration' }
+          });
+        }
+      });
+    }
     
     // Apply rate limiting to other API routes
     app.use('/api/products', limiters.apiLimiter);
