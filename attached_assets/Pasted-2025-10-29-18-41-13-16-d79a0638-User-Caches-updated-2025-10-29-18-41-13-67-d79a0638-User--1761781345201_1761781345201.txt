@@ -1,0 +1,206 @@
+2025-10-29 18:41:13.16
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:41:13.67
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:41:13.67
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:41:13.67
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341330
+2025-10-29 18:41:13.67
+d79a0638
+User
+📦 Processing order JK3825341330: 1 line items
+2025-10-29 18:41:13.75
+d79a0638
+User
+👤 User not found, fetching from Shopify: 9296369516858
+2025-10-29 18:41:13.75
+d79a0638
+User
+👤 Fetching customer 9296369516858 from Shopify
+2025-10-29 18:41:13.92
+d79a0638
+User
+✅ Fetched customer 9296369516858: beckykimduong@gmail.com
+2025-10-29 18:41:13.96
+d79a0638
+User
+✨ Created new user 16 from Shopify: beckykimduong@gmail.com (Becky Bush)
+2025-10-29 18:41:14.08
+d79a0638
+User
+✅ Processed 1 line items for order JK3825341330 (user: 16)
+2025-10-29 18:41:14.09
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341330
+2025-10-29 18:41:14.09
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 16
+2025-10-29 18:41:14.09
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 16
+2025-10-29 18:41:14.09
+d79a0638
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-10-29 18:41:14.14
+d79a0638
+User
+📊 Recalculated ranking stats for 1 product(s)
+2025-10-29 18:41:14.14
+d79a0638
+User
+⚠️ RankingStatsCache: Cache not initialized, cannot update products
+2025-10-29 18:41:14.14
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:41:16.31
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:41:16.31
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:41:16.31
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341317
+2025-10-29 18:41:16.31
+d79a0638
+User
+📦 Processing order JK3825341317: 3 line items
+2025-10-29 18:41:16.42
+d79a0638
+User
+👤 User not found, fetching from Shopify: 9521596399930
+2025-10-29 18:41:16.42
+d79a0638
+User
+👤 Fetching customer 9521596399930 from Shopify
+2025-10-29 18:41:16.63
+d79a0638
+User
+✅ Fetched customer 9521596399930: colfaxjmj2@gmail.com
+2025-10-29 18:41:16.67
+d79a0638
+User
+✨ Created new user 17 from Shopify: colfaxjmj2@gmail.com (Jolene Jacobs)
+2025-10-29 18:41:16.97
+d79a0638
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 18:41:16.97
+d79a0638
+User
+✅ Webhook signature verified
+2025-10-29 18:41:16.97
+d79a0638
+User
+📦 Processing orders/updated webhook for order JK3825341322
+2025-10-29 18:41:16.97
+d79a0638
+User
+📦 Processing order JK3825341322: 1 line items
+2025-10-29 18:41:16.97
+d79a0638
+User
+✅ Processed 3 line items for order JK3825341317 (user: 17)
+2025-10-29 18:41:16.97
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341317
+2025-10-29 18:41:16.97
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 17
+2025-10-29 18:41:16.97
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 17
+2025-10-29 18:41:16.97
+d79a0638
+User
+🔄 Recalculating ranking stats for 3 product(s)
+2025-10-29 18:41:17.01
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:41:17.01
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:41:17.05
+d79a0638
+User
+👤 User not found, fetching from Shopify: 8601824887098
+2025-10-29 18:41:17.05
+d79a0638
+User
+👤 Fetching customer 8601824887098 from Shopify
+2025-10-29 18:41:17.25
+d79a0638
+User
+✅ Fetched customer 8601824887098: matodance@hotmail.com
+2025-10-29 18:41:17.29
+d79a0638
+User
+✨ Created new user 18 from Shopify: matodance@hotmail.com (Mat Winer)
+2025-10-29 18:41:17.43
+d79a0638
+User
+✅ Processed 1 line items for order JK3825341322 (user: 18)
+2025-10-29 18:41:17.43
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341322
+2025-10-29 18:41:17.43
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 18
+2025-10-29 18:41:17.43
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 18
+2025-10-29 18:41:17.43
+d79a0638
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-10-29 18:41:17.48
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:41:17.48
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:41:41.23
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 2 }
+2025-10-29 18:41:47.03
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 1 }
+2025-10-29 18:41:47.54
+d79a0638
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors
