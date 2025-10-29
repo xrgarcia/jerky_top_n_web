@@ -475,6 +475,7 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+        unsubscribeFromCustomerOrdersUpdates();
       } else if (tool === 'data') {
         document.getElementById('dataTool').style.display = 'block';
         
@@ -482,6 +483,7 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+        unsubscribeFromCustomerOrdersUpdates();
       } else if (tool === 'live-users') {
         document.getElementById('liveUsersTool').style.display = 'block';
         await loadLiveUsers();
@@ -490,6 +492,7 @@ function setupToolNavigation() {
           window.socket.emit('subscribe:live-users');
           liveUsersSubscribed = true;
         }
+        unsubscribeFromCustomerOrdersUpdates();
       } else if (tool === 'products') {
         document.getElementById('productsTool').style.display = 'block';
         await loadProductsTable();
@@ -498,6 +501,7 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+        unsubscribeFromCustomerOrdersUpdates();
       } else if (tool === 'customer-orders') {
         document.getElementById('customerOrdersTool').style.display = 'block';
         await loadCustomerOrders();
@@ -506,6 +510,7 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+        subscribeToCustomerOrdersUpdates();
       }
     });
   });
@@ -1050,6 +1055,7 @@ async function loadCacheConfig() {
 let currentOrdersPage = 1;
 let currentOrdersFilters = {};
 const ordersPerPage = 50;
+let customerOrdersSocketSubscribed = false;
 
 async function loadCustomerOrders(page = 1) {
   try {
@@ -1243,4 +1249,35 @@ function setupCustomerOrdersFilters() {
       loadCustomerOrders(currentOrdersPage + 1);
     });
   }
+}
+
+function subscribeToCustomerOrdersUpdates() {
+  if (!window.socket || customerOrdersSocketSubscribed) return;
+  
+  window.socket.emit('subscribe:customer-orders');
+  customerOrdersSocketSubscribed = true;
+  console.log('📦 Subscribed to customer orders real-time updates');
+  
+  window.socket.on('customer-orders:updated', (data) => {
+    console.log('📦 Customer orders updated:', data);
+    
+    showToast({
+      type: 'info',
+      icon: '📦',
+      title: 'Order Updated',
+      message: `Order ${data.orderNumber} ${data.action === 'deleted' ? 'cancelled' : 'updated'} - Refreshing table...`,
+      duration: 3000
+    });
+    
+    loadCustomerOrders(currentOrdersPage);
+  });
+}
+
+function unsubscribeFromCustomerOrdersUpdates() {
+  if (!window.socket || !customerOrdersSocketSubscribed) return;
+  
+  window.socket.emit('unsubscribe:customer-orders');
+  window.socket.off('customer-orders:updated');
+  customerOrdersSocketSubscribed = false;
+  console.log('📦 Unsubscribed from customer orders updates');
 }
