@@ -2080,6 +2080,57 @@ document.addEventListener('DOMContentLoaded', function() {
     let autoSaveTimeout;
     let isSaving = false;
 
+    // Request queue to serialize ranking saves and prevent concurrent requests
+    class RankingSaveQueue {
+        constructor() {
+            this.queue = [];
+            this.processing = false;
+            this.pendingSavePromise = null;
+        }
+
+        async enqueue(saveFunction) {
+            return new Promise((resolve, reject) => {
+                this.queue.push({ saveFunction, resolve, reject });
+                this.process();
+            });
+        }
+
+        async process() {
+            if (this.processing || this.queue.length === 0) {
+                return;
+            }
+
+            this.processing = true;
+            const { saveFunction, resolve, reject } = this.queue.shift();
+
+            try {
+                const result = await saveFunction();
+                resolve(result);
+            } catch (error) {
+                reject(error);
+            } finally {
+                this.processing = false;
+                // Process next item in queue
+                if (this.queue.length > 0) {
+                    this.process();
+                }
+            }
+        }
+
+        async waitForPendingSaves() {
+            // Wait for all pending saves to complete
+            while (this.processing || this.queue.length > 0) {
+                await new Promise(resolve => setTimeout(resolve, 50));
+            }
+        }
+
+        get hasPendingSaves() {
+            return this.processing || this.queue.length > 0;
+        }
+    }
+
+    const rankingSaveQueue = new RankingSaveQueue();
+
     function updateAutoSaveStatus(status, message = '') {
         showStatus(status, message);
         
@@ -2148,111 +2199,114 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function autoSaveRankings() {
-        try {
-            isSaving = true;
-            
-            const sessionId = localStorage.getItem('customerSessionId');
-            if (!sessionId) {
-                updateAutoSaveStatus('error', 'Authentication required');
-                return;
-            }
-
-            const filledSlots = rankingSlots.filter(slot => slot.classList.contains('filled'));
-            if (filledSlots.length === 0) {
-                updateAutoSaveStatus('', '');
-                return;
-            }
-
-            const rankings = collectRankingData();
-            
-            // Track current product IDs
-            const currentProductIds = new Set(rankings.map(r => r.productData.id));
-            
-            // Find newly added products (in current but not in last saved)
-            const newlyRankedProductIds = [...currentProductIds].filter(id => !lastSavedProductIds.has(id));
-            
-            const response = await fetch('/api/rankings/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sessionId: sessionId,
-                    rankingListId: 'default',
-                    rankings: rankings
-                })
-            });
-            
-            const result = await response.json();
-
-            if (response.ok) {
-                updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
+        // Enqueue the save operation to prevent concurrent requests
+        return rankingSaveQueue.enqueue(async () => {
+            try {
+                isSaving = true;
                 
-                // Update last saved product IDs
-                lastSavedProductIds = currentProductIds;
-                
-                // Clear optimistically removed products on successful save
-                optimisticallyRemovedProducts = [];
-                
-                // Emit event to update progress widget and other reactive components
-                if (window.appEventBus) {
-                    console.log(`📢 Emitting ranking:saved event with count: ${rankings.length}`);
-                    window.appEventBus.emit('ranking:saved', { 
-                        count: rankings.length,
-                        rankingListId: 'default'
-                    });
-                    
-                    // Note: product:ranked events no longer needed with optimistic UI
-                    // Products are removed immediately when ranked, not after save
+                const sessionId = localStorage.getItem('customerSessionId');
+                if (!sessionId) {
+                    updateAutoSaveStatus('error', 'Authentication required');
+                    return;
                 }
-            } else {
-                // Save failed - restore optimistically removed products
-                console.error('❌ Save failed, restoring optimistically removed products');
+
+                const filledSlots = rankingSlots.filter(slot => slot.classList.contains('filled'));
+                if (filledSlots.length === 0) {
+                    updateAutoSaveStatus('', '');
+                    return;
+                }
+
+                const rankings = collectRankingData();
+                
+                // Track current product IDs
+                const currentProductIds = new Set(rankings.map(r => r.productData.id));
+                
+                // Find newly added products (in current but not in last saved)
+                const newlyRankedProductIds = [...currentProductIds].filter(id => !lastSavedProductIds.has(id));
+                
+                const response = await fetch('/api/rankings/products', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionId: sessionId,
+                        rankingListId: 'default',
+                        rankings: rankings
+                    })
+                });
+                
+                const result = await response.json();
+
+                if (response.ok) {
+                    updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
+                    
+                    // Update last saved product IDs
+                    lastSavedProductIds = currentProductIds;
+                    
+                    // Clear optimistically removed products on successful save
+                    optimisticallyRemovedProducts = [];
+                    
+                    // Emit event to update progress widget and other reactive components
+                    if (window.appEventBus) {
+                        console.log(`📢 Emitting ranking:saved event with count: ${rankings.length}`);
+                        window.appEventBus.emit('ranking:saved', { 
+                            count: rankings.length,
+                            rankingListId: 'default'
+                        });
+                        
+                        // Note: product:ranked events no longer needed with optimistic UI
+                        // Products are removed immediately when ranked, not after save
+                    }
+                } else {
+                    // Save failed - restore optimistically removed products
+                    console.error('❌ Save failed, restoring optimistically removed products');
+                    if (optimisticallyRemovedProducts.length > 0) {
+                        currentProducts.push(...optimisticallyRemovedProducts);
+                        optimisticallyRemovedProducts = [];
+                        displayProducts(); // Re-render to show restored products
+                        console.log(`♻️ Restored ${optimisticallyRemovedProducts.length} products to display`);
+                    }
+                    
+                    // Handle server-side duplicate detection
+                    if (result.error && result.error.includes('Duplicate')) {
+                        updateAutoSaveStatus('error', 'Duplicate products detected');
+                        if (window.appEventBus) {
+                            window.appEventBus.emit('notification:show', {
+                                message: 'Save failed: duplicate products in ranking. Products restored to list.',
+                                type: 'error'
+                            });
+                        }
+                    } else {
+                        updateAutoSaveStatus('error', 'Save failed');
+                        if (window.appEventBus) {
+                            window.appEventBus.emit('notification:show', {
+                                message: 'Save failed. Products restored to list.',
+                                type: 'error'
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('Auto-save error:', error);
+                
+                // Restore optimistically removed products on exception
                 if (optimisticallyRemovedProducts.length > 0) {
                     currentProducts.push(...optimisticallyRemovedProducts);
                     optimisticallyRemovedProducts = [];
-                    displayProducts(); // Re-render to show restored products
-                    console.log(`♻️ Restored ${optimisticallyRemovedProducts.length} products to display`);
+                    displayProducts();
+                    console.log(`♻️ Restored products to display after error`);
                 }
                 
-                // Handle server-side duplicate detection
-                if (result.error && result.error.includes('Duplicate')) {
-                    updateAutoSaveStatus('error', 'Duplicate products detected');
-                    if (window.appEventBus) {
-                        window.appEventBus.emit('notification:show', {
-                            message: 'Save failed: duplicate products in ranking. Products restored to list.',
-                            type: 'error'
-                        });
-                    }
-                } else {
-                    updateAutoSaveStatus('error', 'Save failed');
-                    if (window.appEventBus) {
-                        window.appEventBus.emit('notification:show', {
-                            message: 'Save failed. Products restored to list.',
-                            type: 'error'
-                        });
-                    }
+                updateAutoSaveStatus('error', 'Save failed');
+                if (window.appEventBus) {
+                    window.appEventBus.emit('notification:show', {
+                        message: 'Save failed. Products restored to list.',
+                        type: 'error'
+                    });
                 }
+            } finally {
+                isSaving = false;
             }
-        } catch (error) {
-            console.error('Auto-save error:', error);
-            
-            // Restore optimistically removed products on exception
-            if (optimisticallyRemovedProducts.length > 0) {
-                currentProducts.push(...optimisticallyRemovedProducts);
-                optimisticallyRemovedProducts = [];
-                displayProducts();
-                console.log(`♻️ Restored products to display after error`);
-            }
-            
-            updateAutoSaveStatus('error', 'Save failed');
-            if (window.appEventBus) {
-                window.appEventBus.emit('notification:show', {
-                    message: 'Save failed. Products restored to list.',
-                    type: 'error'
-                });
-            }
-        } finally {
-            isSaving = false;
-        }
+        });
     }
 
     async function saveRankings() {
