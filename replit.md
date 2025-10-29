@@ -46,7 +46,11 @@ The application features a modern web architecture designed for responsiveness, 
 - **Database Connection Strategy**: Dual-connection architecture using Neon PostgreSQL, with pooled connections for most queries and dedicated primary-only connections for critical-path queries.
 
 ### Feature Specifications
-- **Ranking**: View top N jerky products, persistent rankings, visual ranking modal with duplicate prevention and optimistic UI.
+- **Ranking**: View top N jerky products, persistent rankings, visual ranking modal with duplicate prevention and optimistic UI. **Hybrid reliability system** ensures bulletproof save delivery:
+  - **Client-side**: IndexedDB-backed persistent queue survives page refreshes, browser crashes, and network failures
+  - **Server-side**: Operation ID-based idempotency prevents duplicate saves
+  - **Automatic retry**: Exponential backoff (1s → 30s max, 5 attempts) with network detection
+  - **Recovery**: Pending operations automatically processed on page reload
 - **Products Page**: Advanced sorting, animal and flavor filtering, client-side instant search, and server-side pagination.
 - **Rank Page Products**: Server-side filtering to exclude already-ranked products before pagination.
 - **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
