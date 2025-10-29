@@ -54,6 +54,13 @@ function getAppDomain() {
 
 const APP_URL = getAppDomain();
 
+// DEBUG: Log environment detection (remove after deployment issue is resolved)
+console.log('🔍 Environment Detection Debug:');
+console.log('   REPLIT_DEPLOYMENT:', process.env.REPLIT_DEPLOYMENT);
+console.log('   NODE_ENV:', process.env.NODE_ENV);
+console.log('   REPLIT_DOMAINS:', process.env.REPLIT_DOMAINS);
+console.log('   Redis secrets available:', Object.keys(process.env).filter(k => k.includes('UPSTASH')));
+
 // Warn if NODE_ENV is not explicitly set
 if (!process.env.NODE_ENV) {
   console.warn('⚠️  NODE_ENV not set - defaulting to "development"');
