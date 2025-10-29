@@ -1116,28 +1116,54 @@
                                     <span class="data-action-icon">⏰</span>
                                     <div>
                                         <h4>Cache Staleness Configuration</h4>
-                                        <p>Configure how old cached product data can be before triggering Sentry alerts. Default is 48 hours.</p>
+                                        <p>Configure separate staleness thresholds for each cache. Metadata cache tracks product details (rarely changes), while ranking stats cache tracks user engagement (updates frequently).</p>
                                     </div>
                                 </div>
                                 <div class="cache-config-form">
-                                    <div class="form-group" style="margin-bottom: 15px;">
-                                        <label for="cacheStaleHours" style="display: block; margin-bottom: 8px; font-weight: 500;">
-                                            Maximum Cache Age (hours):
+                                    <div class="form-group" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #e0e0e0;">
+                                        <label for="metadataCacheStaleHours" style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                            📦 Product Metadata Cache Age (hours):
                                         </label>
+                                        <div style="margin-bottom: 6px; font-size: 13px; color: #666; line-height: 1.4;">
+                                            Product details, animal types, and flavors from Shopify. Updates when products change.
+                                        </div>
                                         <input 
                                             type="number" 
-                                            id="cacheStaleHours" 
+                                            id="metadataCacheStaleHours" 
                                             min="1" 
-                                            max="168" 
+                                            max="720" 
+                                            step="1"
+                                            value="168"
+                                            style="width: 150px; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                        />
+                                        <span style="margin-left: 10px; color: #666; font-size: 14px;">hours</span>
+                                        <div style="margin-top: 8px; font-size: 12px; color: #999;">
+                                            Current: <span id="currentMetadataCacheStaleHours" style="font-weight: bold; color: #c4a962;">168</span> hours
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="rankingStatsCacheStaleHours" style="display: block; margin-bottom: 8px; font-weight: 500; color: #333;">
+                                            📊 Ranking Stats Cache Age (hours):
+                                        </label>
+                                        <div style="margin-bottom: 6px; font-size: 13px; color: #666; line-height: 1.4;">
+                                            Product ranking statistics and averages. Updates with every order and ranking.
+                                        </div>
+                                        <input 
+                                            type="number" 
+                                            id="rankingStatsCacheStaleHours" 
+                                            min="1" 
+                                            max="720" 
                                             step="1"
                                             value="48"
                                             style="width: 150px; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
                                         />
                                         <span style="margin-left: 10px; color: #666; font-size: 14px;">hours</span>
                                         <div style="margin-top: 8px; font-size: 12px; color: #999;">
-                                            Current: <span id="currentCacheStaleHours" style="font-weight: bold; color: #c4a962;">48</span> hours
+                                            Current: <span id="currentRankingStatsCacheStaleHours" style="font-weight: bold; color: #c4a962;">48</span> hours
                                         </div>
                                     </div>
+                                    
                                     <button class="btn-primary" id="saveCacheConfigBtn" style="background: #6B8E23;">💾 Save Configuration</button>
                                 </div>
                             </div>

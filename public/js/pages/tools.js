@@ -777,15 +777,29 @@ window.initToolsPage = async function() {
   const saveCacheConfigBtn = document.getElementById('saveCacheConfigBtn');
   if (saveCacheConfigBtn) {
     saveCacheConfigBtn.addEventListener('click', async () => {
-      const hoursInput = document.getElementById('cacheStaleHours');
-      const hours = parseInt(hoursInput.value);
+      const metadataInput = document.getElementById('metadataCacheStaleHours');
+      const rankingStatsInput = document.getElementById('rankingStatsCacheStaleHours');
       
-      if (isNaN(hours) || hours < 1 || hours > 168) {
+      const metadataHours = parseInt(metadataInput.value);
+      const rankingStatsHours = parseInt(rankingStatsInput.value);
+      
+      // Validate both inputs
+      if (isNaN(metadataHours) || metadataHours < 1 || metadataHours > 720) {
         showToast({
           type: 'error',
           icon: '❌',
           title: 'Invalid Input',
-          message: 'Please enter a value between 1 and 168 hours (7 days).'
+          message: 'Metadata cache hours must be between 1 and 720 (30 days).'
+        });
+        return;
+      }
+      
+      if (isNaN(rankingStatsHours) || rankingStatsHours < 1 || rankingStatsHours > 720) {
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Invalid Input',
+          message: 'Ranking stats cache hours must be between 1 and 720 (30 days).'
         });
         return;
       }
@@ -797,21 +811,26 @@ window.initToolsPage = async function() {
         const response = await fetch('/api/admin/cache-config', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ cacheStaleHours: hours })
+          body: JSON.stringify({ 
+            metadataCacheStaleHours: metadataHours,
+            rankingStatsCacheStaleHours: rankingStatsHours
+          })
         });
         
         if (!response.ok) {
-          throw new Error('Failed to save configuration');
+          const errorData = await response.json();
+          throw new Error(errorData.error || 'Failed to save configuration');
         }
         
         const data = await response.json();
-        document.getElementById('currentCacheStaleHours').textContent = hours;
+        document.getElementById('currentMetadataCacheStaleHours').textContent = metadataHours;
+        document.getElementById('currentRankingStatsCacheStaleHours').textContent = rankingStatsHours;
         
         showToast({
           type: 'success',
           icon: '✅',
           title: 'Configuration Saved',
-          message: `Cache staleness threshold updated to ${hours} hours.`
+          message: `Cache thresholds updated: Metadata ${metadataHours}h, Stats ${rankingStatsHours}h`
         });
       } catch (error) {
         console.error('Error saving cache config:', error);
@@ -819,7 +838,7 @@ window.initToolsPage = async function() {
           type: 'error',
           icon: '❌',
           title: 'Save Failed',
-          message: 'Failed to save configuration. Please try again.'
+          message: error.message || 'Failed to save configuration. Please try again.'
         });
       } finally {
         saveCacheConfigBtn.disabled = false;
@@ -1038,13 +1057,20 @@ async function loadCacheConfig() {
     }
     
     const data = await response.json();
-    const hours = data.cacheStaleHours || 48;
+    const metadataHours = data.metadataCacheStaleHours || 168;
+    const rankingStatsHours = data.rankingStatsCacheStaleHours || 48;
     
-    const input = document.getElementById('cacheStaleHours');
-    const currentDisplay = document.getElementById('currentCacheStaleHours');
+    // Update metadata cache inputs
+    const metadataInput = document.getElementById('metadataCacheStaleHours');
+    const metadataDisplay = document.getElementById('currentMetadataCacheStaleHours');
+    if (metadataInput) metadataInput.value = metadataHours;
+    if (metadataDisplay) metadataDisplay.textContent = metadataHours;
     
-    if (input) input.value = hours;
-    if (currentDisplay) currentDisplay.textContent = hours;
+    // Update ranking stats cache inputs
+    const rankingStatsInput = document.getElementById('rankingStatsCacheStaleHours');
+    const rankingStatsDisplay = document.getElementById('currentRankingStatsCacheStaleHours');
+    if (rankingStatsInput) rankingStatsInput.value = rankingStatsHours;
+    if (rankingStatsDisplay) rankingStatsDisplay.textContent = rankingStatsHours;
     
   } catch (error) {
     console.error('Error loading cache config:', error);
