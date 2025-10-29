@@ -258,7 +258,9 @@ class WebSocketGateway {
     const sanitizedUsers = activeUsers.map(user => ({
       ...user,
       lastName: user.lastName ? user.lastName.charAt(0) + '.' : '',
-      email: user.role === 'employee_admin' ? user.email : user.email.split('@')[0] + '@***'
+      email: user.email 
+        ? (user.role === 'employee_admin' ? user.email : user.email.split('@')[0] + '@***')
+        : 'unknown@***'
     }));
     
     this.io.to('live-users').emit('live-users:update', {
