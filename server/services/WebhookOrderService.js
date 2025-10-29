@@ -119,12 +119,6 @@ class WebhookOrderService {
           .returning();
 
         console.log(`✨ Created new user ${newUser.id} from Shopify: ${email} (${firstName} ${lastName})`);
-        
-        Sentry.captureMessage('Auto-created user from order webhook', {
-          level: 'info',
-          tags: { service: 'webhook-order', action: 'user_created' },
-          extra: { userId: newUser.id, shopifyCustomerId, email }
-        });
 
         return newUser;
       } catch (insertError) {
@@ -240,8 +234,15 @@ class WebhookOrderService {
     const user = await this.findOrCreateUser(shopifyCustomerId, customerEmail);
     
     if (!user) {
-      console.warn(`❌ Could not find or create user for order ${orderNumber}`);
-      return { success: true, action: 'skipped', reason: 'user_creation_failed', orderNumber };
+      const errorMsg = `Failed to find or create user for order ${orderNumber} (customer: ${customerEmail}, shopifyId: ${shopifyCustomerId})`;
+      console.error(`❌ ${errorMsg}`);
+      
+      // Throw error to trigger webhook retry - don't silently skip orders!
+      const error = new Error(errorMsg);
+      error.orderNumber = orderNumber;
+      error.customerEmail = customerEmail;
+      error.shopifyCustomerId = shopifyCustomerId;
+      throw error;
     }
 
     const lineItems = orderData.line_items || [];
