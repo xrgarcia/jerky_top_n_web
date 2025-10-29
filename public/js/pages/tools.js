@@ -1105,7 +1105,7 @@ function renderCustomerOrdersTable(orders) {
   if (orders.length === 0) {
     tableBody.innerHTML = `
       <tr>
-        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+        <td colspan="6" style="text-align: center; padding: 40px; color: #999;">
           No orders found
         </td>
       </tr>
@@ -1114,7 +1114,15 @@ function renderCustomerOrdersTable(orders) {
   }
   
   tableBody.innerHTML = orders.map(order => {
-    const orderDate = new Date(order.orderDate).toLocaleDateString();
+    const orderDateTime = new Date(order.orderDate);
+    const formattedDateTime = orderDateTime.toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    });
     const customerName = order.userFirstName && order.userLastName 
       ? `${order.userFirstName} ${order.userLastName}`
       : 'N/A';
@@ -1133,16 +1141,13 @@ function renderCustomerOrdersTable(orders) {
           </div>
         </td>
         <td style="padding: 12px;">
-          <code style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 12px;">${order.shopifyProductId}</code>
-        </td>
-        <td style="padding: 12px;">
           ${order.sku ? `<code style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 12px;">${order.sku}</code>` : '<span style="color: #999;">—</span>'}
         </td>
         <td style="padding: 12px; text-align: center;">
           <strong>${order.quantity}</strong>
         </td>
         <td style="padding: 12px;">
-          ${orderDate}
+          ${formattedDateTime}
         </td>
         <td style="padding: 12px;">
           <div style="font-size: 12px;">
