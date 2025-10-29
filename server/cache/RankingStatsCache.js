@@ -57,7 +57,8 @@ class RankingStatsCache {
       this.data[productId] = productsStats[productId];
     }
     
-    console.log(`✅ RankingStatsCache: Updated ${productIds.length} product(s): ${productIds.join(', ')}`);
+    this.timestamp = Date.now();
+    console.log(`✅ RankingStatsCache: Updated ${productIds.length} product(s): ${productIds.join(', ')} - timestamp reset`);
   }
 
   /**
