@@ -1,26 +1,19 @@
 /**
  * RankingStatsCache - A cache manager for product ranking statistics
- * Follows OOP principles with encapsulation and single responsibility
+ * Invalidated only by webhooks - no TTL expiration
  */
 class RankingStatsCache {
-  constructor(ttlMinutes = 30) {
+  constructor() {
     this.data = null;
     this.timestamp = null;
     this.isLoading = false;
-    this.TTL = ttlMinutes * 60 * 1000; // Convert minutes to milliseconds
-    this.invalidationTimer = null;
   }
 
   /**
-   * Check if cached data is still valid
+   * Check if cached data exists
    */
   isValid() {
-    if (!this.data || !this.timestamp) {
-      return false;
-    }
-    
-    const age = Date.now() - this.timestamp;
-    return age < this.TTL;
+    return this.data !== null && this.timestamp !== null;
   }
 
   /**
@@ -46,32 +39,15 @@ class RankingStatsCache {
     this.data = stats;
     this.timestamp = Date.now();
     
-    // Clear existing timer
-    if (this.invalidationTimer) {
-      clearTimeout(this.invalidationTimer);
-    }
-    
-    // Schedule automatic invalidation
-    this.invalidationTimer = setTimeout(() => {
-      console.log('⏰ RankingStats cache expired - will refresh on next request');
-      this.invalidate();
-    }, this.TTL);
-    
-    console.log(`✅ RankingStats Cache UPDATED: Stored ${Object.keys(stats).length} product stats, valid for ${this.TTL / 60000} minutes`);
-    console.log(`⏰ Next cache invalidation scheduled in ${this.TTL / 60000} minutes`);
+    console.log(`✅ RankingStats Cache UPDATED: Stored ${Object.keys(stats).length} product stats (webhook-invalidated only)`);
   }
 
   /**
-   * Manually invalidate the cache
+   * Invalidate the cache (called by webhooks when rankings change)
    */
   invalidate() {
     this.data = null;
     this.timestamp = null;
-    
-    if (this.invalidationTimer) {
-      clearTimeout(this.invalidationTimer);
-      this.invalidationTimer = null;
-    }
     
     console.log('🗑️ RankingStats cache invalidated');
   }
@@ -96,7 +72,7 @@ class RankingStatsCache {
       hasData: this.data !== null,
       isValid: this.isValid(),
       ageMinutes: this.getAge(),
-      ttlMinutes: this.TTL / 60000,
+      ttl: 'webhook-only',
       itemCount: this.data ? Object.keys(this.data).length : 0
     };
   }
