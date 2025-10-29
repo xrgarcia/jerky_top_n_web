@@ -138,11 +138,11 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
       // 1. Fetch fresh products from Shopify if cache is invalid
       // 2. Sync metadata for all current products
       // 3. Clean up orphaned products no longer tagged as "rankable"
-      const result = await productsService.getAllProducts({
+      const products = await productsService.getAllProducts({
         includeMetadata: true
       });
-      console.log(`🏷️ Products cache warmed and metadata synchronized: ${result.products.length} products`);
-      return result;
+      console.log(`🏷️ Products cache warmed and metadata synchronized: ${products.length} products`);
+      return products;
     });
   }
 
