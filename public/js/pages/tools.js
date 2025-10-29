@@ -1054,6 +1054,10 @@ async function loadCacheConfig() {
 // Customer Orders Management
 let currentOrdersPage = 1;
 let currentOrdersFilters = {};
+let currentOrdersSort = {
+  sortBy: 'orderDate',
+  sortOrder: 'desc'
+};
 const ordersPerPage = 50;
 let customerOrdersSocketSubscribed = false;
 
@@ -1062,7 +1066,8 @@ async function loadCustomerOrders(page = 1) {
     const params = new URLSearchParams({
       limit: ordersPerPage,
       offset: (page - 1) * ordersPerPage,
-      ...currentOrdersFilters
+      ...currentOrdersFilters,
+      ...currentOrdersSort
     });
 
     const response = await fetch(`/api/admin/customer-orders?${params}`);
@@ -1098,6 +1103,56 @@ async function loadCustomerOrders(page = 1) {
   }
 }
 
+function handleOrderColumnSort(columnName) {
+  if (currentOrdersSort.sortBy === columnName) {
+    currentOrdersSort.sortOrder = currentOrdersSort.sortOrder === 'asc' ? 'desc' : 'asc';
+  } else {
+    currentOrdersSort.sortBy = columnName;
+    currentOrdersSort.sortOrder = 'asc';
+  }
+  
+  loadCustomerOrders(currentOrdersPage);
+}
+
+function updateOrderColumnHeaders() {
+  const headerRow = document.querySelector('.orders-table thead tr');
+  if (!headerRow) return;
+  
+  const sortableColumns = {
+    0: 'orderNumber',
+    1: 'customerEmail',
+    2: 'sku',
+    3: 'quantity',
+    4: 'orderDate'
+  };
+  
+  const headers = headerRow.querySelectorAll('th');
+  headers.forEach((header, index) => {
+    const columnName = sortableColumns[index];
+    if (!columnName) return;
+    
+    header.style.cursor = 'pointer';
+    header.style.userSelect = 'none';
+    header.setAttribute('data-sort-column', columnName);
+    
+    const isSorted = currentOrdersSort.sortBy === columnName;
+    const arrow = isSorted 
+      ? (currentOrdersSort.sortOrder === 'asc' ? ' ▲' : ' ▼')
+      : '';
+    
+    const baseText = header.textContent.replace(/ [▲▼]/g, '');
+    header.textContent = baseText + arrow;
+    
+    if (isSorted) {
+      header.style.color = '#c4a962';
+    } else {
+      header.style.color = '';
+    }
+    
+    header.onclick = () => handleOrderColumnSort(columnName);
+  });
+}
+
 function renderCustomerOrdersTable(orders) {
   const tableBody = document.getElementById('customerOrdersTableBody');
   const orderCount = document.getElementById('orderCount');
@@ -1118,6 +1173,8 @@ function renderCustomerOrdersTable(orders) {
     `;
     return;
   }
+  
+  updateOrderColumnHeaders();
   
   tableBody.innerHTML = orders.map(order => {
     const orderDateTime = new Date(order.orderDate);
