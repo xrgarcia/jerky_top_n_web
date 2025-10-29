@@ -2958,6 +2958,11 @@ if (databaseAvailable && storage) {
       const dataRouter = createDataManagementRoutes(storage, db);
       adminRouter.use(dataRouter);
       
+      // Add customer orders route
+      const createCustomerOrdersRoutes = require('./server/routes/admin/customerOrders');
+      const customerOrdersRouter = createCustomerOrdersRoutes(db);
+      adminRouter.use(customerOrdersRouter);
+      
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       

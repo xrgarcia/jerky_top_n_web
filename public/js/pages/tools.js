@@ -498,6 +498,14 @@ function setupToolNavigation() {
           window.socket.emit('unsubscribe:live-users');
           liveUsersSubscribed = false;
         }
+      } else if (tool === 'customer-orders') {
+        document.getElementById('customerOrdersTool').style.display = 'block';
+        await loadCustomerOrders();
+        
+        if (liveUsersSubscribed && window.socket) {
+          window.socket.emit('unsubscribe:live-users');
+          liveUsersSubscribed = false;
+        }
       }
     });
   });
@@ -733,6 +741,7 @@ window.initToolsPage = async function() {
   
   setupToolNavigation();
   setupProductFilters();
+  setupCustomerOrdersFilters();
   await checkSuperAdminAccess(); // Check super admin access and show/hide Manage Data tab
   await loadAchievementsTable();
   
@@ -1034,5 +1043,199 @@ async function loadCacheConfig() {
     
   } catch (error) {
     console.error('Error loading cache config:', error);
+  }
+}
+
+// Customer Orders Management
+let currentOrdersPage = 1;
+let currentOrdersFilters = {};
+const ordersPerPage = 50;
+
+async function loadCustomerOrders(page = 1) {
+  try {
+    const params = new URLSearchParams({
+      limit: ordersPerPage,
+      offset: (page - 1) * ordersPerPage,
+      ...currentOrdersFilters
+    });
+
+    const response = await fetch(`/api/admin/customer-orders?${params}`);
+    
+    if (!response.ok) {
+      if (response.status === 403) {
+        sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+        window.location.hash = '#login';
+        window.showPage('login');
+        return;
+      }
+      throw new Error('Failed to load customer orders');
+    }
+
+    const data = await response.json();
+    currentOrdersPage = page;
+    
+    renderCustomerOrdersTable(data.orders || []);
+    updateOrdersPagination(data.total, page);
+    
+  } catch (error) {
+    console.error('Error loading customer orders:', error);
+    const tableBody = document.getElementById('customerOrdersTableBody');
+    if (tableBody) {
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; color: #e74c3c; padding: 20px;">
+            Failed to load customer orders. ${error.message}
+          </td>
+        </tr>
+      `;
+    }
+  }
+}
+
+function renderCustomerOrdersTable(orders) {
+  const tableBody = document.getElementById('customerOrdersTableBody');
+  const orderCount = document.getElementById('orderCount');
+  
+  if (orderCount) {
+    orderCount.textContent = `${orders.length} orders loaded`;
+  }
+  
+  if (!tableBody) return;
+  
+  if (orders.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
+          No orders found
+        </td>
+      </tr>
+    `;
+    return;
+  }
+  
+  tableBody.innerHTML = orders.map(order => {
+    const orderDate = new Date(order.orderDate).toLocaleDateString();
+    const customerName = order.userFirstName && order.userLastName 
+      ? `${order.userFirstName} ${order.userLastName}`
+      : 'N/A';
+    const lineItemTitle = order.lineItemData?.title || 'N/A';
+    const lineItemPrice = order.lineItemData?.price || 'N/A';
+    
+    return `
+      <tr style="border-bottom: 1px solid #e9ecef;">
+        <td style="padding: 12px;">
+          <strong>${order.orderNumber}</strong>
+        </td>
+        <td style="padding: 12px;">
+          <div style="font-size: 13px;">
+            <div><strong>${customerName}</strong></div>
+            <div style="color: #666; font-size: 12px;">${order.customerEmail}</div>
+          </div>
+        </td>
+        <td style="padding: 12px;">
+          <code style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 12px;">${order.shopifyProductId}</code>
+        </td>
+        <td style="padding: 12px;">
+          ${order.sku ? `<code style="background: #f8f9fa; padding: 2px 6px; border-radius: 3px; font-size: 12px;">${order.sku}</code>` : '<span style="color: #999;">—</span>'}
+        </td>
+        <td style="padding: 12px; text-align: center;">
+          <strong>${order.quantity}</strong>
+        </td>
+        <td style="padding: 12px;">
+          ${orderDate}
+        </td>
+        <td style="padding: 12px;">
+          <div style="font-size: 12px;">
+            <div><strong>${lineItemTitle}</strong></div>
+            <div style="color: #666;">$${lineItemPrice}</div>
+          </div>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function updateOrdersPagination(total, currentPage) {
+  const totalEl = document.getElementById('ordersTotal');
+  const showingEl = document.getElementById('ordersShowing');
+  const currentPageEl = document.getElementById('currentOrdersPage');
+  const prevBtn = document.getElementById('prevOrdersPage');
+  const nextBtn = document.getElementById('nextOrdersPage');
+  
+  const start = (currentPage - 1) * ordersPerPage + 1;
+  const end = Math.min(currentPage * ordersPerPage, total);
+  
+  if (totalEl) totalEl.textContent = total;
+  if (showingEl) showingEl.textContent = total > 0 ? `${start}-${end}` : '0';
+  if (currentPageEl) currentPageEl.textContent = `Page ${currentPage}`;
+  
+  if (prevBtn) {
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.style.opacity = currentPage === 1 ? '0.5' : '1';
+    prevBtn.style.cursor = currentPage === 1 ? 'not-allowed' : 'pointer';
+  }
+  
+  if (nextBtn) {
+    const hasMore = end < total;
+    nextBtn.disabled = !hasMore;
+    nextBtn.style.opacity = hasMore ? '1' : '0.5';
+    nextBtn.style.cursor = hasMore ? 'pointer' : 'not-allowed';
+  }
+}
+
+function setupCustomerOrdersFilters() {
+  const applyBtn = document.getElementById('applyOrderFilters');
+  const clearBtn = document.getElementById('clearOrderFilters');
+  const prevBtn = document.getElementById('prevOrdersPage');
+  const nextBtn = document.getElementById('nextOrdersPage');
+  
+  if (applyBtn) {
+    applyBtn.addEventListener('click', () => {
+      currentOrdersFilters = {
+        orderNumber: document.getElementById('filterOrderNumber')?.value || '',
+        customerEmail: document.getElementById('filterCustomerEmail')?.value || '',
+        productId: document.getElementById('filterProductId')?.value || '',
+        sku: document.getElementById('filterSku')?.value || '',
+        dateFrom: document.getElementById('filterDateFrom')?.value || '',
+        dateTo: document.getElementById('filterDateTo')?.value || ''
+      };
+      
+      // Remove empty filters
+      Object.keys(currentOrdersFilters).forEach(key => {
+        if (!currentOrdersFilters[key]) {
+          delete currentOrdersFilters[key];
+        }
+      });
+      
+      loadCustomerOrders(1);
+    });
+  }
+  
+  if (clearBtn) {
+    clearBtn.addEventListener('click', () => {
+      document.getElementById('filterOrderNumber').value = '';
+      document.getElementById('filterCustomerEmail').value = '';
+      document.getElementById('filterProductId').value = '';
+      document.getElementById('filterSku').value = '';
+      document.getElementById('filterDateFrom').value = '';
+      document.getElementById('filterDateTo').value = '';
+      
+      currentOrdersFilters = {};
+      loadCustomerOrders(1);
+    });
+  }
+  
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (currentOrdersPage > 1) {
+        loadCustomerOrders(currentOrdersPage - 1);
+      }
+    });
+  }
+  
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      loadCustomerOrders(currentOrdersPage + 1);
+    });
   }
 }

@@ -817,6 +817,7 @@
                     <button class="tools-nav-btn active" data-tool="achievements">Manage Coins</button>
                     <button class="tools-nav-btn" data-tool="live-users">Live Users</button>
                     <button class="tools-nav-btn" data-tool="products">Manage Products</button>
+                    <button class="tools-nav-btn" data-tool="customer-orders">Customer Orders</button>
                     <button class="tools-nav-btn" data-tool="data" id="manageDataTabBtn" style="display: none;">🔐 Manage Data</button>
                 </div>
 
@@ -968,6 +969,135 @@
                                 <!-- Table rows will be populated by JavaScript -->
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- Customer Orders Tool -->
+                <div class="tool-section" id="customerOrdersTool" style="display: none;">
+                    <div class="tool-header">
+                        <h3>🛒 Customer Orders</h3>
+                        <div class="tool-header-subtitle">
+                            <span id="orderCount" style="color: #c4a962;">Loading...</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Filters -->
+                    <div class="filters-container" style="margin-bottom: 20px;">
+                        <div class="filters-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                            <div class="filter-group">
+                                <label for="filterOrderNumber" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Order Number</label>
+                                <input 
+                                    type="text" 
+                                    id="filterOrderNumber" 
+                                    placeholder="Search order number..."
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="filterCustomerEmail" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Customer Email</label>
+                                <input 
+                                    type="text" 
+                                    id="filterCustomerEmail" 
+                                    placeholder="Search email..."
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="filterProductId" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Product ID</label>
+                                <input 
+                                    type="text" 
+                                    id="filterProductId" 
+                                    placeholder="Search product ID..."
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="filterSku" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">SKU</label>
+                                <input 
+                                    type="text" 
+                                    id="filterSku" 
+                                    placeholder="Search SKU..."
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div class="filters-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                            <div class="filter-group">
+                                <label for="filterDateFrom" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Order Date From</label>
+                                <input 
+                                    type="date" 
+                                    id="filterDateFrom" 
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="filterDateTo" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Order Date To</label>
+                                <input 
+                                    type="date" 
+                                    id="filterDateTo" 
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                />
+                            </div>
+                            
+                            <div class="filter-group" style="display: flex; align-items: flex-end; gap: 10px;">
+                                <button 
+                                    id="applyOrderFilters" 
+                                    class="btn-primary"
+                                    style="padding: 8px 20px; flex: 1;"
+                                >
+                                    🔍 Apply Filters
+                                </button>
+                                <button 
+                                    id="clearOrderFilters" 
+                                    class="btn-secondary"
+                                    style="padding: 8px 20px; flex: 1; background: #6c757d;"
+                                >
+                                    ✕ Clear
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="orders-table-container" style="overflow-x: auto;">
+                        <table class="orders-table" style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Order Number</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Customer</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Product ID</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">SKU</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Quantity</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Order Date</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Line Item Details</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customerOrdersTableBody">
+                                <!-- Table rows will be populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination-container" style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <div style="font-size: 14px; color: #666;">
+                            Showing <span id="ordersShowing">0</span> of <span id="ordersTotal">0</span> orders
+                        </div>
+                        <div style="display: flex; gap: 10px;">
+                            <button id="prevOrdersPage" class="btn-secondary" style="padding: 8px 15px;" disabled>← Previous</button>
+                            <span id="currentOrdersPage" style="padding: 8px 15px; background: white; border-radius: 4px;">Page 1</span>
+                            <button id="nextOrdersPage" class="btn-secondary" style="padding: 8px 15px;">Next →</button>
+                        </div>
                     </div>
                 </div>
 
