@@ -1,0 +1,206 @@
+2025-10-29 18:43:42.78
+d79a0638
+User
+👤 User not found, fetching from Shopify: 9481545056570
+2025-10-29 18:43:42.78
+d79a0638
+User
+👤 Fetching customer 9481545056570 from Shopify
+2025-10-29 18:43:42.94
+d79a0638
+User
+✅ Fetched customer 9481545056570: boden@duck.com
+2025-10-29 18:43:42.99
+d79a0638
+User
+✨ Created new user 46 from Shopify: boden@duck.com (Winfred Denham)
+2025-10-29 18:43:43.19
+d79a0638
+User
+✅ Processed 2 line items for order JK3825341390 (user: 46)
+2025-10-29 18:43:43.19
+d79a0638
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341390
+2025-10-29 18:43:43.19
+d79a0638
+User
+🔄 Invalidating purchase history cache for user 46
+2025-10-29 18:43:43.19
+d79a0638
+User
+🗑️ Purchase cache invalidated for user 46
+2025-10-29 18:43:43.19
+d79a0638
+User
+🔄 Recalculating ranking stats for 2 product(s)
+2025-10-29 18:43:43.24
+d79a0638
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 18:43:43.24
+d79a0638
+User
+✅ Caches updated
+2025-10-29 18:43:48.82
+931f0c8f
+User
+👋 WebSocket client disconnected: cCyn84g5F84v5V5PAAAd
+2025-10-29 18:43:48.82
+931f0c8f
+User
+👤 User 4 still has 1 active socket(s)
+2025-10-29 18:43:49.57
+d79a0638
+User
+✅ WebSocket client connected: PsQXkaXD82VT0QTLAAAD
+2025-10-29 18:43:49.69
+d79a0638
+User
+🔐 User 4 authenticated on socket PsQXkaXD82VT0QTLAAAD
+2025-10-29 18:43:49.69
+d79a0638
+User
+📡 TEST: Sent test:ping to socket PsQXkaXD82VT0QTLAAAD
+2025-10-29 18:43:49.77
+d79a0638
+User
+🔍 Streaks endpoint called
+2025-10-29 18:43:49.77
+d79a0638
+User
+🔑 Session ID present: 5118586e...
+2025-10-29 18:43:49.77
+d79a0638
+User
+🔍 Achievements endpoint called
+2025-10-29 18:43:49.77
+d79a0638
+User
+🔑 Session ID present: 5118586e...
+2025-10-29 18:43:49.81
+d79a0638
+User
+✅ Session validated for user 4
+2025-10-29 18:43:49.81
+d79a0638
+User
+📊 Fetching streaks for user 4
+2025-10-29 18:43:49.82
+d79a0638
+User
+✅ Session validated for user 4
+2025-10-29 18:43:49.82
+d79a0638
+User
+📊 Fetching achievements for user 4
+2025-10-29 18:43:49.82
+d79a0638
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-29 18:43:49.82
+d79a0638
+User
+🔄 Batching user stats queries...
+2025-10-29 18:43:49.82
+d79a0638
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 64s)
+2025-10-29 18:43:49.86
+d79a0638
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:43:49.86
+d79a0638
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-29 18:43:49.86
+d79a0638
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-29 18:43:49.94
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 2, waitingRequests: 0 }
+2025-10-29 18:43:49.94
+d79a0638
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 2, waitingRequests: 0 }
+2025-10-29 18:43:49.98
+d79a0638
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:43:49.98
+d79a0638
+User
+⏱️ Batch 1 completed in 168ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-29 18:43:49.98
+d79a0638
+User
+💾 Cache HIT: Returning 162 products from cache (age: 3 minutes)
+2025-10-29 18:43:49.98
+d79a0638
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-29 18:43:49.99
+d79a0638
+User
+💾 Cache HIT: Returning 162 products from cache (age: 3 minutes)
+2025-10-29 18:43:49.99
+d79a0638
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 3 minutes)
+2025-10-29 18:43:50.03
+d79a0638
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 18:43:50.06
+d79a0638
+User
+⏱️ Batch 2 completed in 79ms (getCompletedAnimalCategories)
+2025-10-29 18:43:50.06
+d79a0638
+User
+⏱️ Total aggregation time: 247ms
+2025-10-29 18:43:50.06
+d79a0638
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-29 18:43:50.06
+d79a0638
+User
+🔄 Getting achievements with progress...
+2025-10-29 18:43:50.06
+d79a0638
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 3 minutes)
+2025-10-29 18:43:50.07
+d79a0638
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 3 minutes)
+2025-10-29 18:43:50.11
+d79a0638
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
+2025-10-29 18:43:50.12
+d79a0638
+User
+📊 ProgressTracker: Found 21 total achievements for user 4
+2025-10-29 18:43:50.12
+d79a0638
+User
+✅ Earned: 7 | 🔒 Unearned: 14
+2025-10-29 18:43:50.12
+d79a0638
+User
+📊 ProgressTracker: 10 unearned achievements have progress data
+2025-10-29 18:43:50.12
+d79a0638
+User
+🎯 Closest unearned achievement: Week Warrior (42.9% complete - 3/7)
+
+Collapse
+
+Wrap
+
+Colors
