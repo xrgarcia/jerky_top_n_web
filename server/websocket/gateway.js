@@ -9,6 +9,7 @@ class WebSocketGateway {
     this.services = services;
     this.activeConnections = new Map(); // socketId -> connection data
     this.activeUsers = new Map(); // userId -> aggregated user data
+    this.pendingAchievements = new Map(); // userId -> {achievements, timestamp}
     this.setupEventHandlers();
   }
 
@@ -36,6 +37,28 @@ class WebSocketGateway {
             socket.userId = session.userId;
             socket.join(`user:${session.userId}`);
             console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id}`);
+            
+            // Emit any pending achievements that were missed while socket was disconnected
+            const pendingKey = session.userId;
+            if (this.pendingAchievements.has(pendingKey)) {
+              const pendingData = this.pendingAchievements.get(pendingKey);
+              const age = Date.now() - pendingData.timestamp;
+              
+              // Only send if less than 5 minutes old
+              if (age < 5 * 60 * 1000) {
+                console.log(`📬 Sending ${pendingData.achievements?.length || 0} pending achievement(s) to user ${session.userId} (age: ${Math.round(age/1000)}s)`);
+                socket.emit('achievements:earned', { achievements: pendingData.achievements });
+                
+                if (pendingData.flavorCoins && pendingData.flavorCoins.length > 0) {
+                  console.log(`📬 Sending ${pendingData.flavorCoins.length} pending flavor coin(s) to user ${session.userId}`);
+                  socket.emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
+                }
+              } else {
+                console.log(`⏰ Discarding stale pending achievements for user ${session.userId} (age: ${Math.round(age/1000)}s)`);
+              }
+              
+              this.pendingAchievements.delete(pendingKey);
+            }
             
             const user = await this.services.storage.getUserById(session.userId);
             if (user) {
