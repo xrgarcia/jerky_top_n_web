@@ -130,6 +130,22 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     return formatted;
   });
 
+  // Register ProductsCache warming with metadata sync and cleanup
+  // This ensures products and metadata are synchronized on every server startup
+  if (productsService) {
+    cacheWarmer.register('ProductsCache', async () => {
+      // getAllProducts with includeMetadata=true will:
+      // 1. Fetch fresh products from Shopify if cache is invalid
+      // 2. Sync metadata for all current products
+      // 3. Clean up orphaned products no longer tagged as "rankable"
+      const result = await productsService.getAllProducts({
+        includeMetadata: true
+      });
+      console.log(`🏷️ Products cache warmed and metadata synchronized: ${result.products.length} products`);
+      return result;
+    });
+  }
+
   // Warm all caches asynchronously (non-blocking)
   // This runs in background after server starts accepting requests
   setImmediate(() => {
