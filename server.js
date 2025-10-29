@@ -1367,8 +1367,8 @@ app.get('/api/products/search', async (req, res) => {
               }
               
               // Broadcast new achievements via WebSocket
-              if (achievementsToEmit.length > 0 && io) {
-                io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+              if (achievementsToEmit.length > 0 && gamificationServices?.wsGateway) {
+                gamificationServices.wsGateway.emitAchievements(userId, achievementsToEmit);
                 console.log(`🏆 [SEARCH] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
                   achievementsToEmit.map(a => a.name).join(', '));
               }
@@ -1904,8 +1904,8 @@ app.post('/api/rankings/products', async (req, res) => {
           }
           
           // Broadcast new achievements via WebSocket (single source of truth for toasts)
-          if (achievementsToEmit.length > 0 && io) {
-            io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+          if (achievementsToEmit.length > 0 && gamificationServices?.wsGateway) {
+            gamificationServices.wsGateway.emitAchievements(userId, achievementsToEmit);
             console.log(`🏆 User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
               achievementsToEmit.map(a => a.name).join(', '));
           }
@@ -2792,8 +2792,8 @@ app.get('/api/search/global', async (req, res) => {
               }
               
               // Broadcast new achievements via WebSocket
-              if (achievementsToEmit.length > 0 && io) {
-                io.to(`user:${userId}`).emit('achievements:earned', { achievements: achievementsToEmit });
+              if (achievementsToEmit.length > 0 && gamificationServices?.wsGateway) {
+                gamificationServices.wsGateway.emitAchievements(userId, achievementsToEmit);
                 console.log(`🏆 [GLOBAL SEARCH] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
                   achievementsToEmit.map(a => a.name).join(', '));
               }
