@@ -1,0 +1,150 @@
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+'9862732382522', '11821175439',
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+'11971532879', '11971532943',
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+'11821167695', '11971533135',
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+'11821166863'
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+]
+2025-10-28 19:50:15.34
+2c0b0c97
+User
+🔄 [original_flavor_enthusiast] UPDATE START - User 4: New calc shows complete (100%)
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+📊 [original_flavor_enthusiast] DB STATE - User 4: Current tier in DB: complete
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+🔍 [flavor_master_hot] CALC START - User 4, Required products: 20 [
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821180943', '11821165071',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821167247', '11821166159',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821195855', '11821193167',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'9814176006458', '11821181263',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'8922662535482', '9445783142714',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'1291529420868', '11821181775',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821182223', '11821180495',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821180559', '11845252111',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'1299529138244', '11821184975',
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+'11821195599', '11821193039'
+2025-10-28 19:50:15.38
+2c0b0c97
+User
+]
+2025-10-28 19:50:15.42
+2c0b0c97
+User
+✅ [flavor_master_hot] CALC RESULT - User 4: 3/20 (15%) → TIER: null (hasTiers: 0)
+2025-10-28 19:50:15.42
+2c0b0c97
+User
+📋 [flavor_master_hot] Ranked product IDs: [ '11821182223', '11821181263', '11821181775' ]
+2025-10-28 19:50:15.42
+2c0b0c97
+User
+🔄 [flavor_master_hot] UPDATE START - User 4: New calc shows null (15%)
+2025-10-28 19:50:15.42
+2c0b0c97
+User
+⚠️ [flavor_master_hot] No tier calculated, skipping update
+2025-10-28 19:50:15.42
+2c0b0c97
+User
+🔍 [Jerky.com - Original Beef Jerky - Bronze] CALC START - User 4, Required products: 1 [ '11821175439' ]
+2025-10-28 19:50:15.46
+2c0b0c97
+User
+✅ [Jerky.com - Original Beef Jerky - Bronze] CALC RESULT - User 4: 1/1 (100%) → TIER: complete (hasTiers: 0)
+2025-10-28 19:50:15.46
+2c0b0c97
+User
+📋 [Jerky.com - Original Beef Jerky - Bronze] Ranked product IDs: [ '11821175439' ]
+2025-10-28 19:50:15.46
+2c0b0c97
+User
+🔄 [Jerky.com - Original Beef Jerky - Bronze] UPDATE START - User 4: New calc shows complete (100%)
+2025-10-28 19:50:15.50
+2c0b0c97
+User
+📊 [Jerky.com - Original Beef Jerky - Bronze] DB STATE - User 4: Current tier in DB: complete
+2025-10-28 19:50:15.55
+2c0b0c97
+User
+🎯 [ENGAGEMENT CHECK] User 4: Checking 0 engagement achievements
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+📄 [PAGE VIEW ENGAGEMENT] User 4: 3 total page views
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+🔍 [SEARCH ENGAGEMENT] User 4: 0 total searches
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+🔥 [STREAK ENGAGEMENT] User 4: Current streak 0 days (longest: 0)
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+🔐 [LOGIN ENGAGEMENT] User 4: Current login streak 0 days (longest: 0)
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+✅ [ENGAGEMENT CHECK] User 4: 0 achievement update(s)
+2025-10-28 19:50:15.59
+2c0b0c97
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 2 minutes)
+2025-10-28 19:50:15.63
+2c0b0c97
+User
+No evaluator for requirement type: complete_collection
+
+Collapse
+
+Wrap
+
+Colors

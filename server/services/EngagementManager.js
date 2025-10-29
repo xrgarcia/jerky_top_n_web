@@ -76,6 +76,11 @@ class EngagementManager {
         // This evaluator should never award the achievement
         return false;
       },
+      complete_collection: (userStats, requirement) => {
+        // Complete collection achievements are handled by CollectionManager, not here
+        // This evaluator should never award the achievement
+        return false;
+      },
       search_count: (userStats, requirement) => {
         // Check if user has performed enough searches
         return userStats.totalSearches >= requirement.value;
