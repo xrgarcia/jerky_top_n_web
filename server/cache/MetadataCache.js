@@ -54,7 +54,8 @@ class MetadataCache {
     }
     
     this.data[shopifyProductId] = metadata;
-    console.log(`✅ MetadataCache: Updated product ${shopifyProductId} (${metadata.title || 'unknown'})`);
+    this.timestamp = Date.now();
+    console.log(`✅ MetadataCache: Updated product ${shopifyProductId} (${metadata.title || 'unknown'}) - timestamp reset`);
   }
 
   /**
