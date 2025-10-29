@@ -25,6 +25,11 @@ The application features a modern web architecture designed for responsiveness, 
 - **Frontend**: Built with Vanilla JavaScript, an event-driven architecture using `EventBus` for pub/sub, and `ServiceRegistry` for dependency injection.
 - **Backend**: Implemented with Node.js and Express.js, following a repository pattern.
 - **User Privacy**: `CommunityService` centralizes user data handling, truncating last names.
+- **User Activation System**: Users have an `active` boolean flag (default: false) that gates community visibility:
+  - **Webhook-Created Users**: Auto-created users from order webhooks default to `active=false` and remain hidden from community/leaderboard
+  - **Login Activation**: First login sets `active=true`, making user visible in community features
+  - **Community Filtering**: All community queries (CommunityService, LeaderboardManager) filter for `active=true` to show only engaged users
+  - **Purpose**: Prevents community clutter from auto-created accounts that never engage with the platform
 - **Real-time Communication**: Socket.IO facilitates real-time bidirectional communication with robust achievement notification delivery:
   - **Pending Achievement Queue**: WebSocketGateway maintains a temporary queue for achievements earned before socket authentication
   - **Race Condition Prevention**: `activeUsers` populated synchronously during auth to ensure `hasAuthenticatedSocket()` returns true immediately
