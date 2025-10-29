@@ -47,6 +47,7 @@ class CommunityService {
         COUNT(DISTINCT pr.ranking_list_id) AS ranking_lists_count
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
+      WHERE u.active = true
       GROUP BY u.id, u.first_name, u.last_name, u.display_name
       ORDER BY ranked_count DESC, u.id ASC
       LIMIT ${limit} OFFSET ${offset}
@@ -79,13 +80,16 @@ class CommunityService {
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
       WHERE 
-        LOWER(u.first_name) LIKE ${searchPattern}
-        OR LOWER(u.last_name) LIKE ${searchPattern}
-        OR LOWER(u.display_name) LIKE ${searchPattern}
-        OR EXISTS (
-          SELECT 1 FROM product_rankings pr2
-          WHERE pr2.user_id = u.id
-          AND LOWER(pr2.product_data->>'title') LIKE ${searchPattern}
+        u.active = true
+        AND (
+          LOWER(u.first_name) LIKE ${searchPattern}
+          OR LOWER(u.last_name) LIKE ${searchPattern}
+          OR LOWER(u.display_name) LIKE ${searchPattern}
+          OR EXISTS (
+            SELECT 1 FROM product_rankings pr2
+            WHERE pr2.user_id = u.id
+            AND LOWER(pr2.product_data->>'title') LIKE ${searchPattern}
+          )
         )
       GROUP BY u.id, u.first_name, u.last_name, u.display_name
       ORDER BY ranked_count DESC
