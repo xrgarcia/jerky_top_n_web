@@ -40,6 +40,28 @@ class GamificationService extends BaseService {
       }
     });
 
+    this.socket.on('flavor_coins:earned', (data) => {
+      console.log('🪙 Received flavor_coins:earned event', data);
+      if (data.coins && data.coins.length > 0) {
+        data.coins.forEach(coin => {
+          // Format flavor coin as achievement for notification display
+          const coinAchievement = {
+            name: `${coin.flavorDisplay} Flavor Coin`,
+            description: 'New flavor discovered!',
+            icon: coin.flavorIcon || '🪙',
+            iconType: 'emoji',
+            code: `flavor_coin_${coin.flavorType}`,
+            category: 'flavor_coin',
+            points: 100,
+            tier: null
+          };
+          this.emit('achievement:new', coinAchievement);
+        });
+        // Reload achievements to get updated coin count
+        this.loadAchievements();
+      }
+    });
+
     this.socket.on('streak:updated', (streak) => {
       this.updateStreakData(streak);
       this.emit('streak:changed', streak);
