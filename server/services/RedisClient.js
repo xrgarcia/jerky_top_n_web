@@ -44,13 +44,16 @@ class RedisClient {
       this.client = new Redis(redisUrl, {
         maxRetriesPerRequest: 3,
         enableReadyCheck: true,
-        lazyConnect: false, // Connect immediately
+        lazyConnect: true, // Don't auto-connect (prevents duplicate() conflicts)
+        tls: {}, // Required for Upstash Redis TLS connections
+        keepAlive: 30000, // Send keepalive packets every 30s (prevents idle disconnections)
+        connectTimeout: 10000, // 10 second connection timeout
         retryStrategy(times) {
           if (times > 3) {
             console.log('❌ Redis retry limit exceeded, using in-memory fallback');
             return null; // Stop retrying
           }
-          const delay = Math.min(times * 100, 2000);
+          const delay = Math.min(times * 200, 1000);
           return delay;
         },
         reconnectOnError(err) {
@@ -82,6 +85,9 @@ class RedisClient {
         this.isConnected = false;
       });
 
+      // Explicitly connect (lazyConnect: true means we control when to connect)
+      await this.client.connect();
+      
       // Test the connection
       await this.client.ping();
       console.log(`🏓 Redis PING successful - connection pool active (${environment})`);
