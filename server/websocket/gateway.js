@@ -264,7 +264,11 @@ class WebSocketGateway {
     
     if (hasSocket) {
       // User has authenticated socket, emit directly
-      this.io.to(`user:${userId}`).emit('achievements:earned', { achievements });
+      const roomName = `user:${userId}`;
+      const room = this.io.sockets.adapter.rooms.get(roomName);
+      const socketsInRoom = room ? room.size : 0;
+      console.log(`🔊 Emitting ${achievements.length} achievement(s) to room "${roomName}" (${socketsInRoom} socket(s))`);
+      this.io.to(roomName).emit('achievements:earned', { achievements });
       console.log(`✅ Emitted ${achievements.length} achievement(s) to authenticated user ${userId}`);
     } else {
       // No authenticated socket, queue for later delivery
