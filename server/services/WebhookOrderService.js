@@ -2,11 +2,13 @@ const Sentry = require('@sentry/node');
 const { db } = require('../db');
 const { customerOrders, users } = require('../../shared/schema');
 const { eq, and } = require('drizzle-orm');
+const OrdersService = require('./OrdersService');
 
 class WebhookOrderService {
   constructor(webSocketGateway = null) {
     this.db = db;
     this.webSocketGateway = webSocketGateway;
+    this.ordersService = new OrdersService();
   }
 
   async processOrderWebhook(orderData, topic) {
@@ -28,6 +30,110 @@ class WebhookOrderService {
         extra: { orderId: orderData.id, orderName: orderData.name }
       });
       throw error;
+    }
+  }
+
+  /**
+   * Create or update user from Shopify customer data
+   * @param {string} shopifyCustomerId - Shopify customer ID
+   * @param {string} customerEmail - Customer email
+   * @returns {Promise<Object|null>} User object or null if creation failed
+   */
+  async findOrCreateUser(shopifyCustomerId, customerEmail) {
+    try {
+      // First try to find existing user by Shopify ID
+      if (shopifyCustomerId) {
+        const [existingUser] = await this.db
+          .select()
+          .from(users)
+          .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+          .limit(1);
+        
+        if (existingUser) {
+          console.log(`✅ Found existing user by Shopify ID: ${existingUser.id} (${existingUser.email})`);
+          return existingUser;
+        }
+      }
+
+      // Try to find by email
+      if (customerEmail) {
+        const [existingUser] = await this.db
+          .select()
+          .from(users)
+          .where(eq(users.email, customerEmail))
+          .limit(1);
+        
+        if (existingUser) {
+          console.log(`✅ Found existing user by email: ${existingUser.id} (${existingUser.email})`);
+          
+          // Update Shopify customer ID if missing
+          if (shopifyCustomerId && !existingUser.shopifyCustomerId) {
+            await this.db
+              .update(users)
+              .set({ shopifyCustomerId })
+              .where(eq(users.id, existingUser.id));
+            
+            console.log(`🔄 Updated user ${existingUser.id} with Shopify customer ID`);
+            existingUser.shopifyCustomerId = shopifyCustomerId;
+          }
+          
+          return existingUser;
+        }
+      }
+
+      // User doesn't exist - fetch from Shopify and create
+      if (!shopifyCustomerId) {
+        console.warn(`⚠️ Cannot create user without Shopify customer ID`);
+        return null;
+      }
+
+      console.log(`👤 User not found, fetching from Shopify: ${shopifyCustomerId}`);
+      const shopifyCustomer = await this.ordersService.fetchCustomer(shopifyCustomerId);
+      
+      if (!shopifyCustomer) {
+        console.warn(`⚠️ Could not fetch customer ${shopifyCustomerId} from Shopify`);
+        return null;
+      }
+
+      // Create new user from Shopify data
+      const firstName = shopifyCustomer.first_name || 'Customer';
+      const lastName = shopifyCustomer.last_name || '';
+      const email = shopifyCustomer.email || customerEmail;
+
+      if (!email) {
+        console.warn(`⚠️ Cannot create user without email`);
+        return null;
+      }
+
+      const [newUser] = await this.db
+        .insert(users)
+        .values({
+          email,
+          firstName,
+          lastName,
+          shopifyCustomerId,
+          role: 'customer',
+          createdAt: new Date(),
+        })
+        .returning();
+
+      console.log(`✨ Created new user ${newUser.id} from Shopify: ${email} (${firstName} ${lastName})`);
+      
+      Sentry.captureMessage('Auto-created user from order webhook', {
+        level: 'info',
+        tags: { service: 'webhook-order', action: 'user_created' },
+        extra: { userId: newUser.id, shopifyCustomerId, email }
+      });
+
+      return newUser;
+      
+    } catch (error) {
+      console.error('❌ Error finding/creating user:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'webhook-order', action: 'find_or_create_user' },
+        extra: { shopifyCustomerId, customerEmail }
+      });
+      return null;
     }
   }
 
@@ -84,28 +190,12 @@ class WebhookOrderService {
       return { success: false, reason: 'missing_customer_data' };
     }
 
-    let user = null;
-    if (shopifyCustomerId) {
-      const [foundUser] = await this.db
-        .select()
-        .from(users)
-        .where(eq(users.shopifyCustomerId, shopifyCustomerId))
-        .limit(1);
-      user = foundUser;
-    }
-
-    if (!user && customerEmail) {
-      const [foundUser] = await this.db
-        .select()
-        .from(users)
-        .where(eq(users.email, customerEmail))
-        .limit(1);
-      user = foundUser;
-    }
-
+    // Find or create user from Shopify data
+    const user = await this.findOrCreateUser(shopifyCustomerId, customerEmail);
+    
     if (!user) {
-      console.log(`ℹ️ No user found for order ${orderNumber} (customer: ${customerEmail || shopifyCustomerId})`);
-      return { success: true, action: 'skipped', reason: 'user_not_found', orderNumber };
+      console.warn(`❌ Could not find or create user for order ${orderNumber}`);
+      return { success: true, action: 'skipped', reason: 'user_creation_failed', orderNumber };
     }
 
     const lineItems = orderData.line_items || [];
