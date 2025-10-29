@@ -43,7 +43,22 @@ class MetadataCache {
   }
 
   /**
-   * Invalidate cache (called by webhooks when products change)
+   * Update a single product in the cache (called by webhooks)
+   * @param {string} shopifyProductId - The product ID to update
+   * @param {Object} metadata - The metadata to store
+   */
+  updateProduct(shopifyProductId, metadata) {
+    if (!this.data) {
+      console.log('⚠️ MetadataCache: Cache not initialized, cannot update single product');
+      return;
+    }
+    
+    this.data[shopifyProductId] = metadata;
+    console.log(`✅ MetadataCache: Updated product ${shopifyProductId} (${metadata.title || 'unknown'})`);
+  }
+
+  /**
+   * Invalidate entire cache (called by admin tools for manual cache clearing)
    */
   invalidate() {
     this.data = null;
