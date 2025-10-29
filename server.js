@@ -24,13 +24,18 @@ const io = new Server(httpServer, {
   pingInterval: 25000 // 25s
 });
 
-// Detect environment and URL for Sentry tracking
-const ENVIRONMENT = process.env.NODE_ENV || 
-                   (process.env.REPL_SLUG && process.env.REPL_OWNER ? 'production' : 'development');
+// Environment configuration - must be explicitly set via NODE_ENV
+const ENVIRONMENT = process.env.NODE_ENV || 'development';
 const APP_URL = process.env.REPLIT_DEV_DOMAIN || 
                 (process.env.REPL_SLUG && process.env.REPL_OWNER ? 
                  `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app` : 
                  'localhost:5000');
+
+// Warn if NODE_ENV is not explicitly set
+if (!process.env.NODE_ENV) {
+  console.warn('⚠️  NODE_ENV not set - defaulting to "development"');
+  console.warn('⚠️  Set NODE_ENV=production for production deployments');
+}
 
 // Initialize Sentry for error monitoring and performance tracking
 if (process.env.SENTRY_DSN) {
