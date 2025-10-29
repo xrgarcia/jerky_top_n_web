@@ -172,13 +172,27 @@ class DatabaseStorage {
   // Product rankings methods
   async saveProductRanking({ userId, shopifyProductId, productData, ranking, rankingListId }) {
     try {
-      const [productRanking] = await db.insert(productRankings).values({
-        userId,
-        shopifyProductId,
-        productData,
-        ranking,
-        rankingListId,
-      }).returning();
+      const { sql } = require('drizzle-orm');
+      
+      // Use UPSERT (ON CONFLICT DO UPDATE) to handle duplicate rankings
+      // This prevents unique constraint errors when ranking the same product multiple times
+      const [productRanking] = await db.insert(productRankings)
+        .values({
+          userId,
+          shopifyProductId,
+          productData,
+          ranking,
+          rankingListId,
+        })
+        .onConflictDoUpdate({
+          target: [productRankings.userId, productRankings.shopifyProductId, productRankings.rankingListId],
+          set: {
+            ranking: sql`EXCLUDED.ranking`,
+            productData: sql`EXCLUDED.product_data`,
+            updatedAt: new Date()
+          }
+        })
+        .returning();
 
       return productRanking;
     } catch (error) {
