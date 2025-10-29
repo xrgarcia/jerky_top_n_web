@@ -1,0 +1,162 @@
+const { customerOrders } = require('../../shared/schema.js');
+const { db } = require('../db.js');
+const { eq, and, sql } = require('drizzle-orm');
+const Sentry = require('@sentry/node');
+
+/**
+ * PurchaseHistoryRepository
+ * Handles data access for customer purchase history
+ * Follows the Repository pattern for database operations
+ */
+class PurchaseHistoryRepository {
+  /**
+   * Get all Shopify product IDs that a user has purchased
+   * @param {number} userId - The user's ID
+   * @returns {Promise<string[]>} Array of Shopify product IDs
+   */
+  async getPurchasedProductIdsByUser(userId) {
+    try {
+      const purchasedProducts = await db
+        .select({ shopifyProductId: customerOrders.shopifyProductId })
+        .from(customerOrders)
+        .where(eq(customerOrders.userId, userId));
+
+      // Return unique product IDs (deduplicate in case of multiple orders)
+      const uniqueProductIds = [...new Set(purchasedProducts.map(p => p.shopifyProductId))];
+      return uniqueProductIds;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { userId }
+      });
+      console.error('Error fetching purchased product IDs:', error);
+      return []; // Return empty array on error to prevent breaking the UI
+    }
+  }
+
+  /**
+   * Upsert a single order item
+   * @param {Object} orderData - Order item data
+   * @returns {Promise<Object>} Inserted/updated order item
+   */
+  async upsertOrderItem(orderData) {
+    try {
+      const [orderItem] = await db
+        .insert(customerOrders)
+        .values({
+          orderNumber: orderData.orderNumber,
+          orderDate: orderData.orderDate,
+          shopifyProductId: orderData.shopifyProductId,
+          sku: orderData.sku || null,
+          quantity: orderData.quantity || 1,
+          userId: orderData.userId,
+          customerEmail: orderData.customerEmail,
+          lineItemData: orderData.lineItemData || null,
+        })
+        .onConflictDoUpdate({
+          target: [customerOrders.orderNumber, customerOrders.shopifyProductId, customerOrders.sku],
+          set: {
+            quantity: sql`EXCLUDED.quantity`,
+            orderDate: sql`EXCLUDED.order_date`,
+            lineItemData: sql`EXCLUDED.line_item_data`,
+            updatedAt: new Date()
+          }
+        })
+        .returning();
+
+      return orderItem;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { orderData }
+      });
+      console.error('Error upserting order item:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Bulk upsert order items (for efficient batch processing)
+   * @param {Array<Object>} orderItems - Array of order item data
+   * @returns {Promise<Array<Object>>} Inserted/updated order items
+   */
+  async bulkUpsertOrderItems(orderItems) {
+    if (!orderItems || orderItems.length === 0) {
+      return [];
+    }
+
+    try {
+      const values = orderItems.map(item => ({
+        orderNumber: item.orderNumber,
+        orderDate: item.orderDate,
+        shopifyProductId: item.shopifyProductId,
+        sku: item.sku || null,
+        quantity: item.quantity || 1,
+        userId: item.userId,
+        customerEmail: item.customerEmail,
+        lineItemData: item.lineItemData || null,
+      }));
+
+      const result = await db
+        .insert(customerOrders)
+        .values(values)
+        .onConflictDoUpdate({
+          target: [customerOrders.orderNumber, customerOrders.shopifyProductId, customerOrders.sku],
+          set: {
+            quantity: sql`EXCLUDED.quantity`,
+            orderDate: sql`EXCLUDED.order_date`,
+            lineItemData: sql`EXCLUDED.line_item_data`,
+            updatedAt: new Date()
+          }
+        })
+        .returning();
+
+      console.log(`✅ Bulk upserted ${result.length} order items`);
+      return result;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { itemCount: orderItems.length }
+      });
+      console.error('Error bulk upserting order items:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Get purchase history for a user with optional date filtering
+   * @param {number} userId - The user's ID
+   * @param {Date} sinceDate - Optional: only return orders since this date
+   * @returns {Promise<Array<Object>>} Array of order items
+   */
+  async getUserPurchaseHistory(userId, sinceDate = null) {
+    try {
+      let query = db
+        .select()
+        .from(customerOrders)
+        .where(eq(customerOrders.userId, userId));
+
+      // Add date filtering if provided
+      if (sinceDate) {
+        query = query.where(
+          and(
+            eq(customerOrders.userId, userId),
+            sql`${customerOrders.orderDate} >= ${sinceDate}`
+          )
+        );
+      }
+
+      const purchases = await query.orderBy(sql`${customerOrders.orderDate} DESC`);
+      return purchases;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { userId, sinceDate }
+      });
+      console.error('Error fetching user purchase history:', error);
+      return [];
+    }
+  }
+}
+
+module.exports = new PurchaseHistoryRepository();

@@ -8,6 +8,7 @@ const crypto = require('crypto');
 const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
+const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -609,6 +610,18 @@ app.get('/api/customer/magic-login', async (req, res) => {
       refreshToken: null,
     });
 
+    // Trigger background order sync for non-employee users (fire-and-forget)
+    if (dbUser.role !== 'employee_admin') {
+      console.log(`🔄 Triggering background order sync for user ${dbUser.id}`);
+      setImmediate(() => {
+        purchaseHistoryService.syncUserOrders(dbUser).catch(err => {
+          console.error(`❌ Background order sync failed for user ${dbUser.id}:`, err);
+        });
+      });
+    } else {
+      console.log(`⏭️ Skipping order sync for employee user ${dbUser.id}`);
+    }
+
     // Create persistent database session (90-day expiration)
     const session = await storage.createSession({
       userId: dbUser.id,
@@ -731,6 +744,9 @@ const rankingStatsCache = new RankingStatsCache(30);
 
 // 30-minute metadata cache (OOP implementation)
 const metadataCache = new MetadataCache(30);
+
+// Shared purchase history service (singleton with persistent cache)
+const purchaseHistoryService = new PurchaseHistoryService();
 
 // Helper to get cache staleness threshold from database (cached for performance)
 let cacheStaleThresholdCache = {
@@ -1139,7 +1155,8 @@ app.get('/api/products/all', async (req, res) => {
       fetchAllShopifyProducts,
       (products) => metadataService.syncProductsMetadata(products),
       metadataCache,
-      rankingStatsCache
+      rankingStatsCache,
+      purchaseHistoryService  // Shared singleton for purchase filtering
     );
     
     // Get all products with complete data (Shopify + metadata + rankings)
@@ -1207,7 +1224,8 @@ app.get('/api/products/search', async (req, res) => {
       fetchAllShopifyProducts,
       (products) => metadataService.syncProductsMetadata(products),
       metadataCache,
-      rankingStatsCache
+      rankingStatsCache,
+      purchaseHistoryService  // Shared singleton for purchase filtering
     );
     
     // Get products with metadata and ranking stats
@@ -1386,6 +1404,13 @@ app.get('/api/products/rankable', async (req, res) => {
     }
     
     const userId = session.userId;
+    
+    // Get user object to check role for purchase filtering
+    const user = await storage.getUserById(userId);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
     console.log(`🎯 Fetching rankable products for user ${userId}: page ${page}, limit ${limit}, sort ${sort}`);
     
     // Use unified ProductsService with shared cache instances
@@ -1400,15 +1425,17 @@ app.get('/api/products/rankable', async (req, res) => {
       fetchAllShopifyProducts,
       (products) => metadataService.syncProductsMetadata(products),
       metadataCache,
-      rankingStatsCache
+      rankingStatsCache,
+      purchaseHistoryService  // Shared singleton for purchase filtering
     );
     
-    // Get products excluding user's already-ranked products
+    // Get products excluding user's already-ranked products AND non-purchased products
     const enrichedProducts = await productsService.getRankableProductsForUser(userId, {
       query,
       rankingListId: 'default',  // Must match the rankingListId used when saving rankings
       includeMetadata: true,
-      includeRankingStats: true
+      includeRankingStats: true,
+      user  // Pass user object for employee bypass and purchase filtering
     });
     
     // Clone products array to avoid mutating the cache

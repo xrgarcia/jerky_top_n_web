@@ -1,4 +1,4 @@
-const { pgTable, serial, text, timestamp, integer, jsonb, unique } = require('drizzle-orm/pg-core');
+const { pgTable, serial, text, timestamp, integer, jsonb, unique, index } = require('drizzle-orm/pg-core');
 const { relations } = require('drizzle-orm');
 
 // User profiles from jerky.com customer accounts
@@ -194,6 +194,28 @@ const rankingOperations = pgTable('ranking_operations', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+// Customer orders - tracks products purchased by customers from Shopify
+const customerOrders = pgTable('customer_orders', {
+  id: serial('id').primaryKey(),
+  orderNumber: text('order_number').notNull(), // Shopify order number
+  orderDate: timestamp('order_date').notNull(), // When the order was placed
+  shopifyProductId: text('shopify_product_id').notNull(), // Product ID from Shopify
+  sku: text('sku'), // Product SKU (nullable as some products may not have SKU)
+  quantity: integer('quantity').default(1).notNull(), // Quantity purchased
+  userId: integer('user_id').references(() => users.id).notNull(),
+  customerEmail: text('customer_email').notNull(), // Backup reference to customer
+  lineItemData: jsonb('line_item_data'), // Full Shopify line item for audit/debug
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  // Unique constraint: each order can only have one entry per product/sku
+  uniqueOrderProduct: unique().on(table.orderNumber, table.shopifyProductId, table.sku),
+  // Indexes for efficient purchase lookups
+  userIdIdx: index('idx_customer_orders_user_id').on(table.userId),
+  userProductIdx: index('idx_customer_orders_user_product').on(table.userId, table.shopifyProductId),
+  userDateIdx: index('idx_customer_orders_user_date').on(table.userId, table.orderDate),
+}));
+
 // Relations
 const flavorCoinsRelations = relations(flavorCoins, ({ one }) => ({
   user: one(users, {
@@ -280,6 +302,7 @@ module.exports = {
   productsMetadata,
   pageViews,
   rankingOperations,
+  customerOrders,
   systemConfig,
   usersRelations,
   sessionsRelations,

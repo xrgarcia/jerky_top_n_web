@@ -2,6 +2,7 @@ const MetadataCache = require('../cache/MetadataCache');
 const RankingStatsCache = require('../cache/RankingStatsCache');
 const ProductsMetadataRepository = require('../repositories/ProductsMetadataRepository');
 const ProductRankingRepository = require('../repositories/ProductRankingRepository');
+const PurchaseHistoryService = require('./PurchaseHistoryService');
 const { sql } = require('drizzle-orm');
 
 /**
@@ -9,7 +10,7 @@ const { sql } = require('drizzle-orm');
  * Combines Shopify products, metadata, and ranking stats into consistent data structure
  */
 class ProductsService {
-  constructor(db, fetchShopifyProducts, fetchProductsMetadata, metadataCache, rankingStatsCache) {
+  constructor(db, fetchShopifyProducts, fetchProductsMetadata, metadataCache, rankingStatsCache, purchaseHistoryService = null) {
     this.db = db;
     this.fetchShopifyProducts = fetchShopifyProducts;
     this.fetchProductsMetadata = fetchProductsMetadata;
@@ -17,6 +18,9 @@ class ProductsService {
     // Use shared cache instances for consistency across the app
     this.metadataCache = metadataCache;
     this.rankingStatsCache = rankingStatsCache;
+    
+    // Shared purchase history service (optional, for purchase-based filtering)
+    this.purchaseHistoryService = purchaseHistoryService;
     
     // Repository for metadata operations
     this.metadataRepo = new ProductsMetadataRepository(db);
@@ -242,15 +246,16 @@ class ProductsService {
   }
   
   /**
-   * Get rankable products for a specific user (excludes already-ranked products)
+   * Get rankable products for a specific user (excludes already-ranked products AND non-purchased products)
    * This ensures users with many rankings always see unranked products
+   * Employees (@jerky.com) can rank all products; regular users only see products they've purchased
    * 
    * @param {number} userId - The user ID to get unranked products for
-   * @param {object} options - Same options as getAllProducts plus rankingListId
-   * @returns {Promise<Array>} Filtered products that user hasn't ranked yet
+   * @param {object} options - Same options as getAllProducts plus rankingListId and user
+   * @returns {Promise<Array>} Filtered products that user hasn't ranked yet and has purchased
    */
   async getRankableProductsForUser(userId, options = {}) {
-    const { rankingListId = 'topN', ...otherOptions } = options;
+    const { rankingListId = 'topN', user = null, ...otherOptions } = options;
     
     // 1. Get all products with full enrichment
     const allProducts = await this.getAllProducts(otherOptions);
@@ -259,12 +264,37 @@ class ProductsService {
     const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, rankingListId);
     const rankedSet = new Set(rankedProductIds);
     
-    // 3. Filter out already-ranked products BEFORE pagination
-    const unrankedProducts = allProducts.filter(product => !rankedSet.has(product.id));
+    // 3. Filter out already-ranked products
+    let unrankedProducts = allProducts.filter(product => !rankedSet.has(product.id));
     
-    console.log(`🎯 User ${userId}: ${allProducts.length} total products, ${rankedProductIds.length} ranked, ${unrankedProducts.length} available to rank`);
+    // 4. Apply purchase history filter for non-employee users
+    const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
     
-    return unrankedProducts;
+    if (!isEmployee && this.purchaseHistoryService) {
+      // Regular users: filter to only purchased products
+      const purchasedProductIds = await this.purchaseHistoryService.getPurchasedProductIds(userId);
+      
+      // Graceful handling: if purchase history is empty, assume sync is still in progress
+      // Return all unranked products so users don't see empty state while orders are syncing
+      if (purchasedProductIds.length === 0) {
+        console.log(`⏳ User ${userId}: Purchase history empty (sync may be in progress), showing all ${unrankedProducts.length} unranked products`);
+        return unrankedProducts;
+      }
+      
+      const purchasedSet = new Set(purchasedProductIds);
+      
+      // Filter to products that are both unranked AND purchased
+      const purchasedUnrankedProducts = unrankedProducts.filter(product => purchasedSet.has(product.id));
+      
+      console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${purchasedProductIds.length} purchased, ${purchasedUnrankedProducts.length} available to rank`);
+      
+      return purchasedUnrankedProducts;
+    } else {
+      // Employees OR service not configured: can rank all unranked products
+      const reason = isEmployee ? '(employee - unrestricted)' : '(purchase history service not configured)';
+      console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${unrankedProducts.length} available to rank ${reason}`);
+      return unrankedProducts;
+    }
   }
   
   /**
