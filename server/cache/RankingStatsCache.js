@@ -43,7 +43,25 @@ class RankingStatsCache {
   }
 
   /**
-   * Invalidate the cache (called by webhooks when rankings change)
+   * Update specific products in the cache (called by webhooks)
+   * @param {Object} productsStats - Map of shopifyProductId -> stats to update
+   */
+  updateProducts(productsStats) {
+    if (!this.data) {
+      console.log('⚠️ RankingStatsCache: Cache not initialized, cannot update products');
+      return;
+    }
+    
+    const productIds = Object.keys(productsStats);
+    for (const productId of productIds) {
+      this.data[productId] = productsStats[productId];
+    }
+    
+    console.log(`✅ RankingStatsCache: Updated ${productIds.length} product(s): ${productIds.join(', ')}`);
+  }
+
+  /**
+   * Invalidate entire cache (called by admin tools for manual cache clearing)
    */
   invalidate() {
     this.data = null;

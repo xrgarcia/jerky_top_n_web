@@ -2879,9 +2879,12 @@ if (databaseAvailable && storage) {
     gamificationServices = services;
     console.log('✅ Gamification services available for achievements');
     
-    // Mount Shopify webhook routes with WebSocket gateway for real-time updates
+    // Mount Shopify webhook routes with WebSocket gateway and shared caches
     const createWebhookRoutes = require('./server/routes/webhooks');
-    app.use('/api/webhooks/shopify', createWebhookRoutes(services.wsGateway));
+    app.use('/api/webhooks/shopify', createWebhookRoutes(services.wsGateway, { 
+      metadataCache, 
+      rankingStatsCache 
+    }));
     console.log('📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*');
     
     // Register Shopify webhooks if credentials are available

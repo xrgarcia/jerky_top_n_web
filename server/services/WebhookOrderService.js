@@ -196,6 +196,7 @@ class WebhookOrderService {
     console.log(`✅ Deleted ${deleted.length} customer_orders records for order ${orderNumber}`);
 
     const userId = deleted.length > 0 ? deleted[0].userId : null;
+    const affectedProductIds = [...new Set(deleted.map(record => record.shopifyProductId).filter(Boolean))];
 
     if (this.webSocketGateway && deleted.length > 0) {
       this.webSocketGateway.broadcastCustomerOrdersUpdate({
@@ -211,7 +212,8 @@ class WebhookOrderService {
       orderNumber,
       userId,
       recordsDeleted: deleted.length,
-      deletedRecords: deleted
+      deletedRecords: deleted,
+      affectedProductIds
     };
   }
 
@@ -378,8 +380,60 @@ class WebhookOrderService {
       orderNumber,
       userId: user.id,
       itemsProcessed: upserted.length,
-      items: upserted
+      items: upserted,
+      affectedProductIds: [...new Set(validItems.map(item => item.shopifyProductId))] // unique product IDs
     };
+  }
+
+  /**
+   * Get fresh ranking stats for specific products
+   * Used to update cache after order changes
+   * @param {Array<string>} productIds - Array of shopify product IDs
+   * @returns {Promise<Object>} Map of productId -> stats
+   */
+  async getProductRankingStats(productIds) {
+    if (!productIds || productIds.length === 0) {
+      return {};
+    }
+
+    try {
+      const { sql } = require('drizzle-orm');
+      
+      const results = await this.db.execute(sql`
+        SELECT 
+          shopify_product_id,
+          COUNT(*) as rank_count,
+          COUNT(DISTINCT user_id) as unique_rankers,
+          AVG(ranking) as avg_rank,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          MAX(ranked_at) as last_ranked_at
+        FROM product_rankings
+        WHERE shopify_product_id IN (${sql.join(productIds.map(id => sql`${id}`), sql`, `)})
+        GROUP BY shopify_product_id
+      `);
+
+      const statsMap = {};
+      for (const row of results.rows) {
+        statsMap[row.shopify_product_id] = {
+          count: parseInt(row.rank_count) || 0,
+          uniqueRankers: parseInt(row.unique_rankers) || 0,
+          avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
+          bestRank: row.best_rank ? parseInt(row.best_rank) : null,
+          worstRank: row.worst_rank ? parseInt(row.worst_rank) : null,
+          lastRankedAt: row.last_ranked_at
+        };
+      }
+
+      console.log(`📊 Recalculated ranking stats for ${Object.keys(statsMap).length} product(s)`);
+      return statsMap;
+    } catch (error) {
+      console.error('❌ Error fetching product ranking stats:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'webhook-order', method: 'getProductRankingStats' }
+      });
+      return {};
+    }
   }
 }
 

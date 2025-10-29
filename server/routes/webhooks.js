@@ -4,18 +4,17 @@ const ShopifyWebhookVerifier = require('../utils/shopifyWebhookVerifier');
 const WebhookOrderService = require('../services/WebhookOrderService');
 const WebhookProductService = require('../services/WebhookProductService');
 const { db } = require('../db');
-const MetadataCache = require('../cache/MetadataCache');
-const RankingStatsCache = require('../cache/RankingStatsCache');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 
-function createWebhookRoutes(webSocketGateway = null) {
+function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}) {
   const router = express.Router();
   
   const verifier = new ShopifyWebhookVerifier(process.env.SHOPIFY_API_SECRET);
   const orderService = new WebhookOrderService(webSocketGateway);
   const productService = new WebhookProductService(db);
-  const metadataCache = new MetadataCache();
-  const rankingStatsCache = new RankingStatsCache();
+  
+  // Use shared cache instances passed from server.js
+  const { metadataCache, rankingStatsCache } = sharedCaches;
 
   router.post('/orders', async (req, res) => {
     try {
@@ -38,15 +37,22 @@ function createWebhookRoutes(webSocketGateway = null) {
 
       if (result.success && (result.userId || result.action === 'deleted')) {
         if (result.userId) {
-          console.log(`🔄 Invalidating caches for user ${result.userId}`);
+          console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
           
           const purchaseHistoryService = new PurchaseHistoryService();
           purchaseHistoryService.invalidateUserCache(result.userId);
         }
         
-        rankingStatsCache.invalidate();
+        // Update only affected products in ranking stats cache
+        if (result.affectedProductIds && result.affectedProductIds.length > 0 && rankingStatsCache) {
+          console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
+          const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
+          if (Object.keys(freshStats).length > 0) {
+            rankingStatsCache.updateProducts(freshStats);
+          }
+        }
         
-        console.log('✅ Caches invalidated');
+        console.log('✅ Caches updated');
       }
 
       Sentry.captureMessage(`Shopify order webhook processed: ${topic}`, {
@@ -101,10 +107,9 @@ function createWebhookRoutes(webSocketGateway = null) {
       const productData = req.body;
       const result = await productService.processProductWebhook(productData, topic);
 
-      if (result.success && result.action === 'upserted') {
-        console.log('🔄 Invalidating metadata cache');
-        metadataCache.invalidate();
-        console.log('✅ Metadata cache invalidated');
+      if (result.success && result.action === 'upserted' && metadataCache) {
+        // Update just this product in the cache instead of invalidating everything
+        metadataCache.updateProduct(result.productId, result.metadata);
       }
 
       Sentry.captureMessage(`Shopify product webhook processed: ${topic}`, {
