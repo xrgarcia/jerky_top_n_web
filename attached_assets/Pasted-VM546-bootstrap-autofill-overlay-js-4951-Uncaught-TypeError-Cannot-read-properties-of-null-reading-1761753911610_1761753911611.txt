@@ -1,0 +1,68 @@
+VM546 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM546 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM546 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM546 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM546 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM546 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM546 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM546 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM546 bootstrap-autofill-overlay.js:1567Understand this error
+VM585 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM585 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM585 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM585 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM585 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM585 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM585 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM585 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM585 bootstrap-autofill-overlay.js:1567Understand this error
+VM593 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM593 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM593 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM593 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM593 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM593 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM593 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM593 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM593 bootstrap-autofill-overlay.js:1567Understand this error
+VM601 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM601 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM601 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM601 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM601 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM601 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM601 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM601 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM601 bootstrap-autofill-overlay.js:1567Understand this error
+VM546 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM546 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM546 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM546 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM546 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM546 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM546 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM546 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM546 bootstrap-autofill-overlay.js:1567Understand this error
+VM585 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM585 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM585 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM585 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM585 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM585 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM585 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM585 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM585 bootstrap-autofill-overlay.js:1567Understand this error
+VM593 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM593 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM593 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM593 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM593 bootstrap-autofill-overlay.js:1567:22)
+AutofillOverlayContentService.getFormFieldData @ VM593 bootstrap-autofill-overlay.js:4951
+AutofillOverlayContentService.handleFormFieldSubmitEvent @ VM593 bootstrap-autofill-overlay.js:4932
+AutofillOverlayContentService.handleSubmitButtonInteraction @ VM593 bootstrap-autofill-overlay.js:4926
+(anonymous) @ VM593 bootstrap-autofill-overlay.js:1567Understand this error
+VM601 bootstrap-autofill-overlay.js:4951 Uncaught TypeError: Cannot read properties of null (reading 'username')
+    at AutofillOverlayContentService.getFormFieldData (VM601 bootstrap-autofill-overlay.js:4951:55)
+    at AutofillOverlayContentService.handleFormFieldSubmitEvent (VM601 bootstrap-autofill-overlay.js:4932:71)
+    at AutofillOverlayContentService.handleSubmitButtonInteraction (VM601 bootstrap-autofill-overlay.js:4926:18)
+    at HTMLDocument.<anonymous> (VM601 bootstrap-autofill-overlay.js:1567:22)
