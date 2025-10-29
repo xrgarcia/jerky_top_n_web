@@ -61,16 +61,20 @@ class ProgressTrackingService extends BaseService {
   checkMilestones() {
     if (!this.progress || !this.progress.nextMilestones) return;
 
+    // Only show milestone progress for upcoming milestones, not already completed ones
     this.progress.nextMilestones.forEach(milestone => {
-      if (milestone.remaining === 0) {
-        this.celebrateMilestone(milestone);
-      } else if (milestone.remaining <= 3 && milestone.remaining > 0) {
+      if (milestone.remaining <= 3 && milestone.remaining > 0) {
         this.showMilestoneProgress(milestone);
       }
+      // Do NOT celebrate milestones with remaining === 0
+      // Those are already complete and should not show toast on every page load
+      // Achievement toasts are handled by the backend when achievements are actually earned
     });
   }
 
   celebrateMilestone(milestone) {
+    // This method is kept for backward compatibility but not used in checkMilestones
+    // Achievement celebrations are now handled by backend achievement:new events
     this.emit('milestone:reached', {
       type: 'celebration',
       target: milestone.target,
