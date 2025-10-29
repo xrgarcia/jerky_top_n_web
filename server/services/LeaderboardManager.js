@@ -76,6 +76,7 @@ class LeaderboardManager {
       LEFT JOIN page_views pv ON pv.user_id = u.id
       LEFT JOIN user_achievements ua ON ua.user_id = u.id
       LEFT JOIN user_product_searches ups ON ups.user_id = u.id
+      WHERE u.active = true
       GROUP BY u.id
       HAVING (COALESCE(${achievementsCount}, 0) 
               + COALESCE(${pageViewsCount}, 0) 
@@ -225,7 +226,8 @@ class LeaderboardManager {
         LEFT JOIN user_pageviews_agg pv ON pv.user_id = u.id
         LEFT JOIN user_rankings_agg ra ON ra.user_id = u.id
         LEFT JOIN user_searches_agg s ON s.user_id = u.id
-        WHERE (COALESCE(ach.achievement_count, 0) 
+        WHERE u.active = true
+        AND (COALESCE(ach.achievement_count, 0) 
                + COALESCE(pv.pageview_count, 0) 
                + COALESCE(ra.ranking_count, 0) 
                + COALESCE(s.search_count, 0)) > 0
