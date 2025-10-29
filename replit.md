@@ -8,6 +8,12 @@ A web application for ranking jerky products, providing a comprehensive and enga
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
+## Production Deployment
+- **Custom Domain**: rank.jerky.com
+- **Domain Detection**: Uses `REPLIT_DOMAINS` environment variable in production (automatically set by Replit when custom domain is configured)
+- **Environment**: Set `NODE_ENV=production` for production deployments
+- **Redis**: Requires `UPSTASH_REDIS_URL_PROD` secret for production distributed caching
+
 ## System Architecture
 The application employs a modern web architecture for responsiveness, scalability, and real-time interaction.
 

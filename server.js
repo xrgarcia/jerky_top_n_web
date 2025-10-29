@@ -26,10 +26,33 @@ const io = new Server(httpServer, {
 
 // Environment configuration - must be explicitly set via NODE_ENV
 const ENVIRONMENT = process.env.NODE_ENV || 'development';
-const APP_URL = process.env.REPLIT_DEV_DOMAIN || 
-                (process.env.REPL_SLUG && process.env.REPL_OWNER ? 
-                 `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app` : 
-                 'localhost:5000');
+
+// Get app domain - prioritize custom domain in production
+function getAppDomain() {
+  // In production deployments, use REPLIT_DOMAINS (includes custom domains)
+  if (process.env.REPLIT_DEPLOYMENT === '1' && process.env.REPLIT_DOMAINS) {
+    const domains = process.env.REPLIT_DOMAINS.split(',');
+    console.log(`🌐  Production deployment detected. Available domains: ${domains.join(', ')}`);
+    // First domain is typically the custom domain
+    const selectedDomain = domains[0];
+    console.log(`✅ Selected domain: ${selectedDomain}`);
+    return selectedDomain;
+  }
+  
+  // In development, use REPLIT_DEV_DOMAIN
+  if (process.env.REPLIT_DEV_DOMAIN) {
+    return process.env.REPLIT_DEV_DOMAIN;
+  }
+  
+  // Fallback to constructed domain
+  if (process.env.REPL_SLUG && process.env.REPL_OWNER) {
+    return `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app`;
+  }
+  
+  return 'localhost:5000';
+}
+
+const APP_URL = getAppDomain();
 
 // Warn if NODE_ENV is not explicitly set
 if (!process.env.NODE_ENV) {
@@ -133,11 +156,8 @@ function getAppDomainFromRequest(req) {
   return 'localhost:5000';
 }
 
-// For startup logging only - not used for actual URLs
-const APP_DOMAIN = process.env.REPLIT_DEV_DOMAIN || 
-                   (process.env.REPL_SLUG && process.env.REPL_OWNER ? 
-                    `${process.env.REPL_SLUG}-${process.env.REPL_OWNER}.replit.app` : 
-                    'localhost:5000');
+// App domain for startup logging and webhook registration
+const APP_DOMAIN = getAppDomain();
 
 console.log('🔧 Shopify Customer Authentication Configuration:');
 console.log('🏪  Shop Domain:', JERKY_SHOP_DOMAIN);
