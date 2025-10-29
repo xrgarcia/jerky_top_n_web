@@ -182,6 +182,18 @@ const pageViews = pgTable('page_views', {
   viewedAt: timestamp('viewed_at').defaultNow(),
 });
 
+// Ranking operations - idempotency tracking for ranking saves
+const rankingOperations = pgTable('ranking_operations', {
+  id: serial('id').primaryKey(),
+  operationId: text('operation_id').unique().notNull(), // Client-generated UUID
+  userId: integer('user_id').references(() => users.id).notNull(),
+  shopifyProductId: text('shopify_product_id').notNull(),
+  rankingListId: text('ranking_list_id').notNull(),
+  ranking: integer('ranking').notNull(),
+  status: text('status').default('completed').notNull(), // 'completed', 'failed'
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
 // Relations
 const flavorCoinsRelations = relations(flavorCoins, ({ one }) => ({
   user: one(users, {
@@ -257,6 +269,7 @@ module.exports = {
   productViews,
   productsMetadata,
   pageViews,
+  rankingOperations,
   usersRelations,
   sessionsRelations,
   rankingsRelations,

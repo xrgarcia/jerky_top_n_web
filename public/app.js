@@ -2092,13 +2092,120 @@ document.addEventListener('DOMContentLoaded', function() {
     let autoSaveTimeout;
     let isSaving = false;
 
-    // Request queue to serialize ranking saves and prevent concurrent requests
+    // Enhanced Request queue with persistent storage and retry logic
     class RankingSaveQueue {
         constructor() {
             this.queue = [];
             this.processing = false;
             this.pendingSavePromise = null;
             this.coalescingEnabled = true;
+            this.persistentQueue = typeof getPersistentQueue === 'function' ? getPersistentQueue() : null;
+            this.retryInProgress = false;
+            
+            // Process any pending operations from previous sessions
+            if (this.persistentQueue) {
+                this.processPendingOperations();
+            }
+        }
+        
+        async processPendingOperations() {
+            try {
+                const pending = await this.persistentQueue.getPending();
+                if (pending.length > 0) {
+                    console.log(`🔄 Found ${pending.length} pending operation(s) from previous session`);
+                    updateAutoSaveStatus('saving', `⏳ Retrying ${pending.length} saved ranking(s)...`);
+                    
+                    for (const operation of pending) {
+                        await this.retryOperation(operation);
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Error processing pending operations:', error);
+            }
+        }
+        
+        async retryOperation(operation) {
+            const maxRetries = 5;
+            const retryCount = operation.retryCount || 0;
+            
+            if (retryCount >= maxRetries) {
+                console.error(`❌ Max retries exceeded for operation ${operation.operationId}`);
+                await this.persistentQueue.complete(operation.operationId);
+                return;
+            }
+            
+            try {
+                const sessionId = localStorage.getItem('customerSessionId');
+                if (!sessionId) {
+                    console.error('❌ No session available for retry');
+                    return;
+                }
+                
+                const rankingListId = operation.rankingListId || 'default';
+                let successCount = 0;
+                
+                // Retry each ranking individually to leverage server-side idempotency
+                for (const ranking of operation.rankings) {
+                    await retryWithBackoff(async () => {
+                        const response = await fetch('/api/rankings/product', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                sessionId,
+                                productId: ranking.productData.id,
+                                productData: ranking.productData,
+                                ranking: ranking.ranking,
+                                rankingListId,
+                                operationId: `${operation.operationId}-${ranking.productData.id}`
+                            })
+                        });
+                        
+                        if (!response.ok) {
+                            const result = await response.json();
+                            throw new Error(result.error || 'Save failed');
+                        }
+                        
+                        successCount++;
+                        return await response.json();
+                    }, {
+                        maxRetries: maxRetries - retryCount,
+                        initialDelay: 1000,
+                        maxDelay: 30000,
+                        onRetry: async (attempt, delay, error) => {
+                            await this.persistentQueue.update(operation.operationId, {
+                                retryCount: retryCount + attempt,
+                                lastAttempt: Date.now()
+                            });
+                            console.log(`🔄 Retrying ${ranking.productData.title}: attempt ${retryCount + attempt}`);
+                        },
+                        shouldRetry: (error) => {
+                            // Don't retry on duplicate errors (already saved)
+                            return !error.message.includes('Duplicate') && !error.message.includes('isDuplicate');
+                        }
+                    });
+                }
+                
+                // Success - remove from persistent queue
+                await this.persistentQueue.complete(operation.operationId);
+                console.log(`✅ Successfully saved ${successCount} persisted ranking(s) from operation ${operation.operationId.substring(0, 8)}`);
+                
+                // Update UI
+                if (window.appEventBus) {
+                    window.appEventBus.emit('ranking:saved', { 
+                        count: successCount,
+                        rankingListId
+                    });
+                }
+                
+                updateAutoSaveStatus('saved', `✓ Recovered ${successCount} ranking(s)`);
+                
+            } catch (error) {
+                console.error(`❌ Failed to retry operation after ${retryCount + 1} attempts:`, error);
+                await this.persistentQueue.update(operation.operationId, {
+                    status: 'failed',
+                    lastError: error.message
+                });
+            }
         }
 
         async enqueue(saveFunction, options = {}) {
@@ -2134,12 +2241,28 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             this.processing = true;
-            const { saveFunction, resolve, reject } = this.queue.shift();
+            const { saveFunction, resolve, reject, options } = this.queue.shift();
 
             try {
                 const result = await saveFunction();
                 resolve(result);
             } catch (error) {
+                // If this is a ranking save and we have persistent queue, save it for retry
+                if (options.type === 'ranking_save' && this.persistentQueue && options.rankings) {
+                    try {
+                        const operationId = typeof generateUUID === 'function' ? generateUUID() : `op-${Date.now()}-${Math.random()}`;
+                        await this.persistentQueue.enqueue({
+                            operationId,
+                            rankings: options.rankings,
+                            rankingListId: options.rankingListId || 'default',
+                            retryCount: 0
+                        });
+                        console.log(`💾 Saved failed operation to persistent queue for retry: ${operationId.substring(0, 8)}`);
+                    } catch (persistError) {
+                        console.error('❌ Failed to persist operation:', persistError);
+                    }
+                }
+                
                 reject(error);
             } finally {
                 this.processing = false;
@@ -2270,6 +2393,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     async function autoSaveRankings() {
+        const rankings = collectRankingData();
+        
         // Enqueue the save operation to prevent concurrent requests
         // Using type 'ranking_save' enables queue coalescing for performance
         return rankingSaveQueue.enqueue(async () => {
@@ -2287,8 +2412,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     updateAutoSaveStatus('', '');
                     return;
                 }
-
-                const rankings = collectRankingData();
                 
                 // Track current product IDs
                 const currentProductIds = new Set(rankings.map(r => r.productData.id));
@@ -2378,7 +2501,11 @@ document.addEventListener('DOMContentLoaded', function() {
             } finally {
                 isSaving = false;
             }
-        }, { type: 'ranking_save' });
+        }, { 
+            type: 'ranking_save', 
+            rankings: rankings,
+            rankingListId: 'default'
+        });
     }
 
     async function saveRankings() {

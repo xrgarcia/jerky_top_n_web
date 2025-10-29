@@ -1386,7 +1386,7 @@ app.get('/api/products/rankable', async (req, res) => {
 // Save product ranking
 app.post('/api/rankings/product', async (req, res) => {
   try {
-    const { sessionId, productId, productData, ranking, rankingListId } = req.body;
+    const { sessionId, productId, productData, ranking, rankingListId, operationId } = req.body;
     
     if (!sessionId) {
       return res.status(401).json({ error: 'Authentication required' });
@@ -1402,14 +1402,41 @@ app.post('/api/rankings/product', async (req, res) => {
       return res.status(401).json({ error: 'Invalid session' });
     }
     
+    const finalRankingListId = rankingListId || 'default';
+    
+    // Check if operation already exists (idempotency)
+    if (operationId) {
+      const existingOperation = await storage.checkOperationExists(operationId);
+      if (existingOperation) {
+        console.log(`🔄 Duplicate operation detected: ${operationId} - returning success (idempotent)`);
+        return res.json({ success: true, ranking: existingOperation, isDuplicate: true });
+      }
+    }
+    
     // Save product ranking
     const productRanking = await storage.saveProductRanking({
       userId: session.userId,
       shopifyProductId: productId,
       productData,
       ranking,
-      rankingListId: rankingListId || 'default'
+      rankingListId: finalRankingListId
     });
+    
+    // Record operation for idempotency
+    if (operationId) {
+      try {
+        await storage.recordOperation({
+          operationId,
+          userId: session.userId,
+          shopifyProductId: productId,
+          rankingListId: finalRankingListId,
+          ranking,
+          status: 'completed'
+        });
+      } catch (error) {
+        console.error('⚠️ Failed to record operation (non-critical):', error);
+      }
+    }
     
     // Invalidate ranking stats cache since data changed
     rankingStatsCache.invalidate();
@@ -1424,7 +1451,7 @@ app.post('/api/rankings/product', async (req, res) => {
       gamificationServices.leaderboardManager.leaderboardCache.invalidate();
     }
     
-    console.log(`✅ Product ranking saved: ${productData.title} at rank ${ranking}`);
+    console.log(`✅ Product ranking saved: ${productData.title} at rank ${ranking}${operationId ? ` (opId: ${operationId.substring(0, 8)})` : ''}`);
     
     res.json({ success: true, ranking: productRanking });
     
@@ -1432,7 +1459,7 @@ app.post('/api/rankings/product', async (req, res) => {
     console.error('Save product ranking error:', error);
     Sentry.captureException(error, {
       tags: { service: 'rankings', endpoint: '/api/rankings/product' },
-      extra: { productId: req.body.productId, ranking: req.body.ranking }
+      extra: { productId: req.body.productId, ranking: req.body.ranking, operationId: req.body.operationId }
     });
     res.status(500).json({ error: 'Failed to save ranking' });
   }

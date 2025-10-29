@@ -1,4 +1,4 @@
-const { users, sessions, rankings, magicLinks, productRankings, userProductSearches } = require('../shared/schema.js');
+const { users, sessions, rankings, magicLinks, productRankings, userProductSearches, rankingOperations } = require('../shared/schema.js');
 const { db } = require('./db.js');
 const { eq, lt } = require('drizzle-orm');
 const crypto = require('crypto');
@@ -301,6 +301,66 @@ class DatabaseStorage {
         extra: { userId, rankingListId, count: rankings.length }
       });
       throw error;
+    }
+  }
+
+  async checkOperationExists(operationId) {
+    try {
+      const [operation] = await db.select()
+        .from(rankingOperations)
+        .where(eq(rankingOperations.operationId, operationId))
+        .limit(1);
+      
+      return operation || null;
+    } catch (error) {
+      console.error('Error checking operation:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'rankings', operation: 'check_operation' },
+        extra: { operationId }
+      });
+      return null;
+    }
+  }
+
+  async recordOperation({ operationId, userId, shopifyProductId, rankingListId, ranking, status = 'completed' }) {
+    try {
+      const [operation] = await db.insert(rankingOperations)
+        .values({
+          operationId,
+          userId,
+          shopifyProductId,
+          rankingListId,
+          ranking,
+          status,
+        })
+        .returning();
+      
+      return operation;
+    } catch (error) {
+      console.error('Error recording operation:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'rankings', operation: 'record_operation' },
+        extra: { operationId, userId, shopifyProductId }
+      });
+      throw error;
+    }
+  }
+
+  async cleanupOldOperations(daysOld = 7) {
+    try {
+      const cutoffDate = new Date();
+      cutoffDate.setDate(cutoffDate.getDate() - daysOld);
+      
+      const result = await db.delete(rankingOperations)
+        .where(lt(rankingOperations.createdAt, cutoffDate));
+      
+      return result;
+    } catch (error) {
+      console.error('Error cleaning up old operations:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'rankings', operation: 'cleanup_operations' },
+        extra: { daysOld }
+      });
     }
   }
 
