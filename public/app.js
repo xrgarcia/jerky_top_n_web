@@ -2131,6 +2131,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const rankingSaveQueue = new RankingSaveQueue();
 
+    // Navigation guard: prevent navigation if saves are pending
+    window.addEventListener('beforeunload', async (e) => {
+        if (rankingSaveQueue.hasPendingSaves) {
+            e.preventDefault();
+            e.returnValue = 'You have unsaved rankings. Please wait for them to save.';
+            
+            // Attempt to complete pending saves before page unloads
+            try {
+                await rankingSaveQueue.waitForPendingSaves();
+            } catch (error) {
+                console.error('Error completing pending saves:', error);
+            }
+        }
+    });
+
+    // Hash change guard: wait for pending saves before navigating
+    let originalHashChangeHandler = null;
+    window.addEventListener('hashchange', async (e) => {
+        if (rankingSaveQueue.hasPendingSaves) {
+            e.preventDefault();
+            
+            // Show status to user
+            updateAutoSaveStatus('saving', '⏳ Waiting for saves to complete...');
+            
+            // Wait for all pending saves to complete
+            await rankingSaveQueue.waitForPendingSaves();
+            
+            updateAutoSaveStatus('saved', '✓ All saves complete');
+            
+            // Now navigate to the new hash
+            window.location.hash = e.newURL.split('#')[1] || '';
+        }
+    }, true); // Use capture phase to intercept before other handlers
+
     function updateAutoSaveStatus(status, message = '') {
         showStatus(status, message);
         
