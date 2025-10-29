@@ -2648,8 +2648,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Refresh product display to show all products again
         displayProducts();
         
-        // Immediately save empty rankings array to database
-        console.log('🗑️ Cleared all rankings, saving empty state to database...');
+        // Delete all rankings from database using DELETE endpoint
+        console.log('🗑️ Cleared all rankings, deleting from database...');
         try {
             const sessionId = localStorage.getItem('customerSessionId');
             if (!sessionId) {
@@ -2659,14 +2659,9 @@ document.addEventListener('DOMContentLoaded', function() {
             
             updateAutoSaveStatus('saving', 'Clearing...');
             
-            const response = await fetch('/api/rankings/products', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    sessionId: sessionId,
-                    rankingListId: 'default',
-                    rankings: [] // Send empty array to clear all rankings
-                })
+            const response = await fetch(`/api/rankings/products/clear?sessionId=${sessionId}&rankingListId=default`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
             });
             
             if (response.ok) {
@@ -3069,7 +3064,7 @@ document.addEventListener('DOMContentLoaded', function() {
         isProductsLoading = true;
         
         if (productsLoading) {
-            productsLoading.style.display = 'block';
+            productsLoading.classList.add('active');
         }
         if (loadMoreBtn) {
             loadMoreBtn.style.display = 'none';
@@ -3117,7 +3112,7 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
             isProductsLoading = false;
             if (productsLoading) {
-                productsLoading.style.display = 'none';
+                productsLoading.classList.remove('active');
             }
         }
     }
