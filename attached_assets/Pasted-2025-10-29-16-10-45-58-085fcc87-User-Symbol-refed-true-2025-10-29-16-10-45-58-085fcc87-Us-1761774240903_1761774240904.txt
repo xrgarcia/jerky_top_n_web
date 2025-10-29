@@ -1,0 +1,212 @@
+2025-10-29 16:10:45.58
+085fcc87
+User
+[Symbol(refed)]: true,
+2025-10-29 16:10:45.58
+085fcc87
+User
+[Symbol(kHasPrimitive)]: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+[Symbol(asyncId)]: 1251118,
+2025-10-29 16:10:45.58
+085fcc87
+User
+},
+2025-10-29 16:10:45.58
+085fcc87
+User
+}
+2025-10-29 16:10:45.58
+085fcc87
+User
+}
+2025-10-29 16:10:45.58
+085fcc87
+User
+Stack: Error: Connection terminated unexpectedly
+2025-10-29 16:10:45.58
+085fcc87
+User
+at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at S. (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket. (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket.emit (node:events:524:28)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+2025-10-29 16:10:45.58
+085fcc87
+User
+❌ Uncaught Exception: Error: Connection terminated unexpectedly
+2025-10-29 16:10:45.58
+085fcc87
+User
+at An. (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at S. (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket.emit (node:events:524:28)
+2025-10-29 16:10:45.58
+085fcc87
+User
+at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10) {
+2025-10-29 16:10:45.58
+085fcc87
+User
+_events: [Object: null prototype] { error: [Function (anonymous)] },
+2025-10-29 16:10:45.58
+085fcc87
+User
+_eventsCount: 1,
+2025-10-29 16:10:45.58
+085fcc87
+User
+connectionParameters: ConnectionParameters {
+2025-10-29 16:10:45.58
+085fcc87
+User
+user: 'neondb_owner',
+2025-10-29 16:10:45.58
+085fcc87
+User
+database: 'neondb',
+2025-10-29 16:10:45.58
+085fcc87
+User
+port: 5432,
+2025-10-29 16:10:45.58
+085fcc87
+User
+host: 'ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech',
+2025-10-29 16:10:45.58
+085fcc87
+User
+binary: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+options: undefined,
+2025-10-29 16:10:45.58
+085fcc87
+User
+ssl: {},
+2025-10-29 16:10:45.58
+085fcc87
+User
+client_encoding: '',
+2025-10-29 16:10:45.58
+085fcc87
+User
+replication: undefined,
+2025-10-29 16:10:45.58
+085fcc87
+User
+application_name: undefined,
+2025-10-29 16:10:45.58
+085fcc87
+User
+lock_timeout: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+idle_in_transaction_session_timeout: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+query_timeout: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+connect_timeout: 5
+2025-10-29 16:10:45.58
+085fcc87
+User
+},
+2025-10-29 16:10:45.58
+085fcc87
+User
+port: 5432,
+2025-10-29 16:10:45.58
+085fcc87
+User
+host: 'ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech',
+2025-10-29 16:10:45.58
+085fcc87
+User
+_Promise: [Function: Promise],
+2025-10-29 16:10:45.58
+085fcc87
+User
+_types: TypeOverrides { _types: [Object], text: {}, binary: {} },
+2025-10-29 16:10:45.58
+085fcc87
+User
+_connectionError: false,
+2025-10-29 16:10:45.58
+085fcc87
+User
+_eventsCount: 22,
+2025-10-29 16:10:45.58
+085fcc87
+User
+_maxListeners: undefined,
+2025-10-29 16:10:45.58
+085fcc87
+User
+lastBuffer: false,
+2025-10-29 16:42:42.65
+34d07d78
+User
+⚠️ Skipping line item with missing product ID: 5989310005336
+2025-10-29 16:42:42.65
+34d07d78
+User
+⚠️ Skipping line item with missing product ID: 5989310136408
+2025-10-29 16:42:42.65
+34d07d78
+User
+⚠️ Skipping line item with missing product ID: 5989310201944
+2025-10-29 16:42:42.65
+34d07d78
+User
+⚠️ Skipping line item with missing product ID: 182448357391
+2025-10-29 16:42:42.65
+34d07d78
+User
+⚠️ Skipping line item with missing product ID: 11238758799
