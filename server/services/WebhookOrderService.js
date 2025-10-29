@@ -105,27 +105,68 @@ class WebhookOrderService {
         return null;
       }
 
-      const [newUser] = await this.db
-        .insert(users)
-        .values({
-          email,
-          firstName,
-          lastName,
-          shopifyCustomerId,
-          role: 'customer',
-          createdAt: new Date(),
-        })
-        .returning();
+      try {
+        const [newUser] = await this.db
+          .insert(users)
+          .values({
+            email,
+            firstName,
+            lastName,
+            shopifyCustomerId,
+            role: 'customer',
+            createdAt: new Date(),
+          })
+          .returning();
 
-      console.log(`✨ Created new user ${newUser.id} from Shopify: ${email} (${firstName} ${lastName})`);
-      
-      Sentry.captureMessage('Auto-created user from order webhook', {
-        level: 'info',
-        tags: { service: 'webhook-order', action: 'user_created' },
-        extra: { userId: newUser.id, shopifyCustomerId, email }
-      });
+        console.log(`✨ Created new user ${newUser.id} from Shopify: ${email} (${firstName} ${lastName})`);
+        
+        Sentry.captureMessage('Auto-created user from order webhook', {
+          level: 'info',
+          tags: { service: 'webhook-order', action: 'user_created' },
+          extra: { userId: newUser.id, shopifyCustomerId, email }
+        });
 
-      return newUser;
+        return newUser;
+      } catch (insertError) {
+        // Handle race condition: another request may have created the user
+        console.warn(`⚠️ User insert failed (likely race condition), retrying lookup: ${email}`);
+        
+        // Retry lookup by Shopify ID
+        if (shopifyCustomerId) {
+          const [existingUser] = await this.db
+            .select()
+            .from(users)
+            .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+            .limit(1);
+          
+          if (existingUser) {
+            console.log(`✅ Found user created by concurrent request: ${existingUser.id}`);
+            return existingUser;
+          }
+        }
+        
+        // Retry lookup by email
+        if (email) {
+          const [existingUser] = await this.db
+            .select()
+            .from(users)
+            .where(eq(users.email, email))
+            .limit(1);
+          
+          if (existingUser) {
+            console.log(`✅ Found user created by concurrent request: ${existingUser.id}`);
+            return existingUser;
+          }
+        }
+        
+        // Still failed - log and return null
+        console.error('❌ Failed to create user and retry lookups failed:', insertError);
+        Sentry.captureException(insertError, {
+          tags: { service: 'webhook-order', action: 'user_insert_failed' },
+          extra: { shopifyCustomerId, email, originalError: insertError.message }
+        });
+        return null;
+      }
       
     } catch (error) {
       console.error('❌ Error finding/creating user:', error);
