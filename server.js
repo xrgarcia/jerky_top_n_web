@@ -465,8 +465,19 @@ app.post('/api/customer/email-login', async (req, res, next) => {
       return;
     }
     
-    // Found valid jerky.com customer
-    const shopifyCustomer = customers[0];
+    // Find customer with EXACT email match (handles email aliasing like kate+employee@jerky.com)
+    const shopifyCustomer = customers.find(c => c.email.toLowerCase() === email.toLowerCase());
+    
+    if (!shopifyCustomer) {
+      console.log(`❌ No exact email match found for: ${email} (found ${customers.length} similar customer(s))`);
+      // Return same success message to prevent email enumeration
+      res.json({
+        success: true,
+        message: `If ${email} is a registered jerky.com customer, we've sent a login link to that address.`,
+        email: email
+      });
+      return;
+    }
     const customer = {
       id: shopifyCustomer.id.toString(),
       email: shopifyCustomer.email,
@@ -2068,7 +2079,9 @@ app.get('/api/customer/auth/callback', async (req, res) => {
         customer = customerData.data?.customer;
       }
     } else {
-      // Use Admin API to get customer data
+      // Use Admin API to get customer data (LEGACY FALLBACK)
+      // WARNING: This fetches ALL customers and cannot handle email aliasing properly
+      // Modern implementations should use Customer Account API above
       const customerResponse = await fetch(endpoints.userinfo_endpoint, {
         method: 'GET',
         headers: {
@@ -2079,6 +2092,11 @@ app.get('/api/customer/auth/callback', async (req, res) => {
       if (customerResponse.ok) {
         const customerData = await customerResponse.json();
         const customers = customerData.customers || [];
+        
+        if (customers.length > 1) {
+          console.warn(`⚠️ OAuth returned ${customers.length} customers. Unable to determine exact email match in Admin API fallback. Using first customer. Consider using Customer Account API for proper email aliasing support.`);
+        }
+        
         if (customers.length > 0) {
           const shopifyCustomer = customers[0];
           customer = {
@@ -2088,6 +2106,8 @@ app.get('/api/customer/auth/callback', async (req, res) => {
             lastName: shopifyCustomer.last_name,
             displayName: `${shopifyCustomer.first_name} ${shopifyCustomer.last_name}`.trim()
           };
+          
+          console.log(`⚠️ Using customer: ${customer.email} (ID: ${customer.id}) from Admin API fallback`);
         }
       }
     }
