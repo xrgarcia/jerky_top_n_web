@@ -48,8 +48,12 @@ The application features a modern web architecture designed for responsiveness, 
   - **Shared Cache Instances**: Webhook routes receive shared cache instances from server.js to ensure consistency
   - **Orphan Cleanup**: Products removed from "rankable" tag in Shopify are automatically deleted from products_metadata during sync
   - **Cache Age Tracking**: Cache timestamp resets on both full loads (server startup) and partial updates (webhooks), tracking time since last activity
-  - **Configurable Staleness Threshold**: Admin dashboard allows setting custom threshold (default 48 hours) for cache age warnings when no updates occur
-  - **Sentry Monitoring**: Alerts triggered for very old cache usage, Shopify API failures, and orphaned product cleanup
+  - **Dual Cache Staleness Thresholds**: Admin dashboard provides separate configurable thresholds for each cache type with independent Sentry monitoring:
+    - **Metadata Cache Threshold**: Default 168 hours (7 days) - products rarely change, suitable for longer staleness window
+    - **Ranking Stats Cache Threshold**: Default 48 hours (2 days) - stats update with orders, requires shorter monitoring window
+    - Each threshold independently configurable (1-720 hours) via admin dashboard "Manage Data" tab
+    - Hourly monitoring sends distinct Sentry alerts tagged by cache type (metadata vs ranking_stats)
+  - **Sentry Monitoring**: Separate alerts for metadata cache staleness and ranking stats cache staleness, plus alerts for Shopify API failures and orphaned product cleanup
   - **Fallback Handling**: Stale cache served as fallback when Shopify unavailable, with warning alerts
 - **Gamification Architecture**: Dual-manager pattern for achievement processing:
   - **EngagementManager**: Calculates and awards engagement-based achievements (searches, page views, streaks, logins) with tiered progression (bronze→silver→gold→platinum→diamond). Supports unique view tracking for products and profiles.
