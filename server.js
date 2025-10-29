@@ -1363,7 +1363,7 @@ app.get('/api/products/rankable', async (req, res) => {
     const transformedProducts = products.slice(startIndex, endIndex);
     const totalProducts = products.length;
     
-    console.log(`✅ Returning ${transformedProducts.length} rankable products (${totalProducts} total unranked)`);
+    console.log(`🎯 User ${userId}: Page ${pageNum} (indices ${startIndex}-${endIndex}) → Returning ${transformedProducts.length} products out of ${totalProducts} total unranked`);
     
     res.json({ 
       products: transformedProducts,

@@ -1115,6 +1115,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'Failed to load products');
             }
 
+            // Handle edge case: if we got 0 products but total shows more exist,
+            // it means our current page is beyond available pages (products were ranked)
+            // Reset to page 1 and try again
+            if (data.products.length === 0 && data.total > 0 && currentPage > 1) {
+                console.log(`📄 Page ${currentPage} returned 0 products but ${data.total} total exist - resetting to page 1`);
+                currentPage = 1;
+                currentProducts = [];
+                isLoading = false;
+                loadProducts(query, true);
+                return;
+            }
+
             if (reset) {
                 currentProducts = data.products;
             } else {
