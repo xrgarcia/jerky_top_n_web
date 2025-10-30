@@ -13,22 +13,11 @@ class RedisClient {
       return this.client;
     }
 
-    // Environment-based Redis URL selection (Replit UI-proof solution)
-    // This approach uses separate variable names to avoid Replit's sync/unsync bugs
-    // Production deployment: Uses UPSTASH_REDIS_URL_PROD (set only in deployment secrets)
-    // Development workspace: Uses UPSTASH_REDIS_URL_DEV (set only in workspace secrets)
-    const isProduction = process.env.REPLIT_DEPLOYMENT === '1' || process.env.NODE_ENV === 'production';
-    const redisUrl = isProduction 
-      ? process.env.UPSTASH_REDIS_URL_PROD 
-      : process.env.UPSTASH_REDIS_URL_DEV;
-    
-    console.log(`🔍 Redis environment: ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
-    console.log(`🔍 Using variable: ${isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL_DEV'}`);
+    const redisUrl = process.env.UPSTASH_REDIS_URL;
     
     if (!redisUrl) {
-      console.warn(`⚠️ Redis URL not found for ${isProduction ? 'production' : 'development'} environment`);
-      console.warn(`⚠️ Required: ${isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL_DEV'}`);
-      console.warn('⚠️ Falling back to in-memory cache');
+      console.warn('⚠️ UPSTASH_REDIS_URL not found, using in-memory cache');
+      console.warn('⚠️ Note: Dev/prod use different Redis instances via Replit unsync feature');
       return null;
     }
 
