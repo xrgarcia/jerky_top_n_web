@@ -916,6 +916,13 @@ document.addEventListener('DOMContentLoaded', function() {
     async function loadRankPageData() {
         if (!document.getElementById('rankingSlots')) return;
         
+        // IMPORTANT: Reset product state to prevent stale data when navigating back to rank page
+        currentProducts = [];
+        currentPage = 1;
+        hasMoreProducts = true;
+        currentSearchQuery = '';
+        console.log('🔄 Reset product state for fresh load');
+        
         // Only generate slots if they don't exist yet
         if (rankingSlots.length === 0) {
             generateRankingSlots(10); // Start with 10 slots
