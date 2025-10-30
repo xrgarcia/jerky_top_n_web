@@ -1520,32 +1520,64 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
-        // Rebuild the rankings with push-down behavior
+        // Rebuild the rankings with correct behavior based on direction
         let currentRank = 1;
         
-        // Place items before the target position
-        allRankedItems.forEach(item => {
-            if (item.rank < targetRank) {
-                fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
-                currentRank++;
-            }
-        });
-        
-        // Insert the dragged item at target position
-        fillSlot(rankingSlots[currentRank - 1], currentRank, sourceProductData);
-        currentRank++;
-        
-        // Place items that were at or after the target position (pushed down)
-        allRankedItems.forEach(item => {
-            if (item.rank >= targetRank) {
-                if (currentRank <= rankingSlots.length) {
+        if (sourceRank < targetRank) {
+            // Moving DOWN (e.g., 2→3): Items between source and target shift up
+            allRankedItems.forEach(item => {
+                if (item.rank < sourceRank) {
+                    // Items before source stay in place
+                    fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
+                    currentRank++;
+                } else if (item.rank > sourceRank && item.rank <= targetRank) {
+                    // Items between source (exclusive) and target (inclusive) shift up
                     fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
                     currentRank++;
                 }
-            }
-        });
-        
-        console.log(`🔄 Push-down reorder: moved rank ${sourceRank} to rank ${targetRank}, pushed others down`);
+            });
+            
+            // Insert the dragged item at target position
+            fillSlot(rankingSlots[currentRank - 1], currentRank, sourceProductData);
+            currentRank++;
+            
+            // Items after target position stay in their relative positions
+            allRankedItems.forEach(item => {
+                if (item.rank > targetRank) {
+                    if (currentRank <= rankingSlots.length) {
+                        fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
+                        currentRank++;
+                    }
+                }
+            });
+            
+            console.log(`🔄 Move-down reorder: moved rank ${sourceRank} to rank ${targetRank}, shifted items up`);
+        } else {
+            // Moving UP (e.g., 3→2): Items at/after target shift down (original logic)
+            // Place items before the target position
+            allRankedItems.forEach(item => {
+                if (item.rank < targetRank) {
+                    fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
+                    currentRank++;
+                }
+            });
+            
+            // Insert the dragged item at target position
+            fillSlot(rankingSlots[currentRank - 1], currentRank, sourceProductData);
+            currentRank++;
+            
+            // Place items that were at or after the target position (pushed down)
+            allRankedItems.forEach(item => {
+                if (item.rank >= targetRank) {
+                    if (currentRank <= rankingSlots.length) {
+                        fillSlot(rankingSlots[currentRank - 1], currentRank, item.data);
+                        currentRank++;
+                    }
+                }
+            });
+            
+            console.log(`🔄 Move-up reorder: moved rank ${sourceRank} to rank ${targetRank}, pushed items down`);
+        }
         
         // Refresh product display to ensure UI is consistent
         displayProducts();
