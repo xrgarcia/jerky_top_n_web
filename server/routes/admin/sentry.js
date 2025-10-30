@@ -201,6 +201,181 @@ module.exports = function createSentryRoutes(storage) {
   });
 
   /**
+   * GET /api/admin/sentry/issues/:issueId
+   * Fetch detailed information about a specific Sentry issue
+   */
+  router.get('/sentry/issues/:issueId', requireAdmin, async (req, res) => {
+    try {
+      if (!SENTRY_ORG_SLUG || !SENTRY_AUTH_TOKEN) {
+        return res.status(503).json({ 
+          error: 'Sentry credentials not configured',
+          message: 'Please configure SENTRY_ORG_SLUG and SENTRY_AUTH_TOKEN environment variables'
+        });
+      }
+
+      const { issueId } = req.params;
+      
+      // Build API URL - using organization-level endpoint
+      const url = `${SENTRY_API_BASE}/organizations/${SENTRY_ORG_SLUG}/issues/${issueId}/`;
+      
+      console.log(`📊 Fetching Sentry issue details: ${url}`);
+
+      // Call Sentry API
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${SENTRY_AUTH_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Sentry API error (${response.status}):`, errorText);
+        
+        if (response.status === 401) {
+          return res.status(503).json({ 
+            error: 'Sentry authentication failed',
+            message: 'Invalid SENTRY_AUTH_TOKEN'
+          });
+        }
+        
+        if (response.status === 404) {
+          return res.status(404).json({ 
+            error: 'Issue not found',
+            message: `Sentry issue "${issueId}" not found.`
+          });
+        }
+        
+        throw new Error(`Sentry API error: ${response.status} - ${errorText}`);
+      }
+
+      const issue = await response.json();
+      
+      console.log(`✅ Fetched Sentry issue details for ${issueId}`);
+
+      res.json({
+        success: true,
+        issue: {
+          id: issue.id,
+          shortId: issue.shortId,
+          title: issue.title || issue.metadata?.title || 'Untitled Issue',
+          culprit: issue.culprit || '',
+          level: issue.level || 'error',
+          status: issue.status || 'unresolved',
+          count: parseInt(issue.count) || 0,
+          userCount: parseInt(issue.userCount) || 0,
+          firstSeen: issue.firstSeen,
+          lastSeen: issue.lastSeen,
+          permalink: issue.permalink,
+          project: {
+            name: issue.project?.name || PROJECT_SLUG,
+            slug: issue.project?.slug || PROJECT_SLUG
+          },
+          metadata: issue.metadata || {},
+          tags: issue.tags || [],
+          activity: issue.activity || [],
+          annotations: issue.annotations || []
+        }
+      });
+
+    } catch (error) {
+      console.error('❌ Error fetching Sentry issue details:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'admin-sentry', endpoint: '/api/admin/sentry/issues/:issueId' },
+        extra: { issueId: req.params.issueId }
+      });
+      res.status(500).json({ 
+        error: 'Failed to fetch Sentry issue details',
+        message: error.message 
+      });
+    }
+  });
+
+  /**
+   * GET /api/admin/sentry/issues/:issueId/events/latest
+   * Fetch the latest event for a specific issue (includes full error details, stack trace, breadcrumbs)
+   */
+  router.get('/sentry/issues/:issueId/events/latest', requireAdmin, async (req, res) => {
+    try {
+      if (!SENTRY_ORG_SLUG || !SENTRY_AUTH_TOKEN) {
+        return res.status(503).json({ 
+          error: 'Sentry credentials not configured',
+          message: 'Please configure SENTRY_ORG_SLUG and SENTRY_AUTH_TOKEN environment variables'
+        });
+      }
+
+      const { issueId } = req.params;
+      
+      // Build API URL for latest event
+      const url = `${SENTRY_API_BASE}/organizations/${SENTRY_ORG_SLUG}/issues/${issueId}/events/latest/`;
+      
+      console.log(`📊 Fetching latest event for Sentry issue: ${url}`);
+
+      // Call Sentry API
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${SENTRY_AUTH_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Sentry API error (${response.status}):`, errorText);
+        
+        if (response.status === 404) {
+          return res.status(404).json({ 
+            error: 'Event not found',
+            message: `No events found for issue "${issueId}".`
+          });
+        }
+        
+        throw new Error(`Sentry API error: ${response.status} - ${errorText}`);
+      }
+
+      const event = await response.json();
+      
+      console.log(`✅ Fetched latest event for issue ${issueId}`);
+
+      res.json({
+        success: true,
+        event: {
+          id: event.id,
+          eventID: event.eventID,
+          title: event.title,
+          message: event.message,
+          level: event.level,
+          platform: event.platform,
+          dateCreated: event.dateCreated,
+          culprit: event.culprit,
+          tags: event.tags || [],
+          context: event.context || {},
+          entries: event.entries || [],
+          errors: event.errors || [],
+          user: event.user || null,
+          sdk: event.sdk || {},
+          breadcrumbs: event.entries?.find(e => e.type === 'breadcrumbs')?.data?.values || [],
+          exception: event.entries?.find(e => e.type === 'exception')?.data?.values || [],
+          request: event.entries?.find(e => e.type === 'request')?.data || null
+        }
+      });
+
+    } catch (error) {
+      console.error('❌ Error fetching latest event:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'admin-sentry', endpoint: '/api/admin/sentry/issues/:issueId/events/latest' },
+        extra: { issueId: req.params.issueId }
+      });
+      res.status(500).json({ 
+        error: 'Failed to fetch latest event',
+        message: error.message 
+      });
+    }
+  });
+
+  /**
    * Helper: Extract environment from issue tags
    */
   function getEnvironmentFromTags(tags) {
