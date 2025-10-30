@@ -195,14 +195,15 @@ const rankingOperations = pgTable('ranking_operations', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
-// Customer orders - tracks products purchased by customers from Shopify
-const customerOrders = pgTable('customer_orders', {
+// Customer order items - tracks individual line items purchased by customers from Shopify
+const customerOrderItems = pgTable('customer_order_items', {
   id: serial('id').primaryKey(),
   orderNumber: text('order_number').notNull(), // Shopify order number
   orderDate: timestamp('order_date').notNull(), // When the order was placed
   shopifyProductId: text('shopify_product_id').notNull(), // Product ID from Shopify
   sku: text('sku'), // Product SKU (nullable as some products may not have SKU)
   quantity: integer('quantity').default(1).notNull(), // Quantity purchased
+  fulfillmentStatus: text('fulfillment_status'), // Shopify fulfillment status (e.g., 'fulfilled', 'partial', 'unfulfilled', 'restocked')
   userId: integer('user_id').references(() => users.id).notNull(),
   customerEmail: text('customer_email').notNull(), // Backup reference to customer
   lineItemData: jsonb('line_item_data'), // Full Shopify line item for audit/debug
@@ -212,9 +213,9 @@ const customerOrders = pgTable('customer_orders', {
   // Unique constraint: each order can only have one entry per product/sku
   uniqueOrderProduct: unique().on(table.orderNumber, table.shopifyProductId, table.sku),
   // Indexes for efficient purchase lookups
-  userIdIdx: index('idx_customer_orders_user_id').on(table.userId),
-  userProductIdx: index('idx_customer_orders_user_product').on(table.userId, table.shopifyProductId),
-  userDateIdx: index('idx_customer_orders_user_date').on(table.userId, table.orderDate),
+  userIdIdx: index('idx_customer_order_items_user_id').on(table.userId),
+  userProductIdx: index('idx_customer_order_items_user_product').on(table.userId, table.shopifyProductId),
+  userDateIdx: index('idx_customer_order_items_user_date').on(table.userId, table.orderDate),
 }));
 
 // Relations
@@ -303,7 +304,7 @@ module.exports = {
   productsMetadata,
   pageViews,
   rankingOperations,
-  customerOrders,
+  customerOrderItems,
   systemConfig,
   usersRelations,
   sessionsRelations,

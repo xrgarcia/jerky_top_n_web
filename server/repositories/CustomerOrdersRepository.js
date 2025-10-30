@@ -1,4 +1,4 @@
-const { customerOrders, users } = require('../../shared/schema');
+const { customerOrderItems, users } = require('../../shared/schema');
 const { eq, and, gte, lte, like, sql, asc, desc } = require('drizzle-orm');
 
 class CustomerOrdersRepository {
@@ -39,49 +39,50 @@ class CustomerOrdersRepository {
     const conditions = [];
 
     if (orderNumber) {
-      conditions.push(like(customerOrders.orderNumber, `%${orderNumber}%`));
+      conditions.push(like(customerOrderItems.orderNumber, `%${orderNumber}%`));
     }
 
     if (customerEmail) {
-      conditions.push(like(customerOrders.customerEmail, `%${customerEmail}%`));
+      conditions.push(like(customerOrderItems.customerEmail, `%${customerEmail}%`));
     }
 
     if (productId) {
-      conditions.push(eq(customerOrders.shopifyProductId, productId));
+      conditions.push(eq(customerOrderItems.shopifyProductId, productId));
     }
 
     if (sku) {
-      conditions.push(like(customerOrders.sku, `%${sku}%`));
+      conditions.push(like(customerOrderItems.sku, `%${sku}%`));
     }
 
     if (dateFrom) {
-      conditions.push(gte(customerOrders.orderDate, new Date(dateFrom)));
+      conditions.push(gte(customerOrderItems.orderDate, new Date(dateFrom)));
     }
 
     if (dateTo) {
-      conditions.push(lte(customerOrders.orderDate, new Date(dateTo)));
+      conditions.push(lte(customerOrderItems.orderDate, new Date(dateTo)));
     }
 
     // Execute query with join to users table
     let query = this.db
       .select({
-        id: customerOrders.id,
-        orderNumber: customerOrders.orderNumber,
-        orderDate: customerOrders.orderDate,
-        shopifyProductId: customerOrders.shopifyProductId,
-        sku: customerOrders.sku,
-        quantity: customerOrders.quantity,
-        customerEmail: customerOrders.customerEmail,
-        lineItemData: customerOrders.lineItemData,
-        createdAt: customerOrders.createdAt,
-        updatedAt: customerOrders.updatedAt,
+        id: customerOrderItems.id,
+        orderNumber: customerOrderItems.orderNumber,
+        orderDate: customerOrderItems.orderDate,
+        shopifyProductId: customerOrderItems.shopifyProductId,
+        sku: customerOrderItems.sku,
+        quantity: customerOrderItems.quantity,
+        fulfillmentStatus: customerOrderItems.fulfillmentStatus,
+        customerEmail: customerOrderItems.customerEmail,
+        lineItemData: customerOrderItems.lineItemData,
+        createdAt: customerOrderItems.createdAt,
+        updatedAt: customerOrderItems.updatedAt,
         userId: users.id,
         userFirstName: users.firstName,
         userLastName: users.lastName,
         userEmail: users.email,
       })
-      .from(customerOrders)
-      .leftJoin(users, eq(customerOrders.userId, users.id));
+      .from(customerOrderItems)
+      .leftJoin(users, eq(customerOrderItems.userId, users.id));
 
     // Apply conditions if any
     if (conditions.length > 0) {
@@ -109,16 +110,16 @@ class CustomerOrdersRepository {
    */
   getSortColumn(sortBy) {
     const sortableColumns = {
-      'orderNumber': customerOrders.orderNumber,
-      'orderDate': customerOrders.orderDate,
-      'customerEmail': customerOrders.customerEmail,
-      'sku': customerOrders.sku,
-      'quantity': customerOrders.quantity,
+      'orderNumber': customerOrderItems.orderNumber,
+      'orderDate': customerOrderItems.orderDate,
+      'customerEmail': customerOrderItems.customerEmail,
+      'sku': customerOrderItems.sku,
+      'quantity': customerOrderItems.quantity,
       'userFirstName': users.firstName,
       'userLastName': users.lastName
     };
 
-    return sortableColumns[sortBy] || customerOrders.orderDate;
+    return sortableColumns[sortBy] || customerOrderItems.orderDate;
   }
 
   /**
@@ -139,32 +140,32 @@ class CustomerOrdersRepository {
     const conditions = [];
 
     if (orderNumber) {
-      conditions.push(like(customerOrders.orderNumber, `%${orderNumber}%`));
+      conditions.push(like(customerOrderItems.orderNumber, `%${orderNumber}%`));
     }
 
     if (customerEmail) {
-      conditions.push(like(customerOrders.customerEmail, `%${customerEmail}%`));
+      conditions.push(like(customerOrderItems.customerEmail, `%${customerEmail}%`));
     }
 
     if (productId) {
-      conditions.push(eq(customerOrders.shopifyProductId, productId));
+      conditions.push(eq(customerOrderItems.shopifyProductId, productId));
     }
 
     if (sku) {
-      conditions.push(like(customerOrders.sku, `%${sku}%`));
+      conditions.push(like(customerOrderItems.sku, `%${sku}%`));
     }
 
     if (dateFrom) {
-      conditions.push(gte(customerOrders.orderDate, new Date(dateFrom)));
+      conditions.push(gte(customerOrderItems.orderDate, new Date(dateFrom)));
     }
 
     if (dateTo) {
-      conditions.push(lte(customerOrders.orderDate, new Date(dateTo)));
+      conditions.push(lte(customerOrderItems.orderDate, new Date(dateTo)));
     }
 
     let query = this.db
       .select({ count: sql`count(*)` })
-      .from(customerOrders);
+      .from(customerOrderItems);
 
     if (conditions.length > 0) {
       query = query.where(and(...conditions));
@@ -181,31 +182,31 @@ class CustomerOrdersRepository {
   async getFilterOptions() {
     // Get distinct order numbers
     const orderNumbers = await this.db
-      .selectDistinct({ orderNumber: customerOrders.orderNumber })
-      .from(customerOrders)
-      .orderBy(customerOrders.orderNumber)
+      .selectDistinct({ orderNumber: customerOrderItems.orderNumber })
+      .from(customerOrderItems)
+      .orderBy(customerOrderItems.orderNumber)
       .limit(1000);
 
     // Get distinct customer emails
     const emails = await this.db
-      .selectDistinct({ email: customerOrders.customerEmail })
-      .from(customerOrders)
-      .orderBy(customerOrders.customerEmail)
+      .selectDistinct({ email: customerOrderItems.customerEmail })
+      .from(customerOrderItems)
+      .orderBy(customerOrderItems.customerEmail)
       .limit(1000);
 
     // Get distinct product IDs
     const productIds = await this.db
-      .selectDistinct({ productId: customerOrders.shopifyProductId })
-      .from(customerOrders)
-      .orderBy(customerOrders.shopifyProductId)
+      .selectDistinct({ productId: customerOrderItems.shopifyProductId })
+      .from(customerOrderItems)
+      .orderBy(customerOrderItems.shopifyProductId)
       .limit(1000);
 
     // Get distinct SKUs
     const skus = await this.db
-      .selectDistinct({ sku: customerOrders.sku })
-      .from(customerOrders)
-      .where(sql`${customerOrders.sku} IS NOT NULL`)
-      .orderBy(customerOrders.sku)
+      .selectDistinct({ sku: customerOrderItems.sku })
+      .from(customerOrderItems)
+      .where(sql`${customerOrderItems.sku} IS NOT NULL`)
+      .orderBy(customerOrderItems.sku)
       .limit(1000);
 
     return {

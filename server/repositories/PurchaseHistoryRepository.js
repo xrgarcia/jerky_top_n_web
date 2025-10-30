@@ -1,4 +1,4 @@
-const { customerOrders } = require('../../shared/schema.js');
+const { customerOrderItems } = require('../../shared/schema.js');
 const { db } = require('../db.js');
 const { eq, and, sql } = require('drizzle-orm');
 const Sentry = require('@sentry/node');
@@ -17,9 +17,9 @@ class PurchaseHistoryRepository {
   async getPurchasedProductIdsByUser(userId) {
     try {
       const purchasedProducts = await db
-        .select({ shopifyProductId: customerOrders.shopifyProductId })
-        .from(customerOrders)
-        .where(eq(customerOrders.userId, userId));
+        .select({ shopifyProductId: customerOrderItems.shopifyProductId })
+        .from(customerOrderItems)
+        .where(eq(customerOrderItems.userId, userId));
 
       // Return unique product IDs (deduplicate in case of multiple orders)
       const uniqueProductIds = [...new Set(purchasedProducts.map(p => p.shopifyProductId))];
@@ -42,7 +42,7 @@ class PurchaseHistoryRepository {
   async upsertOrderItem(orderData) {
     try {
       const [orderItem] = await db
-        .insert(customerOrders)
+        .insert(customerOrderItems)
         .values({
           orderNumber: orderData.orderNumber,
           orderDate: orderData.orderDate,
@@ -54,7 +54,7 @@ class PurchaseHistoryRepository {
           lineItemData: orderData.lineItemData || null,
         })
         .onConflictDoUpdate({
-          target: [customerOrders.orderNumber, customerOrders.shopifyProductId, customerOrders.sku],
+          target: [customerOrderItems.orderNumber, customerOrderItems.shopifyProductId, customerOrderItems.sku],
           set: {
             quantity: sql`EXCLUDED.quantity`,
             orderDate: sql`EXCLUDED.order_date`,
@@ -119,10 +119,10 @@ class PurchaseHistoryRepository {
       }
 
       const result = await db
-        .insert(customerOrders)
+        .insert(customerOrderItems)
         .values(values)
         .onConflictDoUpdate({
-          target: [customerOrders.orderNumber, customerOrders.shopifyProductId, customerOrders.sku],
+          target: [customerOrderItems.orderNumber, customerOrderItems.shopifyProductId, customerOrderItems.sku],
           set: {
             quantity: sql`EXCLUDED.quantity`,
             orderDate: sql`EXCLUDED.order_date`,
@@ -154,20 +154,20 @@ class PurchaseHistoryRepository {
     try {
       let query = db
         .select()
-        .from(customerOrders)
-        .where(eq(customerOrders.userId, userId));
+        .from(customerOrderItems)
+        .where(eq(customerOrderItems.userId, userId));
 
       // Add date filtering if provided
       if (sinceDate) {
         query = query.where(
           and(
-            eq(customerOrders.userId, userId),
-            sql`${customerOrders.orderDate} >= ${sinceDate}`
+            eq(customerOrderItems.userId, userId),
+            sql`${customerOrderItems.orderDate} >= ${sinceDate}`
           )
         );
       }
 
-      const purchases = await query.orderBy(sql`${customerOrders.orderDate} DESC`);
+      const purchases = await query.orderBy(sql`${customerOrderItems.orderDate} DESC`);
       return purchases;
     } catch (error) {
       Sentry.captureException(error, {

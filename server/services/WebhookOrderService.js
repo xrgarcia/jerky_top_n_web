@@ -1,6 +1,6 @@
 const Sentry = require('@sentry/node');
 const { db } = require('../db');
-const { customerOrders, users } = require('../../shared/schema');
+const { customerOrderItems, users } = require('../../shared/schema');
 const { eq, and } = require('drizzle-orm');
 const OrdersService = require('./OrdersService');
 
@@ -66,12 +66,12 @@ class WebhookOrderService {
             
             // Also update all customer orders associated with this user to have the real email
             await this.db
-              .update(customerOrders)
+              .update(customerOrderItems)
               .set({ 
                 customerEmail: customerEmail,
                 updatedAt: new Date()
               })
-              .where(eq(customerOrders.userId, existingUser.id));
+              .where(eq(customerOrderItems.userId, existingUser.id));
             
             console.log(`🔄 Updated placeholder user ${existingUser.id} with real email: ${customerEmail} (and updated all associated orders)`);
             existingUser.email = customerEmail;
@@ -213,8 +213,8 @@ class WebhookOrderService {
     console.log(`🗑️ Deleting customer_orders records for cancelled order: ${orderNumber}`);
 
     const deleted = await this.db
-      .delete(customerOrders)
-      .where(eq(customerOrders.orderNumber, orderNumber))
+      .delete(customerOrderItems)
+      .where(eq(customerOrderItems.orderNumber, orderNumber))
       .returning();
 
     console.log(`✅ Deleted ${deleted.length} customer_orders records for order ${orderNumber}`);
@@ -286,6 +286,9 @@ class WebhookOrderService {
       const sku = item.sku || null;
       const quantity = typeof item.quantity === 'number' ? item.quantity : 1;
       
+      // Get fulfillment status from line item or fall back to order-level status
+      const fulfillmentStatus = item.fulfillment_status || orderData.fulfillment_status || null;
+      
       currentLineItemKeys.add(`${orderNumber}:${productId}:${sku}`);
 
       orderItems.push({
@@ -294,6 +297,7 @@ class WebhookOrderService {
         shopifyProductId: productId,
         sku,
         quantity,
+        fulfillmentStatus,
         userId: user.id,
         customerEmail: customerEmail || user.email,
         lineItemData: {
@@ -303,14 +307,15 @@ class WebhookOrderService {
           variant_title: item.variant_title,
           price: item.price,
           fulfillable_quantity: item.fulfillable_quantity,
+          fulfillment_status: item.fulfillment_status,
         }
       });
     }
 
     const existingItems = await this.db
       .select()
-      .from(customerOrders)
-      .where(eq(customerOrders.orderNumber, orderNumber));
+      .from(customerOrderItems)
+      .where(eq(customerOrderItems.orderNumber, orderNumber));
 
     const itemsToDelete = existingItems.filter(existing => {
       const key = `${existing.orderNumber}:${existing.shopifyProductId}:${existing.sku}`;
@@ -320,8 +325,8 @@ class WebhookOrderService {
     if (itemsToDelete.length > 0) {
       for (const item of itemsToDelete) {
         await this.db
-          .delete(customerOrders)
-          .where(eq(customerOrders.id, item.id));
+          .delete(customerOrderItems)
+          .where(eq(customerOrderItems.id, item.id));
       }
       console.log(`🗑️ Removed ${itemsToDelete.length} orphaned line items from order ${orderNumber}`);
     }
@@ -353,12 +358,12 @@ class WebhookOrderService {
     for (const item of orderItems) {
       const existing = await this.db
         .select()
-        .from(customerOrders)
+        .from(customerOrderItems)
         .where(
           and(
-            eq(customerOrders.orderNumber, item.orderNumber),
-            eq(customerOrders.shopifyProductId, item.shopifyProductId),
-            eq(customerOrders.sku, item.sku)
+            eq(customerOrderItems.orderNumber, item.orderNumber),
+            eq(customerOrderItems.shopifyProductId, item.shopifyProductId),
+            eq(customerOrderItems.sku, item.sku)
           )
         )
         .limit(1);
@@ -366,25 +371,26 @@ class WebhookOrderService {
       if (existing.length > 0) {
         if (item.quantity === 0) {
           await this.db
-            .delete(customerOrders)
-            .where(eq(customerOrders.id, existing[0].id));
+            .delete(customerOrderItems)
+            .where(eq(customerOrderItems.id, existing[0].id));
           deletedInLoop++;
           console.log(`🗑️ Removed line item with quantity 0: ${item.shopifyProductId}`);
         } else {
           const [updated] = await this.db
-            .update(customerOrders)
+            .update(customerOrderItems)
             .set({
               quantity: item.quantity,
+              fulfillmentStatus: item.fulfillmentStatus,
               lineItemData: item.lineItemData,
               updatedAt: new Date(),
             })
-            .where(eq(customerOrders.id, existing[0].id))
+            .where(eq(customerOrderItems.id, existing[0].id))
             .returning();
           upserted.push(updated);
         }
       } else if (item.quantity > 0) {
         const [inserted] = await this.db
-          .insert(customerOrders)
+          .insert(customerOrderItems)
           .values(item)
           .returning();
         upserted.push(inserted);

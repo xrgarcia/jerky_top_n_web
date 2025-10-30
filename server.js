@@ -3048,9 +3048,9 @@ if (databaseAvailable && storage) {
       adminRouter.use(dataRouter);
       
       // Add customer orders route
-      const createCustomerOrdersRoutes = require('./server/routes/admin/customerOrders');
-      const customerOrdersRouter = createCustomerOrdersRoutes(db);
-      adminRouter.use(customerOrdersRouter);
+      const createCustomerOrdersRoutes = require('./server/routes/admin/customerOrderItems');
+      const customerOrderItemsRouter = createCustomerOrdersRoutes(db);
+      adminRouter.use(customerOrderItemsRouter);
       
       // Add Sentry monitoring route
       const createSentryRoutes = require('./server/routes/admin/sentry');

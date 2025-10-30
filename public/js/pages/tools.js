@@ -1226,7 +1226,7 @@ function renderCustomerOrdersTable(orders) {
   if (orders.length === 0) {
     tableBody.innerHTML = `
       <tr>
-        <td colspan="6" style="text-align: center; padding: 40px; color: #999;">
+        <td colspan="7" style="text-align: center; padding: 40px; color: #999;">
           No orders found
         </td>
       </tr>
@@ -1252,6 +1252,8 @@ function renderCustomerOrdersTable(orders) {
     const lineItemTitle = order.lineItemData?.title || 'N/A';
     const lineItemPrice = order.lineItemData?.price || 'N/A';
     
+    const fulfillmentBadge = getFulfillmentStatusBadge(order.fulfillmentStatus);
+    
     return `
       <tr style="border-bottom: 1px solid #e9ecef;">
         <td style="padding: 12px;">
@@ -1270,6 +1272,9 @@ function renderCustomerOrdersTable(orders) {
           <strong>${order.quantity}</strong>
         </td>
         <td style="padding: 12px;">
+          ${fulfillmentBadge}
+        </td>
+        <td style="padding: 12px;">
           ${formattedDateTime}
         </td>
         <td style="padding: 12px;">
@@ -1281,6 +1286,24 @@ function renderCustomerOrdersTable(orders) {
       </tr>
     `;
   }).join('');
+}
+
+function getFulfillmentStatusBadge(status) {
+  if (!status) {
+    return `<span style="display: inline-block; padding: 4px 10px; background: #6c757d; color: white; border-radius: 12px; font-size: 11px; font-weight: 600;">UNFULFILLED</span>`;
+  }
+  
+  const statusColors = {
+    'fulfilled': { bg: '#28a745', text: 'white', label: 'FULFILLED' },
+    'partial': { bg: '#ffc107', text: '#333', label: 'PARTIAL' },
+    'unfulfilled': { bg: '#6c757d', text: 'white', label: 'UNFULFILLED' },
+    'restocked': { bg: '#17a2b8', text: 'white', label: 'RESTOCKED' },
+    'not_eligible': { bg: '#dc3545', text: 'white', label: 'NOT ELIGIBLE' }
+  };
+  
+  const config = statusColors[status.toLowerCase()] || { bg: '#6c757d', text: 'white', label: status.toUpperCase() };
+  
+  return `<span style="display: inline-block; padding: 4px 10px; background: ${config.bg}; color: ${config.text}; border-radius: 12px; font-size: 11px; font-weight: 600;">${config.label}</span>`;
 }
 
 function updateOrdersPagination(total, currentPage) {
@@ -1378,11 +1401,21 @@ function subscribeToCustomerOrdersUpdates() {
   window.socket.on('customer-orders:updated', (data) => {
     console.log('📦 Customer orders updated:', data);
     
+    let statusMessage = '';
+    if (data.action === 'deleted') {
+      statusMessage = 'cancelled';
+    } else if (data.action === 'upserted') {
+      const itemText = data.itemsCount === 1 ? 'item' : 'items';
+      statusMessage = `${data.itemsCount} ${itemText} updated`;
+    } else {
+      statusMessage = 'updated';
+    }
+    
     showToast({
-      type: 'info',
-      icon: '📦',
+      type: data.action === 'deleted' ? 'warning' : 'info',
+      icon: data.action === 'deleted' ? '🗑️' : '📦',
       title: 'Order Updated',
-      message: `Order ${data.orderNumber} ${data.action === 'deleted' ? 'cancelled' : 'updated'} - Refreshing table...`,
+      message: `Order ${data.orderNumber} ${statusMessage}`,
       duration: 3000
     });
     
