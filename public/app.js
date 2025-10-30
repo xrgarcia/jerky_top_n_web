@@ -1148,6 +1148,10 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update hasMoreProducts BEFORE calling displayProducts() so it has the latest value
             hasMoreProducts = data.hasMore;
             
+            // Reset the stale-state check flag whenever we successfully load products
+            // This allows the fallback to trigger again if needed for subsequent batches
+            window._finalProductCheck = false;
+            
             if (hasMoreProducts) {
                 const totalProducts = data.total || 0;
                 const loadedProducts = currentProducts.length;
@@ -1229,6 +1233,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('🚀 Auto-loading more products - all visible products have been ranked');
                 loadProducts(currentSearchQuery, false); // Load next page (maintains current search)
                 productList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666; font-size: 16px;">⏳ Loading more products...</div>';
+                return;
+            }
+            
+            // FALLBACK: If hasMoreProducts is false but we have loaded products before,
+            // do one final check by resetting to page 1 to ensure server-side state is current
+            // This handles the case where products were ranked rapidly and client state is stale
+            if (!hasMoreProducts && currentProducts.length > 0 && !window._finalProductCheck) {
+                console.log('🔄 No visible products remaining - performing final server check for stale state');
+                window._finalProductCheck = true; // Prevent infinite loops (reset on successful load)
+                loadProducts(currentSearchQuery, true); // Reset and reload from page 1
+                productList.innerHTML = '<div style="text-align: center; padding: 40px; color: #666; font-size: 16px;">⏳ Checking for more products...</div>';
                 return;
             }
             
