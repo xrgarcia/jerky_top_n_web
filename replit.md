@@ -52,12 +52,12 @@ The application employs a modern web architecture for responsiveness, scalabilit
 - **Products Page**: Advanced sorting, filtering by animal and flavor, client-side instant search, and server-side pagination.
 - **Rank Page Products**: Server-side filtering to exclude already-ranked products. Non-employee users can only rank purchased products, with automatic Shopify order synchronization on login. Employee users bypass purchase restrictions.
 - **Purchase History System**: Automatic background synchronization of Shopify orders on user login with caching and optimized database indexes.
-- **Shopify Webhook Integration**: Real-time synchronization for customer orders and product data via webhooks (orders/create, orders/updated, orders/cancelled, products/update, products/create) with HMAC SHA-256 verification, orphan cleanup, and cache invalidation.
+- **Shopify Webhook Integration**: Real-time synchronization for customer orders and product data via webhooks (orders/create, orders/updated, orders/cancelled, products/update, products/create) with HMAC SHA-256 verification, orphan cleanup, and cache invalidation. Tracks individual order line items with fulfillment status (fulfilled, unfulfilled, partial, restocked).
 - **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
 - **Leaderboard**: Displays top 50 rankers with engagement scores and badges.
 - **User Profile**: Displays user information and ranking statistics.
 - **Gamification**: Tracks engagement, static collections, dynamic collections, and flavor coin achievements with progress tracking, streaks, leaderboards, and notifications.
-- **Admin Tools**: Role-based access for managing achievements, monitoring live users, custom icon uploads, and a Customer Orders dashboard with filterable, sortable, and paginated synced Shopify order data.
+- **Admin Tools**: Role-based access for managing achievements, monitoring live users, custom icon uploads, and a Customer Order Items dashboard with fulfillment status tracking, real-time updates via WebSockets, and filterable, sortable, paginated Shopify order line item data.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
