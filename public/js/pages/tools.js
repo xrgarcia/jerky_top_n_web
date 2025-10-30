@@ -1183,7 +1183,8 @@ function updateOrderColumnHeaders() {
     1: 'customerEmail',
     2: 'sku',
     3: 'quantity',
-    4: 'orderDate'
+    4: 'fulfillmentStatus',
+    5: 'orderDate'
   };
   
   const headers = headerRow.querySelectorAll('th');
