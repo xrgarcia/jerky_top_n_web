@@ -27,6 +27,7 @@ class CustomerOrdersRepository {
       customerEmail,
       productId,
       sku,
+      fulfillmentStatus,
       dateFrom,
       dateTo,
       limit = 100,
@@ -52,6 +53,10 @@ class CustomerOrdersRepository {
 
     if (sku) {
       conditions.push(like(customerOrderItems.sku, `%${sku}%`));
+    }
+
+    if (fulfillmentStatus) {
+      conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
     }
 
     if (dateFrom) {
@@ -133,6 +138,7 @@ class CustomerOrdersRepository {
       customerEmail,
       productId,
       sku,
+      fulfillmentStatus,
       dateFrom,
       dateTo
     } = filters;
@@ -153,6 +159,10 @@ class CustomerOrdersRepository {
 
     if (sku) {
       conditions.push(like(customerOrderItems.sku, `%${sku}%`));
+    }
+
+    if (fulfillmentStatus) {
+      conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
     }
 
     if (dateFrom) {

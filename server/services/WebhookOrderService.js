@@ -403,11 +403,20 @@ class WebhookOrderService {
     const totalDeletions = deletedInLoop + itemsToDelete.length;
     if (this.webSocketGateway && (upserted.length > 0 || totalDeletions > 0)) {
       const action = upserted.length > 0 ? 'upserted' : 'updated';
+      
+      // Get unique fulfillment statuses from upserted items
+      const fulfillmentStatuses = [...new Set(
+        upserted
+          .map(item => item.fulfillmentStatus)
+          .filter(status => status !== null && status !== undefined)
+      )];
+      
       this.webSocketGateway.broadcastCustomerOrdersUpdate({
         action,
         orderNumber,
         itemsCount: upserted.length,
-        deletedCount: totalDeletions
+        deletedCount: totalDeletions,
+        fulfillmentStatuses
       });
     }
 

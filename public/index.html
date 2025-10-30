@@ -1028,6 +1028,22 @@
                                     style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
                                 />
                             </div>
+                            
+                            <div class="filter-group">
+                                <label for="filterFulfillmentStatus" style="display: block; margin-bottom: 5px; font-size: 12px; color: #666;">Fulfillment Status</label>
+                                <select 
+                                    id="filterFulfillmentStatus" 
+                                    class="filter-input"
+                                    style="width: 100%; padding: 8px; border: 2px solid #ddd; border-radius: 4px; font-size: 14px;"
+                                >
+                                    <option value="">All Statuses</option>
+                                    <option value="fulfilled">Fulfilled</option>
+                                    <option value="unfulfilled">Unfulfilled</option>
+                                    <option value="partial">Partial</option>
+                                    <option value="restocked">Restocked</option>
+                                    <option value="not_eligible">Not Eligible</option>
+                                </select>
+                            </div>
                         </div>
                         
                         <div class="filters-row" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
@@ -1071,13 +1087,22 @@
                     </div>
 
                     <div class="orders-table-container" style="overflow-x: auto;">
-                        <table class="orders-table" style="width: 100%; border-collapse: collapse;">
+                        <table class="orders-table" style="width: 100%; border-collapse: collapse; table-layout: fixed;">
+                            <colgroup>
+                                <col style="width: 11%;"><!-- Order Number -->
+                                <col style="width: 16%;"><!-- Customer -->
+                                <col style="width: 13%;"><!-- SKU -->
+                                <col style="width: 6%;"><!-- Quantity -->
+                                <col style="width: 11%;"><!-- Status -->
+                                <col style="width: 13%;"><!-- Order Date & Time -->
+                                <col style="width: 30%;"><!-- Line Item Details -->
+                            </colgroup>
                             <thead>
                                 <tr style="background: #f8f9fa; border-bottom: 2px solid #dee2e6;">
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">Order Number</th>
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">Customer</th>
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">SKU</th>
-                                    <th style="padding: 12px; text-align: left; font-weight: 600;">Quantity</th>
+                                    <th style="padding: 12px; text-align: left; font-weight: 600; text-align: center;">Quantity</th>
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">Status</th>
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">Order Date & Time</th>
                                     <th style="padding: 12px; text-align: left; font-weight: 600;">Line Item Details</th>

@@ -1347,6 +1347,7 @@ function setupCustomerOrdersFilters() {
         customerEmail: document.getElementById('filterCustomerEmail')?.value || '',
         productId: document.getElementById('filterProductId')?.value || '',
         sku: document.getElementById('filterSku')?.value || '',
+        fulfillmentStatus: document.getElementById('filterFulfillmentStatus')?.value || '',
         dateFrom: document.getElementById('filterDateFrom')?.value || '',
         dateTo: document.getElementById('filterDateTo')?.value || ''
       };
@@ -1368,6 +1369,7 @@ function setupCustomerOrdersFilters() {
       document.getElementById('filterCustomerEmail').value = '';
       document.getElementById('filterProductId').value = '';
       document.getElementById('filterSku').value = '';
+      document.getElementById('filterFulfillmentStatus').value = '';
       document.getElementById('filterDateFrom').value = '';
       document.getElementById('filterDateTo').value = '';
       
@@ -1417,7 +1419,18 @@ function subscribeToCustomerOrdersUpdates() {
       statusMessage = 'cancelled';
     } else if (data.action === 'upserted') {
       const itemText = data.itemsCount === 1 ? 'item' : 'items';
-      statusMessage = `${data.itemsCount} ${itemText} updated`;
+      
+      // Add fulfillment status info if available
+      let fulfillmentInfo = '';
+      if (data.fulfillmentStatuses && data.fulfillmentStatuses.length > 0) {
+        const statuses = data.fulfillmentStatuses.map(s => {
+          // Capitalize and format status
+          return s.charAt(0).toUpperCase() + s.slice(1).replace('_', ' ');
+        });
+        fulfillmentInfo = ` (${statuses.join(', ')})`;
+      }
+      
+      statusMessage = `${data.itemsCount} ${itemText} updated${fulfillmentInfo}`;
     } else {
       statusMessage = 'updated';
     }
