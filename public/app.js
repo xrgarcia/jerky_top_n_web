@@ -1174,6 +1174,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } finally {
             isLoading = false;
             productLoading.style.display = 'none';
+            
+            // CRITICAL: After loading completes, re-check if we need to auto-load more products
+            // This handles the case where the newly loaded products are also all ranked
+            displayProducts();
         }
     }
 
