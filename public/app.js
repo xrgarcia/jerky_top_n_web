@@ -2139,6 +2139,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Auto-save functionality
     let autoSaveTimeout;
     let isSaving = false;
+    let pendingRankingsSnapshot = null; // Track latest rankings for coalescing
 
     // Enhanced Request queue with persistent storage and retry logic
     class RankingSaveQueue {
@@ -2149,6 +2150,7 @@ document.addEventListener('DOMContentLoaded', function() {
             this.coalescingEnabled = true;
             this.persistentQueue = typeof getPersistentQueue === 'function' ? getPersistentQueue() : null;
             this.retryInProgress = false;
+            this.activeNetworkSave = false; // Track if network save is in progress
             
             // Process any pending operations from previous sessions
             if (this.persistentQueue) {
@@ -2462,8 +2464,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Schedule batched API call after 800ms of no ranking changes (for performance)
         autoSaveTimeout = setTimeout(async () => {
-            if (isSaving) return; // Prevent concurrent saves
-            
+            // CRITICAL FIX: Never block saves - always enqueue them
+            // The RankingSaveQueue will handle coalescing and serialization
+            // This prevents data loss during rapid ranking changes
             updateAutoSaveStatus('saving', 'Saving...');
             await autoSaveRankings();
         }, 800);
@@ -2488,11 +2491,20 @@ document.addEventListener('DOMContentLoaded', function() {
     async function autoSaveRankings() {
         const rankings = collectRankingData();
         
+        // If a network save is already in progress, snapshot the latest rankings
+        // They'll be saved after the current save completes
+        if (rankingSaveQueue.activeNetworkSave) {
+            console.log(`🔄 Network save in progress, snapshotting ${rankings.length} rankings for next batch`);
+            pendingRankingsSnapshot = rankings;
+            return;
+        }
+        
         // Enqueue the save operation to prevent concurrent requests
         // Using type 'ranking_save' enables queue coalescing for performance
         return rankingSaveQueue.enqueue(async () => {
             try {
                 isSaving = true;
+                rankingSaveQueue.activeNetworkSave = true;
                 
                 const sessionId = localStorage.getItem('customerSessionId');
                 if (!sessionId) {
@@ -2524,6 +2536,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Find newly added products (in current but not in last saved)
                 const newlyRankedProductIds = [...currentProductIds].filter(id => !lastSavedProductIds.has(id));
                 
+                console.log(`📤 Starting network save for ${rankings.length} rankings`);
                 const response = await fetch('/api/rankings/products', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -2568,6 +2581,19 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         // Note: product:ranked events no longer needed with optimistic UI
                         // Products are removed immediately when ranked, not after save
+                    }
+                    
+                    // CRITICAL: Check if rankings were added during this save
+                    // If so, trigger another save to capture them
+                    if (pendingRankingsSnapshot && pendingRankingsSnapshot.length > 0) {
+                        console.log(`🔄 Processing pending snapshot: ${pendingRankingsSnapshot.length} rankings`);
+                        const snapshot = pendingRankingsSnapshot;
+                        pendingRankingsSnapshot = null;
+                        
+                        // Schedule another save for the pending rankings after a brief delay
+                        setTimeout(() => {
+                            scheduleAutoSave();
+                        }, 100);
                     }
                 } else {
                     // Save failed - restore optimistically removed products
@@ -2618,6 +2644,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } finally {
                 isSaving = false;
+                rankingSaveQueue.activeNetworkSave = false;
+                
+                // CRITICAL: Check if rankings were snapshotted during error/finally
+                // This ensures no rankings are lost even if save failed
+                if (pendingRankingsSnapshot && pendingRankingsSnapshot.length > 0) {
+                    console.log(`🔄 Rescheduling save for ${pendingRankingsSnapshot.length} pending rankings (from finally block)`);
+                    pendingRankingsSnapshot = null; // Clear to prevent infinite loop
+                    setTimeout(() => {
+                        scheduleAutoSave();
+                    }, 100);
+                }
             }
         }, { 
             type: 'ranking_save', 
