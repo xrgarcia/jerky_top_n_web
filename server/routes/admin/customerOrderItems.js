@@ -71,6 +71,30 @@ module.exports = function createCustomerOrdersRoutes(db) {
   });
 
   /**
+   * Get filter options (distinct values for dropdowns)
+   * GET /api/admin/customer-orders/filters
+   * NOTE: This must come before /:orderNumber route to avoid conflicts
+   */
+  router.get('/customer-orders/filters', async (req, res) => {
+    try {
+      const filterOptions = await repository.getFilterOptions();
+
+      res.json({
+        success: true,
+        filters: filterOptions
+      });
+
+    } catch (error) {
+      console.error('Error fetching filter options:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch filter options',
+        message: error.message
+      });
+    }
+  });
+
+  /**
    * Get order details by order number (all items)
    * GET /api/admin/customer-orders/:orderNumber
    */
@@ -122,29 +146,6 @@ module.exports = function createCustomerOrdersRoutes(db) {
       res.status(500).json({
         success: false,
         error: 'Failed to fetch order details',
-        message: error.message
-      });
-    }
-  });
-
-  /**
-   * Get filter options (distinct values for dropdowns)
-   * GET /api/admin/customer-orders/filters
-   */
-  router.get('/customer-orders/filters', async (req, res) => {
-    try {
-      const filterOptions = await repository.getFilterOptions();
-
-      res.json({
-        success: true,
-        filters: filterOptions
-      });
-
-    } catch (error) {
-      console.error('Error fetching filter options:', error);
-      res.status(500).json({
-        success: false,
-        error: 'Failed to fetch filter options',
         message: error.message
       });
     }

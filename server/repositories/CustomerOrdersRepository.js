@@ -219,11 +219,19 @@ class CustomerOrdersRepository {
       .orderBy(customerOrderItems.sku)
       .limit(1000);
 
+    // Get distinct fulfillment statuses
+    const fulfillmentStatuses = await this.db
+      .selectDistinct({ status: customerOrderItems.fulfillmentStatus })
+      .from(customerOrderItems)
+      .where(sql`${customerOrderItems.fulfillmentStatus} IS NOT NULL`)
+      .orderBy(customerOrderItems.fulfillmentStatus);
+
     return {
       orderNumbers: orderNumbers.map(o => o.orderNumber),
       emails: emails.map(e => e.email),
       productIds: productIds.map(p => p.productId),
-      skus: skus.map(s => s.sku)
+      skus: skus.map(s => s.sku),
+      fulfillmentStatuses: fulfillmentStatuses.map(f => f.status)
     };
   }
 }

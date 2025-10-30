@@ -1676,11 +1676,44 @@ function updateOrdersPagination(total, currentPage) {
   }
 }
 
+async function loadFilterOptions() {
+  try {
+    const response = await fetch('/api/admin/customer-orders/filters');
+    if (!response.ok) {
+      throw new Error('Failed to load filter options');
+    }
+    
+    const data = await response.json();
+    
+    // Populate fulfillment status dropdown
+    const fulfillmentSelect = document.getElementById('filterFulfillmentStatus');
+    if (fulfillmentSelect && data.filters.fulfillmentStatuses) {
+      // Keep the "All Statuses" option
+      fulfillmentSelect.innerHTML = '<option value="">All Statuses</option>';
+      
+      // Add actual statuses from database
+      data.filters.fulfillmentStatuses.forEach(status => {
+        const option = document.createElement('option');
+        option.value = status;
+        // Capitalize first letter for display
+        option.textContent = status.charAt(0).toUpperCase() + status.slice(1).replace(/_/g, ' ');
+        fulfillmentSelect.appendChild(option);
+      });
+    }
+    
+  } catch (error) {
+    console.error('Error loading filter options:', error);
+  }
+}
+
 function setupCustomerOrdersFilters() {
   const applyBtn = document.getElementById('applyOrderFilters');
   const clearBtn = document.getElementById('clearOrderFilters');
   const prevBtn = document.getElementById('prevOrdersPage');
   const nextBtn = document.getElementById('nextOrdersPage');
+  
+  // Load filter options from database
+  loadFilterOptions();
   
   if (applyBtn) {
     applyBtn.addEventListener('click', () => {
