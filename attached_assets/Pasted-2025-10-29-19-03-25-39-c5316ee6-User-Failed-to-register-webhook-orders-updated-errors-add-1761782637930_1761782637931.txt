@@ -1,0 +1,200 @@
+2025-10-29 19:03:25.39
+c5316ee6
+User
+❌ Failed to register webhook orders/updated: {"errors":{"address":["for this topic has already been taken"]}}
+2025-10-29 19:03:25.39
+c5316ee6
+User
+✓ Webhook already registered: orders/cancelled -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+2025-10-29 19:03:25.39
+c5316ee6
+User
+✓ Webhook already registered: products/create -> https://jerkyrankings.replit.app/api/webhooks/shopify/products
+2025-10-29 19:03:26.49
+c5316ee6
+User
+✅ Seeded/updated 17/17 achievements
+2025-10-29 19:03:26.49
+c5316ee6
+User
+🚫 AchievementCache MISS: Data expired or not found
+2025-10-29 19:03:27.25
+afe881d2
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-10-29 19:03:27.26
+afe881d2
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-29 19:03:28.58
+c5316ee6
+User
+✅ AchievementCache SET: Cached 21 definitions
+2025-10-29 19:03:28.58
+c5316ee6
+User
+✅ Achievements seeded
+2025-10-29 19:03:33.58
+c5316ee6
+User
+📄 Fetched page 2: 226 products (total so far: 476)
+2025-10-29 19:03:33.59
+c5316ee6
+User
+🛍️ Total products fetched from Shopify: 476
+2025-10-29 19:03:33.59
+c5316ee6
+User
+✅ Filtered to 162 rankable products (out of 476 total)
+2025-10-29 19:03:33.59
+c5316ee6
+User
+⏰ Next cache invalidation scheduled in 30 minutes
+2025-10-29 19:03:33.59
+c5316ee6
+User
+✅ Cache UPDATED: Loaded 162 products, valid for 30 minutes
+2025-10-29 19:03:48.33
+c5316ee6
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 19:03:48.33
+c5316ee6
+User
+✅ Webhook signature verified
+2025-10-29 19:03:48.33
+c5316ee6
+User
+📦 Processing orders/updated webhook for order JK3825341304
+2025-10-29 19:03:48.33
+c5316ee6
+User
+📦 Processing order JK3825341304: 6 line items
+2025-10-29 19:03:48.43
+c5316ee6
+User
+👤 User not found, fetching from Shopify: 9521117528378
+2025-10-29 19:03:48.43
+c5316ee6
+User
+👤 Fetching customer 9521117528378 from Shopify
+2025-10-29 19:03:48.67
+c5316ee6
+User
+✅ Fetched customer 9521117528378: m@mau.com.co
+2025-10-29 19:03:48.72
+c5316ee6
+User
+✨ Created new user 165 from Shopify: m@mau.com.co (Michael Mau)
+2025-10-29 19:03:49.34
+c5316ee6
+User
+✅ Processed 6 line items for order JK3825341304 (user: 165)
+2025-10-29 19:03:49.34
+c5316ee6
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341304
+2025-10-29 19:03:49.34
+c5316ee6
+User
+🔄 Invalidating purchase history cache for user 165
+2025-10-29 19:03:49.34
+c5316ee6
+User
+🗑️ Purchase cache invalidated for user 165
+2025-10-29 19:03:49.34
+c5316ee6
+User
+🔄 Recalculating ranking stats for 6 product(s)
+2025-10-29 19:03:49.39
+c5316ee6
+User
+📊 Recalculated ranking stats for 2 product(s)
+2025-10-29 19:03:49.39
+c5316ee6
+User
+⚠️ RankingStatsCache: Cache not initialized, cannot update products
+2025-10-29 19:03:49.39
+c5316ee6
+User
+✅ Caches updated
+2025-10-29 19:03:49.59
+afe881d2
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-29 19:03:51.49
+afe881d2
+User
+👋 WebSocket client disconnected: 8HpOSMx_TtqS40sTAAAD
+2025-10-29 19:03:51.49
+afe881d2
+User
+👤 User 4 still has 3 active socket(s)
+2025-10-29 19:03:51.53
+c5316ee6
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 19:03:51.53
+c5316ee6
+User
+✅ Webhook signature verified
+2025-10-29 19:03:51.53
+c5316ee6
+User
+📦 Processing orders/updated webhook for order JK3825341178
+2025-10-29 19:03:51.53
+c5316ee6
+User
+📦 Processing order JK3825341178: 1 line items
+2025-10-29 19:03:51.62
+c5316ee6
+User
+👤 User not found, fetching from Shopify: 9519133196602
+2025-10-29 19:03:51.62
+c5316ee6
+User
+👤 Fetching customer 9519133196602 from Shopify
+2025-10-29 19:03:51.81
+c5316ee6
+User
+✅ Fetched customer 9519133196602: jcortez@amityfdn.org
+2025-10-29 19:03:51.85
+c5316ee6
+User
+✨ Created new user 166 from Shopify: jcortez@amityfdn.org (Josie Cortez)
+2025-10-29 19:03:52.00
+c5316ee6
+User
+✅ Processed 1 line items for order JK3825341178 (user: 166)
+2025-10-29 19:03:52.00
+c5316ee6
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341178
+2025-10-29 19:03:52.00
+c5316ee6
+User
+🔄 Invalidating purchase history cache for user 166
+2025-10-29 19:03:52.00
+c5316ee6
+User
+🗑️ Purchase cache invalidated for user 166
+2025-10-29 19:03:52.00
+c5316ee6
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-10-29 19:03:52.02
+afe881d2
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-10-29 19:03:52.05
+c5316ee6
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 19:03:52.05
+c5316ee6
+User
+✅ Caches updated
+2025-10-29 19:03:52.06
+afe881d2
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }

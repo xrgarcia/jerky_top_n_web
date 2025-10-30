@@ -1,0 +1,206 @@
+2025-10-29 19:05:45.10
+c5316ee6
+User
+📊 Fetching achievements for user 4
+2025-10-29 19:05:45.10
+c5316ee6
+User
+✅ Product count retrieved: 162 rankable products
+2025-10-29 19:05:45.10
+c5316ee6
+User
+🔄 Batching user stats queries...
+2025-10-29 19:05:45.10
+c5316ee6
+User
+💾 LeaderboardPositionCache HIT: User 4 (all_time) position 1 (age: 112s)
+2025-10-29 19:05:45.20
+c5316ee6
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 1, waitingRequests: 0 }
+2025-10-29 19:05:45.21
+c5316ee6
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 1, waitingRequests: 0 }
+2025-10-29 19:05:45.23
+c5316ee6
+User
+🔌 Database client connected to pool { totalConnections: 4, idleConnections: 1, waitingRequests: 0 }
+2025-10-29 19:05:45.25
+c5316ee6
+User
+💾 Cache HIT: Returning 162 products from cache (age: 2 minutes)
+2025-10-29 19:05:45.25
+c5316ee6
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 2 minutes)
+2025-10-29 19:05:45.26
+c5316ee6
+User
+✅ Session validated for user 4
+2025-10-29 19:05:45.26
+c5316ee6
+User
+📊 Fetching streaks for user 4
+2025-10-29 19:05:45.28
+c5316ee6
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 19:05:45.28
+c5316ee6
+User
+⏱️ Batch 1 completed in 176ms (getUserStats + getUserPosition + getUserStreaks)
+2025-10-29 19:05:45.28
+c5316ee6
+User
+💾 Cache HIT: Returning 162 products from cache (age: 2 minutes)
+2025-10-29 19:05:45.28
+c5316ee6
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-10-29 19:05:45.30
+c5316ee6
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 19:05:45.30
+c5316ee6
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 4
+2025-10-29 19:05:45.30
+c5316ee6
+User
+✅ Database query completed: 1 streak(s) found
+2025-10-29 19:05:45.30
+c5316ee6
+User
+✅ Streaks fetched successfully for user 4: 1 streak(s)
+2025-10-29 19:05:45.36
+c5316ee6
+User
+⏱️ Batch 2 completed in 84ms (getCompletedAnimalCategories)
+2025-10-29 19:05:45.36
+c5316ee6
+User
+⏱️ Total aggregation time: 260ms
+2025-10-29 19:05:45.36
+c5316ee6
+User
+✅ User stats aggregated: position 1, streak 3
+2025-10-29 19:05:45.36
+c5316ee6
+User
+🔄 Getting achievements with progress...
+2025-10-29 19:05:45.36
+c5316ee6
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 2 minutes)
+2025-10-29 19:05:45.38
+c5316ee6
+User
+🔌 Database client connected to pool { totalConnections: 5, idleConnections: 3, waitingRequests: 0 }
+2025-10-29 19:05:45.40
+c5316ee6
+User
+✅ Achievements fetched successfully for user 4: 21 achievement(s)
+2025-10-29 19:05:45.47
+c5316ee6
+User
+💾 AchievementCache HIT: Returning 21 definitions (age: 2 minutes)
+2025-10-29 19:05:45.55
+c5316ee6
+User
+📊 ProgressTracker: Found 21 total achievements for user 4
+2025-10-29 19:05:45.55
+c5316ee6
+User
+✅ Earned: 7 | 🔒 Unearned: 14
+2025-10-29 19:05:45.55
+c5316ee6
+User
+📊 ProgressTracker: 10 unearned achievements have progress data
+2025-10-29 19:05:45.55
+c5316ee6
+User
+🎯 Closest unearned achievement: Early Adopter (NaN% complete - 0/2025-11-10)
+2025-10-29 19:06:08.82
+c5316ee6
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-29 19:06:08.82
+c5316ee6
+User
+✅ Webhook signature verified
+2025-10-29 19:06:08.82
+c5316ee6
+User
+📦 Processing orders/updated webhook for order JK3825340986
+2025-10-29 19:06:08.82
+c5316ee6
+User
+📦 Processing order JK3825340986: 3 line items
+2025-10-29 19:06:08.91
+c5316ee6
+User
+👤 User not found, fetching from Shopify: 9516092162362
+2025-10-29 19:06:08.91
+c5316ee6
+User
+👤 Fetching customer 9516092162362 from Shopify
+2025-10-29 19:06:09.13
+c5316ee6
+User
+✅ Fetched customer 9516092162362: dale@cathaven.com
+2025-10-29 19:06:09.17
+c5316ee6
+User
+✨ Created new user 176 from Shopify: dale@cathaven.com (Dale Anderson)
+2025-10-29 19:06:09.47
+c5316ee6
+User
+✅ Processed 3 line items for order JK3825340986 (user: 176)
+2025-10-29 19:06:09.47
+c5316ee6
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825340986
+2025-10-29 19:06:09.47
+c5316ee6
+User
+🔄 Invalidating purchase history cache for user 176
+2025-10-29 19:06:09.47
+c5316ee6
+User
+🗑️ Purchase cache invalidated for user 176
+2025-10-29 19:06:09.47
+c5316ee6
+User
+🔄 Recalculating ranking stats for 3 product(s)
+2025-10-29 19:06:09.51
+c5316ee6
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-29 19:06:09.51
+c5316ee6
+User
+✅ Caches updated
+2025-10-29 19:06:15.30
+c5316ee6
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-10-29 19:06:15.30
+c5316ee6
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-29 19:06:15.30
+c5316ee6
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-29 19:06:15.40
+c5316ee6
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+
+Collapse
+
+Wrap
+
+Colors
