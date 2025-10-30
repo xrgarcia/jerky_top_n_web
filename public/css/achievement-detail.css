@@ -384,7 +384,737 @@
   color: #065f46;
 }
 
-/* Responsive */
+/* ============================================
+   DYNAMIC COLLECTION STYLES
+   ============================================ */
+
+.dynamic-collection-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dynamic-hero {
+  background: linear-gradient(135deg, #8b9862 0%, #7b8b52 100%);
+  color: white;
+  padding: 48px 32px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  box-shadow: 0 8px 24px rgba(123, 139, 82, 0.3);
+}
+
+.dynamic-hero-icon {
+  font-size: 96px;
+  line-height: 1;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.dynamic-hero-content {
+  flex: 1;
+}
+
+.dynamic-hero-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dynamic-hero-description {
+  font-size: 18px;
+  margin: 0 0 24px 0;
+  opacity: 0.95;
+  line-height: 1.5;
+}
+
+.dynamic-hero-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-stat-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.hero-stat-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  opacity: 0.85;
+  font-weight: 600;
+}
+
+.dynamic-tier-progression {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e9ecef;
+}
+
+.tier-progression-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 24px 0;
+}
+
+.tier-badges-horizontal {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.tier-badge-item {
+  flex: 1;
+  text-align: center;
+  padding: 24px 16px;
+  border-radius: 16px;
+  border: 3px solid transparent;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.tier-badge-item.earned {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-color: #7b8b52;
+}
+
+.tier-badge-item.locked {
+  opacity: 0.35;
+  border-color: #dee2e6;
+}
+
+.tier-badge-item.current {
+  border-color: #c9a142;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  box-shadow: 0 6px 16px rgba(201, 161, 66, 0.3);
+  transform: scale(1.08);
+}
+
+.tier-badge-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.tier-badge-name {
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: #2c2c2c;
+  margin-bottom: 6px;
+}
+
+.tier-badge-threshold {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+}
+
+.dynamic-products-section {
+  margin-top: 32px;
+}
+
+.products-section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 24px 0;
+}
+
+/* ============================================
+   FLAVOR COIN SPOTLIGHT STYLES
+   ============================================ */
+
+.flavor-coin-spotlight {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.spotlight-hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.spotlight-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 32px 48px;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  border-radius: 24px;
+  border: 3px solid #fed7aa;
+  box-shadow: 0 8px 24px rgba(254, 215, 170, 0.4);
+}
+
+.spotlight-badge-icon {
+  font-size: 80px;
+  line-height: 1;
+}
+
+.spotlight-badge-name {
+  font-size: 28px;
+  font-weight: 800;
+  color: #92400e;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.spotlight-product {
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  border: 3px solid #7b8b52;
+}
+
+.spotlight-product-image {
+  position: relative;
+  width: 100%;
+  height: 500px;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.spotlight-product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.5s ease;
+}
+
+.spotlight-product-image img.grayscale {
+  filter: grayscale(100%) brightness(1.1);
+  opacity: 0.6;
+}
+
+.spotlight-complete-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+}
+
+.spotlight-locked-badge {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.spotlight-product-details {
+  padding: 40px;
+}
+
+.spotlight-product-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2c2c2c;
+  margin: 0 0 16px 0;
+}
+
+.spotlight-product-price {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7b8b52;
+  margin-bottom: 24px;
+}
+
+.spotlight-meta {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 12px;
+  line-height: 1.6;
+}
+
+.spotlight-status {
+  margin-top: 32px;
+}
+
+.spotlight-success {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 24px;
+  background: linear-gradient(135deg, #d1f5d3 0%, #a7f3d0 100%);
+  border-radius: 16px;
+  border: 2px solid #6ee7b7;
+}
+
+.spotlight-success-icon {
+  font-size: 48px;
+  line-height: 1;
+}
+
+.spotlight-success-text strong {
+  font-size: 20px;
+  color: #065f46;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.spotlight-success-text p {
+  font-size: 16px;
+  color: #047857;
+  margin: 0;
+}
+
+.spotlight-cta {
+  padding: 32px;
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  border-radius: 16px;
+  border: 2px solid #fed7aa;
+  text-align: center;
+}
+
+.spotlight-cta-icon {
+  font-size: 56px;
+  margin-bottom: 16px;
+}
+
+.spotlight-cta-text strong {
+  font-size: 24px;
+  color: #92400e;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.spotlight-cta-text p {
+  font-size: 16px;
+  color: #b45309;
+  margin: 0 0 24px 0;
+}
+
+.spotlight-cta-button {
+  background: linear-gradient(135deg, #7b8b52 0%, #98ab6a 100%);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 700;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
+}
+
+.spotlight-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(123, 139, 82, 0.4);
+}
+
+/* ============================================
+   HIDDEN COLLECTION STYLES
+   ============================================ */
+
+.hidden-mystery-state {
+  max-width: 600px;
+  margin: 80px auto;
+  text-align: center;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-radius: 24px;
+  border: 3px dashed #adb5bd;
+}
+
+.mystery-box {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 32px;
+}
+
+.mystery-icon {
+  font-size: 120px;
+  line-height: 1;
+  animation: mystery-float 3s ease-in-out infinite;
+}
+
+@keyframes mystery-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+.mystery-shimmer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.mystery-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #495057;
+  margin: 0 0 16px 0;
+}
+
+.mystery-hint {
+  font-size: 18px;
+  color: #6c757d;
+  margin: 0;
+  font-style: italic;
+}
+
+.hidden-collection-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hidden-reveal-banner {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+  padding: 48px 32px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);
+  animation: reveal-pulse 2s ease-in-out;
+}
+
+@keyframes reveal-pulse {
+  0% { transform: scale(0.95); opacity: 0; }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.reveal-icon {
+  font-size: 64px;
+  line-height: 1;
+  animation: reveal-sparkle 1.5s ease-in-out infinite;
+}
+
+@keyframes reveal-sparkle {
+  0%, 100% { opacity: 1; transform: rotate(0deg); }
+  50% { opacity: 0.7; transform: rotate(180deg); }
+}
+
+.reveal-content {
+  text-align: center;
+}
+
+.reveal-title {
+  font-size: 36px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reveal-subtitle {
+  font-size: 18px;
+  margin: 0;
+  opacity: 0.95;
+}
+
+/* ============================================
+   LEGACY ACHIEVEMENT STYLES
+   ============================================ */
+
+.legacy-achievement-layout {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.legacy-header {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  padding: 32px;
+  border-radius: 16px;
+  margin-bottom: 32px;
+  display: flex;
+  gap: 24px;
+  align-items: center;
+  border: 2px solid #fed7aa;
+  box-shadow: 0 4px 12px rgba(254, 215, 170, 0.3);
+}
+
+.legacy-badge {
+  flex-shrink: 0;
+  text-align: center;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  border: 2px solid #fed7aa;
+  min-width: 120px;
+}
+
+.legacy-badge-icon {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.legacy-badge-tier {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #92400e;
+}
+
+.legacy-info {
+  flex: 1;
+}
+
+.legacy-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #2c2c2c;
+  margin: 0 0 12px 0;
+}
+
+.legacy-description {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+}
+
+.legacy-progress-bar {
+  position: relative;
+  height: 32px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid #fed7aa;
+}
+
+.legacy-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7b8b52 0%, #98ab6a 100%);
+  transition: width 0.5s ease;
+}
+
+.legacy-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  font-weight: 700;
+  color: #2c2c2c;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
+}
+
+.legacy-checklist {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #e9ecef;
+}
+
+.legacy-checklist-item {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
+  border-bottom: 2px solid #f1f3f5;
+  transition: all 0.3s ease;
+}
+
+.legacy-checklist-item:last-child {
+  border-bottom: none;
+}
+
+.legacy-checklist-item:hover {
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.legacy-checklist-item.checked {
+  opacity: 0.7;
+}
+
+.legacy-checkbox {
+  font-size: 28px;
+  font-weight: 700;
+  color: #7b8b52;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.legacy-checklist-item:not(.checked) .legacy-checkbox {
+  color: #adb5bd;
+}
+
+.legacy-product-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.legacy-product-thumb {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e9ecef;
+  flex-shrink: 0;
+}
+
+.legacy-checklist-item:not(.checked) .legacy-product-thumb {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+.legacy-product-details {
+  flex: 1;
+}
+
+.legacy-product-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 4px;
+}
+
+.legacy-product-price {
+  font-size: 14px;
+  font-weight: 700;
+  color: #7b8b52;
+}
+
+/* ============================================
+   STATIC COLLECTION STYLES
+   ============================================ */
+
+.static-collection-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.static-collection-header {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 2px solid #7b8b52;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+}
+
+.static-header-content {
+  flex: 1;
+}
+
+.static-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #2c2c2c;
+  margin: 0 0 12px 0;
+}
+
+.static-description {
+  font-size: 18px;
+  color: #666;
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.static-theme-badge {
+  display: inline-block;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #7b8b52 0%, #98ab6a 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.static-progress-circle {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-ring-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.progress-percentage {
+  font-size: 28px;
+  font-weight: 800;
+  color: #7b8b52;
+  line-height: 1;
+}
+
+.progress-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.static-products-grid {
+  margin-top: 24px;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
 @media (max-width: 768px) {
   .achievement-detail-stats {
     grid-template-columns: 1fr;
@@ -441,5 +1171,129 @@
   
   .engagement-stats-grid {
     grid-template-columns: 1fr;
+  }
+  
+  /* Dynamic Collection Mobile */
+  .dynamic-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 32px 24px;
+  }
+  
+  .dynamic-hero-icon {
+    font-size: 72px;
+  }
+  
+  .dynamic-hero-title {
+    font-size: 28px;
+  }
+  
+  .dynamic-hero-description {
+    font-size: 16px;
+  }
+  
+  .dynamic-hero-stats {
+    justify-content: center;
+  }
+  
+  .tier-badges-horizontal {
+    flex-wrap: wrap;
+  }
+  
+  .tier-badge-item {
+    flex: 1 1 calc(50% - 8px);
+    min-width: 120px;
+    padding: 16px 12px;
+  }
+  
+  .tier-badge-icon {
+    font-size: 36px;
+  }
+  
+  /* Flavor Coin Mobile */
+  .spotlight-badge {
+    padding: 24px 32px;
+  }
+  
+  .spotlight-badge-icon {
+    font-size: 64px;
+  }
+  
+  .spotlight-badge-name {
+    font-size: 20px;
+  }
+  
+  .spotlight-product-image {
+    height: 350px;
+  }
+  
+  .spotlight-product-details {
+    padding: 24px;
+  }
+  
+  .spotlight-product-title {
+    font-size: 24px;
+  }
+  
+  .spotlight-product-price {
+    font-size: 22px;
+  }
+  
+  .spotlight-success {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .spotlight-cta-text strong {
+    font-size: 20px;
+  }
+  
+  /* Hidden Collection Mobile */
+  .hidden-reveal-banner {
+    flex-direction: column;
+    padding: 32px 24px;
+    gap: 20px;
+  }
+  
+  .reveal-icon {
+    font-size: 48px;
+  }
+  
+  .reveal-title {
+    font-size: 28px;
+  }
+  
+  .reveal-subtitle {
+    font-size: 16px;
+  }
+  
+  /* Legacy Mobile */
+  .legacy-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .legacy-title {
+    font-size: 24px;
+  }
+  
+  .legacy-product-info {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  /* Static Collection Mobile */
+  .static-collection-header {
+    flex-direction: column;
+    text-align: center;
+    padding: 28px 24px;
+  }
+  
+  .static-title {
+    font-size: 26px;
+  }
+  
+  .static-description {
+    font-size: 16px;
   }
 }
