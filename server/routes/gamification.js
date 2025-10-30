@@ -226,7 +226,8 @@ function createGamificationRoutes(services) {
       const streakUpdate = await streakManager.updateStreak(userId, streakType);
 
       if (services.io) {
-        services.io.to(`user:${userId}`).emit('streak:updated', streakUpdate);
+        const { getRoomName } = require('../websocket/gateway');
+        services.io.to(getRoomName(`user:${userId}`)).emit('streak:updated', streakUpdate);
       }
 
       res.json({ streak: streakUpdate });

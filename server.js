@@ -1764,7 +1764,8 @@ app.post('/api/rankings/products', async (req, res) => {
           
           // Broadcast streak update via WebSocket if streak changed
           if (streakResult && (streakResult.continued || streakResult.broken) && io) {
-            io.to(`user:${userId}`).emit('streak:updated', streakResult);
+            const { getRoomName } = require('./server/websocket/gateway');
+            io.to(getRoomName(`user:${userId}`)).emit('streak:updated', streakResult);
             
             if (streakResult.continued) {
               console.log(`🔥 User ${userId} continued streak: ${streakResult.currentStreak} days`);
@@ -1810,7 +1811,8 @@ app.post('/api/rankings/products', async (req, res) => {
             if (newFlavorCoins.length > 0) {
               console.log(`🪙 User ${userId} earned ${newFlavorCoins.length} new Flavor Coin(s)`);
               if (io) {
-                io.to(`user:${userId}`).emit('flavor_coins:earned', { coins: newFlavorCoins });
+                const { getRoomName } = require('./server/websocket/gateway');
+                io.to(getRoomName(`user:${userId}`)).emit('flavor_coins:earned', { coins: newFlavorCoins });
               }
             }
           }

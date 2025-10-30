@@ -3,6 +3,13 @@
  * Handles Socket.IO connections and event distribution
  */
 
+// Environment-aware room name helper (can be used outside the class)
+function getRoomName(baseName) {
+  const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+  const envPrefix = isProduction ? 'prod' : 'dev';
+  return `${envPrefix}:${baseName}`;
+}
+
 class WebSocketGateway {
   constructor(io, services) {
     this.io = io;
@@ -10,12 +17,25 @@ class WebSocketGateway {
     this.activeConnections = new Map(); // socketId -> connection data
     this.activeUsers = new Map(); // userId -> aggregated user data
     this.pendingAchievements = new Map(); // userId -> {achievements, flavorCoins, timestamp}
+    
+    // Environment prefix for room names to prevent cross-environment notification leakage
+    const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+    this.envPrefix = isProduction ? 'prod' : 'dev';
+    console.log(`🏷️  WebSocket environment prefix: ${this.envPrefix}`);
+    
     this.setupEventHandlers();
     
     // Cleanup stale pending achievements every 5 minutes
     this.cleanupInterval = setInterval(() => {
       this.cleanupStalePendingAchievements();
     }, 5 * 60 * 1000);
+  }
+  
+  /**
+   * Generate environment-aware room name to prevent cross-environment notification leakage
+   */
+  room(name) {
+    return `${this.envPrefix}:${name}`;
   }
 
   cleanupStalePendingAchievements() {
@@ -53,12 +73,12 @@ class WebSocketGateway {
             // Clean state: Leave old room if re-authenticating as different user
             if (socket.userId && socket.userId !== session.userId) {
               console.log(`🔄 Socket ${socket.id} switching users: ${socket.userId} → ${session.userId}`);
-              socket.leave(`user:${socket.userId}`);
+              socket.leave(this.room(`user:${socket.userId}`));
             }
             
             socket.userId = session.userId;
-            socket.join(`user:${session.userId}`);
-            console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id}`);
+            socket.join(this.room(`user:${session.userId}`));
+            console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id} (room: ${this.room(`user:${session.userId}`)})`);
             
             // TEST: Emit a test event immediately to verify socket communication
             socket.emit('test:ping', { message: 'Socket is working!', timestamp: Date.now() });
@@ -102,12 +122,12 @@ class WebSocketGateway {
                 // Emit to entire user room (not just this socket) to support multi-device
                 if (pendingData.achievements && pendingData.achievements.length > 0) {
                   console.log(`📬 Sending ${pendingData.achievements.length} pending achievement(s) to user ${session.userId} room (age: ${Math.round(age/1000)}s)`);
-                  this.io.to(`user:${session.userId}`).emit('achievements:earned', { achievements: pendingData.achievements });
+                  this.io.to(this.room(`user:${session.userId}`)).emit('achievements:earned', { achievements: pendingData.achievements });
                 }
                 
                 if (pendingData.flavorCoins && pendingData.flavorCoins.length > 0) {
                   console.log(`📬 Sending ${pendingData.flavorCoins.length} pending flavor coin(s) to user ${session.userId} room`);
-                  this.io.to(`user:${session.userId}`).emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
+                  this.io.to(this.room(`user:${session.userId}`)).emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
                 }
               } else {
                 console.log(`⏰ Discarding stale pending achievements for user ${session.userId} (age: ${Math.round(age/1000)}s)`);
@@ -166,20 +186,20 @@ class WebSocketGateway {
       });
 
       socket.on('subscribe:leaderboard', () => {
-        socket.join('leaderboard');
-        console.log(`📊 Socket ${socket.id} subscribed to leaderboard`);
+        socket.join(this.room('leaderboard'));
+        console.log(`📊 Socket ${socket.id} subscribed to leaderboard (room: ${this.room('leaderboard')})`);
       });
 
       socket.on('subscribe:activity-feed', () => {
-        socket.join('activity-feed');
-        console.log(`📰 Socket ${socket.id} subscribed to activity feed`);
+        socket.join(this.room('activity-feed'));
+        console.log(`📰 Socket ${socket.id} subscribed to activity feed (room: ${this.room('activity-feed')})`);
       });
 
       socket.on('subscribe:customer-orders', () => {
         // Only allow admin users to subscribe to customer orders updates
         if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
-          socket.join('admin:customer-orders');
-          console.log(`📦 Socket ${socket.id} subscribed to customer orders updates (user: ${socket.userData.email}, role: ${socket.userData.role})`);
+          socket.join(this.room('admin:customer-orders'));
+          console.log(`📦 Socket ${socket.id} subscribed to customer orders updates (room: ${this.room('admin:customer-orders')}, user: ${socket.userData.email}, role: ${socket.userData.role})`);
           // Acknowledge subscription success
           socket.emit('subscription:confirmed', { room: 'customer-orders' });
         } else {
@@ -196,7 +216,7 @@ class WebSocketGateway {
       });
 
       socket.on('unsubscribe:customer-orders', () => {
-        socket.leave('admin:customer-orders');
+        socket.leave(this.room('admin:customer-orders'));
         console.log(`📦 Socket ${socket.id} unsubscribed from customer orders updates`);
       });
 
@@ -207,20 +227,20 @@ class WebSocketGateway {
           return;
         }
         
-        socket.join('live-users');
-        console.log(`👥 Socket ${socket.id} (employee) subscribed to live users`);
+        socket.join(this.room('live-users'));
+        console.log(`👥 Socket ${socket.id} (employee) subscribed to live users (room: ${this.room('live-users')})`);
       });
 
       socket.on('unsubscribe:leaderboard', () => {
-        socket.leave('leaderboard');
+        socket.leave(this.room('leaderboard'));
       });
 
       socket.on('unsubscribe:activity-feed', () => {
-        socket.leave('activity-feed');
+        socket.leave(this.room('activity-feed'));
       });
 
       socket.on('unsubscribe:live-users', () => {
-        socket.leave('live-users');
+        socket.leave(this.room('live-users'));
       });
 
       socket.on('disconnect', () => {
@@ -273,7 +293,7 @@ class WebSocketGateway {
         : 'unknown@***'
     }));
     
-    this.io.to('live-users').emit('live-users:update', {
+    this.io.to(this.room('live-users')).emit('live-users:update', {
       users: sanitizedUsers,
       count: sanitizedUsers.length,
       timestamp: new Date().toISOString()
@@ -295,10 +315,10 @@ class WebSocketGateway {
     
     if (hasSocket) {
       // User has authenticated socket, emit directly
-      const roomName = `user:${userId}`;
+      const roomName = this.room(`user:${userId}`);
       const room = this.io.sockets.adapter.rooms.get(roomName);
       const socketsInRoom = room ? room.size : 0;
-      console.log(`🔊 Emitting ${achievements.length} achievement(s) to user ${userId} (${socketsInRoom} socket(s))`);
+      console.log(`🔊 Emitting ${achievements.length} achievement(s) to user ${userId} (${socketsInRoom} socket(s), room: ${roomName})`);
       this.io.to(roomName).emit('achievements:earned', { achievements });
     } else {
       // No authenticated socket, queue for later delivery
@@ -326,7 +346,7 @@ class WebSocketGateway {
     
     if (hasSocket) {
       // User has authenticated socket, emit directly
-      this.io.to(`user:${userId}`).emit('flavor_coins:earned', { coins });
+      this.io.to(this.room(`user:${userId}`)).emit('flavor_coins:earned', { coins });
       console.log(`✅ Emitted ${coins.length} flavor coin(s) to authenticated user ${userId}`);
     } else {
       // No authenticated socket, queue for later delivery
@@ -342,8 +362,8 @@ class WebSocketGateway {
   }
 
   broadcastAchievementEarned(userId, achievement) {
-    this.io.to(`user:${userId}`).emit('achievement:earned', achievement);
-    this.io.to('activity-feed').emit('activity:new', {
+    this.io.to(this.room(`user:${userId}`)).emit('achievement:earned', achievement);
+    this.io.to(this.room('activity-feed')).emit('activity:new', {
       type: 'achievement_earned',
       userId,
       data: achievement,
@@ -352,10 +372,10 @@ class WebSocketGateway {
   }
 
   broadcastStreakUpdate(userId, streak) {
-    this.io.to(`user:${userId}`).emit('streak:updated', streak);
+    this.io.to(this.room(`user:${userId}`)).emit('streak:updated', streak);
     
     if (streak.continued && streak.currentStreak % 7 === 0) {
-      this.io.to('activity-feed').emit('activity:new', {
+      this.io.to(this.room('activity-feed')).emit('activity:new', {
         type: 'streak_milestone',
         userId,
         data: streak,
@@ -365,13 +385,13 @@ class WebSocketGateway {
   }
 
   broadcastLeaderboardUpdate() {
-    this.io.to('leaderboard').emit('leaderboard:updated', {
+    this.io.to(this.room('leaderboard')).emit('leaderboard:updated', {
       timestamp: new Date().toISOString(),
     });
   }
 
   broadcastProductRanked(userId, productData, ranking) {
-    this.io.to('activity-feed').emit('activity:new', {
+    this.io.to(this.room('activity-feed')).emit('activity:new', {
       type: 'product_ranked',
       userId,
       data: { productData, ranking },
@@ -390,12 +410,13 @@ class WebSocketGateway {
   }
 
   broadcastCustomerOrdersUpdate(data) {
-    this.io.to('admin:customer-orders').emit('customer-orders:updated', {
+    this.io.to(this.room('admin:customer-orders')).emit('customer-orders:updated', {
       ...data,
       timestamp: new Date().toISOString(),
     });
-    console.log(`📦 Broadcasting customer orders update to admin room: ${data.action} - ${data.orderNumber}`);
+    console.log(`📦 Broadcasting customer orders update to admin room (${this.room('admin:customer-orders')}): ${data.action} - ${data.orderNumber}`);
   }
 }
 
 module.exports = WebSocketGateway;
+module.exports.getRoomName = getRoomName;
