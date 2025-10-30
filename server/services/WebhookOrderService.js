@@ -35,11 +35,13 @@ class WebhookOrderService {
 
   /**
    * Create or update user from Shopify customer data
+   * Falls back to creating a placeholder user if customer data is missing
    * @param {string} shopifyCustomerId - Shopify customer ID
    * @param {string} customerEmail - Customer email
-   * @returns {Promise<Object|null>} User object or null if creation failed
+   * @param {string} orderNumber - Order number (for placeholder email generation)
+   * @returns {Promise<Object>} User object (never null - creates placeholder if needed)
    */
-  async findOrCreateUser(shopifyCustomerId, customerEmail) {
+  async findOrCreateUser(shopifyCustomerId, customerEmail, orderNumber) {
     try {
       // First try to find existing user by Shopify ID
       if (shopifyCustomerId) {
@@ -51,6 +53,30 @@ class WebhookOrderService {
         
         if (existingUser) {
           console.log(`✅ Found existing user by Shopify ID: ${existingUser.id} (${existingUser.email})`);
+          
+          // If this was a placeholder user and we now have real email, update it
+          if (customerEmail && existingUser.email.includes('@placeholder.jerky.com') && customerEmail !== existingUser.email) {
+            await this.db
+              .update(users)
+              .set({ 
+                email: customerEmail,
+                updatedAt: new Date()
+              })
+              .where(eq(users.id, existingUser.id));
+            
+            // Also update all customer orders associated with this user to have the real email
+            await this.db
+              .update(customerOrders)
+              .set({ 
+                customerEmail: customerEmail,
+                updatedAt: new Date()
+              })
+              .where(eq(customerOrders.userId, existingUser.id));
+            
+            console.log(`🔄 Updated placeholder user ${existingUser.id} with real email: ${customerEmail} (and updated all associated orders)`);
+            existingUser.email = customerEmail;
+          }
+          
           return existingUser;
         }
       }
@@ -81,28 +107,34 @@ class WebhookOrderService {
         }
       }
 
-      // User doesn't exist - fetch from Shopify and create
-      if (!shopifyCustomerId) {
-        console.warn(`⚠️ Cannot create user without Shopify customer ID`);
-        return null;
+      // User doesn't exist - try to fetch from Shopify and create
+      let firstName = 'Guest';
+      let lastName = 'Customer';
+      let email = null;
+
+      if (shopifyCustomerId) {
+        console.log(`👤 User not found, fetching from Shopify: ${shopifyCustomerId}`);
+        const shopifyCustomer = await this.ordersService.fetchCustomer(shopifyCustomerId);
+        
+        if (shopifyCustomer) {
+          firstName = shopifyCustomer.first_name || firstName;
+          lastName = shopifyCustomer.last_name || lastName;
+          email = shopifyCustomer.email || customerEmail;
+        } else {
+          console.warn(`⚠️ Could not fetch customer ${shopifyCustomerId} from Shopify`);
+        }
       }
 
-      console.log(`👤 User not found, fetching from Shopify: ${shopifyCustomerId}`);
-      const shopifyCustomer = await this.ordersService.fetchCustomer(shopifyCustomerId);
+      // Use provided email if available, otherwise create placeholder
+      if (!email && customerEmail) {
+        email = customerEmail;
+      }
       
-      if (!shopifyCustomer) {
-        console.warn(`⚠️ Could not fetch customer ${shopifyCustomerId} from Shopify`);
-        return null;
-      }
-
-      // Create new user from Shopify data
-      const firstName = shopifyCustomer.first_name || 'Customer';
-      const lastName = shopifyCustomer.last_name || '';
-      const email = shopifyCustomer.email || customerEmail;
-
       if (!email) {
-        console.warn(`⚠️ Cannot create user without email`);
-        return null;
+        // Create placeholder email - use Shopify customer ID if available, otherwise order number
+        const identifier = shopifyCustomerId || `order-${orderNumber}`;
+        email = `guest-${identifier}@placeholder.jerky.com`;
+        console.warn(`⚠️ Creating placeholder user with email: ${email}`);
       }
 
       try {
@@ -112,13 +144,13 @@ class WebhookOrderService {
             email,
             firstName,
             lastName,
-            shopifyCustomerId,
+            shopifyCustomerId: shopifyCustomerId || null,
             role: 'customer',
             createdAt: new Date(),
           })
           .returning();
 
-        console.log(`✨ Created new user ${newUser.id} from Shopify: ${email} (${firstName} ${lastName})`);
+        console.log(`✨ Created new user ${newUser.id}: ${email} (${firstName} ${lastName})`);
 
         return newUser;
       } catch (insertError) {
@@ -140,35 +172,33 @@ class WebhookOrderService {
         }
         
         // Retry lookup by email
-        if (email) {
-          const [existingUser] = await this.db
-            .select()
-            .from(users)
-            .where(eq(users.email, email))
-            .limit(1);
-          
-          if (existingUser) {
-            console.log(`✅ Found user created by concurrent request: ${existingUser.id}`);
-            return existingUser;
-          }
+        const [existingUser] = await this.db
+          .select()
+          .from(users)
+          .where(eq(users.email, email))
+          .limit(1);
+        
+        if (existingUser) {
+          console.log(`✅ Found user created by concurrent request: ${existingUser.id}`);
+          return existingUser;
         }
         
-        // Still failed - log and return null
+        // Still failed - this is a real error, capture and throw
         console.error('❌ Failed to create user and retry lookups failed:', insertError);
         Sentry.captureException(insertError, {
           tags: { service: 'webhook-order', action: 'user_insert_failed' },
-          extra: { shopifyCustomerId, email, originalError: insertError.message }
+          extra: { shopifyCustomerId, email, orderNumber, originalError: insertError.message }
         });
-        return null;
+        throw insertError;
       }
       
     } catch (error) {
       console.error('❌ Error finding/creating user:', error);
       Sentry.captureException(error, {
         tags: { service: 'webhook-order', action: 'find_or_create_user' },
-        extra: { shopifyCustomerId, customerEmail }
+        extra: { shopifyCustomerId, customerEmail, orderNumber }
       });
-      return null;
+      throw error;
     }
   }
 
@@ -225,25 +255,8 @@ class WebhookOrderService {
       return { success: false, reason: 'missing_order_data' };
     }
 
-    if (!customerEmail && !shopifyCustomerId) {
-      console.warn('⚠️ Cannot process order: missing customer email and ID');
-      return { success: false, reason: 'missing_customer_data' };
-    }
-
-    // Find or create user from Shopify data
-    const user = await this.findOrCreateUser(shopifyCustomerId, customerEmail);
-    
-    if (!user) {
-      const errorMsg = `Failed to find or create user for order ${orderNumber} (customer: ${customerEmail}, shopifyId: ${shopifyCustomerId})`;
-      console.error(`❌ ${errorMsg}`);
-      
-      // Throw error to trigger webhook retry - don't silently skip orders!
-      const error = new Error(errorMsg);
-      error.orderNumber = orderNumber;
-      error.customerEmail = customerEmail;
-      error.shopifyCustomerId = shopifyCustomerId;
-      throw error;
-    }
+    // Find or create user from Shopify data (creates placeholder if customer data missing)
+    const user = await this.findOrCreateUser(shopifyCustomerId, customerEmail, orderNumber);
 
     const lineItems = orderData.line_items || [];
     const orderItems = [];
