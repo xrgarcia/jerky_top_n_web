@@ -1145,7 +1145,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 currentProducts = [...currentProducts, ...data.products];
             }
 
-            displayProducts();
+            // Update hasMoreProducts BEFORE calling displayProducts() so it has the latest value
             hasMoreProducts = data.hasMore;
             
             if (hasMoreProducts) {
