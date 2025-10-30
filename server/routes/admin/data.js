@@ -352,11 +352,8 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
       const environment = isProduction ? 'production' : 'development';
       
-      // Get Redis URL based on environment
-      const redisUrl = isProduction 
-        ? process.env.UPSTASH_REDIS_URL_PROD 
-        : process.env.UPSTASH_REDIS_URL;
-      const redisUrlSource = isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL';
+      // Redis URL (same variable name, different values via Replit unsync)
+      const redisUrl = process.env.UPSTASH_REDIS_URL;
 
       const config = {
         environment: {
@@ -366,10 +363,11 @@ module.exports = function createDataManagementRoutes(storage, db) {
           detectedEnvironment: environment
         },
         redis: {
-          urlSource: redisUrlSource,
+          urlSource: 'UPSTASH_REDIS_URL',
           available: !!redisUrl,
           hostPort: getHostPort(redisUrl),
-          maskedUrl: maskPassword(redisUrl)
+          maskedUrl: maskPassword(redisUrl),
+          note: 'Dev/prod use different Redis instances via Replit unsync feature'
         },
         database: {
           available: !!process.env.DATABASE_URL,
