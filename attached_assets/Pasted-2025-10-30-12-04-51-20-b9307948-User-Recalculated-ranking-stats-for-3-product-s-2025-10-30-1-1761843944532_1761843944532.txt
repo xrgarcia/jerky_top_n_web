@@ -1,0 +1,206 @@
+2025-10-30 12:04:51.20
+b9307948
+User
+📊 Recalculated ranking stats for 3 product(s)
+2025-10-30 12:04:51.20
+b9307948
+User
+✅ RankingStatsCache: Updated 3 product(s): 11821194319, 11821194511, 11821195535 - timestamp reset
+2025-10-30 12:04:51.20
+b9307948
+User
+✅ Caches updated
+2025-10-30 12:04:54.28
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 6, idleConnections: 6 }
+2025-10-30 12:04:54.28
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-10-30 12:04:58.26
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-10-30 12:04:58.28
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-10-30 12:04:58.28
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-10-30 12:05:03.81
+b9307948
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-30 12:05:03.81
+b9307948
+User
+✅ Webhook signature verified
+2025-10-30 12:05:03.81
+b9307948
+User
+📦 Processing orders/updated webhook for order JK3825341433
+2025-10-30 12:05:03.81
+b9307948
+User
+📦 Processing order JK3825341433: 3 line items
+2025-10-30 12:05:03.90
+b9307948
+User
+👤 User not found, fetching from Shopify: 9523328418106
+2025-10-30 12:05:03.90
+b9307948
+User
+👤 Fetching customer 9523328418106 from Shopify
+2025-10-30 12:05:04.14
+b9307948
+User
+✅ Fetched customer 9523328418106: midget73@tds.net
+2025-10-30 12:05:04.19
+b9307948
+User
+✨ Created new user 765: midget73@tds.net (Heather L Krantz)
+2025-10-30 12:05:04.49
+b9307948
+User
+✅ Processed 3 line items for order JK3825341433 (user: 765)
+2025-10-30 12:05:04.49
+b9307948
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341433
+2025-10-30 12:05:04.49
+b9307948
+User
+🔄 Invalidating purchase history cache for user 765
+2025-10-30 12:05:04.49
+b9307948
+User
+🗑️ Purchase cache invalidated for user 765
+2025-10-30 12:05:04.49
+b9307948
+User
+🔄 Recalculating ranking stats for 3 product(s)
+2025-10-30 12:05:04.49
+b9307948
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 0 }
+2025-10-30 12:05:04.54
+b9307948
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-10-30 12:05:04.54
+b9307948
+User
+✅ Caches updated
+2025-10-30 12:05:14.94
+b9307948
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-10-30 12:05:14.94
+b9307948
+User
+✅ Webhook signature verified
+2025-10-30 12:05:14.94
+b9307948
+User
+📦 Processing orders/updated webhook for order JK3825341137
+2025-10-30 12:05:14.94
+b9307948
+User
+📦 Processing order JK3825341137: 4 line items
+2025-10-30 12:05:14.99
+b9307948
+User
+✅ Found existing user by Shopify ID: 263 (deckertbob@gmail.com)
+2025-10-30 12:05:15.38
+b9307948
+User
+✅ Processed 4 line items for order JK3825341137 (user: 263)
+2025-10-30 12:05:15.38
+b9307948
+User
+📦 Broadcasting customer orders update to admin room: upserted - JK3825341137
+2025-10-30 12:05:15.38
+b9307948
+User
+🔄 Invalidating purchase history cache for user 263
+2025-10-30 12:05:15.38
+b9307948
+User
+🗑️ Purchase cache invalidated for user 263
+2025-10-30 12:05:15.38
+b9307948
+User
+🔄 Recalculating ranking stats for 4 product(s)
+2025-10-30 12:05:15.43
+b9307948
+User
+📊 Recalculated ranking stats for 1 product(s)
+2025-10-30 12:05:15.43
+b9307948
+User
+✅ RankingStatsCache: Updated 1 product(s): 11821166863 - timestamp reset
+2025-10-30 12:05:15.43
+b9307948
+User
+✅ Caches updated
+2025-10-30 12:05:18.61
+b9307948
+User
+🧹 Checking for orphaned products in metadata table...
+2025-10-30 12:05:18.61
+b9307948
+User
+Current rankable products: 162
+2025-10-30 12:05:19.61
+b9307948
+User
+✅ No orphaned products found in metadata table
+2025-10-30 12:05:19.61
+b9307948
+User
+🏷️ Synced metadata for 162 fresh products
+2025-10-30 12:05:19.61
+b9307948
+User
+🗑️ Metadata cache invalidated
+2025-10-30 12:05:19.61
+b9307948
+User
+🚫 RankingStats Cache MISS: Data expired or not found
+2025-10-30 12:05:22.81
+b9307948
+User
+📊 Found ranking stats for 162 products
+2025-10-30 12:05:22.91
+b9307948
+User
+✅ RankingStats Cache UPDATED: Stored 162 product stats (webhook-invalidated only)
+2025-10-30 12:05:22.91
+b9307948
+User
+🚫 Metadata Cache MISS: Data expired or not found
+2025-10-30 12:05:25.41
+b9307948
+User
+✅ Metadata Cache UPDATED: Stored 162 products (webhook-invalidated only)
+2025-10-30 12:05:25.71
+b9307948
+User
+🏷️ Products cache warmed and metadata synchronized: 162 products
+2025-10-30 12:05:25.71
+b9307948
+User
+✅ CacheWarmer: ProductsCache warmed in 152434ms
+2025-10-30 12:05:25.81
+b9307948
+User
+🔥 CacheWarmer: Completed in 152547ms (3 success, 0 failed)
+
+Collapse
+
+Wrap
+
+Colors

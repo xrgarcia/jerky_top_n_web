@@ -179,9 +179,19 @@ class WebSocketGateway {
         // Only allow admin users to subscribe to customer orders updates
         if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
           socket.join('admin:customer-orders');
-          console.log(`📦 Socket ${socket.id} subscribed to customer orders updates`);
+          console.log(`📦 Socket ${socket.id} subscribed to customer orders updates (user: ${socket.userData.email}, role: ${socket.userData.role})`);
+          // Acknowledge subscription success
+          socket.emit('subscription:confirmed', { room: 'customer-orders' });
         } else {
-          console.warn(`⚠️ Socket ${socket.id} attempted to subscribe to customer orders without admin access`);
+          const reason = !socket.userData 
+            ? 'socket not authenticated (userData missing)' 
+            : `insufficient permissions (role: ${socket.userData.role}, email: ${socket.userData.email})`;
+          console.warn(`⚠️ Socket ${socket.id} attempted to subscribe to customer orders: ${reason}`);
+          // Notify client of failed subscription
+          socket.emit('subscription:failed', { 
+            room: 'customer-orders', 
+            reason: 'Admin access required' 
+          });
         }
       });
 

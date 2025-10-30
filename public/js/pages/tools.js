@@ -1408,10 +1408,69 @@ function debouncedLoadCustomerOrders(page) {
 function subscribeToCustomerOrdersUpdates() {
   if (!window.socket || customerOrdersSocketSubscribed) return;
   
-  window.socket.emit('subscribe:customer-orders');
-  customerOrdersSocketSubscribed = true;
-  console.log('📦 Subscribed to customer orders real-time updates');
+  // Attempt to subscribe to customer orders (only after authentication)
+  const attemptSubscription = () => {
+    console.log('📦 Attempting to subscribe to customer orders updates...');
+    window.socket.emit('subscribe:customer-orders');
+    // Don't set flag here - wait for server confirmation
+  };
   
+  // Listen for subscription confirmation/failure (set up once)
+  window.socket.off('subscription:confirmed'); // Remove old listeners
+  window.socket.on('subscription:confirmed', (data) => {
+    if (data.room === 'customer-orders') {
+      console.log('✅ Customer orders subscription confirmed by server');
+      customerOrdersSocketSubscribed = true; // Only set flag on confirmation
+    }
+  });
+  
+  window.socket.off('subscription:failed'); // Remove old listeners
+  window.socket.on('subscription:failed', (data) => {
+    if (data.room === 'customer-orders') {
+      console.error('❌ Customer orders subscription failed:', data.reason);
+      customerOrdersSocketSubscribed = false; // Reset flag to allow retry
+      
+      // Retry after authentication if the failure was due to missing auth
+      if (data.reason.includes('Admin access required') && window.appEventBus) {
+        console.log('🔄 Will retry subscription after authentication...');
+      }
+    }
+  });
+  
+  // Subscribe after authentication
+  if (window.appEventBus) {
+    // Listen for authentication (initial or re-authentication)
+    window.appEventBus.on('socket:authenticated', () => {
+      if (!customerOrdersSocketSubscribed && currentToolTab === 'customer-orders') {
+        console.log('🔄 Socket authenticated, subscribing to customer orders...');
+        attemptSubscription();
+      }
+    });
+    
+    // Re-subscribe after reconnection
+    window.socket.on('connect', () => {
+      if (currentToolTab === 'customer-orders') {
+        console.log('🔄 Socket reconnected, waiting for authentication...');
+        customerOrdersSocketSubscribed = false; // Reset subscription flag
+        // The socket:authenticated event will trigger the subscription
+      }
+    });
+    
+    // Try to subscribe immediately if socket is already authenticated
+    // (Check if we've already received socket:authenticated by looking for user data)
+    const sessionId = localStorage.getItem('customerSessionId');
+    if (sessionId) {
+      console.log('🔄 Session exists, attempting immediate subscription...');
+      attemptSubscription();
+    }
+  } else {
+    // Fallback: subscribe immediately if eventBus is not available
+    console.warn('⚠️ EventBus not available, attempting subscription anyway');
+    attemptSubscription();
+  }
+  
+  // Set up the event listener for order updates (only once)
+  window.socket.off('customer-orders:updated'); // Remove any existing listeners
   window.socket.on('customer-orders:updated', (data) => {
     console.log('📦 Customer orders updated:', data);
     

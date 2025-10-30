@@ -1,0 +1,56 @@
+app-init.js:9 🚀 Initializing application architecture...
+app-init.js:105 ⚙️ Initializing services...
+app-init.js:148 ✅ Application architecture initialized
+app-init.js:121 ✅ gamification initialized
+page-integrations.js:170 ✅ Page integrations initialized
+home-dashboard.js:286 ✅ Home dashboard initialized
+footer.js:70 ✅ Footer navigation initialized
+app.js?v=20251012c:872 🔀 Hash changed to: "tools" → Routing to: "tools"
+tools.js:729 🛠️ Initializing Tools page...
+hero-dashboard.js:18 🎮 Initializing Hero Dashboard...
+hero-dashboard.js:43 📊 Loading hero dashboard stats...
+footer.js:13 ✅ Footer navigation links using native hash routing
+PersistentQueue.js:31 ✅ IndexedDB PersistentQueue ready
+console.js:36 ✅ Frontend error tracking initialized (PRODUCTION)
+console.js:36 ✅ socialProof initialized
+console.js:36 ✅ activityFeed initialized
+console.js:36 ✅ progressTracking initialized
+console.js:36 ✅ leaderboard initialized
+console.js:36 ✅ All services initialized
+console.js:36 🎨 Initializing UI widgets...
+console.js:36 ✅ Notification widget created
+console.js:36 ❌ Customer session expired or not found
+console.js:36 🔐 Super admin access: false
+console.js:36 ✅ WebSocket connected
+console.js:36 ✅ Hero stats loaded: Object
+console.js:36 ✅ Hero Dashboard initialized
+/api/admin/achievements:1  Failed to load resource: the server responded with a status of 403 ()
+console.js:36 Error loading achievements: TypeError: window.showPage is not a function
+    at loadAchievementsAdmin (toolsAdmin.js:59:16)
+(anonymous) @ console.js:36
+console.js:36 🔀 Hash changed to: "login" → Routing to: "login"
+/api/admin/cache-config:1  Failed to load resource: the server responded with a status of 403 ()
+console.js:36 Failed to load cache config
+(anonymous) @ console.js:36
+console.js:36 ❌ Customer session expired or not found
+console.js:36 📊 Page view tracked: login
+console.js:36 🔑 Navigating to login page...
+console.js:36 ✅ 90-day customer session validated: Customer
+console.js:36 ✅ User already logged in, redirecting to: home
+console.js:36 🔄 Fetching home stats from /api/gamification/home-stats
+console.js:36 📊 Loading hero dashboard stats...
+console.js:36 📊 Page view tracked: home
+console.js:36 🔀 Hash changed to: "home" → Routing to: "home"
+console.js:36 🔄 Fetching home stats from /api/gamification/home-stats
+console.js:36 📊 Loading hero dashboard stats...
+console.js:36 📥 Home stats response: 200 
+console.js:36 ✅ Home stats loaded: Object
+console.js:36 📥 Home stats response: 200 
+console.js:36 ✅ Home stats loaded: Object
+console.js:36 ✅ Hero stats loaded: Object
+console.js:36 ✅ Hero stats loaded: Object
+console.js:36 🔀 Hash changed to: "tools" → Routing to: "tools"
+console.js:36 🛠️ Initializing Tools page...
+console.js:36 📊 Page view tracked: tools
+console.js:36 🔐 Super admin access: true
+console.js:36 📦 Subscribed to customer orders real-time updates
