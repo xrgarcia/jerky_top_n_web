@@ -12,7 +12,7 @@ A web application for ranking jerky products, providing a comprehensive and enga
 - **Custom Domain**: rank.jerky.com
 - **Domain Detection**: Uses `REPLIT_DOMAINS` environment variable in production (automatically set by Replit when custom domain is configured)
 - **Environment**: Set `NODE_ENV=production` for production deployments
-- **Redis**: Requires `UPSTASH_REDIS_URL_PROD` secret for production distributed caching
+- **Redis**: Uses `UPSTASH_REDIS_URL` secret (different values for dev/prod via Replit's unsync feature)
 
 ## System Architecture
 The application employs a modern web architecture for responsiveness, scalability, and real-time interaction.

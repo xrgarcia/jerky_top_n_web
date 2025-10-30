@@ -22,9 +22,9 @@ This application is now optimized to handle 1,000-5,000 concurrent users through
   - Products (30min TTL)
 
 **Configuration**:
-- **Development**: Uses `UPSTASH_REDIS_URL` environment variable
-- **Production**: Uses `UPSTASH_REDIS_URL_PROD` environment variable
-- Environment detection: Checks `REPLIT_DEPLOYMENT === '1'` to determine production
+- Uses `UPSTASH_REDIS_URL` environment variable
+- Dev and production use **different Redis instances** via Replit's **unsync feature**
+- In Replit Secrets, unsync `UPSTASH_REDIS_URL` to set different values for dev/prod
 - Uses Upstash Redis (free tier supports up to 10,000 requests/day per database)
 - Graceful degradation if Redis unavailable
 - Connection pool prevents Upstash free tier connection limits from being exceeded
@@ -32,15 +32,16 @@ This application is now optimized to handle 1,000-5,000 concurrent users through
 **Dual Redis Setup** (Dev/Prod Separation):
 - Separate Redis databases for development and production
 - Prevents dev testing from consuming production bandwidth/usage
-- Automatic environment-based selection (no manual configuration needed)
-- Clear startup logging shows which database is being used:
-  - Development: `🔌 Establishing Redis connection pool for development...`
-  - Production: `🔌 Establishing Redis connection pool for production...`
+- **Managed via Replit's unsync feature** - no code-level environment detection needed
+- In Replit Secrets UI:
+  - Dev: `UPSTASH_REDIS_URL` = your dev Redis instance
+  - Production: Click "unsync" on `UPSTASH_REDIS_URL` and set production Redis instance
+- Clear startup logging: `🔌 Establishing Redis connection pool...`
 
 **🚨 CRITICAL - Production Secret Required**:
-- You **MUST** add `UPSTASH_REDIS_URL_PROD` secret before deploying to production
+- You **MUST** unsync `UPSTASH_REDIS_URL` in production deployment secrets
+- Set production Redis URL in the unsynced production secret
 - If missing, production will fall back to **in-memory cache** (single-instance only)
-- Look for error logs: `❌ CRITICAL: UPSTASH_REDIS_URL_PROD not found in production!`
 - **Never share dev and prod Redis databases** - this causes cache pollution and data leakage
 - Production without Redis = no cross-instance coordination, degraded performance
 
