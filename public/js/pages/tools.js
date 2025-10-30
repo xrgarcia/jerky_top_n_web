@@ -1442,12 +1442,18 @@ function renderCustomerOrdersTable(orders) {
     return `
       <tr style="border-bottom: 1px solid #e9ecef;">
         <td style="padding: 12px;">
-          <strong>${order.orderNumber}</strong>
+          <a href="#" 
+             onclick="viewOrderDetails('${order.orderNumber}'); return false;" 
+             style="color: #c4a962; text-decoration: none; font-weight: bold; cursor: pointer;"
+             onmouseover="this.style.textDecoration='underline'" 
+             onmouseout="this.style.textDecoration='none'">
+            ${order.orderNumber}
+          </a>
         </td>
         <td style="padding: 12px;">
           <div style="font-size: 13px;">
             <div><strong>${customerName}</strong></div>
-            <div style="color: #666; font-size: 12px;">${order.customerEmail}</div>
+            <div style="color: #666; font-size: 12px; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${order.customerEmail}">${order.customerEmail}</div>
           </div>
         </td>
         <td style="padding: 12px;">
@@ -1473,6 +1479,156 @@ function renderCustomerOrdersTable(orders) {
   }).join('');
 }
 
+async function viewOrderDetails(orderNumber) {
+  try {
+    // Fetch order details
+    const response = await fetch(`/api/admin/customer-orders/${orderNumber}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to load order details');
+    }
+    
+    const orderData = await response.json();
+    
+    // Display order details modal
+    showOrderDetailsModal(orderData);
+    
+  } catch (error) {
+    console.error('Error loading order details:', error);
+    showToast({
+      type: 'error',
+      icon: '❌',
+      title: 'Error',
+      message: 'Failed to load order details',
+      duration: 3000
+    });
+  }
+}
+
+function showOrderDetailsModal(orderData) {
+  const modal = document.getElementById('orderDetailsModal');
+  if (!modal) {
+    console.error('Order details modal not found');
+    return;
+  }
+  
+  const { order, items } = orderData;
+  
+  // Format order date
+  const orderDate = new Date(order.orderDate);
+  const formattedDate = orderDate.toLocaleString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+  
+  const customerName = order.userFirstName && order.userLastName 
+    ? `${order.userFirstName} ${order.userLastName}`
+    : 'N/A';
+  
+  // Calculate total
+  const totalAmount = items.reduce((sum, item) => sum + (parseFloat(item.lineItemData?.price || 0) * item.quantity), 0);
+  
+  // Build items table
+  const itemsHTML = items.map((item, index) => {
+    const lineItemTitle = item.lineItemData?.title || 'N/A';
+    const lineItemPrice = item.lineItemData?.price || '0.00';
+    const lineTotal = (parseFloat(lineItemPrice) * item.quantity).toFixed(2);
+    const fulfillmentBadge = getFulfillmentStatusBadge(item.fulfillmentStatus);
+    
+    return `
+      <tr style="border-bottom: 1px solid #e9ecef;">
+        <td style="padding: 12px; text-align: center;">${index + 1}</td>
+        <td style="padding: 12px;">
+          <div><strong>${lineItemTitle}</strong></div>
+          ${item.sku ? `<div style="color: #666; font-size: 12px; margin-top: 4px;">SKU: ${item.sku}</div>` : ''}
+        </td>
+        <td style="padding: 12px; text-align: center;"><strong>${item.quantity}</strong></td>
+        <td style="padding: 12px; text-align: right;">$${lineItemPrice}</td>
+        <td style="padding: 12px; text-align: right;"><strong>$${lineTotal}</strong></td>
+        <td style="padding: 12px; text-align: center;">${fulfillmentBadge}</td>
+      </tr>
+    `;
+  }).join('');
+  
+  const modalContent = `
+    <div style="background: white; border-radius: 8px; width: 95%; max-width: 900px; max-height: 90vh; overflow-y: auto; box-shadow: 0 4px 20px rgba(0,0,0,0.15);">
+      <!-- Header -->
+      <div style="padding: 24px; border-bottom: 2px solid #e9ecef; background: #f8f9fa;">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div>
+            <h2 style="margin: 0 0 8px 0; color: #2c2c2c; font-size: 24px;">Order ${order.orderNumber}</h2>
+            <div style="color: #666; font-size: 14px;">${formattedDate}</div>
+          </div>
+          <button onclick="closeOrderDetailsModal()" style="background: none; border: none; font-size: 28px; color: #999; cursor: pointer; padding: 0; line-height: 1;">×</button>
+        </div>
+      </div>
+      
+      <!-- Customer Info -->
+      <div style="padding: 24px; border-bottom: 1px solid #e9ecef;">
+        <h3 style="margin: 0 0 16px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">Customer Information</h3>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+          <div>
+            <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Name</div>
+            <div style="font-weight: 600;">${customerName}</div>
+          </div>
+          <div>
+            <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Email</div>
+            <div style="font-weight: 600; word-break: break-all;">${order.customerEmail}</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Items -->
+      <div style="padding: 24px;">
+        <h3 style="margin: 0 0 16px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">Order Items (${items.length})</h3>
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; background: white;">
+            <thead>
+              <tr style="background: #f8f9fa; border-bottom: 2px solid #e9ecef;">
+                <th style="padding: 12px; text-align: center; font-weight: 600; color: #555;">#</th>
+                <th style="padding: 12px; text-align: left; font-weight: 600; color: #555;">Product</th>
+                <th style="padding: 12px; text-align: center; font-weight: 600; color: #555;">Qty</th>
+                <th style="padding: 12px; text-align: right; font-weight: 600; color: #555;">Price</th>
+                <th style="padding: 12px; text-align: right; font-weight: 600; color: #555;">Total</th>
+                <th style="padding: 12px; text-align: center; font-weight: 600; color: #555;">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${itemsHTML}
+            </tbody>
+            <tfoot>
+              <tr style="border-top: 2px solid #e9ecef; background: #f8f9fa;">
+                <td colspan="4" style="padding: 16px; text-align: right; font-weight: 600; font-size: 16px;">Total:</td>
+                <td style="padding: 16px; text-align: right; font-weight: 700; font-size: 16px; color: #c4a962;">$${totalAmount.toFixed(2)}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+      
+      <!-- Footer -->
+      <div style="padding: 20px 24px; border-top: 1px solid #e9ecef; background: #f8f9fa; text-align: right;">
+        <button onclick="closeOrderDetailsModal()" style="padding: 10px 24px; background: #c4a962; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 600; font-size: 14px;">Close</button>
+      </div>
+    </div>
+  `;
+  
+  modal.innerHTML = modalContent;
+  modal.style.display = 'flex';
+}
+
+function closeOrderDetailsModal() {
+  const modal = document.getElementById('orderDetailsModal');
+  if (modal) {
+    modal.style.display = 'none';
+  }
+}
+
 function getFulfillmentStatusBadge(status) {
   if (!status) {
     return `<span style="display: inline-block; padding: 4px 10px; background: #6c757d; color: white; border-radius: 12px; font-size: 11px; font-weight: 600;">UNFULFILLED</span>`;
@@ -1483,7 +1639,8 @@ function getFulfillmentStatusBadge(status) {
     'partial': { bg: '#ffc107', text: '#333', label: 'PARTIAL' },
     'unfulfilled': { bg: '#6c757d', text: 'white', label: 'UNFULFILLED' },
     'restocked': { bg: '#17a2b8', text: 'white', label: 'RESTOCKED' },
-    'not_eligible': { bg: '#dc3545', text: 'white', label: 'NOT ELIGIBLE' }
+    'not_eligible': { bg: '#dc3545', text: 'white', label: 'NOT ELIGIBLE' },
+    'delivered': { bg: '#17c671', text: 'white', label: 'DELIVERED' }
   };
   
   const config = statusColors[status.toLowerCase()] || { bg: '#6c757d', text: 'white', label: status.toUpperCase() };

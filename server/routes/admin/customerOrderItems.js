@@ -71,6 +71,63 @@ module.exports = function createCustomerOrdersRoutes(db) {
   });
 
   /**
+   * Get order details by order number (all items)
+   * GET /api/admin/customer-orders/:orderNumber
+   */
+  router.get('/customer-orders/:orderNumber', async (req, res) => {
+    try {
+      const { orderNumber } = req.params;
+      
+      // Fetch all order items for this order number
+      const items = await repository.getOrders({
+        orderNumber,
+        limit: 1000, // Get all items
+        offset: 0,
+        sortBy: 'createdAt',
+        sortOrder: 'asc'
+      });
+      
+      if (items.length === 0) {
+        return res.status(404).json({
+          success: false,
+          error: 'Order not found'
+        });
+      }
+      
+      // Format dates to ISO strings for frontend
+      const formattedItems = items.map(item => ({
+        ...item,
+        orderDate: item.orderDate?.toISOString(),
+        createdAt: item.createdAt?.toISOString(),
+        updatedAt: item.updatedAt?.toISOString(),
+      }));
+      
+      // Extract order-level information from the first item
+      const orderInfo = {
+        orderNumber: formattedItems[0].orderNumber,
+        orderDate: formattedItems[0].orderDate,
+        customerEmail: formattedItems[0].customerEmail,
+        userFirstName: formattedItems[0].userFirstName,
+        userLastName: formattedItems[0].userLastName
+      };
+      
+      res.json({
+        success: true,
+        order: orderInfo,
+        items: formattedItems
+      });
+      
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to fetch order details',
+        message: error.message
+      });
+    }
+  });
+
+  /**
    * Get filter options (distinct values for dropdowns)
    * GET /api/admin/customer-orders/filters
    */
