@@ -13,9 +13,16 @@ class RedisClient {
       return this.client;
     }
 
+    // DEBUG: Log environment detection
+    console.log('🔍 Redis Environment Detection:');
+    console.log(`   REPLIT_DEPLOYMENT: ${process.env.REPLIT_DEPLOYMENT}`);
+    console.log(`   Has UPSTASH_REDIS_URL: ${!!process.env.UPSTASH_REDIS_URL}`);
+    console.log(`   Has UPSTASH_REDIS_URL_PROD: ${!!process.env.UPSTASH_REDIS_URL_PROD}`);
+    
     // Detect environment: production deployment vs development
     const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
     const environment = isProduction ? 'production' : 'development';
+    console.log(`   Detected environment: ${environment}`);
     
     // Select appropriate Redis URL based on environment
     const redisUrl = isProduction 
@@ -23,6 +30,8 @@ class RedisClient {
       : process.env.UPSTASH_REDIS_URL;
     
     const urlSource = isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL';
+    console.log(`   Selected secret: ${urlSource}`);
+    console.log(`   Secret available: ${!!redisUrl}`);
     
     // Production safety: NEVER fall back to dev Redis (causes cache pollution/data leaks)
     if (!redisUrl) {
@@ -31,6 +40,7 @@ class RedisClient {
         console.error('❌ Production MUST have its own Redis database for data isolation.');
         console.error('❌ Falling back to in-memory cache (single-instance only).');
         console.error('❌ ADD UPSTASH_REDIS_URL_PROD SECRET IMMEDIATELY!');
+        console.error('❌ This will cause "Too many requests" errors in admin dashboard!');
       } else {
         console.warn(`⚠️ ${urlSource} not found for ${environment}, using in-memory cache`);
       }
