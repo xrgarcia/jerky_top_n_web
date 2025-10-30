@@ -384,7 +384,7 @@ module.exports = function createDataManagementRoutes(storage, db) {
         },
         sentry: {
           dsnSet: !!process.env.SENTRY_DSN,
-          environment: process.env.SENTRY_ENVIRONMENT || 'undefined'
+          environment: process.env.NODE_ENV || 'development'
         }
       };
 
