@@ -1148,9 +1148,12 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update hasMoreProducts BEFORE calling displayProducts() so it has the latest value
             hasMoreProducts = data.hasMore;
             
-            // Reset the stale-state check flag whenever we successfully load products
-            // This allows the fallback to trigger again if needed for subsequent batches
-            window._finalProductCheck = false;
+            // Reset the stale-state check flag only when we get products OR when hasMore is true
+            // This allows the fallback to trigger again for subsequent batches
+            // But prevents infinite loops when truly no products remain
+            if (data.products.length > 0 || hasMoreProducts) {
+                window._finalProductCheck = false;
+            }
             
             if (hasMoreProducts) {
                 const totalProducts = data.total || 0;
