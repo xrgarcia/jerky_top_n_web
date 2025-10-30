@@ -293,5 +293,107 @@ module.exports = function createDataManagementRoutes(storage, db) {
     }
   });
 
+  /**
+   * GET /api/admin/environment-config
+   * Get sanitized environment configuration (for debugging/verification)
+   */
+  router.get('/environment-config', requireSuperAdmin, async (req, res) => {
+    try {
+      // Helper function to mask passwords in URLs
+      const maskPassword = (url) => {
+        if (!url) return null;
+        try {
+          const urlObj = new URL(url);
+          if (urlObj.password) {
+            urlObj.password = '***';
+          }
+          return urlObj.toString();
+        } catch (e) {
+          // If URL parsing fails, try basic string replacement for Redis URLs
+          if (url.includes('@')) {
+            const parts = url.split('@');
+            if (parts[0].includes(':')) {
+              const authParts = parts[0].split(':');
+              authParts[authParts.length - 1] = '***';
+              return authParts.join(':') + '@' + parts.slice(1).join('@');
+            }
+          }
+          return url;
+        }
+      };
+
+      // Helper to extract host:port from URL
+      const getHostPort = (url) => {
+        if (!url) return null;
+        try {
+          const urlObj = new URL(url);
+          // Use actual port if present, or infer default based on protocol
+          let port = urlObj.port;
+          if (!port) {
+            // Infer default port based on protocol if not explicitly set
+            if (urlObj.protocol === 'postgres:' || urlObj.protocol === 'postgresql:') {
+              port = '5432';
+            } else if (urlObj.protocol === 'redis:' || urlObj.protocol === 'rediss:') {
+              port = '6379';
+            }
+          }
+          return port ? `${urlObj.hostname}:${port}` : urlObj.hostname;
+        } catch (e) {
+          // Fallback for Redis URLs like redis://user:pass@host:port
+          if (url.includes('@')) {
+            const afterAt = url.split('@')[1];
+            return afterAt.split('/')[0]; // Remove database number if present
+          }
+          return null;
+        }
+      };
+
+      // Detect environment
+      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+      const environment = isProduction ? 'production' : 'development';
+      
+      // Get Redis URL based on environment
+      const redisUrl = isProduction 
+        ? process.env.UPSTASH_REDIS_URL_PROD 
+        : process.env.UPSTASH_REDIS_URL;
+      const redisUrlSource = isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL';
+
+      const config = {
+        environment: {
+          nodeEnv: process.env.NODE_ENV || 'undefined',
+          replitDeployment: process.env.REPLIT_DEPLOYMENT || 'undefined',
+          replitDomains: process.env.REPLIT_DOMAINS || 'undefined',
+          detectedEnvironment: environment
+        },
+        redis: {
+          urlSource: redisUrlSource,
+          available: !!redisUrl,
+          hostPort: getHostPort(redisUrl),
+          maskedUrl: maskPassword(redisUrl)
+        },
+        database: {
+          available: !!process.env.DATABASE_URL,
+          hostPort: getHostPort(process.env.DATABASE_URL),
+          maskedUrl: maskPassword(process.env.DATABASE_URL)
+        },
+        shopify: {
+          shop: process.env.SHOPIFY_SHOP_NAME || 'undefined',
+          apiKeySet: !!process.env.SHOPIFY_API_KEY,
+          apiSecretSet: !!process.env.SHOPIFY_API_SECRET,
+          accessTokenSet: !!process.env.SHOPIFY_ACCESS_TOKEN
+        },
+        sentry: {
+          dsnSet: !!process.env.SENTRY_DSN,
+          environment: process.env.SENTRY_ENVIRONMENT || 'undefined'
+        }
+      };
+
+      res.json(config);
+    } catch (error) {
+      console.error('Error getting environment config:', error);
+      res.status(500).json({ error: 'Failed to get environment configuration' });
+    }
+  });
+
   return router;
 };

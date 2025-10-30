@@ -478,6 +478,7 @@ function setupToolNavigation() {
         unsubscribeFromCustomerOrdersUpdates();
       } else if (tool === 'data') {
         document.getElementById('dataTool').style.display = 'block';
+        await loadEnvironmentConfig(); // Load environment config when tab is shown
         
         if (liveUsersSubscribed && window.socket) {
           window.socket.emit('unsubscribe:live-users');
@@ -1083,6 +1084,189 @@ async function loadCacheConfig() {
     
   } catch (error) {
     console.error('Error loading cache config:', error);
+  }
+}
+
+async function loadEnvironmentConfig() {
+  const container = document.getElementById('environmentConfigContent');
+  if (!container) return;
+  
+  try {
+    const response = await fetch('/api/admin/environment-config');
+    
+    if (!response.ok) {
+      container.innerHTML = `
+        <div style="padding: 20px; color: #e74c3c; text-align: center;">
+          <strong>Failed to load environment configuration</strong>
+          <div style="margin-top: 10px; font-size: 14px;">Access denied or server error</div>
+        </div>
+      `;
+      return;
+    }
+    
+    const config = await response.json();
+    
+    // Determine environment badge color
+    const envBadgeColor = config.environment.detectedEnvironment === 'production' 
+      ? '#c4a962' 
+      : '#6B8E23';
+    
+    // Build HTML for environment config display
+    let html = `
+      <div style="background: #f8f9fa; border-radius: 8px; padding: 20px;">
+        <!-- Environment Detection -->
+        <div style="margin-bottom: 25px;">
+          <h4 style="margin: 0 0 15px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">
+            🌍 Environment Detection
+          </h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Detected Environment</td>
+              <td style="padding: 10px;">
+                <span style="background: ${envBadgeColor}; color: white; padding: 4px 12px; border-radius: 4px; font-weight: 600; text-transform: uppercase; font-size: 12px;">
+                  ${config.environment.detectedEnvironment}
+                </span>
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">NODE_ENV</td>
+              <td style="padding: 10px; font-family: monospace; color: #333;">${config.environment.nodeEnv}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">REPLIT_DEPLOYMENT</td>
+              <td style="padding: 10px; font-family: monospace; color: #333;">${config.environment.replitDeployment}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: 500; color: #555;">Domain</td>
+              <td style="padding: 10px; font-family: monospace; font-size: 12px; color: #333; word-break: break-all;">${config.environment.replitDomains}</td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Redis Configuration -->
+        <div style="margin-bottom: 25px;">
+          <h4 style="margin: 0 0 15px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">
+            🔴 Redis Cache Configuration
+          </h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Secret Source</td>
+              <td style="padding: 10px; font-family: monospace; color: #333;">${config.redis.urlSource}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Connection Status</td>
+              <td style="padding: 10px;">
+                ${config.redis.available 
+                  ? '<span style="color: #27ae60; font-weight: 600;">✅ Connected</span>' 
+                  : '<span style="color: #e74c3c; font-weight: 600;">❌ Not Available</span>'}
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Host:Port</td>
+              <td style="padding: 10px; font-family: monospace; font-size: 14px; font-weight: 600; color: #c4a962;">${config.redis.hostPort || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: 500; color: #555;">Full URL (masked)</td>
+              <td style="padding: 10px; font-family: monospace; font-size: 11px; color: #666; word-break: break-all;">${config.redis.maskedUrl || 'N/A'}</td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Database Configuration -->
+        <div style="margin-bottom: 25px;">
+          <h4 style="margin: 0 0 15px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">
+            💾 Database Configuration
+          </h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Connection Status</td>
+              <td style="padding: 10px;">
+                ${config.database.available 
+                  ? '<span style="color: #27ae60; font-weight: 600;">✅ Connected</span>' 
+                  : '<span style="color: #e74c3c; font-weight: 600;">❌ Not Available</span>'}
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Host:Port</td>
+              <td style="padding: 10px; font-family: monospace; font-size: 14px; font-weight: 600; color: #c4a962;">${config.database.hostPort || 'N/A'}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: 500; color: #555;">Full URL (masked)</td>
+              <td style="padding: 10px; font-family: monospace; font-size: 11px; color: #666; word-break: break-all;">${config.database.maskedUrl || 'N/A'}</td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Shopify Configuration -->
+        <div style="margin-bottom: 25px;">
+          <h4 style="margin: 0 0 15px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">
+            🛍️ Shopify Integration
+          </h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">Shop Domain</td>
+              <td style="padding: 10px; font-family: monospace; color: #333;">${config.shopify.shop}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">API Key</td>
+              <td style="padding: 10px;">
+                ${config.shopify.apiKeySet 
+                  ? '<span style="color: #27ae60;">✅ Set</span>' 
+                  : '<span style="color: #e74c3c;">❌ Missing</span>'}
+              </td>
+            </tr>
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">API Secret</td>
+              <td style="padding: 10px;">
+                ${config.shopify.apiSecretSet 
+                  ? '<span style="color: #27ae60;">✅ Set</span>' 
+                  : '<span style="color: #e74c3c;">❌ Missing</span>'}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: 500; color: #555;">Access Token</td>
+              <td style="padding: 10px;">
+                ${config.shopify.accessTokenSet 
+                  ? '<span style="color: #27ae60;">✅ Set</span>' 
+                  : '<span style="color: #e74c3c;">❌ Missing</span>'}
+              </td>
+            </tr>
+          </table>
+        </div>
+        
+        <!-- Sentry Configuration -->
+        <div>
+          <h4 style="margin: 0 0 15px 0; color: #2c2c2c; font-size: 16px; font-weight: 600;">
+            🐛 Sentry Error Tracking
+          </h4>
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr style="border-bottom: 1px solid #e0e0e0;">
+              <td style="padding: 10px; font-weight: 500; color: #555;">DSN</td>
+              <td style="padding: 10px;">
+                ${config.sentry.dsnSet 
+                  ? '<span style="color: #27ae60;">✅ Set</span>' 
+                  : '<span style="color: #e74c3c;">❌ Missing</span>'}
+              </td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; font-weight: 500; color: #555;">Environment</td>
+              <td style="padding: 10px; font-family: monospace; color: #333;">${config.sentry.environment}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    `;
+    
+    container.innerHTML = html;
+    
+  } catch (error) {
+    console.error('Error loading environment config:', error);
+    container.innerHTML = `
+      <div style="padding: 20px; color: #e74c3c; text-align: center;">
+        <strong>Error loading environment configuration</strong>
+        <div style="margin-top: 10px; font-size: 14px;">${error.message}</div>
+      </div>
+    `;
   }
 }
 
