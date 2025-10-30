@@ -80,22 +80,6 @@ class ProductsMetadataService {
       
       if (result.deletedCount > 0) {
         console.log(`🗑️ Cleaned up ${result.deletedCount} orphaned products from metadata table`);
-        
-        // Log to Sentry
-        const deletedTitles = result.deletedProducts.map(p => p.title);
-        Sentry.captureMessage(`Cleaned up ${result.deletedCount} orphaned products from metadata`, {
-          level: 'warning',
-          tags: { 
-            service: 'products', 
-            operation: 'metadata_cleanup',
-            deleted_count: result.deletedCount
-          },
-          extra: {
-            deleted_product_ids: result.deletedIds,
-            deleted_product_titles: deletedTitles,
-            current_rankable_count: currentProductIds.length
-          }
-        });
       } else {
         console.log(`✅ No orphaned products found in metadata table`);
       }
