@@ -241,6 +241,35 @@ class WebhookOrderService {
     };
   }
 
+  /**
+   * Get the fulfillment status for a line item by checking if it's in a delivered fulfillment
+   * @param {Object} lineItem - The line item from Shopify order
+   * @param {Array} fulfillments - Array of fulfillments from the order
+   * @param {Object} orderData - The full order data
+   * @returns {string|null} - The fulfillment status to use
+   */
+  getFulfillmentStatusForLineItem(lineItem, fulfillments, orderData) {
+    // Check if this line item is in any fulfillment
+    if (fulfillments && fulfillments.length > 0) {
+      for (const fulfillment of fulfillments) {
+        // Check if this line item is in this fulfillment
+        const lineItemInFulfillment = fulfillment.line_items?.find(
+          fi => fi.id === lineItem.id
+        );
+        
+        if (lineItemInFulfillment) {
+          // If the fulfillment's shipment status is delivered, use "delivered"
+          if (fulfillment.shipment_status === 'delivered') {
+            return 'delivered';
+          }
+        }
+      }
+    }
+    
+    // Fall back to line item's fulfillment status or order-level status
+    return lineItem.fulfillment_status || orderData.fulfillment_status || null;
+  }
+
   async handleOrderCreateOrUpdate(orderData) {
     const orderNumber = orderData.name || orderData.order_number?.toString();
     const orderDate = new Date(orderData.created_at || orderData.processed_at);
@@ -259,6 +288,7 @@ class WebhookOrderService {
     const user = await this.findOrCreateUser(shopifyCustomerId, customerEmail, orderNumber);
 
     const lineItems = orderData.line_items || [];
+    const fulfillments = orderData.fulfillments || [];
     const orderItems = [];
     const currentLineItemKeys = new Set();
     let skippedItems = 0;
@@ -286,8 +316,8 @@ class WebhookOrderService {
       const sku = item.sku || null;
       const quantity = typeof item.quantity === 'number' ? item.quantity : 1;
       
-      // Get fulfillment status from line item or fall back to order-level status
-      const fulfillmentStatus = item.fulfillment_status || orderData.fulfillment_status || null;
+      // Get fulfillment status by checking if line item is in a delivered fulfillment
+      const fulfillmentStatus = this.getFulfillmentStatusForLineItem(item, fulfillments, orderData);
       
       currentLineItemKeys.add(`${orderNumber}:${productId}:${sku}`);
 

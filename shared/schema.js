@@ -203,7 +203,7 @@ const customerOrderItems = pgTable('customer_order_items', {
   shopifyProductId: text('shopify_product_id').notNull(), // Product ID from Shopify
   sku: text('sku'), // Product SKU (nullable as some products may not have SKU)
   quantity: integer('quantity').default(1).notNull(), // Quantity purchased
-  fulfillmentStatus: text('fulfillment_status'), // Shopify fulfillment status (e.g., 'fulfilled', 'partial', 'unfulfilled', 'restocked')
+  fulfillmentStatus: text('fulfillment_status'), // Shopify fulfillment status (e.g., 'fulfilled', 'partial', 'unfulfilled', 'restocked', 'delivered')
   userId: integer('user_id').references(() => users.id).notNull(),
   customerEmail: text('customer_email').notNull(), // Backup reference to customer
   lineItemData: jsonb('line_item_data'), // Full Shopify line item for audit/debug
