@@ -1236,10 +1236,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             
-            // FALLBACK: If hasMoreProducts is false but we have loaded products before,
-            // do one final check by resetting to page 1 to ensure server-side state is current
-            // This handles the case where products were ranked rapidly and client state is stale
-            if (!hasMoreProducts && currentProducts.length > 0 && !window._finalProductCheck) {
+            // FALLBACK: If hasMoreProducts is false, do one final check by resetting to page 1
+            // to ensure server-side state is current. This handles the case where products
+            // were ranked rapidly and client state is stale (even if all products were removed).
+            if (!hasMoreProducts && !window._finalProductCheck) {
                 console.log('🔄 No visible products remaining - performing final server check for stale state');
                 window._finalProductCheck = true; // Prevent infinite loops (reset on successful load)
                 loadProducts(currentSearchQuery, true); // Reset and reload from page 1
