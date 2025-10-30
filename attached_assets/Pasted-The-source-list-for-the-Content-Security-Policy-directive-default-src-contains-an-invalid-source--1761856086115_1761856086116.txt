@@ -1,0 +1,2007 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+_app-2681746cded3d69a.js:13 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+_app-2681746cded3d69a.js:13 [LaunchDarkly] LaunchDarkly client initialized
+framework-feb12df8fd4c4694.js:1 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'ambient-light-sensor'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'battery'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'execution-while-not-rendered'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'execution-while-out-of-viewport'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'layout-animations'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'legacy-image-formats'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'navigation-override'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'oversized-images'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'publickey-credentials'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'speaker-selection'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'unoptimized-images'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'unsized-media'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Unrecognized feature: 'pointer-lock'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Allow attribute will take precedence over 'allowfullscreen'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+framework-feb12df8fd4c4694.js:1 Allow attribute will take precedence over 'allowpaymentrequest'.
+_ @ framework-feb12df8fd4c4694.js:1
+(anonymous) @ framework-feb12df8fd4c4694.js:1
+uD @ framework-feb12df8fd4c4694.js:1
+uI @ framework-feb12df8fd4c4694.js:1
+uM @ framework-feb12df8fd4c4694.js:1
+uS @ framework-feb12df8fd4c4694.js:1
+C @ framework-feb12df8fd4c4694.js:1
+z @ framework-feb12df8fd4c4694.js:1
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'battery'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'layout-animations'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'legacy-image-formats'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'navigation-override'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'oversized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'publickey-credentials'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'speaker-selection'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'unoptimized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'unsized-media'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar4p%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 🔀 Hash changed to: "home" → Routing to: "home"
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 📊 Page view tracked: home
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ TEST: Received test:ping from server! {message: 'Socket is working!', timestamp: 1761855963990}
+injected.js:27 ✅ Frontend error tracking initialized (development)
+injected.js:27 📊 Loading initial home stats...
+injected.js:27 🔄 Fetching home stats from /api/gamification/home-stats
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 16, totalRankings: 126, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 16, totalRankings: 126, recentAchievements: Array(10)}
+injected.js:27 📥 Home stats response: 200 OK
+injected.js:27 ✅ Home stats loaded: {topRankers: Array(1), topProducts: Array(5), recentlyRanked: Array(5), trending: Array(5), debated: Array(0), …}
+injected.js:27 ✅ GamificationService: Loaded 25 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 ✅ Progress data loaded: {totalRankings: 126, uniqueProducts: 126, achievementsEarned: 16, totalPoints: 5630, currentStreak: 7, …}
+injected.js:27 🔀 Hash changed to: "tools" → Routing to: "tools"
+injected.js:27 🛠️ Initializing Tools page...
+injected.js:27 📊 Page view tracked: tools
+injected.js:27 🔐 Super admin access: true
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🔄 Reset product state for fresh load
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 126, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🔄 Reset product state for fresh load
+injected.js:27 🗑️ Cleared existing rankings for reload
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 ⏳ Products already loading, skipping duplicate call
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 20 products (total: 20)
+injected.js:27 ✅ GamificationService: Loaded 25 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 126, isCollapsed: false}
+injected.js:27 ✅ Loaded 126 saved rankings
+injected.js:27 📈 Adding 119 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 129
+injected.js:27 📈 Pre-expanded slots to 129 to accommodate rank 126
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ Progress data loaded: {totalRankings: 126, uniqueProducts: 126, achievementsEarned: 16, totalPoints: 5630, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 126, isCollapsed: false}
+injected.js:27 ✅ Loaded 126 saved rankings
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drag over slot 127
+injected.js:27 🎯 Drop on slot 127, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 127 with push-down
+injected.js:27 ⚡ Optimistically removed product 9902441595194 from display
+injected.js:27 📦 Inserted product at rank 127, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 129 slots
+injected.js:27 ✅ Total ranking slots: 134
+injected.js:27 ♾️ Infinite expansion triggered! Filled 127/129 slots, highest rank: 127, added 5 more slots
+injected.js:27 📝 Queued operation: 5f9b485d for rank undefined
+injected.js:27 💾 Immediately persisted 127 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drag over slot 128
+injected.js:27 🎯 Drop on slot 128, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 128 with push-down
+injected.js:27 ⚡ Optimistically removed product 9902440087866 from display
+injected.js:27 📦 Inserted product at rank 128, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (128 total)
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drag over slot 129
+injected.js:27 🎯 Drop on slot 129, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 129 with push-down
+injected.js:27 ⚡ Optimistically removed product 9906429755706 from display
+injected.js:27 📦 Inserted product at rank 129, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (129 total)
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drag over slot 130
+injected.js:27 🎯 Drop on slot 130, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 130 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821184975 from display
+injected.js:27 📦 Inserted product at rank 130, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (130 total)
+injected.js:27 ✅ Completed operation: 5f9b485d
+injected.js:27 ✅ Cleared persisted operation 5f9b485d after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 127
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 127, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 127, uniqueProducts: 127, achievementsEarned: 16, totalPoints: 5630, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 127, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 127, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drag over slot 131
+injected.js:27 🎯 Drop on slot 131, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 131 with push-down
+injected.js:27 ⚡ Optimistically removed product 8264493564218 from display
+injected.js:27 📦 Inserted product at rank 131, pushed 0 items down
+injected.js:27 📝 Queued operation: 13a36ffb for rank undefined
+injected.js:27 💾 Immediately persisted 131 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drag over slot 132
+injected.js:27 🎯 Drop on slot 132, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 132 with push-down
+injected.js:27 ⚡ Optimistically removed product 8386384429370 from display
+injected.js:27 📦 Inserted product at rank 132, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 134 slots
+injected.js:27 ✅ Total ranking slots: 139
+injected.js:27 ♾️ Infinite expansion triggered! Filled 132/134 slots, highest rank: 132, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (132 total)
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drop on slot 133, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 133 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821194319 from display
+injected.js:27 📦 Inserted product at rank 133, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (133 total)
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 133
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 ✅ Completed operation: 13a36ffb
+injected.js:27 ✅ Cleared persisted operation 13a36ffb after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 130
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 130, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drag over slot 134
+injected.js:27 🎯 Drop on slot 134, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 134 with push-down
+injected.js:27 ⚡ Optimistically removed product 8264490352954 from display
+injected.js:27 📦 Inserted product at rank 134, pushed 0 items down
+injected.js:27 ✅ Progress data loaded: {totalRankings: 130, uniqueProducts: 130, achievementsEarned: 16, totalPoints: 5630, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 130, isCollapsed: false}
+injected.js:27 📝 Queued operation: 3c0975e2 for rank undefined
+injected.js:27 💾 Immediately persisted 134 ranking(s) to survive refresh
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 130, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drag over slot 135
+injected.js:27 🎯 Drop on slot 135, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 135 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821195535 from display
+injected.js:27 📦 Inserted product at rank 135, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (135 total)
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drag over slot 136
+injected.js:27 🎯 Drop on slot 136, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 136 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821195855 from display
+injected.js:27 📦 Inserted product at rank 136, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (136 total)
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drag over slot 137
+injected.js:27 🎯 Drop on slot 137, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 137 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821195599 from display
+injected.js:27 📦 Inserted product at rank 137, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 139 slots
+injected.js:27 ✅ Total ranking slots: 144
+injected.js:27 ♾️ Infinite expansion triggered! Filled 137/139 slots, highest rank: 137, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (137 total)
+injected.js:27 ✅ Completed operation: 3c0975e2
+injected.js:27 ✅ Cleared persisted operation 3c0975e2 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 134
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 134, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 4742, code: 'original_master', name: 'Original Master', description: 'you like it straight down the middle, i like it :-)', icon: '/objects/achievement-icons/d2b6144b-a3ab-4c29-8218-bb6c43efb494.png', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 4742, code: 'original_master', name: 'Original Master', description: 'you like it straight down the middle, i like it :-)', icon: '/objects/achievement-icons/d2b6144b-a3ab-4c29-8218-bb6c43efb494.png', …}
+injected.js:27 ✨ Showing toast: ⬆️ Tier Upgraded! - Original Master - 💎 Platinum
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Tier Upgraded! (0 remaining in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 ✅ Progress data loaded: {totalRankings: 134, uniqueProducts: 134, achievementsEarned: 16, totalPoints: 5690, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 134, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 138
+injected.js:27 🎯 Drop on slot 138, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 138 with push-down
+injected.js:27 ⚡ Optimistically removed product 11821194511 from display
+injected.js:27 📦 Inserted product at rank 138, pushed 0 items down
+injected.js:27 📝 Queued operation: 036f54f8 for rank undefined
+injected.js:27 💾 Immediately persisted 138 ranking(s) to survive refresh
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 134, isCollapsed: false}
+injected.js:27 ✅ GamificationService: Loaded 25 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 134, isCollapsed: false}
+_app-2681746cded3d69a.js:13  POST https://sp.replit.com/v1/t 400 (Bad Request)
+(anonymous) @ _app-2681746cded3d69a.js:13
+o @ sdk.min.js:1
+dispatch @ fetch-dispatcher.ts:11
+(anonymous) @ index.ts:122
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+g @ index.ts:93
+(anonymous) @ delivery.js:28
+(anonymous) @ delivery.js:11
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+(anonymous) @ delivery.js:4
+o @ delivery.js:27
+(anonymous) @ event-queue.js:325
+(anonymous) @ event-queue.js:323
+n @ _app-2681746cded3d69a.js:13
+setTimeout
+(anonymous) @ _app-2681746cded3d69a.js:13
+(anonymous) @ event-queue.js:321
+(anonymous) @ event-queue.js:320
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+(anonymous) @ tslib.es6.js:76
+u @ tslib.es6.js:72
+(anonymous) @ event-queue.js:273
+(anonymous) @ event-queue.js:181
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+s @ tslib.es6.js:73
+Promise.then
+a @ tslib.es6.js:76
+(anonymous) @ tslib.es6.js:76
+u @ tslib.es6.js:72
+(anonymous) @ event-queue.js:169
+(anonymous) @ event-queue.js:135
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+(anonymous) @ event-queue.js:128
+(anonymous) @ dispatch.js:25
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+p @ dispatch.js:18
+(anonymous) @ index.ts:460
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+(anonymous) @ index.ts:454
+(anonymous) @ index.ts:253
+(anonymous) @ tslib.es6.js:103
+(anonymous) @ tslib.es6.js:108
+(anonymous) @ tslib.es6.js:80
+u @ tslib.es6.js:72
+(anonymous) @ index.ts:241
+I @ _app-2681746cded3d69a.js:15
+u @ 5042-88eeeb7478310b0c.js:1
+p @ 5042-88eeeb7478310b0c.js:1
+(anonymous) @ 5042-88eeeb7478310b0c.js:1
+(anonymous) @ main-e39bbe138ca431bf.js:1
+n @ main-e39bbe138ca431bf.js:1
+u @ main-e39bbe138ca431bf.js:1
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drag over slot 139
+injected.js:27 🎯 Drop on slot 139, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 139 with push-down
+injected.js:27 ⚡ Optimistically removed product 9923495788858 from display
+injected.js:27 📦 Inserted product at rank 139, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (139 total)
+injected.js:27 ✅ Completed operation: 036f54f8
+injected.js:27 ✅ Cleared persisted operation 036f54f8 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 137
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 137, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 137, uniqueProducts: 137, achievementsEarned: 16, totalPoints: 5690, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 137, isCollapsed: false}
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 137, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drag over slot 140
+injected.js:27 🎯 Drop on slot 140, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 140 with push-down
+injected.js:27 ⚡ Optimistically removed product 9826823471418 from display
+injected.js:27 📦 Inserted product at rank 140, pushed 0 items down
+injected.js:27 📝 Queued operation: ccb92bef for rank undefined
+injected.js:27 💾 Immediately persisted 140 ranking(s) to survive refresh
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 4833, code: 'flavor_master_hot', name: 'Flavor Master - Hot', description: 'flavor master hot, to hot to touch', icon: '/objects/achievement-icons/3c9e5952-e2a8-475e-8748-b7856277193e.png', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 4833, code: 'flavor_master_hot', name: 'Flavor Master - Hot', description: 'flavor master hot, to hot to touch', icon: '/objects/achievement-icons/3c9e5952-e2a8-475e-8748-b7856277193e.png', …}
+injected.js:27 ✨ Showing toast: ⬆️ Tier Upgraded! - Flavor Master - Hot - 💎 Platinum
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Tier Upgraded! (0 remaining in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drag over slot 141
+injected.js:27 🎯 Drop on slot 141, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 141 with push-down
+injected.js:27 ⚡ Optimistically removed product 8229996003642 from display
+injected.js:27 📦 Inserted product at rank 141, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (141 total)
+injected.js:27 ✅ GamificationService: Loaded 25 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 137, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drop on slot 142, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 142 with push-down
+injected.js:27 ⚡ Optimistically removed product 9861034705210 from display
+injected.js:27 📦 Inserted product at rank 142, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 144 slots
+injected.js:27 ✅ Total ranking slots: 149
+injected.js:27 ♾️ Infinite expansion triggered! Filled 142/144 slots, highest rank: 142, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (142 total)
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 142
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drag over slot 143
+injected.js:27 🎯 Drop on slot 143, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 143 with push-down
+injected.js:27 ⚡ Optimistically removed product 9401498140986 from display
+injected.js:27 📦 Inserted product at rank 143, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (143 total)
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 3579, code: 'globe_trotter', name: 'Global Taster', description: 'Try ranking products from all 3 brands', icon: '✈️', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 3579, code: 'globe_trotter', name: 'Global Taster', description: 'Try ranking products from all 3 brands', icon: '✈️', …}
+injected.js:27 ✨ Showing toast: 🎉 Achievement Unlocked! - Global Taster
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 ✅ Completed operation: ccb92bef
+injected.js:27 ✅ Cleared persisted operation ccb92bef after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 140
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 140, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 140, uniqueProducts: 140, achievementsEarned: 17, totalPoints: 6060, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 140, isCollapsed: false}
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: 🎉 Achievement Unlocked! (0 remaining in queue)
+injected.js:27 ✅ GamificationService: Loaded 25 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 140, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 140, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 144
+injected.js:27 🎯 Drop on slot 144, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 144 with push-down
+injected.js:27 ⚡ Optimistically removed product 9861038965050 from display
+injected.js:27 📦 Inserted product at rank 144, pushed 0 items down
+injected.js:27 📝 Queued operation: 8ae706f2 for rank undefined
+injected.js:27 💾 Immediately persisted 144 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drag over slot 145
+injected.js:27 🎯 Drop on slot 145, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 145 with push-down
+injected.js:27 ⚡ Optimistically removed product 1299529105476 from display
+injected.js:27 📦 Inserted product at rank 145, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (145 total)
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 ✅ Completed operation: 8ae706f2
+injected.js:27 ✅ Cleared persisted operation 8ae706f2 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 143
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 143, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 ✅ Progress data loaded: {totalRankings: 143, uniqueProducts: 143, achievementsEarned: 17, totalPoints: 6060, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 143, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 25, totalRankings: 143, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drag over slot 146
+injected.js:27 🎯 Drop on slot 146, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 146 with push-down
+injected.js:27 ⚡ Optimistically removed product 1299529138244 from display
+injected.js:27 🚀 Auto-loading more products - all visible products have been ranked
+injected.js:27 📦 Inserted product at rank 146, pushed 0 items down
+injected.js:27 📝 Queued operation: 6699a050 for rank undefined
+injected.js:27 💾 Immediately persisted 146 ranking(s) to survive refresh
+injected.js:27 📄 Page 2 returned 0 products but 19 total exist - resetting to page 1
+injected.js:27 🚀 Auto-loading more products - all visible products have been ranked
+injected.js:27 ✅ Loaded 19 products (total: 19)
+injected.js:27 ✅ Loaded 19 products (total: 38)
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 6619, code: 'bbq_boss', name: 'BBQ Boss', description: 'nothing beats football, beer and BBQ', icon: '/objects/achievement-icons/7eff8ecd-7205-4192-ab75-20db4c828d70.png', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 6619, code: 'bbq_boss', name: 'BBQ Boss', description: 'nothing beats football, beer and BBQ', icon: '/objects/achievement-icons/7eff8ecd-7205-4192-ab75-20db4c828d70.png', …}
+injected.js:27 ✨ Showing toast: 🎉 Achievement Unlocked! - BBQ Boss
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🎉 Achievement Unlocked! (0 remaining in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 ✅ GamificationService: Loaded 26 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 143, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drag over slot 147
+injected.js:27 🎯 Drop on slot 147, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 147 with push-down
+injected.js:27 ⚡ Optimistically removed product 9656912085306 from display
+injected.js:27 📦 Inserted product at rank 147, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 149 slots
+injected.js:27 ✅ Total ranking slots: 154
+injected.js:27 ♾️ Infinite expansion triggered! Filled 147/149 slots, highest rank: 147, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (147 total)
+injected.js:27 ✅ Completed operation: 6699a050
+injected.js:27 ✅ Cleared persisted operation 6699a050 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 146
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 146, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 ✅ Progress data loaded: {totalRankings: 146, uniqueProducts: 146, achievementsEarned: 18, totalPoints: 7310, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 146, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎯 Drag over slot 149
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 146, isCollapsed: false}
+injected.js:27 🎯 Drop on slot 149, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 149 with push-down
+injected.js:27 ⚡ Optimistically removed product 9708200362298 from display
+injected.js:27 📦 Inserted product at rank 149, pushed 0 items down
+injected.js:27 📝 Queued operation: 0bb44592 for rank undefined
+injected.js:27 💾 Immediately persisted 148 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drag over slot 148
+injected.js:27 🎯 Drop on slot 148, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 148 with push-down
+injected.js:27 ⚡ Optimistically removed product 9741030621498 from display
+injected.js:27 📦 Inserted product at rank 148, pushed 1 items down
+injected.js:27 💾 Updated persisted rankings (149 total)
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ✅ Completed operation: 0bb44592
+injected.js:27 ✅ Cleared persisted operation 0bb44592 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 147
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 147, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 147, uniqueProducts: 147, achievementsEarned: 18, totalPoints: 7310, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 147, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 147, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 150
+injected.js:27 🎯 Drop on slot 150, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 150 with push-down
+injected.js:27 ⚡ Optimistically removed product 9763730227514 from display
+injected.js:27 📦 Inserted product at rank 150, pushed 0 items down
+injected.js:27 📝 Queued operation: a43dd5bf for rank undefined
+injected.js:27 💾 Immediately persisted 150 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drag over slot 151
+injected.js:27 🎯 Drop on slot 151, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 151 with push-down
+injected.js:27 ⚡ Optimistically removed product 9788034941242 from display
+injected.js:27 📦 Inserted product at rank 151, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (151 total)
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drag over slot 152
+injected.js:27 🎯 Drop on slot 152, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 152 with push-down
+injected.js:27 ⚡ Optimistically removed product 9814176006458 from display
+injected.js:27 📦 Inserted product at rank 152, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 154 slots
+injected.js:27 ✅ Total ranking slots: 159
+injected.js:27 ♾️ Infinite expansion triggered! Filled 152/154 slots, highest rank: 152, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (152 total)
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drag over slot 153
+injected.js:27 🎯 Drop on slot 153, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 153 with push-down
+injected.js:27 ⚡ Optimistically removed product 9822624743738 from display
+injected.js:27 📦 Inserted product at rank 153, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (153 total)
+injected.js:27 ✅ Completed operation: a43dd5bf
+injected.js:27 ✅ Cleared persisted operation a43dd5bf after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 151
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 151, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 151, uniqueProducts: 151, achievementsEarned: 18, totalPoints: 7310, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 151, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 151, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drag over slot 154
+injected.js:27 🎯 Drop on slot 154, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 154 with push-down
+injected.js:27 ⚡ Optimistically removed product 9822641815866 from display
+injected.js:27 📦 Inserted product at rank 154, pushed 0 items down
+injected.js:27 📝 Queued operation: 9cf749a5 for rank undefined
+injected.js:27 💾 Immediately persisted 154 ranking(s) to survive refresh
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 4742, code: 'original_master', name: 'Original Master', description: 'you like it straight down the middle, i like it :-)', icon: '/objects/achievement-icons/d2b6144b-a3ab-4c29-8218-bb6c43efb494.png', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 4742, code: 'original_master', name: 'Original Master', description: 'you like it straight down the middle, i like it :-)', icon: '/objects/achievement-icons/d2b6144b-a3ab-4c29-8218-bb6c43efb494.png', …}
+injected.js:27 ✨ Showing toast: ⬆️ Tier Upgraded! - Original Master - 💠 Diamond
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Tier Upgraded! (0 remaining in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 🎯 Drag over slot 155
+injected.js:27 🎯 Drop on slot 155, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 155 with push-down
+injected.js:27 ⚡ Optimistically removed product 9861039325498 from display
+injected.js:27 📦 Inserted product at rank 155, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (155 total)
+injected.js:27 ✅ GamificationService: Loaded 26 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 151, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drop on slot 156, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 156 with push-down
+injected.js:27 ⚡ Optimistically removed product 9884230222138 from display
+injected.js:27 📦 Inserted product at rank 156, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (156 total)
+injected.js:27 ✅ Completed operation: 9cf749a5
+injected.js:27 ✅ Cleared persisted operation 9cf749a5 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 153
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 153, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 153, uniqueProducts: 153, achievementsEarned: 18, totalPoints: 7360, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 153, isCollapsed: false}
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 153, isCollapsed: false}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🎯 Drag over slot 156
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drag over slot 157
+injected.js:27 🎯 Drop on slot 157, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 157 with push-down
+injected.js:27 ⚡ Optimistically removed product 9896817656122 from display
+injected.js:27 📦 Inserted product at rank 157, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 159 slots
+injected.js:27 ✅ Total ranking slots: 164
+injected.js:27 ♾️ Infinite expansion triggered! Filled 157/159 slots, highest rank: 157, added 5 more slots
+injected.js:27 📝 Queued operation: d9548cd8 for rank undefined
+injected.js:27 💾 Immediately persisted 157 ranking(s) to survive refresh
+injected.js:27 ✅ Completed operation: d9548cd8
+injected.js:27 ✅ Cleared persisted operation d9548cd8 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 156
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 156, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 ✅ Progress data loaded: {totalRankings: 156, uniqueProducts: 156, achievementsEarned: 18, totalPoints: 7360, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 156, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drag over slot 158
+injected.js:27 🎯 Drop on slot 158, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 158 with push-down
+injected.js:27 ⚡ Optimistically removed product 9923487498554 from display
+injected.js:27 📦 Inserted product at rank 158, pushed 0 items down
+injected.js:27 📝 Queued operation: e3e74253 for rank undefined
+injected.js:27 💾 Immediately persisted 158 ranking(s) to survive refresh
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 156, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drag over slot 159
+injected.js:27 🎯 Drop on slot 159, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 159 with push-down
+injected.js:27 ⚡ Optimistically removed product 9953357365562 from display
+injected.js:27 📦 Inserted product at rank 159, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (159 total)
+injected.js:27 🏆 Received achievements:earned event {achievements: Array(1)}
+injected.js:27 🏆 NotificationWidget received achievement:new event {id: 4833, code: 'flavor_master_hot', name: 'Flavor Master - Hot', description: 'flavor master hot, to hot to touch', icon: '/objects/achievement-icons/3c9e5952-e2a8-475e-8748-b7856277193e.png', …}
+injected.js:27 💬 NotificationWidget.showAchievement() called with: {id: 4833, code: 'flavor_master_hot', name: 'Flavor Master - Hot', description: 'flavor master hot, to hot to touch', icon: '/objects/achievement-icons/3c9e5952-e2a8-475e-8748-b7856277193e.png', …}
+injected.js:27 ✨ Showing toast: ⬆️ Tier Upgraded! - Flavor Master - Hot - 💠 Diamond
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Tier Upgraded! (0 remaining in queue)
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 ✅ GamificationService: Loaded 26 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 156, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drag over slot 160
+injected.js:27 🎯 Drop on slot 160, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 160 with push-down
+injected.js:27 ⚡ Optimistically removed product 9975308124474 from display
+injected.js:27 📦 Inserted product at rank 160, pushed 0 items down
+injected.js:27 💾 Updated persisted rankings (160 total)
+injected.js:27 ✅ Completed operation: e3e74253
+injected.js:27 ✅ Cleared persisted operation e3e74253 after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 157
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 157, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 ✅ Progress data loaded: {totalRankings: 157, uniqueProducts: 157, achievementsEarned: 18, totalPoints: 7440, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 157, isCollapsed: false}
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drop on slot 161, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 161 with push-down
+injected.js:27 ⚡ Optimistically removed product 9456979345722 from display
+injected.js:27 📦 Inserted product at rank 161, pushed 0 items down
+injected.js:27 📝 Queued operation: 5f46804b for rank undefined
+injected.js:27 💾 Immediately persisted 161 ranking(s) to survive refresh
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 157, isCollapsed: false}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 161
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drag over slot 162
+injected.js:27 🎯 Drop on slot 162, draggedSlot: none, draggedProduct: yes
+injected.js:27 📦 Adding product to slot 162 with push-down
+injected.js:27 ⚡ Optimistically removed product 9504314360122 from display
+injected.js:27 📦 Inserted product at rank 162, pushed 0 items down
+injected.js:27 📈 Adding 5 more slots to existing 164 slots
+injected.js:27 ✅ Total ranking slots: 169
+injected.js:27 ♾️ Infinite expansion triggered! Filled 162/164 slots, highest rank: 162, added 5 more slots
+injected.js:27 💾 Updated persisted rankings (162 total)
+injected.js:27 ✅ Completed operation: 5f46804b
+injected.js:27 ✅ Cleared persisted operation 5f46804b after successful save
+injected.js:27 📢 Emitting ranking:saved event with count: 161
+injected.js:27 🔄 Progress widget received ranking:saved event, refreshing... {count: 161, rankingListId: 'default'}
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 📡 ProgressWidget received ranking:saved event
+injected.js:27 ✅ Progress data loaded: {totalRankings: 161, uniqueProducts: 161, achievementsEarned: 18, totalPoints: 7440, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 161, isCollapsed: false}
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 161, isCollapsed: false}
+injected.js:27 🔀 Hash changed to: "coins/rank_them_all" → Routing to: "coins/rank_them_all"
+injected.js:27 🏆 Initializing Achievement Detail page for achievement rank_them_all...
+workspace_iframe.html?initialPath=%2F%23rank&id=%3Ar4p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+injected.js:27 🚀 Initializing application architecture...
+injected.js:27 ⚙️ Initializing services...
+injected.js:27 ✅ Application architecture initialized
+injected.js:27 ✅ gamification initialized
+injected.js:27 ✅ socialProof initialized
+injected.js:27 ✅ activityFeed initialized
+injected.js:27 ✅ progressTracking initialized
+injected.js:27 ✅ leaderboard initialized
+injected.js:27 ✅ All services initialized
+injected.js:27 🎨 Initializing UI widgets...
+injected.js:27 ✅ Notification widget created
+injected.js:27 ✅ Page integrations initialized
+injected.js:27 ✅ Home dashboard initialized
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Footer navigation initialized
+injected.js:27 🔀 Hash changed to: "rank" → Routing to: "rank"
+injected.js:27 🔄 Reset product state for fresh load
+injected.js:27 🚀 Loading rankings and products in parallel...
+injected.js:27 📊 Page view tracked: rank
+injected.js:27 ✅ Progress container inserted after page header
+injected.js:27 ✅ ProgressWidget init: setting up listeners and rendering
+injected.js:27 🎧 ProgressWidget: Setting up event listeners
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: false, hasMilestone: false, achievementsCount: 0, totalRankings: undefined, isCollapsed: false}
+injected.js:27 ✅ Progress widget integrated into Rank page
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 🔄 Reloading achievements, streaks, progress, and rankings for rank page
+injected.js:27 🎮 Initializing Hero Dashboard...
+injected.js:27 📊 Loading hero dashboard stats...
+injected.js:27 ✅ Footer navigation links using native hash routing
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ Frontend error tracking initialized (development)
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Loaded 1 products (total: 1)
+injected.js:27 ✅ Hero stats loaded: {activeRankersToday: 1, achievementsThisWeek: 18, totalRankings: 161, recentAchievements: Array(10)}
+injected.js:27 ✅ Hero Dashboard initialized
+injected.js:27 ✅ TEST: Received test:ping from server! {message: 'Socket is working!', timestamp: 1761856051574}
+injected.js:27 ✅ GamificationService: Loaded 26 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: false, hasMilestone: false, achievementsCount: 26, totalRankings: undefined, isCollapsed: false}
+injected.js:27 🔐 Socket authenticated for user: 2
+injected.js:27 📊 GamificationService: Loading achievements from /api/gamification/achievements
+injected.js:27 📊 Loading progress data from /api/gamification/progress
+injected.js:27 ✅ 90-day customer session validated: Customer
+injected.js:27 ✅ Progress data loaded: {totalRankings: 161, uniqueProducts: 161, achievementsEarned: 18, totalPoints: 7440, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 161, isCollapsed: false}
+injected.js:27 ✅ Loaded 161 saved rankings
+injected.js:27 📈 Adding 154 more slots to existing 10 slots
+injected.js:27 ✅ Total ranking slots: 164
+injected.js:27 📈 Pre-expanded slots to 164 to accommodate rank 161
+injected.js:27 ✅ Both rankings and products loaded successfully
+injected.js:27 ✅ GamificationService: Loaded 26 achievements, emitting event
+injected.js:27 📊 ProgressTrackingService received achievements from GamificationService
+injected.js:27 📡 ProgressWidget received progress:achievements:updated event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 161, isCollapsed: false}
+injected.js:27 ✅ Progress data loaded: {totalRankings: 161, uniqueProducts: 161, achievementsEarned: 18, totalPoints: 7440, currentStreak: 7, …}
+injected.js:27 📡 ProgressWidget received progress:loaded event
+injected.js:27 🎨 ProgressWidget rendering with: {hasProgress: true, hasMilestone: true, achievementsCount: 26, totalRankings: 161, isCollapsed: false}
