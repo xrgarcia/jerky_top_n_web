@@ -13,11 +13,21 @@ class RedisClient {
       return this.client;
     }
 
-    const redisUrl = process.env.UPSTASH_REDIS_URL;
+    // Environment-specific Redis URL selection
+    // Production: Use UPSTASH_REDIS_URL_PROD (workaround for Replit's broken secrets sync UI)
+    // Development: Use UPSTASH_REDIS_URL (standard variable name)
+    const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+    const redisUrl = isProduction 
+      ? process.env.UPSTASH_REDIS_URL_PROD 
+      : process.env.UPSTASH_REDIS_URL;
+    
+    const varName = isProduction ? 'UPSTASH_REDIS_URL_PROD' : 'UPSTASH_REDIS_URL';
+    console.log(`🔍 Redis environment: ${isProduction ? 'PRODUCTION' : 'DEVELOPMENT'}`);
+    console.log(`🔍 Using Redis variable: ${varName}`);
     
     if (!redisUrl) {
-      console.warn('⚠️ UPSTASH_REDIS_URL not found, using in-memory cache');
-      console.warn('⚠️ Note: Dev/prod use different Redis instances via Replit unsync feature');
+      console.warn(`⚠️ ${varName} not found, using in-memory cache`);
+      console.warn('⚠️ Dev uses UPSTASH_REDIS_URL, prod uses UPSTASH_REDIS_URL_PROD');
       return null;
     }
 
