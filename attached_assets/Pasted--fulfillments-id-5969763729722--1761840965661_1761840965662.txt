@@ -1,0 +1,210 @@
+"fulfillments": [
+                {
+                    "id": 5969763729722,
+                    "admin_graphql_api_id": "gid://shopify/Fulfillment/5969763729722",
+                    "created_at": "2025-10-06T11:30:04-05:00",
+                    "location_id": 60964372568,
+                    "name": "JK3825337616.1",
+                    "order_id": 6775422484794,
+                    "origin_address": {},
+                    "receipt": {},
+                    "service": "manual",
+                    "shipment_status": "delivered",
+                    "status": "success",
+                    "tracking_company": "USPS",
+                    "tracking_number": "9400150206217312502518",
+                    "tracking_numbers": [
+                        "9400150206217312502518"
+                    ],
+                    "tracking_url": "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400150206217312502518",
+                    "tracking_urls": [
+                        "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400150206217312502518"
+                    ],
+                    "updated_at": "2025-10-10T09:02:21-05:00",
+                    "line_items": [
+                        {
+                            "id": 16455346454842,
+                            "admin_graphql_api_id": "gid://shopify/LineItem/16455346454842",
+                            "attributed_staffs": [],
+                            "current_quantity": 1,
+                            "fulfillable_quantity": 0,
+                            "fulfillment_service": "manual",
+                            "fulfillment_status": "fulfilled",
+                            "gift_card": false,
+                            "grams": 85,
+                            "name": "All-Natural Beef Jerky - Carolina Reaper - 2.5 oz.",
+                            "pre_tax_price": "5.49",
+                            "pre_tax_price_set": {
+                                "shop_money": {
+                                    "amount": "5.49",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "5.49",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "price": "10.99",
+                            "price_set": {
+                                "shop_money": {
+                                    "amount": "10.99",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "10.99",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "product_exists": true,
+                            "product_id": 11821182223,
+                            "properties": [],
+                            "quantity": 1,
+                            "requires_shipping": true,
+                            "sku": "JCB-BEJ-50-16",
+                            "taxable": true,
+                            "title": "All-Natural Beef Jerky - Carolina Reaper",
+                            "total_discount": "0.00",
+                            "total_discount_set": {
+                                "shop_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "variant_id": 49434321615,
+                            "variant_inventory_management": "shopify",
+                            "variant_title": "2.5 oz.",
+                            "vendor": "Jerky.com",
+                            "tax_lines": [
+                                {
+                                    "channel_liable": false,
+                                    "price": "0.00",
+                                    "price_set": {
+                                        "shop_money": {
+                                            "amount": "0.00",
+                                            "currency_code": "USD"
+                                        },
+                                        "presentment_money": {
+                                            "amount": "0.00",
+                                            "currency_code": "USD"
+                                        }
+                                    },
+                                    "rate": 0.0,
+                                    "title": "Connecticut State Tax"
+                                }
+                            ],
+                            "duties": [],
+                            "discount_allocations": [
+                                {
+                                    "amount": "5.50",
+                                    "amount_set": {
+                                        "shop_money": {
+                                            "amount": "5.50",
+                                            "currency_code": "USD"
+                                        },
+                                        "presentment_money": {
+                                            "amount": "5.50",
+                                            "currency_code": "USD"
+                                        }
+                                    },
+                                    "discount_application_index": 0
+                                }
+                            ]
+                        },
+                        {
+                            "id": 16455346487610,
+                            "admin_graphql_api_id": "gid://shopify/LineItem/16455346487610",
+                            "attributed_staffs": [],
+                            "current_quantity": 1,
+                            "fulfillable_quantity": 0,
+                            "fulfillment_service": "manual",
+                            "fulfillment_status": "fulfilled",
+                            "gift_card": false,
+                            "grams": 85,
+                            "name": "Personal Suggestion - Beef Jerky - Jerky.com Ghost Pepper Beef Jerky",
+                            "pre_tax_price": "5.50",
+                            "pre_tax_price_set": {
+                                "shop_money": {
+                                    "amount": "5.50",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "5.50",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "price": "10.99",
+                            "price_set": {
+                                "shop_money": {
+                                    "amount": "10.99",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "10.99",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "product_exists": true,
+                            "product_id": 9902484783418,
+                            "properties": [],
+                            "quantity": 1,
+                            "requires_shipping": true,
+                            "sku": "JCB-BEJ-27-16-Q-GA",
+                            "taxable": true,
+                            "title": "Personal Suggestion - Beef Jerky",
+                            "total_discount": "0.00",
+                            "total_discount_set": {
+                                "shop_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                },
+                                "presentment_money": {
+                                    "amount": "0.00",
+                                    "currency_code": "USD"
+                                }
+                            },
+                            "variant_id": 51279032615226,
+                            "variant_inventory_management": "shopify",
+                            "variant_title": "Jerky.com Ghost Pepper Beef Jerky",
+                            "vendor": "Jerky.com",
+                            "tax_lines": [
+                                {
+                                    "channel_liable": false,
+                                    "price": "0.00",
+                                    "price_set": {
+                                        "shop_money": {
+                                            "amount": "0.00",
+                                            "currency_code": "USD"
+                                        },
+                                        "presentment_money": {
+                                            "amount": "0.00",
+                                            "currency_code": "USD"
+                                        }
+                                    },
+                                    "rate": 0.0,
+                                    "title": "Connecticut State Tax"
+                                }
+                            ],
+                            "duties": [],
+                            "discount_allocations": [
+                                {
+                                    "amount": "5.49",
+                                    "amount_set": {
+                                        "shop_money": {
+                                            "amount": "5.49",
+                                            "currency_code": "USD"
+                                        },
+                                        "presentment_money": {
+                                            "amount": "5.49",
+                                            "currency_code": "USD"
+                                        }
+                                    },
+                                    "discount_application_index": 0
+                                }
+                            ]
+                        }
+                    ]
+                }
