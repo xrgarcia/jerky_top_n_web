@@ -655,6 +655,49 @@ function createGamificationRoutes(services) {
       const unrankedCount = products.filter(p => !p.isRanked).length;
       const percentage = totalProducts > 0 ? Math.round((rankedCount / totalProducts) * 100) : 0;
 
+      // Get user's achievement record for tier info
+      const { userAchievements } = require('../../shared/schema');
+      const { eq, and } = require('drizzle-orm');
+      const userAchievementResult = await services.db.select()
+        .from(userAchievements)
+        .where(and(
+          eq(userAchievements.userId, userId),
+          eq(userAchievements.achievementId, achievement.id)
+        ))
+        .limit(1);
+      const userAchievement = userAchievementResult[0] || null;
+
+      // Add metadata specific to each collection type
+      const metadata = {};
+      
+      if (achievement.collectionType === 'dynamic_collection') {
+        // Dynamic collection: Add animal category info
+        const categories = achievement.requirement?.categories || [];
+        metadata.animalCategories = categories;
+        metadata.currentTier = userAchievement?.currentTier || null;
+        metadata.requirementType = achievement.requirement?.type;
+      } else if (achievement.collectionType === COLLECTION_TYPES.FLAVOR_COIN) {
+        // Flavor coin: Add single product spotlight info
+        metadata.isSingleProduct = true;
+        if (products.length > 0) {
+          const product = allEnrichedProducts.find(p => p.id === products[0].id);
+          if (product) {
+            metadata.productDetails = {
+              vendor: product.vendor,
+              tags: product.tags,
+              productType: product.productType
+            };
+          }
+        }
+      } else if (achievement.collectionType === 'hidden_collection') {
+        // Hidden collection: Add mystery/locked state
+        metadata.isHidden = true;
+        metadata.isUnlocked = userAchievement !== null;
+      } else if (achievement.collectionType === COLLECTION_TYPES.STATIC) {
+        // Static collection: Add category theme if available
+        metadata.theme = achievement.category;
+      }
+
       res.json({
         achievement: {
           id: achievement.id,
@@ -665,7 +708,8 @@ function createGamificationRoutes(services) {
           collectionType: achievement.collectionType,
           hasTiers: achievement.hasTiers,
           tierThresholds: achievement.tierThresholds,
-          points: achievement.points
+          points: achievement.points,
+          category: achievement.category
         },
         type: 'collection',
         products,
@@ -673,8 +717,12 @@ function createGamificationRoutes(services) {
           total: totalProducts,
           ranked: rankedCount,
           unranked: unrankedCount,
-          percentage: percentage
-        }
+          percentage: percentage,
+          earned: userAchievement !== null,
+          currentTier: userAchievement?.currentTier || null,
+          pointsEarned: userAchievement?.pointsAwarded || 0
+        },
+        metadata
       });
     } catch (error) {
       console.error('❌ Error fetching achievement products:', error);
