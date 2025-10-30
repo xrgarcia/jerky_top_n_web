@@ -1391,6 +1391,17 @@ function setupCustomerOrdersFilters() {
   }
 }
 
+// Debounce helper to prevent excessive API calls
+let customerOrdersReloadTimer = null;
+function debouncedLoadCustomerOrders(page) {
+  if (customerOrdersReloadTimer) {
+    clearTimeout(customerOrdersReloadTimer);
+  }
+  customerOrdersReloadTimer = setTimeout(() => {
+    loadCustomerOrders(page);
+  }, 500); // Wait 500ms after last webhook before reloading
+}
+
 function subscribeToCustomerOrdersUpdates() {
   if (!window.socket || customerOrdersSocketSubscribed) return;
   
@@ -1419,7 +1430,8 @@ function subscribeToCustomerOrdersUpdates() {
       duration: 3000
     });
     
-    loadCustomerOrders(currentOrdersPage);
+    // Debounce the reload to prevent rate limiting when many webhooks arrive quickly
+    debouncedLoadCustomerOrders(currentOrdersPage);
   });
 }
 

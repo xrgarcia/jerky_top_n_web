@@ -58,10 +58,11 @@ async function createRateLimiters() {
     }),
   });
 
-  // Very strict rate limit for admin endpoints
+  // Rate limit for admin endpoints (higher in dev due to webhooks)
+  const isDev = process.env.NODE_ENV !== 'production';
   const adminLimiter = rateLimit({
     windowMs: 1 * 60 * 1000, // 1 minute
-    max: 20, // Limit each IP to 20 admin requests per minute
+    max: isDev ? 200 : 60, // Dev: 200/min (high webhook activity), Prod: 60/min
     message: 'Too many admin requests, please try again later.',
     standardHeaders: true,
     legacyHeaders: false,
