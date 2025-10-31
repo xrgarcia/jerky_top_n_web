@@ -24,10 +24,22 @@ class WebhookOrderService {
       console.warn(`⚠️ Unknown order webhook topic: ${topic}`);
       return { success: false, reason: 'unknown_topic' };
     } catch (error) {
-      console.error('❌ Error processing order webhook:', error);
+      const errorMessage = error.message || 'Unknown error';
+      const cause = error.cause?.message || error.cause || '';
+      const fullErrorDetails = `${errorMessage}${cause ? ` | Cause: ${cause}` : ''}`;
+      
+      console.error('❌ Error processing order webhook:', fullErrorDetails);
+      console.error('Full error:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      
       Sentry.captureException(error, {
         tags: { service: 'webhook-order', topic },
-        extra: { orderId: orderData.id, orderName: orderData.name }
+        extra: { 
+          orderId: orderData.id, 
+          orderName: orderData.name,
+          errorMessage,
+          cause: String(cause),
+          fullErrorDetails
+        }
       });
       throw error;
     }
@@ -386,44 +398,70 @@ class WebhookOrderService {
     let deletedInLoop = 0;
     
     for (const item of orderItems) {
-      const existing = await this.db
-        .select()
-        .from(customerOrderItems)
-        .where(
-          and(
-            eq(customerOrderItems.orderNumber, item.orderNumber),
-            eq(customerOrderItems.shopifyProductId, item.shopifyProductId),
-            eq(customerOrderItems.sku, item.sku)
+      if (item.quantity === 0) {
+        const deleted = await this.db
+          .delete(customerOrderItems)
+          .where(
+            and(
+              eq(customerOrderItems.orderNumber, item.orderNumber),
+              eq(customerOrderItems.shopifyProductId, item.shopifyProductId),
+              eq(customerOrderItems.sku, item.sku)
+            )
           )
-        )
-        .limit(1);
-
-      if (existing.length > 0) {
-        if (item.quantity === 0) {
-          await this.db
-            .delete(customerOrderItems)
-            .where(eq(customerOrderItems.id, existing[0].id));
+          .returning();
+        
+        if (deleted.length > 0) {
           deletedInLoop++;
           console.log(`🗑️ Removed line item with quantity 0: ${item.shopifyProductId}`);
-        } else {
-          const [updated] = await this.db
-            .update(customerOrderItems)
-            .set({
-              quantity: item.quantity,
-              fulfillmentStatus: item.fulfillmentStatus,
-              lineItemData: item.lineItemData,
+        }
+      } else {
+        try {
+          const [result] = await this.db
+            .insert(customerOrderItems)
+            .values({
+              ...item,
+              createdAt: new Date(),
               updatedAt: new Date(),
             })
-            .where(eq(customerOrderItems.id, existing[0].id))
+            .onConflictDoUpdate({
+              target: [
+                customerOrderItems.orderNumber,
+                customerOrderItems.shopifyProductId,
+                customerOrderItems.sku
+              ],
+              set: {
+                quantity: item.quantity,
+                fulfillmentStatus: item.fulfillmentStatus,
+                lineItemData: item.lineItemData,
+                userId: item.userId,
+                customerEmail: item.customerEmail,
+                orderDate: item.orderDate,
+                updatedAt: new Date(),
+              }
+            })
             .returning();
-          upserted.push(updated);
+          
+          upserted.push(result);
+        } catch (error) {
+          const errorMessage = error.message || 'Unknown error';
+          const cause = error.cause?.message || error.cause || '';
+          const fullErrorDetails = `${errorMessage}${cause ? ` | Cause: ${cause}` : ''}`;
+          
+          console.error(`❌ Failed to upsert order item:`, fullErrorDetails);
+          console.error('Item data:', JSON.stringify(item, null, 2));
+          
+          Sentry.captureException(error, {
+            tags: { service: 'webhook-order', method: 'handleOrderCreateOrUpdate', operation: 'upsert_item' },
+            extra: { 
+              item,
+              orderNumber,
+              errorMessage,
+              cause: String(cause),
+              fullErrorDetails
+            }
+          });
+          throw error;
         }
-      } else if (item.quantity > 0) {
-        const [inserted] = await this.db
-          .insert(customerOrderItems)
-          .values(item)
-          .returning();
-        upserted.push(inserted);
       }
     }
 
