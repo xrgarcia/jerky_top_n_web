@@ -2004,19 +2004,21 @@ async function loadSentryIssues() {
               ">${issue.status}</span>
             </td>
             <td style="padding: 12px 15px;">
-              <a href="${issue.permalink}" 
-                 target="_blank" 
-                 rel="noopener noreferrer"
+              <button onclick="showSentryIssueDetail('${issue.id}', '${issue.shortId}')" 
                  style="
-                   color: #7b8b52; 
-                   text-decoration: none; 
+                   background: #7b8b52; 
+                   color: white; 
+                   border: none; 
+                   padding: 6px 12px; 
+                   border-radius: 4px; 
+                   cursor: pointer; 
                    font-weight: 500;
                    font-size: 13px;
                  "
-                 onmouseover="this.style.textDecoration='underline'"
-                 onmouseout="this.style.textDecoration='none'">
+                 onmouseover="this.style.background='#6a7a45'"
+                 onmouseout="this.style.background='#7b8b52'">
                 View Details →
-              </a>
+              </button>
             </td>
           </tr>
         `;
@@ -2064,4 +2066,266 @@ function formatRelativeTime(timestamp) {
   if (diffDays < 30) return `${diffDays}d ago`;
   
   return date.toLocaleDateString();
+}
+
+async function showSentryIssueDetail(issueId, shortId) {
+  const detailSection = document.getElementById('sentryIssueDetail');
+  const listSection = document.getElementById('sentryIssuesList');
+  const detailContent = document.getElementById('sentryDetailContent');
+  
+  if (!detailSection || !listSection || !detailContent) {
+    console.error('Sentry detail elements not found');
+    return;
+  }
+  
+  listSection.style.display = 'none';
+  detailSection.style.display = 'block';
+  
+  detailContent.innerHTML = `
+    <div style="text-align: center; padding: 60px 20px;">
+      <div style="display: inline-block; width: 48px; height: 48px; border: 4px solid #7b8b52; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+      <div style="margin-top: 20px; color: #666; font-size: 16px;">Loading issue details...</div>
+    </div>
+  `;
+  
+  try {
+    const [issueResponse, eventResponse] = await Promise.all([
+      fetch(`/api/admin/sentry/issues/${issueId}`),
+      fetch(`/api/admin/sentry/issues/${issueId}/events/latest`)
+    ]);
+    
+    if (!issueResponse.ok || !eventResponse.ok) {
+      throw new Error('Failed to fetch issue details');
+    }
+    
+    const issueData = await issueResponse.json();
+    const eventData = await eventResponse.json();
+    
+    const issue = issueData.issue;
+    const event = eventData.event;
+    
+    renderSentryIssueDetail(issue, event);
+    
+  } catch (error) {
+    console.error('Error loading issue details:', error);
+    detailContent.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; color: #e74c3c;">
+        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+        <div style="font-weight: 600; font-size: 18px; margin-bottom: 8px;">Failed to load issue details</div>
+        <div style="font-size: 14px; color: #999;">${error.message}</div>
+        <button onclick="closeSentryIssueDetail()" style="margin-top: 20px; padding: 10px 20px; background: #7b8b52; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: 500;">Back to Issues</button>
+      </div>
+    `;
+  }
+}
+
+function closeSentryIssueDetail() {
+  const detailSection = document.getElementById('sentryIssueDetail');
+  const listSection = document.getElementById('sentryIssuesList');
+  
+  if (detailSection && listSection) {
+    detailSection.style.display = 'none';
+    listSection.style.display = 'block';
+  }
+}
+
+function renderSentryIssueDetail(issue, event) {
+  const detailContent = document.getElementById('sentryDetailContent');
+  
+  const statusColors = {
+    'unresolved': '#e74c3c',
+    'resolved': '#27ae60',
+    'ignored': '#95a5a6'
+  };
+  
+  const levelColors = {
+    'error': '#e74c3c',
+    'warning': '#f39c12',
+    'info': '#3498db',
+    'debug': '#95a5a6'
+  };
+  
+  const stackTrace = event.exception && event.exception.length > 0 
+    ? event.exception[0].stacktrace?.frames || [] 
+    : [];
+  
+  const breadcrumbs = event.breadcrumbs || [];
+  const tags = event.tags || [];
+  const context = event.context || {};
+  
+  const stackTraceHTML = stackTrace.length > 0
+    ? stackTrace.reverse().map((frame, index) => `
+        <div style="background: ${index === 0 ? '#fff5f5' : 'white'}; border: 1px solid ${index === 0 ? '#e74c3c' : '#e0e0e0'}; border-radius: 4px; padding: 12px; margin-bottom: 8px; font-family: 'Courier New', monospace; font-size: 13px;">
+          <div style="font-weight: 600; color: ${index === 0 ? '#e74c3c' : '#333'}; margin-bottom: 4px;">
+            ${index === 0 ? '🔴 ' : ''}${frame.function || '<anonymous>'}
+          </div>
+          <div style="color: #666; font-size: 12px;">
+            ${frame.filename || 'Unknown file'}${frame.lineNo ? `:${frame.lineNo}` : ''}${frame.colNo ? `:${frame.colNo}` : ''}
+          </div>
+          ${frame.context && frame.context.length > 0 ? `
+            <div style="margin-top: 8px; padding: 8px; background: #f5f5f5; border-radius: 3px; overflow-x: auto;">
+              ${frame.context.map((line, i) => `
+                <div style="color: ${i === Math.floor(frame.context.length / 2) ? '#e74c3c' : '#666'}; font-weight: ${i === Math.floor(frame.context.length / 2) ? '600' : 'normal'};">
+                  ${line[0]}: ${escapeHtml(line[1])}
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `).join('')
+    : '<div style="padding: 20px; text-align: center; color: #999;">No stack trace available</div>';
+  
+  const breadcrumbsHTML = breadcrumbs.length > 0
+    ? breadcrumbs.slice(-10).map((crumb, index) => {
+        const timestamp = crumb.timestamp ? new Date(crumb.timestamp * 1000).toLocaleTimeString() : 'Unknown';
+        const categoryIcon = crumb.category === 'console' ? '📝' : crumb.category === 'navigation' ? '🔗' : crumb.category === 'xhr' ? '📡' : '📍';
+        return `
+          <div style="border-left: 3px solid ${index === breadcrumbs.length - 1 ? '#e74c3c' : '#ddd'}; padding: 8px 12px; margin-bottom: 8px; background: ${index === breadcrumbs.length - 1 ? '#fff5f5' : 'white'};">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 4px;">
+              <div style="font-weight: 600; color: #333;">${categoryIcon} ${crumb.category || 'event'}</div>
+              <div style="font-size: 11px; color: #999;">${timestamp}</div>
+            </div>
+            <div style="font-size: 13px; color: #666;">${escapeHtml(crumb.message || JSON.stringify(crumb.data || {}))}</div>
+          </div>
+        `;
+      }).join('')
+    : '<div style="padding: 20px; text-align: center; color: #999;">No breadcrumbs available</div>';
+  
+  const tagsHTML = tags.length > 0
+    ? tags.map(tag => `
+        <div style="display: inline-block; background: #f0f0f0; padding: 4px 8px; border-radius: 3px; margin: 4px; font-size: 12px;">
+          <span style="color: #666; font-weight: 600;">${tag.key}:</span> <span style="color: #333;">${escapeHtml(tag.value)}</span>
+        </div>
+      `).join('')
+    : '<div style="color: #999; font-size: 13px;">No tags available</div>';
+  
+  const contextHTML = Object.keys(context).length > 0
+    ? Object.entries(context).map(([key, value]) => `
+        <div style="margin-bottom: 12px;">
+          <div style="font-weight: 600; color: #333; margin-bottom: 4px;">${key}</div>
+          <pre style="background: #f5f5f5; padding: 8px; border-radius: 4px; overflow-x: auto; font-size: 12px; margin: 0;">${escapeHtml(JSON.stringify(value, null, 2))}</pre>
+        </div>
+      `).join('')
+    : '<div style="color: #999; font-size: 13px;">No context data available</div>';
+  
+  detailContent.innerHTML = `
+    <div style="max-width: 1200px; margin: 0 auto;">
+      <!-- Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 2px solid #e0e0e0;">
+        <div>
+          <button onclick="closeSentryIssueDetail()" style="background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: 500; margin-bottom: 12px;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f0f0f0'">← Back to Issues</button>
+          <h2 style="margin: 0; font-size: 24px; color: #2c2c2c;">${issue.shortId}: ${escapeHtml(issue.title)}</h2>
+        </div>
+        <div style="text-align: right;">
+          <a href="${issue.permalink}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #e74c3c; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-bottom: 8px;" onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">
+            🔗 Open in Sentry →
+          </a>
+          <div style="font-size: 12px; color: #666;">View full issue in Sentry dashboard</div>
+        </div>
+      </div>
+      
+      <!-- Quick Stats -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px;">
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Status</div>
+          <div style="font-weight: 600; color: ${statusColors[issue.status] || '#666'}; font-size: 18px; text-transform: capitalize;">${issue.status}</div>
+        </div>
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Level</div>
+          <div style="font-weight: 600; color: ${levelColors[issue.level] || '#666'}; font-size: 18px; text-transform: uppercase;">${issue.level}</div>
+        </div>
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Events</div>
+          <div style="font-weight: 600; font-size: 18px;">${issue.count.toLocaleString()}</div>
+        </div>
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Users Affected</div>
+          <div style="font-weight: 600; font-size: 18px;">${issue.userCount.toLocaleString()}</div>
+        </div>
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">First Seen</div>
+          <div style="font-weight: 600; font-size: 14px;">${formatRelativeTime(issue.firstSeen)}</div>
+        </div>
+        <div style="background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 16px;">
+          <div style="color: #666; font-size: 12px; margin-bottom: 4px;">Last Seen</div>
+          <div style="font-weight: 600; font-size: 14px;">${formatRelativeTime(issue.lastSeen)}</div>
+        </div>
+      </div>
+      
+      <!-- Error Message -->
+      <div style="background: #fff5f5; border-left: 4px solid #e74c3c; padding: 16px; margin-bottom: 24px; border-radius: 4px;">
+        <div style="font-weight: 600; color: #e74c3c; margin-bottom: 8px; font-size: 14px;">Error Message</div>
+        <div style="font-family: 'Courier New', monospace; font-size: 14px; color: #333;">${escapeHtml(event.message || issue.title)}</div>
+        ${issue.culprit ? `<div style="margin-top: 8px; font-size: 12px; color: #666;">📍 ${escapeHtml(issue.culprit)}</div>` : ''}
+      </div>
+      
+      <!-- Tabs for detailed info -->
+      <div style="margin-bottom: 24px;">
+        <div style="border-bottom: 2px solid #e0e0e0; margin-bottom: 16px;">
+          <button onclick="switchSentryTab('stack')" id="sentryTabStack" class="sentry-detail-tab" style="background: none; border: none; padding: 12px 16px; cursor: pointer; font-weight: 600; border-bottom: 3px solid #7b8b52; color: #7b8b52;">Stack Trace</button>
+          <button onclick="switchSentryTab('breadcrumbs')" id="sentryTabBreadcrumbs" class="sentry-detail-tab" style="background: none; border: none; padding: 12px 16px; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; color: #666;">Breadcrumbs</button>
+          <button onclick="switchSentryTab('tags')" id="sentryTabTags" class="sentry-detail-tab" style="background: none; border: none; padding: 12px 16px; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; color: #666;">Tags</button>
+          <button onclick="switchSentryTab('context')" id="sentryTabContext" class="sentry-detail-tab" style="background: none; border: none; padding: 12px 16px; cursor: pointer; font-weight: 600; border-bottom: 3px solid transparent; color: #666;">Context</button>
+        </div>
+        
+        <div id="sentryTabContent">
+          <div id="sentryContentStack" class="sentry-detail-content" style="display: block;">
+            <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2c2c2c;">Stack Trace</h3>
+            ${stackTraceHTML}
+          </div>
+          
+          <div id="sentryContentBreadcrumbs" class="sentry-detail-content" style="display: none;">
+            <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2c2c2c;">Breadcrumbs (Last 10)</h3>
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 12px;">
+              ${breadcrumbsHTML}
+            </div>
+          </div>
+          
+          <div id="sentryContentTags" class="sentry-detail-content" style="display: none;">
+            <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2c2c2c;">Tags</h3>
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 16px;">
+              ${tagsHTML}
+            </div>
+          </div>
+          
+          <div id="sentryContentContext" class="sentry-detail-content" style="display: none;">
+            <h3 style="margin: 0 0 16px 0; font-size: 16px; color: #2c2c2c;">Context Data</h3>
+            <div style="background: white; border: 1px solid #e0e0e0; border-radius: 4px; padding: 16px;">
+              ${contextHTML}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function switchSentryTab(tabName) {
+  const tabs = ['stack', 'breadcrumbs', 'tags', 'context'];
+  
+  tabs.forEach(tab => {
+    const tabBtn = document.getElementById(`sentryTab${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+    const content = document.getElementById(`sentryContent${tab.charAt(0).toUpperCase() + tab.slice(1)}`);
+    
+    if (tab === tabName) {
+      if (tabBtn) {
+        tabBtn.style.borderBottom = '3px solid #7b8b52';
+        tabBtn.style.color = '#7b8b52';
+      }
+      if (content) content.style.display = 'block';
+    } else {
+      if (tabBtn) {
+        tabBtn.style.borderBottom = '3px solid transparent';
+        tabBtn.style.color = '#666';
+      }
+      if (content) content.style.display = 'none';
+    }
+  });
+}
+
+function escapeHtml(text) {
+  if (typeof text !== 'string') return text;
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
 }

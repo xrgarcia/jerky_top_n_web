@@ -1125,67 +1125,77 @@
 
                 <!-- Sentry Issues Tool -->
                 <div class="tool-section" id="sentryIssuesTool" style="display: none;">
-                    <div class="tool-header">
-                        <h3>🔍 Sentry Error Monitoring</h3>
-                        <div class="tool-header-subtitle">
-                            <span id="sentryIssuesCount" style="color: #c4a962;">Loading...</span>
+                    <!-- Issues List View -->
+                    <div id="sentryIssuesList">
+                        <div class="tool-header">
+                            <h3>🔍 Sentry Error Monitoring</h3>
+                            <div class="tool-header-subtitle">
+                                <span id="sentryIssuesCount" style="color: #c4a962;">Loading...</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Filter Controls -->
+                        <div class="sentry-filters" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
+                            <div class="filter-group">
+                                <label for="sentryEnvironmentFilter" style="display: block; margin-bottom: 5px; font-size: 13px; color: #666; font-weight: 500;">Environment:</label>
+                                <select id="sentryEnvironmentFilter" class="filter-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px; min-width: 150px;">
+                                    <option value="all">All Environments</option>
+                                    <option value="production">Production</option>
+                                    <option value="development">Development</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group">
+                                <label for="sentryStatusFilter" style="display: block; margin-bottom: 5px; font-size: 13px; color: #666; font-weight: 500;">Status:</label>
+                                <select id="sentryStatusFilter" class="filter-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px; min-width: 150px;">
+                                    <option value="unresolved" selected>Unresolved</option>
+                                    <option value="resolved">Resolved</option>
+                                    <option value="ignored">Ignored</option>
+                                    <option value="all">All Status</option>
+                                </select>
+                            </div>
+                            
+                            <div class="filter-group" style="display: flex; align-items: flex-end;">
+                                <button id="sentryApplyFiltersBtn" class="btn-primary" style="padding: 8px 20px;">Apply Filters</button>
+                            </div>
+                            
+                            <div class="filter-group" style="display: flex; align-items: flex-end; margin-left: auto;">
+                                <button id="sentryRefreshBtn" class="btn-secondary" style="padding: 8px 15px;">🔄 Refresh</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Issues Table -->
+                        <div class="sentry-issues-table-container" style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); overflow-x: auto;">
+                            <table class="sentry-issues-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                                <thead>
+                                    <tr style="background: linear-gradient(135deg, rgba(123, 139, 82, 0.08), rgba(196, 169, 98, 0.08)); border-bottom: 2px solid #7b8b52;">
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Level</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Issue</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Environment</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Count</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Users</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">First Seen</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Last Seen</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Status</th>
+                                        <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sentryIssuesTableBody">
+                                    <tr>
+                                        <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
+                                            Loading Sentry issues...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     
-                    <!-- Filter Controls -->
-                    <div class="sentry-filters" style="display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap;">
-                        <div class="filter-group">
-                            <label for="sentryEnvironmentFilter" style="display: block; margin-bottom: 5px; font-size: 13px; color: #666; font-weight: 500;">Environment:</label>
-                            <select id="sentryEnvironmentFilter" class="filter-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px; min-width: 150px;">
-                                <option value="all">All Environments</option>
-                                <option value="production">Production</option>
-                                <option value="development">Development</option>
-                            </select>
+                    <!-- Issue Detail View -->
+                    <div id="sentryIssueDetail" style="display: none;">
+                        <div id="sentryDetailContent">
+                            <!-- Content will be populated by JavaScript -->
                         </div>
-                        
-                        <div class="filter-group">
-                            <label for="sentryStatusFilter" style="display: block; margin-bottom: 5px; font-size: 13px; color: #666; font-weight: 500;">Status:</label>
-                            <select id="sentryStatusFilter" class="filter-select" style="padding: 8px 12px; border: 2px solid #e0e0e0; border-radius: 6px; font-size: 14px; min-width: 150px;">
-                                <option value="unresolved" selected>Unresolved</option>
-                                <option value="resolved">Resolved</option>
-                                <option value="ignored">Ignored</option>
-                                <option value="all">All Status</option>
-                            </select>
-                        </div>
-                        
-                        <div class="filter-group" style="display: flex; align-items: flex-end;">
-                            <button id="sentryApplyFiltersBtn" class="btn-primary" style="padding: 8px 20px;">Apply Filters</button>
-                        </div>
-                        
-                        <div class="filter-group" style="display: flex; align-items: flex-end; margin-left: auto;">
-                            <button id="sentryRefreshBtn" class="btn-secondary" style="padding: 8px 15px;">🔄 Refresh</button>
-                        </div>
-                    </div>
-                    
-                    <!-- Issues Table -->
-                    <div class="sentry-issues-table-container" style="background: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); overflow-x: auto;">
-                        <table class="sentry-issues-table" style="width: 100%; border-collapse: collapse; font-size: 14px;">
-                            <thead>
-                                <tr style="background: linear-gradient(135deg, rgba(123, 139, 82, 0.08), rgba(196, 169, 98, 0.08)); border-bottom: 2px solid #7b8b52;">
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Level</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Issue</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Environment</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Count</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Users</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">First Seen</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Last Seen</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Status</th>
-                                    <th style="padding: 15px; text-align: left; font-weight: 600; color: #2c2c2c; text-transform: uppercase; font-size: 12px; letter-spacing: 0.5px;">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="sentryIssuesTableBody">
-                                <tr>
-                                    <td colspan="9" style="text-align: center; padding: 40px; color: #999;">
-                                        Loading Sentry issues...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
