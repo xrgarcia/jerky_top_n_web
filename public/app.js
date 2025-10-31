@@ -1746,9 +1746,19 @@ document.addEventListener('DOMContentLoaded', function() {
             displayProducts(); // Re-render immediately (includes auto-load check)
         }
 
-        // Collect all items at and after the target rank (to be pushed down)
+        // Check if we're replacing a product (target slot is filled)
+        const targetSlot = rankingSlots[targetRank - 1];
+        let displacedProduct = null;
+        
+        if (targetSlot && targetSlot.classList.contains('filled')) {
+            displacedProduct = JSON.parse(targetSlot.dataset.productData);
+            console.log(`🔄 Replacing product at rank ${targetRank}: "${displacedProduct.title}" will be unranked`);
+        }
+        
+        // Collect all items AFTER the target rank (to be pushed down)
+        // Skip the target slot itself since we're replacing it, not pushing it
         const itemsToPushDown = [];
-        for (let i = targetRank - 1; i < rankingSlots.length; i++) {
+        for (let i = targetRank; i < rankingSlots.length; i++) {
             const slotToCheck = rankingSlots[i];
             if (slotToCheck.classList.contains('filled')) {
                 itemsToPushDown.push({
@@ -1788,6 +1798,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 highestPushedRank = Math.max(highestPushedRank, newRank);
             }
         });
+        
+        // If a product was displaced, return it to the available products list
+        // This happens when inserting into a filled slot (replacing scenario)
+        if (displacedProduct) {
+            const displacedProductId = displacedProduct.id;
+            
+            // Check if it's in the optimistically removed list
+            const optimisticIndex = optimisticallyRemovedProducts.findIndex(p => p.id === displacedProductId);
+            if (optimisticIndex !== -1) {
+                // Restore from optimistic removal list
+                const restoredProduct = optimisticallyRemovedProducts.splice(optimisticIndex, 1)[0];
+                currentProducts.unshift(restoredProduct);
+                console.log(`↩️ Restored displaced product ${displacedProductId} from optimistic removal list`);
+            } else {
+                // Check if it's already in currentProducts (shouldn't be, but guard against duplicates)
+                const alreadyInProducts = currentProducts.some(p => p.id === displacedProductId);
+                if (!alreadyInProducts) {
+                    currentProducts.unshift(displacedProduct);
+                    console.log(`↩️ Returned displaced product ${displacedProductId} to available products list`);
+                }
+            }
+            
+            // Re-render to show the displaced product
+            displayProducts();
+        }
         
         // Check if any pushed items landed in high-numbered slots that need expansion
         if (itemsToPushDown.length > 0) {
@@ -2044,6 +2079,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const slot = rankingSlots[rank - 1];
         if (!slot || !slot.classList.contains('filled')) return;
         
+        // Get the product being removed so we can return it to the available list
+        const removedProductData = JSON.parse(slot.dataset.productData);
+        const removedProductId = removedProductData.id;
+        
         // Collect all items after the deleted rank
         const itemsToMoveUp = [];
         for (let i = rank; i < rankingSlots.length; i++) {
@@ -2083,6 +2122,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         console.log(`🗑️ Removed rank ${rank}, moved ${itemsToMoveUp.length} items up`);
+        
+        // Return the removed product to the available products list
+        // First check if it's in the optimistically removed list
+        const optimisticIndex = optimisticallyRemovedProducts.findIndex(p => p.id === removedProductId);
+        if (optimisticIndex !== -1) {
+            // Product was optimistically removed - restore it from there
+            const restoredProduct = optimisticallyRemovedProducts.splice(optimisticIndex, 1)[0];
+            currentProducts.unshift(restoredProduct); // Add to beginning for visibility
+            console.log(`↩️ Restored product ${removedProductId} from optimistic removal list`);
+        } else {
+            // Product wasn't optimistically removed - check if it's already in currentProducts
+            const alreadyInProducts = currentProducts.some(p => p.id === removedProductId);
+            if (!alreadyInProducts) {
+                // Add it back to currentProducts (product data is from the slot)
+                currentProducts.unshift(removedProductData);
+                console.log(`↩️ Returned product ${removedProductId} to available products list`);
+            }
+        }
         
         // Refresh product display to show removed product again
         displayProducts();
