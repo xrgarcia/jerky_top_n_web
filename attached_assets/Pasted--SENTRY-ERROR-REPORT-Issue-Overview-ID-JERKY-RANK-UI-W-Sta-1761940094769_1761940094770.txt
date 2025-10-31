@@ -1,0 +1,206 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-W
+- **Status**: unresolved
+- **Level**: error
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-29T20:00:24.610000Z
+- **Last Seen**: 2025-10-31T19:46:49Z
+- **Total Events**: 6
+- **Users Affected**: 0
+
+## Error Details
+**Title**: Error: Failed query: insert into "customer_order_items" ("id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at") values (default, $1, $2, $3, ...
+
+**Message**: Error: Failed query: insert into "customer_order_items" ("id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at") values (default, $1, $2, $3, ...
+
+**Location**: POST /api/webhooks/shopify/orders
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6983034761/
+
+## Stack Trace
+```
+  🔴 <anonymous>
+     File: /home/runner/workspace/server/routes/webhooks.js:36:22
+     Code Context:
+         29:         console.error('❌ Webhook verification failed - rejecting request');
+         30:         return res.status(401).json({ error: 'Webhook verification failed' });
+         31:       }
+         32: 
+         33:       console.log('✅ Webhook signature verified');
+         34: 
+         35:       const orderData = req.body;
+     >>> 36:       const result = await orderService.processOrderWebhook(orderData, topic);
+         37: 
+         38:       if (result.success && (result.userId || result.action === 'deleted')) {
+         39:         if (result.userId) {
+         40:           console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
+         41:           
+         42:           const purchaseHistoryService = new PurchaseHistoryService();
+         43:           purchaseHistoryService.invalidateUserCache(result.userId);
+
+     WebhookOrderService.processOrderWebhook
+     File: /home/runner/workspace/server/services/WebhookOrderService.js:21:16
+     Code Context:
+         14:   async processOrderWebhook(orderData, topic) {
+         15:     try {
+         16:       console.log(`📦 Processing ${topic} webhook for order ${orderData.name || orderData.id}`);
+         17: 
+         18:       if (topic === 'orders/cancelled') {
+         19:         return await this.handleOrderCancelled(orderData);
+         20:       } else if (topic === 'orders/create' || topic === 'orders/updated') {
+     >>> 21:         return await this.handleOrderCreateOrUpdate(orderData);
+         22:       }
+         23: 
+         24:       console.warn(`⚠️ Unknown order webhook topic: ${topic}`);
+         25:       return { success: false, reason: 'unknown_topic' };
+         26:     } catch (error) {
+         27:       console.error('❌ Error processing order webhook:', error);
+         28:       Sentry.captureException(error, {
+
+     WebhookOrderService.handleOrderCreateOrUpdate
+     File: /home/runner/workspace/server/services/WebhookOrderService.js:422:28
+     Code Context:
+         415:               updatedAt: new Date(),
+         416:             })
+         417:             .where(eq(customerOrderItems.id, existing[0].id))
+         418:             .returning();
+         419:           upserted.push(updated);
+         420:         }
+         421:       } else if (item.quantity > 0) {
+     >>> 422:         const [inserted] = await this.db
+         423:           .insert(customerOrderItems)
+         424:           .values(item)
+         425:           .returning();
+         426:         upserted.push(inserted);
+         427:       }
+         428:     }
+         429: 
+
+     NeonPreparedQuery.execute
+     File: /home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:131:20
+     Code Context:
+         124:     this.logger.logQuery(this.rawQueryConfig.text, params);
+         125:     const { fields, client, rawQueryConfig: rawQuery, queryConfig: query, joinsNotNullableMap, customResultMapper } = this;
+         126:     if (!fields && !customResultMapper) {
+         127:       return await this.queryWithCache(rawQuery.text, params, async () => {
+         128:         return await client.query(rawQuery, params);
+         129:       });
+         130:     }
+     >>> 131:     const result = await this.queryWithCache(query.text, params, async () => {
+         132:       return await client.query(query, params);
+         133:     });
+         134:     return customResultMapper ? customResultMapper(result.rows) : result.rows.map((row) => (0, import_utils.mapResultRow)(fields, row, joins {snip}
+         135:   }
+         136:   all(placeholderValues = {}) {
+         137:     const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
+         138:     this.logger.logQuery(this.rawQueryConfig.text, params);
+
+     NeonPreparedQuery.queryWithCache
+     File: /home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:64:16
+     Code Context:
+         57:   static [import_entity.entityKind] = "PgPreparedQuery";
+         58:   /** @internal */
+         59:   joinsNotNullableMap;
+         60:   /** @internal */
+         61:   async queryWithCache(queryString, params, query) {
+         62:     if (this.cache === void 0 || (0, import_entity.is)(this.cache, import_cache.NoopCache) || this.queryMetadata === void 0) {
+         63:       try {
+     >>> 64:         return await query();
+         65:       } catch (e) {
+         66:         throw new import_errors.DrizzleQueryError(queryString, params, e);
+         67:       }
+         68:     }
+         69:     if (this.cacheConfig && !this.cacheConfig.enable) {
+         70:       try {
+         71:         return await query();
+
+     <anonymous>
+     File: /home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:132:14
+     Code Context:
+         125:     const { fields, client, rawQueryConfig: rawQuery, queryConfig: query, joinsNotNullableMap, customResultMapper } = this;
+         126:     if (!fields && !customResultMapper) {
+         127:       return await this.queryWithCache(rawQuery.text, params, async () => {
+         128:         return await client.query(rawQuery, params);
+         129:       });
+         130:     }
+         131:     const result = await this.queryWithCache(query.text, params, async () => {
+     >>> 132:       return await client.query(query, params);
+         133:     });
+         134:     return customResultMapper ? customResultMapper(result.rows) : result.rows.map((row) => (0, import_utils.mapResultRow)(fields, row, joins {snip}
+         135:   }
+         136:   all(placeholderValues = {}) {
+         137:     const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
+         138:     this.logger.logQuery(this.rawQueryConfig.text, params);
+         139:     return this.queryWithCache(this.rawQueryConfig.text, params, async () => {
+
+     process.processTicksAndRejections
+     File: node:internal/process/task_queues:95:5
+
+     <anonymous>
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1086:33
+     Code Context:
+         1079: connection.stream.destroy():this.connection.end(),e)this.connection.once("end",e);else return new this.
+         1080: _Promise(t=>{this.connection.once("end",t)})}};a(In,"Client");var Ut=In;Ut.Query=Js;Xs.exports=Ut});var io=T((up,no)=>{"use strict";p();var  {snip}
+         1081: let t=r.findIndex(e);return t===-1?void 0:r.splice(t,1)[0]},"removeWhere"),Bn=class Bn{constructor(e,t,n){
+         1082: this.client=e,this.idleListener=t,this.timeoutId=n}};a(Bn,"IdleItem");var Tn=Bn,Rn=class Rn{constructor(e){
+         1083: this.callback=e}};a(Rn,"PendingItem");var je=Rn;function il(){throw new Error("Release called on cli\
+         1084: ent which has already been released to the pool.")}a(il,"throwOnDoubleRelease");function Dt(r,e){if(e)
+         1085: return{callback:e,result:void 0};let t,n,i=a(function(o,u){o?t(o):n(u)},"cb"),s=new r(function(o,u){
+     >>> 1086: n=o,t=u}).catch(o=>{throw Error.captureStackTrace(o),o});return{callback:i,result:s}}a(Dt,"promisify");
+         1087: function sl(r,e){return a(function t(n){n.client=e,e.removeListener("error",t),e.on("error",()=>{r.log(
+         1088: "additional client error after disconnection due to error",n)}),r._remove(e),r.emit("error",n,e)},"i\
+         1089: dleListener")}a(sl,"makeIdleListener");var Ln=class Ln extends nl{constructor(e,t){super(),this.options=
+         1090: Object.assign({},e),e!=null&&"password"in e&&Object.defineProperty(this.options,"password",{configurable:!0,
+         1091: enumerable:!1,writable:!0,value:e.password}),e!=null&&e.ssl&&e.ssl.key&&Object.defineProperty(this.options.
+         1092: ssl,"key",{enumerable:!1}),this.options.max=this.options.max||this.options.poolSize||10,this.options.
+         1093: min=this.options.min||0,this.options.maxUses=this.options.maxUses||1/0,this.options.allowExitOnIdle=
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T19:46:48.403000Z] console: ✅ Webhook signature verified
+  [2025-10-31T19:46:48.403000Z] console: 📦 Processing orders/create webhook for order JK3825341841
+  [2025-10-31T19:46:48.403000Z] console: 📦 Processing order JK3825341841: 4 line items
+  [2025-10-31T19:46:48.495000Z] console: 👤 User not found, fetching from Shopify: 9284441243962
+  [2025-10-31T19:46:48.495000Z] console: 👤 Fetching customer 9284441243962 from Shopify
+  [2025-10-31T19:46:48.749000Z] http: {"http.method":"GET","status_code":200,"url":"https://jerky-com.myshopify.com/admin/api/2023-10/customers/9284441243962.json"}
+  [2025-10-31T19:46:48.750000Z] console: ✅ Fetched customer 9284441243962: davidslatern@gmail.com
+  [2025-10-31T19:46:48.791000Z] console: ⚠️ User insert failed (likely race condition), retrying lookup: davidslatern@gmail.com
+  [2025-10-31T19:46:48.837000Z] console: ✅ Found user created by concurrent request: 994
+  [2025-10-31T19:46:49.040000Z] console: ❌ Error processing order webhook: Error: Failed query: insert into "customer_order_items" ("id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at") values (default, $1, $2, $3, $4, $5, $6, $7, $8, $9, default, default) returning "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at"
+params: JK3825341841,2025-10-31T19:46:39.000Z,8814759149882,JCB-BEJ-124-1,1,,994,davidslatern@gmail.com,{"id":16535596237114,"title":"Seasonal Drop - Sweet Apple Cider Beef Jerky 2oz","variant_id":49941794390330,"variant_title":null,"price":"8.99","fulfillable_quantity":1,"fulfillment_status":null}
+```
+
+## Tags
+```
+  app_url: jerkyrankings.replit.app
+  environment: PRODUCTION
+  handled: yes
+  level: error
+  mechanism: generic
+  os: Ubuntu Linux 20.04
+  os.name: Ubuntu Linux
+  runtime: node v20.19.3
+  runtime.name: node
+  server_name: localhost
+  service: webhook-order
+  topic: orders/create
+  transaction: POST /api/webhooks/shopify/orders
+  url: https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+```
+
+## Context Data
+```json
+  orderId:
+    6820114891066
+
+  orderName:
+    "JK3825341841"
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
