@@ -126,7 +126,7 @@ class HomeDashboard {
     }
 
     container.innerHTML = topProducts.map((product, index) => `
-      <div class="dashboard-item product-item" onclick="showProductDetail('${product.productId}')">
+      <div class="dashboard-item product-item" onclick="navigateToProduct('${product.productId}')">
         <div class="rank-badge">#${index + 1}</div>
         <img src="${product.productData.image}" alt="${product.productData.title}" class="product-thumb">
         <div class="product-info">
@@ -150,7 +150,7 @@ class HomeDashboard {
     }
 
     container.innerHTML = recentlyRanked.map(item => `
-      <div class="dashboard-item product-item" onclick="showProductDetail('${item.productId}')">
+      <div class="dashboard-item product-item" onclick="navigateToProduct('${item.productId}')">
         <img src="${item.productData.image}" alt="${item.productData.title}" class="product-thumb">
         <div class="product-info">
           <div class="product-name">${item.productData.title}</div>
@@ -172,7 +172,7 @@ class HomeDashboard {
     }
 
     container.innerHTML = trending.map((product, index) => `
-      <div class="dashboard-item product-item" onclick="showProductDetail('${product.productId}')">
+      <div class="dashboard-item product-item" onclick="navigateToProduct('${product.productId}')">
         <div class="trending-badge">🔥 ${product.recentRankCount}</div>
         <img src="${product.productData.image}" alt="${product.productData.title}" class="product-thumb">
         <div class="product-info">
@@ -193,7 +193,7 @@ class HomeDashboard {
     }
 
     container.innerHTML = debated.map(product => `
-      <div class="dashboard-item product-item" onclick="showProductDetail('${product.productId}')">
+      <div class="dashboard-item product-item" onclick="navigateToProduct('${product.productId}')">
         <img src="${product.productData.image}" alt="${product.productData.title}" class="product-thumb">
         <div class="product-info">
           <div class="product-name">${product.productData.title}</div>

@@ -1,0 +1,72 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-1C
+- **Status**: unresolved
+- **Level**: error
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-31T18:27:12.627000Z
+- **Last Seen**: 2025-10-31T19:12:06Z
+- **Total Events**: 2
+- **Users Affected**: 2
+
+## Error Details
+**Title**: ReferenceError: showProductDetail is not defined
+
+**Message**: ReferenceError: showProductDetail is not defined
+
+**Location**: HTMLDivElement.onclick(<unknown module>)
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6988056378/
+
+## Stack Trace
+```
+  🔴 HTMLDivElement.onclick
+     File: https://rank.jerky.com/#home:1:1
+     Code Context:
+     >>> 1: <!DOCTYPE html>
+         2: <html lang="en">
+         3: <head>
+         4:     <meta charset="UTF-8">
+         5:     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         6:     <title>Jerky Top N Web - Premium Jerky Rankings</title>
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T19:11:20.751000Z] console: 📥 Home stats response: 200 
+  [2025-10-31T19:11:20.781000Z] fetch: {"__span":"8c56f955cf314ebd","method":"GET","response_body_size":219,"status_code":200,"url":"/api/gamification/streaks"}
+  [2025-10-31T19:11:20.781000Z] console: ✅ Home stats loaded: [object Object]
+  [2025-10-31T19:11:21.006000Z] fetch: {"__span":"80eb4009bb2d7285","method":"GET","response_body_size":22891,"status_code":200,"url":"/api/gamification/achievements"}
+  [2025-10-31T19:11:21.007000Z] console: ✅ GamificationService: Loaded 26 achievements, emitting event
+  [2025-10-31T19:11:21.007000Z] console: 📊 ProgressTrackingService received achievements from GamificationService
+  [2025-10-31T19:11:21.015000Z] fetch: {"__span":"b3e4fd4bfc935a93","method":"GET","response_body_size":5419,"status_code":200,"url":"/api/gamification/progress"}
+  [2025-10-31T19:11:21.016000Z] console: ✅ Progress data loaded: [object Object]
+  [2025-10-31T19:11:22.026000Z] sentry.transaction: d105677cb9cb4baf9133e21f2086b921
+  [2025-10-31T19:12:06.333000Z] ui.click: div.dashboard-item.product-item > div.product-info > div.product-stats
+```
+
+## Tags
+```
+  browser: Chrome 141.0.0
+  browser.name: Chrome
+  environment: PRODUCTION
+  handled: no
+  level: error
+  mechanism: onerror
+  os: Windows >=10
+  os.name: Windows
+  replayId: 6b63c5ed42cd4e0caac07b0f0395d86b
+  url: https://rank.jerky.com/
+  user: ip:45.27.167.135
+```
+
+## Context Data
+```json
+No context data available
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
