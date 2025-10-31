@@ -860,6 +860,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let isLoading = false;
     let hasMoreProducts = true;
     let currentSearchQuery = '';
+    let totalProductCount = 0; // Track total rankable products for progress calculation
 
     // ========== ROUTING SYSTEM ==========
     // Simple hash-based routing - URL is single source of truth
@@ -910,6 +911,7 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         delete slot.dataset.productId;
         delete slot.dataset.productData;
+        updateProgressIndicators(); // Update progress when slot is cleared
     }
 
     // Load rank page data (rankings + products)
@@ -956,6 +958,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Note: Product removal now happens optimistically (immediately when ranked)
     // See insertProductWithPushDown() and replaceProductAtPosition() for implementation
 
+    // Update progress indicators (ranking progress bar and available count)
+    function updateProgressIndicators() {
+        const rankingProgressText = document.getElementById('rankingProgressText');
+        const rankingProgressBar = document.getElementById('rankingProgressBar');
+        const availableProductsText = document.getElementById('availableProductsText');
+        
+        if (!rankingProgressText || !rankingProgressBar || !availableProductsText) return;
+        
+        // Count filled slots
+        const filledSlots = rankingSlots.filter(slot => slot.classList.contains('filled'));
+        const rankedCount = filledSlots.length;
+        const totalCount = totalProductCount || 0;
+        const availableCount = currentProducts.length;
+        
+        // Calculate percentage
+        const percentage = totalCount > 0 ? Math.round((rankedCount / totalCount) * 100) : 0;
+        
+        // Update ranking side
+        rankingProgressText.textContent = `${rankedCount} of ${totalCount} ranked (${percentage}%)`;
+        rankingProgressBar.style.width = `${percentage}%`;
+        
+        // Update search side
+        availableProductsText.textContent = `${availableCount} available to rank`;
+    }
+
 
     // Special version of loadProducts for initial parallel loading (no duplicate loading indicators)
     async function loadProductsForInitialLoad() {
@@ -986,8 +1013,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             currentProducts = data.products;
+            totalProductCount = data.total || 0; // Store for progress calculation
             displayProducts();
             hasMoreProducts = data.hasMore;
+            updateProgressIndicators(); // Update progress after loading products
             
             if (hasMoreProducts) {
                 const totalProducts = data.total || 0;
@@ -1060,8 +1089,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Refresh product display to filter out already-ranked products
                 displayProducts();
+                
+                // Update progress indicators after loading rankings
+                updateProgressIndicators();
             } else {
                 console.log('📝 No saved rankings found, starting fresh');
+                updateProgressIndicators(); // Update even if no rankings (will show 0%)
             }
         } catch (error) {
             console.error('❌ Error loading user rankings:', error);
@@ -1141,12 +1174,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (reset) {
                 currentProducts = data.products;
+                totalProductCount = data.total || 0; // Store for progress calculation
             } else {
                 currentProducts = [...currentProducts, ...data.products];
+                totalProductCount = data.total || 0; // Update total count
             }
 
             // Update hasMoreProducts BEFORE calling displayProducts() so it has the latest value
             hasMoreProducts = data.hasMore;
+            updateProgressIndicators(); // Update progress after loading products
             
             // Reset the stale-state check flag only when we get products OR when hasMore is true
             // This allows the fallback to trigger again for subsequent batches
@@ -1293,6 +1329,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             productList.appendChild(productCard);
         });
+        
+        updateProgressIndicators(); // Update progress after displaying products
     }
 
     // Setup event listeners for ranking system
@@ -1704,6 +1742,8 @@ document.addEventListener('DOMContentLoaded', function() {
             slot.addEventListener('dragstart', handleSlotDragStart);
             slot.addEventListener('dragend', handleSlotDragEnd);
         }
+        
+        updateProgressIndicators(); // Update progress when slot is filled
     }
 
     // Track optimistically removed products for potential restoration on save failure
