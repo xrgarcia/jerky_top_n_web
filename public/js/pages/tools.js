@@ -1902,13 +1902,26 @@ async function loadSentryIssues() {
   // Load available environments dynamically
   const loadEnvironments = async () => {
     try {
-      const response = await fetch('/api/admin/sentry/environments');
-      if (!response.ok) {
+      // Fetch available environments
+      const envResponse = await fetch('/api/admin/sentry/environments');
+      if (!envResponse.ok) {
         throw new Error('Failed to fetch environments');
       }
       
-      const data = await response.json();
-      const environments = data.environments || [];
+      const envData = await envResponse.json();
+      const environments = envData.environments || [];
+      
+      // Fetch current environment (same as Sentry uses)
+      let currentEnvironment = 'development'; // fallback
+      try {
+        const currentResponse = await fetch('/api/admin/sentry/current-environment');
+        if (currentResponse.ok) {
+          const currentData = await currentResponse.json();
+          currentEnvironment = currentData.environment || 'development';
+        }
+      } catch (err) {
+        console.warn('Could not fetch current environment, using default');
+      }
       
       // Populate environment dropdown
       environmentFilter.innerHTML = '<option value="all">All Environments</option>';
@@ -1916,10 +1929,14 @@ async function loadSentryIssues() {
         const option = document.createElement('option');
         option.value = env;
         option.textContent = env.charAt(0).toUpperCase() + env.slice(1);
+        // Set as selected if it matches current environment
+        if (env === currentEnvironment) {
+          option.selected = true;
+        }
         environmentFilter.appendChild(option);
       });
       
-      console.log(`✅ Loaded ${environments.length} Sentry environments`);
+      console.log(`✅ Loaded ${environments.length} Sentry environments (default: ${currentEnvironment})`);
     } catch (error) {
       console.error('❌ Error loading Sentry environments:', error);
       // Keep default options on error

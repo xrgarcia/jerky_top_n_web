@@ -267,6 +267,28 @@ module.exports = function createSentryRoutes(storage) {
   });
 
   /**
+   * GET /api/admin/sentry/current-environment
+   * Get the current environment being used for Sentry error tracking
+   */
+  router.get('/sentry/current-environment', requireAdmin, async (req, res) => {
+    try {
+      // Return the same environment that Sentry is using
+      const currentEnvironment = process.env.NODE_ENV || 'development';
+      
+      res.json({
+        success: true,
+        environment: currentEnvironment
+      });
+    } catch (error) {
+      console.error('❌ Error getting current environment:', error);
+      res.status(500).json({ 
+        error: 'Failed to get current environment',
+        message: error.message 
+      });
+    }
+  });
+
+  /**
    * GET /api/admin/sentry/issues/:issueId
    * Fetch detailed information about a specific Sentry issue
    */
