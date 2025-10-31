@@ -1,0 +1,276 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-9
+- **Status**: unresolved
+- **Level**: fatal
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-16T16:36:50.187000Z
+- **Last Seen**: 2025-10-31T18:10:44Z
+- **Total Events**: 60
+- **Users Affected**: 0
+
+## Error Details
+**Title**: Error: Connection terminated unexpectedly
+
+**Message**: Error: Connection terminated unexpectedly
+
+**Location**: POST /api/rankings/products
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6949685153/
+
+## Stack Trace
+```
+  🔴 WebSocket.emitClose
+     File: /home/runner/workspace/node_modules/ws/lib/websocket.js:272:10
+     Code Context:
+         265: 
+         266:     if (this._extensions[PerMessageDeflate.extensionName]) {
+         267:       this._extensions[PerMessageDeflate.extensionName].cleanup();
+         268:     }
+         269: 
+         270:     this._receiver.removeAllListeners();
+         271:     this._readyState = WebSocket.CLOSED;
+     >>> 272:     this.emit('close', this._closeCode, this._closeMessage);
+         273:   }
+         274: 
+         275:   /**
+         276:    * Start a closing handshake.
+         277:    *
+         278:    *          +----------+   +-----------+   +----------+
+         279:    *     - - -|ws.close()|-->|close frame|-->|ws.close()|- - -
+
+     WebSocket.emit
+     File: node:events:524:28
+
+     WebSocket.onClose
+     File: /home/runner/workspace/node_modules/ws/lib/event-target.js:220:9
+     Code Context:
+         213:         const event = new CloseEvent('close', {
+         214:           code,
+         215:           reason: message.toString(),
+         216:           wasClean: this._closeFrameReceived && this._closeFrameSent
+         217:         });
+         218: 
+         219:         event[kTarget] = this;
+     >>> 220:         callListener(handler, this, event);
+         221:       };
+         222:     } else if (type === 'error') {
+         223:       wrapper = function onError(error) {
+         224:         const event = new ErrorEvent('error', {
+         225:           error,
+         226:           message: error.message
+         227:         });
+
+     callListener
+     File: /home/runner/workspace/node_modules/ws/lib/event-target.js:290:14
+     Code Context:
+         283:  * @param {Event} event The event to pass to the listener
+         284:  * @private
+         285:  */
+         286: function callListener(listener, thisArg, event) {
+         287:   if (typeof listener === 'object' && listener.handleEvent) {
+         288:     listener.handleEvent.call(listener, event);
+         289:   } else {
+     >>> 290:     listener.call(thisArg, event);
+         291:   }
+         292: }
+
+     WebSocket.?
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74
+     Code Context:
+         395: wsProxy;if(i===void 0)throw new Error("No WebSocket proxy is configured. Please see https://github.c\
+         396: om/neondatabase/serverless/blob/main/CONFIG.md#wsproxy-string--host-string-port-number--string--stri\
+         397: ng");return typeof i=="function"?i(t,n):`${i}?address=${t}:${n}`}setNoDelay(){return this}setKeepAlive(){
+         398: return this}ref(){return this}unref(){return this}connect(t,n,i){this.connecting=!0,i&&this.once("co\
+         399: nnect",i);let s=a(()=>{this.connecting=!1,this.pending=!1,this.emit("connect"),this.emit("ready")},"\
+         400: handleWebSocketOpen"),o=a((c,l=!1)=>{c.binaryType="arraybuffer",c.addEventListener("error",f=>{this.
+         401: emit("error",f),this.emit("close")}),c.addEventListener("message",f=>{if(this.tlsState===0){let y=d.
+     >>> 402: from(f.data);this.emit("data",y)}}),c.addEventListener("close",()=>{this.emit("close")}),l?s():c.addEventListener(
+         403: "open",s)},"configureWebSocket"),u;try{u=this.wsProxyAddrForHost(n,typeof t=="string"?parseInt(t,10):
+         404: t)}catch(c){this.emit("error",c),this.emit("close");return}try{let l=(this.useSecureWebSocket?"wss:":
+         405: "ws:")+"//"+u;if(this.webSocketConstructor!==void 0)this.ws=new this.webSocketConstructor(l),o(this.
+         406: ws);else try{this.ws=new WebSocket(l),o(this.ws)}catch{this.ws=new __unstable_WebSocket(l),o(this.ws)}}catch(c){
+         407: let f=(this.useSecureWebSocket?"https:":"http:")+"//"+u;fetch(f,{headers:{Upgrade:"websocket"}}).then(
+         408: y=>{if(this.ws=y.webSocket,this.ws==null)throw c;this.ws.accept(),o(this.ws,!0)}).catch(y=>{this.emit(
+         409: "error",new Error(`All attempts to open a WebSocket to connect to the database failed. Please refer \
+
+     S.emit
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79
+     Code Context:
+         309: B.prototype.setMaxListeners=a(function(e){if(typeof e!="number"||e<0||ui(e))throw new RangeError('Th\
+         310: e value of "n" is out of range. It must be a non-negative number. Received '+e+".");return this._maxListeners=
+         311: e,this},"setMaxListeners");function ci(r){return r._maxListeners===void 0?B.defaultMaxListeners:r._maxListeners}
+         312: a(ci,"_getMaxListeners");B.prototype.getMaxListeners=a(function(){return ci(this)},"getMaxListeners");
+         313: B.prototype.emit=a(function(e){for(var t=[],n=1;n<arguments.length;n++)t.push(arguments[n]);var i=e===
+         314: "error",s=this._events;if(s!==void 0)i=i&&s.error===void 0;else if(!i)return!1;if(i){var o;if(t.length>
+         315: 0&&(o=t[0]),o instanceof Error)throw o;var u=new Error("Unhandled error."+(o?" ("+o.message+")":""));
+     >>> 316: throw u.context=o,u}var c=s[e];if(c===void 0)return!1;if(typeof c=="function")oi(c,this,t);else for(var l=c.
+         317: length,f=di(c,l),n=0;n<l;++n)oi(f[n],this,t);return!0},"emit");function li(r,e,t,n){var i,s,o;if(yt(
+         318: t),s=r._events,s===void 0?(s=r._events=Object.create(null),r._eventsCount=0):(s.newListener!==void 0&&
+         319: (r.emit("newListener",e,t.listener?t.listener:t),s=r._events),o=s[e]),o===void 0)o=s[e]=t,++r._eventsCount;else if(typeof o==
+         320: "function"?o=s[e]=n?[t,o]:[o,t]:n?o.unshift(t):o.push(t),i=ci(r),i>0&&o.length>i&&!o.warned){o.warned=
+         321: !0;var u=new Error("Possible EventEmitter memory leak detected. "+o.length+" "+String(e)+" listeners\
+         322:  added. Use emitter.setMaxListeners() to increase limit");u.name="MaxListenersExceededWarning",u.emitter=
+         323: r,u.type=e,u.count=o.length,oa(u)}return r}a(li,"_addListener");B.prototype.addListener=a(function(e,t){
+
+     S.?
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58
+     Code Context:
+         963: Ys=Q.flush(),zc=Q.sync(),Kc=Q.end(),An=class An extends Gc{constructor(e){super(),e=e||{},this.stream=
+         964: e.stream||new Ks.Socket,this._keepAlive=e.keepAlive,this._keepAliveInitialDelayMillis=e.keepAliveInitialDelayMillis,
+         965: this.lastBuffer=!1,this.parsedStatements={},this.ssl=e.ssl||!1,this._ending=!1,this._emitMessage=!1;
+         966: var t=this;this.on("newListener",function(n){n==="message"&&(t._emitMessage=!0)})}connect(e,t){var n=this;
+         967: this._connecting=!0,this.stream.setNoDelay(!0),this.stream.connect(e,t),this.stream.once("connect",function(){
+         968: n._keepAlive&&n.stream.setKeepAlive(!0,n._keepAliveInitialDelayMillis),n.emit("connect")});let i=a(function(s){
+         969: n._ending&&(s.code==="ECONNRESET"||s.code==="EPIPE")||n.emit("error",s)},"reportStreamError");if(this.
+     >>> 970: stream.on("error",i),this.stream.on("close",function(){n.emit("end")}),!this.ssl)return this.attachListeners(
+         971: this.stream);this.stream.once("data",function(s){var o=s.toString("utf8");switch(o){case"S":break;case"\
+         972: N":return n.stream.end(),n.emit("error",new Error("The server does not support SSL connections"));default:
+         973: return n.stream.end(),n.emit("error",new Error("There was an error establishing an SSL connection"))}
+         974: var u=(zs(),O(Vs));let c={socket:n.stream};n.ssl!==!0&&(Object.assign(c,n.ssl),"key"in n.ssl&&(c.key=
+         975: n.ssl.key)),Ks.isIP(t)===0&&(c.servername=t);try{n.stream=u.connect(c)}catch(l){return n.emit("error",
+         976: l)}n.attachListeners(n.stream),n.stream.on("error",i),n.emit("sslconnect")})}attachListeners(e){e.on(
+         977: "end",()=>{this.emit("end")}),Vc(e,t=>{var n=t.name==="error"?"errorMessage":t.name;this._emitMessage&&
+
+     An.emit
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79
+     Code Context:
+         309: B.prototype.setMaxListeners=a(function(e){if(typeof e!="number"||e<0||ui(e))throw new RangeError('Th\
+         310: e value of "n" is out of range. It must be a non-negative number. Received '+e+".");return this._maxListeners=
+         311: e,this},"setMaxListeners");function ci(r){return r._maxListeners===void 0?B.defaultMaxListeners:r._maxListeners}
+         312: a(ci,"_getMaxListeners");B.prototype.getMaxListeners=a(function(){return ci(this)},"getMaxListeners");
+         313: B.prototype.emit=a(function(e){for(var t=[],n=1;n<arguments.length;n++)t.push(arguments[n]);var i=e===
+         314: "error",s=this._events;if(s!==void 0)i=i&&s.error===void 0;else if(!i)return!1;if(i){var o;if(t.length>
+         315: 0&&(o=t[0]),o instanceof Error)throw o;var u=new Error("Unhandled error."+(o?" ("+o.message+")":""));
+     >>> 316: throw u.context=o,u}var c=s[e];if(c===void 0)return!1;if(typeof c=="function")oi(c,this,t);else for(var l=c.
+         317: length,f=di(c,l),n=0;n<l;++n)oi(f[n],this,t);return!0},"emit");function li(r,e,t,n){var i,s,o;if(yt(
+         318: t),s=r._events,s===void 0?(s=r._events=Object.create(null),r._eventsCount=0):(s.newListener!==void 0&&
+         319: (r.emit("newListener",e,t.listener?t.listener:t),s=r._events),o=s[e]),o===void 0)o=s[e]=t,++r._eventsCount;else if(typeof o==
+         320: "function"?o=s[e]=n?[t,o]:[o,t]:n?o.unshift(t):o.push(t),i=ci(r),i>0&&o.length>i&&!o.warned){o.warned=
+         321: !0;var u=new Error("Possible EventEmitter memory leak detected. "+o.length+" "+String(e)+" listeners\
+         322:  added. Use emitter.setMaxListeners() to increase limit");u.name="MaxListenersExceededWarning",u.emitter=
+         323: r,u.type=e,u.count=o.length,oa(u)}return r}a(li,"_addListener");B.prototype.addListener=a(function(e,t){
+
+     Object.onceWrapper
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95
+     Code Context:
+         319: (r.emit("newListener",e,t.listener?t.listener:t),s=r._events),o=s[e]),o===void 0)o=s[e]=t,++r._eventsCount;else if(typeof o==
+         320: "function"?o=s[e]=n?[t,o]:[o,t]:n?o.unshift(t):o.push(t),i=ci(r),i>0&&o.length>i&&!o.warned){o.warned=
+         321: !0;var u=new Error("Possible EventEmitter memory leak detected. "+o.length+" "+String(e)+" listeners\
+         322:  added. Use emitter.setMaxListeners() to increase limit");u.name="MaxListenersExceededWarning",u.emitter=
+         323: r,u.type=e,u.count=o.length,oa(u)}return r}a(li,"_addListener");B.prototype.addListener=a(function(e,t){
+         324: return li(this,e,t,!1)},"addListener");B.prototype.on=B.prototype.addListener;B.prototype.prependListener=
+         325: a(function(e,t){return li(this,e,t,!0)},"prependListener");function aa(){if(!this.fired)return this.
+     >>> 326: target.removeListener(this.type,this.wrapFn),this.fired=!0,arguments.length===0?this.listener.call(this.
+         327: target):this.listener.apply(this.target,arguments)}a(aa,"onceWrapper");function fi(r,e,t){var n={fired:!1,
+         328: wrapFn:void 0,target:r,type:e,listener:t},i=aa.bind(n);return i.listener=t,n.wrapFn=i,i}a(fi,"_onceW\
+         329: rap");B.prototype.once=a(function(e,t){return yt(t),this.on(e,fi(this,e,t)),this},"once");B.prototype.
+         330: prependOnceListener=a(function(e,t){return yt(t),this.prependListener(e,fi(this,e,t)),this},"prepend\
+         331: OnceListener");B.prototype.removeListener=a(function(e,t){var n,i,s,o,u;if(yt(t),i=this._events,i===
+         332: void 0)return this;if(n=i[e],n===void 0)return this;if(n===t||n.listener===t)--this._eventsCount===0?
+         333: this._events=Object.create(null):(delete i[e],i.removeListener&&this.emit("removeListener",e,n.listener||
+
+     An.?
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76
+     Code Context:
+         1002: length=0}_connect(e){var t=this,n=this.connection;if(this._connectionCallback=e,this._connecting||this.
+         1003: _connected){let i=new Error("Client has already been connected. You cannot reuse a client.");m.nextTick(
+         1004: ()=>{e(i)});return}this._connecting=!0,this.connectionTimeoutHandle,this._connectionTimeoutMillis>0&&
+         1005: (this.connectionTimeoutHandle=setTimeout(()=>{n._ending=!0,n.stream.destroy(new Error("timeout expir\
+         1006: ed"))},this._connectionTimeoutMillis)),this.host&&this.host.indexOf("/")===0?n.connect(this.host+"/.\
+         1007: s.PGSQL."+this.port):n.connect(this.port,this.host),n.on("connect",function(){t.ssl?n.requestSsl():n.
+         1008: startup(t.getStartupConf())}),n.on("sslconnect",function(){n.startup(t.getStartupConf())}),this._attachListeners(
+     >>> 1009: n),n.once("end",()=>{let i=this._ending?new Error("Connection terminated"):new Error("Connection ter\
+         1010: minated unexpectedly");clearTimeout(this.connectionTimeoutHandle),this._errorAllQueries(i),this._ending||
+         1011: (this._connecting&&!this._connectionError?this._connectionCallback?this._connectionCallback(i):this.
+         1012: _handleErrorEvent(i):this._connectionError||this._handleErrorEvent(i)),m.nextTick(()=>{this.emit("en\
+         1013: d")})})}connect(e){if(e){this._connect(e);return}return new this._Promise((t,n)=>{this._connect(i=>{
+         1014: i?n(i):t()})})}_attachListeners(e){e.on("authenticationCleartextPassword",this._handleAuthCleartextPassword.
+         1015: bind(this)),e.on("authenticationMD5Password",this._handleAuthMD5Password.bind(this)),e.on("authentic\
+         1016: ationSASL",this._handleAuthSASL.bind(this)),e.on("authenticationSASLContinue",this._handleAuthSASLContinue.
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T18:10:05.603000Z] console: ✅ [ENGAGEMENT CHECK] User 961: 0 achievement update(s)
+  [2025-10-31T18:10:05.603000Z] console: 💾 AchievementCache HIT: Returning 26 definitions (age: 11 minutes)
+  [2025-10-31T18:10:44.587000Z] console: ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+  [2025-10-31T18:10:44.589000Z] console: Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+  [2025-10-31T18:10:44.593000Z] console: ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+  [2025-10-31T18:10:44.594000Z] console: Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+  [2025-10-31T18:10:44.596000Z] console: ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+  [2025-10-31T18:10:44.596000Z] console: Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+  [2025-10-31T18:10:44.599000Z] console: ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+  [2025-10-31T18:10:44.599000Z] console: Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+```
+
+## Tags
+```
+  app_url: jerkyrankings.replit.app
+  browser: Chrome 142
+  browser.name: Chrome
+  client_os: macOS
+  client_os.name: macOS
+  environment: PRODUCTION
+  handled: yes
+  level: error
+  mechanism: generic
+  os: Ubuntu Linux 20.04
+  os.name: Ubuntu Linux
+  runtime: node v20.19.3
+  runtime.name: node
+  server_name: localhost
+  transaction: POST /api/rankings/products
+  url: https://rank.jerky.com/api/rankings/products
+```
+
+## Context Data
+```json
+No context data available
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
