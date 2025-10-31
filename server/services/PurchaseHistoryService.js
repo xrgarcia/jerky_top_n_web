@@ -73,18 +73,6 @@ class PurchaseHistoryService {
       const duration = Date.now() - startTime;
       console.log(`✅ Order sync completed for user ${user.id}: ${orderItems.length} items from ${orders.length} orders in ${duration}ms`);
 
-      // Log success to Sentry for monitoring
-      Sentry.captureMessage(`Order sync completed for user ${user.id}`, {
-        level: 'info',
-        tags: { service: 'purchase-history', operation: 'sync' },
-        extra: {
-          userId: user.id,
-          itemsImported: orderItems.length,
-          ordersProcessed: orders.length,
-          durationMs: duration
-        }
-      });
-
       return {
         success: true,
         itemsImported: orderItems.length,

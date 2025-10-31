@@ -1,0 +1,78 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-G
+- **Status**: unresolved
+- **Level**: info
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-29T16:05:46.605000Z
+- **Last Seen**: 2025-10-31T13:11:58Z
+- **Total Events**: 7
+- **Users Affected**: 0
+
+## Error Details
+**Title**: Order sync completed for user 9
+
+**Message**: Order sync completed for user 9
+
+**Location**: GET /api/customer/magic-login
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6982516298/
+
+## Stack Trace
+```
+No stack trace available
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T13:11:58.635000Z] console: ⚠️ Skipping line item with missing product ID: 210183684111
+  [2025-10-31T13:11:58.635000Z] console: ⚠️ Skipping line item with missing product ID: 210116935695
+  [2025-10-31T13:11:58.635000Z] console: ⚠️ Skipping line item with missing product ID: 164344102927
+  [2025-10-31T13:11:58.635000Z] console: ⚠️ Skipping line item with missing product ID: 89479905295
+  [2025-10-31T13:11:58.635000Z] console: ⚠️ Skipping line item with missing product ID: 11234338639
+  [2025-10-31T13:11:58.635000Z] console: 📊 Extracted 16 line items from 38 orders
+  [2025-10-31T13:11:58.636000Z] console: 📦 Deduplicated 16 items to 14 unique items
+  [2025-10-31T13:11:58.742000Z] console: ✅ Bulk upserted 14 order items
+  [2025-10-31T13:11:58.742000Z] console: 🗑️ Purchase cache invalidated for user 9
+  [2025-10-31T13:11:58.742000Z] console: ✅ Order sync completed for user 9: 16 items from 38 orders in 3083ms
+```
+
+## Tags
+```
+  app_url: jerkyrankings.replit.app
+  browser: Chrome 142
+  browser.name: Chrome
+  client_os: macOS
+  client_os.name: macOS
+  environment: PRODUCTION
+  level: info
+  operation: sync
+  os: Ubuntu Linux 20.04
+  os.name: Ubuntu Linux
+  runtime: node v20.19.3
+  runtime.name: node
+  server_name: localhost
+  service: purchase-history
+  transaction: GET /api/customer/magic-login
+  url: https://rank.jerky.com/api/customer/magic-login
+```
+
+## Context Data
+```json
+  durationMs:
+    3083
+
+  itemsImported:
+    16
+
+  ordersProcessed:
+    38
+
+  userId:
+    9
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
