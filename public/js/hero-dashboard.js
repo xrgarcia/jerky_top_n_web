@@ -161,7 +161,7 @@ class HeroDashboard {
           <span class="achievement-user">${achievement.userName}</span>
           earned
           <span class="achievement-name">${achievement.achievementName}</span>
-          <span class="achievement-tier ${achievement.achievementTier}">${achievement.achievementTier}</span>
+          ${achievement.achievementTier ? `<span class="achievement-tier ${achievement.achievementTier}">${achievement.achievementTier}</span>` : ''}
           <span class="achievement-time">${timeAgo}</span>
         </div>
       </div>
