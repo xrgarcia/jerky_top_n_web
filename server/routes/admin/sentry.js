@@ -140,6 +140,8 @@ module.exports = function createSentryRoutes(storage) {
       const issues = await response.json();
       
       // Transform issues for frontend consumption
+      // Note: Sentry /issues/ endpoint doesn't include tags by default,
+      // so we use the environment filter parameter as the source of truth
       const transformedIssues = issues.slice(0, limit).map(issue => ({
         id: issue.id,
         shortId: issue.shortId,
@@ -162,9 +164,9 @@ module.exports = function createSentryRoutes(storage) {
           filename: issue.metadata?.filename || '',
           function: issue.metadata?.function || ''
         },
-        // Extract environment tags
-        tags: issue.tags || [],
-        environment: issue.environment || getEnvironmentFromTags(issue.tags || [])
+        // Use the filter environment if specified, otherwise check issue properties
+        // Sentry /issues/ endpoint doesn't include tags by default
+        environment: environment || issue.environment || getEnvironmentFromTags(issue.tags || [])
       }));
 
       console.log(`✅ Fetched ${transformedIssues.length} Sentry issues (filtered by: ${query || 'none'})`);
