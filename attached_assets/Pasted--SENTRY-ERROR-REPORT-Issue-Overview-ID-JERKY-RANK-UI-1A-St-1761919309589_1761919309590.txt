@@ -1,0 +1,195 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-1A
+- **Status**: unresolved
+- **Level**: error
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-31T09:14:07.918000Z
+- **Last Seen**: 2025-10-31T09:14:07Z
+- **Total Events**: 1
+- **Users Affected**: 0
+
+## Error Details
+**Title**: Error: Failed query: 
+
+**Message**: Error: Failed query: 
+
+**Location**: POST /api/webhooks/shopify/orders
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6986889442/
+
+## Stack Trace
+```
+  🔴 <anonymous>
+     File: /home/runner/workspace/server/routes/webhooks.js:49:30
+     Code Context:
+         42:           const purchaseHistoryService = new PurchaseHistoryService();
+         43:           purchaseHistoryService.invalidateUserCache(result.userId);
+         44:         }
+         45:         
+         46:         // Update only affected products in ranking stats cache
+         47:         if (result.affectedProductIds && result.affectedProductIds.length > 0 && rankingStatsCache) {
+         48:           console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
+     >>> 49:           const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
+         50:           if (Object.keys(freshStats).length > 0) {
+         51:             rankingStatsCache.updateProducts(freshStats);
+         52:           }
+         53:         }
+         54:         
+         55:         console.log('✅ Caches updated');
+         56:       }
+
+     WebhookOrderService.getProductRankingStats
+     File: /home/runner/workspace/server/services/WebhookOrderService.js:478:23
+     Code Context:
+         471:     if (!productIds || productIds.length === 0) {
+         472:       return {};
+         473:     }
+         474: 
+         475:     try {
+         476:       const { sql } = require('drizzle-orm');
+         477:       
+     >>> 478:       const results = await this.db.execute(sql`
+         479:         SELECT 
+         480:           shopify_product_id,
+         481:           COUNT(*) as rank_count,
+         482:           COUNT(DISTINCT user_id) as unique_rankers,
+         483:           AVG(ranking) as avg_rank,
+         484:           MIN(ranking) as best_rank,
+         485:           MAX(ranking) as worst_rank,
+
+     NeonPreparedQuery.execute
+     File: /home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:127:14
+     Code Context:
+         120:   rawQueryConfig;
+         121:   queryConfig;
+         122:   async execute(placeholderValues = {}) {
+         123:     const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
+         124:     this.logger.logQuery(this.rawQueryConfig.text, params);
+         125:     const { fields, client, rawQueryConfig: rawQuery, queryConfig: query, joinsNotNullableMap, customResultMapper } = this;
+         126:     if (!fields && !customResultMapper) {
+     >>> 127:       return await this.queryWithCache(rawQuery.text, params, async () => {
+         128:         return await client.query(rawQuery, params);
+         129:       });
+         130:     }
+         131:     const result = await this.queryWithCache(query.text, params, async () => {
+         132:       return await client.query(query, params);
+         133:     });
+         134:     return customResultMapper ? customResultMapper(result.rows) : result.rows.map((row) => (0, import_utils.mapResultRow)(fields, row, joins {snip}
+
+     NeonPreparedQuery.queryWithCache
+     File: /home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:64:16
+     Code Context:
+         57:   static [import_entity.entityKind] = "PgPreparedQuery";
+         58:   /** @internal */
+         59:   joinsNotNullableMap;
+         60:   /** @internal */
+         61:   async queryWithCache(queryString, params, query) {
+         62:     if (this.cache === void 0 || (0, import_entity.is)(this.cache, import_cache.NoopCache) || this.queryMetadata === void 0) {
+         63:       try {
+     >>> 64:         return await query();
+         65:       } catch (e) {
+         66:         throw new import_errors.DrizzleQueryError(queryString, params, e);
+         67:       }
+         68:     }
+         69:     if (this.cacheConfig && !this.cacheConfig.enable) {
+         70:       try {
+         71:         return await query();
+
+     <anonymous>
+     File: /home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:128:16
+     Code Context:
+         121:   queryConfig;
+         122:   async execute(placeholderValues = {}) {
+         123:     const params = (0, import_sql.fillPlaceholders)(this.params, placeholderValues);
+         124:     this.logger.logQuery(this.rawQueryConfig.text, params);
+         125:     const { fields, client, rawQueryConfig: rawQuery, queryConfig: query, joinsNotNullableMap, customResultMapper } = this;
+         126:     if (!fields && !customResultMapper) {
+         127:       return await this.queryWithCache(rawQuery.text, params, async () => {
+     >>> 128:         return await client.query(rawQuery, params);
+         129:       });
+         130:     }
+         131:     const result = await this.queryWithCache(query.text, params, async () => {
+         132:       return await client.query(query, params);
+         133:     });
+         134:     return customResultMapper ? customResultMapper(result.rows) : result.rows.map((row) => (0, import_utils.mapResultRow)(fields, row, joins {snip}
+         135:   }
+
+     process.processTicksAndRejections
+     File: node:internal/process/task_queues:95:5
+
+     <anonymous>
+     File: /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1086:33
+     Code Context:
+         1079: connection.stream.destroy():this.connection.end(),e)this.connection.once("end",e);else return new this.
+         1080: _Promise(t=>{this.connection.once("end",t)})}};a(In,"Client");var Ut=In;Ut.Query=Js;Xs.exports=Ut});var io=T((up,no)=>{"use strict";p();var  {snip}
+         1081: let t=r.findIndex(e);return t===-1?void 0:r.splice(t,1)[0]},"removeWhere"),Bn=class Bn{constructor(e,t,n){
+         1082: this.client=e,this.idleListener=t,this.timeoutId=n}};a(Bn,"IdleItem");var Tn=Bn,Rn=class Rn{constructor(e){
+         1083: this.callback=e}};a(Rn,"PendingItem");var je=Rn;function il(){throw new Error("Release called on cli\
+         1084: ent which has already been released to the pool.")}a(il,"throwOnDoubleRelease");function Dt(r,e){if(e)
+         1085: return{callback:e,result:void 0};let t,n,i=a(function(o,u){o?t(o):n(u)},"cb"),s=new r(function(o,u){
+     >>> 1086: n=o,t=u}).catch(o=>{throw Error.captureStackTrace(o),o});return{callback:i,result:s}}a(Dt,"promisify");
+         1087: function sl(r,e){return a(function t(n){n.client=e,e.removeListener("error",t),e.on("error",()=>{r.log(
+         1088: "additional client error after disconnection due to error",n)}),r._remove(e),r.emit("error",n,e)},"i\
+         1089: dleListener")}a(sl,"makeIdleListener");var Ln=class Ln extends nl{constructor(e,t){super(),this.options=
+         1090: Object.assign({},e),e!=null&&"password"in e&&Object.defineProperty(this.options,"password",{configurable:!0,
+         1091: enumerable:!1,writable:!0,value:e.password}),e!=null&&e.ssl&&e.ssl.key&&Object.defineProperty(this.options.
+         1092: ssl,"key",{enumerable:!1}),this.options.max=this.options.max||this.options.poolSize||10,this.options.
+         1093: min=this.options.min||0,this.options.maxUses=this.options.maxUses||1/0,this.options.allowExitOnIdle=
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T09:14:07.268000Z] console: 🔌 Database client connected to pool [object Object]
+  [2025-10-31T09:14:07.329000Z] console: ✅ Found existing user by Shopify ID: 639 (v4bdlxwge4yger5ahtpef5v33dx24@scs.tiktokw.us)
+  [2025-10-31T09:14:07.753000Z] console: ✅ Processed 3 line items for order JK3825340878 (user: 639)
+  [2025-10-31T09:14:07.754000Z] console: 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825340878
+  [2025-10-31T09:14:07.754000Z] console: 🔄 Invalidating purchase history cache for user 639
+  [2025-10-31T09:14:07.754000Z] console: 🗑️ Purchase cache invalidated for user 639
+  [2025-10-31T09:14:07.754000Z] console: 🔄 Recalculating ranking stats for 3 product(s)
+  [2025-10-31T09:14:07.913000Z] console: ❌ Database client error: [object Object]
+  [2025-10-31T09:14:07.913000Z] console: 🔌 Database client removed from pool [object Object]
+  [2025-10-31T09:14:07.914000Z] console: ❌ Error fetching product ranking stats: Error: Failed query: 
+        SELECT 
+          shopify_product_id,
+          COUNT(*) as rank_count,
+          COUNT(DISTINCT user_id) as unique_rankers,
+          AVG(ranking) as avg_rank,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          MAX(created_at) as last_ranked_at
+        FROM product_rankings
+        WHERE shopify_product_id IN ($1, $2, $3)
+        GROUP BY shopify_product_id
+      
+params: 6833908449368,11821164559,9902471315770
+```
+
+## Tags
+```
+  app_url: jerkyrankings.replit.app
+  environment: PRODUCTION
+  handled: yes
+  level: error
+  mechanism: generic
+  method: getProductRankingStats
+  os: Ubuntu Linux 20.04
+  os.name: Ubuntu Linux
+  runtime: node v20.19.3
+  runtime.name: node
+  server_name: localhost
+  service: webhook-order
+  transaction: POST /api/webhooks/shopify/orders
+  url: https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+```
+
+## Context Data
+```json
+No context data available
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
