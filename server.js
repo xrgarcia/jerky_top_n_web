@@ -575,7 +575,9 @@ app.post('/api/customer/email-login', async (req, res, next) => {
 });
 
 // Magic link verification endpoint
-app.get('/api/customer/magic-login', async (req, res) => {
+app.get('/api/customer/magic-login', async (req, res, next) => {
+  const limiter = await getAuthLimiter();
+  return limiter(req, res, async () => {
   try {
     const { token } = req.query;
     
@@ -738,6 +740,7 @@ app.get('/api/customer/magic-login', async (req, res) => {
       </html>
     `);
   }
+  });
 });
 
 // Customer session status endpoint

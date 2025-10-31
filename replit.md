@@ -38,6 +38,7 @@ The application employs a modern web architecture for responsiveness, scalabilit
 - **User Activation System**: Users default to `active=false` (hidden from community) until their first login, after which `active=true`.
 - **Real-time Communication**: Socket.IO for bidirectional communication, managing achievement notifications with a pending queue and multi-device support.
 - **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
+- **Rate Limiting**: Authentication endpoints protected with 10 requests per 15 minutes per IP (applies to both email-login and magic-login), using Redis for distributed tracking across instances.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Shopify Synchronization**: Automatic sync system for products and metadata with Shopify, featuring cache warming on startup, selective cache updates via webhooks, orphan cleanup, and dual cache staleness thresholds with Sentry monitoring.
 - **Gamification Architecture**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) for achievement processing, with an event-driven system for tracking progress, streaks, leaderboards, and notifications. `ProgressTracker` unifies progress calculation across achievement types.
