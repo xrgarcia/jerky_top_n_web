@@ -1899,6 +1899,36 @@ async function loadSentryIssues() {
   const applyFiltersBtn = document.getElementById('sentryApplyFiltersBtn');
   const refreshBtn = document.getElementById('sentryRefreshBtn');
   
+  // Load available environments dynamically
+  const loadEnvironments = async () => {
+    try {
+      const response = await fetch('/api/admin/sentry/environments');
+      if (!response.ok) {
+        throw new Error('Failed to fetch environments');
+      }
+      
+      const data = await response.json();
+      const environments = data.environments || [];
+      
+      // Populate environment dropdown
+      environmentFilter.innerHTML = '<option value="all">All Environments</option>';
+      environments.forEach(env => {
+        const option = document.createElement('option');
+        option.value = env;
+        option.textContent = env.charAt(0).toUpperCase() + env.slice(1);
+        environmentFilter.appendChild(option);
+      });
+      
+      console.log(`✅ Loaded ${environments.length} Sentry environments`);
+    } catch (error) {
+      console.error('❌ Error loading Sentry environments:', error);
+      // Keep default options on error
+    }
+  };
+  
+  // Load environments first
+  await loadEnvironments();
+  
   const fetchIssues = async () => {
     try {
       countSpan.textContent = 'Loading...';
@@ -2377,7 +2407,14 @@ async function copyIssueForAI() {
   const breadcrumbs = event.breadcrumbs || [];
   const breadcrumbsText = breadcrumbs.length > 0
     ? breadcrumbs.slice(-10).map(crumb => {
-        const timestamp = crumb.timestamp ? new Date(crumb.timestamp * 1000).toISOString() : 'Unknown';
+        let timestamp = 'Unknown';
+        if (crumb.timestamp) {
+          try {
+            timestamp = new Date(crumb.timestamp * 1000).toISOString();
+          } catch (e) {
+            timestamp = String(crumb.timestamp);
+          }
+        }
         const category = crumb.category || 'event';
         const message = crumb.message || JSON.stringify(crumb.data || {});
         return `  [${timestamp}] ${category}: ${message}`;

@@ -164,7 +164,7 @@ module.exports = function createSentryRoutes(storage) {
         },
         // Extract environment tags
         tags: issue.tags || [],
-        environment: getEnvironmentFromTags(issue.tags || [])
+        environment: issue.environment || getEnvironmentFromTags(issue.tags || [])
       }));
 
       console.log(`✅ Fetched ${transformedIssues.length} Sentry issues (filtered by: ${query || 'none'})`);
@@ -195,6 +195,70 @@ module.exports = function createSentryRoutes(storage) {
       });
       res.status(500).json({ 
         error: 'Failed to fetch Sentry issues',
+        message: error.message 
+      });
+    }
+  });
+
+  /**
+   * GET /api/admin/sentry/environments
+   * Fetch available environments from Sentry project
+   */
+  router.get('/sentry/environments', requireAdmin, async (req, res) => {
+    try {
+      if (!SENTRY_ORG_SLUG || !SENTRY_AUTH_TOKEN) {
+        return res.status(503).json({ 
+          error: 'Sentry credentials not configured',
+          message: 'Please configure SENTRY_ORG_SLUG and SENTRY_AUTH_TOKEN environment variables'
+        });
+      }
+
+      const url = `${SENTRY_API_BASE}/projects/${SENTRY_ORG_SLUG}/${PROJECT_SLUG}/environments/`;
+      
+      console.log(`📊 Fetching Sentry environments: ${url}`);
+
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${SENTRY_AUTH_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Sentry API error (${response.status}):`, errorText);
+        
+        if (response.status === 404) {
+          // No environments configured, return empty array
+          return res.json({
+            success: true,
+            environments: []
+          });
+        }
+        
+        throw new Error(`Sentry API error: ${response.status} - ${errorText}`);
+      }
+
+      const environments = await response.json();
+      
+      // Extract environment names
+      const environmentNames = environments.map(env => env.name).filter(Boolean);
+      
+      console.log(`✅ Fetched ${environmentNames.length} Sentry environments:`, environmentNames);
+
+      res.json({
+        success: true,
+        environments: environmentNames
+      });
+
+    } catch (error) {
+      console.error('❌ Error fetching Sentry environments:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'admin-sentry', endpoint: '/api/admin/sentry/environments' }
+      });
+      res.status(500).json({ 
+        error: 'Failed to fetch Sentry environments',
         message: error.message 
       });
     }
