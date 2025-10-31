@@ -281,6 +281,14 @@
                         <button id="toggleRankingsBtn" class="toggle-btn">▼ Collapse</button>
                         <button id="clearRankingBtn" class="clear-btn">Clear All</button>
                     </div>
+                    <div class="panel-sub-header">
+                        <div class="progress-info">
+                            <span class="progress-text" id="rankingProgressText">0 of 0 ranked (0%)</span>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="rankingProgressBar" style="width: 0%;"></div>
+                        </div>
+                    </div>
                     <div class="ranking-slots" id="rankingSlots">
                         <!-- Ranking slots will be generated dynamically -->
                     </div>
@@ -293,6 +301,12 @@
                         <div class="search-controls">
                             <input type="text" id="productSearch" placeholder="Search jerky products..." class="search-input-field" autocomplete="off">
                             <button id="searchBtn" class="search-btn-field">Search</button>
+                        </div>
+                    </div>
+                    <div class="panel-sub-header">
+                        <div class="available-info">
+                            <span class="available-text" id="availableProductsText">0 available to rank</span>
+                            <span class="helper-text">← Drag products to rank</span>
                         </div>
                     </div>
                     <div class="product-results" id="productResults">
