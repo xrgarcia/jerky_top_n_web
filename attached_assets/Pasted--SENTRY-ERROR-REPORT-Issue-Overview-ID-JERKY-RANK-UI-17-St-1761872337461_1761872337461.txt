@@ -1,0 +1,83 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-17
+- **Status**: unresolved
+- **Level**: error
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-30T17:03:35.995000Z
+- **Last Seen**: 2025-10-30T21:31:34Z
+- **Total Events**: 2
+- **Users Affected**: 1
+
+## Error Details
+**Title**: TypeError: window.showPage is not a function
+
+**Message**: TypeError: window.showPage is not a function
+
+**Location**: loadAchievementsAdmin(pages/toolsAdmin)
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6985293829/
+
+## Stack Trace
+```
+  🔴 loadAchievementsAdmin
+     File: /js/pages/toolsAdmin.js:59:16
+     Code Context:
+         54:     
+         55:     if (!response.ok) {
+         56:       if (response.status === 403) {
+         57:         sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
+         58:         window.location.hash = '#login';
+     >>> 59:         window.showPage('login');
+         60:         return;
+         61:       }
+         62:       
+         63:       // Handle rate limit errors
+         64:       if (response.status === 429) {
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-30T21:31:34.599000Z] console: ✅ leaderboard initialized
+  [2025-10-30T21:31:34.599000Z] console: ✅ All services initialized
+  [2025-10-30T21:31:34.599000Z] console: 🎨 Initializing UI widgets...
+  [2025-10-30T21:31:34.599000Z] console: ✅ Notification widget created
+  [2025-10-30T21:31:34.601000Z] console: ❌ Customer session expired or not found
+  [2025-10-30T21:31:34.692000Z] xhr: {"method":"GET","response_body_size":1,"status_code":200,"url":"https://rank.jerky.com:443/socket.io/?EIO=4&transport=polling&t=xw33ee7h&sid=cx_K7D-NmyE3xlcCAAAC"}
+  [2025-10-30T21:31:34.699000Z] fetch: {"__span":"b335c0b9d845a7a3","method":"GET","response_body_size":43,"status_code":403,"url":"/api/admin/achievements"}
+  [2025-10-30T21:31:34.700000Z] navigation: {"from":"/#login","to":"/#login"}
+  [2025-10-30T21:31:34.703000Z] sentry.transaction: 48ab2bebd5d2473da38be083936a3152
+  [2025-10-30T21:31:34.705000Z] console: Error loading achievements: TypeError: window.showPage is not a function
+```
+
+## Tags
+```
+  browser: Chrome 141.0.0
+  browser.name: Chrome
+  environment: PRODUCTION
+  handled: yes
+  level: error
+  mechanism: generic
+  os: Windows >=10
+  os.name: Windows
+  replayId: 7e50e7db2c2a484694333bc5b2061d1d
+  source: frontend
+  transaction: /
+  url: https://rank.jerky.com/
+  user: ip:45.27.167.135
+```
+
+## Context Data
+```json
+  context:
+    "loadAchievementsAdmin"
+
+  endpoint:
+    "/api/admin/achievements"
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
