@@ -1515,6 +1515,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!sourceSlot || !targetSlot) return;
         
+        // Ensure source slot is filled and has valid product data
+        if (!sourceSlot.classList.contains('filled') || 
+            !sourceSlot.dataset.productData || 
+            sourceSlot.dataset.productData === 'undefined') {
+            console.warn(`⚠️ Cannot reorder: source slot ${sourceRank} is empty or has no product data`);
+            return;
+        }
+        
         // Get the product data from source
         const sourceProductData = JSON.parse(sourceSlot.dataset.productData);
         

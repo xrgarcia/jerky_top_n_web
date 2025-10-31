@@ -1,0 +1,105 @@
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: JERKY-RANK-UI-1D
+- **Status**: unresolved
+- **Level**: error
+- **Environment**: PRODUCTION
+- **First Seen**: 2025-10-31T19:06:42.961000Z
+- **Last Seen**: 2025-10-31T19:06:42Z
+- **Total Events**: 1
+- **Users Affected**: 1
+
+## Error Details
+**Title**: SyntaxError: "undefined" is not valid JSON
+
+**Message**: SyntaxError: "undefined" is not valid JSON
+
+**Location**: JSON.parse(<anonymous>)
+
+**Sentry Link**: https://jerkycom.sentry.io/issues/6988135089/
+
+## Stack Trace
+```
+  🔴 HTMLDivElement.handleDrop
+     File: /app.js:1648:13
+     Code Context:
+         1643:                 console.log(`🚫 Same slot, no reorder needed`);
+         1644:                 return;
+         1645:             }
+         1646:             
+         1647:             // Swap or reorder the items
+     >>> 1648:             reorderSlots(sourceRank, targetRank);
+         1649:             
+         1650:             // Trigger auto-save after reordering
+         1651:             scheduleAutoSave();
+         1652:             
+         1653:             return; // Exit early after handling slot reordering
+
+     reorderSlots
+     File: /app.js:1519:40
+     Code Context:
+         1514:         const targetSlot = rankingSlots[targetRank - 1];
+         1515:         
+         1516:         if (!sourceSlot || !targetSlot) return;
+         1517:         
+         1518:         // Get the product data from source
+     >>> 1519:         const sourceProductData = JSON.parse(sourceSlot.dataset.productData);
+         1520:         
+         1521:         // Collect all filled slots and their data
+         1522:         const allRankedItems = [];
+         1523:         rankingSlots.forEach((slot, index) => {
+         1524:             const rank = index + 1;
+
+     JSON.parse
+     File: <anonymous>
+
+```
+
+## Breadcrumbs (Last 10 Actions)
+```
+  [2025-10-31T19:06:42.951000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.951000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.951000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.952000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.956000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.957000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.957000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.958000Z] console: 🎯 Drag over slot 13
+  [2025-10-31T19:06:42.960000Z] console: 🎯 Drop on slot 13, draggedSlot: 15, draggedProduct: yes
+  [2025-10-31T19:06:42.960000Z] console: 🔄 Attempting reorder from slot 15 to slot 13
+```
+
+## Tags
+```
+  browser: Chrome 142.0.0
+  browser.name: Chrome
+  device: Mac
+  device.family: Mac
+  environment: PRODUCTION
+  handled: no
+  level: error
+  mechanism: instrument
+  os: Mac OS X >=10.15.7
+  os.name: Mac OS X
+  replayId: a80017b1c44643238175fdba26eac17f
+  url: https://rank.jerky.com/
+  user: ip:70.182.230.179
+```
+
+## Context Data
+```json
+  arguments:
+    [
+        {
+            "currentTarget": "div#rankingSlots.ranking-slots > div.ranking-slot",
+            "isTrusted": true,
+            "target": "div#rankingSlots.ranking-slots > div.ranking-slot > div.slot-placeholder",
+            "type": "drop"
+        }
+    ]
+```
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
