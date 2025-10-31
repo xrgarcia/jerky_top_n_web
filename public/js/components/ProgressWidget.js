@@ -2,13 +2,27 @@
  * ProgressWidget - Displays user progress and next milestones
  */
 class ProgressWidget {
-  constructor(containerId, progressService, eventBus) {
+  constructor(containerId, progressService, eventBus, options = {}) {
     this.container = document.getElementById(containerId);
     this.progressService = progressService;
     this.eventBus = eventBus;
     this.mysteriousDescriptions = this.initMysteriousDescriptions();
-    // Check sessionStorage for collapsed state preference, default to collapsed (true)
-    this.isCollapsed = sessionStorage.getItem('progressWidgetCollapsed') !== 'false';
+    
+    // Determine initial collapsed state:
+    // 1. Check sessionStorage for user preference
+    // 2. Fall back to options.defaultCollapsed (default: true if not specified)
+    const storageKey = `progressWidgetCollapsed_${containerId}`;
+    const storedState = sessionStorage.getItem(storageKey);
+    
+    if (storedState !== null) {
+      // User has a saved preference for this specific widget
+      this.isCollapsed = storedState === 'true';
+    } else {
+      // No saved preference, use the default from options
+      this.isCollapsed = options.defaultCollapsed !== false; // defaults to true
+    }
+    
+    this.storageKey = storageKey;
     this.init();
   }
 
@@ -74,7 +88,7 @@ class ProgressWidget {
     if (!achievementsSection) return;
 
     this.isCollapsed = !this.isCollapsed;
-    sessionStorage.setItem('progressWidgetCollapsed', this.isCollapsed);
+    sessionStorage.setItem(this.storageKey, this.isCollapsed);
 
     const toggleButton = this.container.querySelector('.progress-toggle-button');
     const widget = this.container.querySelector('.progress-widget');
