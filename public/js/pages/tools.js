@@ -2129,8 +2129,16 @@ function closeSentryIssueDetail() {
   }
 }
 
+// Store current issue and event data globally for copy function
+let currentSentryIssue = null;
+let currentSentryEvent = null;
+
 function renderSentryIssueDetail(issue, event) {
   const detailContent = document.getElementById('sentryDetailContent');
+  
+  // Store globally for copy function
+  currentSentryIssue = issue;
+  currentSentryEvent = event;
   
   const statusColors = {
     'unresolved': '#e74c3c',
@@ -2216,8 +2224,11 @@ function renderSentryIssueDetail(issue, event) {
           <button onclick="closeSentryIssueDetail()" style="background: #f0f0f0; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; font-weight: 500; margin-bottom: 12px;" onmouseover="this.style.background='#e0e0e0'" onmouseout="this.style.background='#f0f0f0'">← Back to Issues</button>
           <h2 style="margin: 0; font-size: 24px; color: #2c2c2c;">${issue.shortId}: ${escapeHtml(issue.title)}</h2>
         </div>
-        <div style="text-align: right;">
-          <a href="${issue.permalink}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #e74c3c; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600; margin-bottom: 8px;" onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">
+        <div style="text-align: right; display: flex; flex-direction: column; gap: 8px;">
+          <button onclick="copyIssueForAI()" style="background: #7b8b52; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-weight: 600;" onmouseover="this.style.background='#6a7a45'" onmouseout="this.style.background='#7b8b52'">
+            📋 Copy for AI Analysis
+          </button>
+          <a href="${issue.permalink}" target="_blank" rel="noopener noreferrer" style="display: inline-block; background: #e74c3c; color: white; padding: 10px 20px; border-radius: 4px; text-decoration: none; font-weight: 600;" onmouseover="this.style.background='#c0392b'" onmouseout="this.style.background='#e74c3c'">
             🔗 Open in Sentry →
           </a>
           <div style="font-size: 12px; color: #666;">View full issue in Sentry dashboard</div>
@@ -2328,4 +2339,132 @@ function escapeHtml(text) {
   const div = document.createElement('div');
   div.textContent = text;
   return div.innerHTML;
+}
+
+async function copyIssueForAI() {
+  if (!currentSentryIssue || !currentSentryEvent) {
+    alert('No issue data available to copy');
+    return;
+  }
+  
+  const issue = currentSentryIssue;
+  const event = currentSentryEvent;
+  
+  // Extract stack trace
+  const stackTrace = event.exception && event.exception.length > 0 
+    ? event.exception[0].stacktrace?.frames || [] 
+    : [];
+  
+  const stackTraceText = stackTrace.length > 0
+    ? stackTrace.reverse().map((frame, index) => {
+        let text = `  ${index === 0 ? '🔴 ' : '   '}${frame.function || '<anonymous>'}\n`;
+        text += `     File: ${frame.filename || 'Unknown'}`;
+        if (frame.lineNo) text += `:${frame.lineNo}`;
+        if (frame.colNo) text += `:${frame.colNo}`;
+        text += '\n';
+        if (frame.context && frame.context.length > 0) {
+          text += '     Code Context:\n';
+          frame.context.forEach(([lineNo, code]) => {
+            const isErrorLine = lineNo === frame.lineNo;
+            text += `     ${isErrorLine ? '>>>' : '   '} ${lineNo}: ${code}\n`;
+          });
+        }
+        return text;
+      }).join('\n')
+    : 'No stack trace available';
+  
+  // Extract breadcrumbs
+  const breadcrumbs = event.breadcrumbs || [];
+  const breadcrumbsText = breadcrumbs.length > 0
+    ? breadcrumbs.slice(-10).map(crumb => {
+        const timestamp = crumb.timestamp ? new Date(crumb.timestamp * 1000).toISOString() : 'Unknown';
+        const category = crumb.category || 'event';
+        const message = crumb.message || JSON.stringify(crumb.data || {});
+        return `  [${timestamp}] ${category}: ${message}`;
+      }).join('\n')
+    : 'No breadcrumbs available';
+  
+  // Extract tags
+  const tags = event.tags || [];
+  const tagsText = tags.length > 0
+    ? tags.map(tag => `  ${tag.key}: ${tag.value}`).join('\n')
+    : 'No tags available';
+  
+  // Extract context
+  const context = event.context || {};
+  const contextText = Object.keys(context).length > 0
+    ? Object.entries(context).map(([key, value]) => {
+        return `  ${key}:\n${JSON.stringify(value, null, 4).split('\n').map(line => `    ${line}`).join('\n')}`;
+      }).join('\n\n')
+    : 'No context data available';
+  
+  // Format the complete issue report
+  const reportText = `
+# SENTRY ERROR REPORT
+====================
+
+## Issue Overview
+- **ID**: ${issue.shortId}
+- **Status**: ${issue.status}
+- **Level**: ${issue.level}
+- **Environment**: ${tags.find(t => t.key === 'environment')?.value || 'Unknown'}
+- **First Seen**: ${issue.firstSeen}
+- **Last Seen**: ${issue.lastSeen}
+- **Total Events**: ${issue.count}
+- **Users Affected**: ${issue.userCount}
+
+## Error Details
+**Title**: ${issue.title}
+
+**Message**: ${event.message || issue.title}
+
+**Location**: ${issue.culprit || 'Unknown'}
+
+**Sentry Link**: ${issue.permalink}
+
+## Stack Trace
+\`\`\`
+${stackTraceText}
+\`\`\`
+
+## Breadcrumbs (Last 10 Actions)
+\`\`\`
+${breadcrumbsText}
+\`\`\`
+
+## Tags
+\`\`\`
+${tagsText}
+\`\`\`
+
+## Context Data
+\`\`\`json
+${contextText}
+\`\`\`
+
+---
+*Copy this entire report when asking for help with debugging this issue.*
+`.trim();
+
+  try {
+    await navigator.clipboard.writeText(reportText);
+    
+    // Show success notification
+    const btn = document.activeElement;
+    if (btn && btn.innerHTML) {
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '✅ Copied!';
+      btn.style.background = '#27ae60';
+      
+      setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.style.background = '#7b8b52';
+      }, 2000);
+    }
+    
+    console.log('✅ Issue data copied to clipboard for AI analysis');
+  } catch (error) {
+    console.error('Failed to copy to clipboard:', error);
+    alert('Failed to copy to clipboard. Please try again.');
+  }
 }
