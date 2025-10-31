@@ -82,8 +82,13 @@ pool.on('connect', (client) => {
     console.error('❌ Database client error:', {
       message: err.message,
       code: err.code,
+      name: err.name,
+      stack: err.stack,
       timestamp: new Date().toISOString()
     });
+    
+    // Also log the full error as JSON to capture all properties
+    console.error('Full client error details:', JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
   });
 });
 
