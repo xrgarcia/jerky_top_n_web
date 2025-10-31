@@ -1720,8 +1720,8 @@ app.post('/api/rankings/products', async (req, res) => {
       });
     }
     
-    // Use bulk upsert instead of clear+insert for atomic updates
-    // This is safer if request is aborted mid-save
+    // Atomically clear and replace rankings (happens inside a database transaction)
+    // This ensures deleted rankings are removed AND no data loss on failure
     await storage.bulkUpsertProductRankings({
       userId,
       rankings: rankings.map(r => ({

@@ -308,14 +308,15 @@ class DatabaseStorage {
 
   async bulkUpsertProductRankings({ userId, rankings, rankingListId }) {
     try {
-      const { sql } = require('drizzle-orm');
+      const { sql, and, notInArray } = require('drizzle-orm');
       
       // Wrap database transaction with retry logic for connection errors
       const results = await retryOnConnectionError(async () => {
-        // Use transaction to ensure atomicity - all rankings save or none do
+        // Use transaction to ensure atomicity - all operations succeed or all fail
         return await db.transaction(async (tx) => {
           const savedRankings = [];
           
+          // First, upsert all current rankings
           for (const { productId, productData, ranking } of rankings) {
             const [savedRanking] = await tx.insert(productRankings)
               .values({
@@ -336,6 +337,27 @@ class DatabaseStorage {
               .returning();
             
             savedRankings.push(savedRanking);
+          }
+          
+          // CRITICAL FIX: Differential delete - only remove rankings that are NOT in the new payload
+          // This allows products to be unranked (deleted) while preventing accidental full wipes
+          if (rankings.length > 0) {
+            // Delete rankings for products NOT in the current payload
+            const currentProductIds = rankings.map(r => r.productId);
+            await tx.delete(productRankings)
+              .where(and(
+                eq(productRankings.userId, userId), 
+                eq(productRankings.rankingListId, rankingListId),
+                notInArray(productRankings.shopifyProductId, currentProductIds)
+              ));
+          } else {
+            // Empty payload means user removed all rankings - delete everything for this list
+            // Frontend has guard against accidental empty sends, so this is intentional
+            await tx.delete(productRankings)
+              .where(and(
+                eq(productRankings.userId, userId), 
+                eq(productRankings.rankingListId, rankingListId)
+              ));
           }
           
           return savedRankings;

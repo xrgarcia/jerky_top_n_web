@@ -2595,23 +2595,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     return;
                 }
 
-                const filledSlots = rankingSlots.filter(slot => slot.classList.contains('filled'));
-                if (filledSlots.length === 0) {
-                    // EDGE CASE FIX: User removed all rankings
-                    // Clear the persisted operation to prevent stale data resurrection
-                    const persistentQueue = rankingSaveQueue.persistentQueue;
-                    if (persistentQueue && currentSessionOperationId) {
-                        try {
-                            await persistentQueue.complete(currentSessionOperationId);
-                            console.log(`🗑️ Cleared persisted operation in autoSave (all rankings removed)`);
-                            currentSessionOperationId = null;
-                        } catch (error) {
-                            console.error('❌ Failed to clear persisted operation:', error);
-                        }
-                    }
-                    updateAutoSaveStatus('', '');
-                    return;
-                }
+                // CRITICAL FIX: Always send rankings to server, even if empty
+                // This ensures the last deleted ranking is removed from the database
+                // Backend uses differential delete to remove products not in payload
                 
                 // Track current product IDs
                 const currentProductIds = new Set(rankings.map(r => r.productData.id));
@@ -2633,10 +2619,26 @@ document.addEventListener('DOMContentLoaded', function() {
                 const result = await response.json();
 
                 if (response.ok) {
-                    updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
-                    
-                    // Update last saved product IDs
-                    lastSavedProductIds = currentProductIds;
+                    if (rankings.length === 0) {
+                        updateAutoSaveStatus('saved', '✓ All rankings cleared');
+                        lastSavedProductIds = new Set();
+                        
+                        // Clear persisted operation when all rankings removed
+                        const persistentQueue = rankingSaveQueue.persistentQueue;
+                        if (persistentQueue && currentSessionOperationId) {
+                            try {
+                                await persistentQueue.complete(currentSessionOperationId);
+                                console.log(`🗑️ Cleared persisted operation (all rankings removed)`);
+                                currentSessionOperationId = null;
+                            } catch (error) {
+                                console.error('❌ Failed to clear persisted operation:', error);
+                            }
+                        }
+                    } else {
+                        updateAutoSaveStatus('saved', `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`);
+                        // Update last saved product IDs
+                        lastSavedProductIds = currentProductIds;
+                    }
                     
                     // Clear optimistically removed products on successful save
                     optimisticallyRemovedProducts = [];
