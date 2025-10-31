@@ -504,9 +504,22 @@ class WebhookOrderService {
       console.log(`📊 Recalculated ranking stats for ${Object.keys(statsMap).length} product(s)`);
       return statsMap;
     } catch (error) {
-      console.error('❌ Error fetching product ranking stats:', error);
+      // Extract nested error message from Drizzle wrapper
+      const errorMessage = error.message || 'Unknown error';
+      const cause = error.cause?.message || error.cause || 'No cause provided';
+      const fullErrorDetails = `${errorMessage}${cause !== 'No cause provided' ? ` | Cause: ${cause}` : ''}`;
+      
+      console.error('❌ Error fetching product ranking stats:', fullErrorDetails);
+      console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      
       Sentry.captureException(error, {
-        tags: { service: 'webhook-order', method: 'getProductRankingStats' }
+        tags: { service: 'webhook-order', method: 'getProductRankingStats' },
+        extra: { 
+          productIds,
+          errorMessage,
+          cause: String(cause),
+          fullErrorDetails
+        }
       });
       return {};
     }
