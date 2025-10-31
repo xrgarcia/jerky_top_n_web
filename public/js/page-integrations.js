@@ -122,8 +122,8 @@
 
     if (!coinbookProgressWidget) {
       const progressService = services.get('progressTracking');
-      coinbookProgressWidget = new ProgressWidget('coinbookProgressWidget', progressService, eventBus);
-      console.log('✅ Progress widget integrated into Coin Book page');
+      coinbookProgressWidget = new ProgressWidget('coinbookProgressWidget', progressService, eventBus, { defaultCollapsed: false });
+      console.log('✅ Progress widget integrated into Coin Book page (defaults to expanded)');
     }
     
     // Reload progress and achievements when coin book page is shown
