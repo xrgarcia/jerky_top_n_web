@@ -4,6 +4,49 @@ const { eq, lt } = require('drizzle-orm');
 const crypto = require('crypto');
 const Sentry = require('@sentry/node');
 
+/**
+ * Retry wrapper for database operations that may encounter transient connection errors
+ * Specifically handles Neon serverless WebSocket connection terminations
+ * @param {Function} operation - Async function to execute
+ * @param {number} maxRetries - Maximum number of retry attempts (default: 2)
+ * @param {number} delayMs - Delay between retries in milliseconds (default: 100)
+ * @returns {Promise} Result of the operation
+ */
+async function retryOnConnectionError(operation, maxRetries = 2, delayMs = 100) {
+  let lastError;
+  
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      lastError = error;
+      
+      // Check if this is a connection termination error
+      const isConnectionError = 
+        error.message?.includes('Connection terminated') ||
+        error.message?.includes('connection closed') ||
+        error.message?.includes('ECONNRESET') ||
+        error.code === 'ECONNRESET' ||
+        error.code === '57P01'; // PostgreSQL connection termination code
+      
+      if (!isConnectionError || attempt === maxRetries) {
+        // Not a connection error or out of retries - throw immediately
+        throw error;
+      }
+      
+      // Log retry attempt
+      console.warn(`⚠️ Database connection error (attempt ${attempt + 1}/${maxRetries + 1}): ${error.message}`);
+      console.warn(`🔄 Retrying in ${delayMs}ms...`);
+      
+      // Wait before retrying with exponential backoff
+      await new Promise(resolve => setTimeout(resolve, delayMs * Math.pow(2, attempt)));
+    }
+  }
+  
+  // This should never be reached, but just in case
+  throw lastError;
+}
+
 class DatabaseStorage {
   async getUser(shopifyCustomerId) {
     const [user] = await db.select().from(users).where(eq(users.shopifyCustomerId, shopifyCustomerId));
@@ -267,41 +310,53 @@ class DatabaseStorage {
     try {
       const { sql } = require('drizzle-orm');
       
-      // Use transaction to ensure atomicity - all rankings save or none do
-      const results = await db.transaction(async (tx) => {
-        const savedRankings = [];
-        
-        for (const { productId, productData, ranking } of rankings) {
-          const [savedRanking] = await tx.insert(productRankings)
-            .values({
-              userId,
-              shopifyProductId: productId,
-              productData,
-              ranking,
-              rankingListId,
-            })
-            .onConflictDoUpdate({
-              target: [productRankings.userId, productRankings.shopifyProductId, productRankings.rankingListId],
-              set: {
-                ranking: sql`EXCLUDED.ranking`,
-                productData: sql`EXCLUDED.product_data`,
-                updatedAt: new Date()
-              }
-            })
-            .returning();
+      // Wrap database transaction with retry logic for connection errors
+      const results = await retryOnConnectionError(async () => {
+        // Use transaction to ensure atomicity - all rankings save or none do
+        return await db.transaction(async (tx) => {
+          const savedRankings = [];
           
-          savedRankings.push(savedRanking);
-        }
-        
-        return savedRankings;
+          for (const { productId, productData, ranking } of rankings) {
+            const [savedRanking] = await tx.insert(productRankings)
+              .values({
+                userId,
+                shopifyProductId: productId,
+                productData,
+                ranking,
+                rankingListId,
+              })
+              .onConflictDoUpdate({
+                target: [productRankings.userId, productRankings.shopifyProductId, productRankings.rankingListId],
+                set: {
+                  ranking: sql`EXCLUDED.ranking`,
+                  productData: sql`EXCLUDED.product_data`,
+                  updatedAt: new Date()
+                }
+              })
+              .returning();
+            
+            savedRankings.push(savedRanking);
+          }
+          
+          return savedRankings;
+        });
       });
 
       return results;
     } catch (error) {
-      Sentry.captureException(error, {
+      // Add connection error context to Sentry
+      const errorContext = {
         tags: { service: 'rankings', operation: 'bulk_upsert' },
-        extra: { userId, rankingListId, count: rankings.length }
-      });
+        extra: { 
+          userId, 
+          rankingListId, 
+          count: rankings.length,
+          errorMessage: error.message,
+          errorCode: error.code
+        }
+      };
+      
+      Sentry.captureException(error, errorContext);
       throw error;
     }
   }
