@@ -59,7 +59,6 @@ async function loadLiveUsers() {
       if (response.status === 403) {
         sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
         window.location.hash = '#login';
-        window.showPage('login');
         return;
       }
       throw new Error('Failed to load live users');
@@ -189,7 +188,6 @@ async function loadProductsTable() {
       if (response.status === 403) {
         sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
         window.location.hash = '#login';
-        window.showPage('login');
         return;
       }
       throw new Error('Failed to load products');
@@ -750,7 +748,6 @@ window.initToolsPage = async function() {
     // Redirect to login page with access denied message
     sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
     window.location.hash = '#login';
-    window.showPage('login');
     return;
   }
   
@@ -1295,7 +1292,6 @@ async function loadCustomerOrders(page = 1) {
       if (response.status === 403) {
         sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
         window.location.hash = '#login';
-        window.showPage('login');
         return;
       }
       

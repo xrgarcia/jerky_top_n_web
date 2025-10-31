@@ -56,7 +56,6 @@ async function loadAchievementsAdmin() {
       if (response.status === 403) {
         sessionStorage.setItem('loginMessage', 'You do not have access to that page.');
         window.location.hash = '#login';
-        window.showPage('login');
         return;
       }
       
