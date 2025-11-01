@@ -3,6 +3,13 @@
 ## Overview
 The Rank Products feature allows authenticated users to create and manage personalized rankings of products they've purchased. This document captures all requirements extracted from the legacy implementation.
 
+The feature supports **two ranking interfaces**:
+1. **Desktop**: Drag-and-drop interface with side-by-side panels
+2. **Mobile**: Modal-based interface with REPLACE/INSERT actions (shown below)
+
+![Ranking Modal Interface](attached_assets/image_1762029801430.png)
+*Mobile-friendly ranking modal showing REPLACE and INSERT options for each position*
+
 ---
 
 ## Frontend Components
@@ -86,6 +93,8 @@ The Rank Products feature allows authenticated users to create and manage person
   - Disable button during loading
 - **Drag to Rank**: Drag products from panel to ranking slots
 - **Click to Rank**: Quick-add button on each product card
+  - **Desktop**: Opens ranking modal (see section 3a)
+  - **Mobile**: Opens ranking modal (primary interaction method)
 
 #### UI Elements
 - Search input with icon
@@ -102,6 +111,287 @@ The Rank Products feature allows authenticated users to create and manage person
 - Empty states:
   - No search results
   - All products ranked
+
+---
+
+### 3a. Ranking Modal (Mobile-Friendly Interface)
+**File:** `legacy/app.js` (function: `openRankModal`)
+**HTML:** `legacy/index.html` (element: `#rankModal`)
+
+#### Purpose
+Provides a **mobile-friendly alternative** to drag-and-drop ranking. Users can precisely choose where to rank a product using REPLACE or INSERT actions.
+
+#### Trigger
+- User clicks "Rank This Product" button on any product card
+- Opens modal with scrollable list of all ranking positions
+
+#### Modal Structure
+
+**Header:**
+- Product thumbnail (60x60px, rounded with blue border)
+- Product title (truncated to 40 chars on mobile)
+- Close button (× icon)
+
+**Body (Scrollable):**
+- List of all ranking positions (1 through N)
+- Each position shows:
+  - Position number (e.g., "Position #1")
+  - Status badge: "FILLED" (green) or "EMPTY" (gray)
+  - Current product (if filled):
+    - Thumbnail image
+    - Product name
+  - Action buttons:
+    - **REPLACE** button (yellow, disabled if empty)
+    - **INSERT** button (green, always enabled)
+
+#### Action: REPLACE
+**Purpose**: Swap out the current product at this position
+
+**Behavior:**
+```javascript
+function replaceProductAtPosition(productData, position) {
+  // 1. Duplicate check: Prevent ranking same product twice
+  const existingRank = isProductAlreadyRanked(productData.id);
+  if (existingRank !== null && existingRank !== position) {
+    showWarning(`Product already ranked at position #${existingRank}`);
+    return;
+  }
+  
+  // 2. Optimistic UI: Immediately remove from available products
+  removeFromAvailableProducts(productData.id);
+  
+  // 3. REPLACE (no push-down): Simply overwrite the slot
+  fillSlot(rankingSlots[position - 1], position, productData);
+  
+  // 4. Old product is NOT returned to available list (replaced)
+  
+  // 5. Check if slots need expansion
+  checkAndAddMoreSlotsForRank(position);
+  
+  // 6. Trigger auto-save (800ms debounce)
+  scheduleAutoSave();
+  
+  // 7. Close modal
+  closeRankModal();
+}
+```
+
+**Example:**
+```
+Before REPLACE at Position #2:
+  1. Cajun Boil
+  2. Black Pepper ← Replace with "Jalapeno Garlic"
+  3. Black Truffle
+
+After REPLACE:
+  1. Cajun Boil
+  2. Jalapeno Garlic ← Replaced
+  3. Black Truffle
+
+Note: "Black Pepper" is REMOVED from rankings entirely
+```
+
+---
+
+#### Action: INSERT
+**Purpose**: Add product at this position and push everything below down
+
+**Behavior:**
+```javascript
+function insertProductAtPosition(newProductData, targetPosition) {
+  // Uses insertProductWithPushDown(targetPosition, newProductData)
+  
+  // 1. Duplicate check: Prevent ranking same product twice
+  const existingRank = isProductAlreadyRanked(newProductData.id);
+  if (existingRank !== null) {
+    showWarning(`Product already ranked at position #${existingRank}`);
+    return;
+  }
+  
+  // 2. Optimistic UI: Immediately remove from available products
+  const productIndex = currentProducts.findIndex(p => p.id === newProductData.id);
+  if (productIndex !== -1) {
+    const removedProduct = currentProducts.splice(productIndex, 1)[0];
+    optimisticallyRemovedProducts.push(removedProduct);
+    displayProducts(); // Re-render product list
+  }
+  
+  // 3. Collect items to push down (all items >= target position)
+  const itemsToPushDown = [];
+  let displacedProduct = null; // Track if target slot is already filled
+  
+  for (let i = targetPosition - 1; i < rankingSlots.length; i++) {
+    const slot = rankingSlots[i];
+    if (slot.classList.contains('filled')) {
+      const slotProductData = JSON.parse(slot.dataset.productData);
+      
+      // First iteration: this is the product being displaced from target position
+      if (i === targetPosition - 1) {
+        displacedProduct = slotProductData;
+      }
+      
+      itemsToPushDown.push({ rank: i + 1, data: slotProductData });
+    }
+  }
+  
+  // 4. Clear affected slots (prepare for re-assignment)
+  for (let i = targetPosition - 1; i < rankingSlots.length; i++) {
+    const slotToClear = rankingSlots[i];
+    if (slotToClear.classList.contains('filled')) {
+      slotToClear.classList.remove('filled');
+      slotToClear.innerHTML = `
+        <div class="slot-number">${i + 1}</div>
+        <div class="slot-placeholder">Drop a product here to rank #${i + 1}</div>
+      `;
+      delete slotToClear.dataset.productData;
+      slotToClear.draggable = false;
+    }
+  }
+  
+  // 5. INSERT new product at target position
+  fillSlot(rankingSlots[targetPosition - 1], targetPosition, newProductData);
+  
+  // 6. PUSH DOWN: Re-assign displaced items to new positions
+  let highestPushedRank = targetPosition;
+  
+  itemsToPushDown.forEach((item, index) => {
+    const newRank = targetPosition + 1 + index;
+    if (newRank <= rankingSlots.length) {
+      fillSlot(rankingSlots[newRank - 1], newRank, item.data);
+      highestPushedRank = Math.max(highestPushedRank, newRank);
+    }
+  });
+  
+  // 7. If displaced product exists, restore to available products list
+  //    (This happens when inserting into a filled slot)
+  if (displacedProduct) {
+    const displacedProductId = displacedProduct.id;
+    
+    // Check if it's in the optimistically removed list
+    const optimisticIndex = optimisticallyRemovedProducts.findIndex(p => p.id === displacedProductId);
+    if (optimisticIndex !== -1) {
+      // Restore from optimistic removal list
+      const restoredProduct = optimisticallyRemovedProducts.splice(optimisticIndex, 1)[0];
+      currentProducts.unshift(restoredProduct);
+      console.log(`↩️ Restored displaced product ${displacedProductId}`);
+    } else {
+      // Check if it's already in currentProducts (guard against duplicates)
+      const alreadyInProducts = currentProducts.some(p => p.id === displacedProductId);
+      if (!alreadyInProducts) {
+        currentProducts.unshift(displacedProduct);
+        console.log(`↩️ Returned displaced product ${displacedProductId} to available list`);
+      }
+    }
+    
+    // Re-render to show the displaced product
+    displayProducts();
+  }
+  
+  // 8. Check if slots need expansion (may need more slots now)
+  if (itemsToPushDown.length > 0) {
+    checkAndAddMoreSlotsForRank(highestPushedRank);
+  }
+  checkAndAddMoreSlots(); // General capacity check
+  
+  // 9. Trigger auto-save (800ms debounce)
+  scheduleAutoSave();
+  
+  // 10. Close modal
+  closeRankModal();
+}
+```
+
+**Example:**
+```
+Before INSERT at Position #2:
+  1. Cajun Boil
+  2. Black Pepper
+  3. Black Truffle
+
+After INSERT "Jalapeno Garlic" at Position #2:
+  1. Cajun Boil
+  2. Jalapeno Garlic ← Inserted
+  3. Black Pepper     ← Pushed down from #2
+  4. Black Truffle    ← Pushed down from #3
+```
+
+---
+
+#### Modal Interaction Details
+
+**Button States:**
+- **REPLACE button**:
+  - Enabled: Position is filled
+  - Disabled: Position is empty (nothing to replace)
+  - Color: Yellow (#FFB800)
+  
+- **INSERT button**:
+  - Always enabled
+  - Color: Green (#6B8E23)
+
+**Keyboard Support:**
+- ESC key: Close modal
+- Buttons are keyboard-navigable (tab focus)
+
+**Scrolling:**
+- Modal body is scrollable (max-height: 90vh)
+- Sticky header with product info
+- Smooth scroll on mobile
+
+**Close Methods:**
+- Click close button (× icon)
+- Press ESC key
+- Click outside modal (overlay click)
+- Auto-close after REPLACE or INSERT action
+
+**Responsive Behavior:**
+- **Mobile (<768px)**:
+  - Modal takes 95% of screen width
+  - Positions stack vertically
+  - Buttons stack vertically within each position
+  - Touch-friendly button sizes (min 44px height)
+  
+- **Desktop (≥768px)**:
+  - Modal max-width: 900px
+  - Positions in grid layout
+  - Buttons side-by-side (Replace | Insert)
+
+---
+
+#### Edge Cases Handled
+
+1. **Duplicate Product Prevention**
+   - Check if product already ranked before REPLACE/INSERT
+   - Show warning notification if duplicate detected
+   - Prevent action and keep modal open
+
+2. **Slot Expansion**
+   - Auto-expand ranking slots dynamically via `checkAndAddMoreSlotsForRank()`
+   - Add 5 slots at a time when nearing capacity
+   - Ensures pushed-down products always have space
+   - No products are ever ejected due to insufficient slots
+
+3. **Displaced Product Restoration (INSERT into Filled Slot)**
+   - When INSERT targets a filled position:
+     - The product originally at that position becomes `displacedProduct`
+     - All items from that position onward are pushed down by 1
+     - The `displacedProduct` is returned to the available products list
+     - Shown in search panel immediately (added to top of list)
+     - Can be re-ranked later
+   - Example: INSERT at Position #2 (filled with "Black Pepper")
+     - "Black Pepper" is displaced and returned to available products
+     - New product takes Position #2
+     - All items originally at #2+ are pushed to #3+
+
+4. **Optimistic UI Recovery**
+   - If REPLACE/INSERT fails (network error):
+     - Product is restored to available list from optimisticallyRemovedProducts
+     - User can retry the action
+   - Auto-save retry logic (3 attempts) handles transient failures
+
+5. **Empty Slot REPLACE**
+   - REPLACE button is disabled on empty slots
+   - Prevents confusing user action (nothing to replace)
 
 ---
 
