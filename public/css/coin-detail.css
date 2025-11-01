@@ -1,6 +1,6 @@
 /* Achievement Detail Page Styles */
 
-.achievement-detail-stats {
+.coin-detail-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
@@ -8,7 +8,7 @@
   margin: 0 auto 40px;
 }
 
-.achievement-stat-card {
+.coin-stat-card {
   background: white;
   border-radius: 12px;
   padding: 24px;
@@ -20,21 +20,21 @@
   transition: all 0.3s ease;
 }
 
-.achievement-stat-card:hover {
+.coin-stat-card:hover {
   border-color: #7b8b52;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.achievement-stat-icon {
+.coin-stat-icon {
   font-size: 36px;
   line-height: 1;
 }
 
-.achievement-stat-content {
+.coin-stat-content {
   flex: 1;
 }
 
-.achievement-stat-value {
+.coin-stat-value {
   font-size: 32px;
   font-weight: 700;
   color: #2c2c2c;
@@ -42,7 +42,7 @@
   margin-bottom: 4px;
 }
 
-.achievement-stat-label {
+.coin-stat-label {
   font-size: 14px;
   color: #666;
   text-transform: uppercase;
@@ -51,19 +51,19 @@
 }
 
 /* Products Container */
-.achievement-products-container {
+.coin-products-container {
   max-width: 1600px;
   margin: 0 auto;
   padding: 0 0 40px;
 }
 
-.achievement-products-grid {
+.coin-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
 }
 
-.achievement-product-card {
+.coin-product-card {
   background: white;
   border-radius: 12px;
   overflow: hidden;
@@ -73,39 +73,39 @@
   cursor: pointer;
 }
 
-.achievement-product-card:hover {
+.coin-product-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.achievement-product-card.ranked {
+.coin-product-card.ranked {
   border-color: #7b8b52;
   background: white;
 }
 
-.achievement-product-card.ranked .achievement-product-image img {
+.coin-product-card.ranked .coin-product-image img {
   opacity: 1;
   filter: none;
 }
 
-.achievement-product-card.unranked {
+.coin-product-card.unranked {
   border-color: #ddd;
 }
 
-.achievement-product-card.unranked .achievement-product-image img {
+.coin-product-card.unranked .coin-product-image img {
   filter: grayscale(100%) brightness(1.1);
   opacity: 0.5;
 }
 
-.achievement-product-card.unranked .achievement-product-info {
+.coin-product-card.unranked .coin-product-info {
   opacity: 0.7;
 }
 
-.achievement-product-card.unranked {
+.coin-product-card.unranked {
   background: #f9f9f9;
 }
 
-.achievement-product-image {
+.coin-product-image {
   position: relative;
   width: 100%;
   height: 250px;
@@ -116,7 +116,7 @@
   overflow: hidden;
 }
 
-.achievement-product-image img {
+.coin-product-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -150,11 +150,11 @@
   letter-spacing: 0.5px;
 }
 
-.achievement-product-info {
+.coin-product-info {
   padding: 16px;
 }
 
-.achievement-product-title {
+.coin-product-title {
   font-size: 16px;
   font-weight: 600;
   color: #2c2c2c;
@@ -166,14 +166,14 @@
   overflow: hidden;
 }
 
-.achievement-product-price {
+.coin-product-price {
   font-size: 18px;
   font-weight: 700;
   color: #7b8b52;
 }
 
 /* Engagement Achievement Styles */
-.achievement-engagement-container {
+.coin-engagement-container {
   max-width: 800px;
   margin: 0 auto;
   padding: 0 20px 40px;
@@ -1493,7 +1493,7 @@
   z-index: 10;
 }
 
-.achievement-product-card:hover .quick-rank-button {
+.coin-product-card:hover .quick-rank-button {
   opacity: 1;
   transform: translateY(0);
 }
@@ -1503,7 +1503,7 @@
   box-shadow: 0 4px 12px rgba(123, 139, 82, 0.5);
 }
 
-.achievement-product-card.unranked .achievement-product-image::after {
+.coin-product-card.unranked .coin-product-image::after {
   content: '';
   position: absolute;
   top: 0;
@@ -1514,7 +1514,7 @@
   pointer-events: none;
 }
 
-.achievement-product-card.ranked {
+.coin-product-card.ranked {
   animation: rankComplete 0.5s ease;
 }
 
@@ -1524,7 +1524,7 @@
   100% { transform: scale(1); }
 }
 
-.achievement-product-card.next-up {
+.coin-product-card.next-up {
   border-color: #fbbf24;
   box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
   animation: nextUpPulse 2s ease-in-out infinite;
@@ -1554,29 +1554,29 @@
    ============================================ */
 
 @media (max-width: 768px) {
-  .achievement-detail-stats {
+  .coin-detail-stats {
     grid-template-columns: 1fr;
     gap: 12px;
   }
   
-  .achievement-stat-card {
+  .coin-stat-card {
     padding: 16px;
   }
   
-  .achievement-stat-icon {
+  .coin-stat-icon {
     font-size: 28px;
   }
   
-  .achievement-stat-value {
+  .coin-stat-value {
     font-size: 24px;
   }
   
-  .achievement-products-grid {
+  .coin-products-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 16px;
   }
   
-  .achievement-product-image {
+  .coin-product-image {
     height: 180px;
   }
   

@@ -468,8 +468,8 @@ body.login-page-active .hero {
     margin-bottom: 30px;
 }
 
-/* Ultra-minimal header for achievement detail pages */
-.achievement-header-minimal {
+/* Ultra-minimal header for coin detail pages */
+.coin-header-minimal {
     background: transparent;
     border-bottom: 1px solid #e0e0e0;
     padding: 16px 20px;

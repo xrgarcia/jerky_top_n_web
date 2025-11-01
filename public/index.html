@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="css/footer.css">
     <link rel="stylesheet" href="css/admin-dashboard.css">
     <link rel="stylesheet" href="css/coinbook.css">
-    <link rel="stylesheet" href="css/achievement-detail.css">
+    <link rel="stylesheet" href="css/coin-detail.css">
 </head>
 <body>
     <!-- Green Announcement Banner -->
@@ -734,16 +734,16 @@
             </div>
         </div>
 
-        <!-- Achievement Detail Page Content -->
-        <div class="page-content" id="achievementDetailPage" style="display: none;">
-            <div class="page-header-minimal achievement-header-minimal">
+        <!-- Coin Detail Page Content -->
+        <div class="page-content" id="coinDetailPage" style="display: none;">
+            <div class="page-header-minimal coin-header-minimal">
                 <div class="page-header-content">
                     <div class="page-header-breadcrumbs">
                         <a href="#home">Home</a>
                         <span>›</span>
                         <a href="#coinbook">Coin Book</a>
                         <span>›</span>
-                        <span id="achievementDetailBreadcrumb">Achievement</span>
+                        <span id="coinDetailBreadcrumb">Coin</span>
                     </div>
                     <div class="page-header-action">
                         <a href="#rank" class="page-action-btn">
@@ -754,41 +754,41 @@
                 </div>
             </div>
             
-            <!-- Achievement Stats -->
-            <div class="achievement-detail-stats">
-                <div class="achievement-stat-card">
-                    <div class="achievement-stat-icon">✅</div>
-                    <div class="achievement-stat-content">
-                        <div class="achievement-stat-value" id="achievementRankedCount">0</div>
-                        <div class="achievement-stat-label">Ranked</div>
+            <!-- Coin Stats -->
+            <div class="coin-detail-stats">
+                <div class="coin-stat-card">
+                    <div class="coin-stat-icon">✅</div>
+                    <div class="coin-stat-content">
+                        <div class="coin-stat-value" id="coinRankedCount">0</div>
+                        <div class="coin-stat-label">Ranked</div>
                     </div>
                 </div>
-                <div class="achievement-stat-card">
-                    <div class="achievement-stat-icon">🔒</div>
-                    <div class="achievement-stat-content">
-                        <div class="achievement-stat-value" id="achievementUnrankedCount">0</div>
-                        <div class="achievement-stat-label">Not Ranked</div>
+                <div class="coin-stat-card">
+                    <div class="coin-stat-icon">🔒</div>
+                    <div class="coin-stat-content">
+                        <div class="coin-stat-value" id="coinUnrankedCount">0</div>
+                        <div class="coin-stat-label">Not Ranked</div>
                     </div>
                 </div>
-                <div class="achievement-stat-card">
-                    <div class="achievement-stat-icon">📊</div>
-                    <div class="achievement-stat-content">
-                        <div class="achievement-stat-value" id="achievementProgressPercentage">0%</div>
-                        <div class="achievement-stat-label">Progress</div>
+                <div class="coin-stat-card">
+                    <div class="coin-stat-icon">📊</div>
+                    <div class="coin-stat-content">
+                        <div class="coin-stat-value" id="coinProgressPercentage">0%</div>
+                        <div class="coin-stat-label">Progress</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Products Grid (for collection achievements) -->
-            <div class="achievement-products-container" id="achievementProductsContainer">
-                <div id="achievementProductsGrid" class="achievement-products-grid">
+            <!-- Products Grid (for collection coins) -->
+            <div class="coin-products-container" id="coinProductsContainer">
+                <div id="coinProductsGrid" class="coin-products-grid">
                     <div class="loading">Loading products...</div>
                 </div>
             </div>
             
-            <!-- Engagement Progress (for engagement achievements) -->
-            <div class="achievement-engagement-container" id="achievementEngagementContainer" style="display: none;">
-                <div id="achievementEngagementDetails"></div>
+            <!-- Engagement Progress (for engagement coins) -->
+            <div class="coin-engagement-container" id="coinEngagementContainer" style="display: none;">
+                <div id="coinEngagementDetails"></div>
             </div>
         </div>
 
@@ -1785,7 +1785,7 @@
     
     <!-- Page Scripts -->
     <script src="js/pages/coinbook.js"></script>
-    <script src="js/pages/achievementDetail.js"></script>
+    <script src="js/pages/coinDetail.js"></script>
     <script src="js/pages/toolsAdmin.js"></script>
     <script src="js/pages/tools.js"></script>
     
