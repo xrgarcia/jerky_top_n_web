@@ -11,11 +11,16 @@ function Nav() {
     return location.pathname === path ? 'active' : '';
   };
 
+  const getUserInitial = () => {
+    if (!user?.firstName) return 'U';
+    return user.firstName.charAt(0).toUpperCase();
+  };
+
   return (
     <nav className="main-nav">
       <div className="nav-container">
         <Link to="/" className="logo">
-          <img src="/logo.png" alt="Jerky Top N" className="logo-img" />
+          <img src="/favicon.png" alt="Jerky Top N" className="logo-img" />
         </Link>
 
         <div className="nav-links">
@@ -30,7 +35,7 @@ function Nav() {
               Rank
             </Link>
           )}
-          <Link to="/coinbook" className={`nav-link ${isActive('/coinbook')}`}>
+          <Link to="/coin-book" className={`nav-link ${isActive('/coin-book')}`}>
             Coin Book
           </Link>
           {isAuthenticated && (
@@ -47,14 +52,16 @@ function Nav() {
 
         <div className="nav-actions">
           {isAuthenticated ? (
-            <>
-              <Link to="/profile" className="nav-link">
-                {user?.first_name || 'Profile'}
-              </Link>
-              <button onClick={logout} className="nav-link logout-btn">
-                Logout
-              </button>
-            </>
+            <div className="user-actions">
+              <div className="user-profile">
+                <Link to="/profile" className="user-avatar" title={`${user?.firstName || 'User'} ${user?.lastName || ''}`}>
+                  {getUserInitial()}
+                </Link>
+                <button onClick={logout} className="logout-btn" title="Logout">
+                  →
+                </button>
+              </div>
+            </div>
           ) : (
             <Link to="/login" className="nav-link">
               Login

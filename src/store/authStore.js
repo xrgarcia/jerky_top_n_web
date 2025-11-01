@@ -23,8 +23,8 @@ export const useAuthStore = create((set) => ({
       const response = await fetch('/api/customer/status', { credentials: 'include' });
       const data = await response.json();
       
-      if (data.authenticated && data.user) {
-        set({ user: data.user, isAuthenticated: true, isLoading: false });
+      if (data.authenticated && data.customer) {
+        set({ user: data.customer, isAuthenticated: true, isLoading: false });
       } else {
         set({ user: null, isAuthenticated: false, isLoading: false });
       }
