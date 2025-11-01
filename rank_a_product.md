@@ -7,7 +7,7 @@ A product ranking interface that allows users to create and manage their persona
 2. **Mobile Mode**: Modal-based interface with REPLACE/INSERT buttons
 
 ![Ranking Modal Interface](attached_assets/image_1762029801430.png)
-*Mobile-friendly ranking modal showing REPLACE and INSERT options for each position*
+*Example ranking modal showing REPLACE and INSERT options for each position*
 
 ---
 
@@ -24,80 +24,34 @@ A product ranking interface that allows users to create and manage their persona
 4. Modal closes, product list updates automatically
 5. Rankings auto-save in background (800ms debounce)
 
-#### Modal Structure & Styling
+#### Modal Structure
 
 **Modal Container:**
-- Background: White (#FFFFFF)
-- Border radius: 8px
 - Width: 95% on mobile, max-width 900px on desktop
 - Max-height: 90vh
-- Box shadow: 0 4px 20px rgba(0,0,0,0.15)
-- Backdrop: Semi-transparent dark overlay
+- Backdrop overlay for focus
 
 **Header:**
-- Background: Light gray (#f8f9fa)
-- Padding: 24px
-- Border bottom: 2px solid #e9ecef
 - Layout: Flexbox (space-between)
-- Product thumbnail: 60x60px, rounded 8px, border 2px solid #4a90e2
-- Product title: Bold, 24px, color #2c2c2c, truncated to ~40 chars
-- Close button: × icon, 28px, color #999, no border/background
+- Product thumbnail: 60x60px, rounded
+- Product title: Bold, truncated to ~40 chars
+- Close button: × icon
 
 **Body (Scrollable):**
-- Padding: 16px 24px
-- Background: White
+- Scrollable list of all positions
 - Overflow-y: Auto
 
 **Position Item:**
-- Background: White
-- Border: 1px solid #e9ecef
-- Border radius: 8px
-- Padding: 16px
-- Margin bottom: 12px
-
-**Position Header:**
-- Display: Flex (space-between, align-center)
-- Margin bottom: 12px
-
-**Position Number:**
-- Font size: 16px
-- Font weight: 600
-- Color: #6B8E23 (olive green)
-- Text: "Position #1", "Position #2", etc.
-
-**Status Badge:**
-- Padding: 4px 12px
-- Border radius: 12px
-- Font size: 12px
-- Font weight: 600
-- FILLED: Background #d4edda (light green), Color #155724 (dark green)
-- EMPTY: Background #e2e3e5 (light gray), Color #6c757d (dark gray)
-
-**Current Product Display (if filled):**
-- Layout: Flex (align-center, gap 12px)
-- Thumbnail: 50x50px, rounded 6px, border 1px solid #dee2e6
-- Product name: 14px, color #2c2c2c, truncated with ellipsis
+- Each position shows:
+  - Position number: "Position #1", "Position #2", etc.
+  - Status badge: "FILLED" or "EMPTY"
+  - Current product (if filled): Thumbnail + name
+  - Action buttons: REPLACE and INSERT
 
 **Action Buttons:**
-- Display: Flex (gap 12px)
 - Min-height: 44px (touch-friendly)
-- Border radius: 6px
-- Font weight: 600
-- Font size: 14px
-- Transition: All 0.2s ease
-
-**REPLACE Button:**
-- Background: #FFB800 (yellow/gold)
-- Color: #000000 (black text)
-- Border: None
-- Hover: Background #E6A600
-- Disabled: Opacity 0.5, cursor not-allowed
-
-**INSERT Button:**
-- Background: #6B8E23 (olive green)
-- Color: #FFFFFF (white text)
-- Border: None
-- Hover: Background #5A7A1F
+- REPLACE button: Disabled when position is empty
+- INSERT button: Always enabled
 
 #### REPLACE Action
 
@@ -150,10 +104,10 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 
 **Button States:**
 - REPLACE: 
-  - Enabled (filled slot): Yellow background #FFB800, black text, hover #E6A600
-  - Disabled (empty slot): Opacity 0.5, not-allowed cursor, no hover
+  - Enabled on filled slots
+  - Disabled on empty slots (opacity reduced, not-allowed cursor)
 - INSERT: 
-  - Always enabled: Green background #6B8E23, white text, hover #5A7A1F
+  - Always enabled
   - No disabled state
 
 **Close Methods:**
@@ -208,30 +162,21 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 ### Feature 3: Manage Your Rankings
 
 **Panel Header**
-- Background: Olive green (#6B8E23)
-- Title: "🏆 Your Rankings" (white text, 18px)
+- Title: "🏆 Your Rankings"
 - Action buttons: Toggle collapse, Clear All
 
 **Panel Sub-Header (Progress Indicator)**
-- Background: Light gray (#f5f5f5)
-- Border bottom: 1px solid #e0e0e0
-- Padding: 12px 20px
-- Min-height: 60px
-- Layout: Flex column with 8px gap (stacks progress text and progress bar vertically)
+- Layout: Flex column with gap (stacks progress text and progress bar vertically)
 
 **Progress Info Row:**
-- Contains progress text
 - Format: "X of Y ranked (Z%)"
 - Example: "5 of 150 ranked (3%)"
-- Font: 14px, weight 600, color #333
 - Updates in real-time as user ranks products
 
-**Progress Bar Row:**
-- Container: Gray background (#e0e0e0), 8px height, rounded 10px
-- Fill: Gradient (olive #6B8E23 → light green #8FBC8F)
+**Progress Bar:**
+- Visual bar showing completion percentage
 - Width: Animates from 0-100% based on percentage
-- Transition: 0.3s ease
-- Positioned below progress text with 8px gap
+- Smooth transition animation
 
 **Calculation:**
 - Ranked count: Number of filled slots
@@ -272,35 +217,22 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 ### Feature 4: Search & Browse Products
 
 **Panel Header**
-- Background: Olive green (#6B8E23)
-- Title: "🔍 Search Products" (white text, 18px)
+- Title: "🔍 Search Products"
 - Search controls: Input field + Search button
 
 **Panel Sub-Header (Available Count)**
-- Background: Light gray (#f5f5f5)
-- Border bottom: 1px solid #e0e0e0
-- Padding: 12px 20px
-- Layout: Flex column with 8px gap (matches rankings panel structure)
-
-**Available Info Row:**
-- Container class: `available-info`
-- Layout: Flex with space-between alignment and center vertical alignment
-- Gap: 10px
-- Contains two child elements: available count text (left) and helper text (right)
+- Layout: Flex with space-between alignment
 
 **Available Count Text:**
-- Element: `<span class="available-text">`
 - Format: "X available to rank"
 - Example: "145 available to rank"
-- Font: 14px, weight 600, color #333
 - Updates dynamically when products ranked/removed
+- Positioned on the left
 
 **Helper Text:**
-- Element: `<span class="helper-text">`
 - Text: "← Drag products to rank"
-- Font: 13px, italic, color #666
-- Desktop only (use CSS media query or conditional rendering to hide on mobile <768px)
-- Positioned on the right via parent's space-between
+- Desktop only (hide on mobile <768px)
+- Positioned on the right
 
 **Search Interface**
 - Search input with icon
@@ -1028,13 +960,10 @@ MODAL_MAX_WIDTH_PX = 900
 MODAL_MOBILE_BREAKPOINT_PX = 768
 PRODUCT_TITLE_MAX_CHARS = 40
 
-// Panel Styling
+// Panel Dimensions
 PANEL_HEADER_HEIGHT_PX = 60
 PANEL_SUB_HEADER_MIN_HEIGHT_PX = 60
 PROGRESS_BAR_HEIGHT_PX = 8
-PANEL_HEADER_BG = '#6B8E23'
-PANEL_SUB_HEADER_BG = '#f5f5f5'
-PROGRESS_BAR_GRADIENT = 'linear-gradient(90deg, #6B8E23 0%, #8FBC8F 100%)'
 ```
 
 ---
@@ -1067,30 +996,23 @@ The following features are documented in this requirements spec but **not yet im
 
 ---
 
-#### 2. Panel Headers & Sub-Headers Styling
+#### 2. Panel Sub-Headers
 **Status:** Partially Implemented  
 **Current Issues:**
-- Panel headers missing olive green background (#6B8E23)
-- Missing emoji icons in titles (🏆 Your Rankings, 🔍 Search Products)
-- Wrong title in search panel ("Available Products" vs "Search Products")
-- Sub-headers missing light gray background (#f5f5f5)
 
-**Rankings Panel Sub-Header Issues:**
+**Rankings Panel Sub-Header:**
 - Progress text format incorrect: shows "X of Y ranked" but missing total products and percentage
 - Current: "5 of 10 ranked" (using slot count)
 - Required: "5 of 150 ranked (3%)" (using total available products)
-- Progress bar missing gradient styling
 
-**Search Panel Sub-Header Issues:**
+**Search Panel Sub-Header:**
 - Entire sub-header section missing
-- No helper text "← Drag products to rank"
-- Available count in wrong location (should be in sub-header, not header)
+- No helper text "← Drag products to rank" (desktop only)
+- Available count should be in sub-header area
 
 **Files to Update:**
-- `src/components/rank/RankingsPanel.jsx` - Update header/sub-header structure
-- `src/components/rank/RankingsPanel.css` - Add proper colors and styling
+- `src/components/rank/RankingsPanel.jsx` - Update sub-header structure
 - `src/components/rank/SearchProductsPanel.jsx` - Add sub-header section
-- `src/components/rank/SearchProductsPanel.css` - Add sub-header styling
 
 ---
 
@@ -1178,7 +1100,7 @@ const percentage = totalProducts > 0
 
 **High Priority (Blocking UX Issues):**
 1. ✅ Ranking Modal - Critical for mobile usability
-2. ✅ Panel styling (colors, headers, sub-headers)
+2. ✅ Panel sub-headers (progress format, helper text)
 3. ✅ Progress calculation fix (shows wrong total)
 
 **Medium Priority (Polish & Completeness):**
@@ -1194,13 +1116,11 @@ const percentage = totalProducts > 0
 ### Implementation Checklist
 
 - [ ] Create `RankingModal` component with REPLACE/INSERT actions
-- [ ] Update panel headers with olive green background + emoji icons
 - [ ] Add sub-header to search panel with helper text
 - [ ] Fix rankings panel sub-header format (X of Y ranked Z%)
 - [ ] Fix progress calculation to use totalProducts
 - [ ] Add collapse toggle to rankings panel
 - [ ] Add page title and subtitle
-- [ ] Update all panel styling colors to match screenshot
 - [ ] Add enhanced drag & drop animations
 - [ ] Test modal on mobile devices (touch interactions)
 - [ ] Test all features match legacy implementation behavior
