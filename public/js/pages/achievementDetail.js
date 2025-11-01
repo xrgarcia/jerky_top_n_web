@@ -12,6 +12,27 @@ let achievementProgress = null;
 let achievementMetadata = null;
 
 /**
+ * Reset grid container classes for the appropriate layout type
+ * @param {string} layoutType - 'default', 'static', 'dynamic', etc.
+ */
+function resetGridContainerClasses(layoutType = 'default') {
+  const grid = document.getElementById('achievementProductsGrid');
+  if (!grid) return;
+  
+  // Remove all layout-specific classes
+  grid.classList.remove('achievement-products-grid', 'static-collection-layout', 
+    'dynamic-collection-layout', 'legacy-achievement-layout');
+  
+  // Apply the appropriate class for this layout
+  if (layoutType === 'static') {
+    grid.classList.add('static-collection-layout');
+  } else if (layoutType === 'default') {
+    grid.classList.add('achievement-products-grid');
+  }
+  // Other layout types handle their own container classes via innerHTML
+}
+
+/**
  * Initialize Achievement Detail page
  */
 window.initAchievementDetailPage = async function(achievementCode) {
@@ -253,6 +274,7 @@ function renderEngagementProgress() {
  * Render products grid (for collection achievements)
  */
 function renderProducts() {
+  resetGridContainerClasses('default');
   const grid = document.getElementById('achievementProductsGrid');
   
   if (achievementProducts.length === 0) {
@@ -290,6 +312,7 @@ function renderProducts() {
  * Render Dynamic Collection (Animal Categories with Tier Progression)
  */
 function renderDynamicCollection() {
+  resetGridContainerClasses('default');
   const grid = document.getElementById('achievementProductsGrid');
   const animalCategories = achievementMetadata.animalCategories || [];
   const currentTier = achievementStats.currentTier || null;
@@ -387,6 +410,7 @@ function renderDynamicCollection() {
  * Render Flavor Coin (Single Product Spotlight)
  */
 function renderFlavorCoin() {
+  resetGridContainerClasses('default');
   const grid = document.getElementById('achievementProductsGrid');
   
   if (achievementProducts.length === 0) {
@@ -458,6 +482,7 @@ function renderFlavorCoin() {
  * Render Hidden Collection (Mystery/Locked State)
  */
 function renderHiddenCollection() {
+  resetGridContainerClasses('default');
   const grid = document.getElementById('achievementProductsGrid');
   const isUnlocked = achievementMetadata.isUnlocked;
   
@@ -513,6 +538,7 @@ function renderHiddenCollection() {
  * Render Legacy Achievement (Simple Checklist Style)
  */
 function renderLegacyAchievement() {
+  resetGridContainerClasses('default');
   const grid = document.getElementById('achievementProductsGrid');
   
   grid.innerHTML = `
@@ -556,6 +582,7 @@ function renderLegacyAchievement() {
  * Render Static Collection (Enhanced Product Grid with Theme)
  */
 function renderStaticCollection() {
+  resetGridContainerClasses('static');
   const grid = document.getElementById('achievementProductsGrid');
   const theme = achievementMetadata.theme || achievementData.category;
   const percentage = achievementStats.percentage;
@@ -619,49 +646,47 @@ function renderStaticCollection() {
   }
   
   grid.innerHTML = `
-    <div class="static-collection-layout">
-      <div class="static-collection-header">
-        <div class="static-header-content">
-          <h2 class="static-title">${achievementData.name}</h2>
-          <p class="static-description">${achievementData.description}</p>
-          ${theme ? `<div class="static-theme-badge">${theme}</div>` : ''}
-        </div>
-        <div class="static-progress-circle">
-          <svg class="progress-ring" width="140" height="140">
-            <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"/>
-            <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"
-              stroke-dasharray="${2 * Math.PI * 60}"
-              stroke-dashoffset="${2 * Math.PI * 60 * (1 - percentage / 100)}"/>
-          </svg>
-          <div class="progress-ring-text">
-            <div class="progress-percentage">${percentage}%</div>
-            <div class="progress-label">Complete</div>
-          </div>
+    <div class="static-collection-header">
+      <div class="static-header-content">
+        <h2 class="static-title">${achievementData.name}</h2>
+        <p class="static-description">${achievementData.description}</p>
+        ${theme ? `<div class="static-theme-badge">${theme}</div>` : ''}
+      </div>
+      <div class="static-progress-circle">
+        <svg class="progress-ring" width="140" height="140">
+          <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"/>
+          <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"
+            stroke-dasharray="${2 * Math.PI * 60}"
+            stroke-dashoffset="${2 * Math.PI * 60 * (1 - percentage / 100)}"/>
+        </svg>
+        <div class="progress-ring-text">
+          <div class="progress-percentage">${percentage}%</div>
+          <div class="progress-label">Complete</div>
         </div>
       </div>
-      
-      ${motivationSection}
-      
-      <div class="static-products-grid achievement-products-grid">
-        ${achievementProducts.map((product, index) => {
-          const isNextUp = index === firstUnrankedIndex;
-          return `
-            <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'} ${isNextUp ? 'next-up' : ''}" onclick="navigateToProduct('${product.id}')">
-              <div class="achievement-product-image">
-                <img src="${product.image}" alt="${product.title}" loading="lazy">
-                ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : ''}
-                ${isNextUp ? '<div class="next-up-badge">👉 Next Up</div>' : ''}
-                ${!product.isRanked && !isNextUp ? '<div class="unranked-badge">Not Ranked</div>' : ''}
-                ${!product.isRanked ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
-              </div>
-              <div class="achievement-product-info">
-                <div class="achievement-product-title">${product.title}</div>
-                <div class="achievement-product-price">$${product.price}</div>
-              </div>
+    </div>
+    
+    ${motivationSection}
+    
+    <div class="static-products-grid">
+      ${achievementProducts.map((product, index) => {
+        const isNextUp = index === firstUnrankedIndex;
+        return `
+          <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'} ${isNextUp ? 'next-up' : ''}" onclick="navigateToProduct('${product.id}')">
+            <div class="achievement-product-image">
+              <img src="${product.image}" alt="${product.title}" loading="lazy">
+              ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : ''}
+              ${isNextUp ? '<div class="next-up-badge">👉 Next Up</div>' : ''}
+              ${!product.isRanked && !isNextUp ? '<div class="unranked-badge">Not Ranked</div>' : ''}
+              ${!product.isRanked ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
             </div>
-          `;
-        }).join('')}
-      </div>
+            <div class="achievement-product-info">
+              <div class="achievement-product-title">${product.title}</div>
+              <div class="achievement-product-price">$${product.price}</div>
+            </div>
+          </div>
+        `;
+      }).join('')}
     </div>
   `;
 }
