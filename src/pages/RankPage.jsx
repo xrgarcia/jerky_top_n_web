@@ -1,9 +1,22 @@
+import './RankPage.css';
+
 export default function RankPage() {
   return (
     <div className="rank-page">
-      <div className="container">
-        <h1>Rank Products</h1>
-        <p>Rank page - ready for implementation</p>
+      <div className="rank-container">
+        <div className="rank-column ranks-column">
+          <h2>Your Rankings</h2>
+          <div className="placeholder-content">
+            ranks go here
+          </div>
+        </div>
+        
+        <div className="rank-column products-column">
+          <h2>Available Products</h2>
+          <div className="placeholder-content">
+            products go here
+          </div>
+        </div>
       </div>
     </div>
   );

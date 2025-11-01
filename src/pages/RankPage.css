@@ -1,8 +1,48 @@
 .rank-page {
   padding: 2rem;
+  min-height: calc(100vh - 200px);
 }
 
-.rank-page .container {
-  max-width: 1200px;
+.rank-container {
+  max-width: 1400px;
   margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  height: 100%;
+}
+
+.rank-column {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-height: 600px;
+}
+
+.rank-column h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.5rem;
+  color: #2c3e50;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.placeholder-content {
+  color: #95a5a6;
+  font-size: 1.1rem;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+/* Responsive design */
+@media (max-width: 968px) {
+  .rank-container {
+    grid-template-columns: 1fr;
+  }
+  
+  .rank-page {
+    padding: 1rem;
+  }
 }
