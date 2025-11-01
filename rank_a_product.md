@@ -24,21 +24,80 @@ A product ranking interface that allows users to create and manage their persona
 4. Modal closes, product list updates automatically
 5. Rankings auto-save in background (800ms debounce)
 
-#### Modal Structure
+#### Modal Structure & Styling
 
-**Header**
-- Product thumbnail (60x60px, rounded with blue border)
-- Product title (truncated to 40 chars on small screens)
-- Close button (× icon)
+**Modal Container:**
+- Background: White (#FFFFFF)
+- Border radius: 8px
+- Width: 95% on mobile, max-width 900px on desktop
+- Max-height: 90vh
+- Box shadow: 0 4px 20px rgba(0,0,0,0.15)
+- Backdrop: Semi-transparent dark overlay
 
-**Body (Scrollable List)**
-For each ranking position (1 through N):
-- Position number: "Position #1", "Position #2", etc.
-- Status badge: "FILLED" (green) or "EMPTY" (gray)
-- If filled: Shows current product thumbnail + name
-- Action buttons:
-  - **REPLACE** (yellow, disabled if empty)
-  - **INSERT** (green, always enabled)
+**Header:**
+- Background: Light gray (#f8f9fa)
+- Padding: 24px
+- Border bottom: 2px solid #e9ecef
+- Layout: Flexbox (space-between)
+- Product thumbnail: 60x60px, rounded 8px, border 2px solid #4a90e2
+- Product title: Bold, 24px, color #2c2c2c, truncated to ~40 chars
+- Close button: × icon, 28px, color #999, no border/background
+
+**Body (Scrollable):**
+- Padding: 16px 24px
+- Background: White
+- Overflow-y: Auto
+
+**Position Item:**
+- Background: White
+- Border: 1px solid #e9ecef
+- Border radius: 8px
+- Padding: 16px
+- Margin bottom: 12px
+
+**Position Header:**
+- Display: Flex (space-between, align-center)
+- Margin bottom: 12px
+
+**Position Number:**
+- Font size: 16px
+- Font weight: 600
+- Color: #6B8E23 (olive green)
+- Text: "Position #1", "Position #2", etc.
+
+**Status Badge:**
+- Padding: 4px 12px
+- Border radius: 12px
+- Font size: 12px
+- Font weight: 600
+- FILLED: Background #d4edda (light green), Color #155724 (dark green)
+- EMPTY: Background #e2e3e5 (light gray), Color #6c757d (dark gray)
+
+**Current Product Display (if filled):**
+- Layout: Flex (align-center, gap 12px)
+- Thumbnail: 50x50px, rounded 6px, border 1px solid #dee2e6
+- Product name: 14px, color #2c2c2c, truncated with ellipsis
+
+**Action Buttons:**
+- Display: Flex (gap 12px)
+- Min-height: 44px (touch-friendly)
+- Border radius: 6px
+- Font weight: 600
+- Font size: 14px
+- Transition: All 0.2s ease
+
+**REPLACE Button:**
+- Background: #FFB800 (yellow/gold)
+- Color: #000000 (black text)
+- Border: None
+- Hover: Background #E6A600
+- Disabled: Opacity 0.5, cursor not-allowed
+
+**INSERT Button:**
+- Background: #6B8E23 (olive green)
+- Color: #FFFFFF (white text)
+- Border: None
+- Hover: Background #5A7A1F
 
 #### REPLACE Action
 
@@ -90,8 +149,12 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 #### Modal Interactions
 
 **Button States:**
-- REPLACE: Disabled on empty positions, yellow color (#FFB800)
-- INSERT: Always enabled, green color (#6B8E23)
+- REPLACE: 
+  - Enabled (filled slot): Yellow background #FFB800, black text, hover #E6A600
+  - Disabled (empty slot): Opacity 0.5, not-allowed cursor, no hover
+- INSERT: 
+  - Always enabled: Green background #6B8E23, white text, hover #5A7A1F
+  - No disabled state
 
 **Close Methods:**
 - Click × button
@@ -105,8 +168,17 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 - Enter/Space activates buttons
 
 **Responsive:**
-- Mobile (<768px): 95% width, buttons stack vertically, 44px min touch target
-- Desktop (≥768px): 900px max width, buttons side-by-side
+- Mobile (<768px): 
+  - Modal width: 95%
+  - Buttons stack vertically (full width)
+  - Min touch target: 44px height
+  - Padding: 16px
+  - Font sizes: Slightly smaller for compact display
+- Desktop (≥768px): 
+  - Modal max-width: 900px
+  - Buttons side-by-side (equal width)
+  - Padding: 24px
+  - Hover states visible
 
 ---
 
