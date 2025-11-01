@@ -20,6 +20,12 @@ body.page-transitioning #heroSection {
     display: none !important;
 }
 
+/* Maintain minimum height during transitions to prevent footer flash */
+body.page-transitioning main,
+body.app-loading main {
+    min-height: 80vh;
+}
+
 /* Smooth fade-in for page content */
 .page-content {
     animation: fadeIn 0.15s ease-in;
