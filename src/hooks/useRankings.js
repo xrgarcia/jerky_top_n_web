@@ -345,8 +345,8 @@ class RankingSaveQueue {
         this.setSaveStatus('error');
         this.setSaveMessage('❌ Save failed after 3 attempts');
         console.error('❌ Max retries exceeded for operation:', operation.operationId);
-        // Don't leave failed operations in queue forever - mark them as failed
-        await this.persistentQueue.markFailed(operation.operationId, error.message);
+        // Remove failed operations from queue to prevent endless retry UI
+        await this.persistentQueue.markComplete(operation.operationId);
       }
     } finally {
       this.activeNetworkSave = false;
