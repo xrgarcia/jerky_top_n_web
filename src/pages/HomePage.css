@@ -1,0 +1,194 @@
+.home-page {
+  background: #f5f3ed;
+}
+
+.hero-section {
+  background: linear-gradient(135deg, #6B8E23, #8FBC8F);
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero-section h1 {
+  font-size: 3em;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.hero-subtitle {
+  font-size: 1.3em;
+  margin-bottom: 40px;
+  opacity: 0.95;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 25px 40px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  min-width: 150px;
+}
+
+.stat-value {
+  font-size: 2.5em;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.stat-label {
+  font-size: 0.9em;
+  opacity: 0.9;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.home-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 30px;
+}
+
+.home-card {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.home-card.full-width {
+  grid-column: 1 / -1;
+}
+
+.card-title {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 2px solid #6B8E23;
+  padding-bottom: 10px;
+}
+
+.rankers-list,
+.products-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.ranker-item,
+.product-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.ranker-item:hover,
+.product-item:hover {
+  background: #f0f0f0;
+}
+
+.ranker-rank,
+.product-rank {
+  font-weight: 700;
+  color: #6B8E23;
+  min-width: 40px;
+}
+
+.ranker-name,
+.product-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.ranker-score,
+.product-avg {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.achievements-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.achievement-icon {
+  font-size: 1.8em;
+  min-width: 40px;
+  text-align: center;
+}
+
+.achievement-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.achievement-user {
+  font-weight: 600;
+  color: #333;
+}
+
+.achievement-name {
+  flex: 1;
+  color: #666;
+}
+
+.achievement-time {
+  font-size: 0.85em;
+  color: #999;
+}
+
+.loading,
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  font-size: 1.2em;
+  color: #666;
+}
+
+.error {
+  color: #e74c3c;
+}
+
+@media (max-width: 768px) {
+  .home-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-section h1 {
+    font-size: 2em;
+  }
+
+  .hero-stats {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

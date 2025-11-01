@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import { useSocket } from '../../hooks/useSocket';
 import Header from './Header';
 import Nav from './Nav';
 import Footer from './Footer';
@@ -19,6 +20,9 @@ import './AppLayout.css';
 
 function AppLayout() {
   const { checkAuth } = useAuthStore();
+  
+  // Initialize WebSocket connection for real-time updates
+  useSocket();
 
   useEffect(() => {
     checkAuth();
