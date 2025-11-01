@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { getPersistentQueue } from '../utils/PersistentQueue';
+import { getPersistentQueue, PersistentQueue } from '../utils/PersistentQueue';
 import { apiClient } from '../utils/api';
 
 export function useMyRankings() {
@@ -227,12 +227,21 @@ class RankingSaveQueue {
       if (pending.length > 0) {
         console.log(`🔄 Found ${pending.length} pending operation(s) from previous session`);
         
-        const { PersistentQueue } = await import('../utils/PersistentQueue');
         let validOps = [];
         let invalidOps = [];
         
         for (const operation of pending) {
+          console.log(`🔍 Validating operation ${operation.operationId?.substring(0, 8)}:`, {
+            hasOperationId: !!operation.operationId,
+            hasRankings: !!operation.rankings,
+            isArray: Array.isArray(operation.rankings),
+            rankingsLength: operation.rankings?.length,
+            firstRanking: operation.rankings?.[0]
+          });
+          
           const validation = PersistentQueue.validateOperation(operation);
+          console.log(`🔍 Validation result:`, validation);
+          
           if (validation.valid) {
             validOps.push(operation);
           } else {
@@ -256,7 +265,7 @@ class RankingSaveQueue {
         }
       }
     } catch (error) {
-      console.error('❌ Error processing pending operations:', error.message || error);
+      console.error('❌ Error processing pending operations:', error.message || String(error));
     }
   }
 
