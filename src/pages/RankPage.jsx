@@ -1,128 +1,154 @@
-import React, { useState } from 'react';
-import { useRankableProducts } from '../hooks/useProducts';
-import { useMyRankings, useRankProduct } from '../hooks/useRankings';
+import { useEffect, useState } from 'react';
+import { useNavigate, useBlocker } from 'react-router-dom';
+import { ProgressWidget } from '../components/rank/ProgressWidget';
+import { RankingsPanel } from '../components/rank/RankingsPanel';
+import { SearchProductsPanel } from '../components/rank/SearchProductsPanel';
+import { useRankings } from '../hooks/useRankings';
+import { useRankableProducts } from '../hooks/useRankableProducts';
 import './RankPage.css';
 
-function RankPage() {
-  const [search, setSearch] = useState('');
-  const { data: products, isLoading: productsLoading } = useRankableProducts({ excludeRanked: true });
-  const { data: myRankings, isLoading: rankingsLoading } = useMyRankings();
-  const rankProduct = useRankProduct();
+export default function RankPage() {
+  const navigate = useNavigate();
+  const [isNavigating, setIsNavigating] = useState(false);
+  const [navigationTarget, setNavigationTarget] = useState(null);
+  
+  const {
+    rankings,
+    updateRankings,
+    loadRankings,
+    clearAllRankings,
+    saveStatus,
+    saveMessage,
+    waitForPendingSaves,
+    hasPendingSaves
+  } = useRankings();
 
-  const isLoading = productsLoading || rankingsLoading;
+  const rankedProductIds = rankings.map(r => r.productData?.productId).filter(Boolean);
+  const {
+    products,
+    loading,
+    availableCount,
+    searchTerm,
+    handleSearch,
+    reloadProducts
+  } = useRankableProducts(rankedProductIds);
 
-  const filteredProducts = products?.products?.filter(p => 
-    p.title.toLowerCase().includes(search.toLowerCase())
-  ) || [];
+  const blocker = useBlocker(
+    ({ currentLocation, nextLocation }) =>
+      hasPendingSaves() && currentLocation.pathname !== nextLocation.pathname
+  );
 
-  const [rankingStatus, setRankingStatus] = useState({ message: '', type: '' });
+  useEffect(() => {
+    loadRankings();
+  }, [loadRankings]);
 
-  const handleRank = async (productId, position) => {
-    setRankingStatus({ message: '', type: '' });
-    try {
-      await rankProduct.mutateAsync({ productId, position });
-      setRankingStatus({ message: 'Product ranked successfully!', type: 'success' });
-      setTimeout(() => setRankingStatus({ message: '', type: '' }), 3000);
-    } catch (error) {
-      setRankingStatus({ 
-        message: error.message || 'Failed to rank product. Please try again.', 
-        type: 'error' 
+  useEffect(() => {
+    reloadProducts();
+  }, [rankedProductIds.length, reloadProducts]);
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (hasPendingSaves()) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [hasPendingSaves]);
+
+  useEffect(() => {
+    if (blocker.state === 'blocked') {
+      setIsNavigating(true);
+      waitForPendingSaves().then(() => {
+        setIsNavigating(false);
+        blocker.proceed();
       });
+    }
+  }, [blocker, waitForPendingSaves]);
+
+  const handleRankProduct = (product) => {
+    const nextRank = rankings.length + 1;
+    const newRankings = [
+      ...rankings,
+      {
+        ranking: nextRank,
+        productData: product
+      }
+    ];
+    updateRankings(newRankings);
+  };
+
+  const handleNavigateAway = async (path) => {
+    if (hasPendingSaves()) {
+      setIsNavigating(true);
+      setNavigationTarget(path);
+      await waitForPendingSaves();
+      setIsNavigating(false);
+      setNavigationTarget(null);
+      navigate(path);
+    } else {
+      navigate(path);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="rank-page">
-        <div className="rank-container">
-          <div className="loading">Loading rankable products...</div>
-        </div>
-      </div>
-    );
-  }
+  const handleBrowseAllClick = () => {
+    handleNavigateAway('/products');
+  };
 
   return (
     <div className="rank-page">
-      <div className="rank-container">
-        <div className="rank-header">
-          <h1>🥩 Rank Products</h1>
-          <p>Rank your purchased jerky products</p>
+      {isNavigating && (
+        <div className="navigation-guard-overlay">
+          <div className="navigation-guard-modal">
+            <div className="spinner-large"></div>
+            <h3>Saving your rankings...</h3>
+            <p>{saveMessage || 'Please wait while we save your changes'}</p>
+            {saveStatus === 'error' && (
+              <div className="error-message">
+                Save failed. Please try again or contact support.
+              </div>
+            )}
+          </div>
         </div>
-
-        <div className="current-rankings">
-          <h2>Your Current Rankings</h2>
-          {myRankings && myRankings.length > 0 ? (
-            <div className="rankings-list">
-              {myRankings.slice(0, 5).map(ranking => (
-                <div key={ranking.id} className="ranking-item">
-                  <span className="rank-badge">#{ranking.position}</span>
-                  <span className="product-name">{ranking.product_title}</span>
-                </div>
-              ))}
-              {myRankings.length > 5 && (
-                <p className="more-rankings">...and {myRankings.length - 5} more</p>
-              )}
-            </div>
-          ) : (
-            <p className="no-rankings">No rankings yet</p>
-          )}
+      )}
+      
+      <div className="rank-page-header">
+        <div className="breadcrumbs">
+          <span className="breadcrumb" onClick={() => handleNavigateAway('/')}>Home</span>
+          <span className="breadcrumb-separator">/</span>
+          <span className="breadcrumb-current">Rank Products</span>
         </div>
+        <button className="browse-all-btn" onClick={handleBrowseAllClick}>
+          Browse All Products
+        </button>
+      </div>
 
-        <div className="search-section">
-          <h2>Add New Ranking</h2>
-          {rankingStatus.message && (
-            <div className={`status-message ${rankingStatus.type}`}>
-              {rankingStatus.message}
-            </div>
-          )}
-          <input
-            type="text"
-            placeholder="Search products to rank..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="search-input"
+      <ProgressWidget />
+
+      <div className="rank-content-grid">
+        <div className="rank-left-panel">
+          <RankingsPanel
+            rankings={rankings}
+            updateRankings={updateRankings}
+            saveStatus={saveStatus}
+            saveMessage={saveMessage}
+            onClearAll={clearAllRankings}
           />
         </div>
 
-        <div className="products-grid">
-          {filteredProducts.map(product => (
-            <div key={product.id} className="product-card">
-              {product.image && (
-                <img src={product.image} alt={product.title} className="product-image" />
-              )}
-              <h3 className="product-title">{product.title}</h3>
-              
-              <div className="rank-actions">
-                <label>Rank Position:</label>
-                <select 
-                  onChange={(e) => {
-                    const position = parseInt(e.target.value);
-                    if (position > 0) {
-                      handleRank(product.id, position);
-                      e.target.value = '';
-                    }
-                  }}
-                  defaultValue=""
-                  disabled={rankProduct.isPending}
-                >
-                  <option value="">Select position...</option>
-                  {[...Array(20)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>#{i + 1}</option>
-                  ))}
-                </select>
-              </div>
-            </div>
-          ))}
+        <div className="rank-right-panel">
+          <SearchProductsPanel
+            products={products}
+            availableCount={availableCount}
+            loading={loading}
+            searchTerm={searchTerm}
+            onSearch={handleSearch}
+            onRankProduct={handleRankProduct}
+          />
         </div>
-
-        {filteredProducts.length === 0 && (
-          <div className="no-products">
-            {search ? 'No products found matching your search' : 'No products available to rank'}
-          </div>
-        )}
       </div>
     </div>
   );
 }
-
-export default RankPage;

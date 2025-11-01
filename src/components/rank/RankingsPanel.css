@@ -1,0 +1,251 @@
+.rankings-panel {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  height: fit-content;
+  position: sticky;
+  top: 20px;
+}
+
+.rankings-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.rankings-header h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0;
+}
+
+.rankings-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.save-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.save-indicator.idle {
+  display: none;
+}
+
+.save-indicator.saving {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.save-indicator.saved {
+  background: #d4edda;
+  color: #155724;
+}
+
+.save-indicator.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.spinner {
+  width: 12px;
+  height: 12px;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.clear-all-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clear-all-btn:hover {
+  background: #c82333;
+}
+
+.rankings-progress {
+  margin-bottom: 20px;
+}
+
+.progress-text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.progress-bar-container {
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7b8b52, #9fad7c);
+  transition: width 0.3s ease;
+}
+
+.ranking-slots-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 600px;
+  overflow-y: auto;
+  padding-right: 5px;
+}
+
+.ranking-slots-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.ranking-slots-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.ranking-slots-container::-webkit-scrollbar-thumb {
+  background: #7b8b52;
+  border-radius: 3px;
+}
+
+.ranking-slot {
+  background: #f9f9f9;
+  border: 2px dashed #d0d0d0;
+  border-radius: 8px;
+  padding: 12px;
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.ranking-slot.filled {
+  background: white;
+  border: 2px solid #7b8b52;
+  cursor: grab;
+}
+
+.ranking-slot.filled:active {
+  cursor: grabbing;
+}
+
+.ranking-slot.drag-over {
+  background: #f0f7e8;
+  border-color: #7b8b52;
+  border-style: solid;
+  transform: scale(1.02);
+}
+
+.slot-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: #7b8b52;
+  min-width: 30px;
+  text-align: center;
+}
+
+.slot-placeholder {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+}
+
+.slot-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.product-thumbnail {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+.product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.product-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2c2c2c;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-vendor {
+  font-size: 12px;
+  color: #666;
+}
+
+.remove-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  flex-shrink: 0;
+}
+
+.remove-btn:hover {
+  background: #c82333;
+}
+
+@media (max-width: 1024px) {
+  .rankings-panel {
+    position: static;
+  }
+}
+
+@media (max-width: 768px) {
+  .rankings-panel {
+    padding: 15px;
+  }
+  
+  .rankings-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .product-title {
+    font-size: 13px;
+  }
+}
