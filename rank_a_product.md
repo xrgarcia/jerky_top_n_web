@@ -207,8 +207,39 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 
 ### Feature 3: Manage Your Rankings
 
+**Panel Header**
+- Background: Olive green (#6B8E23)
+- Title: "🏆 Your Rankings" (white text, 18px)
+- Action buttons: Toggle collapse, Clear All
+
+**Panel Sub-Header (Progress Indicator)**
+- Background: Light gray (#f5f5f5)
+- Border bottom: 1px solid #e0e0e0
+- Padding: 12px 20px
+- Min-height: 60px
+- Layout: Flex column with 8px gap (stacks progress text and progress bar vertically)
+
+**Progress Info Row:**
+- Contains progress text
+- Format: "X of Y ranked (Z%)"
+- Example: "5 of 150 ranked (3%)"
+- Font: 14px, weight 600, color #333
+- Updates in real-time as user ranks products
+
+**Progress Bar Row:**
+- Container: Gray background (#e0e0e0), 8px height, rounded 10px
+- Fill: Gradient (olive #6B8E23 → light green #8FBC8F)
+- Width: Animates from 0-100% based on percentage
+- Transition: 0.3s ease
+- Positioned below progress text with 8px gap
+
+**Calculation:**
+- Ranked count: Number of filled slots
+- Total count: Total products available to user
+- Percentage: (ranked / total) × 100
+
 **View Current Rankings**
-- Left panel shows numbered slots (1, 2, 3...)
+- Numbered slots below sub-header (1, 2, 3...)
 - Initial slots: 10
 - Auto-expands: +5 slots when filling within 2 of max
 - Each filled slot shows:
@@ -239,6 +270,37 @@ Note: If #2 was filled, "Black Pepper" returns to available products
 ---
 
 ### Feature 4: Search & Browse Products
+
+**Panel Header**
+- Background: Olive green (#6B8E23)
+- Title: "🔍 Search Products" (white text, 18px)
+- Search controls: Input field + Search button
+
+**Panel Sub-Header (Available Count)**
+- Background: Light gray (#f5f5f5)
+- Border bottom: 1px solid #e0e0e0
+- Padding: 12px 20px
+- Layout: Flex column with 8px gap (matches rankings panel structure)
+
+**Available Info Row:**
+- Container class: `available-info`
+- Layout: Flex with space-between alignment and center vertical alignment
+- Gap: 10px
+- Contains two child elements: available count text (left) and helper text (right)
+
+**Available Count Text:**
+- Element: `<span class="available-text">`
+- Format: "X available to rank"
+- Example: "145 available to rank"
+- Font: 14px, weight 600, color #333
+- Updates dynamically when products ranked/removed
+
+**Helper Text:**
+- Element: `<span class="helper-text">`
+- Text: "← Drag products to rank"
+- Font: 13px, italic, color #666
+- Desktop only (use CSS media query or conditional rendering to hide on mobile <768px)
+- Positioned on the right via parent's space-between
 
 **Search Interface**
 - Search input with icon
@@ -965,4 +1027,12 @@ PROGRESS_CACHE_STALE_TIME_MS = 30000   // 30 sec
 MODAL_MAX_WIDTH_PX = 900
 MODAL_MOBILE_BREAKPOINT_PX = 768
 PRODUCT_TITLE_MAX_CHARS = 40
+
+// Panel Styling
+PANEL_HEADER_HEIGHT_PX = 60
+PANEL_SUB_HEADER_MIN_HEIGHT_PX = 60
+PROGRESS_BAR_HEIGHT_PX = 8
+PANEL_HEADER_BG = '#6B8E23'
+PANEL_SUB_HEADER_BG = '#f5f5f5'
+PROGRESS_BAR_GRADIENT = 'linear-gradient(90deg, #6B8E23 0%, #8FBC8F 100%)'
 ```
