@@ -195,29 +195,11 @@ export function useRankings() {
            (pendingRankingsSnapshotRef.current !== null);
   }, [hasPendingDebounce]);
 
-  const clearQueue = useCallback(async () => {
-    try {
-      const persistentQueue = getPersistentQueue();
-      await persistentQueue.clearAll();
-      setSaveStatus('idle');
-      setSaveMessage('');
-      if (saveQueueRef.current) {
-        saveQueueRef.current.hasPendingSaves = false;
-      }
-      console.log('✅ Manually cleared all pending operations from queue');
-      return true;
-    } catch (error) {
-      console.error('❌ Failed to clear queue:', error);
-      return false;
-    }
-  }, []);
-
   return {
     rankings,
     updateRankings,
     loadRankings,
     clearAllRankings,
-    clearQueue,
     saveStatus,
     saveMessage,
     waitForPendingSaves,

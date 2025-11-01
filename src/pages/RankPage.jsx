@@ -17,7 +17,6 @@ export default function RankPage() {
     updateRankings,
     loadRankings,
     clearAllRankings,
-    clearQueue,
     saveStatus,
     saveMessage,
     waitForPendingSaves,
