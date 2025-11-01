@@ -359,7 +359,13 @@ class RankingSaveQueue {
       }, 2000);
 
     } catch (error) {
-      console.error('❌ Save operation failed:', error.message || error);
+      console.error('❌ Save operation failed:', {
+        message: error.message,
+        name: error.name,
+        stack: error.stack,
+        fullError: error,
+        stringified: JSON.stringify(error)
+      });
       
       const retryCount = (operation.retryCount || 0) + 1;
       
