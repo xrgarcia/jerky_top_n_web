@@ -51,10 +51,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Page navigation functions
     async function showPage(page, updateURL = true) {
-        // Remove app-loading class on first page load (prevents flash on initial load)
-        // This must happen at the start to handle all code paths including early returns
-        document.body.classList.remove('app-loading');
-        
         const communityPage = document.getElementById('communityPage');
         const leaderboardPage = document.getElementById('leaderboardPage');
         const profilePage = document.getElementById('profilePage');
@@ -875,9 +871,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const page = fullPage.split('?')[0] || 'home';
         
         console.log(`🔀 Hash changed to: "${hash}" → Routing to: "${page}"`);
+        console.log(`🎭 Loading class status BEFORE showPage:`, document.body.classList.contains('app-loading'));
         
         // Show the page based on URL hash, don't update URL (prevent loop)
         showPage(page, false);
+        
+        console.log(`🎭 Loading class status AFTER showPage:`, document.body.classList.contains('app-loading'));
+        
+        // Remove app-loading class after first page is shown via routing (prevents flash on initial load)
+        // This ensures content only appears AFTER the correct page is determined from the hash
+        document.body.classList.remove('app-loading');
+        
+        console.log(`✅ Loading class removed - content now visible for page: "${page}"`);
     }
     
     // Handle URL hash changes (back/forward buttons, direct links)
