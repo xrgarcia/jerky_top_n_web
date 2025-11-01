@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../utils/api';
 import './RankPage.css';
 
 export default function RankPage() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -13,6 +15,13 @@ export default function RankPage() {
     setLoading(true);
     setError(null);
     setHasSearched(true);
+
+    // Update URL params
+    if (searchTerm.trim()) {
+      setSearchParams({ search: searchTerm.trim() });
+    } else {
+      setSearchParams({});
+    }
 
     try {
       const params = new URLSearchParams({
@@ -41,6 +50,7 @@ export default function RankPage() {
   };
 
   useEffect(() => {
+    // Load products on mount (using search term from URL if present)
     handleSearch();
   }, []);
 
