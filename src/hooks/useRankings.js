@@ -226,15 +226,37 @@ class RankingSaveQueue {
       const pending = await this.persistentQueue.getPending();
       if (pending.length > 0) {
         console.log(`🔄 Found ${pending.length} pending operation(s) from previous session`);
-        this.setSaveStatus('saving');
-        this.setSaveMessage(`⏳ Retrying ${pending.length} saved ranking(s)...`);
+        
+        const { PersistentQueue } = await import('../utils/PersistentQueue');
+        let validOps = [];
+        let invalidOps = [];
         
         for (const operation of pending) {
-          await this.retryOperation(operation);
+          const validation = PersistentQueue.validateOperation(operation);
+          if (validation.valid) {
+            validOps.push(operation);
+          } else {
+            invalidOps.push({ operation, reason: validation.reason });
+            console.warn(`🗑️ Purging invalid operation ${operation.operationId?.substring(0, 8)}: ${validation.reason}`);
+            await this.persistentQueue.markComplete(operation.operationId);
+          }
+        }
+        
+        if (invalidOps.length > 0) {
+          console.log(`✅ Auto-purged ${invalidOps.length} invalid operation(s) from queue`);
+        }
+        
+        if (validOps.length > 0) {
+          this.setSaveStatus('saving');
+          this.setSaveMessage(`⏳ Retrying ${validOps.length} saved ranking(s)...`);
+          
+          for (const operation of validOps) {
+            await this.retryOperation(operation);
+          }
         }
       }
     } catch (error) {
-      console.error('❌ Error processing pending operations:', error);
+      console.error('❌ Error processing pending operations:', error.message || error);
     }
   }
 
@@ -266,7 +288,7 @@ class RankingSaveQueue {
         await this.executeOperation(operation);
       }
     } catch (error) {
-      console.error('❌ Queue processing error:', error);
+      console.error('❌ Queue processing error:', error.message || error);
     } finally {
       this.processing = false;
       
@@ -320,7 +342,7 @@ class RankingSaveQueue {
       }, 2000);
 
     } catch (error) {
-      console.error('❌ Save operation failed:', error);
+      console.error('❌ Save operation failed:', error.message || error);
       
       const retryCount = (operation.retryCount || 0) + 1;
       

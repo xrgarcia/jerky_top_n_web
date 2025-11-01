@@ -46,10 +46,41 @@ class PersistentQueue {
   }
 
   /**
+   * Validate operation has required fields for ranking save
+   */
+  static validateOperation(operation) {
+    if (!operation.operationId) {
+      return { valid: false, reason: 'Missing operationId' };
+    }
+    
+    if (!operation.rankings || !Array.isArray(operation.rankings)) {
+      return { valid: false, reason: 'Missing or invalid rankings array' };
+    }
+    
+    for (let i = 0; i < operation.rankings.length; i++) {
+      const ranking = operation.rankings[i];
+      if (!ranking.productData || !ranking.productData.productId) {
+        return { valid: false, reason: `Ranking ${i} missing productData.productId` };
+      }
+      if (typeof ranking.ranking !== 'number') {
+        return { valid: false, reason: `Ranking ${i} missing ranking number` };
+      }
+    }
+    
+    return { valid: true };
+  }
+
+  /**
    * Add operation to persistent queue
    */
   async enqueue(operation) {
     await this.readyPromise;
+    
+    const validation = PersistentQueue.validateOperation(operation);
+    if (!validation.valid) {
+      console.error('❌ Invalid operation rejected:', validation.reason, operation);
+      throw new Error(`Invalid operation: ${validation.reason}`);
+    }
     
     return new Promise((resolve, reject) => {
       const transaction = this.db.transaction([this.storeName], 'readwrite');
@@ -66,7 +97,7 @@ class PersistentQueue {
       const request = store.put(operationData);
       
       request.onsuccess = () => {
-        console.log(`📝 Queued operation: ${operation.operationId.substring(0, 8)} for rank ${operation.ranking}`);
+        console.log(`📝 Queued operation: ${operation.operationId.substring(0, 8)}`);
         resolve(operationData);
       };
       
