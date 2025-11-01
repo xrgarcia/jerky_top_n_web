@@ -142,7 +142,6 @@ export default function RankPage() {
             saveStatus={saveStatus}
             saveMessage={saveMessage}
             onClearAll={clearAllRankings}
-            onClearQueue={clearQueue}
           />
         </div>
 
