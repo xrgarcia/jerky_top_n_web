@@ -687,11 +687,11 @@ app.get('/api/customer/magic-login', async (req, res, next) => {
       customerData: customer,
     });
 
-    // Set HTTP-only cookie for 90-day persistence
+    // Set HTTP-only cookie for 90-day persistence (SameSite=none required for iframe context)
     res.cookie('session_id', session.id, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
+      sameSite: 'none', // Required for cookies to work in iframe
       maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days in milliseconds
       path: '/'
     });
@@ -2350,11 +2350,11 @@ app.get('/api/customer/auth/callback', async (req, res) => {
         customerData: customer,
       });
 
-      // Set HTTP-only cookie for 90-day persistence
+      // Set HTTP-only cookie for 90-day persistence (SameSite=none required for iframe context)
       res.cookie('session_id', session.id, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax',
+        secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
+        sameSite: 'none', // Required for cookies to work in iframe
         maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days in milliseconds
         path: '/'
       });
