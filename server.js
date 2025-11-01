@@ -850,6 +850,7 @@ app.get('/api/customer/status', async (req, res) => {
     const sessionId = req.cookies.session_id || req.query.sessionId;
     
     if (!sessionId) {
+      console.log('⚠️  No session cookie found. Cookies:', Object.keys(req.cookies).length > 0 ? Object.keys(req.cookies) : 'none');
       return res.json({ authenticated: false });
     }
     

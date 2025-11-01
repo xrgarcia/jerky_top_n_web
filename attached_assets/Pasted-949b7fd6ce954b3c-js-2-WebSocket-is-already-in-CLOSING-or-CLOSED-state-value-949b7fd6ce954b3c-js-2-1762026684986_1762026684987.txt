@@ -1,0 +1,223 @@
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+VM4203 injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'ambient-light-sensor'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'battery'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'execution-while-not-rendered'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'execution-while-out-of-viewport'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'layout-animations'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'legacy-image-formats'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'navigation-override'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'oversized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'publickey-credentials'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'speaker-selection'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'unoptimized-images'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Unrecognized feature: 'unsized-media'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Allow attribute will take precedence over 'allowfullscreen'.Understand this warning
+workspace_iframe.html?initialPath=%2Frank&id=%3Ar4t9%3A:1 Allow attribute will take precedence over 'allowpaymentrequest'.Understand this warning
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+bootstrap-autofill-overlay.js:643 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+Ha.Node.appendChild @ bootstrap-autofill-overlay.js:643
+appendInlineMenuElementToDom @ bootstrap-autofill-overlay.js:3135
+(anonymous) @ bootstrap-autofill-overlay.js:3085
+fulfilled @ bootstrap-autofill-overlay.js:2760
+Promise.then
+step @ bootstrap-autofill-overlay.js:2762
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendButtonElement @ bootstrap-autofill-overlay.js:3079
+(anonymous) @ bootstrap-autofill-overlay.js:3070
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendInlineMenuElements @ bootstrap-autofill-overlay.js:3068
+appendAutofillInlineMenuToDom @ bootstrap-autofill-overlay.js:2787
+AutofillInit.handleExtensionMessage @ bootstrap-autofill-overlay.js:21947Understand this error
+bootstrap-autofill-overlay.js:643 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+Ha.Node.appendChild @ bootstrap-autofill-overlay.js:643
+appendInlineMenuElementToDom @ bootstrap-autofill-overlay.js:3135
+(anonymous) @ bootstrap-autofill-overlay.js:3085
+fulfilled @ bootstrap-autofill-overlay.js:2760
+Promise.then
+step @ bootstrap-autofill-overlay.js:2762
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendButtonElement @ bootstrap-autofill-overlay.js:3079
+(anonymous) @ bootstrap-autofill-overlay.js:3070
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendInlineMenuElements @ bootstrap-autofill-overlay.js:3068
+appendAutofillInlineMenuToDom @ bootstrap-autofill-overlay.js:2787
+AutofillInit.handleExtensionMessage @ bootstrap-autofill-overlay.js:21947Understand this error
+bootstrap-autofill-overlay.js:643 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+Ha.Node.appendChild @ bootstrap-autofill-overlay.js:643
+appendInlineMenuElementToDom @ bootstrap-autofill-overlay.js:3135
+(anonymous) @ bootstrap-autofill-overlay.js:3085
+fulfilled @ bootstrap-autofill-overlay.js:2760
+Promise.then
+step @ bootstrap-autofill-overlay.js:2762
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendButtonElement @ bootstrap-autofill-overlay.js:3079
+(anonymous) @ bootstrap-autofill-overlay.js:3070
+(anonymous) @ bootstrap-autofill-overlay.js:2763
+autofill_inline_menu_content_service_awaiter @ bootstrap-autofill-overlay.js:2759
+appendInlineMenuElements @ bootstrap-autofill-overlay.js:3068
+appendAutofillInlineMenuToDom @ bootstrap-autofill-overlay.js:2787
+AutofillInit.handleExtensionMessage @ bootstrap-autofill-overlay.js:21947Understand this error
+bootstrap-autofill-overlay.js:3087 Uncaught (in promise) NotSupportedError: Failed to execute 'showPopover' on 'HTMLElement': Not supported on elements that are not popovers.
+    at AutofillInlineMenuContentService.<anonymous> (bootstrap-autofill-overlay.js:3087:36)
+    at Generator.next (<anonymous>)
+    at fulfilled (bootstrap-autofill-overlay.js:2760:58)

@@ -16,7 +16,8 @@ A web application for ranking jerky products, providing a comprehensive and enga
     - `DEV_LOGIN_EMAIL` environment variable (email of user to impersonate)
   - **Restrictions**: Only works when `NODE_ENV != production` AND `REPLIT_DEPLOYMENT != 1` AND request from localhost socket
   - **Usage**: Visit `http://localhost:5000/dev/login/{YOUR_TOKEN}` → auto-creates 90-day session → redirects to app
-  - **Session Handling**: Creates httpOnly cookie + stores sessionId in localStorage via `#login-success` hash route
+  - **Session Handling**: Creates httpOnly cookie with `SameSite=none; Secure` (required for Replit iframe) + stores sessionId in localStorage via `#login-success` hash route
+  - **IMPORTANT**: If you previously logged in before November 1, 2025, clear your `session_id` cookie or visit dev login again to get new SameSite=none cookie
 
 ## Production Deployment
 - **Custom Domain**: rank.jerky.com
