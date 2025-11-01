@@ -303,7 +303,7 @@ class RankingSaveQueue {
         throw new Error(`Save failed: ${response.status}`);
       }
 
-      await this.persistentQueue.complete(operation.operationId);
+      await this.persistentQueue.markComplete(operation.operationId);
       
       this.setSaveStatus('saved');
       this.setSaveMessage('✓ Saved');
@@ -325,7 +325,7 @@ class RankingSaveQueue {
       const retryCount = (operation.retryCount || 0) + 1;
       
       if (retryCount < 3) {
-        await this.persistentQueue.update(operation.operationId, {
+        await this.persistentQueue.updateOperation(operation.operationId, {
           retryCount,
           lastAttempt: Date.now()
         });
