@@ -1,0 +1,147 @@
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 🔄 Found 2 pending operation(s) from previous session
+injected.js:27 ✅ Loaded 0 rankings
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ Save operation failed: TypeError: this.persistentQueue.complete is not a function
+    at Ux.executeOperation (index-DYf2iy8u.js:61:141724)
+    at async Ux.retryOperation (index-DYf2iy8u.js:61:142657)
+    at async Ux.processPendingOperations (index-DYf2iy8u.js:61:140616)
+(anonymous) @ injected.js:27
+executeOperation @ index-DYf2iy8u.js:61
+await in executeOperation
+retryOperation @ index-DYf2iy8u.js:61
+processPendingOperations @ index-DYf2iy8u.js:61
+await in processPendingOperations
+Ux @ index-DYf2iy8u.js:61
+(anonymous) @ index-DYf2iy8u.js:61
+Ll @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+om @ index-DYf2iy8u.js:48
+fr @ index-DYf2iy8u.js:48
+pm @ index-DYf2iy8u.js:48
+Gl @ index-DYf2iy8u.js:48
+rm @ index-DYf2iy8u.js:48
+im @ index-DYf2iy8u.js:48
+$h @ index-DYf2iy8u.js:48
+Jh @ index-DYf2iy8u.js:48
+mm @ index-DYf2iy8u.js:48
+Ne @ index-DYf2iy8u.js:25
+injected.js:27 ❌ Error processing pending operations: TypeError: this.persistentQueue.update is not a function
+    at Ux.executeOperation (index-DYf2iy8u.js:61:142233)
+    at async Ux.retryOperation (index-DYf2iy8u.js:61:142657)
+    at async Ux.processPendingOperations (index-DYf2iy8u.js:61:140616)
+(anonymous) @ injected.js:27
+processPendingOperations @ index-DYf2iy8u.js:61
+await in processPendingOperations
+Ux @ index-DYf2iy8u.js:61
+(anonymous) @ index-DYf2iy8u.js:61
+Ll @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+ba @ index-DYf2iy8u.js:48
+Qh @ index-DYf2iy8u.js:48
+om @ index-DYf2iy8u.js:48
+fr @ index-DYf2iy8u.js:48
+pm @ index-DYf2iy8u.js:48
+Gl @ index-DYf2iy8u.js:48
+rm @ index-DYf2iy8u.js:48
+im @ index-DYf2iy8u.js:48
+$h @ index-DYf2iy8u.js:48
+Jh @ index-DYf2iy8u.js:48
+mm @ index-DYf2iy8u.js:48
+Ne @ index-DYf2iy8u.js:25
+injected.js:27 ✅ Loaded 20 rankable products (page 1, hasMore: true)
+injected.js:27 ✅ WebSocket connected
