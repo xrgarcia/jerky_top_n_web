@@ -24,11 +24,13 @@ The application employs a modern web architecture for responsiveness, scalabilit
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
 - **Responsiveness**: Optimized for desktop, tablet, and mobile.
+- **Layout Width**: Expanded from 1200px to 1600px for better screen utilization on large displays.
 - **Hero Gamification Dashboard**: Homepage hero section features a live engagement dashboard with stats, social proof, user progress, and real-time updates via WebSockets.
 - **Minimal Page Headers**: Content pages utilize compact headers with breadcrumbs, title, subtitle, and action buttons.
 - **Unified Product Cards**: Consistent card styling across all product displays.
 - **Home Page Dashboard**: Dynamic Bento Box layout with interactive widgets.
 - **Interactive Ranking**: Supports drag-and-drop for desktop and dropdown selection for mobile with visual cues and badges.
+- **Achievement Detail Pages**: Enhanced gamification with animated progress rings, "Next Up" spotlight, motivational callouts, quick-rank buttons, and locked item effects for static collections.
 - **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking, with automatic data refresh on navigation.
 
 ### Technical Implementations

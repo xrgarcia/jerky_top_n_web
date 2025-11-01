@@ -435,7 +435,7 @@ body.login-page-active .hero {
 
 /* Main Content */
 .main-content {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     padding: 40px 20px;
 }
@@ -469,7 +469,7 @@ body.login-page-active .hero {
 }
 
 .page-header-content {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
