@@ -334,11 +334,19 @@ class RankingSaveQueue {
         console.log(`🔄 Retrying in ${backoffMs}ms (attempt ${retryCount + 1}/3)`);
         
         await new Promise(resolve => setTimeout(resolve, backoffMs));
-        await this.retryOperation(operation);
+        
+        // Fetch updated operation with new retryCount before retrying
+        const pending = await this.persistentQueue.getPending();
+        const updatedOp = pending.find(op => op.operationId === operation.operationId);
+        if (updatedOp) {
+          await this.retryOperation(updatedOp);
+        }
       } else {
         this.setSaveStatus('error');
         this.setSaveMessage('❌ Save failed after 3 attempts');
         console.error('❌ Max retries exceeded for operation:', operation.operationId);
+        // Don't leave failed operations in queue forever - mark them as failed
+        await this.persistentQueue.markFailed(operation.operationId, error.message);
       }
     } finally {
       this.activeNetworkSave = false;
