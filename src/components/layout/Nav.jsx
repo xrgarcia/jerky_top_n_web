@@ -73,7 +73,7 @@ function Nav() {
     <nav className="main-nav">
       <div className="nav-container">
         <a href="https://jerky.com" className="logo" target="_blank" rel="noopener noreferrer">
-          <img src="/favicon.png" alt="Jerky Top N" className="logo-img" />
+          <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_150x.png?v=1678208718" alt="Jerky.com Logo" className="logo-img" loading="eager" />
         </a>
 
         <div className="nav-links">
