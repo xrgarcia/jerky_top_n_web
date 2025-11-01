@@ -1108,6 +1108,232 @@
   margin-top: 4px;
 }
 
+/* Unified Hero Section for Static Collections */
+.static-hero {
+  background: white;
+  border-radius: 20px;
+  padding: 40px;
+  margin-bottom: 40px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.static-hero-discovery {
+  background: linear-gradient(135deg, #e0f2fe 0%, #f0f9ff 100%);
+  border-color: #93c5fd;
+  box-shadow: 0 4px 20px rgba(147, 197, 253, 0.2);
+}
+
+.static-hero-progress {
+  background: linear-gradient(135deg, #fff9e6 0%, #fffbeb 100%);
+  border-color: #fed7aa;
+  box-shadow: 0 4px 20px rgba(254, 215, 170, 0.2);
+}
+
+.static-hero-success {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border-color: #6ee7b7;
+  box-shadow: 0 4px 20px rgba(110, 231, 183, 0.2);
+}
+
+.hero-content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.hero-icon {
+  font-size: 64px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.hero-main {
+  flex: 1;
+}
+
+.hero-title {
+  font-size: 32px;
+  font-weight: 800;
+  margin: 0 0 12px 0;
+  line-height: 1.2;
+}
+
+.static-hero-discovery .hero-title {
+  color: #1e40af;
+}
+
+.static-hero-progress .hero-title {
+  color: #92400e;
+}
+
+.static-hero-success .hero-title {
+  color: #065f46;
+}
+
+.hero-message {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 0 0 20px 0;
+}
+
+.static-hero-discovery .hero-message {
+  color: #1e3a8a;
+}
+
+.static-hero-progress .hero-message {
+  color: #b45309;
+}
+
+.static-hero-success .hero-message {
+  color: #047857;
+}
+
+.hero-submessage {
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 0 0 20px 0;
+  font-style: italic;
+  opacity: 0.9;
+}
+
+/* Hero CTA Button */
+.hero-cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #7b8b52 0%, #98ab6a 100%);
+  color: white;
+  padding: 14px 32px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.4);
+  transition: all 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.hero-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(123, 139, 82, 0.5);
+  color: white;
+}
+
+.hero-cta-subtext {
+  font-size: 14px;
+  color: #1e40af;
+  font-style: italic;
+  margin: 0;
+  opacity: 0.8;
+}
+
+/* Hero Stats Row */
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-top: 20px;
+}
+
+.hero-stat {
+  text-align: center;
+}
+
+.hero-stat-value {
+  font-size: 36px;
+  font-weight: 800;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.static-hero-progress .hero-stat-value {
+  color: #92400e;
+}
+
+.static-hero-success .hero-stat-value {
+  color: #065f46;
+}
+
+.hero-stat-label {
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  opacity: 0.7;
+}
+
+/* Hero Badge (right side) */
+.hero-badge {
+  flex-shrink: 0;
+  position: relative;
+}
+
+.hero-progress-ring {
+  transform: rotate(-90deg);
+}
+
+.hero-progress-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
+
+.hero-progress-percentage {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.static-hero-progress .hero-progress-percentage {
+  color: #7b8b52;
+}
+
+.static-hero-success .hero-progress-percentage {
+  color: #10b981;
+}
+
+/* Collection Info Badge (for discovery state) */
+.hero-collection-info {
+  width: 120px;
+  height: 120px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border: 3px solid #93c5fd;
+}
+
+.collection-count {
+  font-size: 40px;
+  font-weight: 800;
+  color: #1e40af;
+  line-height: 1;
+}
+
+.collection-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e40af;
+  text-transform: uppercase;
+  margin-top: 4px;
+  letter-spacing: 0.5px;
+}
+
+.collection-sublabel {
+  font-size: 11px;
+  color: #1e3a8a;
+  opacity: 0.7;
+}
+
 .static-products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -1596,5 +1822,86 @@
   .next-up-badge {
     font-size: 11px;
     padding: 4px 10px;
+  }
+  
+  /* Unified Hero Mobile */
+  .static-hero {
+    flex-direction: column;
+    padding: 28px 24px;
+    gap: 24px;
+  }
+  
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+  }
+  
+  .hero-icon {
+    font-size: 52px;
+  }
+  
+  .hero-title {
+    font-size: 26px;
+  }
+  
+  .hero-message {
+    font-size: 16px;
+  }
+  
+  .hero-submessage {
+    font-size: 14px;
+  }
+  
+  .hero-cta-button {
+    font-size: 16px;
+    padding: 12px 28px;
+  }
+  
+  .hero-stats {
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  
+  .hero-stat-value {
+    font-size: 28px;
+  }
+  
+  .hero-stat-label {
+    font-size: 12px;
+  }
+  
+  .hero-progress-ring {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .hero-progress-ring circle {
+    r: 42;
+    cx: 50;
+    cy: 50;
+  }
+  
+  .hero-progress-percentage {
+    font-size: 26px;
+  }
+  
+  .hero-collection-info {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .collection-count {
+    font-size: 32px;
+  }
+  
+  .collection-label {
+    font-size: 11px;
+  }
+  
+  .collection-sublabel {
+    font-size: 10px;
   }
 }

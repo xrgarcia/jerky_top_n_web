@@ -145,9 +145,12 @@ function updateStats() {
 function renderContent() {
   const productsContainer = document.getElementById('achievementProductsContainer');
   const engagementContainer = document.getElementById('achievementEngagementContainer');
+  const statsContainer = document.querySelector('.achievement-detail-stats');
   
   if (achievementType === 'engagement') {
     // Engagement collection: Show engagement progress
+    // Show stats cards for engagement achievements
+    if (statsContainer) statsContainer.style.display = 'grid';
     if (productsContainer) productsContainer.style.display = 'none';
     if (engagementContainer) {
       engagementContainer.style.display = 'block';
@@ -161,6 +164,17 @@ function renderContent() {
       
       // Route to specific collection type renderer
       const collectionType = achievementData.collectionType;
+      
+      // Show stats cards by default for most collection types
+      if (statsContainer) {
+        if (collectionType === 'static_collection' || collectionType === 'custom_product_list') {
+          // Static collections use integrated hero, hide stats cards
+          statsContainer.style.display = 'none';
+        } else {
+          // Other collections show stats cards
+          statsContainer.style.display = 'grid';
+        }
+      }
       
       if (collectionType === 'dynamic_collection') {
         renderDynamicCollection();
@@ -710,80 +724,129 @@ function generateSmartCommentary() {
 function renderStaticCollection() {
   resetGridContainerClasses('static');
   const grid = document.getElementById('achievementProductsGrid');
+  
+  // Note: Stats cards are hidden by renderContent() for static collections
+  // This allows the unified hero to display stats in a more integrated way
+  
   const theme = achievementMetadata.theme || achievementData.category;
   const percentage = achievementStats.percentage;
   const ranked = achievementStats.ranked;
   const unranked = achievementStats.unranked;
   const total = achievementStats.total;
+  const rankableCount = achievementMetadata.rankableCount || 0;
   
   // Find first unranked AND rankable product for "next-up" spotlight
-  // This ensures we only spotlight products the user can actually rank
   const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked && p.isRankable);
   
   // Generate smart commentary based on collection analysis and user state
   const commentary = generateSmartCommentary();
   
-  // Build motivation section from smart commentary
-  let motivationSection = '';
+  // Build unified hero section that adapts to user state
+  let heroSection = '';
+  
   if (commentary.type === 'success') {
-    motivationSection = `
-      <div class="static-completion-banner">
-        <div class="completion-icon">${commentary.icon}</div>
-        <div class="completion-title">${commentary.title}</div>
-        <div class="completion-text">${commentary.message}</div>
+    // STATE: Completed - Celebration hero
+    heroSection = `
+      <div class="static-hero static-hero-success">
+        <div class="hero-content">
+          <div class="hero-icon">${commentary.icon}</div>
+          <div class="hero-main">
+            <h2 class="hero-title">${commentary.title}</h2>
+            <p class="hero-message">${commentary.message}</p>
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-value">${total}</div>
+                <div class="hero-stat-label">Products Ranked</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">${achievementData.points}</div>
+                <div class="hero-stat-label">Flavor Coins Earned</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <svg class="hero-progress-ring" width="120" height="120">
+            <circle class="progress-ring-circle-bg" stroke="#6ee7b7" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+            <circle class="progress-ring-circle" stroke="#10b981" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"
+              stroke-dasharray="${2 * Math.PI * 52}"
+              stroke-dashoffset="0"/>
+          </svg>
+          <div class="hero-progress-text">
+            <div class="hero-progress-percentage">100%</div>
+          </div>
+        </div>
       </div>
     `;
   } else if (commentary.type === 'discovery') {
-    motivationSection = `
-      <div class="static-discovery-callout">
-        <div class="discovery-icon">${commentary.icon}</div>
-        <div class="discovery-content">
-          <div class="discovery-title">${commentary.title}</div>
-          <div class="discovery-text">${commentary.message}</div>
-          ${commentary.cta ? `
-            <a href="${commentary.cta.url}" target="_blank" rel="noopener noreferrer" class="discovery-cta-button">
-              ${commentary.cta.text}
-            </a>
-            <div class="discovery-subtext">${commentary.cta.subtext}</div>
-          ` : ''}
+    // STATE: Discovery - CTA-focused hero
+    heroSection = `
+      <div class="static-hero static-hero-discovery">
+        <div class="hero-content">
+          <div class="hero-icon">${commentary.icon}</div>
+          <div class="hero-main">
+            <h2 class="hero-title">${commentary.title}</h2>
+            <p class="hero-message">${commentary.message}</p>
+            ${commentary.cta ? `
+              <a href="${commentary.cta.url}" target="_blank" rel="noopener noreferrer" class="hero-cta-button">
+                ${commentary.cta.text}
+              </a>
+              <p class="hero-cta-subtext">${commentary.cta.subtext}</p>
+            ` : ''}
+          </div>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-collection-info">
+            <div class="collection-count">${total}</div>
+            <div class="collection-label">Products</div>
+            <div class="collection-sublabel">to discover</div>
+          </div>
         </div>
       </div>
     `;
   } else {
-    motivationSection = `
-      <div class="static-motivation-callout">
-        <div class="motivation-icon">${commentary.icon}</div>
-        <div class="motivation-content">
-          <div class="motivation-title">${commentary.title}</div>
-          <div class="motivation-text">${commentary.message}</div>
-          ${commentary.subMessage ? `<div class="motivation-subtext">${commentary.subMessage}</div>` : ''}
+    // STATE: In Progress - Progress-focused hero
+    heroSection = `
+      <div class="static-hero static-hero-progress">
+        <div class="hero-content">
+          <div class="hero-icon">${commentary.icon}</div>
+          <div class="hero-main">
+            <h2 class="hero-title">${commentary.title}</h2>
+            <p class="hero-message">${commentary.message}</p>
+            ${commentary.subMessage ? `<p class="hero-submessage">${commentary.subMessage}</p>` : ''}
+            <div class="hero-stats">
+              <div class="hero-stat">
+                <div class="hero-stat-value">${ranked}</div>
+                <div class="hero-stat-label">Ranked</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">${rankableCount}</div>
+                <div class="hero-stat-label">Ready to Rank</div>
+              </div>
+              <div class="hero-stat">
+                <div class="hero-stat-value">${total}</div>
+                <div class="hero-stat-label">Total</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-badge">
+          <svg class="hero-progress-ring" width="120" height="120">
+            <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
+            <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"
+              stroke-dasharray="${2 * Math.PI * 52}"
+              stroke-dashoffset="${2 * Math.PI * 52 * (1 - percentage / 100)}"/>
+          </svg>
+          <div class="hero-progress-text">
+            <div class="hero-progress-percentage">${percentage}%</div>
+          </div>
         </div>
       </div>
     `;
   }
   
   grid.innerHTML = `
-    <div class="static-collection-header">
-      <div class="static-header-content">
-        <h2 class="static-title">${achievementData.name}</h2>
-        <p class="static-description">${achievementData.description}</p>
-        ${theme ? `<div class="static-theme-badge">${theme}</div>` : ''}
-      </div>
-      <div class="static-progress-circle">
-        <svg class="progress-ring" width="140" height="140">
-          <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"/>
-          <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"
-            stroke-dasharray="${2 * Math.PI * 60}"
-            stroke-dashoffset="${2 * Math.PI * 60 * (1 - percentage / 100)}"/>
-        </svg>
-        <div class="progress-ring-text">
-          <div class="progress-percentage">${percentage}%</div>
-          <div class="progress-label">Complete</div>
-        </div>
-      </div>
-    </div>
-    
-    ${motivationSection}
+    ${heroSection}
     
     <div class="static-products-grid">
       ${achievementProducts.map((product, index) => {
