@@ -16,27 +16,30 @@ export function useRankableProducts(rankedProductIds = []) {
     setError(null);
     
     try {
-      const response = await apiClient('/products/all');
+      const response = await apiClient('/products/rankable');
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      
       const data = await response.json();
       
       if (data.products && Array.isArray(data.products)) {
-        const rankedIds = new Set(rankedProductIds);
-        const availableProducts = data.products.filter(
-          product => !rankedIds.has(product.productId)
-        );
-        
-        setProducts(availableProducts);
-        setFilteredProducts(availableProducts);
-        setAvailableCount(availableProducts.length);
-        console.log(`✅ Loaded ${availableProducts.length} rankable products`);
+        setProducts(data.products);
+        setFilteredProducts(data.products);
+        setAvailableCount(data.products.length);
+        console.log(`✅ Loaded ${data.products.length} rankable products`);
       }
     } catch (err) {
-      console.error('Failed to load products:', err);
+      console.error('Failed to load rankable products:', err);
       setError('Failed to load products');
+      setProducts([]);
+      setFilteredProducts([]);
+      setAvailableCount(0);
     } finally {
       setLoading(false);
     }
-  }, [rankedProductIds]);
+  }, []);
 
   useEffect(() => {
     loadProducts();

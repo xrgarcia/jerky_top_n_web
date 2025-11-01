@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useBlocker } from 'react-router-dom';
 import { ProgressWidget } from '../components/rank/ProgressWidget';
 import { RankingsPanel } from '../components/rank/RankingsPanel';
@@ -23,7 +23,11 @@ export default function RankPage() {
     hasPendingSaves
   } = useRankings();
 
-  const rankedProductIds = rankings.map(r => r.productData?.productId).filter(Boolean);
+  const rankedProductIds = useMemo(() => 
+    rankings.map(r => r.productData?.productId).filter(Boolean), 
+    [rankings]
+  );
+  
   const {
     products,
     loading,
@@ -41,10 +45,6 @@ export default function RankPage() {
   useEffect(() => {
     loadRankings();
   }, [loadRankings]);
-
-  useEffect(() => {
-    reloadProducts();
-  }, [rankedProductIds.length, reloadProducts]);
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
