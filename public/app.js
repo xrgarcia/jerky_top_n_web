@@ -492,6 +492,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.socket && window.socket.connected) {
             window.socket.emit('page:view', { page });
         }
+        
+        // Remove app-loading class after first page is shown (prevents flash on initial load)
+        document.body.classList.remove('app-loading');
     }
 
     // Customer authentication elements

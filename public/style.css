@@ -12,6 +12,11 @@ body {
     animation: fadeIn 0.2s ease-in;
 }
 
+/* Prevent page content from showing during initial routing */
+body.app-loading .page-content {
+    display: none !important;
+}
+
 /* Typography enhancements for product pages */
 h1, h2, h3 {
     font-family: Georgia, 'Times New Roman', serif;
