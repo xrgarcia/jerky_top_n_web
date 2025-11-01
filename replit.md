@@ -61,7 +61,7 @@ src/
 - **WebSocket Integration**: Socket events trigger query invalidations for live data synchronization
 
 **Pages Migrated:**
-- Home - Live stats dashboard with real-time updates
+- Home - Hero dashboard with yellow banner, live stats (using `/api/gamification/hero-stats`), achievements slider, and dual CTAs
 - Products - Search, filter, sort functionality
 - Leaderboard - Top 50 rankers with badges
 - Coin Book - Achievement grid with earned/locked states
