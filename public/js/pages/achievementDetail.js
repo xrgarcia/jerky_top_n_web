@@ -1,86 +1,86 @@
 /**
- * Coin Detail Page - Shows progress for all coin types
- * Supports both collection-based (products) and engagement-based (activity) coins
+ * Achievement Detail Page - Shows progress for all achievement types
+ * Supports both collection-based (products) and engagement-based (activity) achievements
  */
 
-let currentCoinCode = null;
-let coinData = null;
-let coinType = null;
-let coinProducts = [];
-let coinStats = null;
-let coinProgress = null;
-let coinMetadata = null;
+let currentAchievementCode = null;
+let achievementData = null;
+let achievementType = null;
+let achievementProducts = [];
+let achievementStats = null;
+let achievementProgress = null;
+let achievementMetadata = null;
 
 /**
  * Reset grid container classes for the appropriate layout type
  * @param {string} layoutType - 'default', 'static', 'dynamic', etc.
  */
 function resetGridContainerClasses(layoutType = 'default') {
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   if (!grid) return;
   
   // Remove all layout-specific classes
-  grid.classList.remove('coin-products-grid', 'static-collection-layout', 
-    'dynamic-collection-layout', 'legacy-coin-layout');
+  grid.classList.remove('achievement-products-grid', 'static-collection-layout', 
+    'dynamic-collection-layout', 'legacy-achievement-layout');
   
   // Apply the appropriate class for this layout
   if (layoutType === 'static') {
     grid.classList.add('static-collection-layout');
   } else if (layoutType === 'default') {
-    grid.classList.add('coin-products-grid');
+    grid.classList.add('achievement-products-grid');
   }
   // Other layout types handle their own container classes via innerHTML
 }
 
 /**
- * Initialize Coin Detail page
+ * Initialize Achievement Detail page
  */
-window.initCoinDetailPage = async function(coinCode) {
-  console.log(`🏆 Initializing Coin Detail page for coin ${coinCode}...`);
+window.initAchievementDetailPage = async function(achievementCode) {
+  console.log(`🏆 Initializing Achievement Detail page for achievement ${achievementCode}...`);
   
-  currentCoinCode = coinCode;
+  currentAchievementCode = achievementCode;
   
-  // Load coin data
-  await loadCoinDetail(coinCode);
+  // Load achievement data
+  await loadAchievementDetail(achievementCode);
 };
 
 /**
- * Load coin detail data
+ * Load achievement detail data
  */
-async function loadCoinDetail(coinCode) {
+async function loadAchievementDetail(achievementCode) {
   try {
-    const response = await fetch(`/api/gamification/coin/${coinCode}/products`);
+    const response = await fetch(`/api/gamification/achievement/${achievementCode}/products`);
     
     if (!response.ok) {
-      throw new Error('Failed to load coin details');
+      throw new Error('Failed to load achievement details');
     }
     
     const data = await response.json();
     
-    // Route guard: Only update DOM if we're still on this coin page
-    // This prevents the coin page from showing after navigating away
-    // Support both new (#coins/code) and legacy (#coin/id) URL formats
+    // Route guard: Only update DOM if we're still on this achievement page
+    // This prevents the achievement page from showing after navigating away
+    // Support both new (#coins/code) and legacy (#achievement/id) URL formats
     const currentHash = window.location.hash;
-    const isCoinsRoute = currentHash.startsWith(`#coins/${coinCode}`);
-    const isLegacyRoute = currentHash.startsWith(`#coin/${coinCode}`);
+    const isCoinsRoute = currentHash.startsWith(`#coins/${achievementCode}`);
+    const isLegacyRoute = currentHash.startsWith(`#achievement/${achievementCode}`);
     if (!isCoinsRoute && !isLegacyRoute) {
-      console.log('🚫 Navigation changed, aborting coin detail render');
+      console.log('🚫 Navigation changed, aborting achievement detail render');
       return;
     }
     
-    coinData = data.coin;
-    coinType = data.type; // 'collection' or 'engagement'
-    coinStats = data.stats;
-    coinMetadata = data.metadata || {};
+    achievementData = data.achievement;
+    achievementType = data.type; // 'collection' or 'engagement'
+    achievementStats = data.stats;
+    achievementMetadata = data.metadata || {};
     
-    if (coinType === 'engagement') {
-      // Engagement coin - no products
-      coinProgress = data.progress;
-      coinProducts = [];
+    if (achievementType === 'engagement') {
+      // Engagement achievement - no products
+      achievementProgress = data.progress;
+      achievementProducts = [];
     } else {
-      // Collection coin - has products
-      coinProducts = data.products || [];
-      coinProgress = null;
+      // Collection achievement - has products
+      achievementProducts = data.products || [];
+      achievementProgress = null;
     }
     
     updatePageHeader();
@@ -88,59 +88,59 @@ async function loadCoinDetail(coinCode) {
     renderContent();
     
   } catch (error) {
-    console.error('Error loading coin details:', error);
+    console.error('Error loading achievement details:', error);
     showError();
   }
 }
 
 /**
- * Update page header with coin info
+ * Update page header with achievement info
  * Note: Header now only contains breadcrumbs (minimal design)
  */
 function updatePageHeader() {
-  document.getElementById('coinDetailBreadcrumb').textContent = coinData.name;
+  document.getElementById('achievementDetailBreadcrumb').textContent = achievementData.name;
 }
 
 /**
  * Update stats cards
  */
 function updateStats() {
-  if (coinType === 'engagement') {
-    // Engagement coins: Show current progress
-    const currentValue = coinProgress?.currentValue || 0;
-    const requiredValue = coinProgress?.requiredValue || 1;
-    const percentage = coinProgress?.percentage || 0;
+  if (achievementType === 'engagement') {
+    // Engagement achievements: Show current progress
+    const currentValue = achievementProgress?.currentValue || 0;
+    const requiredValue = achievementProgress?.requiredValue || 1;
+    const percentage = achievementProgress?.percentage || 0;
     
-    document.getElementById('coinRankedCount').textContent = currentValue;
-    document.getElementById('coinUnrankedCount').textContent = requiredValue - currentValue;
-    document.getElementById('coinProgressPercentage').textContent = `${percentage}%`;
+    document.getElementById('achievementRankedCount').textContent = currentValue;
+    document.getElementById('achievementUnrankedCount').textContent = requiredValue - currentValue;
+    document.getElementById('achievementProgressPercentage').textContent = `${percentage}%`;
     
     // Update stat labels for engagement
-    document.querySelector('#coinRankedCount').parentElement.querySelector('.coin-stat-label').textContent = 'Current';
-    document.querySelector('#coinUnrankedCount').parentElement.querySelector('.coin-stat-label').textContent = 'Remaining';
+    document.querySelector('#achievementRankedCount').parentElement.querySelector('.achievement-stat-label').textContent = 'Current';
+    document.querySelector('#achievementUnrankedCount').parentElement.querySelector('.achievement-stat-label').textContent = 'Remaining';
   } else {
-    // Collection coins: Show ranked/unranked products
-    document.getElementById('coinRankedCount').textContent = coinStats.ranked;
-    document.getElementById('coinUnrankedCount').textContent = coinStats.unranked;
-    document.getElementById('coinProgressPercentage').textContent = `${coinStats.percentage}%`;
+    // Collection achievements: Show ranked/unranked products
+    document.getElementById('achievementRankedCount').textContent = achievementStats.ranked;
+    document.getElementById('achievementUnrankedCount').textContent = achievementStats.unranked;
+    document.getElementById('achievementProgressPercentage').textContent = `${achievementStats.percentage}%`;
     
     // Ensure stat labels are correct for collections
-    document.querySelector('#coinRankedCount').parentElement.querySelector('.coin-stat-label').textContent = 'Ranked';
-    document.querySelector('#coinUnrankedCount').parentElement.querySelector('.coin-stat-label').textContent = 'Not Ranked';
+    document.querySelector('#achievementRankedCount').parentElement.querySelector('.achievement-stat-label').textContent = 'Ranked';
+    document.querySelector('#achievementUnrankedCount').parentElement.querySelector('.achievement-stat-label').textContent = 'Not Ranked';
   }
 }
 
 /**
- * Render appropriate content based on coin type and collectionType
+ * Render appropriate content based on achievement type and collectionType
  */
 function renderContent() {
-  const productsContainer = document.getElementById('coinProductsContainer');
-  const engagementContainer = document.getElementById('coinEngagementContainer');
-  const statsContainer = document.querySelector('.coin-detail-stats');
+  const productsContainer = document.getElementById('achievementProductsContainer');
+  const engagementContainer = document.getElementById('achievementEngagementContainer');
+  const statsContainer = document.querySelector('.achievement-detail-stats');
   
-  if (coinType === 'engagement') {
+  if (achievementType === 'engagement') {
     // Engagement collection: Show engagement progress
-    // Show stats cards for engagement coins
+    // Show stats cards for engagement achievements
     if (statsContainer) statsContainer.style.display = 'grid';
     if (productsContainer) productsContainer.style.display = 'none';
     if (engagementContainer) {
@@ -148,13 +148,13 @@ function renderContent() {
       renderEngagementProgress();
     }
   } else {
-    // Collection-based coin: Route to specific renderer
+    // Collection-based achievement: Route to specific renderer
     if (engagementContainer) engagementContainer.style.display = 'none';
     if (productsContainer) {
       productsContainer.style.display = 'block';
       
       // Route to specific collection type renderer
-      const collectionType = coinData.collectionType;
+      const collectionType = achievementData.collectionType;
       
       // Show stats cards by default for most collection types
       if (statsContainer) {
@@ -174,7 +174,7 @@ function renderContent() {
       } else if (collectionType === 'hidden_collection') {
         renderHiddenCollection();
       } else if (collectionType === 'legacy') {
-        renderLegacyCoin();
+        renderLegacyAchievement();
       } else if (collectionType === 'static_collection' || collectionType === 'custom_product_list') {
         renderStaticCollection();
       } else {
@@ -189,11 +189,11 @@ function renderContent() {
  * Render engagement progress details
  */
 function renderEngagementProgress() {
-  const container = document.getElementById('coinEngagementDetails');
+  const container = document.getElementById('achievementEngagementDetails');
   if (!container) return;
   
-  const { currentValue, requiredValue, percentage, currentTier, pointsEarned, requirementLabel } = coinProgress;
-  const hasTiers = coinData.hasTiers;
+  const { currentValue, requiredValue, percentage, currentTier, pointsEarned, requirementLabel } = achievementProgress;
+  const hasTiers = achievementData.hasTiers;
   
   // Generate tier badges if applicable
   let tierBadges = '';
@@ -256,19 +256,19 @@ function renderEngagementProgress() {
           <div class="engagement-stat-icon">⭐</div>
           <div class="engagement-stat-content">
             <div class="engagement-stat-label">Points Earned</div>
-            <div class="engagement-stat-value">${pointsEarned} / ${coinData.points}</div>
+            <div class="engagement-stat-value">${pointsEarned} / ${achievementData.points}</div>
           </div>
         </div>
       </div>
       
       ${percentage < 100 ? `
         <div class="engagement-cta">
-          <p>Keep going! You're ${Math.round(100 - percentage)}% away from ${hasTiers ? 'the next tier' : 'completing this coin'}.</p>
+          <p>Keep going! You're ${Math.round(100 - percentage)}% away from ${hasTiers ? 'the next tier' : 'completing this achievement'}.</p>
         </div>
       ` : `
         <div class="engagement-complete">
           <div class="complete-icon">✅</div>
-          <p>Coin Complete!</p>
+          <p>Achievement Complete!</p>
         </div>
       `}
     </div>
@@ -276,37 +276,37 @@ function renderEngagementProgress() {
 }
 
 /**
- * Render products grid (for collection coins)
+ * Render products grid (for collection achievements)
  */
 function renderProducts() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   
-  if (coinProducts.length === 0) {
+  if (achievementProducts.length === 0) {
     grid.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">📦</div>
         <div class="empty-state-title">No Products Found</div>
-        <div class="empty-state-message">This coin doesn't have any associated products yet.</div>
+        <div class="empty-state-message">This achievement doesn't have any associated products yet.</div>
       </div>
     `;
     return;
   }
   
-  grid.innerHTML = coinProducts.map(product => {
+  grid.innerHTML = achievementProducts.map(product => {
     // Show full collection: ranked products in color, unranked in greyscale
     const isRanked = product.isRanked;
     const cardClass = isRanked ? 'ranked' : 'unranked';
     
     return `
-      <div class="coin-product-card ${cardClass}" onclick="navigateToProduct('${product.id}')">
-        <div class="coin-product-image">
+      <div class="achievement-product-card ${cardClass}" onclick="navigateToProduct('${product.id}')">
+        <div class="achievement-product-image">
           <img src="${product.image}" alt="${product.title}" loading="lazy">
           ${isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
         </div>
-        <div class="coin-product-info">
-          <div class="coin-product-title">${product.title}</div>
-          <div class="coin-product-price">$${product.price}</div>
+        <div class="achievement-product-info">
+          <div class="achievement-product-title">${product.title}</div>
+          <div class="achievement-product-price">$${product.price}</div>
         </div>
       </div>
     `;
@@ -318,10 +318,10 @@ function renderProducts() {
  */
 function renderDynamicCollection() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
-  const animalCategories = coinMetadata.animalCategories || [];
-  const currentTier = coinStats.currentTier || null;
-  const hasTiers = coinData.hasTiers;
+  const grid = document.getElementById('achievementProductsGrid');
+  const animalCategories = achievementMetadata.animalCategories || [];
+  const currentTier = achievementStats.currentTier || null;
+  const hasTiers = achievementData.hasTiers;
   
   // Build tier progression
   let tierSection = '';
@@ -335,7 +335,7 @@ function renderDynamicCollection() {
       'diamond': '💠'
     };
     
-    const tierThresholds = coinData.tierThresholds || {
+    const tierThresholds = achievementData.tierThresholds || {
       bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100
     };
     
@@ -365,17 +365,17 @@ function renderDynamicCollection() {
   grid.innerHTML = `
     <div class="dynamic-collection-layout">
       <div class="dynamic-hero">
-        <div class="dynamic-hero-icon">${coinData.icon}</div>
+        <div class="dynamic-hero-icon">${achievementData.icon}</div>
         <div class="dynamic-hero-content">
           <h2 class="dynamic-hero-title">${animalCategories.join(' & ')} Collection</h2>
           <p class="dynamic-hero-description">Rank all ${animalCategories.join(' and ')} products to complete this collection!</p>
           <div class="dynamic-hero-stats">
             <div class="hero-stat">
-              <span class="hero-stat-value">${coinStats.percentage}%</span>
+              <span class="hero-stat-value">${achievementStats.percentage}%</span>
               <span class="hero-stat-label">Complete</span>
             </div>
             <div class="hero-stat">
-              <span class="hero-stat-value">${coinStats.ranked}/${coinStats.total}</span>
+              <span class="hero-stat-value">${achievementStats.ranked}/${achievementStats.total}</span>
               <span class="hero-stat-label">Ranked</span>
             </div>
             ${currentTier ? `
@@ -392,16 +392,16 @@ function renderDynamicCollection() {
       
       <div class="dynamic-products-section">
         <h3 class="products-section-title">Collection Products</h3>
-        <div class="coin-products-grid">
-          ${coinProducts.map(product => `
-            <div class="coin-product-card ${product.isRanked ? 'ranked' : 'unranked'}" onclick="navigateToProduct('${product.id}')">
-              <div class="coin-product-image">
+        <div class="achievement-products-grid">
+          ${achievementProducts.map(product => `
+            <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'}" onclick="navigateToProduct('${product.id}')">
+              <div class="achievement-product-image">
                 <img src="${product.image}" alt="${product.title}" loading="lazy">
                 ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
               </div>
-              <div class="coin-product-info">
-                <div class="coin-product-title">${product.title}</div>
-                <div class="coin-product-price">$${product.price}</div>
+              <div class="achievement-product-info">
+                <div class="achievement-product-title">${product.title}</div>
+                <div class="achievement-product-price">$${product.price}</div>
               </div>
             </div>
           `).join('')}
@@ -416,9 +416,9 @@ function renderDynamicCollection() {
  */
 function renderFlavorCoin() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   
-  if (coinProducts.length === 0) {
+  if (achievementProducts.length === 0) {
     grid.innerHTML = `
       <div class="empty-state">
         <div class="empty-state-icon">🍖</div>
@@ -429,16 +429,16 @@ function renderFlavorCoin() {
     return;
   }
   
-  const product = coinProducts[0];
+  const product = achievementProducts[0];
   const isRanked = product.isRanked;
-  const productDetails = coinMetadata.productDetails || {};
+  const productDetails = achievementMetadata.productDetails || {};
   
   grid.innerHTML = `
     <div class="flavor-coin-spotlight">
       <div class="spotlight-hero">
         <div class="spotlight-badge">
-          <div class="spotlight-badge-icon">${coinData.icon}</div>
-          <div class="spotlight-badge-name">${coinData.name}</div>
+          <div class="spotlight-badge-icon">${achievementData.icon}</div>
+          <div class="spotlight-badge-name">${achievementData.name}</div>
         </div>
       </div>
       
@@ -460,8 +460,8 @@ function renderFlavorCoin() {
               <div class="spotlight-success">
                 <div class="spotlight-success-icon">🎉</div>
                 <div class="spotlight-success-text">
-                  <strong>Coin Unlocked!</strong>
-                  <p>You've ranked this product and earned the ${coinData.name} flavor coin!</p>
+                  <strong>Achievement Unlocked!</strong>
+                  <p>You've ranked this product and earned the ${achievementData.name} flavor coin!</p>
                 </div>
               </div>
             ` : `
@@ -469,7 +469,7 @@ function renderFlavorCoin() {
                 <div class="spotlight-cta-icon">🎯</div>
                 <div class="spotlight-cta-text">
                   <strong>Rank This Product to Unlock!</strong>
-                  <p>Add this product to your ranking to earn the ${coinData.name} flavor coin.</p>
+                  <p>Add this product to your ranking to earn the ${achievementData.name} flavor coin.</p>
                 </div>
                 <button class="spotlight-cta-button" onclick="navigateToProduct('${product.id}')">
                   View Product →
@@ -488,11 +488,11 @@ function renderFlavorCoin() {
  */
 function renderHiddenCollection() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
-  const isUnlocked = coinMetadata.isUnlocked;
+  const grid = document.getElementById('achievementProductsGrid');
+  const isUnlocked = achievementMetadata.isUnlocked;
   
   if (!isUnlocked) {
-    // This shouldn't happen (backend filters hidden coins)
+    // This shouldn't happen (backend filters hidden achievements)
     // but show mystery state just in case
     grid.innerHTML = `
       <div class="hidden-mystery-state">
@@ -500,8 +500,8 @@ function renderHiddenCollection() {
           <div class="mystery-icon">🎁</div>
           <div class="mystery-shimmer"></div>
         </div>
-        <h3 class="mystery-title">Hidden Coin</h3>
-        <p class="mystery-hint">This coin is locked. Keep exploring to unlock it!</p>
+        <h3 class="mystery-title">Hidden Achievement</h3>
+        <p class="mystery-hint">This achievement is locked. Keep exploring to unlock it!</p>
       </div>
     `;
     return;
@@ -513,23 +513,23 @@ function renderHiddenCollection() {
       <div class="hidden-reveal-banner">
         <div class="reveal-icon">✨</div>
         <div class="reveal-content">
-          <h2 class="reveal-title">Secret Coin Unlocked!</h2>
-          <p class="reveal-subtitle">You discovered the hidden ${coinData.name} collection</p>
+          <h2 class="reveal-title">Secret Achievement Unlocked!</h2>
+          <p class="reveal-subtitle">You discovered the hidden ${achievementData.name} collection</p>
         </div>
         <div class="reveal-icon">✨</div>
       </div>
       
       <div class="hidden-products-section">
-        <div class="coin-products-grid">
-          ${coinProducts.map(product => `
-            <div class="coin-product-card ${product.isRanked ? 'ranked' : 'unranked'}" onclick="navigateToProduct('${product.id}')">
-              <div class="coin-product-image">
+        <div class="achievement-products-grid">
+          ${achievementProducts.map(product => `
+            <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'}" onclick="navigateToProduct('${product.id}')">
+              <div class="achievement-product-image">
                 <img src="${product.image}" alt="${product.title}" loading="lazy">
                 ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
               </div>
-              <div class="coin-product-info">
-                <div class="coin-product-title">${product.title}</div>
-                <div class="coin-product-price">$${product.price}</div>
+              <div class="achievement-product-info">
+                <div class="achievement-product-title">${product.title}</div>
+                <div class="achievement-product-price">$${product.price}</div>
               </div>
             </div>
           `).join('')}
@@ -540,32 +540,32 @@ function renderHiddenCollection() {
 }
 
 /**
- * Render Legacy Coin (Simple Checklist Style)
+ * Render Legacy Achievement (Simple Checklist Style)
  */
-function renderLegacyCoin() {
+function renderLegacyAchievement() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   
   grid.innerHTML = `
-    <div class="legacy-coin-layout">
+    <div class="legacy-achievement-layout">
       <div class="legacy-header">
         <div class="legacy-badge">
-          <div class="legacy-badge-icon">${coinData.icon}</div>
-          <div class="legacy-badge-tier">${coinData.tier || 'Bronze'}</div>
+          <div class="legacy-badge-icon">${achievementData.icon}</div>
+          <div class="legacy-badge-tier">${achievementData.tier || 'Bronze'}</div>
         </div>
         <div class="legacy-info">
-          <h3 class="legacy-title">${coinData.name}</h3>
-          <p class="legacy-description">${coinData.description}</p>
+          <h3 class="legacy-title">${achievementData.name}</h3>
+          <p class="legacy-description">${achievementData.description}</p>
           <div class="legacy-progress-bar">
-            <div class="legacy-progress-fill" style="width: ${coinStats.percentage}%"></div>
-            <div class="legacy-progress-text">${coinStats.percentage}% Complete</div>
+            <div class="legacy-progress-fill" style="width: ${achievementStats.percentage}%"></div>
+            <div class="legacy-progress-text">${achievementStats.percentage}% Complete</div>
           </div>
         </div>
       </div>
       
-      ${coinProducts.length > 0 ? `
+      ${achievementProducts.length > 0 ? `
         <div class="legacy-checklist">
-          ${coinProducts.map(product => `
+          ${achievementProducts.map(product => `
             <div class="legacy-checklist-item ${product.isRanked ? 'checked' : ''}">
               <div class="legacy-checkbox">${product.isRanked ? '✓' : '☐'}</div>
               <div class="legacy-product-info" onclick="navigateToProduct('${product.id}')">
@@ -588,7 +588,7 @@ function renderLegacyCoin() {
  */
 function generateSmartCommentary() {
   // Defensive check: ensure required data exists
-  if (!coinStats || !coinMetadata) {
+  if (!achievementStats || !achievementMetadata) {
     return {
       icon: '⭐',
       title: 'Collection Progress',
@@ -597,13 +597,13 @@ function generateSmartCommentary() {
     };
   }
   
-  const percentage = coinStats.percentage || 0;
-  const ranked = coinStats.ranked || 0;
-  const unranked = coinStats.unranked || 0;
-  const total = coinStats.total || coinProducts.length;
-  const analysis = coinMetadata.productAnalysis || {};
-  const rankableCount = coinMetadata.rankableCount || 0;
-  const unrankableCount = coinMetadata.unrankableCount || 0;
+  const percentage = achievementStats.percentage || 0;
+  const ranked = achievementStats.ranked || 0;
+  const unranked = achievementStats.unranked || 0;
+  const total = achievementStats.total || achievementProducts.length;
+  const analysis = achievementMetadata.productAnalysis || {};
+  const rankableCount = achievementMetadata.rankableCount || 0;
+  const unrankableCount = achievementMetadata.unrankableCount || 0;
   
   // Detect dominant themes
   const flavors = analysis.flavorProfiles || [];
@@ -626,7 +626,7 @@ function generateSmartCommentary() {
     return {
       icon: '🎉',
       title: 'Collection Complete!',
-      message: `You've ranked all ${total} products in this ${themeDescription}. You earned ${coinData.points} flavor coins!`,
+      message: `You've ranked all ${total} products in this ${themeDescription}. You earned ${achievementData.points} flavor coins!`,
       type: 'success'
     };
   }
@@ -649,7 +649,7 @@ function generateSmartCommentary() {
     
     return {
       icon: '🌟',
-      title: `Explore ${coinData.name}`,
+      title: `Explore ${achievementData.name}`,
       message: `You haven't tried any of these ${total} products yet. ${encouragement}`,
       cta: {
         text: '🛍️ Shop This Collection',
@@ -676,7 +676,7 @@ function generateSmartCommentary() {
       icon: '💪',
       title: 'Great Start!',
       message: `You've ranked ${ranked} product${ranked === 1 ? '' : 's'}! You have ${unranked - unrankableCount} more rankable product${unranked - unrankableCount === 1 ? '' : 's'} ready to go.`,
-      subMessage: `Want to complete this collection? Purchase ${unrankableCount} more product${unrankableCount === 1 ? '' : 's'} to unlock the full coin.`,
+      subMessage: `Want to complete this collection? Purchase ${unrankableCount} more product${unrankableCount === 1 ? '' : 's'} to unlock the full achievement.`,
       type: 'progress'
     };
   }
@@ -686,7 +686,7 @@ function generateSmartCommentary() {
     return {
       icon: '⭐',
       title: 'Making Progress!',
-      message: `You've ranked ${ranked} of ${total} products. ${unranked} more to go for ${coinData.points} flavor coins!`,
+      message: `You've ranked ${ranked} of ${total} products. ${unranked} more to go for ${achievementData.points} flavor coins!`,
       type: 'progress'
     };
   }
@@ -696,7 +696,7 @@ function generateSmartCommentary() {
     return {
       icon: '🎯',
       title: 'Halfway Hero!',
-      message: `You're ${percentage}% complete! Keep going to earn ${coinData.points} flavor coins.`,
+      message: `You're ${percentage}% complete! Keep going to earn ${achievementData.points} flavor coins.`,
       type: 'progress'
     };
   }
@@ -705,7 +705,7 @@ function generateSmartCommentary() {
   return {
     icon: '🔥',
     title: 'Almost There!',
-    message: `Just ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${coinData.points} flavor coins!`,
+    message: `Just ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!`,
     type: 'progress'
   };
 }
@@ -715,20 +715,20 @@ function generateSmartCommentary() {
  */
 function renderStaticCollection() {
   resetGridContainerClasses('static');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   
   // Note: Stats cards are hidden by renderContent() for static collections
   // This allows the unified hero to display stats in a more integrated way
   
-  const theme = coinMetadata.theme || coinData.category;
-  const percentage = coinStats.percentage;
-  const ranked = coinStats.ranked;
-  const unranked = coinStats.unranked;
-  const total = coinStats.total;
-  const rankableCount = coinMetadata.rankableCount || 0;
+  const theme = achievementMetadata.theme || achievementData.category;
+  const percentage = achievementStats.percentage;
+  const ranked = achievementStats.ranked;
+  const unranked = achievementStats.unranked;
+  const total = achievementStats.total;
+  const rankableCount = achievementMetadata.rankableCount || 0;
   
   // Find first unranked AND rankable product for "next-up" spotlight
-  const firstUnrankedIndex = coinProducts.findIndex(p => !p.isRanked && p.isRankable);
+  const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked && p.isRankable);
   
   // Generate smart commentary based on collection analysis and user state
   const commentary = generateSmartCommentary();
@@ -751,7 +751,7 @@ function renderStaticCollection() {
                 <div class="hero-stat-label">Products Ranked</div>
               </div>
               <div class="hero-stat">
-                <div class="hero-stat-value">${coinData.points}</div>
+                <div class="hero-stat-value">${achievementData.points}</div>
                 <div class="hero-stat-label">Flavor Coins Earned</div>
               </div>
             </div>
@@ -841,20 +841,20 @@ function renderStaticCollection() {
     ${heroSection}
     
     <div class="static-products-grid">
-      ${coinProducts.map((product, index) => {
+      ${achievementProducts.map((product, index) => {
         const isNextUp = index === firstUnrankedIndex;
         return `
-          <div class="coin-product-card ${product.isRanked ? 'ranked' : 'unranked'} ${isNextUp ? 'next-up' : ''}" onclick="navigateToProduct('${product.id}')">
-            <div class="coin-product-image">
+          <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'} ${isNextUp ? 'next-up' : ''}" onclick="navigateToProduct('${product.id}')">
+            <div class="achievement-product-image">
               <img src="${product.image}" alt="${product.title}" loading="lazy">
               ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : ''}
               ${isNextUp ? '<div class="next-up-badge">👉 Next Up</div>' : ''}
               ${!product.isRanked && !isNextUp ? '<div class="unranked-badge">Not Ranked</div>' : ''}
               ${!product.isRanked && product.isRankable ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
             </div>
-            <div class="coin-product-info">
-              <div class="coin-product-title">${product.title}</div>
-              <div class="coin-product-price">$${product.price}</div>
+            <div class="achievement-product-info">
+              <div class="achievement-product-title">${product.title}</div>
+              <div class="achievement-product-price">$${product.price}</div>
             </div>
           </div>
         `;
@@ -882,7 +882,7 @@ window.quickRankProduct = function(productId) {
  * Show error state
  */
 function showError() {
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('achievementProductsGrid');
   grid.innerHTML = `
     <div class="empty-state">
       <div class="empty-state-icon">⚠️</div>
