@@ -309,23 +309,26 @@ function HomePage() {
             </div>
             <div className="dashboard-list">
               {homeStats?.recentAchievements && homeStats.recentAchievements.length > 0 ? (
-                homeStats.recentAchievements.map((achievement, index) => (
-                  <div key={`${achievement.userId}-${achievement.achievementName}-${index}`} className="dashboard-item achievement-item">
-                    <div className={`achievement-icon ${achievement.achievementTier}`}>
-                      {achievement.achievementIcon?.startsWith('/') ? (
-                        <img src={achievement.achievementIcon} alt="Achievement" style={{width: '48px', height: '48px', objectFit: 'contain'}} />
-                      ) : (
-                        achievement.achievementIcon
-                      )}
-                    </div>
-                    <div className="achievement-info">
-                      <div className="achievement-name">{achievement.achievementName}</div>
-                      <div className="achievement-earned">
-                        {achievement.userName} • {formatTimeAgo(achievement.earnedAt)}
+                homeStats.recentAchievements.map((achievement, index) => {
+                  const isImageIcon = achievement.achievementIcon?.startsWith('/') || achievement.achievementIcon?.startsWith('http');
+                  return (
+                    <div key={`${achievement.userId}-${achievement.achievementName}-${index}`} className="dashboard-item achievement-item">
+                      <div className={`achievement-icon ${achievement.achievementTier}`}>
+                        {isImageIcon ? (
+                          <img src={achievement.achievementIcon} alt="Achievement" style={{width: '48px', height: '48px', objectFit: 'contain'}} />
+                        ) : (
+                          achievement.achievementIcon
+                        )}
+                      </div>
+                      <div className="achievement-info">
+                        <div className="achievement-name">{achievement.achievementName}</div>
+                        <div className="achievement-earned">
+                          {achievement.userName} • {formatTimeAgo(achievement.earnedAt)}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))
+                  );
+                })
               ) : (
                 <p className="empty-state">🏅 No badges earned yet. Start ranking to unlock yours!</p>
               )}
