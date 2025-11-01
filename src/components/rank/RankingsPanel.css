@@ -86,6 +86,22 @@
   background: #c82333;
 }
 
+.clear-queue-btn {
+  background: #ffc107;
+  color: #2c2c2c;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.clear-queue-btn:hover {
+  background: #e0a800;
+}
+
 .rankings-progress {
   margin-bottom: 20px;
 }
