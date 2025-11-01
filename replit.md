@@ -31,6 +31,7 @@ The application employs a modern web architecture for responsiveness, scalabilit
 - **Home Page Dashboard**: Dynamic Bento Box layout with interactive widgets.
 - **Interactive Ranking**: Supports drag-and-drop for desktop and dropdown selection for mobile with visual cues and badges.
 - **Achievement Detail Pages**: Enhanced gamification with animated progress rings, "Next Up" spotlight, motivational callouts, quick-rank buttons, and locked item effects. Static collections feature a unified adaptive hero section that consolidates progress visualization, stats, and smart commentary into a single component (replaces separate stats cards, header, and callout) with three states: discovery (blue gradient with shop CTA), progress (orange gradient with stats row and ring), and success (green gradient with celebration).
+- **Terminology Glossary Alignment**: Commentary system follows official glossary where "Explore" = breadth (trying new things) and "Discover" = depth (refining preferences). Discovery state (0% completion) uses "Explore" language to encourage trying new products.
 - **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking, with automatic data refresh on navigation.
 
 ### Technical Implementations
