@@ -51,6 +51,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Page navigation functions
     async function showPage(page, updateURL = true) {
+        // Remove app-loading class on first page load (prevents flash on initial load)
+        // This must happen at the start to handle all code paths including early returns
+        document.body.classList.remove('app-loading');
+        
         const communityPage = document.getElementById('communityPage');
         const leaderboardPage = document.getElementById('leaderboardPage');
         const profilePage = document.getElementById('profilePage');
@@ -492,9 +496,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.socket && window.socket.connected) {
             window.socket.emit('page:view', { page });
         }
-        
-        // Remove app-loading class after first page is shown (prevents flash on initial load)
-        document.body.classList.remove('app-loading');
     }
 
     // Customer authentication elements
