@@ -132,7 +132,8 @@
 }
 
 .search-input {
-  background: transparent;
+  background: transparent !important;
+  background-color: transparent !important;
   border: none !important;
   color: rgba(255, 255, 255, 0.9);
   outline: none !important;
@@ -153,6 +154,17 @@
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.search-input:-webkit-autofill,
+.search-input:-webkit-autofill:hover,
+.search-input:-webkit-autofill:focus,
+.search-input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #2c2c2c inset !important;
+  -webkit-text-fill-color: rgba(255, 255, 255, 0.9) !important;
+  caret-color: rgba(255, 255, 255, 0.9);
 }
 
 .search-input::placeholder {
