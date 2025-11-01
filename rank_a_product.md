@@ -1,305 +1,75 @@
-# Rank a Product - Requirements Document
+# Rank a Product - Frontend Requirements
 
 ## Overview
-The Rank Products feature allows authenticated users to create and manage personalized rankings of products they've purchased. This document captures all requirements extracted from the legacy implementation.
+A product ranking interface that allows users to create and manage their personalized jerky rankings. The feature provides **two interaction modes** for maximum usability:
 
-The feature supports **two ranking interfaces**:
-1. **Desktop**: Drag-and-drop interface with side-by-side panels
-2. **Mobile**: Modal-based interface with REPLACE/INSERT actions (shown below)
+1. **Desktop Mode**: Drag-and-drop interface with side-by-side panels
+2. **Mobile Mode**: Modal-based interface with REPLACE/INSERT buttons
 
 ![Ranking Modal Interface](attached_assets/image_1762029801430.png)
 *Mobile-friendly ranking modal showing REPLACE and INSERT options for each position*
 
 ---
 
-## Frontend Components
+## Core User Features
 
-### 1. RankPage (Main Page Component)
-**File:** `src/pages/RankPage.jsx`
+### Feature 1: Rank a Product (Modal Interface)
 
-#### State Management
-- Track navigation state during pending saves (`isNavigating`, `navigationTarget`)
-- Manage rankings list with automatic synchronization
-- Track save status and messages
-- Compute ranked product IDs from current rankings
-
-#### Core Functionality
-- **Load Rankings on Mount**: Fetch user's existing rankings when page loads
-- **Navigation Blocking**: Prevent navigation when unsaved changes exist
-  - Block browser navigation (back/forward)
-  - Block route changes via React Router
-  - Show modal overlay during save operations
-- **Browser Unload Protection**: Warn users before closing tab with unsaved changes
-- **Auto-save Integration**: Wait for pending saves before allowing navigation
-- **Add Product to Rankings**: Add product to next available rank position
-- **Navigate to Products Page**: Allow browsing full product catalog
-
-#### UI Elements
-- Breadcrumb navigation (Home > Rank Products)
-- "Browse All Products" button
-- Navigation guard modal with spinner and save status
-- Three-panel layout:
-  - Progress widget (top)
-  - Rankings panel (left)
-  - Search products panel (right)
-
----
-
-### 2. RankingsPanel Component
-**File:** `src/components/rank/RankingsPanel.jsx`
-
-#### State Management
-- Dynamic slot count (starts at 10, expands as needed)
-- Drag state tracking (`draggedItem`, `dragOverSlot`)
-- Auto-expand slots when nearing capacity (+5 slots when within 2 of limit)
-
-#### Core Functionality
-- **Drag and Drop Reordering**
-  - Drag products from search panel into specific rank positions
-  - Reorder existing rankings by dragging between slots
-  - Push down existing items when inserting at occupied position
-  - Validate against duplicate products in rankings
-- **Remove Product**: Remove individual product and renumber remaining rankings
-- **Clear All Rankings**: Confirmation dialog before clearing all (with API call)
-- **Save Status Display**: Show real-time save indicators (saving/saved/error)
-- **Progress Tracking**: Visual progress bar showing filled vs total slots
-
-#### Slot Behavior
-- Each slot displays rank number
-- Filled slots show:
-  - Product thumbnail image
-  - Product title and vendor
-  - Remove button (×)
-  - Draggable handle
-- Empty slots show placeholder text
-
-#### Visual Feedback
-- Highlight drag-over target slot
-- Show save spinner during network operations
-- Display save message (✓ Saved, Saving..., Error)
-
----
-
-### 3. SearchProductsPanel Component
-**File:** `src/components/rank/SearchProductsPanel.jsx`
-
-#### Core Functionality
-- **Product Search**: Real-time search with 300ms debounce
-  - Search by name, animal type, flavor
-  - Clear search to see all available products
-- **Pagination**: Load more products on demand
-  - Show "X of Y loaded" counter
-  - "Load More Products" button
-  - Disable button during loading
-- **Drag to Rank**: Drag products from panel to ranking slots
-- **Click to Rank**: Quick-add button on each product card
-  - **Desktop**: Opens ranking modal (see section 3a)
-  - **Mobile**: Opens ranking modal (primary interaction method)
-
-#### UI Elements
-- Search input with icon
-- Available count display
-- Product grid with cards showing:
-  - Product image
-  - Product title
-  - Vendor name
-  - Metadata tags (animal, flavor)
-  - "Rank This Product" button
-- Loading states:
-  - Initial load spinner
-  - "Load More" spinner
-- Empty states:
-  - No search results
-  - All products ranked
-
----
-
-### 3a. Ranking Modal (Mobile-Friendly Interface)
-**File:** `legacy/app.js` (function: `openRankModal`)
-**HTML:** `legacy/index.html` (element: `#rankModal`)
-
-#### Purpose
-Provides a **mobile-friendly alternative** to drag-and-drop ranking. Users can precisely choose where to rank a product using REPLACE or INSERT actions.
-
-#### Trigger
-- User clicks "Rank This Product" button on any product card
-- Opens modal with scrollable list of all ranking positions
+**User Flow:**
+1. User clicks "Rank This Product" button on any product card
+2. Modal opens showing all current ranking positions
+3. User chooses a position and action:
+   - **REPLACE**: Swap out the current product at that position
+   - **INSERT**: Add product at that position and push others down
+4. Modal closes, product list updates automatically
+5. Rankings auto-save in background (800ms debounce)
 
 #### Modal Structure
 
-**Header:**
+**Header**
 - Product thumbnail (60x60px, rounded with blue border)
-- Product title (truncated to 40 chars on mobile)
+- Product title (truncated to 40 chars on small screens)
 - Close button (× icon)
 
-**Body (Scrollable):**
-- List of all ranking positions (1 through N)
-- Each position shows:
-  - Position number (e.g., "Position #1")
-  - Status badge: "FILLED" (green) or "EMPTY" (gray)
-  - Current product (if filled):
-    - Thumbnail image
-    - Product name
-  - Action buttons:
-    - **REPLACE** button (yellow, disabled if empty)
-    - **INSERT** button (green, always enabled)
+**Body (Scrollable List)**
+For each ranking position (1 through N):
+- Position number: "Position #1", "Position #2", etc.
+- Status badge: "FILLED" (green) or "EMPTY" (gray)
+- If filled: Shows current product thumbnail + name
+- Action buttons:
+  - **REPLACE** (yellow, disabled if empty)
+  - **INSERT** (green, always enabled)
 
-#### Action: REPLACE
-**Purpose**: Swap out the current product at this position
+#### REPLACE Action
 
-**Behavior:**
-```javascript
-function replaceProductAtPosition(productData, position) {
-  // 1. Duplicate check: Prevent ranking same product twice
-  const existingRank = isProductAlreadyRanked(productData.id);
-  if (existingRank !== null && existingRank !== position) {
-    showWarning(`Product already ranked at position #${existingRank}`);
-    return;
-  }
-  
-  // 2. Optimistic UI: Immediately remove from available products
-  removeFromAvailableProducts(productData.id);
-  
-  // 3. REPLACE (no push-down): Simply overwrite the slot
-  fillSlot(rankingSlots[position - 1], position, productData);
-  
-  // 4. Old product is NOT returned to available list (replaced)
-  
-  // 5. Check if slots need expansion
-  checkAndAddMoreSlotsForRank(position);
-  
-  // 6. Trigger auto-save (800ms debounce)
-  scheduleAutoSave();
-  
-  // 7. Close modal
-  closeRankModal();
-}
-```
+**What happens:**
+- Overwrites the product at the selected position
+- Old product is **removed entirely** from rankings
+- No other positions are affected
+- Products below stay in place
 
 **Example:**
 ```
 Before REPLACE at Position #2:
   1. Cajun Boil
-  2. Black Pepper ← Replace with "Jalapeno Garlic"
+  2. Black Pepper  ← User replaces this
   3. Black Truffle
 
-After REPLACE:
+After REPLACE with "Jalapeno Garlic":
   1. Cajun Boil
-  2. Jalapeno Garlic ← Replaced
+  2. Jalapeno Garlic  ← New product
   3. Black Truffle
 
-Note: "Black Pepper" is REMOVED from rankings entirely
+Note: "Black Pepper" is gone (not returned to available products)
 ```
 
----
+#### INSERT Action
 
-#### Action: INSERT
-**Purpose**: Add product at this position and push everything below down
-
-**Behavior:**
-```javascript
-function insertProductAtPosition(newProductData, targetPosition) {
-  // Uses insertProductWithPushDown(targetPosition, newProductData)
-  
-  // 1. Duplicate check: Prevent ranking same product twice
-  const existingRank = isProductAlreadyRanked(newProductData.id);
-  if (existingRank !== null) {
-    showWarning(`Product already ranked at position #${existingRank}`);
-    return;
-  }
-  
-  // 2. Optimistic UI: Immediately remove from available products
-  const productIndex = currentProducts.findIndex(p => p.id === newProductData.id);
-  if (productIndex !== -1) {
-    const removedProduct = currentProducts.splice(productIndex, 1)[0];
-    optimisticallyRemovedProducts.push(removedProduct);
-    displayProducts(); // Re-render product list
-  }
-  
-  // 3. Collect items to push down (all items >= target position)
-  const itemsToPushDown = [];
-  let displacedProduct = null; // Track if target slot is already filled
-  
-  for (let i = targetPosition - 1; i < rankingSlots.length; i++) {
-    const slot = rankingSlots[i];
-    if (slot.classList.contains('filled')) {
-      const slotProductData = JSON.parse(slot.dataset.productData);
-      
-      // First iteration: this is the product being displaced from target position
-      if (i === targetPosition - 1) {
-        displacedProduct = slotProductData;
-      }
-      
-      itemsToPushDown.push({ rank: i + 1, data: slotProductData });
-    }
-  }
-  
-  // 4. Clear affected slots (prepare for re-assignment)
-  for (let i = targetPosition - 1; i < rankingSlots.length; i++) {
-    const slotToClear = rankingSlots[i];
-    if (slotToClear.classList.contains('filled')) {
-      slotToClear.classList.remove('filled');
-      slotToClear.innerHTML = `
-        <div class="slot-number">${i + 1}</div>
-        <div class="slot-placeholder">Drop a product here to rank #${i + 1}</div>
-      `;
-      delete slotToClear.dataset.productData;
-      slotToClear.draggable = false;
-    }
-  }
-  
-  // 5. INSERT new product at target position
-  fillSlot(rankingSlots[targetPosition - 1], targetPosition, newProductData);
-  
-  // 6. PUSH DOWN: Re-assign displaced items to new positions
-  let highestPushedRank = targetPosition;
-  
-  itemsToPushDown.forEach((item, index) => {
-    const newRank = targetPosition + 1 + index;
-    if (newRank <= rankingSlots.length) {
-      fillSlot(rankingSlots[newRank - 1], newRank, item.data);
-      highestPushedRank = Math.max(highestPushedRank, newRank);
-    }
-  });
-  
-  // 7. If displaced product exists, restore to available products list
-  //    (This happens when inserting into a filled slot)
-  if (displacedProduct) {
-    const displacedProductId = displacedProduct.id;
-    
-    // Check if it's in the optimistically removed list
-    const optimisticIndex = optimisticallyRemovedProducts.findIndex(p => p.id === displacedProductId);
-    if (optimisticIndex !== -1) {
-      // Restore from optimistic removal list
-      const restoredProduct = optimisticallyRemovedProducts.splice(optimisticIndex, 1)[0];
-      currentProducts.unshift(restoredProduct);
-      console.log(`↩️ Restored displaced product ${displacedProductId}`);
-    } else {
-      // Check if it's already in currentProducts (guard against duplicates)
-      const alreadyInProducts = currentProducts.some(p => p.id === displacedProductId);
-      if (!alreadyInProducts) {
-        currentProducts.unshift(displacedProduct);
-        console.log(`↩️ Returned displaced product ${displacedProductId} to available list`);
-      }
-    }
-    
-    // Re-render to show the displaced product
-    displayProducts();
-  }
-  
-  // 8. Check if slots need expansion (may need more slots now)
-  if (itemsToPushDown.length > 0) {
-    checkAndAddMoreSlotsForRank(highestPushedRank);
-  }
-  checkAndAddMoreSlots(); // General capacity check
-  
-  // 9. Trigger auto-save (800ms debounce)
-  scheduleAutoSave();
-  
-  // 10. Close modal
-  closeRankModal();
-}
-```
+**What happens:**
+- Adds new product at the selected position
+- If position is filled: displaced product returns to available list
+- All products at/below that position shift down by 1
+- Ranking slots expand automatically if needed
 
 **Example:**
 ```
@@ -310,336 +80,363 @@ Before INSERT at Position #2:
 
 After INSERT "Jalapeno Garlic" at Position #2:
   1. Cajun Boil
-  2. Jalapeno Garlic ← Inserted
-  3. Black Pepper     ← Pushed down from #2
-  4. Black Truffle    ← Pushed down from #3
+  2. Jalapeno Garlic  ← Inserted
+  3. Black Pepper     ← Pushed from #2 to #3
+  4. Black Truffle    ← Pushed from #3 to #4
+
+Note: If #2 was filled, "Black Pepper" returns to available products
 ```
 
----
-
-#### Modal Interaction Details
+#### Modal Interactions
 
 **Button States:**
-- **REPLACE button**:
-  - Enabled: Position is filled
-  - Disabled: Position is empty (nothing to replace)
-  - Color: Yellow (#FFB800)
-  
-- **INSERT button**:
-  - Always enabled
-  - Color: Green (#6B8E23)
-
-**Keyboard Support:**
-- ESC key: Close modal
-- Buttons are keyboard-navigable (tab focus)
-
-**Scrolling:**
-- Modal body is scrollable (max-height: 90vh)
-- Sticky header with product info
-- Smooth scroll on mobile
+- REPLACE: Disabled on empty positions, yellow color (#FFB800)
+- INSERT: Always enabled, green color (#6B8E23)
 
 **Close Methods:**
-- Click close button (× icon)
+- Click × button
 - Press ESC key
-- Click outside modal (overlay click)
-- Auto-close after REPLACE or INSERT action
+- Click outside modal
+- Automatic close after REPLACE/INSERT
 
-**Responsive Behavior:**
-- **Mobile (<768px)**:
-  - Modal takes 95% of screen width
-  - Positions stack vertically
-  - Buttons stack vertically within each position
-  - Touch-friendly button sizes (min 44px height)
-  
-- **Desktop (≥768px)**:
-  - Modal max-width: 900px
-  - Positions in grid layout
-  - Buttons side-by-side (Replace | Insert)
+**Keyboard:**
+- ESC closes modal
+- Tab navigates buttons
+- Enter/Space activates buttons
+
+**Responsive:**
+- Mobile (<768px): 95% width, buttons stack vertically, 44px min touch target
+- Desktop (≥768px): 900px max width, buttons side-by-side
 
 ---
 
-#### Edge Cases Handled
+### Feature 2: Rank a Product (Drag & Drop)
 
-1. **Duplicate Product Prevention**
-   - Check if product already ranked before REPLACE/INSERT
-   - Show warning notification if duplicate detected
-   - Prevent action and keep modal open
+**User Flow:**
+1. User drags product card from search panel
+2. Drops on a ranking slot (empty or filled)
+3. Drop behavior same as INSERT action (push-down)
+4. Rankings auto-save in background
 
-2. **Slot Expansion**
-   - Auto-expand ranking slots dynamically via `checkAndAddMoreSlotsForRank()`
-   - Add 5 slots at a time when nearing capacity
-   - Ensures pushed-down products always have space
-   - No products are ever ejected due to insufficient slots
+**Visual Feedback:**
+- Dragging: Product card shows drag cursor
+- Drag over slot: Slot highlights with blue border
+- Drop: Slot fills immediately (optimistic UI)
 
-3. **Displaced Product Restoration (INSERT into Filled Slot)**
-   - When INSERT targets a filled position:
-     - The product originally at that position becomes `displacedProduct`
-     - All items from that position onward are pushed down by 1
-     - The `displacedProduct` is returned to the available products list
-     - Shown in search panel immediately (added to top of list)
-     - Can be re-ranked later
-   - Example: INSERT at Position #2 (filled with "Black Pepper")
-     - "Black Pepper" is displaced and returned to available products
-     - New product takes Position #2
-     - All items originally at #2+ are pushed to #3+
+**Drag Sources:**
+- Product cards in search panel
+- Existing ranking slots (reorder)
 
-4. **Optimistic UI Recovery**
-   - If REPLACE/INSERT fails (network error):
-     - Product is restored to available list from optimisticallyRemovedProducts
-     - User can retry the action
-   - Auto-save retry logic (3 attempts) handles transient failures
-
-5. **Empty Slot REPLACE**
-   - REPLACE button is disabled on empty slots
-   - Prevents confusing user action (nothing to replace)
+**Drop Targets:**
+- Any ranking slot (1 through N)
+- Dropping on filled slot behaves like INSERT
 
 ---
 
-### 4. ProgressWidget Component
-**File:** `src/components/rank/ProgressWidget.jsx`
+### Feature 3: Manage Your Rankings
 
-#### State Management
-- Collapsible state (stored in sessionStorage per page)
-- Progress data fetching via React Query
+**View Current Rankings**
+- Left panel shows numbered slots (1, 2, 3...)
+- Initial slots: 10
+- Auto-expands: +5 slots when filling within 2 of max
+- Each filled slot shows:
+  - Product thumbnail
+  - Product title
+  - Vendor name
+  - Remove button (×)
+
+**Remove a Product**
+- Click × button on any filled slot
+- Product removed immediately
+- Remaining products renumber automatically
+- Removed product does NOT return to available list
+
+**Clear All Rankings**
+- Button in panel header
+- Confirmation dialog: "Are you sure?"
+- Clears all rankings via API call
+- Progress widget updates automatically
+
+**Save Status Indicator**
+- Shows in rankings panel header
+- States: idle | saving | saved | error
+- "Saving...": Spinner + text
+- "✓ Saved": Checkmark + text (2 seconds)
+- "❌ Error": Error message
+
+---
+
+### Feature 4: Search & Browse Products
+
+**Search Interface**
+- Search input with icon
+- Placeholder: "Search products by name, animal, flavor..."
+- Real-time search with 300ms debounce
+- Clear search shows all available products
+
+**Product List**
+- Grid layout with product cards
+- Each card shows:
+  - Product image (or placeholder)
+  - Product title
+  - Vendor name
+  - Metadata tags (animal, flavor)
+  - "Rank This Product" button
+  - Draggable (desktop)
+
+**Pagination**
+- Load 20 products at a time
+- "Load More Products" button at bottom
+- Shows "X of Y loaded"
+- Button disabled during loading
+- Loading spinner on button
+
+**Empty States**
+- No search results: "No products match your search" + 🔍
+- All ranked: "All products have been ranked!" + 🔍
+
+**Available Count**
+- Header shows: "150 available to rank"
+- Updates as products are ranked
+
+---
+
+### Feature 5: Progress & Achievements
+
+**Progress Widget (Collapsible)**
+- Location: Top of rank page
+- Collapsed by default (stored in sessionStorage)
+- Click to expand/collapse
+
+**Compact View (Collapsed)**
+- Recent achievement icon
+- Total products ranked: 🎯 25
+- Current streak: 🔥 7
+- Next milestone progress bar with %
+
+**Expanded View**
+- All achievements grid (earned + locked)
+- Earned: Full name + tier emoji (🥉🥈🥇)
+- Locked: "???" + cryptic hint
+- Click achievement → Navigate to Coin Book
+
+**Next Milestone**
+- Shows upcoming achievement name
+- Mysterious description (e.g., "The path reveals itself...")
+- Progress bar (0-100%)
+
+**Progress Hints for Locked Achievements:**
+- rank_count: "Progress: 10/25"
+- streak_days: "Current streak: 3/7 days"
+- unique_brands: "Brands explored: 5/10"
+- leaderboard_position: "Rank higher to unlock..."
+- profile_views: "Views: 50/100"
+- trendsetter: "Rank trending products..."
+
+**Data Refresh:**
 - Auto-refresh every 60 seconds
-
-#### Core Functionality
-- **Display User Statistics**
-  - Total products ranked (🎯)
-  - Current ranking streak (🔥)
-  - Most recent achievement icon
-- **Next Milestone Tracking**
-  - Show upcoming achievement
-  - Display mysterious description hint
-  - Progress bar with percentage
-- **Achievement Grid**
-  - Show all achievements (earned and locked)
-  - Earned: Full name + tier emoji
-  - Locked: Display as "???" with progress hints
-  - Click to navigate to Coin Book detail page
-- **Expand/Collapse Toggle**: Minimize to save screen space
-
-#### Achievement Progress Hints
-- `rank_count`: "Progress: X/Y"
-- `streak_days`: "Current streak: X/Y days"
-- `unique_brands`: "Brands explored: X/Y"
-- `leaderboard_position`: "Rank higher to unlock..."
-- `profile_views`: "Views: X/Y"
-- `trendsetter`: "Rank trending products..."
-- `rank_all_products`: "Products ranked: X/Y"
-
-#### Display Logic
-- Hide widget if user has 0 rankings AND 0 achievements
-- Show tier emojis: 🥉 Bronze, 🥈 Silver, 🥇 Gold
-- Support custom achievement icons (images or emoji)
-- Display earned dates on hover
+- Manual refresh on ranking changes
+- 30 second cache
 
 ---
 
-## Custom Hooks
+### Feature 6: Auto-Save System
 
-### 5. useRankings Hook
-**File:** `src/hooks/useRankings.js`
+**How It Works:**
+1. User makes any ranking change
+2. 800ms debounce timer starts
+3. After 800ms: Save queued to IndexedDB
+4. Network request sent to server
+5. On success: Mark operation complete, remove from queue
+6. On failure: Retry with exponential backoff (3 attempts max)
 
-#### State Management
-- Rankings array
-- Save status (idle/saving/saved/error)
-- Save message
-- Last saved product IDs (Set for comparison)
-- Pending debounce flag
+**Persistent Queue (IndexedDB)**
+- Survives page refresh, browser crash, network outages
+- Stores operations with:
+  - Operation ID (unique)
+  - Full rankings payload
+  - Idempotency key
+  - Retry count
+  - Timestamp
+- On page load: Resume pending operations automatically
 
-#### Core Functionality
-- **Load Rankings**: Fetch from `/api/rankings/products?rankingListId=default`
-- **Update Rankings**: Trigger auto-save with 800ms debounce
-- **Clear All Rankings**: DELETE request to clear endpoint
-- **Auto-save System**:
-  - Debounce changes (800ms delay)
-  - Queue operations in persistent IndexedDB
-  - Retry failed saves with exponential backoff (3 attempts max)
-  - Snapshot pending changes during active network saves
-  - Process snapshot after current save completes
-- **Navigation Guards**:
-  - Track pending saves (debounce + queue + snapshots)
-  - Wait for all pending operations before navigation
-  - Flush debounce timeout on demand
+**Retry Logic:**
+- Attempt 1: Immediate
+- Attempt 2: After 2 seconds
+- Attempt 3: After 4 seconds
+- After 3 failures: Show persistent error
 
-#### RankingSaveQueue Class
-- **Persistent Queue Integration**: Uses IndexedDB-backed queue
-- **Process Pending Operations**: Retry operations from previous session on init
-- **Enqueue**: Add save operation to queue
-- **Process Queue**: Execute operations sequentially
-- **Execute Operation**: POST to `/api/rankings/products` with:
-  - Idempotency key header
-  - Rankings payload
-  - Session authentication via cookie
-- **Retry Logic**: Exponential backoff (2^n seconds, max 3 attempts)
-- **Cache Invalidation**: Invalidate rankings, progress, achievements caches
-- **Status Callbacks**: Update UI save status
-- **Queue Drainage Detection**: Call callback when queue empties
+**Optimistic UI:**
+- Changes appear instantly (before save)
+- Products removed from available list immediately
+- On failure: Restore to available list
+- User never blocked by network
 
 ---
 
-### 6. useRankableProducts Hook
-**File:** `src/hooks/useRankableProducts.js`
+### Feature 7: Navigation Protection
 
-#### State Management
-- Products list (paginated)
-- Filtered products (after search)
-- Search term with debounced updates
-- Loading states (initial and load-more)
-- Pagination state (current page, hasMore, total count)
-- Available count
+**Prevent Data Loss:**
+- Browser navigation (back/forward): beforeunload warning
+- React Router navigation: Block with confirmation modal
+- Tab/window close: Browser confirmation dialog
 
-#### Core Functionality
-- **Load Products**: GET `/api/products/rankable` with query params:
-  - `query`: Search term
-  - `page`: Current page number
-  - `limit`: 20 products per page
-  - `sort`: 'name-asc'
-- **Search with Debounce**: 300ms delay before triggering new search
-- **Pagination**: Load additional pages without resetting list
-- **Reload Products**: Reset to page 1 with fresh data
-- **Authentication Check**: Skip loading if not authenticated
+**Navigation Modal:**
+- Shows when navigating with pending saves
+- "Saving your rankings..."
+- Spinner + save status message
+- Auto-proceeds when save completes
+- Error state if save fails
 
-#### Product Filtering (Server-side)
-- Exclude already-ranked products (by ID)
-- For non-employee users: Only show purchased products
-- For employee users: Show all products
+**What's Protected:**
+- Route changes (e.g., Home → Rank → Products)
+- Browser back/forward buttons
+- Tab close
+- Page refresh
 
 ---
 
-### 7. useProgress Hook
-**File:** `src/hooks/useProgress.js`
+## UI/UX Requirements
 
-#### Core Functionality
-- **Fetch Progress Data**: GET `/api/gamification/progress`
-- **Cache Strategy**: 30s stale time, 60s refetch interval
-- **Helper: getNextMilestone**: Extract first upcoming milestone
-- **Helper: getMysteriousDescription**: Return cryptic hint for achievement
+### Layout (Desktop)
 
-#### Mysterious Descriptions Map
-- first_rank: "Every legend begins with a single choice..."
-- rank_10: "The path reveals itself to those who persist..."
-- rank_25: "Power grows with dedication. Keep going..."
-- rank_50: "You're halfway to something extraordinary..."
-- complete_collection: "The ultimate completionist. Rank them all..."
-- streak_3: "The flame ignites. Feed it daily..."
-- streak_7: "Seven suns have witnessed your devotion..."
-- streak_30: "The calendar bends to your will. Don't break..."
-- And more...
-
----
-
-## Utilities
-
-### 8. PersistentQueue Class
-**File:** `src/utils/PersistentQueue.js`
-
-#### Core Functionality
-- **IndexedDB Storage**: Survive page refreshes, network failures, browser crashes
-- **Database Structure**:
-  - Database: 'RankingQueue'
-  - Store: 'pending_operations'
-  - Key: operationId
-  - Indexes: timestamp, status
-
-#### Operations
-- **init()**: Initialize IndexedDB connection, create schema on first run
-- **enqueue(operation)**: Add operation with pending status
-  - Auto-assign timestamp and retryCount
-- **getPending()**: Retrieve all pending operations sorted by timestamp
-- **markComplete(operationId)**: Delete operation from queue (alias: complete)
-- **updateOperation(operationId, updates)**: Update retry count and metadata
-- **markFailed(operationId, error)**: Mark as failed with error details
-- **getPendingCount()**: Count pending operations
-- **clearAll()**: Remove all operations from queue
-
-#### Operation Schema
-```javascript
-{
-  operationId: string,      // Unique identifier
-  rankings: array,          // Full rankings payload
-  idempotencyKey: string,   // For server-side deduplication
-  timestamp: number,        // Enqueue time
-  status: 'pending',        // Operation status
-  retryCount: number,       // Attempt counter
-  lastAttempt: number|null, // Last attempt timestamp
-  lastError: string|null    // Error from last failure
-}
+```
+┌─────────────────────────────────────┐
+│  Breadcrumb  |  Browse All Button   │
+├─────────────────────────────────────┤
+│        Progress Widget (collapsible) │
+├──────────────────┬──────────────────┤
+│                  │                  │
+│  Rankings Panel  │  Products Panel  │
+│  (Left 40%)      │  (Right 60%)     │
+│                  │                  │
+│  1. [Product]    │  [Search Input]  │
+│  2. [Product]    │                  │
+│  3. [Empty]      │  [Product Grid]  │
+│  ...             │                  │
+│                  │  [Load More]     │
+└──────────────────┴──────────────────┘
 ```
 
+### Loading States
+
+**Initial Page Load:**
+- Rankings panel: Empty slots visible
+- Products panel: Loading spinner
+- Progress widget: Hidden until data loads
+
+**Search:**
+- Products panel: Loading spinner overlay
+- Search input: Enabled during load
+- Product grid: Dims slightly
+
+**Pagination:**
+- "Load More" button: Spinner + "Loading..." text
+- Button disabled
+- Product grid: Stays visible
+
+**Auto-save:**
+- Rankings header: Spinner + "Saving..."
+- No blocking UI
+- Slots remain interactive
+
+### Error States
+
+**Failed Rankings Load:**
+- Log error to console
+- Show empty rankings panel
+- Allow user to start ranking
+
+**Failed Product Load:**
+- Error message in products panel
+- "Failed to load products"
+- Retry button
+
+**Failed Save:**
+- Error message in rankings header
+- "❌ Save failed after 3 attempts"
+- Operation stays in IndexedDB queue
+- Retry on next page load
+
+**No Network:**
+- Operations queue in IndexedDB
+- "Saving offline..." message
+- Auto-retry when connection restored
+
+### Animations & Transitions
+
+**Drag & Drop:**
+- Smooth transform during drag
+- 200ms ease-in-out on drop
+- Highlight animation on target slot
+
+**Modal:**
+- Fade in: 200ms
+- Slide up: 300ms ease-out
+- Backdrop fade: 200ms
+
+**Save Status:**
+- Spinner rotation: continuous
+- Success fade: 2 seconds
+- Error shake: 0.5 seconds
+
+**Product Removal:**
+- Fade out: 300ms
+- Collapse: 200ms ease-in
+- Renumber: stagger 100ms each
+
 ---
 
-## Server-Side APIs
+## API Endpoints (Frontend Contracts)
 
-### 9. Ranking Endpoints
-**File:** `server.js`
+### Save Rankings
 
-#### POST /api/rankings/products (Bulk Save)
-**Purpose**: Save all user rankings atomically
-
-**Authentication**: Session cookie (httpOnly)
-
-**Request Body**:
 ```javascript
+POST /api/rankings/products
+
+Headers:
+  X-Idempotency-Key: {unique-key}
+  Cookie: session_id={httpOnly}
+
+Body:
 {
-  rankingListId: 'default',  // List identifier
+  rankingListId: 'default',
   rankings: [
     {
       ranking: 1,
       productData: {
-        id: '123456789',
+        id: '123',
         title: 'Product Name',
         vendor: 'Brand',
         image: 'https://...',
-        // ... other product fields
+        // ... other fields
       }
     }
   ]
 }
+
+Success Response (200):
+{
+  success: true,
+  message: 'Saved 10 rankings'
+}
+
+Error Response (400):
+{
+  error: 'Duplicate products detected in rankings',
+  duplicates: ['123', '456']
+}
 ```
 
-**Validation**:
-- Check for duplicate product IDs in payload
-- Return 400 error with duplicate list if found
+### Get Rankings
 
-**Database Operation**:
-- Call `storage.bulkUpsertProductRankings()`
-- Atomic transaction: upsert new rankings + delete removed ones
-- Differential delete: Only remove products NOT in payload
-
-**Cache Invalidation**:
-- Ranking stats cache
-- Leaderboard position cache
-- Home stats cache
-- Leaderboard cache
-
-**Async Gamification Processing** (non-blocking):
-- Update daily ranking streak
-- Broadcast streak updates via WebSocket
-- Calculate user stats and position
-- Award flavor coins for newly ranked products
-- Check and award achievements
-- Emit achievements via WebSocket
-- Log errors to Sentry without failing request
-
-**Response**:
 ```javascript
-{ success: true, message: 'Saved X rankings' }
-```
+GET /api/rankings/products?rankingListId=default
 
----
+Headers:
+  Cookie: session_id={httpOnly}
 
-#### GET /api/rankings/products
-**Purpose**: Retrieve user's current rankings
-
-**Authentication**: Session cookie (httpOnly)
-
-**Query Params**:
-- `rankingListId`: default = 'default'
-
-**Response**:
-```javascript
+Success Response (200):
 {
   rankings: [
     {
@@ -647,7 +444,7 @@ After INSERT "Jalapeno Garlic" at Position #2:
       userId: 123,
       shopifyProductId: '987654321',
       ranking: 1,
-      productData: { /* full product object */ },
+      productData: { /* full product */ },
       createdAt: '2025-11-01T...',
       updatedAt: '2025-11-01T...',
       rankingListId: 'default'
@@ -656,62 +453,31 @@ After INSERT "Jalapeno Garlic" at Position #2:
 }
 ```
 
----
+### Clear Rankings
 
-#### DELETE /api/rankings/products/clear
-**Purpose**: Clear all rankings for user's list
-
-**Authentication**: Session cookie (httpOnly)
-
-**Query Params**:
-- `rankingListId`: default = 'default'
-
-**Database Operation**:
-- Call `storage.clearUserProductRankings(userId, rankingListId)`
-
-**Cache Invalidation**:
-- Ranking stats cache
-
-**Response**:
 ```javascript
+DELETE /api/rankings/products/clear?rankingListId=default
+
+Headers:
+  Cookie: session_id={httpOnly}
+
+Success Response (200):
 { success: true }
 ```
 
----
+### Get Rankable Products
 
-### 10. Products Endpoint
-**File:** `server.js` (uses ProductsService)
-
-#### GET /api/products/rankable
-**Purpose**: Get products user can rank (filtered by purchase history)
-
-**Authentication**: Session cookie (httpOnly)
-
-**Query Params**:
-- `query`: Search term (optional)
-- `page`: Page number (default: 1)
-- `limit`: Results per page (default: 20)
-- `sort`: Sort order (default: 'name-asc')
-
-**Server-side Filtering Logic**:
-1. Get all products from Shopify (with caching)
-2. Enrich with metadata (animal, flavor) and ranking stats
-3. Get user's already-ranked product IDs
-4. Filter out ranked products
-5. **For non-employee users**: Filter to only purchased products
-   - Sync Shopify orders on user login
-   - Query purchase history from database
-   - If empty purchase history: Show all (sync may be in progress)
-6. **For employee users**: Show all unranked products
-7. Apply search filter (name, animal, flavor)
-8. Paginate results
-
-**Response**:
 ```javascript
+GET /api/products/rankable?query={search}&page={n}&limit=20&sort=name-asc
+
+Headers:
+  Cookie: session_id={httpOnly}
+
+Success Response (200):
 {
   products: [
     {
-      productId: '123456789',
+      productId: '123',
       title: 'Product Name',
       vendor: 'Brand',
       image: 'https://...',
@@ -720,217 +486,52 @@ After INSERT "Jalapeno Garlic" at Position #2:
         animal: 'beef',
         flavor: 'teriyaki'
       },
-      rankingCount: 42,
-      avgRank: 3.5,
-      // ... other enriched fields
+      rankingCount: 42,      // How many users ranked this
+      avgRank: 3.5,          // Average rank position
+      // ... other fields
     }
   ],
-  total: 150,
-  hasMore: true
+  total: 150,              // Total available products
+  hasMore: true            // More pages available
 }
+
+Notes:
+- Server filters out already-ranked products
+- Non-employees only see purchased products
+- Employees see all products
 ```
 
----
+### Get Progress Data
 
-## Database Layer
-
-### 11. Storage Methods
-**File:** `server/storage.js`
-
-#### saveProductRanking(params)
-**Purpose**: Save/update single product ranking
-
-**Params**:
-- userId
-- shopifyProductId
-- productData (JSONB)
-- ranking (integer)
-- rankingListId
-
-**SQL Operation**: UPSERT with ON CONFLICT DO UPDATE
-- Unique constraint: (userId, shopifyProductId, rankingListId)
-- Update: ranking, productData, updatedAt on conflict
-
-**Error Handling**: Capture to Sentry with context
-
----
-
-#### getUserProductRankings(userId, rankingListId)
-**Purpose**: Fetch user's rankings ordered by rank
-
-**Returns**: Array of ranking records
-
----
-
-#### bulkUpsertProductRankings(params)
-**Purpose**: Atomically save multiple rankings
-
-**Params**:
-- userId
-- rankings: Array of { productId, productData, ranking }
-- rankingListId
-
-**Database Transaction**:
-1. Upsert each ranking (ON CONFLICT DO UPDATE)
-2. Differential delete: Remove rankings for products NOT in payload
-3. Special case: Empty payload = delete all rankings
-4. Retry wrapper for connection errors
-
-**Atomicity**: All operations succeed or all fail (transaction rollback)
-
-**Returns**: Array of saved ranking records
-
----
-
-#### clearUserProductRankings(userId, rankingListId)
-**Purpose**: Delete all rankings for user's list
-
-**SQL Operation**: DELETE WHERE userId AND rankingListId
-
----
-
-### 12. ProductRankingRepository
-**File:** `server/repositories/ProductRankingRepository.js`
-
-#### getRankedProductIdsByUser(userId, rankingListId)
-**Purpose**: Get array of product IDs user has ranked
-
-**Returns**: Array of shopifyProductId strings
-
-**Usage**: Filter available products in useRankableProducts
-
----
-
-## Business Logic
-
-### 13. Purchase History Filtering
-**Requirement**: Non-employee users can only rank products they've purchased
-
-**Implementation Flow**:
-1. User logs in via Shopify Customer Account
-2. Webhook or sync process fetches user's orders
-3. Orders stored in database with product IDs
-4. `ProductsService.getRankableProductsForUser()` queries purchase history
-5. Filter products to intersection of (unranked AND purchased)
-6. Employees bypass filter (can rank any product)
-
-**Edge Case**: Empty purchase history returns all products
-- Assumption: Sync still in progress
-- Prevents empty state during initial login
-
----
-
-### 14. Gamification Integration
-
-#### Streak Management
-**Trigger**: Bulk ranking save
-**Logic**: Update 'daily_rank' streak when user ranks products
-**Broadcast**: WebSocket event `streak:updated` to user's room
-
-#### Achievement System
-**Checked After Ranking**:
-- rank_count achievements (1, 10, 25, 50, etc.)
-- complete_collection (rank all products)
-- unique_brands (explore different brands)
-- streak-based achievements
-- leaderboard position achievements
-
-**Flavor Coins**:
-- Award coins for newly ranked products with metadata
-- Check which products are new since last save
-- Award coins via FlavorCoinManager
-
-**WebSocket Emission**:
-- Emit earned achievements to user
-- Include achievement details for toast notifications
-
----
-
-## Data Structures
-
-### 15. Ranking Object
 ```javascript
-{
-  ranking: number,           // Position in list (1-based)
-  productData: {
-    productId: string,       // Shopify product ID
-    title: string,
-    vendor: string,
-    image: string,
-    price: string,
-    metadata: {
-      animal: string,
-      flavor: string
-    },
-    // ... other product fields
-  }
-}
-```
+GET /api/gamification/progress
 
-### 16. Product Object (Enriched)
-```javascript
-{
-  id: string,                    // Shopify product ID
-  productId: string,             // Alias for consistency
-  title: string,
-  handle: string,
-  vendor: string,
-  productType: string,
-  tags: string[],
-  bodyHtml: string,
-  image: string,
-  price: string,
-  compareAtPrice: string,
-  
-  // Metadata
-  animalType: string,
-  animalDisplay: string,
-  animalIcon: string,
-  primaryFlavor: string,
-  secondaryFlavors: string[],
-  flavorDisplay: string,
-  flavorIcon: string,
-  
-  // Ranking Stats
-  rankingCount: number,          // How many users ranked this
-  uniqueRankers: number,
-  avgRank: number,
-  bestRank: number,
-  worstRank: number,
-  lastRankedAt: date
-}
-```
+Headers:
+  Cookie: session_id={httpOnly}
 
-### 17. Progress Data
-```javascript
+Success Response (200):
 {
-  totalRankings: number,
-  currentStreak: number,
+  totalRankings: 25,
+  currentStreak: 7,
   achievements: [
     {
-      code: string,
-      name: string,
-      description: string,
-      icon: string,              // Emoji or image URL
-      tier: 'bronze'|'silver'|'gold',
-      earned: boolean,
-      earnedDate: date,
-      requirement: {
-        type: string,
-        value: number
-      },
-      progress: {
-        current: number,
-        required: number
-      }
+      code: 'first_rank',
+      name: 'First Steps',
+      description: 'Ranked your first product',
+      icon: '🎯',
+      tier: 'bronze',
+      earned: true,
+      earnedDate: '2025-10-15T...',
+      requirement: { type: 'rank_count', value: 1 },
+      progress: { current: 25, required: 1 }
     }
   ],
-  recentAchievements: [],        // Recently earned
+  recentAchievements: [ /* last 3 earned */ ],
   nextMilestones: [
     {
-      code: string,
-      name: string,
-      progress: number            // Percentage (0-100)
+      code: 'rank_50',
+      name: 'Halfway There',
+      progress: 50  // percentage (0-100)
     }
   ]
 }
@@ -938,299 +539,358 @@ After INSERT "Jalapeno Garlic" at Position #2:
 
 ---
 
-## UI/UX Requirements
+## Frontend State Management
 
-### 18. Interaction Patterns
+### useRankings Hook
 
-#### Drag and Drop
-- **Source**: Product cards in search panel
-- **Target**: Ranking slots (empty or filled)
-- **Visual Feedback**: Highlight target slot on drag over
-- **Behavior**: 
-  - Drop on empty slot: Insert at that position
-  - Drop on filled slot: Push existing items down
-  - Reorder existing: Drag between slots, renumber affected items
+**State:**
+- `rankings`: Array of ranking objects
+- `saveStatus`: 'idle' | 'saving' | 'saved' | 'error'
+- `saveMessage`: String for UI display
+- `hasPendingSaves`: Boolean flag
 
-#### Auto-save UX
-- **Trigger**: Any ranking change (add, remove, reorder)
-- **Debounce**: 800ms delay before network request
-- **Visual Indicator**: Show "Saving..." spinner in header
-- **Success**: Show "✓ Saved" for 2 seconds
-- **Error**: Show "❌ Save failed" and retry automatically
-- **Persistence**: Queue operations in IndexedDB for retry
+**Methods:**
+- `loadRankings()`: Fetch from API
+- `updateRankings(newRankings)`: Update state + trigger auto-save
+- `clearAllRankings()`: DELETE API call
+- `waitForPendingSaves()`: Promise that resolves when queue empty
 
-#### Navigation Protection
-- **Trigger**: User attempts to leave page with pending saves
-- **Browser**: Show beforeunload confirmation dialog
-- **React Router**: Block navigation and show modal
-- **Modal Content**: "Saving your rankings..." with spinner
-- **Auto-proceed**: Navigate after save completes
+**Auto-save Flow:**
+1. updateRankings() called
+2. State updates immediately (optimistic)
+3. 800ms debounce timer set
+4. Timer expires → enqueue to IndexedDB
+5. POST to /api/rankings/products
+6. Success → remove from queue, invalidate caches
+7. Failure → retry with backoff
 
----
+### useRankableProducts Hook
 
-### 19. Loading States
+**State:**
+- `products`: Array of product objects
+- `loading`: Boolean
+- `searchTerm`: String
+- `currentPage`: Number
+- `hasMore`: Boolean
+- `totalProducts`: Number
+- `availableCount`: Number
 
-#### Initial Page Load
-- Show loading spinner in search panel
-- Rankings panel shows empty slots
-- Progress widget hidden until data loads
+**Methods:**
+- `handleSearch(term)`: Debounced search (300ms)
+- `loadMoreProducts()`: Load next page
+- `reloadProducts()`: Reset to page 1
 
-#### Pagination
-- Show "Loading..." text in "Load More" button
-- Disable button during load
-- Append new products to grid
+**Search Flow:**
+1. User types in search input
+2. 300ms debounce
+3. GET /api/products/rankable?query={term}&page=1
+4. Products list updates
+5. Pagination resets
 
-#### Save Operations
-- Show spinner next to save status
-- Dim/disable UI during critical operations (optional)
+### useProgress Hook
 
----
+**State:**
+- Progress data from API
+- Cache: 30s stale time, 60s refetch interval
 
-### 20. Error States
-
-#### Failed Ranking Load
-- Log to console
-- Show empty rankings panel
-- Allow user to start ranking fresh
-
-#### Failed Save
-- Show error message in rankings header
-- Retry automatically (up to 3 times)
-- Keep operation in IndexedDB queue
-- Retry on next page load if still failed
-
-#### No Products Available
-- Show empty state in search panel
-- Message: "All products have been ranked!" (if no search term)
-- Message: "No products match your search" (if searching)
+**Methods:**
+- `getNextMilestone(data)`: Extract first milestone
+- `getMysteriousDescription(code)`: Get cryptic hint
 
 ---
 
-### 21. Responsive Behavior
+## Data Models
 
-#### Layout
-- Three-panel layout on desktop
-- Progress widget at top (collapsible)
-- Rankings panel on left
-- Search panel on right
+### Ranking Object
+```javascript
+{
+  ranking: 1,              // Position (1-based)
+  productData: {
+    productId: '123',      // Shopify ID
+    title: 'Product Name',
+    vendor: 'Brand',
+    image: 'https://...',
+    price: '29.99',
+    metadata: {
+      animal: 'beef',
+      flavor: 'teriyaki'
+    }
+  }
+}
+```
 
-#### Mobile Considerations (Current)
-- Drag and drop works on touch devices
-- May need touch-specific event handlers
-- Consider stacking panels vertically
+### Product Object
+```javascript
+{
+  productId: '123',
+  title: 'Product Name',
+  vendor: 'Brand',
+  image: 'https://...',
+  price: '29.99',
+  compareAtPrice: '34.99',
+  metadata: {
+    animal: 'beef',
+    flavor: 'teriyaki'
+  },
+  rankingCount: 42,
+  avgRank: 3.5,
+  bestRank: 1,
+  worstRank: 10
+}
+```
+
+### Achievement Object
+```javascript
+{
+  code: 'first_rank',
+  name: 'First Steps',
+  description: 'Ranked your first product',
+  icon: '🎯',              // Emoji or image URL
+  tier: 'bronze',          // bronze | silver | gold
+  earned: true,
+  earnedDate: '2025-10-15T...',
+  requirement: {
+    type: 'rank_count',
+    value: 1
+  },
+  progress: {
+    current: 25,
+    required: 1
+  }
+}
+```
+
+---
+
+## Edge Cases & Validations
+
+### Duplicate Prevention
+**Problem:** User tries to rank same product twice
+
+**Detection:**
+- Check rankings array before REPLACE/INSERT
+- Check before drag-drop
+
+**Handling:**
+- Show warning notification
+- Prevent action
+- Keep modal open (if modal)
+
+### Empty Slot REPLACE
+**Problem:** User clicks REPLACE on empty slot
+
+**Handling:**
+- Button disabled (cannot click)
+- Visual indication (grayed out)
+
+### Network Failure During Save
+**Problem:** Save request fails (timeout, 500 error, offline)
+
+**Handling:**
+- Operation stays in IndexedDB queue
+- Show error status in UI
+- Retry with exponential backoff (2s, 4s)
+- After 3 failures: Persistent error message
+- Auto-retry on next page load
+
+### Displaced Product During INSERT
+**Problem:** INSERT into filled slot displaces product
+
+**Handling:**
+- Displaced product tracked in state
+- Returned to available products list (top)
+- Shown in products panel immediately
+- Can be re-ranked
+
+### Slot Expansion
+**Problem:** INSERT pushes products beyond current slot count
+
+**Handling:**
+- Auto-expand slots: +5 at a time
+- Triggered when filling within 2 of max
+- No products ever lost/ejected
+
+### Browser Crash During Save
+**Problem:** Browser crashes before save completes
+
+**Handling:**
+- Operation persisted in IndexedDB
+- On next page load: Resume operation
+- Retry automatically
+- User sees save complete on return
+
+### Concurrent Edits (Multiple Tabs)
+**Problem:** User has rank page open in 2 tabs
+
+**Current Behavior:**
+- Each tab has independent state
+- Last save wins on server
+- Refresh to see latest
+
+**Recommendation:**
+- Add tab synchronization via BroadcastChannel
+- Or: Show warning "Rankings modified in another tab"
 
 ---
 
 ## Performance Optimizations
 
-### 22. Caching Strategies
-
-#### Client-side (React Query)
-- Rankings: 5 minute stale time
-- Progress: 30 second stale time, 60 second refetch
-- Products: On-demand, no auto-refetch
-
-#### Server-side Caches
-- Ranking stats: 30 minute cache
-- Product metadata: 30 minute cache
-- Shopify products: Cache with invalidation
-- Leaderboard: Cache with invalidation
-
-#### Cache Invalidation
-- Clear on ranking save
-- Clear on achievement award
-- Clear on admin actions
-
----
-
-### 23. Network Optimization
-
-#### Debouncing
+### Debouncing
 - Search input: 300ms
 - Auto-save: 800ms
 - Prevents excessive API calls
 
-#### Pagination
+### Pagination
 - Load 20 products at a time
-- Infinite scroll pattern
-- Lazy load images
+- Prevents loading 100+ products upfront
+- "Load More" pattern
 
-#### Batch Operations
-- Save all rankings in single POST
-- Atomic transaction on server
-- Reduces round trips
+### Optimistic UI
+- Ranking changes appear instantly
+- Don't wait for server response
+- Rollback on error
 
----
+### Caching
+- Progress data: 30s stale, 60s refetch
+- Products: Cache per search term
+- Rankings: 5 minute cache
 
-### 24. Data Integrity
-
-#### Duplicate Prevention
-- Client: Check before adding to rankings array
-- Server: Validate no duplicate product IDs in payload
-- Database: Unique constraint on (userId, productId, listId)
-
-#### Idempotency
-- Client: Generate idempotency key per save
-- Server: Accept X-Idempotency-Key header
-- Database: UPSERT operations (ON CONFLICT DO UPDATE)
-
-#### Transaction Safety
-- Wrap bulk operations in database transaction
-- All-or-nothing save (no partial updates)
-- Retry on connection errors
+### IndexedDB Queue
+- Offload save operations from main thread
+- Batch operations when possible
+- Process sequentially to avoid conflicts
 
 ---
 
-## Security Requirements
+## Accessibility
 
-### 25. Authentication & Authorization
+### Keyboard Navigation
+- Tab through all interactive elements
+- Enter/Space activates buttons
+- ESC closes modal
+- Arrow keys navigate product grid (optional)
 
-#### Session Management
-- HttpOnly session cookie
-- Server validates session on every request
-- No session ID in request body (cookie only)
+### Screen Reader Support
+- ARIA labels on all buttons
+- ARIA live regions for save status
+- Alt text on all images
+- Semantic HTML (h1, h2, nav, etc.)
 
-#### User Isolation
-- All queries filtered by userId from session
-- Cannot view/modify other users' rankings
-- Employee role check for admin operations
+### Focus Management
+- Focus trap in modal
+- Return focus after modal close
+- Visible focus indicators
+- Skip links for keyboard users
 
-#### Input Validation
-- Validate rankingListId format
-- Validate product IDs exist
-- Validate ranking numbers are positive integers
-- Sanitize search queries
-
----
-
-### 26. Error Handling
-
-#### Client-side
-- Catch and log errors to console
-- Show user-friendly error messages
-- Retry failed operations automatically
-- Preserve user data in IndexedDB
-
-#### Server-side
-- Try-catch all async operations
-- Log errors to Sentry with context
-- Return appropriate HTTP status codes
-- Don't expose internal errors to client
+### Color Contrast
+- WCAG AA compliance
+- Status indicators not color-only
+- Text overlays readable
 
 ---
 
-## Testing Requirements
+## Testing Checklist
 
-### 27. Unit Tests (Recommended)
+### Unit Tests
+- [ ] useRankings hook: save/load/clear
+- [ ] useRankableProducts hook: search/pagination
+- [ ] PersistentQueue: enqueue/retry/complete
+- [ ] Modal: REPLACE/INSERT logic
+- [ ] Drag and drop handlers
 
-#### Components
-- RankingsPanel: Drag and drop logic
-- SearchProductsPanel: Search and pagination
-- ProgressWidget: Display logic and calculations
+### Integration Tests
+- [ ] Rank product → Auto-save → Verify saved
+- [ ] Search products → Pagination → Load more
+- [ ] Clear rankings → Confirm → Verify cleared
+- [ ] Network failure → Retry → Success
+- [ ] Browser crash → Reload → Resume save
 
-#### Hooks
-- useRankings: Save queue, debounce, snapshots
-- useRankableProducts: Filtering and pagination
-- useProgress: Data transformation
+### User Flows
+- [ ] New user: Rank first product
+- [ ] Reorder rankings via drag-drop
+- [ ] Remove product from ranking
+- [ ] Search and rank specific product
+- [ ] Mobile: Use modal to rank
+- [ ] Desktop: Use drag-drop to rank
+- [ ] Navigate away with pending saves
 
-#### Utilities
-- PersistentQueue: IndexedDB operations
-- All CRUD operations
-
----
-
-### 28. Integration Tests (Recommended)
-
-#### User Flows
-- Add product to ranking
-- Reorder rankings via drag and drop
-- Remove product from ranking
-- Clear all rankings
-- Search and paginate products
-- Navigate away with pending saves
-
-#### API Endpoints
-- Bulk save with various payloads
-- Get rankings
-- Clear rankings
-- Get rankable products with filters
+### Edge Cases
+- [ ] Rank same product twice (prevented)
+- [ ] REPLACE empty slot (button disabled)
+- [ ] INSERT beyond max slots (auto-expand)
+- [ ] Save while offline (queue persists)
+- [ ] Multiple failed saves (retry logic)
+- [ ] Concurrent tabs (warning or sync)
 
 ---
 
-### 29. Edge Cases to Test
+## Mobile Considerations
 
-#### Data Scenarios
-- Empty rankings list
-- All products ranked
-- Duplicate product ranking attempt
-- Network failure during save
-- Browser crash during save
-- Multiple rapid ranking changes
+### Touch Gestures
+- Tap to open modal (primary method)
+- Long-press to drag (optional)
+- Swipe to scroll modal
+- Pinch to zoom images (optional)
 
-#### User Scenarios
-- New user (no rankings yet)
-- Employee user (unrestricted access)
-- User with partial purchase history
-- User navigating during save
+### Viewport
+- Responsive breakpoint: 768px
+- Mobile: Stack panels vertically
+- Modal: 95% width, full height
+- Touch targets: 44px minimum
 
----
-
-## Configuration
-
-### 30. Constants
-
-#### Pagination
-- Page size: 20 products
-- Sort order: 'name-asc'
-
-#### Timing
-- Search debounce: 300ms
-- Auto-save debounce: 800ms
-- Save success message: 2000ms display
-- Progress refetch: 60000ms interval
-
-#### Retry Policy
-- Max retries: 3
-- Backoff: Exponential (2^n seconds)
-
-#### Defaults
-- Initial slot count: 10
-- Slot expansion: +5 slots
-- Expansion trigger: Within 2 slots of capacity
-- Default ranking list: 'default'
+### Performance
+- Lazy load images in product grid
+- Virtual scrolling for long lists (optional)
+- Reduce animations on low-end devices
+- Smaller initial page load
 
 ---
 
-## Dependencies
+## Browser Support
 
-### 31. Frontend Libraries
-- React (hooks, components)
-- React Router (navigation, blocking)
-- @tanstack/react-query (data fetching, caching)
-- IndexedDB (PersistentQueue storage)
+### Required
+- Chrome 90+
+- Firefox 88+
+- Safari 14+
+- Edge 90+
 
-### 32. Backend Libraries
-- Express.js (routing)
-- Drizzle ORM (database queries)
-- PostgreSQL (data storage)
-- @sentry/node (error tracking)
-- Socket.io (WebSocket for real-time updates)
+### IndexedDB
+- All modern browsers supported
+- Graceful degradation if unavailable
+- Fallback: In-memory queue (no persistence)
 
-### 33. External Services
-- Shopify API (product data, customer orders)
-- Redis (optional: distributed caching)
+### Drag & Drop
+- Desktop only
+- Touch devices: Use modal instead
+- Feature detection before enabling
 
 ---
 
-## Future Enhancements (Not in Current Implementation)
+## Configuration Constants
 
-### Potential Features
-- Multiple ranking lists per user
-- Shared/public ranking lists
-- Ranking templates
-- Comparison view (my rankings vs others)
-- Ranking analytics and insights
-- Export rankings to PDF/CSV
-- Undo/redo ranking changes
-- Ranking notes/comments
-- Mobile-optimized touch gestures
+```javascript
+// Timing
+SEARCH_DEBOUNCE_MS = 300
+AUTO_SAVE_DEBOUNCE_MS = 800
+SAVE_SUCCESS_DISPLAY_MS = 2000
+PROGRESS_REFETCH_INTERVAL_MS = 60000
+
+// Pagination
+PRODUCTS_PER_PAGE = 20
+INITIAL_SLOT_COUNT = 10
+SLOT_EXPANSION_INCREMENT = 5
+SLOT_EXPANSION_THRESHOLD = 2
+
+// Retry
+MAX_SAVE_RETRIES = 3
+RETRY_BACKOFF_BASE_MS = 2000  // 2s, 4s, 8s
+
+// Caching
+RANKINGS_CACHE_STALE_TIME_MS = 300000  // 5 min
+PROGRESS_CACHE_STALE_TIME_MS = 30000   // 30 sec
+
+// Modal
+MODAL_MAX_WIDTH_PX = 900
+MODAL_MOBILE_BREAKPOINT_PX = 768
+PRODUCT_TITLE_MAX_CHARS = 40
+```
