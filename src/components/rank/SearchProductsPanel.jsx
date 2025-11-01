@@ -1,7 +1,19 @@
 import { useState } from 'react';
 import './SearchProductsPanel.css';
 
-export function SearchProductsPanel({ products, availableCount, loading, searchTerm, onSearch, onRankProduct }) {
+export function SearchProductsPanel({ 
+  products, 
+  availableCount, 
+  loading, 
+  searchTerm, 
+  onSearch, 
+  onRankProduct,
+  hasMore,
+  isLoadingMore,
+  onLoadMore,
+  totalProducts,
+  currentPage
+}) {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   const handleRankClick = (product) => {
@@ -46,44 +58,70 @@ export function SearchProductsPanel({ products, availableCount, loading, searchT
           </div>
         </div>
       ) : (
-        <div className="products-grid">
-          {products.map((product) => (
-            <div
-              key={product.productId}
-              className="product-card"
-              draggable
-              onDragStart={(e) => handleDragStart(product, e)}
-            >
-              <div className="product-image-container">
-                <img 
-                  src={product.image || '/placeholder.jpg'} 
-                  alt={product.title}
-                  className="product-image"
-                />
+        <>
+          <div className="products-grid">
+            {products.map((product) => (
+              <div
+                key={product.productId}
+                className="product-card"
+                draggable
+                onDragStart={(e) => handleDragStart(product, e)}
+              >
+                <div className="product-image-container">
+                  <img 
+                    src={product.image || '/placeholder.jpg'} 
+                    alt={product.title}
+                    className="product-image"
+                  />
+                </div>
+                <div className="product-details">
+                  <div className="product-title">{product.title}</div>
+                  <div className="product-vendor">{product.vendor}</div>
+                  {product.metadata && (
+                    <div className="product-tags">
+                      {product.metadata.animal && (
+                        <span className="product-tag">{product.metadata.animal}</span>
+                      )}
+                      {product.metadata.flavor && (
+                        <span className="product-tag">{product.metadata.flavor}</span>
+                      )}
+                    </div>
+                  )}
+                  <button
+                    className="rank-product-btn"
+                    onClick={() => handleRankClick(product)}
+                  >
+                    Rank This Product
+                  </button>
+                </div>
               </div>
-              <div className="product-details">
-                <div className="product-title">{product.title}</div>
-                <div className="product-vendor">{product.vendor}</div>
-                {product.metadata && (
-                  <div className="product-tags">
-                    {product.metadata.animal && (
-                      <span className="product-tag">{product.metadata.animal}</span>
-                    )}
-                    {product.metadata.flavor && (
-                      <span className="product-tag">{product.metadata.flavor}</span>
-                    )}
-                  </div>
+            ))}
+          </div>
+          
+          {hasMore && (
+            <div className="load-more-container">
+              <button 
+                className="load-more-btn" 
+                onClick={onLoadMore}
+                disabled={isLoadingMore}
+              >
+                {isLoadingMore ? (
+                  <>
+                    <div className="loading-spinner-small"></div>
+                    Loading...
+                  </>
+                ) : (
+                  <>
+                    Load More Products
+                    <div className="load-more-info">
+                      {products.length} of {totalProducts} loaded
+                    </div>
+                  </>
                 )}
-                <button
-                  className="rank-product-btn"
-                  onClick={() => handleRankClick(product)}
-                >
-                  Rank This Product
-                </button>
-              </div>
+              </button>
             </div>
-          ))}
-        </div>
+          )}
+        </>
       )}
     </div>
   );

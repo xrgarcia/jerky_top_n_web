@@ -34,7 +34,12 @@ export default function RankPage() {
     availableCount,
     searchTerm,
     handleSearch,
-    reloadProducts
+    reloadProducts,
+    loadMoreProducts,
+    hasMore,
+    isLoadingMore,
+    totalProducts,
+    currentPage
   } = useRankableProducts(rankedProductIds);
 
   const blocker = useBlocker(
@@ -146,6 +151,11 @@ export default function RankPage() {
             searchTerm={searchTerm}
             onSearch={handleSearch}
             onRankProduct={handleRankProduct}
+            hasMore={hasMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={loadMoreProducts}
+            totalProducts={totalProducts}
+            currentPage={currentPage}
           />
         </div>
       </div>
