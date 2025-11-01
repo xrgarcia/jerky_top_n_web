@@ -95,19 +95,10 @@ async function loadAchievementDetail(achievementCode) {
 
 /**
  * Update page header with achievement info
+ * Note: Header now only contains breadcrumbs (minimal design)
  */
 function updatePageHeader() {
   document.getElementById('achievementDetailBreadcrumb').textContent = achievementData.name;
-  document.getElementById('achievementDetailTitle').textContent = achievementData.name;
-  document.getElementById('achievementDetailSubtitle').textContent = achievementData.description;
-  
-  // Update icon
-  const iconEl = document.getElementById('achievementDetailIcon');
-  if (achievementData.iconType === 'image') {
-    iconEl.innerHTML = `<img src="${achievementData.icon}" alt="${achievementData.name}" style="width: 32px; height: 32px; object-fit: contain;">`;
-  } else {
-    iconEl.textContent = achievementData.icon;
-  }
 }
 
 /**

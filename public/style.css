@@ -468,6 +468,14 @@ body.login-page-active .hero {
     margin-bottom: 30px;
 }
 
+/* Ultra-minimal header for achievement detail pages */
+.achievement-header-minimal {
+    background: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 16px 20px;
+    margin-bottom: 30px;
+}
+
 .page-header-content {
     max-width: 1600px;
     margin: 0 auto;
