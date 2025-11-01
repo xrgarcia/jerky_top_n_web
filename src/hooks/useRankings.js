@@ -7,7 +7,12 @@ export function useMyRankings() {
   return useQuery({
     queryKey: ['myRankings'],
     queryFn: async () => {
-      const response = await apiClient('/api/customer/rankings');
+      const sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        return { rankings: [] };
+      }
+      
+      const response = await apiClient(`/api/rankings/products?sessionId=${sessionId}&rankingListId=default`);
       const data = await response.json();
       return data;
     },
@@ -30,16 +35,22 @@ export function useRankings() {
 
   const loadRankings = useCallback(async () => {
     try {
-      const response = await apiClient('/api/customer/rankings');
+      const sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        console.log('No session available, skipping rankings load');
+        return;
+      }
+
+      const response = await apiClient(`/api/rankings/products?sessionId=${sessionId}&rankingListId=default`);
       const data = await response.json();
       
       if (data.rankings && Array.isArray(data.rankings)) {
         const formattedRankings = data.rankings.map(r => ({
           ranking: r.ranking,
-          productData: r.product
+          productData: r.productData
         }));
         setRankings(formattedRankings);
-        setLastSavedProductIds(new Set(data.rankings.map(r => r.product.productId)));
+        setLastSavedProductIds(new Set(data.rankings.map(r => r.productData.productId)));
         console.log(`✅ Loaded ${formattedRankings.length} rankings`);
       }
     } catch (error) {
@@ -139,7 +150,14 @@ export function useRankings() {
 
   const clearAllRankings = useCallback(async () => {
     try {
-      await apiClient('/api/customer/rankings/clear', { method: 'DELETE' });
+      const sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        throw new Error('No session available');
+      }
+
+      await apiClient(`/api/rankings/products/clear?sessionId=${sessionId}&rankingListId=default`, { 
+        method: 'DELETE' 
+      });
       setRankings([]);
       setLastSavedProductIds(new Set());
       setSaveStatus('saved');
@@ -281,13 +299,22 @@ class RankingSaveQueue {
     this.activeNetworkSave = true;
     
     try {
-      const response = await apiClient('/rank', {
+      const sessionId = localStorage.getItem('sessionId');
+      if (!sessionId) {
+        throw new Error('No session available');
+      }
+
+      const response = await apiClient('/api/rankings/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-Idempotency-Key': operation.idempotencyKey
         },
-        body: JSON.stringify({ rankings: operation.rankings })
+        body: JSON.stringify({ 
+          sessionId,
+          rankingListId: 'default',
+          rankings: operation.rankings 
+        })
       });
 
       if (!response.ok) {
