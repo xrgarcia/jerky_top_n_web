@@ -49,7 +49,7 @@ window.initCoinDetailPage = async function(coinCode) {
  */
 async function loadCoinDetail(coinCode) {
   try {
-    const response = await fetch(`/api/gamification/coin/${coinCode}/products`);
+    const response = await fetch(`/api/gamification/achievement/${coinCode}/products`);
     
     if (!response.ok) {
       throw new Error('Failed to load coin details');
