@@ -711,8 +711,17 @@ function createGamificationRoutes(services) {
         metadata.isHidden = true;
         metadata.isUnlocked = userAchievement !== null;
       } else if (achievement.collectionType === COLLECTION_TYPES.STATIC) {
-        // Static collection: Add category theme if available
+        // Static collection: Add category theme and analyze products for commentary
         metadata.theme = achievement.category;
+        
+        // Analyze collection products to extract themes for smart commentary
+        const productAnalysis = analyzeCollectionProducts(productIds, allEnrichedProducts);
+        metadata.productAnalysis = productAnalysis;
+        
+        // Count rankable products for commentary generation
+        const rankableCount = products.filter(p => p.isRankable).length;
+        metadata.rankableCount = rankableCount;
+        metadata.unrankableCount = totalProducts - rankableCount;
       }
 
       res.json({
@@ -747,6 +756,88 @@ function createGamificationRoutes(services) {
       res.status(500).json({ error: 'Failed to fetch achievement products' });
     }
   });
+
+  // Helper function to analyze collection products and extract themes
+  function analyzeCollectionProducts(productIds, allEnrichedProducts) {
+    const collectionProducts = productIds
+      .map(id => allEnrichedProducts.find(p => p.id === id))
+      .filter(p => p);
+    
+    if (collectionProducts.length === 0) {
+      return {};
+    }
+    
+    // Extract all tags from products (lowercased for consistency)
+    const allTags = collectionProducts
+      .flatMap(p => p.tags || [])
+      .map(tag => tag.toLowerCase());
+    
+    // Count tag frequency
+    const tagFrequency = {};
+    allTags.forEach(tag => {
+      tagFrequency[tag] = (tagFrequency[tag] || 0) + 1;
+    });
+    
+    // Get most common tags (appearing in at least 30% of products)
+    const threshold = Math.ceil(collectionProducts.length * 0.3);
+    const commonTags = Object.entries(tagFrequency)
+      .filter(([_, count]) => count >= threshold)
+      .sort((a, b) => b[1] - a[1])
+      .map(([tag, _]) => tag);
+    
+    // Detect flavor profiles from tags and titles
+    const flavorKeywords = {
+      hot: ['hot', 'spicy', 'fire', 'jalapeno', 'habanero', 'ghost pepper', 'carolina reaper'],
+      sweet: ['sweet', 'honey', 'maple', 'brown sugar', 'teriyaki'],
+      savory: ['original', 'classic', 'traditional', 'peppered', 'cracked pepper'],
+      exotic: ['exotic', 'unique', 'special', 'wild']
+    };
+    
+    const detectedFlavors = [];
+    for (const [flavor, keywords] of Object.entries(flavorKeywords)) {
+      const hasKeyword = allTags.some(tag => keywords.some(keyword => tag.includes(keyword))) ||
+        collectionProducts.some(p => keywords.some(keyword => p.title.toLowerCase().includes(keyword)));
+      if (hasKeyword) {
+        detectedFlavors.push(flavor);
+      }
+    }
+    
+    // Detect animal types from titles and product types
+    const animalTypes = {};
+    const animalKeywords = {
+      beef: ['beef', 'brisket', 'steak'],
+      turkey: ['turkey'],
+      pork: ['pork', 'bacon'],
+      chicken: ['chicken'],
+      bison: ['bison', 'buffalo'],
+      venison: ['venison', 'deer'],
+      elk: ['elk'],
+      exotic: ['alligator', 'kangaroo', 'ostrich', 'wild boar', 'salmon']
+    };
+    
+    for (const [animal, keywords] of Object.entries(animalKeywords)) {
+      const count = collectionProducts.filter(p => 
+        keywords.some(keyword => 
+          p.title.toLowerCase().includes(keyword) || 
+          (p.productType && p.productType.toLowerCase().includes(keyword))
+        )
+      ).length;
+      if (count > 0) {
+        animalTypes[animal] = count;
+      }
+    }
+    
+    // Get unique vendors
+    const vendors = [...new Set(collectionProducts.map(p => p.vendor).filter(Boolean))];
+    
+    return {
+      commonTags,
+      flavorProfiles: detectedFlavors,
+      animalTypes,
+      vendors,
+      totalProducts: collectionProducts.length
+    };
+  }
 
   // Helper function to get user-friendly labels for requirement types
   function getRequirementLabel(requirementType) {

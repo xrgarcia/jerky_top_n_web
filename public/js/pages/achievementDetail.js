@@ -579,6 +579,132 @@ function renderLegacyAchievement() {
 }
 
 /**
+ * Generate smart commentary based on collection analysis and user state
+ */
+function generateSmartCommentary() {
+  // Defensive check: ensure required data exists
+  if (!achievementStats || !achievementMetadata) {
+    return {
+      icon: '⭐',
+      title: 'Collection Progress',
+      message: 'Loading collection details...',
+      type: 'progress'
+    };
+  }
+  
+  const percentage = achievementStats.percentage || 0;
+  const ranked = achievementStats.ranked || 0;
+  const unranked = achievementStats.unranked || 0;
+  const total = achievementStats.total || achievementProducts.length;
+  const analysis = achievementMetadata.productAnalysis || {};
+  const rankableCount = achievementMetadata.rankableCount || 0;
+  const unrankableCount = achievementMetadata.unrankableCount || 0;
+  
+  // Detect dominant themes
+  const flavors = analysis.flavorProfiles || [];
+  const animals = analysis.animalTypes || {};
+  const primaryAnimal = Object.keys(animals).sort((a, b) => animals[b] - animals[a])[0];
+  
+  // Build contextual description
+  let themeDescription = '';
+  if (flavors.length > 0) {
+    const flavorText = flavors.join(' and ');
+    themeDescription = `${flavorText} ${total > 1 ? 'flavors' : 'flavor'}`;
+  } else if (primaryAnimal) {
+    themeDescription = `${primaryAnimal} jerky collection`;
+  } else {
+    themeDescription = 'collection';
+  }
+  
+  // STATE 1: 100% Complete
+  if (percentage === 100) {
+    return {
+      icon: '🎉',
+      title: 'Collection Complete!',
+      message: `You've ranked all ${total} products in this ${themeDescription}. You earned ${achievementData.points} flavor coins!`,
+      type: 'success'
+    };
+  }
+  
+  // STATE 2: 0% with NO rankable products (haven't purchased anything)
+  if (percentage === 0 && rankableCount === 0) {
+    let encouragement = '';
+    if (flavors.includes('hot')) {
+      encouragement = 'Ready to turn up the heat? These spicy snacks pack serious flavor and fire.';
+    } else if (flavors.includes('sweet')) {
+      encouragement = 'Sweet tooth calling? These flavor-packed treats balance savory and sweet perfectly.';
+    } else if (flavors.includes('exotic')) {
+      encouragement = 'Adventure awaits! These unique proteins will take your taste buds on a wild ride.';
+    } else if (primaryAnimal && primaryAnimal !== 'beef') {
+      encouragement = `Curious about ${primaryAnimal}? These premium cuts are leaner and pack incredible flavor.`;
+    } else {
+      encouragement = `Explore this curated collection of ${total} premium jerky products.`;
+    }
+    
+    return {
+      icon: '🌟',
+      title: `Discover ${achievementData.name}`,
+      message: `You haven't tried any of these ${total} products yet. ${encouragement}`,
+      cta: {
+        text: '🛍️ Shop This Collection',
+        url: 'https://jerky.com/collections/all',
+        subtext: 'Purchase products from this collection, then come back to rank them and earn flavor coins!'
+      },
+      type: 'discovery'
+    };
+  }
+  
+  // STATE 3: 0% but HAS rankable products (purchased but not ranked)
+  if (percentage === 0 && rankableCount > 0) {
+    return {
+      icon: '🚀',
+      title: 'Ready to Start?',
+      message: `You've purchased ${rankableCount} of these ${total} products. Time to rank them and start earning flavor coins!`,
+      type: 'start'
+    };
+  }
+  
+  // STATE 4: 1-24% with some unrankable
+  if (percentage < 25 && unrankableCount > 0) {
+    return {
+      icon: '💪',
+      title: 'Great Start!',
+      message: `You've ranked ${ranked} product${ranked === 1 ? '' : 's'}! You have ${unranked - unrankableCount} more rankable product${unranked - unrankableCount === 1 ? '' : 's'} ready to go.`,
+      subMessage: `Want to complete this collection? Purchase ${unrankableCount} more product${unrankableCount === 1 ? '' : 's'} to unlock the full achievement.`,
+      type: 'progress'
+    };
+  }
+  
+  // STATE 5: 25-49% progress
+  if (percentage < 50) {
+    return {
+      icon: '⭐',
+      title: 'Making Progress!',
+      message: `You've ranked ${ranked} of ${total} products. ${unranked} more to go for ${achievementData.points} flavor coins!`,
+      type: 'progress'
+    };
+  }
+  
+  // STATE 6: 50-74% progress
+  if (percentage < 75) {
+    return {
+      icon: '🎯',
+      title: 'Halfway Hero!',
+      message: `You're ${percentage}% complete! Keep going to earn ${achievementData.points} flavor coins.`,
+      type: 'progress'
+    };
+  }
+  
+  // STATE 7: 75-99% progress
+  return {
+    icon: '🔥',
+    title: 'Almost There!',
+    message: `Just ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!`,
+    type: 'progress'
+  };
+}
+
+/**
  * Render Static Collection (Enhanced Product Grid with Theme)
  */
 function renderStaticCollection() {
@@ -594,53 +720,43 @@ function renderStaticCollection() {
   // This ensures we only spotlight products the user can actually rank
   const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked && p.isRankable);
   
-  // Determine motivation message
+  // Generate smart commentary based on collection analysis and user state
+  const commentary = generateSmartCommentary();
+  
+  // Build motivation section from smart commentary
   let motivationSection = '';
-  if (percentage === 100) {
+  if (commentary.type === 'success') {
     motivationSection = `
       <div class="static-completion-banner">
-        <div class="completion-icon">🎉</div>
-        <div class="completion-title">Collection Complete!</div>
-        <div class="completion-text">You've ranked all ${total} products in this collection. You earned ${achievementData.points} flavor coins!</div>
+        <div class="completion-icon">${commentary.icon}</div>
+        <div class="completion-title">${commentary.title}</div>
+        <div class="completion-text">${commentary.message}</div>
       </div>
     `;
-  } else if (percentage >= 75) {
+  } else if (commentary.type === 'discovery') {
     motivationSection = `
-      <div class="static-motivation-callout">
-        <div class="motivation-icon">🔥</div>
-        <div class="motivation-content">
-          <div class="motivation-title">Almost There!</div>
-          <div class="motivation-text">Rank ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!</div>
+      <div class="static-discovery-callout">
+        <div class="discovery-icon">${commentary.icon}</div>
+        <div class="discovery-content">
+          <div class="discovery-title">${commentary.title}</div>
+          <div class="discovery-text">${commentary.message}</div>
+          ${commentary.cta ? `
+            <a href="${commentary.cta.url}" target="_blank" rel="noopener noreferrer" class="discovery-cta-button">
+              ${commentary.cta.text}
+            </a>
+            <div class="discovery-subtext">${commentary.cta.subtext}</div>
+          ` : ''}
         </div>
       </div>
     `;
-  } else if (percentage >= 50) {
+  } else {
     motivationSection = `
       <div class="static-motivation-callout">
-        <div class="motivation-icon">🎯</div>
+        <div class="motivation-icon">${commentary.icon}</div>
         <div class="motivation-content">
-          <div class="motivation-title">Halfway Hero!</div>
-          <div class="motivation-text">You're ${percentage}% complete. Keep going to earn ${achievementData.points} flavor coins!</div>
-        </div>
-      </div>
-    `;
-  } else if (percentage >= 25) {
-    motivationSection = `
-      <div class="static-motivation-callout">
-        <div class="motivation-icon">⭐</div>
-        <div class="motivation-content">
-          <div class="motivation-title">Great Start!</div>
-          <div class="motivation-text">You've ranked ${ranked} of ${total} products. ${unranked} more to go for ${achievementData.points} flavor coins!</div>
-        </div>
-      </div>
-    `;
-  } else if (percentage > 0) {
-    motivationSection = `
-      <div class="static-motivation-callout">
-        <div class="motivation-icon">🚀</div>
-        <div class="motivation-content">
-          <div class="motivation-title">You're On Your Way!</div>
-          <div class="motivation-text">Rank ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!</div>
+          <div class="motivation-title">${commentary.title}</div>
+          <div class="motivation-text">${commentary.message}</div>
+          ${commentary.subMessage ? `<div class="motivation-subtext">${commentary.subMessage}</div>` : ''}
         </div>
       </div>
     `;

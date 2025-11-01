@@ -1150,6 +1150,77 @@
   margin: 0;
 }
 
+.motivation-subtext {
+  font-size: 14px;
+  color: #92400e;
+  margin-top: 8px;
+  font-style: italic;
+}
+
+/* Discovery Callout - For collections user hasn't purchased */
+.static-discovery-callout {
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  border: 2px solid #93c5fd;
+  border-radius: 16px;
+  padding: 28px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(147, 197, 253, 0.3);
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.discovery-icon {
+  font-size: 48px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.discovery-content {
+  flex: 1;
+}
+
+.discovery-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e40af;
+  margin: 0 0 12px 0;
+}
+
+.discovery-text {
+  font-size: 16px;
+  color: #1e3a8a;
+  margin: 0 0 16px 0;
+  line-height: 1.6;
+}
+
+.discovery-cta-button {
+  display: inline-block;
+  background: linear-gradient(135deg, #7b8b52 0%, #98ab6a 100%);
+  color: white;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 3px 10px rgba(123, 139, 82, 0.4);
+  transition: all 0.3s ease;
+  margin-bottom: 8px;
+}
+
+.discovery-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(123, 139, 82, 0.5);
+  color: white;
+}
+
+.discovery-subtext {
+  font-size: 13px;
+  color: #1e40af;
+  font-style: italic;
+  margin-top: 8px;
+}
+
 .static-completion-banner {
   background: linear-gradient(135deg, #d1f5d3 0%, #a7f3d0 100%);
   border: 2px solid #6ee7b7;
@@ -1464,6 +1535,37 @@
   
   .motivation-text {
     font-size: 15px;
+  }
+  
+  .motivation-subtext {
+    font-size: 13px;
+  }
+  
+  .static-discovery-callout {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .discovery-icon {
+    font-size: 40px;
+  }
+  
+  .discovery-title {
+    font-size: 20px;
+  }
+  
+  .discovery-text {
+    font-size: 15px;
+  }
+  
+  .discovery-cta-button {
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+  
+  .discovery-subtext {
+    font-size: 12px;
   }
   
   .static-completion-banner {
