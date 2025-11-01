@@ -804,11 +804,11 @@ app.get('/dev/login/:token', async (req, res) => {
       customerData: mockCustomer,
     });
     
-    // Set HTTP-only cookie
+    // Set HTTP-only cookie (SameSite=none required for iframe context)
     res.cookie('session_id', session.id, {
       httpOnly: true,
-      secure: false, // Dev only
-      sameSite: 'lax',
+      secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
+      sameSite: 'none', // Required for cookies to work in iframe
       maxAge: 90 * 24 * 60 * 60 * 1000,
       path: '/'
     });
