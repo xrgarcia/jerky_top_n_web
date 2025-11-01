@@ -195,11 +195,29 @@ export function useRankings() {
            (pendingRankingsSnapshotRef.current !== null);
   }, [hasPendingDebounce]);
 
+  const clearQueue = useCallback(async () => {
+    try {
+      const persistentQueue = getPersistentQueue();
+      await persistentQueue.clearAll();
+      setSaveStatus('idle');
+      setSaveMessage('');
+      if (saveQueueRef.current) {
+        saveQueueRef.current.hasPendingSaves = false;
+      }
+      console.log('✅ Manually cleared all pending operations from queue');
+      return true;
+    } catch (error) {
+      console.error('❌ Failed to clear queue:', error);
+      return false;
+    }
+  }, []);
+
   return {
     rankings,
     updateRankings,
     loadRankings,
     clearAllRankings,
+    clearQueue,
     saveStatus,
     saveMessage,
     waitForPendingSaves,
@@ -231,28 +249,35 @@ class RankingSaveQueue {
         let invalidOps = [];
         
         for (const operation of pending) {
-          console.log(`🔍 Validating operation ${operation.operationId?.substring(0, 8)}:`, {
-            hasOperationId: !!operation.operationId,
-            hasRankings: !!operation.rankings,
-            isArray: Array.isArray(operation.rankings),
-            rankingsLength: operation.rankings?.length,
-            firstRanking: operation.rankings?.[0]
-          });
-          
-          const validation = PersistentQueue.validateOperation(operation);
-          console.log(`🔍 Validation result:`, validation);
-          
-          if (validation.valid) {
-            validOps.push(operation);
-          } else {
-            invalidOps.push({ operation, reason: validation.reason });
-            console.warn(`🗑️ Purging invalid operation ${operation.operationId?.substring(0, 8)}: ${validation.reason}`);
+          try {
+            // Check for schema version mismatch (operations without version are old format)
+            if (!operation.version || operation.version !== 1) {
+              console.warn(`🗑️ Purging operation with old/missing schema version: ${operation.operationId?.substring(0, 8)} (version: ${operation.version || 'none'})`);
+              invalidOps.push({ operation, reason: 'Schema version mismatch' });
+              await this.persistentQueue.markComplete(operation.operationId);
+              continue;
+            }
+            
+            // Validate operation structure
+            const validation = PersistentQueue.validateOperation(operation);
+            
+            if (validation.valid) {
+              validOps.push(operation);
+            } else {
+              invalidOps.push({ operation, reason: validation.reason });
+              console.warn(`🗑️ Purging invalid operation ${operation.operationId?.substring(0, 8)}: ${validation.reason}`);
+              await this.persistentQueue.markComplete(operation.operationId);
+            }
+          } catch (validationError) {
+            // Graceful degradation: if validation crashes, auto-purge the corrupted operation
+            console.error(`🗑️ Purging corrupted operation ${operation.operationId?.substring(0, 8)} - validation crashed:`, validationError.message || String(validationError));
+            invalidOps.push({ operation, reason: 'Validation crashed: ' + (validationError.message || 'Unknown error') });
             await this.persistentQueue.markComplete(operation.operationId);
           }
         }
         
         if (invalidOps.length > 0) {
-          console.log(`✅ Auto-purged ${invalidOps.length} invalid operation(s) from queue`);
+          console.log(`✅ Auto-purged ${invalidOps.length} invalid/corrupted operation(s) from queue`);
         }
         
         if (validOps.length > 0) {
@@ -265,7 +290,7 @@ class RankingSaveQueue {
         }
       }
     } catch (error) {
-      console.error('❌ Error processing pending operations:', error.message || String(error));
+      console.error('❌ Error processing pending operations:', error.message || String(error), error);
     }
   }
 
@@ -273,6 +298,7 @@ class RankingSaveQueue {
     const operationId = `op_${Date.now()}_${Math.random().toString(36).substring(7)}`;
     
     const operation = {
+      version: 1, // Schema version for future compatibility
       operationId,
       rankings: saveData.rankings,
       idempotencyKey: saveData.idempotencyKey,

@@ -17,6 +17,7 @@ export default function RankPage() {
     updateRankings,
     loadRankings,
     clearAllRankings,
+    clearQueue,
     saveStatus,
     saveMessage,
     waitForPendingSaves,
@@ -142,6 +143,7 @@ export default function RankPage() {
             saveStatus={saveStatus}
             saveMessage={saveMessage}
             onClearAll={clearAllRankings}
+            onClearQueue={clearQueue}
           />
         </div>
 
