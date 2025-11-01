@@ -641,6 +641,7 @@ function generateSmartCommentary() {
   }
   
   // STATE 2: 0% with NO rankable products (haven't purchased anything)
+  // Using "Explore" (breadth - trying new things) per glossary
   if (percentage === 0 && rankableCount === 0) {
     let encouragement = '';
     if (flavors.includes('hot')) {
@@ -652,12 +653,12 @@ function generateSmartCommentary() {
     } else if (primaryAnimal && primaryAnimal !== 'beef') {
       encouragement = `Curious about ${primaryAnimal}? These premium cuts are leaner and pack incredible flavor.`;
     } else {
-      encouragement = `Explore this curated collection of ${total} premium jerky products.`;
+      encouragement = `Try this curated collection of ${total} premium jerky products.`;
     }
     
     return {
       icon: '🌟',
-      title: `Discover ${achievementData.name}`,
+      title: `Explore ${achievementData.name}`,
       message: `You haven't tried any of these ${total} products yet. ${encouragement}`,
       cta: {
         text: '🛍️ Shop This Collection',
@@ -779,7 +780,7 @@ function renderStaticCollection() {
       </div>
     `;
   } else if (commentary.type === 'discovery') {
-    // STATE: Discovery - CTA-focused hero
+    // STATE: Discovery - CTA-focused hero (Explore = breadth, trying new things)
     heroSection = `
       <div class="static-hero static-hero-discovery">
         <div class="hero-content">
@@ -799,7 +800,7 @@ function renderStaticCollection() {
           <div class="hero-collection-info">
             <div class="collection-count">${total}</div>
             <div class="collection-label">Products</div>
-            <div class="collection-sublabel">to discover</div>
+            <div class="collection-sublabel">to explore</div>
           </div>
         </div>
       </div>
