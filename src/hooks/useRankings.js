@@ -14,7 +14,6 @@ export function useRankings() {
   const saveQueueRef = useRef(null);
   const pendingRankingsSnapshotRef = useRef(null);
   const autoSaveRankingsRef = useRef(null);
-  const isProcessingSnapshotRef = useRef(false);
   const queryClient = useQueryClient();
 
   const loadRankings = useCallback(async () => {
