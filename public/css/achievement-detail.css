@@ -6,7 +6,6 @@
   gap: 20px;
   max-width: 1600px;
   margin: 0 auto 40px;
-  padding: 0 20px;
 }
 
 .achievement-stat-card {
@@ -55,7 +54,7 @@
 .achievement-products-container {
   max-width: 1600px;
   margin: 0 auto;
-  padding: 0 20px 40px;
+  padding: 0 0 40px;
 }
 
 .achievement-products-grid {
