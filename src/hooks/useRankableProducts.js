@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useAuthStore } from '../store/authStore';
 import { apiClient } from '../utils/api';
 
 export function useRankableProducts(rankedProductIds = []) {
+  const { isAuthenticated, isLoading: authLoading } = useAuthStore();
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -16,6 +18,13 @@ export function useRankableProducts(rankedProductIds = []) {
   const searchTimeoutRef = useRef(null);
 
   const loadProducts = useCallback(async (page = 1, reset = false) => {
+    if (!isAuthenticated) {
+      console.log('⏸️ Not authenticated, skipping product load');
+      setLoading(false);
+      setIsLoadingMore(false);
+      return;
+    }
+
     if (reset) {
       setLoading(true);
       setProducts([]);
@@ -64,11 +73,15 @@ export function useRankableProducts(rankedProductIds = []) {
       setLoading(false);
       setIsLoadingMore(false);
     }
-  }, [searchTerm]);
+  }, [searchTerm, isAuthenticated]);
 
   useEffect(() => {
-    loadProducts(1, true);
-  }, []);
+    if (!authLoading && isAuthenticated) {
+      loadProducts(1, true);
+    } else if (!authLoading && !isAuthenticated) {
+      setLoading(false);
+    }
+  }, [authLoading, isAuthenticated, loadProducts]);
 
   const handleSearch = useCallback((term) => {
     setSearchTerm(term);

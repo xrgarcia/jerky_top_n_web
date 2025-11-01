@@ -19,14 +19,30 @@ import LoginPage from '../../pages/LoginPage';
 import './AppLayout.css';
 
 function AppLayout() {
-  const { checkAuth } = useAuthStore();
+  const { checkAuth, setUser } = useAuthStore();
   
   // Initialize WebSocket connection for real-time updates
   useSocket();
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    // Handle login success redirect (from magic link or dev login)
+    const hash = window.location.hash;
+    if (hash.startsWith('#login-success')) {
+      const params = new URLSearchParams(hash.split('?')[1]);
+      const sessionId = params.get('sessionId');
+      
+      if (sessionId) {
+        localStorage.setItem('sessionId', sessionId);
+        console.log('✅ Session ID stored from login redirect');
+        
+        // Clear the hash and check auth
+        window.location.hash = '';
+        checkAuth();
+      }
+    } else {
+      checkAuth();
+    }
+  }, [checkAuth, setUser]);
 
   return (
     <div className="app-layout">

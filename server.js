@@ -743,6 +743,106 @@ app.get('/api/customer/magic-login', async (req, res, next) => {
   });
 });
 
+// Development-only login endpoint (NEVER active in production)
+app.get('/dev/login/:token', async (req, res) => {
+  // Security checks: multiple layers of protection
+  
+  // 1. Check NODE_ENV - only works in development
+  if (process.env.NODE_ENV === 'production' || process.env.REPLIT_DEPLOYMENT === '1') {
+    return res.status(404).send('Not Found');
+  }
+  
+  // 2. Check if dev login is configured
+  if (!process.env.DEV_LOGIN_TOKEN || !process.env.DEV_LOGIN_EMAIL) {
+    return res.status(404).send('Not Found');
+  }
+  
+  // 3. IP whitelist - only localhost (use socket address, not forwarded headers)
+  const socketIp = req.socket.remoteAddress;
+  const isLocalhost = socketIp === '127.0.0.1' || socketIp === '::1' || socketIp === '::ffff:127.0.0.1';
+  
+  if (!isLocalhost) {
+    console.warn(`⚠️  Dev login blocked: non-localhost socket IP ${socketIp} (headers: ${req.ip})`);
+    return res.status(403).send('Forbidden');
+  }
+  
+  // 4. Token validation
+  const { token } = req.params;
+  if (token !== process.env.DEV_LOGIN_TOKEN) {
+    console.warn(`⚠️  Dev login failed: invalid token`);
+    return res.status(403).send('Forbidden');
+  }
+  
+  try {
+    if (!storage) {
+      return res.status(500).send('Database not available');
+    }
+    
+    // Find user by email
+    const email = process.env.DEV_LOGIN_EMAIL;
+    const dbUser = await storage.getUserByEmail(email);
+    
+    if (!dbUser) {
+      return res.status(404).send(`User not found: ${email}`);
+    }
+    
+    // Create mock customer data for dev session
+    const mockCustomer = {
+      id: dbUser.shopifyCustomerId || `dev-${dbUser.id}`,
+      email: dbUser.email,
+      firstName: dbUser.firstName || 'Dev',
+      lastName: dbUser.lastName || 'User',
+      displayName: dbUser.displayName || `${dbUser.firstName} ${dbUser.lastName}`,
+    };
+    
+    // Create persistent session
+    const session = await storage.createSession({
+      userId: dbUser.id,
+      shopifyCustomerId: mockCustomer.id,
+      accessToken: null,
+      refreshToken: null,
+      customerData: mockCustomer,
+    });
+    
+    // Set HTTP-only cookie
+    res.cookie('session_id', session.id, {
+      httpOnly: true,
+      secure: false, // Dev only
+      sameSite: 'lax',
+      maxAge: 90 * 24 * 60 * 60 * 1000,
+      path: '/'
+    });
+    
+    console.log(`🔓 DEV LOGIN: ${mockCustomer.displayName} (${mockCustomer.email})`);
+    
+    // Redirect to app with session
+    const appDomain = getAppDomainFromRequest(req);
+    const protocol = req.secure ? 'https' : 'http';
+    const redirectUrl = `${protocol}://${appDomain}/#login-success?sessionId=${session.id}`;
+    
+    res.send(`
+      <html>
+        <body style="font-family: Arial; text-align: center; padding: 50px; background: #6B8E23; color: white;">
+          <h2>🔓 DEV LOGIN</h2>
+          <p>Logged in as: ${mockCustomer.firstName} ${mockCustomer.lastName}</p>
+          <p>Email: ${mockCustomer.email}</p>
+          <p>Role: ${dbUser.role || 'user'}</p>
+          <p>Redirecting...</p>
+          <script>
+            setTimeout(() => {
+              window.location.href = '${redirectUrl}';
+            }, 1000);
+          </script>
+        </body>
+      </html>
+    `);
+    
+  } catch (error) {
+    console.error('Dev login error:', error);
+    res.status(500).send(`Dev login error: ${error.message}`);
+  }
+});
+
 // Customer session status endpoint
 app.get('/api/customer/status', async (req, res) => {
   try {
