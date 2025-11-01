@@ -1036,3 +1036,171 @@ PANEL_HEADER_BG = '#6B8E23'
 PANEL_SUB_HEADER_BG = '#f5f5f5'
 PROGRESS_BAR_GRADIENT = 'linear-gradient(90deg, #6B8E23 0%, #8FBC8F 100%)'
 ```
+
+---
+
+## Features Not Yet Implemented
+
+The following features are documented in this requirements spec but **not yet implemented** in the current React rank page (`src/pages/RankPage.jsx`, `src/components/rank/`):
+
+### 🔴 Critical Missing Features
+
+#### 1. Ranking Modal (Mobile-Friendly Interface)
+**Status:** Not Implemented  
+**Current Behavior:** Clicking "Rank This Product" button adds product to end of rankings  
+**Required Behavior:** Open modal showing all positions with REPLACE/INSERT buttons
+
+**Missing Components:**
+- Modal UI with product header
+- Scrollable list of all ranking positions
+- Position status badges (FILLED/EMPTY)
+- REPLACE button (yellow, disabled on empty slots)
+- INSERT button (green, always enabled)
+- REPLACE logic (swap product, no push-down)
+- INSERT logic (add at position, push-down, restore displaced product)
+- Modal close handlers (×, ESC, overlay click)
+- Responsive modal styling (95% width mobile, 900px max desktop)
+
+**Implementation Files Needed:**
+- `src/components/rank/RankingModal.jsx` (new component)
+- `src/components/rank/RankingModal.css` (new styles)
+
+---
+
+#### 2. Panel Headers & Sub-Headers Styling
+**Status:** Partially Implemented  
+**Current Issues:**
+- Panel headers missing olive green background (#6B8E23)
+- Missing emoji icons in titles (🏆 Your Rankings, 🔍 Search Products)
+- Wrong title in search panel ("Available Products" vs "Search Products")
+- Sub-headers missing light gray background (#f5f5f5)
+
+**Rankings Panel Sub-Header Issues:**
+- Progress text format incorrect: shows "X of Y ranked" but missing total products and percentage
+- Current: "5 of 10 ranked" (using slot count)
+- Required: "5 of 150 ranked (3%)" (using total available products)
+- Progress bar missing gradient styling
+
+**Search Panel Sub-Header Issues:**
+- Entire sub-header section missing
+- No helper text "← Drag products to rank"
+- Available count in wrong location (should be in sub-header, not header)
+
+**Files to Update:**
+- `src/components/rank/RankingsPanel.jsx` - Update header/sub-header structure
+- `src/components/rank/RankingsPanel.css` - Add proper colors and styling
+- `src/components/rank/SearchProductsPanel.jsx` - Add sub-header section
+- `src/components/rank/SearchProductsPanel.css` - Add sub-header styling
+
+---
+
+#### 3. Rankings Panel Collapse Toggle
+**Status:** Not Implemented  
+**Current Behavior:** Rankings panel always visible  
+**Required Behavior:** Toggle button to collapse/expand rankings panel
+
+**Missing Features:**
+- "▼ Collapse" / "▲ Expand" button in rankings header
+- Collapse state management
+- Smooth transition animation
+- Persist collapse state (optional)
+
+**Files to Update:**
+- `src/components/rank/RankingsPanel.jsx`
+- `src/components/rank/RankingsPanel.css`
+
+---
+
+### 🟡 Page-Level Missing Features
+
+#### 4. Page Header (Title & Subtitle)
+**Status:** Partially Implemented  
+**Current:** Only breadcrumbs and Browse All button  
+**Missing:**
+- Page title with icon: "🏆 Rank Your Favorites"
+- Subtitle: "Build your ultimate jerky lineup and show the community what you're snacking on 🥩"
+
+**Files to Update:**
+- `src/pages/RankPage.jsx`
+- `src/pages/RankPage.css`
+
+---
+
+### 🟢 Minor Enhancements Needed
+
+#### 5. Progress Calculation Logic
+**Status:** Incorrect  
+**Current Behavior:** Uses `slotCount` as denominator (e.g., "5 of 10 ranked")  
+**Required Behavior:** Use `totalProducts` from API (e.g., "5 of 150 ranked (3%)")
+
+**Calculation Fix:**
+```javascript
+// Current (WRONG):
+const percentage = (filledCount / slotCount) * 100;
+
+// Required (CORRECT):
+const percentage = totalProducts > 0 
+  ? Math.round((filledCount / totalProducts) * 100) 
+  : 0;
+```
+
+**Files to Update:**
+- `src/components/rank/RankingsPanel.jsx` (accept `totalProducts` prop)
+- `src/pages/RankPage.jsx` (pass `totalProducts` prop)
+
+---
+
+#### 6. Drag & Drop Visual Feedback Enhancement
+**Status:** Basic implementation exists  
+**Missing:**
+- Product card drag cursor styling
+- Smooth transform animation during drag
+- 200ms ease-in-out on drop transition
+- Highlight animation on target slot
+
+**Files to Update:**
+- `src/components/rank/RankingsPanel.css`
+- `src/components/rank/SearchProductsPanel.css`
+
+---
+
+#### 7. Helper Text in Search Panel
+**Status:** Not Implemented  
+**Missing:** "← Drag products to rank" text in sub-header (desktop only)
+
+**Files to Update:**
+- `src/components/rank/SearchProductsPanel.jsx`
+- `src/components/rank/SearchProductsPanel.css` (add media query to hide on mobile)
+
+---
+
+### 📋 Summary by Priority
+
+**High Priority (Blocking UX Issues):**
+1. ✅ Ranking Modal - Critical for mobile usability
+2. ✅ Panel styling (colors, headers, sub-headers)
+3. ✅ Progress calculation fix (shows wrong total)
+
+**Medium Priority (Polish & Completeness):**
+4. Page header title/subtitle
+5. Rankings panel collapse toggle
+6. Helper text in search panel
+
+**Low Priority (Nice-to-Have):**
+7. Enhanced drag & drop animations
+
+---
+
+### Implementation Checklist
+
+- [ ] Create `RankingModal` component with REPLACE/INSERT actions
+- [ ] Update panel headers with olive green background + emoji icons
+- [ ] Add sub-header to search panel with helper text
+- [ ] Fix rankings panel sub-header format (X of Y ranked Z%)
+- [ ] Fix progress calculation to use totalProducts
+- [ ] Add collapse toggle to rankings panel
+- [ ] Add page title and subtitle
+- [ ] Update all panel styling colors to match screenshot
+- [ ] Add enhanced drag & drop animations
+- [ ] Test modal on mobile devices (touch interactions)
+- [ ] Test all features match legacy implementation behavior
