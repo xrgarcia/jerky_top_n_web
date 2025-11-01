@@ -8,6 +8,16 @@ A web application for ranking jerky products, providing a comprehensive and enga
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
+## Development & Testing
+- **Dev Login Endpoint**: `/dev/login/:token` - Secure development-only login bypass for testing
+  - **Security**: Multi-layered protection (environment checks, localhost-only socket IP validation, token validation)
+  - **Requirements**: 
+    - `DEV_LOGIN_TOKEN` environment variable (GUID format, e.g., `1d27b23c-215b-4f18-b0a8-493494066288`)
+    - `DEV_LOGIN_EMAIL` environment variable (email of user to impersonate)
+  - **Restrictions**: Only works when `NODE_ENV != production` AND `REPLIT_DEPLOYMENT != 1` AND request from localhost socket
+  - **Usage**: Visit `http://localhost:5000/dev/login/{YOUR_TOKEN}` → auto-creates 90-day session → redirects to app
+  - **Session Handling**: Creates httpOnly cookie + stores sessionId in localStorage via `#login-success` hash route
+
 ## Production Deployment
 - **Custom Domain**: rank.jerky.com
 - **Domain Detection**: Uses `REPLIT_DOMAINS` environment variable in production (automatically set by Replit when custom domain is configured)
