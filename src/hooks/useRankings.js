@@ -7,12 +7,8 @@ export function useMyRankings() {
   return useQuery({
     queryKey: ['myRankings'],
     queryFn: async () => {
-      const sessionId = localStorage.getItem('sessionId');
-      if (!sessionId) {
-        return { rankings: [] };
-      }
-      
-      const response = await apiClient(`/api/rankings/products?sessionId=${sessionId}&rankingListId=default`);
+      // Session is sent via httpOnly cookie, no need for query param
+      const response = await apiClient(`/api/rankings/products?rankingListId=default`);
       const data = await response.json();
       return data;
     },
@@ -35,13 +31,8 @@ export function useRankings() {
 
   const loadRankings = useCallback(async () => {
     try {
-      const sessionId = localStorage.getItem('sessionId');
-      if (!sessionId) {
-        console.log('No session available, skipping rankings load');
-        return;
-      }
-
-      const response = await apiClient(`/api/rankings/products?sessionId=${sessionId}&rankingListId=default`);
+      // Session is sent via httpOnly cookie, no need for query param
+      const response = await apiClient(`/api/rankings/products?rankingListId=default`);
       const data = await response.json();
       
       if (data.rankings && Array.isArray(data.rankings)) {
@@ -150,12 +141,8 @@ export function useRankings() {
 
   const clearAllRankings = useCallback(async () => {
     try {
-      const sessionId = localStorage.getItem('sessionId');
-      if (!sessionId) {
-        throw new Error('No session available');
-      }
-
-      await apiClient(`/api/rankings/products/clear?sessionId=${sessionId}&rankingListId=default`, { 
+      // Session is sent via httpOnly cookie, no need for query param
+      await apiClient(`/api/rankings/products/clear?rankingListId=default`, { 
         method: 'DELETE' 
       });
       setRankings([]);
@@ -299,11 +286,7 @@ class RankingSaveQueue {
     this.activeNetworkSave = true;
     
     try {
-      const sessionId = localStorage.getItem('sessionId');
-      if (!sessionId) {
-        throw new Error('No session available');
-      }
-
+      // Session is sent via httpOnly cookie, no need to include in body
       const response = await apiClient('/api/rankings/products', {
         method: 'POST',
         headers: {
@@ -311,7 +294,6 @@ class RankingSaveQueue {
           'X-Idempotency-Key': operation.idempotencyKey
         },
         body: JSON.stringify({ 
-          sessionId,
           rankingListId: 'default',
           rankings: operation.rankings 
         })

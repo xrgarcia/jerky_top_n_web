@@ -1788,7 +1788,10 @@ app.post('/api/rankings/product', async (req, res) => {
 // Save multiple product rankings (bulk save for auto-save)
 app.post('/api/rankings/products', async (req, res) => {
   try {
-    const { sessionId, rankingListId = 'default', rankings } = req.body;
+    const { rankingListId = 'default', rankings } = req.body;
+    
+    // Get session from cookie or body (backwards compatibility)
+    const sessionId = req.cookies.session_id || req.body.sessionId;
     
     if (!sessionId) {
       return res.status(401).json({ error: 'Authentication required' });
@@ -2161,7 +2164,10 @@ app.get('/api/rankings/products', async (req, res) => {
 // Clear user's product rankings for a specific ranking list
 app.delete('/api/rankings/products/clear', async (req, res) => {
   try {
-    const { sessionId, rankingListId = 'default' } = req.query;
+    const { rankingListId = 'default' } = req.query;
+    
+    // Get session from cookie or query param (backwards compatibility)
+    const sessionId = req.cookies.session_id || req.query.sessionId;
     
     if (!sessionId) {
       return res.status(401).json({ error: 'Authentication required' });
