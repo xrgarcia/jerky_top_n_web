@@ -88,7 +88,7 @@ async function loadCoinDetail(achievementCode) {
     renderContent();
     
   } catch (error) {
-    console.error('Error loading achievement details:', error);
+    console.error('Error loading coin details:', error);
     showError();
   }
 }
