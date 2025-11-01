@@ -98,14 +98,14 @@ export default function RankPage() {
                 {products.map(product => (
                   <div key={product.id} className="product-card">
                     <div className="product-image">
-                      {product.imageUrl ? (
-                        <img src={product.imageUrl} alt={product.name} />
+                      {product.image ? (
+                        <img src={product.image} alt={product.title} />
                       ) : (
                         <div className="no-image">No Image</div>
                       )}
                     </div>
                     <div className="product-info">
-                      <h3 className="product-name">{product.name}</h3>
+                      <h3 className="product-name">{product.title}</h3>
                       {product.price && (
                         <p className="product-price">${product.price}</p>
                       )}
