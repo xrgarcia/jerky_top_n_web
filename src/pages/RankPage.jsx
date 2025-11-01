@@ -130,7 +130,9 @@ export default function RankPage() {
         </button>
       </div>
 
-      <ProgressWidget />
+      <div className="progress-widget-container">
+        <ProgressWidget />
+      </div>
 
       <div className="rank-content-grid">
         <div className="rank-left-panel">

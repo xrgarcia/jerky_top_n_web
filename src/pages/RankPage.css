@@ -55,6 +55,11 @@
   background: #6a7847;
 }
 
+.progress-widget-container {
+  max-width: 1400px;
+  margin: 0 auto 20px;
+}
+
 .rank-content-grid {
   max-width: 1400px;
   margin: 0 auto;
