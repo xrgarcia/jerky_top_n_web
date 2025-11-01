@@ -625,11 +625,22 @@ function createGamificationRoutes(services) {
         }
       }
 
+      // Get user info to determine if employee
+      const user = await services.storage.getUserById(userId);
+      const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
+      
       // Get user's ranked product IDs to mark which are ranked
       const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'default');
       const rankedSet = new Set(rankedProductIds);
+      
+      // Get user's purchased product IDs to determine which can be ranked (non-employees only)
+      let purchasedSet = new Set();
+      if (!isEmployee && services.purchaseHistoryService) {
+        const purchasedProductIds = await services.purchaseHistoryService.getPurchasedProductIds(userId);
+        purchasedSet = new Set(purchasedProductIds);
+      }
 
-      // Map ALL products in achievement with isRanked status (collection book view)
+      // Map ALL products in achievement with isRanked AND isRankable status (collection book view)
       const products = productIds
         .map(productId => {
           const product = allEnrichedProducts.find(p => p.id === productId);
@@ -639,13 +650,19 @@ function createGamificationRoutes(services) {
           
           const isRanked = rankedSet.has(product.id);
           
+          // Product is rankable if:
+          // - User is an employee (can rank anything), OR
+          // - User has purchased this product
+          const isRankable = isEmployee || purchasedSet.has(product.id);
+          
           return {
             id: product.id,
             title: product.title,
             image: product.image,
             price: product.price,
             handle: product.handle,
-            isRanked: isRanked // Mark if user has ranked this product
+            isRanked: isRanked, // Mark if user has ranked this product
+            isRankable: isRankable // Mark if user CAN rank this product (has purchased or is employee)
           };
         })
         .filter(p => p !== null);

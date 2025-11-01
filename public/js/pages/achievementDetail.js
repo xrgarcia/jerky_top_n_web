@@ -590,8 +590,9 @@ function renderStaticCollection() {
   const unranked = achievementStats.unranked;
   const total = achievementStats.total;
   
-  // Find first unranked product for "next-up" spotlight
-  const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked);
+  // Find first unranked AND rankable product for "next-up" spotlight
+  // This ensures we only spotlight products the user can actually rank
+  const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked && p.isRankable);
   
   // Determine motivation message
   let motivationSection = '';
@@ -678,7 +679,7 @@ function renderStaticCollection() {
               ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : ''}
               ${isNextUp ? '<div class="next-up-badge">👉 Next Up</div>' : ''}
               ${!product.isRanked && !isNextUp ? '<div class="unranked-badge">Not Ranked</div>' : ''}
-              ${!product.isRanked ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
+              ${!product.isRanked && product.isRankable ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
             </div>
             <div class="achievement-product-info">
               <div class="achievement-product-title">${product.title}</div>
