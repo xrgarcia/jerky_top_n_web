@@ -26,7 +26,7 @@ The application employs a modern web architecture for responsiveness, scalabilit
 - **Responsiveness**: Optimized for desktop, tablet, and mobile.
 - **Layout Width**: Expanded from 1200px to 1600px for better screen utilization on large displays.
 - **Hero Gamification Dashboard**: Homepage hero section features a live engagement dashboard with stats, social proof, user progress, and real-time updates via WebSockets.
-- **Minimal Page Headers**: Content pages utilize compact headers with breadcrumbs, title, subtitle, and action buttons.
+- **Minimal Page Headers**: Content pages utilize compact headers with breadcrumbs, title, subtitle, and action buttons. Achievement detail pages use an ultra-minimal header (breadcrumbs + action button only) to let the dynamic hero section be the primary visual focus.
 - **Unified Product Cards**: Consistent card styling across all product displays.
 - **Home Page Dashboard**: Dynamic Bento Box layout with interactive widgets.
 - **Interactive Ranking**: Supports drag-and-drop for desktop and dropdown selection for mobile with visual cues and badges.
