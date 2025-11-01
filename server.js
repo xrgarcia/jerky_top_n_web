@@ -12,6 +12,21 @@ const PurchaseHistoryService = require('./server/services/PurchaseHistoryService
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+// Helper: Detect if request is secure (HTTPS or through Replit proxy)
+function isSecureContext(req) {
+  // Check if request is already HTTPS
+  if (req.secure || req.protocol === 'https') return true;
+  
+  // Check Replit proxy headers
+  if (req.headers['x-forwarded-proto'] === 'https') return true;
+  if (req.headers['x-replit-user-id']) return true; // Replit always uses HTTPS
+  
+  // Check if we're in production
+  if (process.env.NODE_ENV === 'production' || process.env.REPLIT_DEPLOYMENT === '1') return true;
+  
+  return false;
+}
 const httpServer = http.createServer(app);
 const io = new Server(httpServer, {
   cors: {
@@ -688,15 +703,16 @@ app.get('/api/customer/magic-login', async (req, res, next) => {
     });
 
     // Set HTTP-only cookie for 90-day persistence (SameSite=none required for iframe context)
+    const isSecure = isSecureContext(req);
     res.cookie('session_id', session.id, {
       httpOnly: true,
-      secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
-      sameSite: 'none', // Required for cookies to work in iframe
+      secure: isSecure, // Auto-detect HTTPS vs HTTP
+      sameSite: isSecure ? 'none' : 'lax', // SameSite=none requires Secure
       maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days in milliseconds
       path: '/'
     });
 
-    console.log(`✅ 90-day session created for jerky.com customer: ${customer.displayName}`);
+    console.log(`✅ 90-day session created for jerky.com customer: ${customer.displayName} (secure: ${isSecure})`);
 
     // Redirect back to rankings app with session
     const appDomain = getAppDomainFromRequest(req);
@@ -805,15 +821,16 @@ app.get('/dev/login/:token', async (req, res) => {
     });
     
     // Set HTTP-only cookie (SameSite=none required for iframe context)
+    const isSecure = isSecureContext(req);
     res.cookie('session_id', session.id, {
       httpOnly: true,
-      secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
-      sameSite: 'none', // Required for cookies to work in iframe
+      secure: isSecure, // Auto-detect HTTPS vs HTTP
+      sameSite: isSecure ? 'none' : 'lax', // SameSite=none requires Secure
       maxAge: 90 * 24 * 60 * 60 * 1000,
       path: '/'
     });
     
-    console.log(`🔓 DEV LOGIN: ${mockCustomer.displayName} (${mockCustomer.email})`);
+    console.log(`🔓 DEV LOGIN: ${mockCustomer.displayName} (${mockCustomer.email}) - secure: ${isSecure}`);
     
     // Redirect to app with session
     const appDomain = getAppDomainFromRequest(req);
@@ -850,7 +867,13 @@ app.get('/api/customer/status', async (req, res) => {
     const sessionId = req.cookies.session_id || req.query.sessionId;
     
     if (!sessionId) {
-      console.log('⚠️  No session cookie found. Cookies:', Object.keys(req.cookies).length > 0 ? Object.keys(req.cookies) : 'none');
+      console.log('⚠️  /api/customer/status - No session cookie found');
+      console.log('   Headers:', JSON.stringify({
+        cookie: req.headers.cookie || 'none',
+        origin: req.headers.origin || 'none',
+        referer: req.headers.referer || 'none'
+      }));
+      console.log('   Parsed cookies:', Object.keys(req.cookies).length > 0 ? Object.keys(req.cookies) : 'none');
       return res.json({ authenticated: false });
     }
     
@@ -2351,15 +2374,16 @@ app.get('/api/customer/auth/callback', async (req, res) => {
       });
 
       // Set HTTP-only cookie for 90-day persistence (SameSite=none required for iframe context)
+      const isSecure = isSecureContext(req);
       res.cookie('session_id', session.id, {
         httpOnly: true,
-        secure: true, // Required for SameSite=none (Replit uses HTTPS proxy)
-        sameSite: 'none', // Required for cookies to work in iframe
+        secure: isSecure, // Auto-detect HTTPS vs HTTP
+        sameSite: isSecure ? 'none' : 'lax', // SameSite=none requires Secure
         maxAge: 90 * 24 * 60 * 60 * 1000, // 90 days in milliseconds
         path: '/'
       });
       
-      console.log(`✅ Real Shopify customer logged in with 90-day session: ${customer.displayName || customer.firstName} (${customer.email})`);
+      console.log(`✅ Real Shopify customer logged in with 90-day session: ${customer.displayName || customer.firstName} (${customer.email}) - secure: ${isSecure}`);
       
     } catch (dbError) {
       console.error('Database error during login:', dbError);
