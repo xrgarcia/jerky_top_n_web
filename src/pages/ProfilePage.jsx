@@ -1,16 +1,14 @@
 import React from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useProgress, useStreaks } from '../hooks/useGamification';
-import { useMyRankings } from '../hooks/useRankings';
 import './ProfilePage.css';
 
 function ProfilePage() {
   const { user } = useAuthStore();
   const { data: progress, isLoading: progressLoading } = useProgress();
   const { data: streaks, isLoading: streaksLoading } = useStreaks();
-  const { data: rankings, isLoading: rankingsLoading } = useMyRankings();
 
-  const isLoading = progressLoading || streaksLoading || rankingsLoading;
+  const isLoading = progressLoading || streaksLoading;
 
   if (isLoading) {
     return (
@@ -58,21 +56,7 @@ function ProfilePage() {
 
         <div className="recent-rankings">
           <h2>Recent Rankings</h2>
-          {rankings && rankings.length > 0 ? (
-            <div className="rankings-list">
-              {rankings.slice(0, 10).map(ranking => (
-                <div key={ranking.id} className="ranking-item">
-                  <span className="ranking-position">#{ranking.position}</span>
-                  <span className="ranking-product">{ranking.product_title || 'Unknown Product'}</span>
-                  <span className="ranking-date">
-                    {new Date(ranking.ranked_at).toLocaleDateString()}
-                  </span>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="no-rankings">No rankings yet. Start ranking your favorite jerky!</p>
-          )}
+          <p className="no-rankings">Rankings feature coming soon!</p>
         </div>
       </div>
     </div>
