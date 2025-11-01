@@ -13,7 +13,8 @@ body {
 }
 
 /* Prevent page content from showing during initial routing */
-body.app-loading .page-content {
+body.app-loading .page-content,
+body.app-loading #heroSection {
     display: none !important;
 }
 
