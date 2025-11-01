@@ -63,19 +63,19 @@
 
 .user-actions {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .user-profile {
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
 }
 
 .main-nav .user-avatar {
-  width: 24px !important;
-  height: 24px !important;
+  width: 32px !important;
+  height: 32px !important;
   border-radius: 50%;
   background: #7b8b52;
   display: flex;
@@ -83,7 +83,7 @@
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 11px !important;
+  font-size: 13px !important;
   cursor: pointer;
   transition: transform 0.2s ease;
   text-decoration: none;
@@ -99,7 +99,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  padding: 6px;
+  padding: 0;
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -108,8 +108,9 @@
   font-family: inherit;
   font-size: 14px;
   line-height: 1;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
 }
 
 .logout-btn:hover {
@@ -127,7 +128,8 @@
   border-radius: 6px;
   padding: 0;
   transition: all 0.3s ease;
-  min-width: 280px;
+  width: 260px;
+  height: 32px;
 }
 
 .search-container:focus-within {
@@ -141,9 +143,9 @@
   color: rgba(255, 255, 255, 0.9);
   outline: none !important;
   box-shadow: none !important;
-  font-size: 15px;
+  font-size: 14px;
   width: 100%;
-  padding: 12px 16px;
+  padding: 8px 12px;
   padding-right: 8px;
   margin: 0;
   flex: 1;
@@ -151,6 +153,7 @@
   -moz-appearance: none;
   appearance: none;
   cursor: text;
+  height: 100%;
 }
 
 .search-input:focus {
@@ -179,13 +182,14 @@
   border: none;
   color: rgba(255, 255, 255, 0.9);
   cursor: pointer;
-  padding: 12px 12px 12px 0;
+  padding: 8px 10px 8px 0;
   margin: 0;
   display: flex;
   align-items: center;
   transition: color 0.2s ease;
   flex-shrink: 0;
   pointer-events: all;
+  height: 100%;
 }
 
 .search-btn:hover {
