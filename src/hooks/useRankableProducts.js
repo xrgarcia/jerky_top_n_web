@@ -44,7 +44,7 @@ export function useRankableProducts(rankedProductIds = []) {
         sort: 'name-asc'
       });
       
-      const response = await apiClient(`/api/products/rankable?${queryParams}`);
+      const response = await apiClient(`/products/rankable?${queryParams}`);
       
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);

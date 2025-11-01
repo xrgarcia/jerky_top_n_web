@@ -8,7 +8,7 @@ export function useMyRankings() {
     queryKey: ['myRankings'],
     queryFn: async () => {
       // Session is sent via httpOnly cookie, no need for query param
-      const response = await apiClient(`/api/rankings/products?rankingListId=default`);
+      const response = await apiClient(`/rankings/products?rankingListId=default`);
       const data = await response.json();
       return data;
     },
@@ -32,7 +32,7 @@ export function useRankings() {
   const loadRankings = useCallback(async () => {
     try {
       // Session is sent via httpOnly cookie, no need for query param
-      const response = await apiClient(`/api/rankings/products?rankingListId=default`);
+      const response = await apiClient(`/rankings/products?rankingListId=default`);
       const data = await response.json();
       
       if (data.rankings && Array.isArray(data.rankings)) {
@@ -142,7 +142,7 @@ export function useRankings() {
   const clearAllRankings = useCallback(async () => {
     try {
       // Session is sent via httpOnly cookie, no need for query param
-      await apiClient(`/api/rankings/products/clear?rankingListId=default`, { 
+      await apiClient(`/rankings/products/clear?rankingListId=default`, { 
         method: 'DELETE' 
       });
       setRankings([]);
@@ -287,7 +287,7 @@ class RankingSaveQueue {
     
     try {
       // Session is sent via httpOnly cookie, no need to include in body
-      const response = await apiClient('/api/rankings/products', {
+      const response = await apiClient('/rankings/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
