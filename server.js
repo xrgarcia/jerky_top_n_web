@@ -197,8 +197,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static files with cache-busting for development
-app.use(express.static('public', {
+// Serve React build static files
+app.use(express.static('public/dist', {
   setHeaders: (res, path) => {
     // Disable caching for JS/CSS files in development to ensure updates are loaded
     if (path.endsWith('.js') || path.endsWith('.css')) {
@@ -3065,11 +3065,11 @@ if (databaseAvailable && storage) {
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
-      // Main route - serves SPA for all routes (MUST BE LAST)
+      // Main route - serves React SPA for all routes (MUST BE LAST)
       app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'index.html'));
+        res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
       });
-      console.log('✅ Catch-all route registered (serves SPA)');
+      console.log('✅ Catch-all route registered (serves React SPA)');
     })
     .catch(error => {
       console.error('❌ Failed to initialize gamification:', error);
@@ -3077,7 +3077,7 @@ if (databaseAvailable && storage) {
 } else {
   // If gamification not available, still need catch-all route
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
   });
 }
 
