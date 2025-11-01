@@ -222,6 +222,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isUserAuthenticated()) {
                 const isAuthenticatedAsync = await isUserAuthenticatedAsync();
                 if (!isAuthenticatedAsync) {
+                    document.body.classList.remove('page-transitioning');
                     showLoginRequiredMessage('rank');
                     return;
                 }
@@ -234,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isUserAuthenticated()) {
                 const isAuthenticatedAsync = await isUserAuthenticatedAsync();
                 if (!isAuthenticatedAsync) {
+                    document.body.classList.remove('page-transitioning');
                     showLoginRequiredMessage('community');
                     return;
                 }
@@ -246,6 +248,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!isUserAuthenticated()) {
                 const isAuthenticatedAsync = await isUserAuthenticatedAsync();
                 if (!isAuthenticatedAsync) {
+                    document.body.classList.remove('page-transitioning');
                     showLoginRequiredMessage('leaderboard');
                     return;
                 }
@@ -377,6 +380,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const redirectTo = sessionStorage.getItem('redirectAfterLogin') || 'home';
                 sessionStorage.removeItem('redirectAfterLogin');
                 console.log(`✅ User already logged in, redirecting to: ${redirectTo}`);
+                // Note: No need to remove page-transitioning here as showPage() will be called recursively
                 await showPage(redirectTo);
                 return;
             }
