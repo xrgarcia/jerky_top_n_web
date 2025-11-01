@@ -464,7 +464,7 @@ body.login-page-active .hero {
 .page-header-minimal {
     background: linear-gradient(135deg, rgba(123, 139, 82, 0.08), rgba(123, 139, 82, 0.03));
     border-bottom: 3px solid #7b8b52;
-    padding: 30px 40px;
+    padding: 30px 20px;
     margin-bottom: 30px;
 }
 
