@@ -18,6 +18,10 @@ author = "agent"
 task = "workflow.run"
 args = "Server"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "React Dev"
+
 [[workflows.workflow]]
 name = "Server"
 author = "agent"
@@ -30,6 +34,18 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "React Dev"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev:react"
+waitForPort = 5173
+
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
@@ -37,6 +53,10 @@ externalPort = 80
 [[ports]]
 localPort = 43457
 externalPort = 3000
+
+[[ports]]
+localPort = 5173
+externalPort = 5173
 
 [deployment]
 deploymentTarget = "autoscale"

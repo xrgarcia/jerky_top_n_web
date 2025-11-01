@@ -1,0 +1,20 @@
+.announcement-banner {
+  background: linear-gradient(135deg, #6B8E23, #8FBC8F);
+  color: white;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.announcement-icon {
+  font-size: 16px;
+}
+
+.announcement-text {
+  letter-spacing: 0.5px;
+}
