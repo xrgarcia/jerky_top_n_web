@@ -16,7 +16,7 @@ let coinMetadata = null;
  * @param {string} layoutType - 'default', 'static', 'dynamic', etc.
  */
 function resetGridContainerClasses(layoutType = 'default') {
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   if (!grid) return;
   
   // Remove all layout-specific classes
@@ -280,7 +280,7 @@ function renderEngagementProgress() {
  */
 function renderProducts() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   
   if (coinProducts.length === 0) {
     grid.innerHTML = `
@@ -318,7 +318,7 @@ function renderProducts() {
  */
 function renderDynamicCollection() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   const animalCategories = coinMetadata.animalCategories || [];
   const currentTier = coinStats.currentTier || null;
   const hasTiers = coinData.hasTiers;
@@ -416,7 +416,7 @@ function renderDynamicCollection() {
  */
 function renderFlavorCoin() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   
   if (coinProducts.length === 0) {
     grid.innerHTML = `
@@ -488,7 +488,7 @@ function renderFlavorCoin() {
  */
 function renderHiddenCollection() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   const isUnlocked = coinMetadata.isUnlocked;
   
   if (!isUnlocked) {
@@ -544,7 +544,7 @@ function renderHiddenCollection() {
  */
 function renderLegacyCoin() {
   resetGridContainerClasses('default');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   
   grid.innerHTML = `
     <div class="legacy-coin-layout">
@@ -715,7 +715,7 @@ function generateSmartCommentary() {
  */
 function renderStaticCollection() {
   resetGridContainerClasses('static');
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   
   // Note: Stats cards are hidden by renderContent() for static collections
   // This allows the unified hero to display stats in a more integrated way
@@ -882,7 +882,7 @@ window.quickRankProduct = function(productId) {
  * Show error state
  */
 function showError() {
-  const grid = document.getElementById('coinProductsGrid');
+  const grid = document.getElementById('coin-products-grid');
   grid.innerHTML = `
     <div class="empty-state">
       <div class="empty-state-icon">⚠️</div>
