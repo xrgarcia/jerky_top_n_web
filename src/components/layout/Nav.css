@@ -104,6 +104,12 @@
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
+.logout-btn svg {
+  display: block;
 }
 
 .logout-btn:hover {
