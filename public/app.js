@@ -50,7 +50,36 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Page navigation functions
+    
+    // Centralized utility to hide all pages
+    function hideAllPages() {
+        const coinDetailPage = document.getElementById('coinDetailPage');
+        const coinbookPage = document.getElementById('coinbookPage');
+        const communityPage = document.getElementById('communityPage');
+        const leaderboardPage = document.getElementById('leaderboardPage');
+        const profilePage = document.getElementById('profilePage');
+        const productDetailPage = document.getElementById('productDetailPage');
+        const userProfilePage = document.getElementById('userProfilePage');
+        
+        if (homePage) homePage.style.display = 'none';
+        if (rankPage) rankPage.style.display = 'none';
+        if (productsPage) productsPage.style.display = 'none';
+        if (communityPage) communityPage.style.display = 'none';
+        if (leaderboardPage) leaderboardPage.style.display = 'none';
+        if (profilePage) profilePage.style.display = 'none';
+        if (productDetailPage) productDetailPage.style.display = 'none';
+        if (loginPage) loginPage.style.display = 'none';
+        if (userProfilePage) userProfilePage.style.display = 'none';
+        if (coinDetailPage) coinDetailPage.style.display = 'none';
+        if (coinbookPage) coinbookPage.style.display = 'none';
+        if (toolsPage) toolsPage.style.display = 'none';
+        if (heroSection) heroSection.style.display = 'none';
+    }
+    
     async function showPage(page, updateURL = true) {
+        // Apply page transition class to hide content during navigation
+        document.body.classList.add('page-transitioning');
+        
         const communityPage = document.getElementById('communityPage');
         const leaderboardPage = document.getElementById('leaderboardPage');
         const profilePage = document.getElementById('profilePage');
@@ -66,21 +95,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.hash = `#${page}`;
             }
             
-            // Hide all pages
-            const coinDetailPage = document.getElementById('coinDetailPage');
-            const coinbookPage = document.getElementById('coinbookPage');
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (leaderboardPage) leaderboardPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
-            if (productDetailPage) productDetailPage.style.display = 'none';
-            if (loginPage) loginPage.style.display = 'none';
+            // Hide all pages and show user profile page
+            hideAllPages();
             if (userProfilePage) userProfilePage.style.display = 'block';
-            if (coinDetailPage) coinDetailPage.style.display = 'none';
-            if (coinbookPage) coinbookPage.style.display = 'none';
-            if (heroSection) heroSection.style.display = 'none';
             
             // Load user profile
             await loadUserProfile(userId);
@@ -95,6 +112,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.socket.emit('page:view', { page: 'community' });
             }
             
+            // Remove transition class after page is ready
+            document.body.classList.remove('page-transitioning');
             return;
         }
         
@@ -107,22 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.location.hash = `#${page}`;
             }
             
-            // Hide all pages - explicitly hide achievement/coinbook pages
-            const coinDetailPage = document.getElementById('coinDetailPage');
-            const coinbookPage = document.getElementById('coinbookPage');
-            
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (leaderboardPage) leaderboardPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
+            // Hide all pages and show product detail page
+            hideAllPages();
             if (productDetailPage) productDetailPage.style.display = 'block';
-            if (loginPage) loginPage.style.display = 'none';
-            if (userProfilePage) userProfilePage.style.display = 'none';
-            if (coinDetailPage) coinDetailPage.style.display = 'none';
-            if (coinbookPage) coinbookPage.style.display = 'none';
-            if (heroSection) heroSection.style.display = 'none';
             
             // Load product detail
             await loadProductDetail(productId);
@@ -137,33 +143,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.socket.emit('page:view', { page: 'products' });
             }
             
+            // Remove transition class after page is ready
+            document.body.classList.remove('page-transitioning');
             return;
         }
         
         // Check if this is a coin detail route (new clean URL structure)
         if (page.startsWith('coins/')) {
             const achievementCode = page.split('/')[1];
+            const coinDetailPage = document.getElementById('coinDetailPage');
             
             // Update URL hash if needed
             if (updateURL && window.location.hash !== `#${page}`) {
                 window.location.hash = `#${page}`;
             }
             
-            // Hide all pages
-            const coinDetailPage = document.getElementById('coinDetailPage');
-            const coinbookPage = document.getElementById('coinbookPage');
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (leaderboardPage) leaderboardPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
-            if (productDetailPage) productDetailPage.style.display = 'none';
-            if (loginPage) loginPage.style.display = 'none';
-            if (userProfilePage) userProfilePage.style.display = 'none';
-            if (coinbookPage) coinbookPage.style.display = 'none';
+            // Hide all pages and show coin detail page
+            hideAllPages();
             if (coinDetailPage) coinDetailPage.style.display = 'block';
-            if (heroSection) heroSection.style.display = 'none';
             
             // Load achievement detail
             if (window.initCoinDetailPage) {
@@ -180,33 +177,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.socket.emit('page:view', { page: 'coinbook' });
             }
             
+            // Remove transition class after page is ready
+            document.body.classList.remove('page-transitioning');
             return;
         }
         
         // Legacy support: Check if this is an achievement detail route (old ID-based URLs)
         if (page.startsWith('achievement/')) {
             const achievementId = page.split('/')[1];
+            const coinDetailPage = document.getElementById('coinDetailPage');
             
             // Update URL hash if needed
             if (updateURL && window.location.hash !== `#${page}`) {
                 window.location.hash = `#${page}`;
             }
             
-            // Hide all pages
-            const coinDetailPage = document.getElementById('coinDetailPage');
-            const coinbookPage = document.getElementById('coinbookPage');
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (leaderboardPage) leaderboardPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
-            if (productDetailPage) productDetailPage.style.display = 'none';
-            if (loginPage) loginPage.style.display = 'none';
-            if (userProfilePage) userProfilePage.style.display = 'none';
-            if (coinbookPage) coinbookPage.style.display = 'none';
+            // Hide all pages and show coin detail page
+            hideAllPages();
             if (coinDetailPage) coinDetailPage.style.display = 'block';
-            if (heroSection) heroSection.style.display = 'none';
             
             // Load achievement detail (pass ID, backend will handle lookup)
             if (window.initCoinDetailPage) {
@@ -223,6 +211,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.socket.emit('page:view', { page: 'coinbook' });
             }
             
+            // Remove transition class after page is ready
+            document.body.classList.remove('page-transitioning');
             return;
         }
         
@@ -270,21 +260,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         
-        // Hide all pages
-        const coinDetailPage = document.getElementById('coinDetailPage');
-        const coinbookPage = document.getElementById('coinbookPage');
-        if (homePage) homePage.style.display = 'none';
-        if (rankPage) rankPage.style.display = 'none';
-        if (productsPage) productsPage.style.display = 'none';
-        if (communityPage) communityPage.style.display = 'none';
-        if (leaderboardPage) leaderboardPage.style.display = 'none';
-        if (profilePage) profilePage.style.display = 'none';
-        if (productDetailPage) productDetailPage.style.display = 'none';
-        if (userProfilePage) userProfilePage.style.display = 'none';
-        if (loginPage) loginPage.style.display = 'none';
-        if (coinDetailPage) coinDetailPage.style.display = 'none';
-        if (coinbookPage) coinbookPage.style.display = 'none';
-        if (toolsPage) toolsPage.style.display = 'none';
+        // Hide all pages using centralized function
+        hideAllPages();
         
         // Show selected page (sessionStorage removed - URL is single source of truth)
         if (page === 'home' && homePage) {
@@ -423,23 +400,10 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (page === 'coinbook') {
             const coinbookPage = document.getElementById('coinbookPage');
             
-            // Hide all other pages
-            if (homePage) homePage.style.display = 'none';
-            if (rankPage) rankPage.style.display = 'none';
-            if (productsPage) productsPage.style.display = 'none';
-            if (communityPage) communityPage.style.display = 'none';
-            if (leaderboardPage) leaderboardPage.style.display = 'none';
-            if (profilePage) profilePage.style.display = 'none';
-            if (productDetailPage) productDetailPage.style.display = 'none';
-            if (loginPage) loginPage.style.display = 'none';
-            if (userProfilePage) userProfilePage.style.display = 'none';
-            if (toolsPage) toolsPage.style.display = 'none';
-            
-            // Show coinbook page
+            // Show coinbook page (hideAllPages already called above)
             if (coinbookPage) {
                 coinbookPage.style.display = 'block';
             }
-            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             
             // Initialize coinbook page (legacy compatibility)
@@ -453,7 +417,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         } else if (page === 'tools' && toolsPage) {
             toolsPage.style.display = 'block';
-            if (heroSection) heroSection.style.display = 'none';
             document.body.classList.remove('login-page-active');
             // Initialize tools page
             if (window.initToolsPage) {
@@ -492,6 +455,9 @@ document.addEventListener('DOMContentLoaded', function() {
         if (window.socket && window.socket.connected) {
             window.socket.emit('page:view', { page });
         }
+        
+        // Remove page transition class after all page setup is complete
+        document.body.classList.remove('page-transitioning');
     }
 
     // Customer authentication elements

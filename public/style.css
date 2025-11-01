@@ -12,10 +12,26 @@ body {
     animation: fadeIn 0.2s ease-in;
 }
 
-/* Prevent page content from showing during initial routing */
+/* Prevent page content from showing during initial routing and page transitions */
 body.app-loading .page-content,
-body.app-loading #heroSection {
+body.app-loading #heroSection,
+body.page-transitioning .page-content,
+body.page-transitioning #heroSection {
     display: none !important;
+}
+
+/* Smooth fade-in for page content */
+.page-content {
+    animation: fadeIn 0.15s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 /* Typography enhancements for product pages */
