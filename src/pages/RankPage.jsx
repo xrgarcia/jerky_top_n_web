@@ -40,6 +40,10 @@ export default function RankPage() {
     }
   };
 
+  useEffect(() => {
+    handleSearch();
+  }, []);
+
   return (
     <div className="rank-page">
       <div className="rank-container">
