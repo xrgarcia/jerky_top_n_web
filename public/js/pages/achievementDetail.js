@@ -558,6 +558,65 @@ function renderLegacyAchievement() {
 function renderStaticCollection() {
   const grid = document.getElementById('achievementProductsGrid');
   const theme = achievementMetadata.theme || achievementData.category;
+  const percentage = achievementStats.percentage;
+  const ranked = achievementStats.ranked;
+  const unranked = achievementStats.unranked;
+  const total = achievementStats.total;
+  
+  // Find first unranked product for "next-up" spotlight
+  const firstUnrankedIndex = achievementProducts.findIndex(p => !p.isRanked);
+  
+  // Determine motivation message
+  let motivationSection = '';
+  if (percentage === 100) {
+    motivationSection = `
+      <div class="static-completion-banner">
+        <div class="completion-icon">🎉</div>
+        <div class="completion-title">Collection Complete!</div>
+        <div class="completion-text">You've ranked all ${total} products in this collection. You earned ${achievementData.points} flavor coins!</div>
+      </div>
+    `;
+  } else if (percentage >= 75) {
+    motivationSection = `
+      <div class="static-motivation-callout">
+        <div class="motivation-icon">🔥</div>
+        <div class="motivation-content">
+          <div class="motivation-title">Almost There!</div>
+          <div class="motivation-text">Rank ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!</div>
+        </div>
+      </div>
+    `;
+  } else if (percentage >= 50) {
+    motivationSection = `
+      <div class="static-motivation-callout">
+        <div class="motivation-icon">🎯</div>
+        <div class="motivation-content">
+          <div class="motivation-title">Halfway Hero!</div>
+          <div class="motivation-text">You're ${percentage}% complete. Keep going to earn ${achievementData.points} flavor coins!</div>
+        </div>
+      </div>
+    `;
+  } else if (percentage >= 25) {
+    motivationSection = `
+      <div class="static-motivation-callout">
+        <div class="motivation-icon">⭐</div>
+        <div class="motivation-content">
+          <div class="motivation-title">Great Start!</div>
+          <div class="motivation-text">You've ranked ${ranked} of ${total} products. ${unranked} more to go for ${achievementData.points} flavor coins!</div>
+        </div>
+      </div>
+    `;
+  } else if (percentage > 0) {
+    motivationSection = `
+      <div class="static-motivation-callout">
+        <div class="motivation-icon">🚀</div>
+        <div class="motivation-content">
+          <div class="motivation-title">You're On Your Way!</div>
+          <div class="motivation-text">Rank ${unranked} more product${unranked === 1 ? '' : 's'} to complete this collection and earn ${achievementData.points} flavor coins!</div>
+        </div>
+      </div>
+    `;
+  }
   
   grid.innerHTML = `
     <div class="static-collection-layout">
@@ -568,36 +627,59 @@ function renderStaticCollection() {
           ${theme ? `<div class="static-theme-badge">${theme}</div>` : ''}
         </div>
         <div class="static-progress-circle">
-          <svg class="progress-ring" width="120" height="120">
-            <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"/>
-            <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="8" fill="transparent" r="52" cx="60" cy="60"
-              stroke-dasharray="${2 * Math.PI * 52}"
-              stroke-dashoffset="${2 * Math.PI * 52 * (1 - achievementStats.percentage / 100)}"/>
+          <svg class="progress-ring" width="140" height="140">
+            <circle class="progress-ring-circle-bg" stroke="#e0e0e0" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"/>
+            <circle class="progress-ring-circle" stroke="#7b8b52" stroke-width="10" fill="transparent" r="60" cx="70" cy="70"
+              stroke-dasharray="${2 * Math.PI * 60}"
+              stroke-dashoffset="${2 * Math.PI * 60 * (1 - percentage / 100)}"/>
           </svg>
           <div class="progress-ring-text">
-            <div class="progress-percentage">${achievementStats.percentage}%</div>
+            <div class="progress-percentage">${percentage}%</div>
             <div class="progress-label">Complete</div>
           </div>
         </div>
       </div>
       
+      ${motivationSection}
+      
       <div class="static-products-grid achievement-products-grid">
-        ${achievementProducts.map(product => `
-          <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'}" onclick="navigateToProduct('${product.id}')">
-            <div class="achievement-product-image">
-              <img src="${product.image}" alt="${product.title}" loading="lazy">
-              ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : '<div class="unranked-badge">Not Ranked</div>'}
+        ${achievementProducts.map((product, index) => {
+          const isNextUp = index === firstUnrankedIndex;
+          return `
+            <div class="achievement-product-card ${product.isRanked ? 'ranked' : 'unranked'} ${isNextUp ? 'next-up' : ''}" onclick="navigateToProduct('${product.id}')">
+              <div class="achievement-product-image">
+                <img src="${product.image}" alt="${product.title}" loading="lazy">
+                ${product.isRanked ? '<div class="ranked-badge">✓ Ranked</div>' : ''}
+                ${isNextUp ? '<div class="next-up-badge">👉 Next Up</div>' : ''}
+                ${!product.isRanked && !isNextUp ? '<div class="unranked-badge">Not Ranked</div>' : ''}
+                ${!product.isRanked ? `<button class="quick-rank-button" onclick="event.stopPropagation(); quickRankProduct('${product.id}')">⭐ Rank Now</button>` : ''}
+              </div>
+              <div class="achievement-product-info">
+                <div class="achievement-product-title">${product.title}</div>
+                <div class="achievement-product-price">$${product.price}</div>
+              </div>
             </div>
-            <div class="achievement-product-info">
-              <div class="achievement-product-title">${product.title}</div>
-              <div class="achievement-product-price">$${product.price}</div>
-            </div>
-          </div>
-        `).join('')}
+          `;
+        }).join('')}
       </div>
     </div>
   `;
 }
+
+/**
+ * Quick rank a product - navigates to rank page
+ */
+window.quickRankProduct = function(productId) {
+  console.log(`⚡ Quick ranking product ${productId}`);
+  window.location.hash = '#rank';
+  
+  // After navigation, we need to wait for the rank page to load and then trigger ranking
+  setTimeout(() => {
+    if (window.openRankModalById) {
+      window.openRankModalById(productId);
+    }
+  }, 300);
+};
 
 /**
  * Show error state

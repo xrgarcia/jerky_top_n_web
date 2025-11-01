@@ -1103,6 +1103,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Expose globally for page navigation reloads
     window.reloadRankPageData = loadRankPageData;
+    
+    // Expose function to open rank modal by product ID
+    window.openRankModalById = function(productId) {
+        const product = currentProducts.find(p => p.id === productId);
+        if (product) {
+            console.log(`🎯 Opening rank modal for product ${productId}`);
+            openRankModal(product);
+        } else {
+            console.error(`❌ Product ${productId} not found in current products`);
+        }
+    };
 
     // Generate ranking slots
     function generateRankingSlots(count) {

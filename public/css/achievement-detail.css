@@ -4,7 +4,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto 40px;
   padding: 0 20px;
 }
@@ -53,15 +53,15 @@
 
 /* Products Container */
 .achievement-products-container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
   padding: 0 20px 40px;
 }
 
 .achievement-products-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
 }
 
 .achievement-product-card {
@@ -1021,7 +1021,7 @@
    ============================================ */
 
 .static-collection-layout {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: 0 auto;
 }
 
@@ -1029,7 +1029,7 @@
   background: white;
   padding: 40px;
   border-radius: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 2px solid #7b8b52;
   display: flex;
@@ -1070,8 +1070,8 @@
 
 .static-progress-circle {
   position: relative;
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   flex-shrink: 0;
 }
 
@@ -1080,7 +1080,8 @@
 }
 
 .progress-ring-circle {
-  transition: stroke-dashoffset 0.5s ease;
+  transition: stroke-dashoffset 0.8s ease;
+  filter: drop-shadow(0 2px 4px rgba(123, 139, 82, 0.3));
 }
 
 .progress-ring-text {
@@ -1092,7 +1093,7 @@
 }
 
 .progress-percentage {
-  font-size: 28px;
+  font-size: 32px;
   font-weight: 800;
   color: #7b8b52;
   line-height: 1;
@@ -1109,6 +1110,144 @@
 
 .static-products-grid {
   margin-top: 24px;
+}
+
+.static-motivation-callout {
+  background: linear-gradient(135deg, #fff9e6 0%, #ffedd5 100%);
+  border: 2px solid #fed7aa;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 12px rgba(254, 215, 170, 0.3);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.motivation-icon {
+  font-size: 48px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.motivation-content {
+  flex: 1;
+}
+
+.motivation-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #92400e;
+  margin: 0 0 8px 0;
+}
+
+.motivation-text {
+  font-size: 16px;
+  color: #b45309;
+  margin: 0;
+}
+
+.static-completion-banner {
+  background: linear-gradient(135deg, #d1f5d3 0%, #a7f3d0 100%);
+  border: 2px solid #6ee7b7;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 32px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(110, 231, 183, 0.3);
+}
+
+.completion-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+}
+
+.completion-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: #065f46;
+  margin: 0 0 12px 0;
+}
+
+.completion-text {
+  font-size: 18px;
+  color: #047857;
+  margin: 0;
+}
+
+.quick-rank-button {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: linear-gradient(135deg, #7b8b52 0%, #98ab6a 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(123, 139, 82, 0.4);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(4px);
+  z-index: 10;
+}
+
+.achievement-product-card:hover .quick-rank-button {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.quick-rank-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.5);
+}
+
+.achievement-product-card.unranked .achievement-product-image::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(0, 0, 0, 0.05) 100%);
+  pointer-events: none;
+}
+
+.achievement-product-card.ranked {
+  animation: rankComplete 0.5s ease;
+}
+
+@keyframes rankComplete {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.achievement-product-card.next-up {
+  border-color: #fbbf24;
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4);
+  animation: nextUpPulse 2s ease-in-out infinite;
+}
+
+@keyframes nextUpPulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(251, 191, 36, 0.4); }
+  50% { box-shadow: 0 6px 24px rgba(251, 191, 36, 0.6); }
+}
+
+.next-up-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
 }
 
 /* ============================================
@@ -1295,5 +1434,62 @@
   
   .static-description {
     font-size: 16px;
+  }
+  
+  .static-progress-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .progress-percentage {
+    font-size: 28px;
+  }
+  
+  .static-motivation-callout {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .motivation-icon {
+    font-size: 40px;
+  }
+  
+  .motivation-title {
+    font-size: 18px;
+  }
+  
+  .motivation-text {
+    font-size: 15px;
+  }
+  
+  .static-completion-banner {
+    padding: 24px 20px;
+  }
+  
+  .completion-icon {
+    font-size: 48px;
+  }
+  
+  .completion-title {
+    font-size: 22px;
+  }
+  
+  .completion-text {
+    font-size: 16px;
+  }
+  
+  .quick-rank-button {
+    opacity: 1;
+    transform: translateY(0);
+    bottom: 8px;
+    right: 8px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+  
+  .next-up-badge {
+    font-size: 11px;
+    padding: 4px 10px;
   }
 }
