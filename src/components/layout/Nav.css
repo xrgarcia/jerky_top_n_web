@@ -87,6 +87,10 @@
   cursor: pointer;
   transition: transform 0.2s ease;
   text-decoration: none;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
 }
 
 .main-nav .user-avatar:hover {
@@ -105,11 +109,14 @@
   justify-content: center;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  line-height: 0;
+  margin: 0;
+  line-height: 1;
 }
 
 .logout-btn svg {
   display: block;
+  margin: 0;
+  padding: 0;
 }
 
 .logout-btn:hover {
