@@ -16,7 +16,7 @@ function LoginPage() {
     setMessage('');
 
     try {
-      const response = await fetch('/api/auth/magic-login', {
+      const response = await fetch('/api/customer/email-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),
