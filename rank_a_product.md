@@ -1122,5 +1122,111 @@ const percentage = totalProducts > 0
 - [ ] Add collapse toggle to rankings panel
 - [ ] Add page title and subtitle
 - [ ] Add enhanced drag & drop animations
+- [ ] **REQUIRED: Test all features using dev login flow (see below)**
 - [ ] Test modal on mobile devices (touch interactions)
 - [ ] Test all features match legacy implementation behavior
+
+---
+
+## Testing Requirements
+
+### Dev Login Flow (REQUIRED for Testing)
+
+**⚠️ CRITICAL: You MUST use the dev login endpoint to properly test all implemented features.**
+
+The rank page requires authentication. You cannot test ranking features without being logged in. Use the development-only login bypass endpoint.
+
+#### Setup Dev Login
+
+**1. Set Environment Variables (Replit Secrets):**
+```bash
+DEV_LOGIN_TOKEN=<generate-a-guid>    # Example: 1d27b23c-215b-4f18-b0a8-493494066288
+DEV_LOGIN_EMAIL=<your-test-email>     # Example: test@jerky.com (must exist in database)
+```
+
+**2. Generate a GUID for token:**
+- Use: https://www.uuidgenerator.net/
+- Or run: `node -e "console.log(require('crypto').randomUUID())"`
+- Copy the GUID to `DEV_LOGIN_TOKEN`
+
+**3. Find a test user email:**
+- Check database for existing users: `SELECT email, firstName, lastName FROM users LIMIT 10;`
+- Use an employee/admin user for full access (can rank all products)
+- Set this email in `DEV_LOGIN_EMAIL`
+
+#### Use Dev Login Endpoint
+
+**URL Pattern:**
+```
+http://localhost:5000/dev/login/{YOUR_TOKEN}
+```
+
+**Example:**
+```
+http://localhost:5000/dev/login/1d27b23c-215b-4f18-b0a8-493494066288
+```
+
+**What Happens:**
+1. Validates token against `DEV_LOGIN_TOKEN` env var
+2. Looks up user by `DEV_LOGIN_EMAIL` in database
+3. Creates a 90-day persistent session
+4. Sets `session_id` httpOnly cookie (SameSite=none for iframe)
+5. Shows confirmation page with user details
+6. Auto-redirects to `/#login-success?sessionId={id}` after 1 second
+
+**Success Response:**
+```html
+🔓 DEV LOGIN
+Logged in as: Test User
+Email: test@jerky.com
+Role: employee
+Redirecting...
+```
+
+#### Security Protections (Why It Won't Work in Production)
+
+The endpoint is protected by **4 layers**:
+
+1. **Environment Check**: Only works when `NODE_ENV != 'production'` AND `REPLIT_DEPLOYMENT != 1`
+2. **Configuration Check**: Requires both env vars to be set
+3. **IP Whitelist**: Only accessible from localhost (`127.0.0.1`, `::1`, `::ffff:127.0.0.1`)
+4. **Token Validation**: Token must match `DEV_LOGIN_TOKEN` exactly
+
+If any check fails → Returns 404 or 403 (endpoint hidden)
+
+#### Testing Workflow
+
+**Every time you implement a feature:**
+
+1. ✅ **Start server**: `npm run dev` or workflow
+2. ✅ **Login**: Visit `http://localhost:5000/dev/login/{YOUR_TOKEN}`
+3. ✅ **Verify session**: Should redirect to app, check auth state in DevTools
+4. ✅ **Test feature**: Rankings panel should load, products should be filterable, etc.
+5. ✅ **Test mutations**: Rank a product, verify it saves, check progress updates
+6. ✅ **Verify data**: Check console logs for save operations, inspect Network tab
+
+**Common Issues:**
+
+- **"Not Found" response**: Check env vars are set correctly
+- **"User not found"**: Email doesn't exist in database, pick different email
+- **No redirect**: Check console for JavaScript errors
+- **Session not persisted**: Clear cookies, try again with new session
+- **Cookie issues**: If you logged in before Nov 1, 2025, clear `session_id` cookie first
+
+#### Why This Matters
+
+**Without logging in, you'll see:**
+- ❌ Empty product list (API filters by purchase history)
+- ❌ Progress widget hidden (no rankings/achievements)
+- ❌ Save operations fail (401 Unauthorized)
+- ❌ No way to test REPLACE/INSERT modal logic
+
+**With dev login, you can test:**
+- ✅ Full product catalog (or purchased products only for non-employees)
+- ✅ Ranking mutations and auto-save
+- ✅ Progress calculations and percentage display
+- ✅ Achievement tracking and streak updates
+- ✅ REPLACE vs INSERT behavior with real data
+- ✅ Navigation protection with pending saves
+
+**📝 Implementation Rule: Before marking ANY checklist item as complete, you MUST test it using dev login.**
