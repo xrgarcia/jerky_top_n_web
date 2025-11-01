@@ -65,7 +65,8 @@ src/
 ```
 
 **Data Layer:**
-- **API Client**: Centralized fetch wrapper with automatic credential inclusion and error handling
+- **API Client**: Centralized fetch wrapper with automatic credential inclusion (httpOnly cookies) and error handling
+- **Session Management**: All API endpoints use httpOnly cookies for authentication (with query param fallback for backwards compatibility)
 - **React Query Hooks**: All server data fetched via hooks with proper cache keys and stale times
 - **Query Invalidation**: Mutations automatically invalidate related queries for real-time UI updates
 - **WebSocket Integration**: Socket events trigger query invalidations for live data synchronization

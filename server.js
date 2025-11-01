@@ -2130,7 +2130,10 @@ app.post('/api/rankings/products', async (req, res) => {
 // Get user's product rankings
 app.get('/api/rankings/products', async (req, res) => {
   try {
-    const { sessionId, rankingListId = 'default' } = req.query;
+    const { rankingListId = 'default' } = req.query;
+    
+    // Get session from cookie or query param (backwards compatibility)
+    const sessionId = req.cookies.session_id || req.query.sessionId;
     
     if (!sessionId) {
       return res.status(401).json({ error: 'Authentication required' });
