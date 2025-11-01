@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import './RankingsPanel.css';
 
-export function RankingsPanel({ rankings, updateRankings, saveStatus, saveMessage, onClearAll, onClearQueue }) {
+export function RankingsPanel({ rankings, updateRankings, saveStatus, saveMessage, onClearAll }) {
   const [slotCount, setSlotCount] = useState(10);
   const [draggedItem, setDraggedItem] = useState(null);
   const [dragOverSlot, setDragOverSlot] = useState(null);
@@ -115,17 +115,6 @@ export function RankingsPanel({ rankings, updateRankings, saveStatus, saveMessag
     }
   };
 
-  const handleClearQueueClick = async () => {
-    if (window.confirm('Clear all stuck saves from the queue? This will remove any pending operations that failed to save.')) {
-      const success = await onClearQueue();
-      if (success) {
-        alert('✅ Queue cleared successfully! Please refresh the page.');
-      } else {
-        alert('❌ Failed to clear queue. Please try again or contact support.');
-      }
-    }
-  };
-
   const renderSlots = () => {
     const slots = [];
     for (let i = 1; i <= slotCount; i++) {
@@ -193,15 +182,6 @@ export function RankingsPanel({ rankings, updateRankings, saveStatus, saveMessag
               {saveStatus === 'saving' && <span className="spinner"></span>}
               <span>{saveMessage}</span>
             </div>
-          )}
-          {saveStatus === 'error' && (
-            <button 
-              className="clear-queue-btn" 
-              onClick={handleClearQueueClick}
-              title="Clear stuck saves from queue"
-            >
-              🗑️ Clear Stuck Saves
-            </button>
           )}
           {filledCount > 0 && (
             <button className="clear-all-btn" onClick={handleClearAllClick}>
