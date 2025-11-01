@@ -7,7 +7,7 @@ export function useMyRankings() {
   return useQuery({
     queryKey: ['myRankings'],
     queryFn: async () => {
-      const response = await apiClient('/user/rankings');
+      const response = await apiClient('/api/customer/rankings');
       const data = await response.json();
       return data;
     },
@@ -30,7 +30,7 @@ export function useRankings() {
 
   const loadRankings = useCallback(async () => {
     try {
-      const response = await apiClient('/user/rankings');
+      const response = await apiClient('/api/customer/rankings');
       const data = await response.json();
       
       if (data.rankings && Array.isArray(data.rankings)) {
@@ -139,7 +139,7 @@ export function useRankings() {
 
   const clearAllRankings = useCallback(async () => {
     try {
-      await apiClient('/user/rankings/clear', { method: 'DELETE' });
+      await apiClient('/api/customer/rankings/clear', { method: 'DELETE' });
       setRankings([]);
       setLastSavedProductIds(new Set());
       setSaveStatus('saved');
