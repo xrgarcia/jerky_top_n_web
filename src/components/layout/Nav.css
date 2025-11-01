@@ -74,8 +74,8 @@
 }
 
 .user-avatar {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: #7b8b52;
   display: flex;
@@ -83,10 +83,11 @@
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 12px;
   cursor: pointer;
   transition: transform 0.2s ease;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
 .user-avatar:hover {
@@ -98,15 +99,17 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  padding: 6px 12px;
+  padding: 6px;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
   font-family: inherit;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
+  width: 28px;
+  height: 28px;
 }
 
 .logout-btn:hover {
