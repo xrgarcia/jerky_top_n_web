@@ -61,6 +61,17 @@ export function useHomeStats() {
   return useQuery({
     queryKey: ['homeStats'],
     queryFn: async () => {
+      const data = await api.get('/gamification/home-stats');
+      return data;
+    },
+    staleTime: 30 * 1000, // 30 seconds - frequently updated
+  });
+}
+
+export function useHeroStats() {
+  return useQuery({
+    queryKey: ['heroStats'],
+    queryFn: async () => {
       const data = await api.get('/gamification/hero-stats');
       return data;
     },
