@@ -1,0 +1,925 @@
+✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 Failed to load rankings: SyntaxError: Failed to execute 'json' on 'Response': Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+    at e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:61:137541
+(anonymous) @ injected.js:27
+(anonymous) @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:61
+await in (anonymous)
+(anonymous) @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:62
+Li @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+ba @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Qh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+om @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+fs @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+pm @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Gi @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+sm @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+lm @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+$h @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Jh @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+mm @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:48
+Ue @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-DQNebR-g.js:25Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ Loaded 0 rankable products
+injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+uV @ ed1e693c96a75807.js:2
+iH @ ed1e693c96a75807.js:2
+iT @ ed1e693c96a75807.js:2
+r6 @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iB @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 737090bfedb2156d.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+uV @ ed1e693c96a75807.js:2
+iH @ ed1e693c96a75807.js:2
+iT @ ed1e693c96a75807.js:2
+r6 @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iB @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 Failed to load rankings: SyntaxError: Failed to execute 'json' on 'Response': Unexpected token '<', "<!DOCTYPE "... is not valid JSON
+    at index-Cm4um1I0.js:61:137541
+(anonymous) @ injected.js:27
+(anonymous) @ index-Cm4um1I0.js:61
+await in (anonymous)
+(anonymous) @ index-Cm4um1I0.js:62
+Li @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+ba @ index-Cm4um1I0.js:48
+Qh @ index-Cm4um1I0.js:48
+om @ index-Cm4um1I0.js:48
+fs @ index-Cm4um1I0.js:48
+pm @ index-Cm4um1I0.js:48
+Gi @ index-Cm4um1I0.js:48
+sm @ index-Cm4um1I0.js:48
+lm @ index-Cm4um1I0.js:48
+$h @ index-Cm4um1I0.js:48
+Jh @ index-Cm4um1I0.js:48
+mm @ index-Cm4um1I0.js:48
+Ue @ index-Cm4um1I0.js:25Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ❌ WebSocket disconnected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+injected.js:27 ✅ WebSocket connected
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
+value @ 949b7fd6ce954b3c.js:2
+ez @ 949b7fd6ce954b3c.js:2
+value @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+(anonymous) @ 949b7fd6ce954b3c.js:2
+apply @ 949b7fd6ce954b3c.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+e @ 33ddb2aa5c45a58a.js:2
+s @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+(anonymous) @ 33ddb2aa5c45a58a.js:2
+wait @ ccbbbec8c653c48d.js:2
+u @ 6dc7a950438d7a9e.js:2
+(anonymous) @ 6dc7a950438d7a9e.js:2
+o @ 7945184460b610be.js:2
+setTimeout
+(anonymous) @ 7945184460b610be.js:2
+Object.assign.isScheduled @ 6dc7a950438d7a9e.js:2
+(anonymous) @ ccbbbec8c653c48d.js:2
+r @ ccbbbec8c653c48d.js:2
+o @ 7945184460b610be.js:2Understand this error
+949b7fd6ce954b3c.js:2 WebSocket is already in CLOSING or CLOSED state.
