@@ -9,7 +9,7 @@ export const useAuthStore = create((set) => ({
   
   logout: async () => {
     try {
-      await fetch('/api/auth/logout', { method: 'POST', credentials: 'include' });
+      await fetch('/api/customer/logout', { method: 'POST', credentials: 'include' });
       localStorage.removeItem('sessionId');
       set({ user: null, isAuthenticated: false });
       window.location.href = '/login';
@@ -20,7 +20,7 @@ export const useAuthStore = create((set) => ({
 
   checkAuth: async () => {
     try {
-      const response = await fetch('/api/auth/session', { credentials: 'include' });
+      const response = await fetch('/api/customer/status', { credentials: 'include' });
       const data = await response.json();
       
       if (data.authenticated && data.user) {

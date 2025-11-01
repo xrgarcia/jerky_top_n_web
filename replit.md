@@ -21,21 +21,65 @@ A web application for ranking jerky products, providing a comprehensive and enga
 ## System Architecture
 The application employs a modern web architecture for responsiveness, scalability, and real-time interaction.
 
+### Frontend Architecture (React Migration - November 2025)
+The application was migrated from vanilla JavaScript to React + React Router for improved maintainability and developer experience.
+
+**Technology Stack:**
+- **React 19** - Modern UI library with component-based architecture
+- **React Router v7** - Client-side routing with protected routes
+- **TanStack Query (React Query)** - Server state management with automatic caching, background refetching, and query invalidation
+- **Zustand** - Lightweight global state management for auth and UI state
+- **Vite** - Fast build tool and dev server
+- **Socket.IO Client** - Real-time WebSocket integration with automatic query invalidation
+
+**Project Structure:**
+```
+src/
+├── main.jsx                 # App entry point with providers
+├── App.jsx                  # Root component with routing
+├── components/
+│   ├── layout/             # AppLayout, Header, Nav, Footer
+│   └── auth/               # ProtectedRoute wrapper
+├── pages/                  # Page components (Home, Products, CoinBook, etc.)
+├── hooks/                  # React Query hooks and custom hooks
+│   ├── useProducts.js
+│   ├── useGamification.js
+│   ├── useCommunity.js
+│   ├── useRankings.js
+│   └── useSocket.js
+├── store/                  # Zustand stores
+│   └── authStore.js
+├── utils/                  # Utilities
+│   └── api.js             # API client with error handling
+└── styles/                 # Global and component-scoped CSS
+```
+
+**Data Layer:**
+- **API Client**: Centralized fetch wrapper with automatic credential inclusion and error handling
+- **React Query Hooks**: All server data fetched via hooks with proper cache keys and stale times
+- **Query Invalidation**: Mutations automatically invalidate related queries for real-time UI updates
+- **WebSocket Integration**: Socket events trigger query invalidations for live data synchronization
+
+**Pages Migrated:**
+- Home - Live stats dashboard with real-time updates
+- Products - Search, filter, sort functionality
+- Leaderboard - Top 50 rankers with badges
+- Coin Book - Achievement grid with earned/locked states
+- Community - User search and profiles
+- Profile - Personal stats and rankings
+- Rank - Product ranking with proper error handling
+- Login - Magic link authentication
+
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
 - **Responsiveness**: Optimized for desktop, tablet, and mobile.
-- **Layout Width**: Expanded from 1200px to 1600px for better screen utilization on large displays.
-- **Hero Gamification Dashboard**: Homepage hero section features a live engagement dashboard with stats, social proof, user progress, and real-time updates via WebSockets.
-- **Minimal Page Headers**: Content pages utilize compact headers with breadcrumbs, title, subtitle, and action buttons. Achievement detail pages use an ultra-minimal header (breadcrumbs + action button only) to let the dynamic hero section be the primary visual focus.
+- **Navigation**: Single Page Application (SPA) with React Router, smooth transitions without page flashing
 - **Unified Product Cards**: Consistent card styling across all product displays.
-- **Home Page Dashboard**: Dynamic Bento Box layout with interactive widgets.
-- **Interactive Ranking**: Supports drag-and-drop for desktop and dropdown selection for mobile with visual cues and badges.
-- **Achievement Detail Pages**: Enhanced gamification with animated progress rings, "Next Up" spotlight, motivational callouts, quick-rank buttons, and locked item effects. Static collections feature a unified adaptive hero section that consolidates progress visualization, stats, and smart commentary into a single component (replaces separate stats cards, header, and callout) with three states: discovery (blue gradient with shop CTA), progress (orange gradient with stats row and ring), and success (green gradient with celebration).
-- **Terminology Glossary Alignment**: Commentary system follows official glossary where "Explore" = breadth (trying new things) and "Discover" = depth (refining preferences). Discovery state (0% completion) uses "Explore" language to encourage trying new products.
-- **Navigation**: Single Page Application (SPA) with hash routing, preserving state and supporting deep-linking, with automatic data refresh on navigation.
+- **Loading States**: Skeleton screens and loading indicators for all async operations
+- **Error Handling**: User-friendly error messages with actionable feedback
 
 ### Technical Implementations
-- **Frontend**: Vanilla JavaScript with an event-driven `EventBus` and `ServiceRegistry` for dependency injection.
+- **Frontend**: React with component-based architecture, TanStack Query for server state, Zustand for client state.
 - **Backend**: Node.js and Express.js, using a repository pattern.
 - **User Privacy**: `CommunityService` centralizes user data handling, truncating last names.
 - **User Activation System**: Users default to `active=false` (hidden from community) until their first login, after which `active=true`.
