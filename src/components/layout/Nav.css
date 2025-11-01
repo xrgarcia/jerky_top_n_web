@@ -73,9 +73,9 @@
   align-items: center;
 }
 
-.user-avatar {
-  width: 28px;
-  height: 28px;
+.main-nav .user-avatar {
+  width: 24px !important;
+  height: 24px !important;
   border-radius: 50%;
   background: #7b8b52;
   display: flex;
@@ -83,14 +83,14 @@
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 11px !important;
   cursor: pointer;
   transition: transform 0.2s ease;
   text-decoration: none;
   flex-shrink: 0;
 }
 
-.user-avatar:hover {
+.main-nav .user-avatar:hover {
   transform: scale(1.1);
 }
 
