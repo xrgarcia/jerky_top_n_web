@@ -1,7 +1,19 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getPersistentQueue } from '../utils/PersistentQueue';
 import { apiClient } from '../utils/api';
+
+export function useMyRankings() {
+  return useQuery({
+    queryKey: ['myRankings'],
+    queryFn: async () => {
+      const response = await apiClient('/user/rankings');
+      const data = await response.json();
+      return data;
+    },
+    staleTime: 5 * 60 * 1000
+  });
+}
 
 export function useRankings() {
   const [rankings, setRankings] = useState([]);

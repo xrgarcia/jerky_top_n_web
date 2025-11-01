@@ -42,6 +42,18 @@ async function fetchApi(endpoint, options = {}) {
   }
 }
 
+export async function apiClient(endpoint, options = {}) {
+  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
+  return fetch(url, {
+    credentials: 'include',
+    headers: {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    },
+    ...options
+  });
+}
+
 export const api = {
   get: (endpoint, options) => fetchApi(endpoint, { ...options, method: 'GET' }),
   post: (endpoint, data, options) => fetchApi(endpoint, { ...options, method: 'POST', body: JSON.stringify(data) }),
