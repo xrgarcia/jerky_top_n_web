@@ -67,6 +67,7 @@ export function useRanking(options = {}) {
   
   /**
    * Recover pending operations from IndexedDB (after page refresh)
+   * Optimized: Sends only the LATEST state instead of replaying all operations
    */
   const recoverPendingOperations = async () => {
     if (!persistentQueue.current) return;
@@ -75,20 +76,37 @@ export function useRanking(options = {}) {
       const pending = await persistentQueue.current.getPending();
       
       if (pending.length > 0) {
-        console.log(`🔄 Found ${pending.length} pending operation(s), attempting recovery...`);
+        console.log(`🔄 Found ${pending.length} pending operation(s), recovering latest state...`);
         
         // Set recovery mode to skip individual callbacks
         isRecovering.current = true;
         
-        for (const operation of pending) {
-          try {
-            await saveToBackend(operation.rankings, operation.operationId);
-          } catch (error) {
-            console.error('Failed to recover operation:', operation.operationId, error);
+        // Sort by timestamp to get the most recent operation (latest state)
+        // Copy array to avoid mutating original
+        const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
+        const latestOperation = sorted[0];
+        
+        console.log(`📤 Sending latest state (${latestOperation.rankings.length} rankings) instead of replaying ${pending.length} operations`);
+        
+        try {
+          // Send only the latest state (throwOnError=true ensures we know if it fails)
+          await saveToBackend(latestOperation.rankings, null, null, true);
+          
+          // Only clear ALL operations after CONFIRMED successful save
+          // This prevents double-clearing and ensures atomic cleanup
+          for (const operation of pending) {
+            await persistentQueue.current.complete(operation.operationId);
           }
+          
+          console.log(`✅ Cleared ${pending.length} operations from queue`);
+        } catch (error) {
+          console.error('Failed to recover latest state, queue preserved for retry:', error);
+          // Leave queue intact on error so retry can happen next load
+          isRecovering.current = false;
+          throw error; // Re-throw to prevent callback
         }
         
-        // Recovery complete - trigger single callback for all operations
+        // Recovery complete - trigger single callback
         isRecovering.current = false;
         if (onSaveComplete) {
           console.log('✅ Recovery complete - triggering single refresh');
@@ -230,8 +248,9 @@ export function useRanking(options = {}) {
   
   /**
    * Save rankings to backend with retry
+   * @param {boolean} throwOnError - If true, throws errors instead of scheduling retries (used during recovery)
    */
-  const saveToBackend = async (rankings, operationId = null, position = null) => {
+  const saveToBackend = async (rankings, operationId = null, position = null, throwOnError = false) => {
     setSaveStatus({ state: 'saving', message: 'Saving...', position });
     
     const idToComplete = operationId || currentOperationId.current;
@@ -288,11 +307,17 @@ export function useRanking(options = {}) {
         message: error.message || 'Save failed. Will retry...' 
       });
       
-      // Keep trying in background
-      setTimeout(() => {
-        console.log('🔄 Retrying save in background...');
-        saveToBackend(rankings, idToComplete);
-      }, 5000);
+      // During recovery, throw errors so caller knows save failed
+      // During normal operation, schedule background retry
+      if (throwOnError) {
+        throw error;
+      } else {
+        // Keep trying in background
+        setTimeout(() => {
+          console.log('🔄 Retrying save in background...');
+          saveToBackend(rankings, idToComplete);
+        }, 5000);
+      }
     }
   };
   
