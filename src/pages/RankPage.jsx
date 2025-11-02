@@ -36,7 +36,33 @@ export default function RankPage() {
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
-    if (state === 'saving' && position) {
+    // Removal messages (position is negative)
+    if (position && position < 0) {
+      const absPosition = Math.abs(position);
+      
+      if (state === 'saving') {
+        const removalMessages = [
+          `Need to rethink that #${absPosition}?`,
+          `#${absPosition} back to the list!`,
+          `Second thoughts on #${absPosition}?`,
+          `Removing #${absPosition}...`
+        ];
+        return removalMessages[absPosition % removalMessages.length];
+      }
+      
+      if (state === 'saved') {
+        const removedMessages = [
+          `✓ #${absPosition} removed!`,
+          `✓ Back to the drawing board!`,
+          `✓ Unranked!`,
+          `✓ Removed from list!`
+        ];
+        return removedMessages[absPosition % removedMessages.length];
+      }
+    }
+    
+    // Addition messages (position is positive)
+    if (state === 'saving' && position && position > 0) {
       const messages = {
         1: ['🏆 Ranking your #1 favorite...', '👑 Crowning your champion...', '⭐ Marking your top pick...'],
         2: ['🥈 Ranking your runner-up...', '⭐ Placing your #2...', '✨ Second best ranked...'],
@@ -53,7 +79,7 @@ export default function RankPage() {
       return options[(position - 1) % options.length];
     }
     
-    if (state === 'saved' && position) {
+    if (state === 'saved' && position && position > 0) {
       const messages = {
         1: ['✓ Champion ranked!', '✓ #1 saved!', '✓ Your favorite crowned!'],
         2: ['✓ Runner-up ranked!', '✓ #2 saved!', '✓ Silver medal locked!'],

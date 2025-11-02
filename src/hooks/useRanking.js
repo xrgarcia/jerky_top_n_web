@@ -130,6 +130,10 @@ export function useRanking(options = {}) {
    */
   const removeRanking = useCallback((productId) => {
     setRankedProducts(prev => {
+      // Find the position before removing
+      const removedItem = prev.find(r => r.productData.id === productId);
+      const removedPosition = removedItem ? removedItem.ranking : null;
+      
       const filtered = prev.filter(r => r.productData.id !== productId);
       
       // Renumber remaining rankings
@@ -138,10 +142,10 @@ export function useRanking(options = {}) {
         ranking: index + 1
       }));
       
-      console.log(`🗑️ Removed product ${productId}`);
+      console.log(`🗑️ Removed product ${productId} from position ${removedPosition}`);
       
-      // Trigger auto-save
-      scheduleAutoSave(renumbered);
+      // Trigger auto-save with removed position (negative to indicate removal)
+      scheduleAutoSave(renumbered, removedPosition ? -removedPosition : null);
       
       return renumbered;
     });
