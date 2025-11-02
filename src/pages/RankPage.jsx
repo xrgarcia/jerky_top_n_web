@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { DndContext, DragOverlay, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, DragOverlay, closestCorners, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
 import { api } from '../utils/api';
@@ -166,7 +166,7 @@ export default function RankPage() {
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      collisionDetection={closestCorners}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
@@ -271,9 +271,9 @@ export default function RankPage() {
       </div>
     </div>
       
-    <DragOverlay>
+    <DragOverlay dropAnimation={null}>
         {activeItem && (
-          <div className="product-card dragging">
+          <div className="product-card-overlay">
             <div className="product-image">
               {activeItem.image ? (
                 <img src={activeItem.image} alt={activeItem.title} />
