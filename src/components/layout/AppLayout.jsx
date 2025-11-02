@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import { useSocket } from '../../hooks/useSocket';
 import Header from './Header';
 import Nav from './Nav';
 import Footer from './Footer';
 import ProtectedRoute from '../auth/ProtectedRoute';
+import EmployeeRoute from '../auth/EmployeeRoute';
 
 import HomePage from '../../pages/HomePage';
 import ProductsPage from '../../pages/ProductsPage';
@@ -15,10 +16,12 @@ import LeaderboardPage from '../../pages/LeaderboardPage';
 import ProfilePage from '../../pages/ProfilePage';
 import RankPage from '../../pages/RankPage';
 import LoginPage from '../../pages/LoginPage';
+import ToolsPage from '../../pages/ToolsPage';
 
 import './AppLayout.css';
 
 function AppLayout() {
+  const location = useLocation();
   const { checkAuth, setUser } = useAuthStore();
   
   // Initialize WebSocket connection for real-time updates
@@ -43,6 +46,11 @@ function AppLayout() {
       checkAuth();
     }
   }, [checkAuth, setUser]);
+
+  // Check auth on every route change
+  useEffect(() => {
+    checkAuth();
+  }, [location.pathname, checkAuth]);
 
   return (
     <div className="app-layout">
@@ -74,6 +82,11 @@ function AppLayout() {
             <ProtectedRoute>
               <ProfilePage />
             </ProtectedRoute>
+          } />
+          <Route path="/tools" element={
+            <EmployeeRoute>
+              <ToolsPage />
+            </EmployeeRoute>
           } />
         </Routes>
       </main>

@@ -6,7 +6,7 @@ import './Nav.css';
 function Nav() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user, isAuthenticated, logout } = useAuthStore();
+  const { user, isAuthenticated, isEmployee, logout } = useAuthStore();
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({ products: [], users: [] });
   const [showDropdown, setShowDropdown] = useState(false);
@@ -88,7 +88,7 @@ function Nav() {
               Rank
             </Link>
           )}
-          <Link to="/coin-book" className={`nav-link ${isActive('/coin-book')}`}>
+          <Link to="/coinbook" className={`nav-link ${isActive('/coinbook')}`}>
             Coin Book
           </Link>
           {isAuthenticated && (
@@ -100,6 +100,11 @@ function Nav() {
                 Leaderboard
               </Link>
             </>
+          )}
+          {isEmployee && (
+            <Link to="/tools" className={`nav-link ${isActive('/tools')}`}>
+              Tools
+            </Link>
           )}
         </div>
 
