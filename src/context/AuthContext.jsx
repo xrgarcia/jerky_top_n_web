@@ -63,7 +63,12 @@ export function AuthProvider({ children }) {
         console.log('📨 BroadcastChannel received:', event.data);
         
         if (event.data === 'auth-changed') {
-          console.log('🔄 Auth changed - invalidating query...');
+          console.log('🔄 Auth changed - clearing state and invalidating queries...');
+          // Clear auth store immediately to prevent privilege leakage during refetch
+          clearAuth();
+          // Remove cached super admin access to prevent reuse
+          queryClient.removeQueries({ queryKey: ['superAdminAccess'] });
+          // Invalidate auth to refetch current status
           queryClient.invalidateQueries({ queryKey: ['auth-status'] });
         }
       };
@@ -73,6 +78,11 @@ export function AuthProvider({ children }) {
       const handleStorageChange = (e) => {
         if (e.key === 'jerky-auth-event' && e.newValue) {
           console.log('📨 localStorage auth event received:', e.newValue);
+          // Clear auth store immediately to prevent privilege leakage during refetch
+          clearAuth();
+          // Remove cached super admin access to prevent reuse
+          queryClient.removeQueries({ queryKey: ['superAdminAccess'] });
+          // Invalidate auth to refetch current status
           queryClient.invalidateQueries({ queryKey: ['auth-status'] });
           localStorage.removeItem('jerky-auth-event');
         }
@@ -87,7 +97,7 @@ export function AuthProvider({ children }) {
         channel.close();
       }
     };
-  }, [queryClient]);
+  }, [queryClient, clearAuth]);
 
   const value = {
     authQuery,

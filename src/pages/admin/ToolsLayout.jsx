@@ -1,0 +1,78 @@
+import React from 'react';
+import { NavLink, Outlet, useLocation } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
+import { useSuperAdminAccess } from '../../hooks/useAdminAccess';
+import './ToolsLayout.css';
+
+function ToolsLayout() {
+  const { user } = useAuthStore();
+  const location = useLocation();
+  const { data: isSuperAdmin = false, isError } = useSuperAdminAccess();
+  
+  // Show error banner if super admin check failed (for debugging)
+  if (isError) {
+    console.error('Failed to check super admin access - defaulting to no access');
+  }
+  
+  const tabs = [
+    { path: '/tools/coins', label: 'Manage Coins', icon: '🏆' },
+    { path: '/tools/live-users', label: 'Live Users', icon: '👥' },
+    { path: '/tools/products', label: 'Manage Products', icon: '🥩' },
+    { path: '/tools/orders', label: 'Order Items', icon: '🛒' },
+    { path: '/tools/sentry', label: 'Sentry Issues', icon: '🔍' },
+  ];
+  
+  if (isSuperAdmin) {
+    tabs.push({ path: '/tools/data', label: 'Manage Data', icon: '🔐' });
+  }
+
+  return (
+    <div className="tools-page">
+      <div className="tools-header">
+        <div className="tools-header-content">
+          <div className="tools-header-text">
+            <div className="tools-breadcrumbs">
+              <NavLink to="/">Home</NavLink>
+              <span>›</span>
+              <span>Admin Tools</span>
+            </div>
+            <h1 className="tools-title">
+              <span className="tools-icon">🛠️</span>
+              <span>Admin Tools</span>
+            </h1>
+            <p className="tools-subtitle">Management tools for jerky.com employees</p>
+          </div>
+          <div className="tools-header-action">
+            <button className="refresh-btn" onClick={() => window.location.reload()}>
+              <span className="icon">🔄</span>
+              <span>Refresh Data</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className="tools-container">
+        <nav className="tools-nav">
+          {tabs.map((tab) => (
+            <NavLink
+              key={tab.path}
+              to={tab.path}
+              className={({ isActive }) => 
+                `tools-nav-btn ${isActive ? 'active' : ''}`
+              }
+            >
+              <span className="tab-icon">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </NavLink>
+          ))}
+        </nav>
+
+        <div className="tools-content">
+          <Outlet />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default ToolsLayout;

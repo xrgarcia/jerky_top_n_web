@@ -18,7 +18,7 @@ export const useAuthStore = create((set) => ({
   clearAuth: () => set({ 
     user: null, 
     isAuthenticated: false, 
-    isEmployee: false, 
+    isEmployee: false,
     userRole: 'user', 
     isLoading: false 
   }),

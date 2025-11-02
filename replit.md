@@ -82,6 +82,7 @@ src/
 - Profile - Personal stats and rankings
 - Rank - Product ranking with proper error handling
 - Login - Magic link authentication
+- Admin Tools - Employee dashboard with 6 tabbed sections (November 2025 React migration)
 
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
@@ -125,7 +126,19 @@ src/
 - **Gamification**: Tracks engagement, static collections, dynamic collections, and flavor coin achievements with progress tracking, streaks, leaderboards, and notifications.
 - **Ranking Commentary System**: Dynamic, contextual encouragement messages on the Rank page that adapt to user progress (0, 1-5, 6-15, 16-30, 31-50, 51-75, 76-88, 89 complete tiers), incorporating streak information and displaying next closest achievement milestones with progress indicators.
 - **Collection Progress Bar**: User-specific progress tracking on the Rank page that displays progress based on products the user can actually rank (purchased products for regular users, entire catalog for @jerky.com employees). Features tier-based colors (blue→green→orange→purple→gold→rainbow), animated gradient shimmer effects, percentage display, and contextual encouragement messages powered by CommentaryService.
-- **Admin Tools**: Role-based access for managing achievements, monitoring live users, custom icon uploads, and a Customer Order Items dashboard with fulfillment status tracking, real-time updates via WebSockets, and filterable, sortable, paginated Shopify order line item data.
+- **Admin Tools**: React-based employee admin dashboard with horizontal tab navigation and earth-tone styling inspired by jerky.com. Features:
+  - **Authentication**: Protected by EmployeeRoute requiring `employee_admin` role
+  - **Nested Routing**: `/admin/tools/*` routes with clean URL structure
+  - **Super Admin Access**: Dynamic backend-driven access control using React Query with user-scoped cache keys (`['superAdminAccess', userId]`) and immediate cache invalidation on auth changes to prevent privilege leakage
+  - **Security**: Auth store clears immediately on auth changes, super admin queries purged before refetch, comprehensive error handling for API failures
+  - **Six Sections**:
+    - Manage Coins - Achievement management interface (🏆)
+    - Live Users - Real-time user monitoring (👥)
+    - Manage Products - Product admin tools (📦)
+    - Customer Order Items - Shopify order tracking with fulfillment status (📋)
+    - Sentry Errors - Error monitoring dashboard (🐛)
+    - Manage Data - Super admin-only data operations (🔧)
+  - **Data Tab Security**: Dynamically fetches super admin status from `/api/admin/data/check-access` endpoint, surfaces API errors with clear messaging, redirects unauthorized employees
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
