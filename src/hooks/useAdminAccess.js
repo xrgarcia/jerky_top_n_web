@@ -12,7 +12,7 @@ export function useSuperAdminAccess() {
     queryFn: async () => {
       console.log('🚀 Executing super admin check API call...');
       try {
-        const response = await api.get('/api/admin/data/check-access');
+        const response = await api.get('/admin/data/check-access');
         console.log('✅ Super admin check response:', response);
         return response.hasSuperAdminAccess;
       } catch (error) {
