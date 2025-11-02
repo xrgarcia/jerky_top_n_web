@@ -723,6 +723,17 @@
   letter-spacing: 0.5px;
 }
 
+.orders-table th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.orders-table th.sortable:hover {
+  background: rgba(123, 139, 82, 0.1);
+  color: #7b8b52;
+}
+
 .orders-table tbody tr {
   border-bottom: 1px solid #f0f0f0;
   transition: background 0.2s;

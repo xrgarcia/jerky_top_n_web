@@ -136,11 +136,11 @@ src/
     - Manage Coins - Achievement management interface (🏆)
     - Live Users - Real-time user monitoring (👥)
     - Manage Products - Product admin tools (📦)
-    - Customer Order Items - Shopify order tracking with 7 filters (order number, email, product ID, SKU, fulfillment status, date range), pagination (25/50/100/200), default 24-hour date range, WebSocket live updates with toast notifications, fully linkable URL state for all filters and pagination (📋)
+    - Customer Order Items - Shopify order tracking with 7 filters (order number, email, product ID, SKU, fulfillment status, date range), sortable columns (click headers to sort by order number, customer, SKU, quantity, status, or date), pagination (25/50/100/200), default 24-hour date range, WebSocket live updates with toast notifications, fully linkable URL state for all filters, sorting, and pagination (📋)
     - Sentry Errors - Error monitoring dashboard (🐛)
     - Manage Data - Super admin-only data operations (🔧)
   - **Data Tab Security**: Dynamically fetches super admin status from `/api/admin/data/check-access` endpoint, surfaces API errors with clear messaging, redirects unauthorized employees
-  - **Order Items Technical Implementation**: `useCustomerOrders` hook for REST API, `useCustomerOrdersWebSocket` hook for real-time updates, memoized WebSocket callbacks with `useCallback` to prevent subscription churn, URL state initialization calculates offset from page parameter `(page - 1) * limit` for deep-linkable pagination
+  - **Order Items Technical Implementation**: `useCustomerOrders` hook for REST API with sorting support (`sortBy`, `sortOrder` params), `useCustomerOrdersWebSocket` hook for real-time updates, memoized WebSocket callbacks with `useCallback` to prevent subscription churn, URL state initialization calculates offset from page parameter `(page - 1) * limit` for deep-linkable pagination, clickable column headers with visual sort indicators (▲/▼/⇅)
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.

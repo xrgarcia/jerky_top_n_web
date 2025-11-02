@@ -36,6 +36,8 @@ function OrderItemsPage() {
     dateTo: searchParams.get('dateTo') || getDefaultDateTo(),
     limit: initialLimit,
     offset: initialOffset,
+    sortBy: searchParams.get('sortBy') || 'orderDate',
+    sortOrder: searchParams.get('sortOrder') || 'desc',
   });
 
   const [currentPage, setCurrentPage] = useState(initialPage);
@@ -113,8 +115,20 @@ function OrderItemsPage() {
       dateTo: getDefaultDateTo(),
       limit: 50,
       offset: 0,
+      sortBy: 'orderDate',
+      sortOrder: 'desc',
     };
     setFilters(defaults);
+    setCurrentPage(1);
+  };
+
+  const handleSort = (column) => {
+    setFilters(prev => ({
+      ...prev,
+      sortBy: column,
+      sortOrder: prev.sortBy === column && prev.sortOrder === 'asc' ? 'desc' : 'asc',
+      offset: 0
+    }));
     setCurrentPage(1);
   };
 
@@ -143,6 +157,11 @@ function OrderItemsPage() {
       case 'restocked': return 'status-badge restocked';
       default: return 'status-badge';
     }
+  };
+
+  const getSortIcon = (column) => {
+    if (filters.sortBy !== column) return ' ⇅';
+    return filters.sortOrder === 'asc' ? ' ▲' : ' ▼';
   };
 
   return (
@@ -267,12 +286,24 @@ function OrderItemsPage() {
             <table className="orders-table">
               <thead>
                 <tr>
-                  <th>Order Number</th>
-                  <th>Customer</th>
-                  <th>SKU</th>
-                  <th>Qty</th>
-                  <th>Status</th>
-                  <th>Order Date & Time ▼</th>
+                  <th onClick={() => handleSort('orderNumber')} className="sortable">
+                    Order Number{getSortIcon('orderNumber')}
+                  </th>
+                  <th onClick={() => handleSort('customerEmail')} className="sortable">
+                    Customer{getSortIcon('customerEmail')}
+                  </th>
+                  <th onClick={() => handleSort('sku')} className="sortable">
+                    SKU{getSortIcon('sku')}
+                  </th>
+                  <th onClick={() => handleSort('quantity')} className="sortable">
+                    Qty{getSortIcon('quantity')}
+                  </th>
+                  <th onClick={() => handleSort('fulfillmentStatus')} className="sortable">
+                    Status{getSortIcon('fulfillmentStatus')}
+                  </th>
+                  <th onClick={() => handleSort('orderDate')} className="sortable">
+                    Order Date & Time{getSortIcon('orderDate')}
+                  </th>
                   <th>Line Item Details</th>
                 </tr>
               </thead>
