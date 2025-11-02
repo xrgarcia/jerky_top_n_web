@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import '../styles/modal.css';
 
 function ConfirmationModal({ 
@@ -29,20 +29,20 @@ function ConfirmationModal({
 
   if (!isOpen) return null;
 
-  const handleConfirm = () => {
+  const handleConfirm = useCallback(() => {
     if (isValid) {
       onConfirm();
       onClose();
     }
-  };
+  }, [isValid, onConfirm, onClose]);
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = useCallback((e) => {
     if (e.key === 'Enter' && isValid) {
       handleConfirm();
     } else if (e.key === 'Escape') {
       onClose();
     }
-  };
+  }, [isValid, handleConfirm, onClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -51,7 +51,7 @@ function ConfirmationModal({
         document.removeEventListener('keydown', handleKeyDown);
       };
     }
-  }, [isOpen, isValid]);
+  }, [isOpen, handleKeyDown]);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
