@@ -66,7 +66,8 @@ class CommentaryService {
           current: closestAchievement.current,
           target: closestAchievement.target,
           remaining: closestAchievement.remaining,
-          progress: closestAchievement.progress
+          progress: closestAchievement.progress,
+          metricLabel: this._getMetricLabel(closestAchievement.type, closestAchievement.target)
         } : null
       };
     } catch (error) {
@@ -79,6 +80,23 @@ class CommentaryService {
         nextMilestone: null
       };
     }
+  }
+
+  /**
+   * Map achievement requirement types to user-friendly metric labels
+   * @private
+   */
+  _getMetricLabel(requirementType, count = 1) {
+    const labels = {
+      'streak_days': count === 1 ? 'day' : 'days',
+      'total_rankings': count === 1 ? 'product' : 'products',
+      'unique_products': count === 1 ? 'product' : 'products',
+      'flavor_collection': count === 1 ? 'flavor' : 'flavors',
+      'leaderboard_position': 'rank',
+      'total_points': count === 1 ? 'point' : 'points',
+    };
+    // Fallback for unknown types to avoid blank messaging
+    return labels[requirementType] || (count === 1 ? 'item' : 'items');
   }
 
   /**
@@ -99,8 +117,9 @@ class CommentaryService {
     // STATE: Early (1-5 ranked)
     if (rankedCount <= 5) {
       if (milestone) {
+        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
         return {
-          text: `Great start! ${milestone.remaining} more to unlock "${milestone.achievementName}" 🎯`,
+          text: `Great start! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🎯`,
           icon: '✨'
         };
       }
@@ -113,8 +132,9 @@ class CommentaryService {
     // STATE: Building momentum (6-15 ranked)
     if (rankedCount <= 15) {
       if (milestone && milestone.remaining <= 5) {
+        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
         return {
-          text: `${milestone.remaining} away from "${milestone.achievementName}"! 🎯`,
+          text: `${milestone.remaining} ${metricLabel} away from "${milestone.achievementName}"! 🎯`,
           icon: '🔥'
         };
       }
@@ -133,8 +153,9 @@ class CommentaryService {
     // STATE: Establishing habits (16-30 ranked)
     if (rankedCount <= 30) {
       if (milestone && milestone.remaining <= 3) {
+        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
         return {
-          text: `So close! ${milestone.remaining} more for "${milestone.achievementName}" ⭐`,
+          text: `So close! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" ⭐`,
           icon: '🎯'
         };
       }
@@ -161,8 +182,9 @@ class CommentaryService {
     // STATE: Advanced collector (51-75 ranked)
     if (percentage < 85) {
       if (milestone && milestone.remaining <= 5) {
+        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
         return {
-          text: `Almost there! ${milestone.remaining} more for "${milestone.achievementName}" 🏆`,
+          text: `Almost there! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🏆`,
           icon: '🔥'
         };
       }

@@ -267,6 +267,7 @@ export default function RankPage() {
                   {commentary.nextMilestone && (
                     <div className="milestone-hint">
                       {commentary.nextMilestone.icon} {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
+                      {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
                     </div>
                   )}
                 </div>
