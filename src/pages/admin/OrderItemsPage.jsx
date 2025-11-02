@@ -41,6 +41,25 @@ function OrderItemsPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(initialPage);
+  const [filterOptions, setFilterOptions] = useState({ fulfillmentStatuses: [] });
+
+  // Fetch filter options from backend
+  useEffect(() => {
+    const fetchFilterOptions = async () => {
+      try {
+        const response = await fetch('/api/admin/customer-orders/filters', {
+          credentials: 'include'
+        });
+        const result = await response.json();
+        if (result.success) {
+          setFilterOptions(result.filters);
+        }
+      } catch (err) {
+        console.error('Failed to fetch filter options:', err);
+      }
+    };
+    fetchFilterOptions();
+  }, []);
 
   // Fetch orders with current filters
   const { data, isLoading, isError, error, refetch } = useCustomerOrders(filters);
@@ -228,10 +247,11 @@ function OrderItemsPage() {
               className="filter-select"
             >
               <option value="">All Statuses</option>
-              <option value="fulfilled">Fulfilled</option>
-              <option value="unfulfilled">Unfulfilled</option>
-              <option value="partial">Partial</option>
-              <option value="restocked">Restocked</option>
+              {filterOptions.fulfillmentStatuses?.map(status => (
+                <option key={status} value={status}>
+                  {status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending'}
+                </option>
+              ))}
             </select>
           </div>
 

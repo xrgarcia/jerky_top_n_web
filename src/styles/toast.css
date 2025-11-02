@@ -57,22 +57,22 @@
 
 .toast-success {
   border-left-color: #27ae60;
-  background: linear-gradient(135deg, rgba(39, 174, 96, 0.05), rgba(46, 204, 113, 0.05));
+  background: #ffffff;
 }
 
 .toast-error {
   border-left-color: #e74c3c;
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.05), rgba(192, 57, 43, 0.05));
+  background: #ffffff;
 }
 
 .toast-warning {
   border-left-color: #f39c12;
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.05), rgba(230, 126, 34, 0.05));
+  background: #ffffff;
 }
 
 .toast-info {
   border-left-color: #3498db;
-  background: linear-gradient(135deg, rgba(52, 152, 219, 0.05), rgba(41, 128, 185, 0.05));
+  background: #ffffff;
 }
 
 .toast:hover {
