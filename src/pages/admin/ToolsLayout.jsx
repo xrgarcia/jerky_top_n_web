@@ -7,12 +7,7 @@ import './ToolsLayout.css';
 function ToolsLayout() {
   const { user } = useAuthStore();
   const location = useLocation();
-  const { data: isSuperAdmin = false, isError } = useSuperAdminAccess();
-  
-  // Show error banner if super admin check failed (for debugging)
-  if (isError) {
-    console.error('Failed to check super admin access - defaulting to no access');
-  }
+  const { data: isSuperAdmin = false } = useSuperAdminAccess();
   
   const tabs = [
     { path: '/tools/coins', label: 'Manage Coins', icon: '🏆' },
