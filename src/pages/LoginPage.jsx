@@ -40,7 +40,17 @@ function LoginPage() {
 
   return (
     <div style={{ padding: '60px 20px', maxWidth: '500px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '30px', textAlign: 'center' }}>Login</h1>
+      <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Login</h1>
+      
+      <p style={{ 
+        textAlign: 'center', 
+        fontSize: '16px', 
+        color: '#555', 
+        marginBottom: '30px',
+        lineHeight: '1.6'
+      }}>
+        Welcome back, jerky lover! Enter your <strong>jerky.com</strong> account email below and we'll send you a magic link to get started.
+      </p>
       
       <form onSubmit={handleSubmit} style={{ background: 'white', padding: '40px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
         <div style={{ marginBottom: '20px' }}>
@@ -90,6 +100,40 @@ function LoginPage() {
           </p>
         )}
       </form>
+
+      <div style={{ 
+        marginTop: '30px', 
+        padding: '24px', 
+        background: '#f9f5f0', 
+        borderRadius: '8px',
+        border: '2px solid #e8d5b7'
+      }}>
+        <h3 style={{ marginTop: 0, marginBottom: '12px', color: '#6B8E23', fontSize: '18px' }}>
+          New to Jerky Rankings?
+        </h3>
+        <p style={{ margin: '0 0 16px 0', color: '#555', lineHeight: '1.6' }}>
+          You'll need a <strong>jerky.com</strong> account to rank your favorite meats and join our community of jerky enthusiasts.
+        </p>
+        <a 
+          href="https://www.jerky.com/account/register" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{ 
+            display: 'inline-block',
+            padding: '12px 24px', 
+            background: '#8B4513', 
+            color: 'white', 
+            textDecoration: 'none', 
+            borderRadius: '4px', 
+            fontWeight: '600',
+            transition: 'background 0.2s'
+          }}
+          onMouseOver={(e) => e.target.style.background = '#6d3410'}
+          onMouseOut={(e) => e.target.style.background = '#8B4513'}
+        >
+          Create Your Account →
+        </a>
+      </div>
     </div>
   );
 }
