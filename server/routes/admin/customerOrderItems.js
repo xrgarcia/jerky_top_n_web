@@ -25,6 +25,18 @@ module.exports = function createCustomerOrdersRoutes(db) {
         sortOrder = 'desc'
       } = req.query;
 
+      console.log('🔍 Customer orders API called:', {
+        orderNumber,
+        customerEmail,
+        productId,
+        sku,
+        fulfillmentStatus,
+        dateFrom,
+        dateTo,
+        sortBy,
+        sortOrder
+      });
+
       const filters = {
         orderNumber,
         customerEmail,

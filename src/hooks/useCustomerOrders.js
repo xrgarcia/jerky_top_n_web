@@ -14,6 +14,9 @@ export function useCustomerOrders(filters = {}) {
         }
       });
 
+      console.log('🔍 Fetching orders with filters:', filters);
+      console.log('📋 URL params:', params.toString());
+
       const data = await api.get(`/admin/customer-orders?${params.toString()}`);
       return data;
     },
