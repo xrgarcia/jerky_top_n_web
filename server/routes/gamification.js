@@ -17,7 +17,8 @@ function createGamificationRoutes(services) {
     productViewRepo,
     homeStatsService,
     communityService,
-    userStatsAggregator
+    userStatsAggregator,
+    commentaryService
   } = services;
 
   router.get('/achievements', async (req, res) => {
@@ -134,6 +135,33 @@ function createGamificationRoutes(services) {
     } catch (error) {
       console.error('Error fetching position:', error);
       res.status(500).json({ error: 'Failed to fetch position' });
+    }
+  });
+
+  router.get('/ranking-progress-commentary', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      
+      // Get total rankable products count
+      const totalRankableProducts = services.getRankableProductCount();
+
+      // Generate ranking progress commentary
+      const commentary = await commentaryService.generateRankingProgressMessage(userId, totalRankableProducts);
+
+      res.json(commentary);
+    } catch (error) {
+      console.error('Error generating ranking progress commentary:', error);
+      res.status(500).json({ error: 'Failed to generate commentary' });
     }
   });
 

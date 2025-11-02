@@ -60,6 +60,31 @@
   color: #2c3e50;
 }
 
+.ranking-commentary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.commentary-icon {
+  font-size: 1.1rem;
+}
+
+.commentary-message {
+  flex: 1;
+}
+
+.milestone-hint {
+  font-size: 0.85rem;
+  color: #c4a962;
+  padding: 0.25rem 0.5rem;
+  background: #fef9ec;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
 .placeholder-content {
   color: #95a5a6;
   font-size: 1.1rem;

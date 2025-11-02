@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { DndContext, DragOverlay, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
+import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
@@ -31,8 +32,13 @@ export default function RankPage() {
     onSaveComplete: (rankings, position) => {
       // Refetch available products after rankings change
       handleSearch();
+      // Refetch commentary to get updated progress
+      refetchCommentary();
     }
   });
+  
+  // Fetch ranking progress commentary from backend
+  const { data: commentary, refetch: refetchCommentary } = useRankingCommentary();
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
@@ -252,9 +258,21 @@ export default function RankPage() {
               )}
             </div>
             <div className="sub-header">
-              <div className="ranking-progress">
-                {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
-              </div>
+              {commentary ? (
+                <div className="ranking-commentary">
+                  <span className="commentary-icon">{commentary.icon}</span>
+                  <span className="commentary-message">{commentary.message}</span>
+                  {commentary.nextMilestone && (
+                    <div className="milestone-hint">
+                      {commentary.nextMilestone.icon} {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="ranking-progress">
+                  {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
+                </div>
+              )}
             </div>
             
             <div className="slots-container">
