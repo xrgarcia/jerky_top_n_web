@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useAdminProducts } from '../../hooks/useAdminTools';
+import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useRecalculateCoin, useAdminProducts } from '../../hooks/useAdminTools';
 import EditCoinModal from '../../components/admin/EditCoinModal';
 import './AdminPages.css';
 
@@ -11,6 +11,7 @@ function ManageCoinsPageAdmin() {
   const deleteCoinMutation = useDeleteCoin();
   const createCoinMutation = useCreateCoin();
   const updateCoinMutation = useUpdateCoin();
+  const recalculateCoinMutation = useRecalculateCoin();
 
   // Filter states
   const [coinTypeFilter, setCoinTypeFilter] = useState('all');
@@ -70,9 +71,45 @@ function ManageCoinsPageAdmin() {
     }
   };
 
-  const handleRefreshCoin = (coin) => {
-    // Placeholder for recalculation - to be implemented
-    toast('Recalculation feature coming soon', { icon: '🔄' });
+  const handleRefreshCoin = async (coin) => {
+    if (!confirm(
+      `Recalculate "${coin.name}"?\n\n` +
+      `This will award the achievement to all users who meet the requirements.\n\n` +
+      `Processing time depends on the number of users in the system.`
+    )) {
+      return;
+    }
+
+    const loadingToast = toast.loading(`Recalculating "${coin.name}" for all users...`, {
+      duration: 0
+    });
+
+    try {
+      const result = await recalculateCoinMutation.mutateAsync(coin.id);
+      
+      // Hide loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show success with stats
+      const stats = result.stats || {};
+      toast.success(
+        `${coin.name} recalculated!\n` +
+        `Processed: ${stats.processed || 0} users\n` +
+        `New awards: ${stats.newAwards || 0}\n` +
+        `Tier upgrades: ${stats.tierUpgrades || 0}` +
+        (stats.errors ? `\nErrors: ${stats.errors}` : ''),
+        { duration: 7000 }
+      );
+    } catch (error) {
+      // Hide loading toast
+      toast.dismiss(loadingToast);
+      
+      // Show error
+      toast.error(
+        `Failed to recalculate ${coin.name}\n${error.message || 'Unknown error'}`,
+        { duration: 7000 }
+      );
+    }
   };
 
   const handleEditCoin = (coin) => {

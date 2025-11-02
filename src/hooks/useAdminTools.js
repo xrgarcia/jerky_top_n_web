@@ -321,6 +321,21 @@ export function useCreateCoin() {
   });
 }
 
+export function useRecalculateCoin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (coinId) => {
+      const data = await api.post(`/admin/achievements/${coinId}/recalculate`);
+      return data;
+    },
+    onSuccess: () => {
+      // Invalidate all relevant caches after recalculation
+      queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+  });
+}
+
 export function useUpdateCoin() {
   const queryClient = useQueryClient();
 
