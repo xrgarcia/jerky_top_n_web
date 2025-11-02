@@ -321,7 +321,7 @@ function OrderItemsPage() {
                     <td className="qty">{order.quantity}</td>
                     <td>
                       <span className={getStatusBadgeClass(order.fulfillmentStatus)}>
-                        {order.fulfillmentStatus || 'Unknown'}
+                        {order.fulfillmentStatus || 'Pending'}
                       </span>
                     </td>
                     <td className="order-date">
