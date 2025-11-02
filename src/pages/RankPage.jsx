@@ -17,7 +17,7 @@ export default function RankPage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [activeId, setActiveId] = useState(null);
   
-  // Ranking state management
+  // Ranking state management with callback to refetch products after save
   const {
     rankedProducts,
     slotCount,
@@ -27,7 +27,12 @@ export default function RankPage() {
     removeRanking,
     reorderRankings,
     getRankedProductIds
-  } = useRanking();
+  } = useRanking({
+    onSaveComplete: () => {
+      // Refetch available products after rankings change
+      handleSearch();
+    }
+  });
   
   // Drag sensors
   const sensors = useSensors(

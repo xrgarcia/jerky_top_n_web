@@ -4,7 +4,8 @@ import { generateUUID } from '../utils/uuid';
 import { retryWithBackoff } from '../utils/retryWithBackoff';
 import { api } from '../utils/api';
 
-export function useRanking() {
+export function useRanking(options = {}) {
+  const { onSaveComplete } = options;
   const [rankedProducts, setRankedProducts] = useState([]);
   const [slotCount, setSlotCount] = useState(10);
   const [saveStatus, setSaveStatus] = useState({ state: 'idle', message: '' }); // idle, saving, saved, error
@@ -253,6 +254,11 @@ export function useRanking() {
         : `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`;
       
       setSaveStatus({ state: 'saved', message });
+      
+      // Notify parent component to refetch products
+      if (onSaveComplete) {
+        onSaveComplete(rankings);
+      }
       
       // Reset to idle after 2 seconds
       setTimeout(() => {
