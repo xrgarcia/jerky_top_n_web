@@ -76,7 +76,7 @@ export default function RankPage() {
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               onKeyPress={handleKeyPress}
-              className="search-input"
+              className="rank-search-input"
             />
             <button 
               onClick={handleSearch}

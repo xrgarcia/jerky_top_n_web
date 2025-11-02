@@ -49,16 +49,18 @@
   margin-bottom: 1.5rem;
 }
 
-.search-input {
+.rank-search-input {
   flex: 1;
   padding: 0.75rem 1rem;
   border: 2px solid #e0e0e0;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
+  background: white;
+  color: #2c3e50;
 }
 
-.search-input:focus {
+.rank-search-input:focus {
   outline: none;
   border-color: #8B4513;
 }
