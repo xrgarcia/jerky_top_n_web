@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, DragOverlay, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
@@ -294,21 +294,6 @@ export default function RankPage() {
   const handleDragCancel = () => {
     setActiveId(null);
   };
-  
-  // Find active item for drag overlay
-  const activeItem = useMemo(() => {
-    if (!activeId) return null;
-    
-    if (activeId.startsWith('product-')) {
-      const productId = activeId.replace('product-', '');
-      return Array.isArray(products) ? products.find(p => p && p.id === productId) : null;
-    } else if (activeId.startsWith('slot-')) {
-      const position = parseInt(activeId.replace('slot-', ''));
-      return Array.isArray(slots) ? slots.find(s => s && s.position === position)?.product : null;
-    }
-    
-    return null;
-  }, [activeId, products, slots]);
 
   return (
     <DndContext
@@ -450,29 +435,6 @@ export default function RankPage() {
         </div>
       </div>
     </div>
-      
-    <DragOverlay dropAnimation={null}>
-        {activeItem && (
-          <div className="product-card-overlay">
-            <div className="product-image">
-              {activeItem.image ? (
-                <img src={activeItem.image} alt={activeItem.title} />
-              ) : (
-                <div className="no-image">No Image</div>
-              )}
-            </div>
-            <div className="product-info">
-              <h3 className="product-name">{activeItem.title}</h3>
-              {activeItem.vendor && (
-                <p className="product-vendor">{activeItem.vendor}</p>
-              )}
-              {activeItem.price && (
-                <p className="product-price">${activeItem.price}</p>
-              )}
-            </div>
-          </div>
-        )}
-      </DragOverlay>
     </DndContext>
   );
 }
