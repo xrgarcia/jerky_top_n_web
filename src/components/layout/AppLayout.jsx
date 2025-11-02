@@ -19,7 +19,7 @@ import LoginPage from '../../pages/LoginPage';
 import ToolsLayout from '../../pages/admin/ToolsLayout';
 import CoinsPage from '../../pages/admin/CoinsPage';
 import LiveUsersPage from '../../pages/admin/LiveUsersPage';
-import ProductsPageAdmin from '../../pages/admin/ProductsPage';
+import ProductsPageAdmin from '../../pages/admin/ProductsPageAdmin';
 import OrderItemsPage from '../../pages/admin/OrderItemsPage';
 import SentryPage from '../../pages/admin/SentryPage';
 import SentryIssueDetailsPage from '../../pages/admin/SentryIssueDetailsPage';
