@@ -10,15 +10,15 @@ function ToolsLayout() {
   const { data: isSuperAdmin = false } = useSuperAdminAccess();
   
   const tabs = [
-    { path: '/tools/coins', label: 'Manage Coins', icon: '🏆' },
-    { path: '/tools/live-users', label: 'Live Users', icon: '👥' },
-    { path: '/tools/products', label: 'Manage Products', icon: '🥩' },
-    { path: '/tools/orders', label: 'Order Items', icon: '🛒' },
-    { path: '/tools/sentry', label: 'Sentry Issues', icon: '🔍' },
+    { path: '/admin/tools/coins', label: 'Manage Coins', icon: '🏆' },
+    { path: '/admin/tools/live-users', label: 'Live Users', icon: '👥' },
+    { path: '/admin/tools/products', label: 'Manage Products', icon: '🥩' },
+    { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },
+    { path: '/admin/tools/sentry', label: 'Sentry Issues', icon: '🔍' },
   ];
   
   if (isSuperAdmin) {
-    tabs.push({ path: '/tools/data', label: 'Manage Data', icon: '🔐' });
+    tabs.push({ path: '/admin/tools/data', label: 'Manage Data', icon: '🔐' });
   }
 
   return (
