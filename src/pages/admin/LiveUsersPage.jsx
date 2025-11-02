@@ -3,12 +3,12 @@ import { useSocket } from '../../hooks/useSocket';
 import './AdminPages.css';
 
 function LiveUsersPage() {
-  const { socket, isConnected } = useSocket();
+  const { socket, isConnected, isSocketAuthenticated } = useSocket();
   const [activeUsers, setActiveUsers] = useState([]);
   const [userCount, setUserCount] = useState(0);
 
   useEffect(() => {
-    if (!socket || !isConnected) return;
+    if (!socket || !isConnected || !isSocketAuthenticated) return;
 
     // Subscribe to live users updates
     socket.emit('subscribe:live-users');
@@ -24,7 +24,7 @@ function LiveUsersPage() {
       socket.emit('unsubscribe:live-users');
       socket.off('live-users:update');
     };
-  }, [socket, isConnected]);
+  }, [socket, isConnected, isSocketAuthenticated]);
 
   const formatTimeAgo = (timestamp) => {
     const seconds = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
@@ -77,7 +77,9 @@ function LiveUsersPage() {
             {activeUsers.length === 0 ? (
               <tr>
                 <td colSpan="6" className="empty-state">
-                  {isConnected ? 'No users currently online' : 'Connecting to live feed...'}
+                  {!isConnected ? 'Connecting to live feed...' : 
+                   !isSocketAuthenticated ? 'Authenticating...' : 
+                   'No users currently online'}
                 </td>
               </tr>
             ) : (

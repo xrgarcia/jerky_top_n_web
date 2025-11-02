@@ -6,6 +6,7 @@ import { useAuthStore } from '../store/authStore';
 export function useSocket() {
   const socketRef = useRef(null);
   const [isConnected, setIsConnected] = useState(false);
+  const [isSocketAuthenticated, setIsSocketAuthenticated] = useState(false);
   const queryClient = useQueryClient();
   const { user, isAuthenticated } = useAuthStore();
 
@@ -24,11 +25,19 @@ export function useSocket() {
     socket.on('connect', () => {
       console.log('✅ WebSocket connected');
       setIsConnected(true);
+      setIsSocketAuthenticated(false);
     });
 
     socket.on('disconnect', () => {
       console.log('❌ WebSocket disconnected');
       setIsConnected(false);
+      setIsSocketAuthenticated(false);
+    });
+
+    // Socket authentication success
+    socket.on('authenticated', (data) => {
+      console.log('🔐 Socket authenticated:', data);
+      setIsSocketAuthenticated(true);
     });
 
     // Achievement notification handler
@@ -61,5 +70,6 @@ export function useSocket() {
   return {
     socket: socketRef.current,
     isConnected,
+    isSocketAuthenticated,
   };
 }

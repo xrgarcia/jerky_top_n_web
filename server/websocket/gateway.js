@@ -55,112 +55,119 @@ class WebSocketGateway {
     }
   }
 
+  async authenticateSocket(socket, session) {
+    // Guard: Check if socket is already authenticated
+    if (socket.userId && socket.userId === session.userId) {
+      console.log(`⚠️ Socket ${socket.id} already authenticated for user ${session.userId}, skipping re-auth`);
+      socket.emit('authenticated', { userId: session.userId });
+      return;
+    }
+    
+    // Clean state: Leave old room if re-authenticating as different user
+    if (socket.userId && socket.userId !== session.userId) {
+      console.log(`🔄 Socket ${socket.id} switching users: ${socket.userId} → ${session.userId}`);
+      socket.leave(this.room(`user:${socket.userId}`));
+    }
+    
+    socket.userId = session.userId;
+    socket.join(this.room(`user:${session.userId}`));
+    console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id} (room: ${this.room(`user:${session.userId}`)})`);
+    
+    // Register user in activeUsers IMMEDIATELY before async work
+    if (this.activeUsers.has(session.userId)) {
+      const existingUser = this.activeUsers.get(session.userId);
+      if (!existingUser.socketIds.includes(socket.id)) {
+        existingUser.socketIds.push(socket.id);
+      }
+      existingUser.lastActivity = new Date().toISOString();
+    } else {
+      this.activeUsers.set(session.userId, {
+        userId: session.userId,
+        socketIds: [socket.id],
+        connectedAt: new Date().toISOString(),
+        lastActivity: new Date().toISOString(),
+        currentPage: 'home'
+      });
+    }
+    
+    // Track socket connection
+    this.activeConnections.set(socket.id, {
+      socketId: socket.id,
+      userId: session.userId,
+      currentPage: 'home',
+      lastActivity: new Date().toISOString()
+    });
+    
+    // Emit pending achievements
+    const pendingKey = session.userId;
+    if (this.pendingAchievements.has(pendingKey)) {
+      const pendingData = this.pendingAchievements.get(pendingKey);
+      const age = Date.now() - pendingData.timestamp;
+      
+      if (age < 5 * 60 * 1000) {
+        if (pendingData.achievements && pendingData.achievements.length > 0) {
+          console.log(`📬 Sending ${pendingData.achievements.length} pending achievement(s) to user ${session.userId} room (age: ${Math.round(age/1000)}s)`);
+          this.io.to(this.room(`user:${session.userId}`)).emit('achievements:earned', { achievements: pendingData.achievements });
+        }
+        
+        if (pendingData.flavorCoins && pendingData.flavorCoins.length > 0) {
+          console.log(`📬 Sending ${pendingData.flavorCoins.length} pending flavor coin(s) to user ${session.userId} room`);
+          this.io.to(this.room(`user:${session.userId}`)).emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
+        }
+      } else {
+        console.log(`⏰ Discarding stale pending achievements for user ${session.userId} (age: ${Math.round(age/1000)}s)`);
+      }
+      
+      this.pendingAchievements.delete(pendingKey);
+    }
+    
+    // Fetch user details to enrich activeUsers
+    const user = await this.services.storage.getUserById(session.userId);
+    if (user) {
+      if (this.activeUsers.has(session.userId)) {
+        const userEntry = this.activeUsers.get(session.userId);
+        userEntry.firstName = user.firstName;
+        userEntry.lastName = user.lastName;
+        userEntry.email = user.email;
+        userEntry.role = user.role;
+        this.activeUsers.set(session.userId, userEntry);
+      }
+      socket.userData = {
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+      };
+      
+      this.broadcastActiveUsersUpdate();
+    }
+    
+    socket.emit('authenticated', { userId: session.userId });
+  }
+
   setupEventHandlers() {
-    this.io.on('connection', (socket) => {
+    this.io.on('connection', async (socket) => {
       console.log(`✅ WebSocket client connected: ${socket.id}`);
+      
+      // Auto-authenticate from handshake cookies (HttpOnly session_id)
+      const cookies = socket.handshake.headers.cookie;
+      if (cookies) {
+        const cookieMatch = cookies.match(/session_id=([^;]+)/);
+        if (cookieMatch) {
+          const sessionId = cookieMatch[1];
+          const session = await this.services.storage.getSession(sessionId);
+          if (session) {
+            await this.authenticateSocket(socket, session);
+          }
+        }
+      }
 
       socket.on('auth', async (data) => {
         if (data.sessionId) {
           const session = await this.services.storage.getSession(data.sessionId);
           if (session) {
-            // Guard: Check if socket is already authenticated
-            if (socket.userId && socket.userId === session.userId) {
-              console.log(`⚠️ Socket ${socket.id} already authenticated for user ${session.userId}, skipping re-auth`);
-              socket.emit('authenticated', { userId: session.userId });
-              return;
-            }
-            
-            // Clean state: Leave old room if re-authenticating as different user
-            if (socket.userId && socket.userId !== session.userId) {
-              console.log(`🔄 Socket ${socket.id} switching users: ${socket.userId} → ${session.userId}`);
-              socket.leave(this.room(`user:${socket.userId}`));
-            }
-            
-            socket.userId = session.userId;
-            socket.join(this.room(`user:${session.userId}`));
-            console.log(`🔐 User ${session.userId} authenticated on socket ${socket.id} (room: ${this.room(`user:${session.userId}`)})`);
-            
-            // TEST: Emit a test event immediately to verify socket communication
-            socket.emit('test:ping', { message: 'Socket is working!', timestamp: Date.now() });
-            console.log(`📡 TEST: Sent test:ping to socket ${socket.id}`);
-            
-            // Register user in activeUsers IMMEDIATELY before async work
-            // This prevents the race where achievements earned during getUserById() are queued
-            if (this.activeUsers.has(session.userId)) {
-              const existingUser = this.activeUsers.get(session.userId);
-              if (!existingUser.socketIds.includes(socket.id)) {
-                existingUser.socketIds.push(socket.id);
-              }
-              existingUser.lastActivity = new Date().toISOString();
-            } else {
-              // Create minimal user entry with just userId - will be enriched after getUserById()
-              this.activeUsers.set(session.userId, {
-                userId: session.userId,
-                socketIds: [socket.id],
-                connectedAt: new Date().toISOString(),
-                lastActivity: new Date().toISOString(),
-                currentPage: 'home'
-              });
-            }
-            
-            // Track socket connection
-            this.activeConnections.set(socket.id, {
-              socketId: socket.id,
-              userId: session.userId,
-              currentPage: 'home',
-              lastActivity: new Date().toISOString()
-            });
-            
-            // Emit any pending achievements that were missed while socket was disconnected
-            const pendingKey = session.userId;
-            if (this.pendingAchievements.has(pendingKey)) {
-              const pendingData = this.pendingAchievements.get(pendingKey);
-              const age = Date.now() - pendingData.timestamp;
-              
-              // Only send if less than 5 minutes old
-              if (age < 5 * 60 * 1000) {
-                // Emit to entire user room (not just this socket) to support multi-device
-                if (pendingData.achievements && pendingData.achievements.length > 0) {
-                  console.log(`📬 Sending ${pendingData.achievements.length} pending achievement(s) to user ${session.userId} room (age: ${Math.round(age/1000)}s)`);
-                  this.io.to(this.room(`user:${session.userId}`)).emit('achievements:earned', { achievements: pendingData.achievements });
-                }
-                
-                if (pendingData.flavorCoins && pendingData.flavorCoins.length > 0) {
-                  console.log(`📬 Sending ${pendingData.flavorCoins.length} pending flavor coin(s) to user ${session.userId} room`);
-                  this.io.to(this.room(`user:${session.userId}`)).emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
-                }
-              } else {
-                console.log(`⏰ Discarding stale pending achievements for user ${session.userId} (age: ${Math.round(age/1000)}s)`);
-              }
-              
-              this.pendingAchievements.delete(pendingKey);
-            }
-            
-            // Now fetch user details to enrich the activeUsers entry
-            const user = await this.services.storage.getUserById(session.userId);
-            if (user) {
-              // Enrich the existing activeUsers entry with full user data
-              if (this.activeUsers.has(session.userId)) {
-                const userEntry = this.activeUsers.get(session.userId);
-                userEntry.firstName = user.firstName;
-                userEntry.lastName = user.lastName;
-                userEntry.email = user.email;
-                userEntry.role = user.role;
-                this.activeUsers.set(session.userId, userEntry);
-              }
-              // Set socket userData
-              socket.userData = {
-                id: user.id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                role: user.role
-              };
-              
-              this.broadcastActiveUsersUpdate();
-            }
-            
-            socket.emit('authenticated', { userId: session.userId });
+            await this.authenticateSocket(socket, session);
           }
         }
       });
