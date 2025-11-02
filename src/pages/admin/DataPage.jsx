@@ -1,12 +1,86 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSuperAdminAccess } from '../../hooks/useAdminAccess';
 import { useEnvironmentConfig } from '../../hooks/useAdminTools';
+import { useClearCache, useClearAllData } from '../../hooks/useAdminMutations';
+import { useToast } from '../../context/ToastContext';
+import ConfirmationModal from '../../components/ConfirmationModal';
 import './AdminPages.css';
 
 function DataPage() {
   const { data: isSuperAdmin, isLoading: loadingAccess, isError, error } = useSuperAdminAccess();
   const { data: config, isLoading: loadingConfig, isError: configError, error: configErrorDetails } = useEnvironmentConfig();
+  const { showToast } = useToast();
+  const clearCacheMutation = useClearCache();
+  const clearAllDataMutation = useClearAllData();
+  
+  const [showClearCacheModal, setShowClearCacheModal] = useState(false);
+  const [showClearDataModal, setShowClearDataModal] = useState(false);
+
+  const handleClearCache = async () => {
+    try {
+      const result = await clearCacheMutation.mutateAsync();
+      const cacheNames = result.clearedCaches ? result.clearedCaches.join(', ') : 'all caches';
+      
+      showToast({
+        type: 'success',
+        icon: '🗑️',
+        title: 'Cache Cleared',
+        message: `Successfully cleared: ${cacheNames}`,
+        duration: 5000
+      });
+    } catch (error) {
+      if (error.status === 403) {
+        showToast({
+          type: 'error',
+          icon: '🔐',
+          title: 'Access Denied',
+          message: 'Super admin privileges required (ray@jerky.com only).',
+          duration: 5000
+        });
+      } else {
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Error',
+          message: `Failed to clear cache: ${error.message}`,
+          duration: 5000
+        });
+      }
+    }
+  };
+
+  const handleClearAllData = async () => {
+    try {
+      const result = await clearAllDataMutation.mutateAsync();
+      
+      showToast({
+        type: 'success',
+        icon: '✅',
+        title: 'Success',
+        message: result.message || 'Successfully cleared all achievement data',
+        duration: 5000
+      });
+    } catch (error) {
+      if (error.status === 403) {
+        showToast({
+          type: 'error',
+          icon: '🔐',
+          title: 'Access Denied',
+          message: 'Super admin privileges required (ray@jerky.com only).',
+          duration: 5000
+        });
+      } else {
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Error',
+          message: `Failed to clear all data: ${error.message}`,
+          duration: 5000
+        });
+      }
+    }
+  };
 
   if (loadingAccess) {
     return (
@@ -257,7 +331,13 @@ function DataPage() {
             </div>
           </div>
           <div className="data-card-content">
-            <button className="btn-warning">🗑️ Clear All Cache</button>
+            <button 
+              className="btn-warning" 
+              onClick={() => setShowClearCacheModal(true)}
+              disabled={clearCacheMutation.isPending}
+            >
+              {clearCacheMutation.isPending ? '⏳ Clearing...' : '🗑️ Clear All Cache'}
+            </button>
           </div>
         </div>
 
@@ -270,10 +350,38 @@ function DataPage() {
             </div>
           </div>
           <div className="data-card-content">
-            <button className="btn-danger">⚠️ Clear All Data</button>
+            <button 
+              className="btn-danger" 
+              onClick={() => setShowClearDataModal(true)}
+              disabled={clearAllDataMutation.isPending}
+            >
+              {clearAllDataMutation.isPending ? '⏳ Clearing...' : '⚠️ Clear All Data'}
+            </button>
           </div>
         </div>
       </div>
+
+      <ConfirmationModal
+        isOpen={showClearCacheModal}
+        onClose={() => setShowClearCacheModal(false)}
+        onConfirm={handleClearCache}
+        title="Clear All Cache"
+        message="⚠️ This will clear all cached data including achievements, leaderboards, product metadata, and home stats. The cache will automatically rebuild on next request."
+        requiredText="delete cache"
+        confirmButtonText="Confirm"
+        confirmButtonClass="btn-warning"
+      />
+
+      <ConfirmationModal
+        isOpen={showClearDataModal}
+        onClose={() => setShowClearDataModal(false)}
+        onConfirm={handleClearAllData}
+        title="Clear All Data"
+        message="⚠️ This will permanently delete ALL data for ALL users including: achievements, streaks, rankings, page views, and searches. This action cannot be undone."
+        requiredText="delete all data"
+        confirmButtonText="Confirm"
+        confirmButtonClass="btn-danger"
+      />
     </div>
   );
 }
