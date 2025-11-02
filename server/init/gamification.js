@@ -31,7 +31,7 @@ const WebSocketGateway = require('../websocket/gateway');
 
 const { primaryDb } = require('../db-primary');
 
-async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null) {
+async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null, purchaseHistoryService = null) {
   console.log('🎮 Initializing gamification system...');
 
   const achievementRepo = new AchievementRepository(db);
@@ -84,6 +84,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     fetchAllShopifyProducts,
     getRankableProductCount,
     productsService,
+    purchaseHistoryService,
     io,
   };
 

@@ -3104,8 +3104,8 @@ if (databaseAvailable && storage) {
   };
 
   waitForRateLimiters().then(async limiters => {
-    // Initialize gamification with rate limiters
-    const services = await initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService, limiters);
+    // Initialize gamification with rate limiters and purchase history service
+    const services = await initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService, limiters, purchaseHistoryService);
     gamificationServices = services;
     console.log('✅ Gamification services available for achievements');
     

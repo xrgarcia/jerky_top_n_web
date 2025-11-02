@@ -122,6 +122,7 @@ src/
 - **User Profile**: Displays user information and ranking statistics.
 - **Gamification**: Tracks engagement, static collections, dynamic collections, and flavor coin achievements with progress tracking, streaks, leaderboards, and notifications.
 - **Ranking Commentary System**: Dynamic, contextual encouragement messages on the Rank page that adapt to user progress (0, 1-5, 6-15, 16-30, 31-50, 51-75, 76-88, 89 complete tiers), incorporating streak information and displaying next closest achievement milestones with progress indicators.
+- **Collection Progress Bar**: User-specific progress tracking on the Rank page that displays progress based on products the user can actually rank (purchased products for regular users, entire catalog for @jerky.com employees). Features tier-based colors (blue→green→orange→purple→gold→rainbow), animated gradient shimmer effects, percentage display, and contextual encouragement messages powered by CommentaryService.
 - **Admin Tools**: Role-based access for managing achievements, monitoring live users, custom icon uploads, and a Customer Order Items dashboard with fulfillment status tracking, real-time updates via WebSockets, and filterable, sortable, paginated Shopify order line item data.
 
 ## External Dependencies

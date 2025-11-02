@@ -182,8 +182,30 @@ function createGamificationRoutes(services) {
       // Get context from query (defaults to 'available_products')
       const context = req.query.context || 'available_products';
       
-      // Get total rankable products count
-      const totalRankableProducts = services.getRankableProductCount();
+      // Get user info to determine if employee
+      const user = await services.storage.getUserById(userId);
+      const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
+      
+      console.log(`📊 Collection Progress - User ${userId} (${user?.email}): isEmployee=${isEmployee}, role=${user?.role}`);
+      
+      // Calculate user-specific total rankable products
+      let totalRankableProducts;
+      if (isEmployee) {
+        // Employees can rank entire catalog
+        totalRankableProducts = services.getRankableProductCount();
+        console.log(`👔 Employee user: ${totalRankableProducts} products (entire catalog)`);
+      } else {
+        // Regular users can only rank products they've purchased
+        if (services.purchaseHistoryService) {
+          const purchasedProductIds = await services.purchaseHistoryService.getPurchasedProductIds(userId);
+          totalRankableProducts = purchasedProductIds.length;
+          console.log(`🛒 Regular user: ${totalRankableProducts} purchased products`);
+        } else {
+          // Fallback if service not configured
+          totalRankableProducts = services.getRankableProductCount();
+          console.log(`⚠️ PurchaseHistoryService not available - using full catalog: ${totalRankableProducts} products`);
+        }
+      }
 
       // Generate collection progress message (REUSABLE for different contexts)
       const progress = await commentaryService.generateCollectionProgressMessage(userId, context, totalRankableProducts);
