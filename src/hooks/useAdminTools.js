@@ -15,3 +15,14 @@ export function useLiveUsers() {
     refetchInterval: 30 * 1000, // Auto-refetch every 30 seconds as backup
   });
 }
+
+export function useEnvironmentConfig() {
+  return useQuery({
+    queryKey: ['environmentConfig'],
+    queryFn: async () => {
+      const data = await api.get('/admin/environment-config');
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - environment config changes rarely
+  });
+}
