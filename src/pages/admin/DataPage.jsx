@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useSuperAdminAccess } from '../../hooks/useAdminAccess';
-import { useEnvironmentConfig } from '../../hooks/useAdminTools';
-import { useClearCache, useClearAllData } from '../../hooks/useAdminMutations';
+import { useEnvironmentConfig, useCacheConfig } from '../../hooks/useAdminTools';
+import { useClearCache, useClearAllData, useSaveCacheConfig } from '../../hooks/useAdminMutations';
 import { useToast } from '../../context/ToastContext';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import './AdminPages.css';
@@ -10,12 +10,26 @@ import './AdminPages.css';
 function DataPage() {
   const { data: isSuperAdmin, isLoading: loadingAccess, isError, error } = useSuperAdminAccess();
   const { data: config, isLoading: loadingConfig, isError: configError, error: configErrorDetails } = useEnvironmentConfig();
+  const { data: cacheConfig, isLoading: loadingCacheConfig } = useCacheConfig();
   const { showToast } = useToast();
   const clearCacheMutation = useClearCache();
   const clearAllDataMutation = useClearAllData();
+  const saveCacheConfigMutation = useSaveCacheConfig();
   
   const [showClearCacheModal, setShowClearCacheModal] = useState(false);
   const [showClearDataModal, setShowClearDataModal] = useState(false);
+  
+  // Cache configuration form state
+  const [metadataHours, setMetadataHours] = useState('');
+  const [rankingStatsHours, setRankingStatsHours] = useState('');
+  
+  // Initialize form values when cache config loads
+  useEffect(() => {
+    if (cacheConfig) {
+      setMetadataHours(cacheConfig.metadataCacheStaleHours?.toString() || '168');
+      setRankingStatsHours(cacheConfig.rankingStatsCacheStaleHours?.toString() || '48');
+    }
+  }, [cacheConfig]);
 
   const handleClearCache = async () => {
     try {
@@ -76,6 +90,67 @@ function DataPage() {
           icon: '❌',
           title: 'Error',
           message: `Failed to clear all data: ${error.message}`,
+          duration: 5000
+        });
+      }
+    }
+  };
+
+  const handleSaveCacheConfig = async () => {
+    // Validate inputs
+    const metadataValue = parseInt(metadataHours);
+    const rankingStatsValue = parseInt(rankingStatsHours);
+    
+    if (isNaN(metadataValue) || metadataValue < 1 || metadataValue > 720) {
+      showToast({
+        type: 'error',
+        icon: '⚠️',
+        title: 'Invalid Input',
+        message: 'Product Metadata Cache hours must be between 1 and 720',
+        duration: 5000
+      });
+      return;
+    }
+    
+    if (isNaN(rankingStatsValue) || rankingStatsValue < 1 || rankingStatsValue > 720) {
+      showToast({
+        type: 'error',
+        icon: '⚠️',
+        title: 'Invalid Input',
+        message: 'Ranking Stats Cache hours must be between 1 and 720',
+        duration: 5000
+      });
+      return;
+    }
+    
+    try {
+      await saveCacheConfigMutation.mutateAsync({
+        metadataCacheStaleHours: metadataValue,
+        rankingStatsCacheStaleHours: rankingStatsValue
+      });
+      
+      showToast({
+        type: 'success',
+        icon: '💾',
+        title: 'Configuration Saved',
+        message: `Cache staleness thresholds updated successfully`,
+        duration: 5000
+      });
+    } catch (error) {
+      if (error.status === 403) {
+        showToast({
+          type: 'error',
+          icon: '🔐',
+          title: 'Access Denied',
+          message: 'Super admin privileges required (ray@jerky.com only).',
+          duration: 5000
+        });
+      } else {
+        showToast({
+          type: 'error',
+          icon: '❌',
+          title: 'Error',
+          message: `Failed to save configuration: ${error.message}`,
           duration: 5000
         });
       }
@@ -309,16 +384,80 @@ function DataPage() {
       </div>
 
       <div className="data-management-grid">
-        <div className="data-card">
+        <div className="data-card cache-config-card">
           <div className="data-card-header">
             <span className="data-icon">⏰</span>
             <div>
               <h3>Cache Staleness Configuration</h3>
-              <p>Configure cache thresholds for metadata and ranking stats</p>
+              <p>Configure staleness thresholds for each cache. Sentry alerts when thresholds exceeded.</p>
             </div>
           </div>
           <div className="data-card-content">
-            <p>Cache configuration controls coming soon...</p>
+            {loadingCacheConfig ? (
+              <div style={{ textAlign: 'center', padding: '20px', color: '#999' }}>
+                Loading configuration...
+              </div>
+            ) : (
+              <div className="cache-config-form">
+                <div className="cache-input-group">
+                  <label className="cache-label">
+                    <span className="label-icon">📦</span>
+                    <span className="label-text">Product Metadata Cache Age</span>
+                  </label>
+                  <p className="cache-description">
+                    Product details, animal types, and flavors from Shopify. Updates when products change.
+                  </p>
+                  <div className="input-with-unit">
+                    <input
+                      type="number"
+                      min="1"
+                      max="720"
+                      value={metadataHours}
+                      onChange={(e) => setMetadataHours(e.target.value)}
+                      className="cache-input"
+                      placeholder="168"
+                    />
+                    <span className="input-unit">hours</span>
+                  </div>
+                  {cacheConfig && (
+                    <p className="current-value">Current: {cacheConfig.metadataCacheStaleHours} hours</p>
+                  )}
+                </div>
+
+                <div className="cache-input-group">
+                  <label className="cache-label">
+                    <span className="label-icon">📊</span>
+                    <span className="label-text">Ranking Stats Cache Age</span>
+                  </label>
+                  <p className="cache-description">
+                    Product ranking statistics and averages. Updates with every order and ranking.
+                  </p>
+                  <div className="input-with-unit">
+                    <input
+                      type="number"
+                      min="1"
+                      max="720"
+                      value={rankingStatsHours}
+                      onChange={(e) => setRankingStatsHours(e.target.value)}
+                      className="cache-input"
+                      placeholder="48"
+                    />
+                    <span className="input-unit">hours</span>
+                  </div>
+                  {cacheConfig && (
+                    <p className="current-value">Current: {cacheConfig.rankingStatsCacheStaleHours} hours</p>
+                  )}
+                </div>
+
+                <button 
+                  className="btn-success btn-save-config" 
+                  onClick={handleSaveCacheConfig}
+                  disabled={saveCacheConfigMutation.isPending}
+                >
+                  {saveCacheConfigMutation.isPending ? '⏳ Saving...' : '💾 Save Configuration'}
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

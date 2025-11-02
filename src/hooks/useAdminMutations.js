@@ -40,3 +40,20 @@ export function useClearAllData() {
     }
   });
 }
+
+export function useSaveCacheConfig() {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ metadataCacheStaleHours, rankingStatsCacheStaleHours }) => {
+      const data = await api.post('/admin/cache-config', {
+        metadataCacheStaleHours,
+        rankingStatsCacheStaleHours
+      });
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cacheConfig'] });
+    }
+  });
+}

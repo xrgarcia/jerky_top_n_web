@@ -26,3 +26,14 @@ export function useEnvironmentConfig() {
     staleTime: 5 * 60 * 1000, // 5 minutes - environment config changes rarely
   });
 }
+
+export function useCacheConfig() {
+  return useQuery({
+    queryKey: ['cacheConfig'],
+    queryFn: async () => {
+      const data = await api.get('/admin/cache-config');
+      return data;
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes - cache config changes rarely
+  });
+}
