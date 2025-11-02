@@ -37,3 +37,46 @@ export function useCacheConfig() {
     staleTime: 2 * 60 * 1000, // 2 minutes - cache config changes rarely
   });
 }
+
+export function useSentryIssues(filters) {
+  return useQuery({
+    queryKey: ['sentryIssues', filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (filters.environment && filters.environment !== 'all') {
+        params.append('environment', filters.environment);
+      }
+      if (filters.status && filters.status !== 'all') {
+        params.append('status', filters.status);
+      }
+      params.append('limit', filters.limit || 25);
+      
+      const data = await api.get(`/admin/sentry/issues?${params.toString()}`);
+      return data;
+    },
+    staleTime: 60 * 1000, // 1 minute
+    enabled: !!filters,
+  });
+}
+
+export function useSentryEnvironments() {
+  return useQuery({
+    queryKey: ['sentryEnvironments'],
+    queryFn: async () => {
+      const data = await api.get('/admin/sentry/environments');
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+export function useSentryCurrentEnvironment() {
+  return useQuery({
+    queryKey: ['sentryCurrentEnvironment'],
+    queryFn: async () => {
+      const data = await api.get('/admin/sentry/current-environment');
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
