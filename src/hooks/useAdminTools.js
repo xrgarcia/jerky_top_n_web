@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../utils/api';
 
 export function useLiveUsers() {
@@ -102,5 +102,88 @@ export function useSentryLatestEvent(issueId) {
     },
     staleTime: 30 * 1000, // 30 seconds
     enabled: !!issueId,
+  });
+}
+
+export function useAdminProducts() {
+  return useQuery({
+    queryKey: ['adminProducts'],
+    queryFn: async () => {
+      const data = await api.get('/admin/products');
+      return {
+        products: data.products || [],
+        total: data.total || 0,
+      };
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes - products don't change frequently
+  });
+}
+
+export function useAnimalCategories() {
+  return useQuery({
+    queryKey: ['animalCategories'],
+    queryFn: async () => {
+      const data = await api.get('/admin/animal-categories');
+      return data.animals || [];
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - animal categories rarely change
+  });
+}
+
+export function useUpdateProductMetadata() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ productId, animalType, animalDisplay, animalIcon }) => {
+      const data = await api.patch(`/admin/products/${productId}/metadata`, {
+        animalType,
+        animalDisplay,
+        animalIcon,
+      });
+      return data;
+    },
+    onMutate: async ({ productId, animalType, animalDisplay, animalIcon }) => {
+      // Cancel outgoing refetches to prevent overwriting optimistic update
+      await queryClient.cancelQueries({ queryKey: ['adminProducts'] });
+
+      // Snapshot previous value for rollback
+      const previousProducts = queryClient.getQueryData(['adminProducts']);
+
+      // Optimistically update the product in cache
+      queryClient.setQueryData(['adminProducts'], (old) => {
+        // If cache is empty or not initialized, skip optimistic update
+        // The mutation will refetch fresh data on success
+        if (!old || !old.products || !Array.isArray(old.products)) {
+          return old;
+        }
+        
+        return {
+          ...old,
+          products: old.products.map((product) =>
+            product.id === productId
+              ? {
+                  ...product,
+                  animalType,
+                  animalDisplay,
+                  animalIcon,
+                }
+              : product
+          ),
+        };
+      });
+
+      // Return context with snapshot for potential rollback
+      return { previousProducts };
+    },
+    onError: (err, variables, context) => {
+      // Rollback to previous state on error
+      if (context?.previousProducts) {
+        queryClient.setQueryData(['adminProducts'], context.previousProducts);
+      }
+    },
+    onSuccess: () => {
+      // Invalidate and refetch to get fresh data from server
+      queryClient.invalidateQueries({ queryKey: ['adminProducts'] });
+    },
   });
 }
