@@ -249,7 +249,7 @@ function OrderItemsPage() {
               <option value="">All Statuses</option>
               {filterOptions.fulfillmentStatuses?.map(status => (
                 <option key={status} value={status}>
-                  {status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Pending'}
+                  {status ? status.charAt(0).toUpperCase() + status.slice(1) : 'Unfulfilled'}
                 </option>
               ))}
             </select>
