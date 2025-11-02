@@ -15,6 +15,7 @@ export default function RankPage() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
+  const [lastSearchedTerm, setLastSearchedTerm] = useState(searchParams.get('search') || '');
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -33,12 +34,9 @@ export default function RankPage() {
     getRankedProductIds
   } = useRanking({
     onSaveComplete: (rankings, position) => {
-      // Only refetch on additions or reorders, not removals
-      // Removals are handled optimistically via handleRemoveRanking
-      if (!position || position > 0) {
-        // Refetch available products after rankings change
-        handleSearch();
-      }
+      // Silently refetch to replenish available products without visual flashing
+      // The optimistic UI keeps the list stable while fetching happens in background
+      handleSearchSilent();
       
       // Always invalidate commentaries to update progress
       queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
@@ -137,9 +135,12 @@ export default function RankPage() {
     setError(null);
     setHasSearched(true);
 
-    // Update URL params
-    if (searchTerm.trim()) {
-      setSearchParams({ search: searchTerm.trim() });
+    // Update URL params and track what we're actually searching for
+    const termToSearch = searchTerm.trim();
+    setLastSearchedTerm(termToSearch);
+    
+    if (termToSearch) {
+      setSearchParams({ search: termToSearch });
     } else {
       setSearchParams({});
     }
@@ -151,8 +152,8 @@ export default function RankPage() {
         sort: 'name-asc'  // Alphabetical sorting for predictable order
       });
       
-      if (searchTerm.trim()) {
-        params.set('query', searchTerm.trim());
+      if (termToSearch) {
+        params.set('query', termToSearch);
       }
 
       const data = await api.get(`/products/rankable?${params.toString()}`);
@@ -163,6 +164,33 @@ export default function RankPage() {
       setProducts([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  /**
+   * Silent refetch to replenish available products without showing loading state
+   * Uses lastSearchedTerm to ensure we refetch the same query that's currently displayed
+   * This prevents visual flashing while keeping the list up-to-date
+   */
+  const handleSearchSilent = async () => {
+    try {
+      const params = new URLSearchParams({
+        excludeRanked: 'true',
+        limit: '50',
+        sort: 'name-asc'
+      });
+      
+      // Use the last searched term, not current searchTerm (which might be mid-edit)
+      if (lastSearchedTerm) {
+        params.set('query', lastSearchedTerm);
+      }
+
+      const data = await api.get(`/products/rankable?${params.toString()}`);
+      // Silently update products without triggering loading state
+      setProducts(Array.isArray(data) ? data : (data?.products ?? []));
+    } catch (err) {
+      // Silent failure - don't show error to user
+      console.error('Background refetch failed:', err);
     }
   };
 
