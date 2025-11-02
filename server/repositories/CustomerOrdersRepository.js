@@ -56,7 +56,12 @@ class CustomerOrdersRepository {
     }
 
     if (fulfillmentStatus) {
-      conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
+      // Translate 'unfulfilled' to NULL for database query
+      if (fulfillmentStatus === 'unfulfilled') {
+        conditions.push(sql`${customerOrderItems.fulfillmentStatus} IS NULL`);
+      } else {
+        conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
+      }
     }
 
     if (dateFrom) {
@@ -165,7 +170,12 @@ class CustomerOrdersRepository {
     }
 
     if (fulfillmentStatus) {
-      conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
+      // Translate 'unfulfilled' to NULL for database query
+      if (fulfillmentStatus === 'unfulfilled') {
+        conditions.push(sql`${customerOrderItems.fulfillmentStatus} IS NULL`);
+      } else {
+        conditions.push(eq(customerOrderItems.fulfillmentStatus, fulfillmentStatus));
+      }
     }
 
     if (dateFrom) {
@@ -225,19 +235,21 @@ class CustomerOrdersRepository {
       .orderBy(customerOrderItems.sku)
       .limit(1000);
 
-    // Get distinct fulfillment statuses
+    // Get distinct fulfillment statuses (including NULL which represents 'unfulfilled')
     const fulfillmentStatuses = await this.db
       .selectDistinct({ status: customerOrderItems.fulfillmentStatus })
       .from(customerOrderItems)
-      .where(sql`${customerOrderItems.fulfillmentStatus} IS NOT NULL`)
       .orderBy(customerOrderItems.fulfillmentStatus);
 
+    // Translate NULL to 'unfulfilled' for frontend
+    const statusList = fulfillmentStatuses.map(f => f.status || 'unfulfilled');
+    
     return {
       orderNumbers: orderNumbers.map(o => o.orderNumber),
       emails: emails.map(e => e.email),
       productIds: productIds.map(p => p.productId),
       skus: skus.map(s => s.sku),
-      fulfillmentStatuses: fulfillmentStatuses.map(f => f.status)
+      fulfillmentStatuses: statusList
     };
   }
 }
