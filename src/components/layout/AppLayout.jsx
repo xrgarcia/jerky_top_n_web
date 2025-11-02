@@ -17,7 +17,7 @@ import ProfilePage from '../../pages/ProfilePage';
 import RankPage from '../../pages/RankPage';
 import LoginPage from '../../pages/LoginPage';
 import ToolsLayout from '../../pages/admin/ToolsLayout';
-import CoinsPage from '../../pages/admin/CoinsPage';
+import ManageCoinsPageAdmin from '../../pages/admin/ManageCoinsPageAdmin';
 import LiveUsersPage from '../../pages/admin/LiveUsersPage';
 import ProductsPageAdmin from '../../pages/admin/ProductsPageAdmin';
 import OrderItemsPage from '../../pages/admin/OrderItemsPage';
@@ -84,8 +84,8 @@ function AppLayout() {
               <ToolsLayout />
             </EmployeeRoute>
           }>
-            <Route index element={<CoinsPage />} />
-            <Route path="coins" element={<CoinsPage />} />
+            <Route index element={<ManageCoinsPageAdmin />} />
+            <Route path="coins" element={<ManageCoinsPageAdmin />} />
             <Route path="live-users" element={<LiveUsersPage />} />
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />

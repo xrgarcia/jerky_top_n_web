@@ -198,3 +198,90 @@ export function useUpdateProductMetadata() {
     },
   });
 }
+
+export function useFetchCoins() {
+  return useQuery({
+    queryKey: ['adminCoins'],
+    queryFn: async () => {
+      const data = await api.get('/admin/achievements');
+      return {
+        achievements: data.achievements || [],
+        total: data.achievements?.length || 0,
+      };
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+}
+
+export function useToggleCoin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (coinId) => {
+      const data = await api.patch(`/admin/achievements/${coinId}/toggle`);
+      return data;
+    },
+    onMutate: async (coinId) => {
+      await queryClient.cancelQueries({ queryKey: ['adminCoins'] });
+      const previousCoins = queryClient.getQueryData(['adminCoins']);
+
+      queryClient.setQueryData(['adminCoins'], (old) => {
+        if (!old || !old.achievements) return old;
+        
+        return {
+          ...old,
+          achievements: old.achievements.map((coin) =>
+            coin.id === coinId
+              ? { ...coin, isActive: coin.isActive ? 0 : 1 }
+              : coin
+          ),
+        };
+      });
+
+      return { previousCoins };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCoins) {
+        queryClient.setQueryData(['adminCoins'], context.previousCoins);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+  });
+}
+
+export function useDeleteCoin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (coinId) => {
+      const data = await api.delete(`/admin/achievements/${coinId}`);
+      return data;
+    },
+    onMutate: async (coinId) => {
+      await queryClient.cancelQueries({ queryKey: ['adminCoins'] });
+      const previousCoins = queryClient.getQueryData(['adminCoins']);
+
+      queryClient.setQueryData(['adminCoins'], (old) => {
+        if (!old || !old.achievements) return old;
+        
+        return {
+          ...old,
+          achievements: old.achievements.filter((coin) => coin.id !== coinId),
+          total: (old.total || 0) - 1,
+        };
+      });
+
+      return { previousCoins };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCoins) {
+        queryClient.setQueryData(['adminCoins'], context.previousCoins);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+  });
+}
