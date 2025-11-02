@@ -102,7 +102,7 @@ function Nav() {
             </>
           )}
           {isEmployee && (
-            <Link to="/tools" className={`nav-link ${isActive('/tools')}`}>
+            <Link to="/admin/tools" className={`nav-link ${isActive('/admin/tools')}`}>
               Tools
             </Link>
           )}
