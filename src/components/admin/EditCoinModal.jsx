@@ -530,7 +530,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                       selectedProducts.map(product => (
                         <div key={product.id} className="product-card">
                           <img 
-                            src={product.featuredImage || '/placeholder.png'} 
+                            src={product.image || '/placeholder.png'} 
                             alt={product.title}
                             className="product-image"
                           />
@@ -582,7 +582,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                       availableProducts.map(product => (
                         <div key={product.id} className="product-card">
                           <img 
-                            src={product.featuredImage || '/placeholder.png'} 
+                            src={product.image || '/placeholder.png'} 
                             alt={product.title}
                             className="product-image"
                           />
