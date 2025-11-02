@@ -1,22 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSocket } from '../../hooks/useSocket';
+import { useLiveUsers } from '../../hooks/useAdminTools';
+import { useQueryClient } from '@tanstack/react-query';
 import './AdminPages.css';
 
 function LiveUsersPage() {
   const { socket, isConnected, isSocketAuthenticated } = useSocket();
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [userCount, setUserCount] = useState(0);
+  const queryClient = useQueryClient();
+  
+  // Fetch initial data from API
+  const { data, isLoading, isError } = useLiveUsers();
+  const activeUsers = data?.users || [];
+  const userCount = data?.count || 0;
 
+  // Subscribe to WebSocket updates for real-time data
   useEffect(() => {
     if (!socket || !isConnected || !isSocketAuthenticated) return;
 
     // Subscribe to live users updates
     socket.emit('subscribe:live-users');
 
-    // Listen for live user updates
-    socket.on('live-users:update', (data) => {
-      setActiveUsers(data.users || []);
-      setUserCount(data.count || 0);
+    // Listen for live user updates and invalidate the query to refetch
+    socket.on('live-users:update', () => {
+      queryClient.invalidateQueries({ queryKey: ['liveUsers'] });
     });
 
     // Cleanup
@@ -24,7 +30,7 @@ function LiveUsersPage() {
       socket.emit('unsubscribe:live-users');
       socket.off('live-users:update');
     };
-  }, [socket, isConnected, isSocketAuthenticated]);
+  }, [socket, isConnected, isSocketAuthenticated, queryClient]);
 
   const formatTimeAgo = (timestamp) => {
     const seconds = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
@@ -74,12 +80,22 @@ function LiveUsersPage() {
             </tr>
           </thead>
           <tbody>
-            {activeUsers.length === 0 ? (
+            {isLoading ? (
               <tr>
                 <td colSpan="6" className="empty-state">
-                  {!isConnected ? 'Connecting to live feed...' : 
-                   !isSocketAuthenticated ? 'Authenticating...' : 
-                   'No users currently online'}
+                  Loading live users...
+                </td>
+              </tr>
+            ) : isError ? (
+              <tr>
+                <td colSpan="6" className="empty-state" style={{ color: '#e74c3c' }}>
+                  Failed to load live users
+                </td>
+              </tr>
+            ) : activeUsers.length === 0 ? (
+              <tr>
+                <td colSpan="6" className="empty-state">
+                  No users currently online
                 </td>
               </tr>
             ) : (
