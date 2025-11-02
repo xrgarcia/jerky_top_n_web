@@ -7,9 +7,10 @@
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: minmax(400px, 1fr) minmax(500px, 2fr);
   gap: 2rem;
   height: 100%;
+  align-items: start;
 }
 
 .rank-column {
@@ -17,7 +18,10 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-height: 600px;
+  min-height: 700px;
+  max-height: calc(100vh - 150px);
+  display: flex;
+  flex-direction: column;
 }
 
 .rank-column h2 {
@@ -56,10 +60,11 @@
 
 /* Rankings column */
 .slots-container {
-  max-height: calc(100vh - 300px);
+  flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.5rem;
+  min-height: 0;
 }
 
 .slots-container::-webkit-scrollbar {
@@ -193,7 +198,10 @@
 
 /* Products display */
 .products-display {
-  min-height: 400px;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;
 }
 
 .loading-state,
