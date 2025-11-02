@@ -11,7 +11,7 @@ export function useCollectionProgress(context = 'available_products') {
   return useQuery({
     queryKey: ['collectionProgress', context],
     queryFn: async () => {
-      const response = await api.get(`/api/gamification/collection-progress?context=${context}`);
+      const response = await api.get(`/gamification/collection-progress?context=${context}`);
       return response;
     },
     staleTime: 30000, // 30 seconds - fresh enough for real-time feel
