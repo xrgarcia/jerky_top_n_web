@@ -14,10 +14,39 @@ class ProductsMetadataRepository {
       .limit(1);
 
     if (existing.length > 0) {
+      const existingData = existing[0];
+      const mergeUpdate = {};
+      const preservedFields = [];
+      const updatedFields = [];
+      
+      for (const [key, incomingValue] of Object.entries(metadata)) {
+        const existingValue = existingData[key];
+        
+        if (existingValue === null || existingValue === undefined) {
+          if (incomingValue !== null && incomingValue !== undefined) {
+            mergeUpdate[key] = incomingValue;
+            updatedFields.push(key);
+          }
+        } else {
+          preservedFields.push(key);
+        }
+      }
+      
+      if (preservedFields.length > 0) {
+        console.log(`🔒 Preserving manual edits for ${shopifyProductId}: ${preservedFields.join(', ')}`);
+      }
+      if (updatedFields.length > 0) {
+        console.log(`📝 Auto-populating NULL fields for ${shopifyProductId}: ${updatedFields.join(', ')}`);
+      }
+      
+      if (Object.keys(mergeUpdate).length === 0) {
+        return [existingData];
+      }
+      
       return await this.db
         .update(productsMetadata)
         .set({
-          ...metadata,
+          ...mergeUpdate,
           updatedAt: new Date(),
         })
         .where(eq(productsMetadata.shopifyProductId, shopifyProductId))
