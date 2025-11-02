@@ -95,12 +95,18 @@ router.get('/products', requireEmployeeAuth, async (req, res) => {
 
 /**
  * PATCH /api/admin/products/:productId/metadata
- * Update product metadata (animal_type, animal_display, animal_icon)
+ * Update product metadata - supports all editable fields except createdAt and updatedAt
  */
 router.patch('/products/:productId/metadata', async (req, res) => {
   try {
     const { productId } = req.params;
-    const { animalType, animalDisplay, animalIcon } = req.body;
+    const { 
+      animalType, animalDisplay, animalIcon,
+      vendor,
+      primaryFlavor, secondaryFlavors,
+      flavorDisplay, flavorIcon,
+      title
+    } = req.body;
 
     if (!productId) {
       return res.status(400).json({
@@ -110,10 +116,17 @@ router.patch('/products/:productId/metadata', async (req, res) => {
     }
 
     // Build update object (only include fields that are provided)
+    // Excludes createdAt and updatedAt which should never be manually updated
     const updateData = {};
     if (animalType !== undefined) updateData.animalType = animalType;
     if (animalDisplay !== undefined) updateData.animalDisplay = animalDisplay;
     if (animalIcon !== undefined) updateData.animalIcon = animalIcon;
+    if (vendor !== undefined) updateData.vendor = vendor;
+    if (primaryFlavor !== undefined) updateData.primaryFlavor = primaryFlavor;
+    if (secondaryFlavors !== undefined) updateData.secondaryFlavors = secondaryFlavors;
+    if (flavorDisplay !== undefined) updateData.flavorDisplay = flavorDisplay;
+    if (flavorIcon !== undefined) updateData.flavorIcon = flavorIcon;
+    if (title !== undefined) updateData.title = title;
 
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({
@@ -152,4 +165,5 @@ router.patch('/products/:productId/metadata', async (req, res) => {
   }
 });
 
-module.exports = router;
+  return router;
+};

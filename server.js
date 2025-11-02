@@ -3181,7 +3181,8 @@ if (databaseAvailable && storage) {
       adminRouter.use(vendorCategoriesRouter);
       
       // Add products admin route
-      const productsAdminRouter = require('./server/routes/admin/products');
+      const createProductsAdminRoutes = require('./server/routes/admin/products');
+      const productsAdminRouter = createProductsAdminRoutes(storage, db);
       adminRouter.use(productsAdminRouter);
       
       // Add recalculate route for retroactive achievement awards
