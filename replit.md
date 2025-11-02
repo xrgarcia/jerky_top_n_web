@@ -112,7 +112,7 @@ src/
 - **Database Connection Strategy**: Dual-connection architecture using Neon PostgreSQL for pooled and dedicated connections.
 
 ### Feature Specifications
-- **Ranking**: Persistent rankings with a visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system (IndexedDB-backed queue, server-side idempotency, automatic retry, recovery).
+- **Ranking**: Persistent rankings with a visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system (IndexedDB-backed queue, server-side idempotency, automatic retry, recovery). Recovery operations are batched to prevent multiple product refetches during page initialization.
 - **Products Page**: Advanced sorting, filtering by animal and flavor, client-side instant search, and server-side pagination.
 - **Rank Page Products**: Server-side filtering to exclude already-ranked products. Non-employee users can only rank purchased products, with automatic Shopify order synchronization on login. Employee users bypass purchase restrictions.
 - **Purchase History System**: Automatic background synchronization of Shopify orders on user login with caching and optimized database indexes.
