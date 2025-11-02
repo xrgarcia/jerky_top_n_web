@@ -82,7 +82,8 @@ src/
 - Profile - Personal stats and rankings
 - Rank - Product ranking with proper error handling
 - Login - Magic link authentication
-- Admin Tools - Employee dashboard with 6 tabbed sections (November 2025 React migration)
+- Admin Tools - Employee dashboard with 6 tabbed sections (November 2025 React migration):
+  - **Order Items** - Customer order tracking with advanced filtering (order number, email, product ID, SKU, fulfillment status, date range), pagination with configurable limit (25/50/100/200), default 24-hour date range, real-time WebSocket updates with toast notifications, and fully linkable URL state
 
 ### UI/UX Decisions
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
@@ -135,10 +136,11 @@ src/
     - Manage Coins - Achievement management interface (🏆)
     - Live Users - Real-time user monitoring (👥)
     - Manage Products - Product admin tools (📦)
-    - Customer Order Items - Shopify order tracking with fulfillment status (📋)
+    - Customer Order Items - Shopify order tracking with 7 filters (order number, email, product ID, SKU, fulfillment status, date range), pagination (25/50/100/200), default 24-hour date range, WebSocket live updates with toast notifications, fully linkable URL state for all filters and pagination (📋)
     - Sentry Errors - Error monitoring dashboard (🐛)
     - Manage Data - Super admin-only data operations (🔧)
   - **Data Tab Security**: Dynamically fetches super admin status from `/api/admin/data/check-access` endpoint, surfaces API errors with clear messaging, redirects unauthorized employees
+  - **Order Items Technical Implementation**: `useCustomerOrders` hook for REST API, `useCustomerOrdersWebSocket` hook for real-time updates, memoized WebSocket callbacks with `useCallback` to prevent subscription churn, URL state initialization calculates offset from page parameter `(page - 1) * limit` for deep-linkable pagination
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
