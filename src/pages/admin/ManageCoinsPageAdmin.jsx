@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useRecalculateCoin, useAdminProducts } from '../../hooks/useAdminTools';
 import EditCoinModal from '../../components/admin/EditCoinModal';
+import ConfirmationModal from '../../components/admin/ConfirmationModal';
 import './AdminPages.css';
 
 function ManageCoinsPageAdmin() {
@@ -21,6 +22,10 @@ function ManageCoinsPageAdmin() {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCoin, setEditingCoin] = useState(null);
+  
+  // Confirmation modal state
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [confirmModalData, setConfirmModalData] = useState(null);
 
   const coins = coinsData?.achievements || [];
   const products = productsData?.products || [];
@@ -71,15 +76,19 @@ function ManageCoinsPageAdmin() {
     }
   };
 
-  const handleRefreshCoin = async (coin) => {
-    if (!confirm(
-      `Recalculate "${coin.name}"?\n\n` +
-      `This will award the achievement to all users who meet the requirements.\n\n` +
-      `Processing time depends on the number of users in the system.`
-    )) {
-      return;
-    }
+  const handleRefreshCoin = (coin) => {
+    setConfirmModalData({
+      coin,
+      title: `Recalculate "${coin.name}"?`,
+      message: `This will award the achievement to all users who meet the requirements.\n\nProcessing time depends on the number of users in the system.`,
+    });
+    setIsConfirmModalOpen(true);
+  };
 
+  const handleConfirmRecalculate = async () => {
+    setIsConfirmModalOpen(false);
+    
+    const { coin } = confirmModalData;
     const loadingToast = toast.loading(`Recalculating "${coin.name}" for all users...`, {
       duration: 0
     });
@@ -375,6 +384,19 @@ function ManageCoinsPageAdmin() {
         allCoins={coins}
         allProducts={products}
       />
+
+      {/* Confirmation Modal */}
+      {confirmModalData && (
+        <ConfirmationModal
+          isOpen={isConfirmModalOpen}
+          onClose={() => setIsConfirmModalOpen(false)}
+          onConfirm={handleConfirmRecalculate}
+          title={confirmModalData.title}
+          message={confirmModalData.message}
+          confirmText="Recalculate"
+          cancelText="Cancel"
+        />
+      )}
     </div>
   );
 }
