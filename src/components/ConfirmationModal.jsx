@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../styles/modal.css';
 
 function ConfirmationModal({ 
@@ -27,31 +27,35 @@ function ConfirmationModal({
     }
   }, [isOpen, requiredText]);
 
+  // Global keyboard handler - no dependencies on handlers
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter') {
+        // Check validity at event time
+        const currentlyValid = requiredText ? inputValue === requiredText : true;
+        if (currentlyValid) {
+          onConfirm();
+          onClose();
+        }
+      } else if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, inputValue, requiredText, onConfirm, onClose]);
+
   if (!isOpen) return null;
 
-  const handleConfirm = useCallback(() => {
+  const handleConfirm = () => {
     if (isValid) {
       onConfirm();
       onClose();
     }
-  }, [isValid, onConfirm, onClose]);
-
-  const handleKeyDown = useCallback((e) => {
-    if (e.key === 'Enter' && isValid) {
-      handleConfirm();
-    } else if (e.key === 'Escape') {
-      onClose();
-    }
-  }, [isValid, handleConfirm, onClose]);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.addEventListener('keydown', handleKeyDown);
-      return () => {
-        document.removeEventListener('keydown', handleKeyDown);
-      };
-    }
-  }, [isOpen, handleKeyDown]);
+  };
 
   return (
     <div className="modal-overlay" onClick={onClose}>
