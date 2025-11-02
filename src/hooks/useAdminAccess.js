@@ -11,9 +11,14 @@ export function useSuperAdminAccess() {
     queryKey: ['superAdminAccess', user?.email || user?.id || 'current'],
     queryFn: async () => {
       console.log('🚀 Executing super admin check API call...');
-      const response = await api.get('/api/admin/data/check-access');
-      console.log('✅ Super admin check response:', response);
-      return response.hasSuperAdminAccess;
+      try {
+        const response = await api.get('/api/admin/data/check-access');
+        console.log('✅ Super admin check response:', response);
+        return response.hasSuperAdminAccess;
+      } catch (error) {
+        console.error('❌ Super admin check API error:', error);
+        throw error;
+      }
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
     retry: 1,
