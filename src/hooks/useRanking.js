@@ -118,8 +118,8 @@ export function useRanking(options = {}) {
       
       console.log(`✅ Added/moved "${product.title}" to position ${position}`);
       
-      // Trigger auto-save
-      scheduleAutoSave(renumbered);
+      // Trigger auto-save with position info
+      scheduleAutoSave(renumbered, position);
       
       return renumbered;
     });
@@ -174,7 +174,7 @@ export function useRanking(options = {}) {
   /**
    * Schedule auto-save with 800ms debounce
    */
-  const scheduleAutoSave = (rankings) => {
+  const scheduleAutoSave = (rankings, position = null) => {
     // Clear existing timeout
     if (saveTimeoutRef.current) {
       clearTimeout(saveTimeoutRef.current);
@@ -185,7 +185,7 @@ export function useRanking(options = {}) {
     
     // Schedule backend save after debounce
     saveTimeoutRef.current = setTimeout(() => {
-      saveToBackend(rankings);
+      saveToBackend(rankings, null, position);
     }, 800);
   };
   
@@ -215,8 +215,8 @@ export function useRanking(options = {}) {
   /**
    * Save rankings to backend with retry
    */
-  const saveToBackend = async (rankings, operationId = null) => {
-    setSaveStatus({ state: 'saving', message: 'Saving...' });
+  const saveToBackend = async (rankings, operationId = null, position = null) => {
+    setSaveStatus({ state: 'saving', message: 'Saving...', position });
     
     const idToComplete = operationId || currentOperationId.current;
     
@@ -253,11 +253,11 @@ export function useRanking(options = {}) {
         ? '✓ All rankings cleared' 
         : `✓ Saved ${rankings.length} ranking${rankings.length === 1 ? '' : 's'}`;
       
-      setSaveStatus({ state: 'saved', message });
+      setSaveStatus({ state: 'saved', message, position });
       
       // Notify parent component to refetch products
       if (onSaveComplete) {
-        onSaveComplete(rankings);
+        onSaveComplete(rankings, position);
       }
       
       // Reset to idle after 2 seconds

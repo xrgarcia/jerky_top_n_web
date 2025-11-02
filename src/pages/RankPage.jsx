@@ -28,11 +28,49 @@ export default function RankPage() {
     reorderRankings,
     getRankedProductIds
   } = useRanking({
-    onSaveComplete: () => {
+    onSaveComplete: (rankings, position) => {
       // Refetch available products after rankings change
       handleSearch();
     }
   });
+  
+  // Generate celebratory message based on position
+  const getCelebratoryMessage = (state, position) => {
+    if (state === 'saving' && position) {
+      const messages = {
+        1: ['🏆 Ranking your #1 favorite...', '👑 Crowning your champion...', '⭐ Marking your top pick...'],
+        2: ['🥈 Ranking your runner-up...', '⭐ Placing your #2...', '✨ Second best ranked...'],
+        3: ['🥉 Ranking your bronze medal...', '✨ Top 3 choice...', '⭐ Third place locked in...'],
+        4: ['Great choice! Ranking #4...', '✓ Adding to top 5...', '⭐ Ranking...'],
+        5: ['Nice pick! Ranking #5...', '✓ Top 5 complete...', '⭐ Ranking...'],
+      };
+      
+      const tier = position <= 5 ? position : 'default';
+      const defaultMsg = ['✓ Ranking...', '⭐ Adding to your list...'];
+      const options = messages[tier] || defaultMsg;
+      
+      // Use position as seed for consistent message per position
+      return options[(position - 1) % options.length];
+    }
+    
+    if (state === 'saved' && position) {
+      const messages = {
+        1: ['✓ Champion ranked!', '✓ #1 saved!', '✓ Your favorite crowned!'],
+        2: ['✓ Runner-up ranked!', '✓ #2 saved!', '✓ Silver medal locked!'],
+        3: ['✓ Bronze ranked!', '✓ #3 saved!', '✓ Top 3 complete!'],
+        4: ['✓ Ranked!', '✓ #4 saved!', '✓ Added!'],
+        5: ['✓ Ranked!', '✓ #5 saved!', '✓ Added!'],
+      };
+      
+      const tier = position <= 5 ? position : 'default';
+      const defaultMsg = ['✓ Ranked!', '✓ Saved!'];
+      const options = messages[tier] || defaultMsg;
+      
+      return options[(position - 1) % options.length];
+    }
+    
+    return saveStatus.message;
+  };
   
   // Drag sensors
   const sensors = useSensors(
@@ -179,13 +217,17 @@ export default function RankPage() {
       <div className="rank-page">
         <div className="rank-container">
           <div className="rank-column ranks-column">
-            <h2>Your Rankings</h2>
+            <div className="header-with-status">
+              <h2>Your Rankings</h2>
+              {saveStatus.state !== 'idle' && (
+                <div className={`save-status-inline save-status-${saveStatus.state}`}>
+                  {getCelebratoryMessage(saveStatus.state, saveStatus.position)}
+                </div>
+              )}
+            </div>
             <div className="sub-header">
               <div className="ranking-progress">
                 {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
-              </div>
-              <div className={`save-status save-status-${saveStatus.state}`}>
-                {saveStatus.message || '\u00A0'}
               </div>
             </div>
             

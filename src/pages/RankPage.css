@@ -24,11 +24,27 @@
   flex-direction: column;
 }
 
+.header-with-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
 .rank-column h2 {
-  margin: 0 0 1rem 0;
+  margin: 0;
   font-size: 1.5rem;
   color: #2c3e50;
   font-weight: 600;
+}
+
+.save-status-inline {
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  animation: fadeIn 0.2s ease-in;
 }
 
 .sub-header {
@@ -37,18 +53,11 @@
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  gap: 1rem;
 }
 
 .sub-header .ranking-progress {
-  flex-shrink: 0;
-}
-
-.sub-header .save-status {
-  flex: 1;
-  text-align: right;
+  font-weight: 600;
+  color: #2c3e50;
 }
 
 .placeholder-content {
@@ -98,19 +107,30 @@
   font-weight: 500;
 }
 
-.save-status-saving {
+.save-status-inline.save-status-saving {
   background-color: #fff3cd;
   color: #856404;
 }
 
-.save-status-saved {
+.save-status-inline.save-status-saved {
   background-color: #d4edda;
   color: #155724;
 }
 
-.save-status-error {
+.save-status-inline.save-status-error {
   background-color: #f8d7da;
   color: #721c24;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 /* Drag overlay - fixed size to match product cards */
