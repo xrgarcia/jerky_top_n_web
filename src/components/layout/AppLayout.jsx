@@ -44,9 +44,13 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
-          <Route path="/coinbook" element={<CoinBookPage />} />
           <Route path="/login" element={<LoginPage />} />
           
+          <Route path="/coinbook" element={
+            <ProtectedRoute>
+              <CoinBookPage />
+            </ProtectedRoute>
+          } />
           <Route path="/rank" element={
             <ProtectedRoute>
               <RankPage />
