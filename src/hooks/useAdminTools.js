@@ -130,19 +130,32 @@ export function useAnimalCategories() {
   });
 }
 
+export function useDistinctFlavors() {
+  return useQuery({
+    queryKey: ['distinctFlavors'],
+    queryFn: async () => {
+      const data = await api.get('/admin/products/distinct-flavors');
+      return {
+        primaryFlavors: data.primaryFlavors || [],
+        flavorDisplays: data.flavorDisplays || [],
+      };
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - flavors rarely change
+  });
+}
+
 export function useUpdateProductMetadata() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async ({ productId, animalType, animalDisplay, animalIcon }) => {
-      const data = await api.patch(`/admin/products/${productId}/metadata`, {
-        animalType,
-        animalDisplay,
-        animalIcon,
-      });
+    mutationFn: async (updateData) => {
+      const { productId, ...fields } = updateData;
+      const data = await api.patch(`/admin/products/${productId}/metadata`, fields);
       return data;
     },
-    onMutate: async ({ productId, animalType, animalDisplay, animalIcon }) => {
+    onMutate: async (updateData) => {
+      const { productId, ...fields } = updateData;
+      
       // Cancel outgoing refetches to prevent overwriting optimistic update
       await queryClient.cancelQueries({ queryKey: ['adminProducts'] });
 
@@ -163,9 +176,7 @@ export function useUpdateProductMetadata() {
             product.id === productId
               ? {
                   ...product,
-                  animalType,
-                  animalDisplay,
-                  animalIcon,
+                  ...fields,
                 }
               : product
           ),

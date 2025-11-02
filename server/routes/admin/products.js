@@ -1,6 +1,6 @@
 const express = require('express');
 const { productsMetadata } = require('../../../shared/schema');
-const { eq } = require('drizzle-orm');
+const { eq, sql } = require('drizzle-orm');
 
 module.exports = function createProductsAdminRoutes(storage, db, metadataCache) {
   const router = express.Router();
@@ -45,6 +45,37 @@ module.exports = function createProductsAdminRoutes(storage, db, metadataCache) 
     return res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+/**
+ * GET /api/admin/products/distinct-flavors
+ * Get distinct flavor values from product metadata
+ */
+router.get('/products/distinct-flavors', requireEmployeeAuth, async (req, res) => {
+  try {
+    const result = await db
+      .select({
+        primaryFlavor: productsMetadata.primaryFlavor,
+        flavorDisplay: productsMetadata.flavorDisplay,
+      })
+      .from(productsMetadata)
+      .where(sql`${productsMetadata.primaryFlavor} IS NOT NULL`);
+
+    const primaryFlavors = [...new Set(result.map(r => r.primaryFlavor).filter(Boolean))].sort();
+    const flavorDisplays = [...new Set(result.map(r => r.flavorDisplay).filter(Boolean))].sort();
+
+    res.json({
+      success: true,
+      primaryFlavors,
+      flavorDisplays,
+    });
+  } catch (error) {
+    console.error('Error fetching distinct flavors:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch flavor values',
+    });
+  }
+});
 
 /**
  * GET /api/admin/products

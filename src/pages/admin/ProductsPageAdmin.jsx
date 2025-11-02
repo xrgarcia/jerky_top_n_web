@@ -1,9 +1,9 @@
 import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useAdminProducts, useAnimalCategories, useUpdateProductMetadata } from '../../hooks/useAdminTools';
+import { useAdminProducts, useAnimalCategories, useDistinctFlavors, useUpdateProductMetadata } from '../../hooks/useAdminTools';
 import './AdminPages.css';
 
-function EditProductModal({ product, animalCategories, onClose, onSave, isLoading, error }) {
+function EditProductModal({ product, animalCategories, distinctFlavors, onClose, onSave, isLoading, error }) {
   const [editField, setEditField] = useState('animal');
   const [selectedAnimal, setSelectedAnimal] = useState(
     animalCategories.find(a => a.type === product.animalType) || animalCategories[0]
@@ -132,25 +132,37 @@ function EditProductModal({ product, animalCategories, onClose, onSave, isLoadin
             <>
               <div className="form-group">
                 <label className="form-label">Primary Flavor</label>
-                <input 
-                  type="text" 
+                <select 
                   value={primaryFlavor}
                   onChange={(e) => setPrimaryFlavor(e.target.value)}
                   disabled={isLoading}
-                  className="form-input"
-                  placeholder="e.g., teriyaki, peppered, original"
-                />
+                  className="form-select"
+                >
+                  <option value="">Select primary flavor...</option>
+                  {distinctFlavors?.primaryFlavors?.map(flavor => (
+                    <option key={flavor} value={flavor}>
+                      {flavor}
+                    </option>
+                  ))}
+                </select>
+                <p className="form-help">Select from existing flavor types (e.g., sweet, spicy, savory)</p>
               </div>
               <div className="form-group">
                 <label className="form-label">Flavor Display Name</label>
-                <input 
-                  type="text" 
+                <select 
                   value={flavorDisplay}
                   onChange={(e) => setFlavorDisplay(e.target.value)}
                   disabled={isLoading}
-                  className="form-input"
-                  placeholder="e.g., Teriyaki, Peppered, Original"
-                />
+                  className="form-select"
+                >
+                  <option value="">Select flavor display...</option>
+                  {distinctFlavors?.flavorDisplays?.map(display => (
+                    <option key={display} value={display}>
+                      {display}
+                    </option>
+                  ))}
+                </select>
+                <p className="form-help">Select from existing display names (e.g., Teriyaki, Sweet & Smoky)</p>
               </div>
             </>
           )}
@@ -172,6 +184,7 @@ function EditProductModal({ product, animalCategories, onClose, onSave, isLoadin
 function ProductsPageAdmin() {
   const { data, isLoading, error } = useAdminProducts();
   const { data: animalCategories = [] } = useAnimalCategories();
+  const { data: distinctFlavors } = useDistinctFlavors();
   const updateMutation = useUpdateProductMetadata();
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -422,6 +435,7 @@ function ProductsPageAdmin() {
         <EditProductModal
           product={editingProduct}
           animalCategories={animalCategories}
+          distinctFlavors={distinctFlavors}
           onClose={() => setEditingProduct(null)}
           onSave={handleSaveEdit}
           isLoading={updateMutation.isPending}
