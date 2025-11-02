@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSocket } from './useSocket';
 
 export function useCustomerOrdersWebSocket({ onOrderUpdate }) {
-  const socket = useSocket();
+  const { socket } = useSocket();
 
   useEffect(() => {
     if (!socket) return;
