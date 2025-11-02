@@ -68,8 +68,8 @@ export default function RankPage() {
       }
 
       const data = await api.get(`/products/rankable?${params.toString()}`);
-      // API returns array of products directly
-      setProducts(Array.isArray(data) ? data : []);
+      // API returns { products: [...] } not a bare array
+      setProducts(Array.isArray(data) ? data : (data?.products ?? []));
     } catch (err) {
       setError(err.message || 'Failed to load products');
       setProducts([]);
