@@ -206,7 +206,7 @@ function ManageCoinsPageAdmin() {
         <input
           type="text"
           className="search-input"
-          placeholder="🔍 Search coins by name, code, or description..."
+          placeholder="Search coins by name, code, or description..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
