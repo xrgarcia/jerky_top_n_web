@@ -1,150 +1,66 @@
 # Jerky Top N Web Application
 
 ## Overview
-A web application for ranking jerky products, providing a comprehensive and engaging platform for jerky enthusiasts. The application allows users to view top-rated products, create personal rankings, and engage with a community through interactive features. The project aims to become a leading platform in the jerky enthusiast community by leveraging gamification, social interaction, and advanced product filtering.
+A web application for ranking jerky products, designed to be a comprehensive and engaging platform for jerky enthusiasts. The project aims to provide users with the ability to view top-rated products, create personal rankings, and interact within a community. Its core ambition is to become a leading platform in the jerky enthusiast community through gamification, social interaction, and advanced product filtering capabilities.
 
 ## User Preferences
 - Clean, professional design aesthetic
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
-## Development & Testing
-- **Dev Login Endpoint**: `/dev/login/:token` - Secure development-only login bypass for testing
-  - **Security**: Multi-layered protection (environment checks, localhost-only socket IP validation, token validation)
-  - **Requirements**: 
-    - `DEV_LOGIN_TOKEN` environment variable (GUID format, e.g., `1d27b23c-215b-4f18-b0a8-493494066288`)
-    - `DEV_LOGIN_EMAIL` environment variable (email of user to impersonate)
-  - **Restrictions**: Only works when `NODE_ENV != production` AND `REPLIT_DEPLOYMENT != 1` AND request from localhost socket
-  - **Usage**: Visit `http://localhost:5000/dev/login/{YOUR_TOKEN}` → auto-creates 90-day session → redirects to app
-  - **Session Handling**: Creates httpOnly cookie with `SameSite=none; Secure` (required for Replit iframe)
-  - **IMPORTANT**: Users must access the app from a consistent domain (Replit webview or custom domain). Cross-domain access (e.g., localhost + Replit domain) will fail due to cookie isolation for security.
-
-## Production Deployment
-- **Custom Domain**: rank.jerky.com
-- **Domain Detection**: Uses `REPLIT_DOMAINS` environment variable in production (automatically set by Replit when custom domain is configured)
-- **Environment**: Set `NODE_ENV=production` for production deployments
-- **Redis Configuration** (workaround for Replit's broken secrets sync UI):
-  - **Development**: Set `UPSTASH_REDIS_URL` in workspace secrets (standard variable name)
-  - **Production**: Set `UPSTASH_REDIS_URL_PROD` in deployment secrets only (separate variable to avoid sync bugs)
-  - Code automatically detects production via `REPLIT_DEPLOYMENT=1` and selects correct variable
-  - When Replit fixes their secrets UI, dev will continue to work with standard `UPSTASH_REDIS_URL`
-
 ## System Architecture
-The application employs a modern web architecture for responsiveness, scalability, and real-time interaction.
+The application utilizes a modern web architecture for responsiveness, scalability, and real-time interaction, built upon a recent migration to React.
 
-### Frontend Architecture (React Migration - November 2025)
-The application was migrated from vanilla JavaScript to React + React Router for improved maintainability and developer experience.
-
-**Technology Stack:**
-- **React 19** - Modern UI library with component-based architecture
-- **React Router v7** - Client-side routing with protected routes
-- **TanStack Query (React Query)** - Server state management with automatic caching, background refetching, and query invalidation
-- **Zustand** - Lightweight global state management for auth and UI state
-- **Vite** - Fast build tool and dev server
-- **Socket.IO Client** - Real-time WebSocket integration with automatic query invalidation
-
-**Project Structure:**
-```
-src/
-├── main.jsx                 # App entry point with providers
-├── App.jsx                  # Root component with routing
-├── components/
-│   ├── layout/             # AppLayout, Header, Nav, Footer
-│   └── auth/               # ProtectedRoute wrapper
-├── pages/                  # Page components (Home, Products, CoinBook, etc.)
-├── hooks/                  # React Query hooks and custom hooks
-│   ├── useProducts.js
-│   ├── useGamification.js
-│   ├── useCommunity.js
-│   ├── useRankings.js
-│   └── useSocket.js
-├── store/                  # Zustand stores
-│   └── authStore.js
-├── utils/                  # Utilities
-│   └── api.js             # API client with error handling
-└── styles/                 # Global and component-scoped CSS
-```
-
-**Data Layer:**
-- **API Client**: Centralized fetch wrapper with automatic credential inclusion (httpOnly cookies) and error handling
-- **Session Management**: All API endpoints use secure httpOnly cookies for authentication (credentials: 'include')
-- **React Query Hooks**: All server data fetched via hooks with proper cache keys and stale times
-- **Query Invalidation**: Mutations automatically invalidate related queries for real-time UI updates
-- **WebSocket Integration**: Socket events trigger query invalidations for live data synchronization
-- **Authentication Security**: React Query-based auth with BroadcastChannel for cross-tab sync, relies exclusively on httpOnly cookies (no localStorage fallback)
-
-**Pages Migrated:**
-- Home - Hero dashboard with yellow banner, live stats (using `/api/gamification/hero-stats`), achievements slider, and dual CTAs
-- Products - Search, filter, sort functionality
-- Leaderboard - Top 50 rankers with badges
-- Coin Book - Achievement grid with earned/locked states
-- Community - User search and profiles
-- Profile - Personal stats and rankings
-- Rank - Product ranking with proper error handling
-- Login - Magic link authentication
-- Admin Tools - Employee dashboard with 6 tabbed sections (November 2025 React migration):
-  - **Order Items** - Customer order tracking with advanced filtering (order number, email, product ID, SKU, fulfillment status, date range), pagination with configurable limit (25/50/100/200), default 24-hour date range, real-time WebSocket updates with toast notifications, and fully linkable URL state
-
-### UI/UX Decisions
+**UI/UX Decisions:**
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
 - **Responsiveness**: Optimized for desktop, tablet, and mobile.
-- **Navigation**: Single Page Application (SPA) with React Router, smooth transitions without page flashing
-- **Unified Product Cards**: Consistent card styling across all product displays.
-- **Loading States**: Skeleton screens and loading indicators for all async operations
-- **Error Handling**: User-friendly error messages with actionable feedback
+- **Navigation**: Single Page Application (SPA) with smooth transitions.
+- **Unified Product Cards**: Consistent styling across all product displays.
+- **Loading States**: Skeleton screens and loading indicators for async operations.
+- **Error Handling**: User-friendly error messages with actionable feedback.
+- **Admin Tools Styling**: Earth-tone styling with horizontal tab navigation.
+- **Collection Progress Bar**: Tier-based colors, animated gradient, percentage display, and contextual encouragement.
 
-### Technical Implementations
-- **Frontend**: React with component-based architecture, TanStack Query for server state, Zustand for client state.
-- **Backend**: Node.js and Express.js, using a repository pattern.
-- **User Privacy**: `CommunityService` centralizes user data handling, truncating last names.
-- **User Activation System**: Users default to `active=false` (hidden from community) until their first login, after which `active=true`.
-- **Real-time Communication**: Socket.IO for bidirectional communication, managing achievement notifications with a pending queue and multi-device support.
-- **Session Security**: Production-grade authentication using httpOnly cookies with `SameSite=none; Secure` for iframe compatibility. 90-day sessions stored server-side with automatic expiration. Removed insecure localStorage/query parameter fallback (November 2025 security hardening).
-- **Single-Domain Requirement**: Users must access the app from one consistent domain to ensure cookies work properly. Cross-domain access is not supported for security reasons.
-- **Rate Limiting**: Authentication endpoints protected with 10 requests per 15 minutes per IP (applies to both email-login and magic-login), using Redis for distributed tracking across instances.
-- **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
-- **Shopify Synchronization**: Automatic sync system for products and metadata with Shopify, featuring cache warming on startup, selective cache updates via webhooks, orphan cleanup, and dual cache staleness thresholds with Sentry monitoring.
-- **Gamification Architecture**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) for achievement processing, with an event-driven system for tracking progress, streaks, leaderboards, and notifications. `ProgressTracker` unifies progress calculation across achievement types.
-- **Page View Tracking**: Asynchronous tracking for detailed analytics.
-- **Timestamp Handling**: All database timestamps are converted to ISO 8601 UTC, with client-side relative time calculation.
-- **Top Rankers**: Calculated by an engagement score.
-- **Most Debated Products**: Identified using PostgreSQL STDDEV for ranking variance.
-- **Streak Tracking**: Calendar-day-based streak calculation.
-- **Performance Optimizations**: OOP design patterns, caching, and query optimization.
-- **Search**: Global unified search with type-ahead for products and community members.
-- **Styling**: Custom CSS with an earth-tone color palette.
-- **Database Connection Strategy**: Dual-connection architecture using Neon PostgreSQL for pooled and dedicated connections.
+**Technical Implementations:**
+- **Frontend**: React 19, React Router v7, TanStack Query for server state, Zustand for global state, Vite for tooling, and Socket.IO Client for real-time updates.
+- **Backend**: Node.js and Express.js, employing a repository pattern.
+- **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks for data fetching, and WebSocket integration for real-time query invalidation.
+- **User Privacy**: `CommunityService` truncates last names.
+- **User Activation**: Users are `active=false` until first login.
+- **Real-time Communication**: Socket.IO for achievement notifications with a pending queue and multi-device support.
+- **Session Security**: Production-grade authentication using httpOnly cookies (`SameSite=none; Secure`), 90-day server-side sessions.
+- **Single-Domain Requirement**: Enforced for cookie security.
+- **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
+- **Product Management**: `ProductsService` combines external data with metadata and ranking statistics, including advanced filtering.
+- **Shopify Synchronization**: Automatic sync of products and metadata via webhooks, with cache warming, selective updates, orphan cleanup, and dual cache staleness thresholds.
+- **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications.
+- **Page View Tracking**: Asynchronous tracking for analytics.
+- **Timestamp Handling**: All database timestamps are ISO 8601 UTC; client-side relative time calculation.
+- **Performance**: OOP design patterns, caching, query optimization.
+- **Search**: Global unified search for products and community members.
+- **Styling**: Custom CSS with an earth-tone palette.
+- **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 
-### Feature Specifications
-- **Ranking**: Persistent rankings with a visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system (IndexedDB-backed queue, server-side idempotency, automatic retry, recovery). Recovery operations are batched to prevent multiple product refetches during page initialization.
-- **Products Page**: Advanced sorting, filtering by animal and flavor, client-side instant search, and server-side pagination.
-- **Rank Page Products**: Server-side filtering to exclude already-ranked products. Non-employee users can only rank purchased products, with automatic Shopify order synchronization on login. Employee users bypass purchase restrictions.
-- **Purchase History System**: Automatic background synchronization of Shopify orders on user login with caching and optimized database indexes.
-- **Shopify Webhook Integration**: Real-time synchronization for customer orders and product data via webhooks (orders/create, orders/updated, orders/cancelled, products/update, products/create) with HMAC SHA-256 verification, orphan cleanup, and cache invalidation. Tracks individual order line items with fulfillment status (fulfilled, unfulfilled, partial, restocked).
-- **Community**: Discover users, search, view profiles with ranking statistics, and display top rankers widget.
-- **Leaderboard**: Displays top 50 rankers with engagement scores and badges.
-- **User Profile**: Displays user information and ranking statistics.
-- **Gamification**: Tracks engagement, static collections, dynamic collections, and flavor coin achievements with progress tracking, streaks, leaderboards, and notifications.
-- **Ranking Commentary System**: Dynamic, contextual encouragement messages on the Rank page that adapt to user progress (0, 1-5, 6-15, 16-30, 31-50, 51-75, 76-88, 89 complete tiers), incorporating streak information and displaying next closest achievement milestones with progress indicators.
-- **Collection Progress Bar**: User-specific progress tracking on the Rank page that displays progress based on products the user can actually rank (purchased products for regular users, entire catalog for @jerky.com employees). Features tier-based colors (blue→green→orange→purple→gold→rainbow), animated gradient shimmer effects, percentage display, and contextual encouragement messages powered by CommentaryService.
-- **Admin Tools**: React-based employee admin dashboard with horizontal tab navigation and earth-tone styling inspired by jerky.com. Features:
-  - **Authentication**: Protected by EmployeeRoute requiring `employee_admin` role
-  - **Nested Routing**: `/admin/tools/*` routes with clean URL structure
-  - **Super Admin Access**: Dynamic backend-driven access control using React Query with user-scoped cache keys (`['superAdminAccess', userId]`) and immediate cache invalidation on auth changes to prevent privilege leakage
-  - **Security**: Auth store clears immediately on auth changes, super admin queries purged before refetch, comprehensive error handling for API failures
-  - **Six Sections**:
-    - Manage Coins - Achievement management interface (🏆)
-    - Live Users - Real-time user monitoring (👥)
-    - Manage Products - Product admin tools (📦)
-    - Customer Order Items - Shopify order tracking with 7 filters (order number, email, product ID, SKU, fulfillment status, date range), sortable columns (click headers to sort by order number, customer, SKU, quantity, status, or date), pagination (25/50/100/200), default 24-hour date range, WebSocket live updates with toast notifications, fully linkable URL state for all filters, sorting, and pagination (📋)
-    - Sentry Errors - Error monitoring dashboard (🐛)
-    - Manage Data - Super admin-only data operations (🔧)
-  - **Data Tab Security**: Dynamically fetches super admin status from `/api/admin/data/check-access` endpoint, surfaces API errors with clear messaging, redirects unauthorized employees
-  - **Order Items Technical Implementation**: `useCustomerOrders` hook for REST API with sorting support (`sortBy`, `sortOrder` params), `useCustomerOrdersWebSocket` hook for real-time updates, memoized WebSocket callbacks with `useCallback` to prevent subscription churn, URL state initialization calculates offset from page parameter `(page - 1) * limit` for deep-linkable pagination, clickable column headers with visual sort indicators (▲/▼/⇅)
+**Feature Specifications:**
+- **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and hybrid reliability system. Non-employee users can only rank purchased products.
+- **Products Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination.
+- **Purchase History**: Automatic background synchronization of Shopify orders on login.
+- **Shopify Webhook Integration**: Real-time sync for orders and products with HMAC SHA-256 verification.
+- **Community**: User discovery, search, profiles with ranking stats, top rankers widget.
+- **Leaderboard**: Top 50 rankers with engagement scores and badges.
+- **User Profile**: Personal stats and rankings.
+- **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
+- **Ranking Commentary**: Dynamic, contextual encouragement messages adapting to user progress and streaks.
+- **Collection Progress Bar**: User-specific progress tracking on the Rank page, indicating progress towards achievements.
+- **Admin Tools**: React-based dashboard with:
+    - EmployeeRoute protection, `employee_admin` role.
+    - Nested routing (`/admin/tools/*`).
+    - Super Admin Access: Dynamic backend-driven access control with immediate cache invalidation.
+    - Six Sections: Manage Coins, Live Users, Manage Products (searchable table, multi-filter UI, edit modal with optimistic updates), Customer Order Items (7 filters, sortable columns, pagination, WebSocket live updates, linkable URL state), Sentry Errors, Manage Data (super admin-only).
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
-- **Error Tracking**: Sentry.io for both backend (Node.js SDK) and frontend (Browser SDK with session replay).
+- **Error Tracking**: Sentry.io (backend and frontend with session replay).
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
-- **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icon uploads.
+- **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icons.
