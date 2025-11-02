@@ -118,6 +118,9 @@
   border: 2px solid #8B4513;
   cursor: grabbing;
   opacity: 0.95;
+  transition: none !important;
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
 }
 
 .product-card-overlay .product-image {
