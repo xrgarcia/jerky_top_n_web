@@ -64,7 +64,10 @@ class CustomerOrdersRepository {
     }
 
     if (dateTo) {
-      conditions.push(lte(customerOrderItems.orderDate, new Date(dateTo)));
+      // Make dateTo inclusive by adding 1 day (end of the selected date)
+      const endDate = new Date(dateTo);
+      endDate.setDate(endDate.getDate() + 1);
+      conditions.push(lte(customerOrderItems.orderDate, endDate));
     }
 
     // Execute query with join to users table
@@ -170,7 +173,10 @@ class CustomerOrdersRepository {
     }
 
     if (dateTo) {
-      conditions.push(lte(customerOrderItems.orderDate, new Date(dateTo)));
+      // Make dateTo inclusive by adding 1 day (end of the selected date)
+      const endDate = new Date(dateTo);
+      endDate.setDate(endDate.getDate() + 1);
+      conditions.push(lte(customerOrderItems.orderDate, endDate));
     }
 
     let query = this.db
