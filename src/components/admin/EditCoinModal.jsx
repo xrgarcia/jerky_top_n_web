@@ -41,6 +41,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   // Protein category state (for flavor coins)
   const [proteinCategories, setProteinCategories] = useState([]);
   
+  // Dynamic collection state
+  const [dynamicCollectionType, setDynamicCollectionType] = useState('complete_collection');
+  const [selectedBrands, setSelectedBrands] = useState([]);
+  const [selectedAnimals, setSelectedAnimals] = useState([]);
+  
   // Requirement state
   const [requirement, setRequirement] = useState('');
   
@@ -85,10 +90,24 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             ? JSON.parse(coin.requirement) 
             : coin.requirement;
           
+          // Handle static collections (with productIds)
           if (req.productIds && Array.isArray(req.productIds)) {
             // Product IDs in DB are strings, ensure they stay strings for comparison
             const productIds = req.productIds.map(id => String(id));
             setSelectedProductIds(productIds);
+          }
+          
+          // Handle dynamic collections
+          if (coin.collectionType === 'dynamic_collection') {
+            if (req.type === 'complete_collection') {
+              setDynamicCollectionType('complete_collection');
+            } else if (req.type === 'brand_collection' && req.brands) {
+              setDynamicCollectionType('brand_collection');
+              setSelectedBrands(req.brands);
+            } else if (req.type === 'animal_collection' && req.animals) {
+              setDynamicCollectionType('animal_collection');
+              setSelectedAnimals(req.animals);
+            }
           }
         } catch (e) {
           console.error('Error parsing coin requirement:', e);
@@ -116,12 +135,21 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setPrerequisiteAchievementId(null);
     setSelectedProductIds([]);
     setProductSearchQuery('');
+    setDynamicCollectionType('complete_collection');
+    setSelectedBrands([]);
+    setSelectedAnimals([]);
     setHasTiers(0);
     setTierThresholds({ bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100 });
     setProteinCategories([]);
     setRequirement('');
   };
   
+  // Helper to check if product selector should show (static collections only)
+  const shouldShowProductSelector = (type) => {
+    return ['static_collection', 'legacy', 'flavor_coin'].includes(type);
+  };
+  
+  // Helper to check if this is any collection type
   const isCollectionType = (type) => {
     return ['static_collection', 'dynamic_collection', 'legacy', 'flavor_coin'].includes(type);
   };
@@ -159,6 +187,38 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setIconPreview(null);
     setIcon('');
   };
+  
+  // Extract unique brands and animals from products
+  const availableBrands = useMemo(() => {
+    const brandMap = new Map();
+    allProducts.forEach(product => {
+      if (product.vendor) {
+        const count = brandMap.get(product.vendor) || 0;
+        brandMap.set(product.vendor, count + 1);
+      }
+    });
+    return Array.from(brandMap.entries())
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allProducts]);
+  
+  const availableAnimals = useMemo(() => {
+    const animalMap = new Map();
+    allProducts.forEach(product => {
+      if (product.animalDisplay) {
+        const count = animalMap.get(product.animalDisplay) || 0;
+        animalMap.set(product.animalDisplay, count + 1);
+      }
+    });
+    return Array.from(animalMap.entries())
+      .map(([name, count]) => ({ 
+        name, 
+        count,
+        // Try to get emoji from first product with this animal
+        emoji: allProducts.find(p => p.animalDisplay === name)?.animalIcon || '🥩'
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name));
+  }, [allProducts]);
   
   // Product selection helpers
   const availableProducts = useMemo(() => {
@@ -204,6 +264,23 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setSelectedProductIds(selectedProductIds.filter(id => String(id) !== String(productId)));
   };
   
+  // Brand/Animal selection handlers
+  const handleToggleBrand = (brandName) => {
+    setSelectedBrands(prev => 
+      prev.includes(brandName)
+        ? prev.filter(b => b !== brandName)
+        : [...prev, brandName]
+    );
+  };
+  
+  const handleToggleAnimal = (animalName) => {
+    setSelectedAnimals(prev =>
+      prev.includes(animalName)
+        ? prev.filter(a => a !== animalName)
+        : [...prev, animalName]
+    );
+  };
+  
   // Validate form
   const validateForm = () => {
     if (!code.trim()) {
@@ -247,13 +324,44 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
       }
     }
     
+    // Validate dynamic collection requirements
+    if (collectionType === 'dynamic_collection') {
+      if (dynamicCollectionType === 'brand_collection' && selectedBrands.length === 0) {
+        toast.error('Please select at least one brand for this dynamic collection');
+        return false;
+      }
+      if (dynamicCollectionType === 'animal_collection' && selectedAnimals.length === 0) {
+        toast.error('Please select at least one animal category for this dynamic collection');
+        return false;
+      }
+    }
+    
     return true;
   };
   
   // Build requirement object based on coin type
   const buildRequirement = () => {
-    if (isCollectionType(collectionType)) {
+    // Dynamic collections
+    if (collectionType === 'dynamic_collection') {
+      if (dynamicCollectionType === 'complete_collection') {
+        return JSON.stringify({ type: 'complete_collection' });
+      } else if (dynamicCollectionType === 'brand_collection') {
+        return JSON.stringify({ 
+          type: 'brand_collection', 
+          brands: selectedBrands 
+        });
+      } else if (dynamicCollectionType === 'animal_collection') {
+        return JSON.stringify({ 
+          type: 'animal_collection', 
+          animals: selectedAnimals 
+        });
+      }
+    }
+    
+    // Static collections and flavor coins (with product IDs)
+    if (shouldShowProductSelector(collectionType)) {
       return JSON.stringify({
+        type: collectionType === 'flavor_coin' ? 'flavor_coin' : 'static_collection',
         productIds: selectedProductIds,
         requiredCount: selectedProductIds.length
       });
@@ -512,8 +620,8 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
           </section>
           
-          {/* PRODUCT SELECTOR (for collection types) */}
-          {isCollectionType(collectionType) && (
+          {/* PRODUCT SELECTOR (for static collections only) */}
+          {shouldShowProductSelector(collectionType) && (
             <section className="form-section">
               <h3 className="section-title">SELECT PRODUCTS FOR COLLECTION</h3>
               <p className="section-description">
@@ -605,6 +713,79 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                   </div>
                 </div>
               </div>
+            </section>
+          )}
+          
+          {/* DYNAMIC COLLECTION SELECTOR */}
+          {collectionType === 'dynamic_collection' && (
+            <section className="form-section">
+              <h3 className="section-title">DYNAMIC COLLECTION CONFIGURATION</h3>
+              
+              <div className="form-group">
+                <label>Dynamic Collection Type*</label>
+                <select
+                  value={dynamicCollectionType}
+                  onChange={(e) => setDynamicCollectionType(e.target.value)}
+                  className="form-select"
+                >
+                  <option value="complete_collection">Complete Collection (all products)</option>
+                  <option value="brand_collection">By Brand/Vendor</option>
+                  <option value="animal_collection">By Animal Category</option>
+                </select>
+                <p className="form-hint">Choose how products are filtered for this dynamic collection</p>
+              </div>
+              
+              {/* Brand selector */}
+              {dynamicCollectionType === 'brand_collection' && (
+                <div className="form-group">
+                  <label>Brands/Vendors (select one or more)</label>
+                  <div className="checkbox-grid">
+                    {availableBrands.map(brand => (
+                      <label key={brand.name} className="checkbox-grid-item">
+                        <input
+                          type="checkbox"
+                          checked={selectedBrands.includes(brand.name)}
+                          onChange={() => handleToggleBrand(brand.name)}
+                        />
+                        <span className="checkbox-item-content">
+                          <span className="checkbox-item-icon">🏷️</span>
+                          <span className="checkbox-item-name">{brand.name}</span>
+                          <span className="checkbox-item-count">({brand.count} product{brand.count !== 1 ? 's' : ''})</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  {selectedBrands.length === 0 && (
+                    <p className="form-hint form-hint-error">Please select at least one brand</p>
+                  )}
+                </div>
+              )}
+              
+              {/* Animal category selector */}
+              {dynamicCollectionType === 'animal_collection' && (
+                <div className="form-group">
+                  <label>Animal Categories (select one or more)</label>
+                  <div className="checkbox-grid">
+                    {availableAnimals.map(animal => (
+                      <label key={animal.name} className="checkbox-grid-item">
+                        <input
+                          type="checkbox"
+                          checked={selectedAnimals.includes(animal.name)}
+                          onChange={() => handleToggleAnimal(animal.name)}
+                        />
+                        <span className="checkbox-item-content">
+                          <span className="checkbox-item-icon">{animal.emoji}</span>
+                          <span className="checkbox-item-name">{animal.name}</span>
+                          <span className="checkbox-item-count">({animal.count} product{animal.count !== 1 ? 's' : ''})</span>
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                  {selectedAnimals.length === 0 && (
+                    <p className="form-hint form-hint-error">Please select at least one animal category</p>
+                  )}
+                </div>
+              )}
             </section>
           )}
           
