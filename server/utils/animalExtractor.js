@@ -9,6 +9,7 @@ const animalMapping = {
   
   // Cattle
   'beef': { type: 'cattle', display: 'Beef', icon: '🐄' },
+  'steak': { type: 'cattle', display: 'Beef', icon: '🐄' },
   'brisket': { type: 'cattle', display: 'Beef', icon: '🐄' },
   'buffalo': { type: 'cattle', display: 'Buffalo', icon: '🦬' },
   
@@ -48,7 +49,7 @@ function extractAnimalFromTitle(title) {
   
   // Priority 1: Check for primary meat types (the actual jerky meat) - usually appears first
   // These are the core jerky types that should be checked before flavor names
-  const primaryMeatTypes = ['chicken', 'turkey', 'beef', 'pork', 'bacon', 'venison', 'elk'];
+  const primaryMeatTypes = ['chicken', 'turkey', 'beef', 'steak', 'pork', 'bacon', 'venison', 'elk'];
   
   for (const meatType of primaryMeatTypes) {
     if (lowerTitle.includes(meatType)) {

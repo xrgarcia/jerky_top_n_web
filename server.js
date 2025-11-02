@@ -1059,10 +1059,10 @@ async function startCacheRehydration() {
     productCache.isStale = false;
     productCache.isLoading = false;
     
-    // Schedule next automatic invalidation
-    scheduleNextCacheInvalidation();
+    // DISABLED: 30-minute auto-refresh (webhooks handle product updates)
+    // scheduleNextCacheInvalidation();
     
-    console.log(`✅ Cache rehydrated with ${freshProducts.length} products, next invalidation scheduled`);
+    console.log(`✅ Cache rehydrated with ${freshProducts.length} products (auto-refresh disabled - using webhooks)`);
   } catch (error) {
     console.error('❌ Cache rehydration failed:', error);
     productCache.isLoading = false;
@@ -1240,10 +1240,10 @@ async function fetchAllShopifyProducts() {
     productCache.isStale = false;
     productCache.isLoading = false;
     
-    // Schedule automatic invalidation in 30 minutes
-    scheduleNextCacheInvalidation();
+    // DISABLED: 30-minute auto-refresh (webhooks handle product updates)
+    // scheduleNextCacheInvalidation();
     
-    console.log(`✅ Cache UPDATED: Loaded ${freshProducts.length} products, valid for 30 minutes`);
+    console.log(`✅ Cache UPDATED: Loaded ${freshProducts.length} products (auto-refresh disabled - using webhooks)`);
     return { products: freshProducts, fromCache: false };
     
   } catch (error) {
