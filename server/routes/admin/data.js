@@ -180,30 +180,35 @@ module.exports = function createDataManagementRoutes(storage, db) {
    */
   router.get('/data/check-access', async (req, res) => {
     try {
+      console.log('🔍 Checking super admin access...');
       const sessionId = req.cookies.session_id;
       
       if (!sessionId) {
+        console.log('❌ No session ID');
         return res.json({ hasSuperAdminAccess: false });
       }
 
       const session = await storage.getSession(sessionId);
       if (!session) {
+        console.log('❌ Invalid session');
         return res.json({ hasSuperAdminAccess: false });
       }
 
       const user = await storage.getUserById(session.userId);
       if (!user) {
+        console.log('❌ User not found');
         return res.json({ hasSuperAdminAccess: false });
       }
 
       const hasSuperAdminAccess = user.email === 'ray@jerky.com';
+      console.log(`✅ Super admin check for ${user.email}: ${hasSuperAdminAccess}`);
 
       res.json({ 
         hasSuperAdminAccess,
         email: hasSuperAdminAccess ? user.email : undefined
       });
     } catch (error) {
-      console.error('Error checking super admin access:', error);
+      console.error('❌ Error checking super admin access:', error);
       res.json({ hasSuperAdminAccess: false });
     }
   });
