@@ -211,6 +211,105 @@ class CommentaryService {
   }
 
   /**
+   * Generate collection progress message with contextual encouragement
+   * REUSABLE across different UI contexts (Available Products, Coin Book, Profile, etc.)
+   * @param {number} userId - User ID
+   * @param {string} context - Context for message tone ('available_products', 'coin_book', 'profile')
+   * @param {number} totalRankableProducts - Total rankable products
+   * @returns {Object} { rankedCount, totalProducts, percentage, message, icon, progressColor }
+   */
+  async generateCollectionProgressMessage(userId, context = 'available_products', totalRankableProducts = 89) {
+    try {
+      const { productRankings } = require('../../shared/schema');
+
+      // Get user's ranking stats
+      const [rankingStats] = await this.db.select({
+        totalRankings: sql`count(*)::int`,
+        uniqueProducts: sql`count(distinct ${productRankings.shopifyProductId})::int`,
+      })
+      .from(productRankings)
+      .where(eq(productRankings.userId, userId))
+      .limit(1);
+
+      const stats = rankingStats || { totalRankings: 0, uniqueProducts: 0 };
+      const rankedCount = stats.uniqueProducts;
+      const remaining = totalRankableProducts - rankedCount;
+      const percentage = totalRankableProducts > 0 ? (rankedCount / totalRankableProducts) * 100 : 0;
+
+      // Generate contextual message based on context and progress tier
+      const message = this._generateCollectionMessage(rankedCount, remaining, totalRankableProducts, percentage, context);
+
+      return {
+        rankedCount,
+        totalProducts: totalRankableProducts,
+        remaining,
+        percentage: Math.round(percentage),
+        message: message.text,
+        icon: message.icon,
+        progressColor: message.color
+      };
+    } catch (error) {
+      console.error('❌ Error generating collection progress message:', error);
+      return {
+        rankedCount: 0,
+        totalProducts: totalRankableProducts,
+        remaining: totalRankableProducts,
+        percentage: 0,
+        message: 'Start exploring!',
+        icon: '🚀',
+        progressColor: 'gray'
+      };
+    }
+  }
+
+  /**
+   * Generate contextual collection messages based on progress tier and context
+   * @private
+   */
+  _generateCollectionMessage(rankedCount, remaining, totalProducts, percentage, context) {
+    // Define message templates by context
+    const templates = {
+      available_products: {
+        empty: { text: "Let's start your flavor journey! Search to find products 🚀", icon: '🚀', color: 'blue' },
+        starting: { text: `You've tasted ${rankedCount} flavor${rankedCount !== 1 ? 's' : ''}—let's find your next favorite!`, icon: '✨', color: 'green' },
+        momentum: { text: `${rankedCount} down, ${remaining} to go! You're on a roll 🔥`, icon: '🔥', color: 'orange' },
+        halfway: { text: `Halfway there! ${remaining} more flavors await 💪`, icon: '💪', color: 'purple' },
+        advanced: { text: `Impressive! Only ${remaining} left to complete your collection 🏆`, icon: '🎖️', color: 'gold' },
+        nearComplete: { text: `Almost legendary! Just ${remaining} more 👑`, icon: '👑', color: 'gold' },
+        complete: { text: "Legend status! You've ranked them all 🎉", icon: '🎉', color: 'rainbow' }
+      },
+      coin_book: {
+        empty: { text: 'Start ranking to unlock achievements!', icon: '🎯', color: 'blue' },
+        starting: { text: `${rankedCount} ranked—keep going to unlock more!`, icon: '⭐', color: 'green' },
+        momentum: { text: `${rankedCount} products ranked! Achievements await 🔥`, icon: '🔥', color: 'orange' },
+        halfway: { text: `${rankedCount} ranked—you're unstoppable! 💪`, icon: '💪', color: 'purple' },
+        advanced: { text: `${rankedCount} ranked! Almost at legend status 🏆`, icon: '🏆', color: 'gold' },
+        nearComplete: { text: `${rankedCount} ranked! Finish strong 👑`, icon: '👑', color: 'gold' },
+        complete: { text: 'All products ranked! 🎉', icon: '🎉', color: 'rainbow' }
+      }
+    };
+
+    const contextTemplates = templates[context] || templates.available_products;
+
+    // Tier logic (matches ranking progress tiers for consistency)
+    if (rankedCount === 0) {
+      return contextTemplates.empty;
+    } else if (rankedCount <= 5) {
+      return contextTemplates.starting;
+    } else if (rankedCount <= 15) {
+      return contextTemplates.momentum;
+    } else if (percentage < 60) {
+      return contextTemplates.halfway;
+    } else if (percentage < 85) {
+      return contextTemplates.advanced;
+    } else if (rankedCount < totalProducts) {
+      return contextTemplates.nearComplete;
+    } else {
+      return contextTemplates.complete;
+    }
+  }
+
+  /**
    * Generate collection-specific commentary (for Coin Book)
    * @param {number} userId - User ID
    * @param {string} collectionId - Collection/achievement ID

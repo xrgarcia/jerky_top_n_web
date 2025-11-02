@@ -165,6 +165,36 @@ function createGamificationRoutes(services) {
     }
   });
 
+  router.get('/collection-progress', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      
+      // Get context from query (defaults to 'available_products')
+      const context = req.query.context || 'available_products';
+      
+      // Get total rankable products count
+      const totalRankableProducts = services.getRankableProductCount();
+
+      // Generate collection progress message (REUSABLE for different contexts)
+      const progress = await commentaryService.generateCollectionProgressMessage(userId, context, totalRankableProducts);
+
+      res.json(progress);
+    } catch (error) {
+      console.error('Error generating collection progress:', error);
+      res.status(500).json({ error: 'Failed to generate collection progress' });
+    }
+  });
+
   router.get('/activity-feed', async (req, res) => {
     try {
       const { limit = 50, type } = req.query;

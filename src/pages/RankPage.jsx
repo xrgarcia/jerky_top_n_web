@@ -5,6 +5,7 @@ import { DndContext, DragOverlay, pointerWithin, PointerSensor, useSensor, useSe
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
+import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
@@ -34,13 +35,17 @@ export default function RankPage() {
     onSaveComplete: (rankings, position) => {
       // Refetch available products after rankings change
       handleSearch();
-      // Invalidate and refetch commentary to get updated progress
+      // Invalidate and refetch both commentaries to get updated progress
       queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
+      queryClient.invalidateQueries({ queryKey: ['collectionProgress'] });
     }
   });
   
   // Fetch ranking progress commentary from backend
   const { data: commentary } = useRankingCommentary();
+  
+  // Fetch collection progress for Available Products section
+  const { data: collectionProgress } = useCollectionProgress('available_products');
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
@@ -299,7 +304,25 @@ export default function RankPage() {
         
         <div className="rank-column products-column">
           <h2>Available Products</h2>
-          <div className="sub-header">remaining products to rank bar</div>
+          {collectionProgress && (
+            <div className="collection-progress-bar">
+              <div className="progress-header">
+                <span className="progress-icon">{collectionProgress.icon}</span>
+                <span className="progress-message">{collectionProgress.message}</span>
+              </div>
+              <div className="progress-stats">
+                <div className="progress-track">
+                  <div 
+                    className={`progress-fill progress-${collectionProgress.progressColor}`}
+                    style={{ width: `${collectionProgress.percentage}%` }}
+                  ></div>
+                </div>
+                <span className="progress-text">
+                  {collectionProgress.rankedCount}/{collectionProgress.totalProducts} ranked ({collectionProgress.percentage}%)
+                </span>
+              </div>
+            </div>
+          )}
           
           <div className="search-box">
             <input
