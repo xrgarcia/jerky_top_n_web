@@ -79,7 +79,7 @@ function AppLayout() {
             </ProtectedRoute>
           } />
           
-          <Route path="/tools" element={
+          <Route path="/admin/tools" element={
             <EmployeeRoute>
               <ToolsLayout />
             </EmployeeRoute>
