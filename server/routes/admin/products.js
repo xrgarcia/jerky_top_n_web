@@ -2,7 +2,7 @@ const express = require('express');
 const { productsMetadata } = require('../../../shared/schema');
 const { eq } = require('drizzle-orm');
 
-module.exports = function createProductsAdminRoutes(storage, db) {
+module.exports = function createProductsAdminRoutes(storage, db, metadataCache) {
   const router = express.Router();
 
   /**
@@ -152,10 +152,10 @@ router.patch('/products/:productId/metadata', async (req, res) => {
     console.log(`✅ Updated product ${productId} metadata:`, updateData);
 
     // Invalidate the metadata cache so the change is immediately visible
-    const MetadataCache = require('../../cache/MetadataCache');
-    const metadataCache = MetadataCache.getInstance();
-    metadataCache.invalidate();
-    console.log('🗑️ Metadata cache invalidated after product update');
+    if (metadataCache) {
+      metadataCache.invalidate();
+      console.log('🗑️ Metadata cache invalidated after product update');
+    }
 
     res.json({
       success: true,

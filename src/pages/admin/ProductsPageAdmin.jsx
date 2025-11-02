@@ -4,17 +4,32 @@ import { useAdminProducts, useAnimalCategories, useUpdateProductMetadata } from 
 import './AdminPages.css';
 
 function EditProductModal({ product, animalCategories, onClose, onSave, isLoading, error }) {
+  const [editField, setEditField] = useState('animal');
   const [selectedAnimal, setSelectedAnimal] = useState(
     animalCategories.find(a => a.type === product.animalType) || animalCategories[0]
   );
+  const [vendor, setVendor] = useState(product.vendor || '');
+  const [title, setTitle] = useState(product.title || '');
+  const [primaryFlavor, setPrimaryFlavor] = useState(product.primaryFlavor || '');
+  const [flavorDisplay, setFlavorDisplay] = useState(product.flavorDisplay || '');
 
   const handleSave = () => {
-    onSave({
-      productId: product.id,
-      animalType: selectedAnimal.type,
-      animalDisplay: selectedAnimal.display,
-      animalIcon: selectedAnimal.icon,
-    });
+    const updateData = { productId: product.id };
+    
+    if (editField === 'animal') {
+      updateData.animalType = selectedAnimal.type;
+      updateData.animalDisplay = selectedAnimal.display;
+      updateData.animalIcon = selectedAnimal.icon;
+    } else if (editField === 'vendor') {
+      updateData.vendor = vendor;
+    } else if (editField === 'title') {
+      updateData.title = title;
+    } else if (editField === 'flavor') {
+      updateData.primaryFlavor = primaryFlavor;
+      updateData.flavorDisplay = flavorDisplay;
+    }
+    
+    onSave(updateData);
   };
 
   return (
@@ -38,33 +53,107 @@ function EditProductModal({ product, animalCategories, onClose, onSave, isLoadin
           </div>
 
           <div className="form-group">
-            <label className="form-label">Animal Category*</label>
-            <select
-              className="form-select"
-              value={selectedAnimal.type}
-              onChange={(e) => {
-                const animal = animalCategories.find(a => a.type === e.target.value);
-                setSelectedAnimal(animal);
-              }}
+            <label className="form-label">Field to Edit</label>
+            <select 
+              value={editField}
+              onChange={(e) => setEditField(e.target.value)}
               disabled={isLoading}
+              className="form-select"
             >
-              {animalCategories.map((animal) => (
-                <option key={animal.type} value={animal.type}>
-                  {animal.icon} {animal.display} ({animal.type})
-                </option>
-              ))}
+              <option value="animal">Animal Category</option>
+              <option value="vendor">Vendor</option>
+              <option value="title">Product Title</option>
+              <option value="flavor">Primary Flavor</option>
             </select>
-            <p className="form-help">Selecting an animal will automatically set the animal type, display name, and icon.</p>
           </div>
 
-          <div className="form-group">
-            <label className="form-label">Preview</label>
-            <div className="preview-box">
-              <div><strong>Icon:</strong> {selectedAnimal.icon}</div>
-              <div><strong>Display:</strong> {selectedAnimal.display}</div>
-              <div><strong>Type:</strong> {selectedAnimal.type}</div>
+          {editField === 'animal' && (
+            <>
+              <div className="form-group">
+                <label className="form-label">Animal Category*</label>
+                <select
+                  className="form-select"
+                  value={selectedAnimal.type}
+                  onChange={(e) => {
+                    const animal = animalCategories.find(a => a.type === e.target.value);
+                    setSelectedAnimal(animal);
+                  }}
+                  disabled={isLoading}
+                >
+                  {animalCategories.map((animal) => (
+                    <option key={animal.type} value={animal.type}>
+                      {animal.icon} {animal.display} ({animal.type})
+                    </option>
+                  ))}
+                </select>
+                <p className="form-help">Selecting an animal will automatically set the animal type, display name, and icon.</p>
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Preview</label>
+                <div className="preview-box">
+                  <div><strong>Icon:</strong> {selectedAnimal.icon}</div>
+                  <div><strong>Display:</strong> {selectedAnimal.display}</div>
+                  <div><strong>Type:</strong> {selectedAnimal.type}</div>
+                </div>
+              </div>
+            </>
+          )}
+
+          {editField === 'vendor' && (
+            <div className="form-group">
+              <label className="form-label">Vendor</label>
+              <input 
+                type="text" 
+                value={vendor}
+                onChange={(e) => setVendor(e.target.value)}
+                disabled={isLoading}
+                className="form-input"
+                placeholder="Enter vendor name"
+              />
             </div>
-          </div>
+          )}
+
+          {editField === 'title' && (
+            <div className="form-group">
+              <label className="form-label">Product Title</label>
+              <input 
+                type="text" 
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                disabled={isLoading}
+                className="form-input"
+                placeholder="Enter product title"
+              />
+            </div>
+          )}
+
+          {editField === 'flavor' && (
+            <>
+              <div className="form-group">
+                <label className="form-label">Primary Flavor</label>
+                <input 
+                  type="text" 
+                  value={primaryFlavor}
+                  onChange={(e) => setPrimaryFlavor(e.target.value)}
+                  disabled={isLoading}
+                  className="form-input"
+                  placeholder="e.g., teriyaki, peppered, original"
+                />
+              </div>
+              <div className="form-group">
+                <label className="form-label">Flavor Display Name</label>
+                <input 
+                  type="text" 
+                  value={flavorDisplay}
+                  onChange={(e) => setFlavorDisplay(e.target.value)}
+                  disabled={isLoading}
+                  className="form-input"
+                  placeholder="e.g., Teriyaki, Peppered, Original"
+                />
+              </div>
+            </>
+          )}
         </div>
 
         <div className="modal-footer">
