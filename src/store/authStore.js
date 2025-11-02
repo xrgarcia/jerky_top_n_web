@@ -26,7 +26,6 @@ export const useAuthStore = create((set) => ({
   logout: async () => {
     try {
       await fetch('/api/customer/logout', { method: 'POST', credentials: 'include' });
-      localStorage.removeItem('sessionId');
       set({ user: null, isAuthenticated: false, isEmployee: false, userRole: 'user' });
       
       const { broadcastAuthChange } = await import('../context/AuthContext');

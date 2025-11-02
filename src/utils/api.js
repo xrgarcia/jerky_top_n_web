@@ -9,26 +9,8 @@ class ApiError extends Error {
   }
 }
 
-// Get sessionId from localStorage (fallback when cookies are blocked)
-function getSessionId() {
-  return localStorage.getItem('sessionId');
-}
-
-// Add sessionId query param if needed (fallback for cookie-blocking browsers)
-function addSessionParam(url) {
-  const sessionId = getSessionId();
-  if (sessionId) {
-    const separator = url.includes('?') ? '&' : '?';
-    return `${url}${separator}sessionId=${sessionId}`;
-  }
-  return url;
-}
-
 async function fetchApi(endpoint, options = {}) {
-  let url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
-  
-  // Add sessionId query param as fallback when cookies fail
-  url = addSessionParam(url);
+  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
   
   const config = {
     credentials: 'include',
@@ -61,10 +43,7 @@ async function fetchApi(endpoint, options = {}) {
 }
 
 export async function apiClient(endpoint, options = {}) {
-  let url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
-  
-  // Add sessionId query param as fallback when cookies fail
-  url = addSessionParam(url);
+  const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
   
   return fetch(url, {
     credentials: 'include',

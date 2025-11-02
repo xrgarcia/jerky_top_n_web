@@ -28,19 +28,11 @@ function AppLayout() {
     // Handle login success redirect (from magic link or dev login)
     const hash = window.location.hash;
     if (hash.startsWith('#login-success')) {
-      const params = new URLSearchParams(hash.split('?')[1]);
-      const sessionId = params.get('sessionId');
+      // Clear the hash and broadcast auth change
+      window.location.hash = '';
       
-      if (sessionId) {
-        localStorage.setItem('sessionId', sessionId);
-        console.log('✅ Session ID stored from login redirect');
-        
-        // Clear the hash and broadcast auth change
-        window.location.hash = '';
-        
-        console.log('📢 Magic link success - broadcasting auth change');
-        broadcastAuthChange();
-      }
+      console.log('📢 Magic link success - broadcasting auth change');
+      broadcastAuthChange();
     }
   }, []);
 
