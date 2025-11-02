@@ -76,11 +76,16 @@ function OrderItemsPage() {
     const icon = updateData.action === 'upserted' ? '📦' : 
                  updateData.action === 'updated' ? '🔄' : '❌';
     
+    // Format fulfillment statuses for display
+    const statusText = updateData.fulfillmentStatuses && updateData.fulfillmentStatuses.length > 0
+      ? ` (${updateData.fulfillmentStatuses.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ')})`
+      : '';
+    
     showToast({
       type: updateData.action === 'deleted' ? 'warning' : 'info',
       icon,
       title: action,
-      message: `Order ${updateData.orderNumber}: ${updateData.itemsCount || 0} item(s)`,
+      message: `Order ${updateData.orderNumber}: ${updateData.itemsCount || 0} item(s)${statusText}`,
       duration: 4000
     });
     
