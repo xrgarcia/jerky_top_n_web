@@ -14,6 +14,7 @@ export function useRanking(options = {}) {
   const saveTimeoutRef = useRef(null);
   const persistentQueue = useRef(null);
   const currentOperationId = useRef(null);
+  const isRecovering = useRef(false); // Track if we're in recovery mode
   
   // Initialize persistent queue
   useEffect(() => {
@@ -76,6 +77,9 @@ export function useRanking(options = {}) {
       if (pending.length > 0) {
         console.log(`🔄 Found ${pending.length} pending operation(s), attempting recovery...`);
         
+        // Set recovery mode to skip individual callbacks
+        isRecovering.current = true;
+        
         for (const operation of pending) {
           try {
             await saveToBackend(operation.rankings, operation.operationId);
@@ -83,9 +87,17 @@ export function useRanking(options = {}) {
             console.error('Failed to recover operation:', operation.operationId, error);
           }
         }
+        
+        // Recovery complete - trigger single callback for all operations
+        isRecovering.current = false;
+        if (onSaveComplete) {
+          console.log('✅ Recovery complete - triggering single refresh');
+          onSaveComplete(rankedProducts, null);
+        }
       }
     } catch (error) {
       console.error('Failed to recover pending operations:', error);
+      isRecovering.current = false;
     }
   };
   
@@ -259,8 +271,8 @@ export function useRanking(options = {}) {
       
       setSaveStatus({ state: 'saved', message, position });
       
-      // Notify parent component to refetch products
-      if (onSaveComplete) {
+      // Notify parent component to refetch products (skip during recovery to avoid multiple fetches)
+      if (onSaveComplete && !isRecovering.current) {
         onSaveComplete(rankings, position);
       }
       

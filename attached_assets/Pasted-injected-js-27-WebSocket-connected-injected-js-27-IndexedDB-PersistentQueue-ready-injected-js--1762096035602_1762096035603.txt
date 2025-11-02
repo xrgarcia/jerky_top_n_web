@@ -1,0 +1,824 @@
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ Loaded 5 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ❌ WebSocket disconnected
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ Loaded 5 existing rankings
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🗑️ Removed product 11971533199 from position 1
+injected.js:27 📝 Queued operation: 9fc8dd19 for rank undefined
+injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 9fc8dd19
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🗑️ Removed product 11821168399 from position 4
+injected.js:27 📝 Queued operation: 37933026 for rank undefined
+injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 37933026
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🗑️ Removed product 11821187791 from position 3
+injected.js:27 📝 Queued operation: adf5a1e5 for rank undefined
+injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: adf5a1e5
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🗑️ Removed product 11821179087 from position 2
+injected.js:27 📝 Queued operation: a8dc8619 for rank undefined
+injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: a8dc8619
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🗑️ Removed product 11821175887 from position 1
+injected.js:27 📝 Queued operation: 8ccf1a49 for rank undefined
+injected.js:27 💾 Persisted 0 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 8ccf1a49
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ❌ WebSocket disconnected
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+injected.js:27 ✅ WebSocket connected
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: true, progressError: null}
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: false, progressError: ApiError: Network error
+    at uo (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spo…}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 Collection Progress Debug: {collectionProgress: undefined, progressLoading: false, progressError: ApiError: Network error
+    at uo (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spo…}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Added/moved "All-Natural Ahi Tuna Jerky - Original" to position 2
+injected.js:27 📝 Queued operation: bcdfb1d1 for rank undefined
+injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: bcdfb1d1
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Black Pepper" to position 2
+injected.js:27 📝 Queued operation: f9b1861d for rank undefined
+injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: f9b1861d
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Chipotle Bourbon" to position 3
+injected.js:27 📝 Queued operation: e98adab2 for rank undefined
+injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: e98adab2
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Chicken Jerky - Buffalo Wing" to position 4
+injected.js:27 📝 Queued operation: 9809b2d9 for rank undefined
+injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 9809b2d9
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Turkey Jerky - Original" to position 5
+injected.js:27 📝 Queued operation: 1be85a5b for rank undefined
+injected.js:27 💾 Persisted 5 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 1be85a5b
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🗑️ Removed product 11821168399 from position 5
+injected.js:27 📝 Queued operation: b69880e5 for rank undefined
+injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+injected.js:27 🗑️ Removed product 11821187791 from position 4
+injected.js:27 📝 Queued operation: b2d9d64e for rank undefined
+injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+injected.js:27 🗑️ Removed product 11821179087 from position 3
+injected.js:27 📝 Queued operation: c3978211 for rank undefined
+injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+injected.js:27 🗑️ Removed product 11821175887 from position 2
+injected.js:27 📝 Queued operation: 792fdfb0 for rank undefined
+injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+injected.js:27 🗑️ Removed product 11971533199 from position 1
+injected.js:27 📝 Queued operation: 45667f7f for rank undefined
+injected.js:27 💾 Persisted 0 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 792fdfb0
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 🔄 Found 4 pending operation(s), attempting recovery...
+injected.js:27 ✅ Completed operation: b69880e5
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Completed operation: b2d9d64e
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: c3978211
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: 45667f7f
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Ahi Tuna Jerky - Original" to position 1
+injected.js:27 📝 Queued operation: 73064d83 for rank undefined
+injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 73064d83
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ Loaded 1 existing rankings
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Black Pepper" to position 2
+injected.js:27 📝 Queued operation: bd316187 for rank undefined
+injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: bd316187
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Chipotle Bourbon" to position 3
+injected.js:27 📝 Queued operation: fcd766e3 for rank undefined
+injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: fcd766e3
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Chicken Jerky - Buffalo Wing" to position 4
+injected.js:27 📝 Queued operation: dff95a45 for rank undefined
+injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: dff95a45
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "All-Natural Turkey Jerky - Original" to position 5
+injected.js:27 📝 Queued operation: ed112718 for rank undefined
+injected.js:27 💾 Persisted 5 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: ed112718
+injected.js:27 ✅ Cleared persisted operation after successful save
+13ea93ecd30055c3.js:2 [Coframe] Mutation callback infinite loop protection triggered, disconnecting mutation observer {0: MutationRecord, 1: MutationRecord}
+(anonymous) @ 13ea93ecd30055c3.js:2
+o @ cf.js?config=%257B%2522projectId%2522%253A%252268c9ad4d4cddb58cf3a1f93d%2522%252C%2522startTime%2522%253A1762093402371%252C%2522timeoutMs%2522%253A1000%252C%2522currentUrl%2522%253A%2522https%253A%252F%252Freplit.com%252F%2540raygarciajr%252Fjerkytopnweb%2522%252C%2522trackingOnly%2522%253Atrue%257D:10
+error @ cf.js?config=%257B%2522projectId%2522%253A%252268c9ad4d4cddb58cf3a1f93d%2522%252C%2522startTime%2522%253A1762093402371%252C%2522timeoutMs%2522%253A1000%252C%2522currentUrl%2522%253A%2522https%253A%252F%252Freplit.com%252F%2540raygarciajr%252Fjerkytopnweb%2522%252C%2522trackingOnly%2522%253Atrue%257D:10
+(anonymous) @ cf.js?config=%257B%2522projectId%2522%253A%252268c9ad4d4cddb58cf3a1f93d%2522%252C%2522startTime%2522%253A1762093402371%252C%2522timeoutMs%2522%253A1000%252C%2522currentUrl%2522%253A%2522https%253A%252F%252Freplit.com%252F%2540raygarciajr%252Fjerkytopnweb%2522%252C%2522trackingOnly%2522%253Atrue%257D:10
+childList
+e @ ed1e693c96a75807.js:2
+uX @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ Loaded 5 existing rankings
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ❌ WebSocket disconnected
+VM1759 injected.js:27 ✅ WebSocket connected
+VM1759 injected.js:27 ✅ IndexedDB PersistentQueue ready
+VM1759 injected.js:27 ✅ Loaded 5 existing rankings
+VM1759 injected.js:27 ❌ WebSocket disconnected
+VM1759 injected.js:27 ✅ WebSocket connected
+VM1759 injected.js:27 🗑️ Removed product 11971533199 from position 1
+VM1759 injected.js:27 📝 Queued operation: 13208323 for rank undefined
+VM1759 injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821175887 from position 1
+VM1759 injected.js:27 📝 Queued operation: b2615aa3 for rank undefined
+VM1759 injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821179087 from position 1
+VM1759 injected.js:27 📝 Queued operation: e5b82acb for rank undefined
+VM1759 injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821187791 from position 1
+VM1759 injected.js:27 📝 Queued operation: f7cd0a5e for rank undefined
+VM1759 injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821168399 from position 1
+VM1759 injected.js:27 📝 Queued operation: aeaab109 for rank undefined
+VM1759 injected.js:27 💾 Persisted 0 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: aeaab109
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ✅ Added/moved "All-Natural Ahi Tuna Jerky - Original" to position 1
+VM1759 injected.js:27 📝 Queued operation: 61f0011a for rank undefined
+VM1759 injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: 61f0011a
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Black Pepper" to position 2
+VM1759 injected.js:27 📝 Queued operation: b20a9421 for rank undefined
+VM1759 injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: b20a9421
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Chipotle Bourbon" to position 3
+VM1759 injected.js:27 📝 Queued operation: 47c2163f for rank undefined
+VM1759 injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: 47c2163f
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ✅ Added/moved "All-Natural Chicken Jerky - Buffalo Wing" to position 4
+VM1759 injected.js:27 📝 Queued operation: 69f968ac for rank undefined
+VM1759 injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: 69f968ac
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ✅ Added/moved "All-Natural Turkey Jerky - Original" to position 5
+VM1759 injected.js:27 📝 Queued operation: 5fa26a4d for rank undefined
+VM1759 injected.js:27 💾 Persisted 5 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: 5fa26a4d
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 🗑️ Removed product 11821168399 from position 5
+VM1759 injected.js:27 📝 Queued operation: e94f1ae1 for rank undefined
+VM1759 injected.js:27 💾 Persisted 4 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821187791 from position 4
+VM1759 injected.js:27 📝 Queued operation: 38289fa8 for rank undefined
+VM1759 injected.js:27 💾 Persisted 3 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821179087 from position 3
+VM1759 injected.js:27 📝 Queued operation: 39349b96 for rank undefined
+VM1759 injected.js:27 💾 Persisted 2 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11821175887 from position 2
+VM1759 injected.js:27 📝 Queued operation: abd9fa3f for rank undefined
+VM1759 injected.js:27 💾 Persisted 1 ranking(s) to IndexedDB
+VM1759 injected.js:27 🗑️ Removed product 11971533199 from position 1
+VM1759 injected.js:27 📝 Queued operation: 00751e1a for rank undefined
+VM1759 injected.js:27 💾 Persisted 0 ranking(s) to IndexedDB
+VM1759 injected.js:27 ✅ Completed operation: abd9fa3f
+VM1759 injected.js:27 ✅ Cleared persisted operation after successful save
+VM1759 injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 🔄 Found 8 pending operation(s), attempting recovery...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Completed operation: 13208323
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: b2615aa3
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: e5b82acb
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: f7cd0a5e
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: e94f1ae1
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: 38289fa8
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: 39349b96
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Completed operation: 00751e1a
+injected.js:27 ✅ Cleared persisted operation after successful save
