@@ -1,19 +1,28 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useFetchCoins, useToggleCoin, useDeleteCoin } from '../../hooks/useAdminTools';
+import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useAdminProducts } from '../../hooks/useAdminTools';
+import EditCoinModal from '../../components/admin/EditCoinModal';
 import './AdminPages.css';
 
 function ManageCoinsPageAdmin() {
   const { data: coinsData, isLoading, error } = useFetchCoins();
+  const { data: productsData } = useAdminProducts();
   const toggleCoinMutation = useToggleCoin();
   const deleteCoinMutation = useDeleteCoin();
+  const createCoinMutation = useCreateCoin();
+  const updateCoinMutation = useUpdateCoin();
 
   // Filter states
   const [coinTypeFilter, setCoinTypeFilter] = useState('all');
   const [visibilityFilter, setVisibilityFilter] = useState('all');
   const [dependencyFilter, setDependencyFilter] = useState('all');
+  
+  // Modal state
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCoin, setEditingCoin] = useState(null);
 
   const coins = coinsData?.achievements || [];
+  const products = productsData?.products || [];
 
   // Apply filters
   const filteredCoins = useMemo(() => {
@@ -67,8 +76,41 @@ function ManageCoinsPageAdmin() {
   };
 
   const handleEditCoin = (coin) => {
-    // Placeholder for edit modal - to be implemented
-    toast('Edit modal coming soon', { icon: '✏️' });
+    setEditingCoin(coin);
+    setIsModalOpen(true);
+  };
+  
+  const handleCreateCoin = () => {
+    setEditingCoin(null);
+    setIsModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingCoin(null);
+  };
+  
+  const handleSaveCoin = async (coinData, iconFile) => {
+    try {
+      if (editingCoin) {
+        // Update existing coin
+        await updateCoinMutation.mutateAsync({
+          coinId: editingCoin.id,
+          coinData,
+          iconFile
+        });
+        toast.success(`${coinData.name} updated successfully`);
+      } else {
+        // Create new coin
+        await createCoinMutation.mutateAsync({
+          coinData,
+          iconFile
+        });
+        toast.success(`${coinData.name} created successfully`);
+      }
+    } catch (error) {
+      throw error; // Re-throw so modal can handle it
+    }
   };
 
   const getCoinTypeDisplay = (collectionType) => {
@@ -99,7 +141,7 @@ function ManageCoinsPageAdmin() {
           <span className="admin-icon">🪙</span>
           <h2>Coin Book Admin Dashboard</h2>
         </div>
-        <button className="btn-create" onClick={() => toast('Create coin modal coming soon', { icon: '➕' })}>
+        <button className="btn-create" onClick={handleCreateCoin}>
           + Create Coin
         </button>
       </div>
@@ -286,6 +328,16 @@ function ManageCoinsPageAdmin() {
           Showing {filteredCoins.length} of {coins.length} coins
         </p>
       </div>
+      
+      {/* Edit/Create Coin Modal */}
+      <EditCoinModal
+        coin={editingCoin}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onSave={handleSaveCoin}
+        allCoins={coins}
+        allProducts={products}
+      />
     </div>
   );
 }

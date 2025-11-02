@@ -61,6 +61,41 @@ export const api = {
   put: (endpoint, data, options) => fetchApi(endpoint, { ...options, method: 'PUT', body: JSON.stringify(data) }),
   patch: (endpoint, data, options) => fetchApi(endpoint, { ...options, method: 'PATCH', body: JSON.stringify(data) }),
   delete: (endpoint, options) => fetchApi(endpoint, { ...options, method: 'DELETE' }),
+  upload: async (endpoint, formData, options = {}) => {
+    const url = endpoint.startsWith('http') ? endpoint : `${BASE_URL}${endpoint}`;
+    
+    const config = {
+      credentials: 'include',
+      method: 'POST',
+      body: formData,
+      ...options,
+    };
+    
+    // Don't set Content-Type for FormData - browser sets it with boundary
+    if (options.headers) {
+      config.headers = options.headers;
+    }
+
+    try {
+      const response = await fetch(url, config);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new ApiError(
+          data.error || data.message || 'Upload failed',
+          response.status,
+          data
+        );
+      }
+
+      return data;
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      throw new ApiError('Network error during upload', 0, { originalError: error.message });
+    }
+  },
 };
 
 export { ApiError };

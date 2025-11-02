@@ -285,3 +285,97 @@ export function useDeleteCoin() {
     },
   });
 }
+
+export function useCreateCoin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ coinData, iconFile }) => {
+      let finalCoinData = { ...coinData };
+      
+      // If there's a custom image icon, upload it first
+      if (iconFile) {
+        const formData = new FormData();
+        formData.append('icon', iconFile);
+        
+        const uploadResult = await api.upload('/admin/achievements/upload-icon', formData);
+        
+        if (uploadResult.tempUrl) {
+          // Confirm the upload
+          const confirmResult = await api.post('/admin/achievements/confirm-icon-upload', {
+            tempUrl: uploadResult.tempUrl
+          });
+          
+          finalCoinData.icon = confirmResult.iconUrl;
+          finalCoinData.iconType = 'image';
+        }
+      }
+      
+      // Create the achievement
+      const data = await api.post('/admin/achievements', finalCoinData);
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+  });
+}
+
+export function useUpdateCoin() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ coinId, coinData, iconFile }) => {
+      let finalCoinData = { ...coinData };
+      
+      // If there's a new custom image icon, upload it first
+      if (iconFile) {
+        const formData = new FormData();
+        formData.append('icon', iconFile);
+        
+        const uploadResult = await api.upload('/admin/achievements/upload-icon', formData);
+        
+        if (uploadResult.tempUrl) {
+          // Confirm the upload
+          const confirmResult = await api.post('/admin/achievements/confirm-icon-upload', {
+            tempUrl: uploadResult.tempUrl
+          });
+          
+          finalCoinData.icon = confirmResult.iconUrl;
+          finalCoinData.iconType = 'image';
+        }
+      }
+      
+      // Update the achievement
+      const data = await api.put(`/admin/achievements/${coinId}`, finalCoinData);
+      return data;
+    },
+    onMutate: async ({ coinId, coinData }) => {
+      await queryClient.cancelQueries({ queryKey: ['adminCoins'] });
+      const previousCoins = queryClient.getQueryData(['adminCoins']);
+
+      queryClient.setQueryData(['adminCoins'], (old) => {
+        if (!old || !old.achievements) return old;
+        
+        return {
+          ...old,
+          achievements: old.achievements.map((coin) =>
+            coin.id === coinId
+              ? { ...coin, ...coinData }
+              : coin
+          ),
+        };
+      });
+
+      return { previousCoins };
+    },
+    onError: (err, variables, context) => {
+      if (context?.previousCoins) {
+        queryClient.setQueryData(['adminCoins'], context.previousCoins);
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+  });
+}
