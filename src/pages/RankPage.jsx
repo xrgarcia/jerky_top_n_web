@@ -40,8 +40,9 @@ export default function RankPage() {
 
   // Filter out already-ranked products (optimistic UI)
   const availableProducts = useMemo(() => {
+    if (!Array.isArray(products) || !getRankedProductIds) return [];
     const rankedIds = new Set(getRankedProductIds());
-    return products.filter(p => !rankedIds.has(p.id));
+    return products.filter(p => p && !rankedIds.has(p.id));
   }, [products, getRankedProductIds]);
   
   const handleSearch = async () => {
@@ -90,9 +91,10 @@ export default function RankPage() {
   
   // Generate empty slots
   const slots = useMemo(() => {
+    if (!Array.isArray(rankedProducts)) return [];
     const slotsArray = [];
     for (let i = 1; i <= slotCount; i++) {
-      const rankedProduct = rankedProducts.find(r => r.ranking === i);
+      const rankedProduct = rankedProducts.find(r => r && r.ranking === i);
       slotsArray.push({
         position: i,
         product: rankedProduct?.productData || null
@@ -118,7 +120,7 @@ export default function RankPage() {
     // Check if dragging from products to slot
     if (activeId.startsWith('product-')) {
       const productId = activeId.replace('product-', '');
-      const product = products.find(p => p.id === productId);
+      const product = Array.isArray(products) ? products.find(p => p && p.id === productId) : null;
       
       if (product && overId.startsWith('slot-')) {
         const position = parseInt(overId.replace('slot-', ''));
@@ -130,10 +132,10 @@ export default function RankPage() {
       const fromPos = parseInt(activeId.replace('slot-', ''));
       const toPos = parseInt(overId.replace('slot-', ''));
       
-      if (fromPos !== toPos) {
+      if (fromPos !== toPos && Array.isArray(rankedProducts)) {
         // Find the actual indices in rankedProducts array
-        const fromIndex = rankedProducts.findIndex(r => r.ranking === fromPos);
-        const toIndex = rankedProducts.findIndex(r => r.ranking === toPos);
+        const fromIndex = rankedProducts.findIndex(r => r && r.ranking === fromPos);
+        const toIndex = rankedProducts.findIndex(r => r && r.ranking === toPos);
         
         if (fromIndex !== -1 && toIndex !== -1) {
           reorderRankings(fromIndex, toIndex);
@@ -152,10 +154,10 @@ export default function RankPage() {
     
     if (activeId.startsWith('product-')) {
       const productId = activeId.replace('product-', '');
-      return products.find(p => p.id === productId);
+      return Array.isArray(products) ? products.find(p => p && p.id === productId) : null;
     } else if (activeId.startsWith('slot-')) {
       const position = parseInt(activeId.replace('slot-', ''));
-      return slots.find(s => s.position === position)?.product;
+      return Array.isArray(slots) ? slots.find(s => s && s.position === position)?.product : null;
     }
     
     return null;
