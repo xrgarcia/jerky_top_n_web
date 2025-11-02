@@ -1,14 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 
 function ProtectedRoute({ children }) {
-  const { isAuthenticated, isLoading, checkAuth } = useAuthStore();
+  const { isAuthenticated, isLoading } = useAuthStore();
   const location = useLocation();
-
-  useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
 
   if (isLoading) {
     return (

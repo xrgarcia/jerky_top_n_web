@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
-import { useAuthStore } from '../../store/authStore';
+import { Routes, Route } from 'react-router-dom';
+import { broadcastAuthChange } from '../../context/AuthContext';
 import { useSocket } from '../../hooks/useSocket';
 import Header from './Header';
 import Nav from './Nav';
@@ -21,9 +21,6 @@ import ToolsPage from '../../pages/ToolsPage';
 import './AppLayout.css';
 
 function AppLayout() {
-  const location = useLocation();
-  const { checkAuth } = useAuthStore();
-  
   // Initialize WebSocket connection for real-time updates
   useSocket();
 
@@ -38,22 +35,14 @@ function AppLayout() {
         localStorage.setItem('sessionId', sessionId);
         console.log('✅ Session ID stored from login redirect');
         
-        // Clear the hash and check auth
+        // Clear the hash and broadcast auth change
         window.location.hash = '';
-        checkAuth();
+        
+        console.log('📢 Magic link success - broadcasting auth change');
+        broadcastAuthChange();
       }
-    } else {
-      checkAuth();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Check auth on every route change
-  useEffect(() => {
-    console.log('🔄 Route changed to:', location.pathname, '- checking auth...');
-    checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname]);
 
   return (
     <div className="app-layout">
