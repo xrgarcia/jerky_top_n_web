@@ -37,7 +37,7 @@ class CommentaryService {
       const rankedCount = stats.uniqueProducts;
 
       // Get current streak
-      const streaks = await this.streakManager.getAllUserStreaks(userId);
+      const streaks = await this.streakManager.getUserStreaks(userId);
       const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
       const currentStreak = dailyStreak?.currentStreak || 0;
 
