@@ -1,13 +1,14 @@
 const express = require('express');
-const router = express.Router();
-const { db, storage } = require('../../storage');
 const { productsMetadata } = require('../../../shared/schema');
 const { eq } = require('drizzle-orm');
 
-/**
- * Middleware to require employee authentication
- */
-async function requireEmployeeAuth(req, res, next) {
+module.exports = function createProductsAdminRoutes(storage, db) {
+  const router = express.Router();
+
+  /**
+   * Middleware to require employee authentication
+   */
+  async function requireEmployeeAuth(req, res, next) {
   try {
     const sessionId = req.cookies.session_id;
     
