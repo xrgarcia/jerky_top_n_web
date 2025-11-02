@@ -208,15 +208,13 @@ function SentryPage() {
                         {getStatusLabel(issue.status)}
                       </span>
                     </td>
-                    <td onClick={(e) => e.stopPropagation()}>
-                      <a 
-                        href={issue.permalink} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
+                    <td>
+                      <button 
+                        onClick={() => navigate(`/admin/tools/sentry/${issue.id}`)}
                         className="btn-view-details"
                       >
-                        Sentry →
-                      </a>
+                        View Details
+                      </button>
                     </td>
                   </tr>
                 ))
