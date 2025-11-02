@@ -44,12 +44,16 @@ module.exports = function createCustomerOrdersRoutes(db) {
         repository.getOrdersCount(filters)
       ]);
 
-      // Format dates to ISO strings for frontend
+      // Format dates to ISO strings and extract lineItemData fields for frontend
       const formattedOrders = orders.map(order => ({
         ...order,
         orderDate: order.orderDate?.toISOString(),
         createdAt: order.createdAt?.toISOString(),
         updatedAt: order.updatedAt?.toISOString(),
+        // Extract commonly used fields from lineItemData JSON
+        productTitle: order.lineItemData?.title || null,
+        price: order.lineItemData?.price || null,
+        variantTitle: order.lineItemData?.variant_title || null,
       }));
 
       res.json({
