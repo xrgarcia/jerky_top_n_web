@@ -16,8 +16,8 @@ A web application for ranking jerky products, providing a comprehensive and enga
     - `DEV_LOGIN_EMAIL` environment variable (email of user to impersonate)
   - **Restrictions**: Only works when `NODE_ENV != production` AND `REPLIT_DEPLOYMENT != 1` AND request from localhost socket
   - **Usage**: Visit `http://localhost:5000/dev/login/{YOUR_TOKEN}` → auto-creates 90-day session → redirects to app
-  - **Session Handling**: Creates httpOnly cookie with `SameSite=none; Secure` (required for Replit iframe) + stores sessionId in localStorage via `#login-success` hash route
-  - **IMPORTANT**: If you previously logged in before November 1, 2025, clear your `session_id` cookie or visit dev login again to get new SameSite=none cookie
+  - **Session Handling**: Creates httpOnly cookie with `SameSite=none; Secure` (required for Replit iframe)
+  - **IMPORTANT**: Users must access the app from a consistent domain (Replit webview or custom domain). Cross-domain access (e.g., localhost + Replit domain) will fail due to cookie isolation for security.
 
 ## Production Deployment
 - **Custom Domain**: rank.jerky.com
@@ -67,10 +67,11 @@ src/
 
 **Data Layer:**
 - **API Client**: Centralized fetch wrapper with automatic credential inclusion (httpOnly cookies) and error handling
-- **Session Management**: All API endpoints use httpOnly cookies for authentication (with query param fallback for backwards compatibility)
+- **Session Management**: All API endpoints use secure httpOnly cookies for authentication (credentials: 'include')
 - **React Query Hooks**: All server data fetched via hooks with proper cache keys and stale times
 - **Query Invalidation**: Mutations automatically invalidate related queries for real-time UI updates
 - **WebSocket Integration**: Socket events trigger query invalidations for live data synchronization
+- **Authentication Security**: React Query-based auth with BroadcastChannel for cross-tab sync, relies exclusively on httpOnly cookies (no localStorage fallback)
 
 **Pages Migrated:**
 - Home - Hero dashboard with yellow banner, live stats (using `/api/gamification/hero-stats`), achievements slider, and dual CTAs
@@ -96,7 +97,8 @@ src/
 - **User Privacy**: `CommunityService` centralizes user data handling, truncating last names.
 - **User Activation System**: Users default to `active=false` (hidden from community) until their first login, after which `active=true`.
 - **Real-time Communication**: Socket.IO for bidirectional communication, managing achievement notifications with a pending queue and multi-device support.
-- **Session Persistence**: Dual-layer authentication using httpOnly cookies and localStorage sessionId.
+- **Session Security**: Production-grade authentication using httpOnly cookies with `SameSite=none; Secure` for iframe compatibility. 90-day sessions stored server-side with automatic expiration. Removed insecure localStorage/query parameter fallback (November 2025 security hardening).
+- **Single-Domain Requirement**: Users must access the app from one consistent domain to ensure cookies work properly. Cross-domain access is not supported for security reasons.
 - **Rate Limiting**: Authentication endpoints protected with 10 requests per 15 minutes per IP (applies to both email-login and magic-login), using Redis for distributed tracking across instances.
 - **Product Management**: `ProductsService` combines external product data with metadata and ranking statistics, including advanced filtering.
 - **Shopify Synchronization**: Automatic sync system for products and metadata with Shopify, featuring cache warming on startup, selective cache updates via webhooks, orphan cleanup, and dual cache staleness thresholds with Sentry monitoring.
