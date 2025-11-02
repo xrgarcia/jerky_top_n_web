@@ -9,6 +9,8 @@ function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { checkAuth } = useAuthStore();
+  
+  const redirectMessage = location.state?.message;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +43,21 @@ function LoginPage() {
   return (
     <div style={{ padding: '60px 20px', maxWidth: '500px', margin: '0 auto' }}>
       <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Login</h1>
+      
+      {redirectMessage && (
+        <div style={{
+          padding: '16px 20px',
+          background: '#fff3cd',
+          border: '2px solid #ffc107',
+          borderRadius: '8px',
+          marginBottom: '20px',
+          textAlign: 'center'
+        }}>
+          <p style={{ margin: 0, color: '#856404', fontSize: '16px', lineHeight: '1.5' }}>
+            🥩 {redirectMessage}
+          </p>
+        </div>
+      )}
       
       <p style={{ 
         textAlign: 'center', 
