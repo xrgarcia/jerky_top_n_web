@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 import { DndContext, DragOverlay, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
@@ -10,6 +11,7 @@ import { DraggableProduct } from '../components/rank/DraggableProduct';
 import './RankPage.css';
 
 export default function RankPage() {
+  const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [products, setProducts] = useState([]);
@@ -32,13 +34,13 @@ export default function RankPage() {
     onSaveComplete: (rankings, position) => {
       // Refetch available products after rankings change
       handleSearch();
-      // Refetch commentary to get updated progress
-      refetchCommentary();
+      // Invalidate and refetch commentary to get updated progress
+      queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
     }
   });
   
   // Fetch ranking progress commentary from backend
-  const { data: commentary, refetch: refetchCommentary } = useRankingCommentary();
+  const { data: commentary } = useRankingCommentary();
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
