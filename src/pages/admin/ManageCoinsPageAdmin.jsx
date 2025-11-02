@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import toast from 'react-hot-toast';
 import { useFetchCoins, useToggleCoin, useDeleteCoin } from '../../hooks/useAdminTools';
 import './AdminPages.css';
@@ -14,6 +14,21 @@ function ManageCoinsPageAdmin() {
   const [dependencyFilter, setDependencyFilter] = useState('all');
 
   const coins = coinsData?.achievements || [];
+
+  // DEBUG: Log coin data to identify legacy pattern
+  useEffect(() => {
+    if (coins.length > 0) {
+      console.log('🪙 DEBUG: All coins data:', coins);
+      console.log('🔍 DEBUG: Coin types breakdown:');
+      const typeGroups = coins.reduce((acc, coin) => {
+        const type = coin.collectionType || 'null';
+        if (!acc[type]) acc[type] = [];
+        acc[type].push({ name: coin.name, category: coin.category, code: coin.code });
+        return acc;
+      }, {});
+      console.table(typeGroups);
+    }
+  }, [coins]);
 
   // Apply filters
   const filteredCoins = useMemo(() => {
