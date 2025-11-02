@@ -81,11 +81,13 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
       if (coin.requirement && isCollectionType(coin.collectionType)) {
         try {
           const req = JSON.parse(coin.requirement);
-          if (req.productIds) {
-            setSelectedProductIds(req.productIds);
+          if (req.productIds && Array.isArray(req.productIds)) {
+            // Product IDs in DB are strings, ensure they stay strings for comparison
+            const productIds = req.productIds.map(id => String(id));
+            setSelectedProductIds(productIds);
           }
         } catch (e) {
-          // Ignore parse errors
+          console.error('Error parsing coin requirement:', e);
         }
       }
     } else {
@@ -156,28 +158,46 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // Product selection helpers
   const availableProducts = useMemo(() => {
+    // Convert product IDs to strings for comparison
+    const selectedIdsAsStrings = selectedProductIds.map(id => String(id));
+    
     if (!productSearchQuery) {
-      return allProducts.filter(p => !selectedProductIds.includes(p.id));
+      return allProducts.filter(p => !selectedIdsAsStrings.includes(String(p.id)));
     }
     
     const query = productSearchQuery.toLowerCase();
     return allProducts.filter(p => 
-      !selectedProductIds.includes(p.id) &&
+      !selectedIdsAsStrings.includes(String(p.id)) &&
       (p.title?.toLowerCase().includes(query) || 
        p.vendor?.toLowerCase().includes(query))
     );
   }, [allProducts, selectedProductIds, productSearchQuery]);
   
   const selectedProducts = useMemo(() => {
-    return allProducts.filter(p => selectedProductIds.includes(p.id));
+    const selectedIdsAsStrings = selectedProductIds.map(id => String(id));
+    return allProducts.filter(p => selectedIdsAsStrings.includes(String(p.id)));
   }, [allProducts, selectedProductIds]);
   
+  // Check if adding more products is allowed
+  const canAddMoreProducts = useMemo(() => {
+    if (collectionType === 'flavor_coin') {
+      return selectedProductIds.length < 1;
+    }
+    return true;
+  }, [collectionType, selectedProductIds.length]);
+  
   const handleAddProduct = (productId) => {
-    setSelectedProductIds([...selectedProductIds, productId]);
+    // For flavor coins, limit to 1 product
+    if (collectionType === 'flavor_coin' && selectedProductIds.length >= 1) {
+      toast.error('Flavor coins can only have one product');
+      return;
+    }
+    // Store as string to match database format
+    setSelectedProductIds([...selectedProductIds, String(productId)]);
   };
   
   const handleRemoveProduct = (productId) => {
-    setSelectedProductIds(selectedProductIds.filter(id => id !== productId));
+    setSelectedProductIds(selectedProductIds.filter(id => String(id) !== String(productId)));
   };
   
   // Validate form
@@ -530,6 +550,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 
                 <div className="product-panel">
                   <h4>Available Products</h4>
+                  {collectionType === 'flavor_coin' && (
+                    <div className="flavor-coin-notice">
+                      Maximum 1 product allowed for Flavor Coins
+                    </div>
+                  )}
                   <input
                     type="text"
                     value={productSearchQuery}
@@ -541,7 +566,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                     {allProducts.length} products available • {allProducts.filter(p => p.rankCount > 0).length} have been ranked
                   </p>
                   <div className="product-list">
-                    {availableProducts.length === 0 ? (
+                    {!canAddMoreProducts ? (
+                      <div className="empty-state-small">
+                        Maximum 1 product allowed for Flavor Coins
+                      </div>
+                    ) : availableProducts.length === 0 ? (
                       <div className="empty-state-small">
                         {productSearchQuery ? 'No products match your search' : 'All products selected'}
                       </div>
@@ -562,6 +591,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                             className="product-action-btn add-btn"
                             onClick={() => handleAddProduct(product.id)}
                             type="button"
+                            disabled={!canAddMoreProducts}
                           >
                             +
                           </button>
