@@ -203,23 +203,31 @@ app.use('/api/webhooks/shopify', express.json({
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
 
-// Disable caching for development in Replit environment
+// Cache busting strategy for SPA
 app.use((req, res, next) => {
-  res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
-  res.set('Pragma', 'no-cache');
-  res.set('Expires', '0');
-  res.set('Last-Modified', new Date().toUTCString());
+  // HTML files should never be cached (they reference hashed assets)
+  if (req.path.endsWith('.html') || req.path === '/' || !req.path.includes('.')) {
+    res.set('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.set('Pragma', 'no-cache');
+    res.set('Expires', '0');
+  }
   next();
 });
 
-// Serve React build static files
+// Serve React build static files with smart caching
 app.use(express.static('public/dist', {
   setHeaders: (res, path) => {
-    // Disable caching for JS/CSS files in development to ensure updates are loaded
-    if (path.endsWith('.js') || path.endsWith('.css')) {
+    if (path.endsWith('.html')) {
+      // HTML files: never cache (always fetch fresh)
       res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
       res.setHeader('Pragma', 'no-cache');
       res.setHeader('Expires', '0');
+    } else if (path.match(/\.(js|css)$/) && path.match(/-[a-zA-Z0-9]{8,}\.(js|css)$/)) {
+      // Hashed JS/CSS files: cache for 1 year (immutable)
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    } else {
+      // Other static assets: cache for 1 hour
+      res.setHeader('Cache-Control', 'public, max-age=3600');
     }
   }
 }));
