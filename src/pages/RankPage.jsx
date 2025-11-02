@@ -33,9 +33,14 @@ export default function RankPage() {
     getRankedProductIds
   } = useRanking({
     onSaveComplete: (rankings, position) => {
-      // Refetch available products after rankings change
-      handleSearch();
-      // Invalidate and refetch both commentaries to get updated progress
+      // Only refetch on additions or reorders, not removals
+      // Removals are handled optimistically via handleRemoveRanking
+      if (!position || position > 0) {
+        // Refetch available products after rankings change
+        handleSearch();
+      }
+      
+      // Always invalidate commentaries to update progress
       queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
       queryClient.invalidateQueries({ queryKey: ['collectionProgress'] });
     }
@@ -142,7 +147,8 @@ export default function RankPage() {
     try {
       const params = new URLSearchParams({
         excludeRanked: 'true',
-        limit: '50'
+        limit: '50',
+        sort: 'name-asc'  // Alphabetical sorting for predictable order
       });
       
       if (searchTerm.trim()) {
@@ -163,6 +169,37 @@ export default function RankPage() {
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
+    }
+  };
+  
+  /**
+   * Handle product unranking with optimistic UI
+   * Immediately adds product back to available products list (alphabetically sorted)
+   */
+  const handleRemoveRanking = (productId) => {
+    // Find the product data before removing
+    const rankedProduct = rankedProducts.find(r => r.productData.id === productId);
+    
+    if (rankedProduct) {
+      // Remove from rankings
+      removeRanking(productId);
+      
+      // Optimistically add back to products list in alphabetical order (with deduplication)
+      setProducts(prev => {
+        // Check if product already exists to avoid duplicates
+        if (prev.some(p => p.id === productId)) {
+          return prev; // Already in list, no need to add
+        }
+        
+        // Add and sort alphabetically
+        const newList = [...prev, rankedProduct.productData];
+        return newList.sort((a, b) => 
+          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
+        );
+      });
+    } else {
+      // Fallback if product data not found
+      removeRanking(productId);
     }
   };
 
@@ -293,7 +330,7 @@ export default function RankPage() {
                       key={slot.position}
                       position={slot.position}
                       product={slot.product}
-                      onRemove={removeRanking}
+                      onRemove={handleRemoveRanking}
                       isDragging={activeId === `slot-${slot.position}`}
                     />
                   ))}
