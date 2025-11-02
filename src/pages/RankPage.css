@@ -42,6 +42,60 @@
   padding: 3rem 1rem;
 }
 
+/* Rankings column */
+.slots-container {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+}
+
+.slots-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.slots-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.slots-container::-webkit-scrollbar-thumb {
+  background: #8B4513;
+  border-radius: 4px;
+}
+
+.slots-container::-webkit-scrollbar-thumb:hover {
+  background: #6B3410;
+}
+
+.ranking-progress {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.save-status {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.save-status-saving {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.save-status-saved {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.save-status-error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
 /* Search box */
 .search-box {
   display: flex;
