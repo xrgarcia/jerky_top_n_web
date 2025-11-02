@@ -80,3 +80,27 @@ export function useSentryCurrentEnvironment() {
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
+
+export function useSentryIssueDetails(issueId) {
+  return useQuery({
+    queryKey: ['sentryIssueDetails', issueId],
+    queryFn: async () => {
+      const data = await api.get(`/admin/sentry/issues/${issueId}`);
+      return data;
+    },
+    staleTime: 30 * 1000, // 30 seconds
+    enabled: !!issueId,
+  });
+}
+
+export function useSentryLatestEvent(issueId) {
+  return useQuery({
+    queryKey: ['sentryLatestEvent', issueId],
+    queryFn: async () => {
+      const data = await api.get(`/admin/sentry/issues/${issueId}/events/latest`);
+      return data;
+    },
+    staleTime: 30 * 1000, // 30 seconds
+    enabled: !!issueId,
+  });
+}

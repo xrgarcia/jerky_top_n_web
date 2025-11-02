@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useSentryIssues, useSentryEnvironments, useSentryCurrentEnvironment } from '../../hooks/useAdminTools';
 import './AdminPages.css';
 
 function SentryPage() {
+  const navigate = useNavigate();
   const { data: currentEnvData } = useSentryCurrentEnvironment();
   const defaultEnv = currentEnvData?.environment || 'production';
 
@@ -175,7 +177,11 @@ function SentryPage() {
                 </tr>
               ) : (
                 issues.map((issue) => (
-                  <tr key={issue.id}>
+                  <tr 
+                    key={issue.id} 
+                    className="clickable-row"
+                    onClick={() => navigate(`/admin/tools/sentry/${issue.id}`)}
+                  >
                     <td>
                       <span className={`level-badge ${getLevelBadgeClass(issue.level)}`}>
                         {issue.level?.toUpperCase() || 'ERROR'}
@@ -202,14 +208,14 @@ function SentryPage() {
                         {getStatusLabel(issue.status)}
                       </span>
                     </td>
-                    <td>
+                    <td onClick={(e) => e.stopPropagation()}>
                       <a 
                         href={issue.permalink} 
                         target="_blank" 
                         rel="noopener noreferrer"
                         className="btn-view-details"
                       >
-                        View Details →
+                        Sentry →
                       </a>
                     </td>
                   </tr>

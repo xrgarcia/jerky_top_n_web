@@ -22,6 +22,7 @@ import LiveUsersPage from '../../pages/admin/LiveUsersPage';
 import ProductsPageAdmin from '../../pages/admin/ProductsPage';
 import OrderItemsPage from '../../pages/admin/OrderItemsPage';
 import SentryPage from '../../pages/admin/SentryPage';
+import SentryIssueDetailsPage from '../../pages/admin/SentryIssueDetailsPage';
 import DataPage from '../../pages/admin/DataPage';
 
 import './AppLayout.css';
@@ -89,6 +90,7 @@ function AppLayout() {
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />
             <Route path="sentry" element={<SentryPage />} />
+            <Route path="sentry/:issueId" element={<SentryIssueDetailsPage />} />
             <Route path="data" element={<DataPage />} />
           </Route>
         </Routes>
