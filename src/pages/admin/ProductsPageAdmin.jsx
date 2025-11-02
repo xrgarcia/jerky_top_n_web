@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useAdminProducts, useAnimalCategories, useUpdateProductMetadata } from '../../hooks/useAdminTools';
 import './AdminPages.css';
 
-function EditProductModal({ product, animalCategories, onClose, onSave }) {
+function EditProductModal({ product, animalCategories, onClose, onSave, isLoading, error }) {
   const [selectedAnimal, setSelectedAnimal] = useState(
     animalCategories.find(a => a.type === product.animalType) || animalCategories[0]
   );
@@ -21,10 +21,16 @@ function EditProductModal({ product, animalCategories, onClose, onSave }) {
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <h3>🥩 Edit Product Metadata</h3>
-          <button className="modal-close-btn" onClick={onClose}>×</button>
+          <button className="modal-close-btn" onClick={onClose} disabled={isLoading}>×</button>
         </div>
         
         <div className="modal-body">
+          {error && (
+            <div className="error-message">
+              <strong>Error:</strong> {error.message || 'Failed to update product. Please try again.'}
+            </div>
+          )}
+
           <div className="form-group">
             <label className="form-label">Product</label>
             <div className="product-display">{product.title}</div>
@@ -39,6 +45,7 @@ function EditProductModal({ product, animalCategories, onClose, onSave }) {
                 const animal = animalCategories.find(a => a.type === e.target.value);
                 setSelectedAnimal(animal);
               }}
+              disabled={isLoading}
             >
               {animalCategories.map((animal) => (
                 <option key={animal.type} value={animal.type}>
@@ -60,11 +67,11 @@ function EditProductModal({ product, animalCategories, onClose, onSave }) {
         </div>
 
         <div className="modal-footer">
-          <button className="btn-secondary" onClick={onClose}>
+          <button className="btn-secondary" onClick={onClose} disabled={isLoading}>
             Cancel
           </button>
-          <button className="btn-primary" onClick={handleSave}>
-            Save Changes
+          <button className="btn-primary" onClick={handleSave} disabled={isLoading}>
+            {isLoading ? 'Saving...' : 'Save Changes'}
           </button>
         </div>
       </div>
@@ -140,7 +147,7 @@ function ProductsPageAdmin() {
       setEditingProduct(null);
     } catch (error) {
       console.error('Failed to update product:', error);
-      alert('Failed to update product. Please try again.');
+      // Error will be displayed in the modal
     }
   };
 
@@ -325,6 +332,8 @@ function ProductsPageAdmin() {
           animalCategories={animalCategories}
           onClose={() => setEditingProduct(null)}
           onSave={handleSaveEdit}
+          isLoading={updateMutation.isPending}
+          error={updateMutation.error}
         />
       )}
     </div>
