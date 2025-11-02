@@ -20,7 +20,7 @@ import ToolsLayout from '../../pages/admin/ToolsLayout';
 import CoinsPage from '../../pages/admin/CoinsPage';
 import LiveUsersPage from '../../pages/admin/LiveUsersPage';
 import ProductsPageAdmin from '../../pages/admin/ProductsPage';
-import OrdersPage from '../../pages/admin/OrdersPage';
+import OrderItemsPage from '../../pages/admin/OrderItemsPage';
 import SentryPage from '../../pages/admin/SentryPage';
 import DataPage from '../../pages/admin/DataPage';
 
@@ -87,7 +87,7 @@ function AppLayout() {
             <Route path="coins" element={<CoinsPage />} />
             <Route path="live-users" element={<LiveUsersPage />} />
             <Route path="products" element={<ProductsPageAdmin />} />
-            <Route path="orders" element={<OrdersPage />} />
+            <Route path="orders" element={<OrderItemsPage />} />
             <Route path="sentry" element={<SentryPage />} />
             <Route path="data" element={<DataPage />} />
           </Route>
