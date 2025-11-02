@@ -184,11 +184,9 @@ export default function RankPage() {
               <div className="ranking-progress">
                 {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
               </div>
-              {saveStatus.state !== 'idle' && (
-                <div className={`save-status save-status-${saveStatus.state}`}>
-                  {saveStatus.message}
-                </div>
-              )}
+              <div className={`save-status save-status-${saveStatus.state}`}>
+                {saveStatus.message || '\u00A0'}
+              </div>
             </div>
             
             <div className="slots-container">

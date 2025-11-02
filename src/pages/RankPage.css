@@ -33,6 +33,18 @@
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid #f0f0f0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sub-header .ranking-progress {
+  flex-shrink: 0;
+}
+
+.sub-header .save-status {
+  flex: 1;
+  text-align: right;
 }
 
 .placeholder-content {
