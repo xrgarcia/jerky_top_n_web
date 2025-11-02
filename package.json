@@ -40,6 +40,7 @@
     "rate-limit-redis": "^4.2.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.9.5",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",

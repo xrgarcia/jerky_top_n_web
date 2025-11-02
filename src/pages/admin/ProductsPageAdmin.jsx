@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import toast from 'react-hot-toast';
 import { useAdminProducts, useAnimalCategories, useUpdateProductMetadata } from '../../hooks/useAdminTools';
 import './AdminPages.css';
 
@@ -144,10 +145,12 @@ function ProductsPageAdmin() {
   const handleSaveEdit = async (updateData) => {
     try {
       await updateMutation.mutateAsync(updateData);
+      toast.success('Product updated successfully!');
       setEditingProduct(null);
     } catch (error) {
       console.error('Failed to update product:', error);
-      // Error will be displayed in the modal
+      toast.error('Failed to update product. Please try again.');
+      // Error will also be displayed in the modal
     }
   };
 
