@@ -120,6 +120,9 @@ export default function RankPage() {
                     </div>
                     <div className="product-info">
                       <h3 className="product-name">{product.title}</h3>
+                      {product.vendor && (
+                        <p className="product-vendor">{product.vendor}</p>
+                      )}
                       {product.price && (
                         <p className="product-price">${product.price}</p>
                       )}

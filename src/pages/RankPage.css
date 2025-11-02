@@ -188,6 +188,14 @@
   white-space: normal !important;
   overflow: visible !important;
   text-overflow: clip !important;
+  text-align: center;
+}
+
+.product-vendor {
+  color: #666;
+  font-size: 12px;
+  margin-bottom: 5px;
+  text-align: center;
 }
 
 .product-price {
@@ -195,6 +203,7 @@
   color: #8B4513;
   font-weight: 600;
   margin: 0;
+  text-align: center;
 }
 
 /* Responsive design */
