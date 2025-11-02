@@ -22,7 +22,7 @@ import './AppLayout.css';
 
 function AppLayout() {
   const location = useLocation();
-  const { checkAuth, setUser } = useAuthStore();
+  const { checkAuth } = useAuthStore();
   
   // Initialize WebSocket connection for real-time updates
   useSocket();
@@ -45,12 +45,15 @@ function AppLayout() {
     } else {
       checkAuth();
     }
-  }, [checkAuth, setUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Check auth on every route change
   useEffect(() => {
+    console.log('🔄 Route changed to:', location.pathname, '- checking auth...');
     checkAuth();
-  }, [location.pathname, checkAuth]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   return (
     <div className="app-layout">

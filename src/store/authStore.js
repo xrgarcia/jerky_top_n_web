@@ -28,11 +28,15 @@ export const useAuthStore = create((set) => ({
 
   checkAuth: async () => {
     try {
+      console.log('🔍 checkAuth called - fetching /api/customer/status');
       const response = await fetch('/api/customer/status', { credentials: 'include' });
       const data = await response.json();
       
+      console.log('📋 Auth response:', { authenticated: data.authenticated, role: data.role, user: data.customer?.firstName });
+      
       if (data.authenticated && data.customer) {
         const role = data.role || 'user';
+        console.log('✅ Setting authenticated state - role:', role, 'isEmployee:', role === 'employee_admin');
         set({ 
           user: data.customer, 
           isAuthenticated: true, 
@@ -41,6 +45,7 @@ export const useAuthStore = create((set) => ({
           isLoading: false 
         });
       } else {
+        console.log('❌ Setting unauthenticated state');
         set({ user: null, isAuthenticated: false, isEmployee: false, userRole: 'user', isLoading: false });
       }
     } catch (error) {
