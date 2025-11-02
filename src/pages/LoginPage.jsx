@@ -41,112 +41,175 @@ function LoginPage() {
   };
 
   return (
-    <div style={{ padding: '60px 20px', maxWidth: '500px', margin: '0 auto' }}>
-      <h1 style={{ marginBottom: '20px', textAlign: 'center' }}>Login</h1>
-      
-      {redirectMessage && (
-        <div style={{
-          padding: '16px 20px',
-          background: '#fff3cd',
-          border: '2px solid #ffc107',
-          borderRadius: '8px',
-          marginBottom: '20px',
-          textAlign: 'center'
-        }}>
-          <p style={{ margin: 0, color: '#856404', fontSize: '16px', lineHeight: '1.5' }}>
-            🥩 {redirectMessage}
-          </p>
-        </div>
-      )}
-      
-      <p style={{ 
-        textAlign: 'center', 
-        fontSize: '16px', 
-        color: '#555', 
-        marginBottom: '30px',
-        lineHeight: '1.6'
+    <div style={{ padding: '40px 20px', maxWidth: '520px', margin: '0 auto' }}>
+      <h1 style={{ 
+        marginBottom: '32px', 
+        textAlign: 'center',
+        fontSize: '36px',
+        color: '#2c2c2c',
+        fontWeight: '700'
       }}>
-        Welcome back, jerky lover! Enter your <strong>jerky.com</strong> account email below and we'll send you a magic link to get started.
-      </p>
+        Login
+      </h1>
       
-      <form onSubmit={handleSubmit} style={{ background: 'white', padding: '40px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)' }}>
-        <div style={{ marginBottom: '20px' }}>
-          <label htmlFor="email" style={{ display: 'block', marginBottom: '8px', fontWeight: '600' }}>
-            Email Address
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            style={{ width: '100%', padding: '12px', border: '1px solid #ddd', borderRadius: '4px', fontSize: '16px' }}
-            placeholder="your@email.com"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          style={{ 
-            width: '100%', 
-            padding: '14px', 
-            background: '#6B8E23', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px', 
-            fontSize: '16px', 
-            fontWeight: '600', 
-            cursor: isLoading ? 'not-allowed' : 'pointer',
-            opacity: isLoading ? 0.7 : 1
-          }}
-        >
-          {isLoading ? 'Sending...' : 'Send Magic Link'}
-        </button>
-
-        {message && (
-          <p style={{ 
-            marginTop: '20px', 
-            padding: '12px', 
-            background: message.includes('error') || message.includes('failed') ? '#fee' : '#efe',
-            color: message.includes('error') || message.includes('failed') ? '#c33' : '#363',
-            borderRadius: '4px',
+      <div style={{ 
+        background: 'white', 
+        borderRadius: '12px', 
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        overflow: 'hidden'
+      }}>
+        {redirectMessage && (
+          <div style={{
+            padding: '20px 24px',
+            background: 'linear-gradient(135deg, #fff9e6 0%, #fff3cd 100%)',
+            borderBottom: '3px solid #f5c518',
             textAlign: 'center'
           }}>
-            {message}
-          </p>
+            <p style={{ 
+              margin: 0, 
+              color: '#8B6914', 
+              fontSize: '16px', 
+              lineHeight: '1.6',
+              fontWeight: '500'
+            }}>
+              🥩 {redirectMessage}
+            </p>
+          </div>
         )}
-      </form>
+        
+        <div style={{ padding: '40px' }}>
+          <p style={{ 
+            textAlign: 'center', 
+            fontSize: '15px', 
+            color: '#666', 
+            marginBottom: '28px',
+            lineHeight: '1.6'
+          }}>
+            Welcome back, jerky lover! Enter your <strong style={{ color: '#6B8E23' }}>jerky.com</strong> account email and we'll send you a magic link.
+          </p>
+          
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: '20px' }}>
+              <label htmlFor="email" style={{ 
+                display: 'block', 
+                marginBottom: '8px', 
+                fontWeight: '600',
+                color: '#2c2c2c',
+                fontSize: '14px'
+              }}>
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                style={{ 
+                  width: '100%', 
+                  padding: '14px 16px', 
+                  border: '2px solid #e0e0e0', 
+                  borderRadius: '8px', 
+                  fontSize: '16px',
+                  transition: 'border-color 0.2s',
+                  outline: 'none',
+                  boxSizing: 'border-box'
+                }}
+                placeholder="your@email.com"
+                onFocus={(e) => e.target.style.borderColor = '#6B8E23'}
+                onBlur={(e) => e.target.style.borderColor = '#e0e0e0'}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              style={{ 
+                width: '100%', 
+                padding: '16px', 
+                background: isLoading ? '#8ca849' : '#6B8E23',
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '8px', 
+                fontSize: '16px', 
+                fontWeight: '600', 
+                cursor: isLoading ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s',
+                boxShadow: isLoading ? 'none' : '0 2px 8px rgba(107, 142, 35, 0.3)'
+              }}
+              onMouseOver={(e) => !isLoading && (e.target.style.background = '#5a7a1e')}
+              onMouseOut={(e) => !isLoading && (e.target.style.background = '#6B8E23')}
+            >
+              {isLoading ? 'Sending...' : 'Send Magic Link'}
+            </button>
+
+            {message && (
+              <div style={{ 
+                marginTop: '20px', 
+                padding: '14px 16px', 
+                background: message.includes('error') || message.includes('failed') ? '#ffebee' : '#e8f5e9',
+                color: message.includes('error') || message.includes('failed') ? '#c62828' : '#2e7d32',
+                borderRadius: '8px',
+                textAlign: 'center',
+                fontSize: '15px',
+                fontWeight: '500',
+                border: `2px solid ${message.includes('error') || message.includes('failed') ? '#ef9a9a' : '#a5d6a7'}`
+              }}>
+                {message}
+              </div>
+            )}
+          </form>
+        </div>
+      </div>
 
       <div style={{ 
-        marginTop: '30px', 
-        padding: '24px', 
-        background: '#f9f5f0', 
-        borderRadius: '8px',
-        border: '2px solid #e8d5b7'
+        marginTop: '32px', 
+        padding: '32px', 
+        background: 'white',
+        borderRadius: '12px',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.08)',
+        border: '2px solid #f5e6d3'
       }}>
-        <h3 style={{ marginTop: 0, marginBottom: '12px', color: '#6B8E23', fontSize: '18px' }}>
-          New to Jerky Rankings?
-        </h3>
-        <p style={{ margin: '0 0 16px 0', color: '#555', lineHeight: '1.6' }}>
-          You'll need a <strong>jerky.com</strong> account to rank your favorite meats and join our community of jerky enthusiasts.
-        </p>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <h3 style={{ 
+            margin: '0 0 8px 0', 
+            color: '#6B8E23', 
+            fontSize: '20px',
+            fontWeight: '700'
+          }}>
+            New to Jerky Rankings?
+          </h3>
+          <p style={{ margin: 0, color: '#666', lineHeight: '1.6', fontSize: '15px' }}>
+            You'll need a <strong style={{ color: '#2c2c2c' }}>jerky.com</strong> account to rank your favorite meats and join our community.
+          </p>
+        </div>
         <a 
           href="https://www.jerky.com/account/register" 
           target="_blank" 
           rel="noopener noreferrer"
           style={{ 
-            display: 'inline-block',
-            padding: '12px 24px', 
+            display: 'block',
+            padding: '14px 28px', 
             background: '#8B4513', 
             color: 'white', 
             textDecoration: 'none', 
-            borderRadius: '4px', 
+            borderRadius: '8px', 
             fontWeight: '600',
-            transition: 'background 0.2s'
+            transition: 'all 0.2s',
+            textAlign: 'center',
+            fontSize: '16px',
+            boxShadow: '0 2px 8px rgba(139, 69, 19, 0.3)'
           }}
-          onMouseOver={(e) => e.target.style.background = '#6d3410'}
-          onMouseOut={(e) => e.target.style.background = '#8B4513'}
+          onMouseOver={(e) => {
+            e.target.style.background = '#6d3410';
+            e.target.style.transform = 'translateY(-1px)';
+            e.target.style.boxShadow = '0 4px 12px rgba(139, 69, 19, 0.4)';
+          }}
+          onMouseOut={(e) => {
+            e.target.style.background = '#8B4513';
+            e.target.style.transform = 'translateY(0)';
+            e.target.style.boxShadow = '0 2px 8px rgba(139, 69, 19, 0.3)';
+          }}
         >
           Create Your Account →
         </a>
