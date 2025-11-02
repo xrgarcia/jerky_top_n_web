@@ -30,7 +30,7 @@ export default function RankPage() {
       });
       
       if (searchTerm.trim()) {
-        params.set('search', searchTerm.trim());
+        params.set('query', searchTerm.trim());
       }
 
       const data = await api.get(`/products/rankable?${params.toString()}`);
