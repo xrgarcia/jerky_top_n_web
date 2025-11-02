@@ -80,7 +80,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
       // Parse requirement for product IDs if it's a collection type
       if (coin.requirement && isCollectionType(coin.collectionType)) {
         try {
-          const req = JSON.parse(coin.requirement);
+          // Requirement is already parsed as an object from the API (jsonb field)
+          const req = typeof coin.requirement === 'string' 
+            ? JSON.parse(coin.requirement) 
+            : coin.requirement;
+          
           if (req.productIds && Array.isArray(req.productIds)) {
             // Product IDs in DB are strings, ensure they stay strings for comparison
             const productIds = req.productIds.map(id => String(id));
