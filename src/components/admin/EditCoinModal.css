@@ -180,6 +180,12 @@
 }
 
 /* Checkbox */
+.checkbox-group {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #e0e0d8;
+}
+
 .checkbox-label {
   display: flex;
   align-items: center;

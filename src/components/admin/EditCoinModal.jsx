@@ -438,13 +438,30 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
             
             <div className="form-group">
+              <label>Category (Optional)</label>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="form-select"
+              >
+                <option value="">None - No category</option>
+                <option value="ranking">Ranking</option>
+                <option value="streak">Streak</option>
+                <option value="discovery">Discovery</option>
+                <option value="social">Social</option>
+                <option value="special">Special</option>
+              </select>
+              <p className="form-hint">Categorizes the coin for organizational purposes</p>
+            </div>
+            
+            <div className="form-group checkbox-group">
               <label className="checkbox-label">
                 <input
                   type="checkbox"
                   checked={isHidden === 1}
                   onChange={(e) => setIsHidden(e.target.checked ? 1 : 0)}
                 />
-                Hidden Achievement (unlock criteria not shown)
+                Hidden Coin (unlock criteria not shown)
               </label>
               {isHidden === 1 && (
                 <p className="form-hint">Users must earn this achievement first before this one can be unlocked</p>
