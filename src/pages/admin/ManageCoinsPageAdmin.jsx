@@ -12,9 +12,6 @@ function ManageCoinsPageAdmin() {
   const [coinTypeFilter, setCoinTypeFilter] = useState('all');
   const [visibilityFilter, setVisibilityFilter] = useState('all');
   const [dependencyFilter, setDependencyFilter] = useState('all');
-  
-  // Search state
-  const [searchQuery, setSearchQuery] = useState('');
 
   const coins = coinsData?.achievements || [];
 
@@ -38,19 +35,9 @@ function ManageCoinsPageAdmin() {
       if (dependencyFilter === 'has' && !coin.prerequisiteAchievementId) return false;
       if (dependencyFilter === 'none' && coin.prerequisiteAchievementId) return false;
 
-      // Search filter
-      if (searchQuery) {
-        const query = searchQuery.toLowerCase();
-        return (
-          coin.name?.toLowerCase().includes(query) ||
-          coin.code?.toLowerCase().includes(query) ||
-          coin.description?.toLowerCase().includes(query)
-        );
-      }
-
       return true;
     });
-  }, [coins, coinTypeFilter, visibilityFilter, dependencyFilter, searchQuery]);
+  }, [coins, coinTypeFilter, visibilityFilter, dependencyFilter]);
 
   const handleToggleCoin = async (coin) => {
     try {
@@ -201,24 +188,13 @@ function ManageCoinsPageAdmin() {
         </button>
       </div>
 
-      {/* Search Bar */}
-      <div className="search-container">
-        <input
-          type="text"
-          className="search-input"
-          placeholder="Search coins by name, code, or description..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </div>
-
       {/* Coins Table */}
       <div className="table-container">
         {isLoading ? (
           <div className="loading-state">Loading coins...</div>
         ) : filteredCoins.length === 0 ? (
           <div className="empty-state">
-            {searchQuery || coinTypeFilter !== 'all' || visibilityFilter !== 'all' || dependencyFilter !== 'all'
+            {coinTypeFilter !== 'all' || visibilityFilter !== 'all' || dependencyFilter !== 'all'
               ? 'No coins match your filters'
               : 'No coins found'}
           </div>
