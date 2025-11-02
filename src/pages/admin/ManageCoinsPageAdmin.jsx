@@ -15,21 +15,6 @@ function ManageCoinsPageAdmin() {
 
   const coins = coinsData?.achievements || [];
 
-  // DEBUG: Log coin data to identify legacy pattern
-  useEffect(() => {
-    if (coins.length > 0) {
-      console.log('🪙 DEBUG: All coins data:', coins);
-      console.log('🔍 DEBUG: Coin types breakdown:');
-      const typeGroups = coins.reduce((acc, coin) => {
-        const type = coin.collectionType || 'null';
-        if (!acc[type]) acc[type] = [];
-        acc[type].push({ name: coin.name, category: coin.category, code: coin.code });
-        return acc;
-      }, {});
-      console.table(typeGroups);
-    }
-  }, [coins]);
-
   // Apply filters
   const filteredCoins = useMemo(() => {
     return coins.filter(coin => {
@@ -39,7 +24,7 @@ function ManageCoinsPageAdmin() {
         if (coinTypeFilter === 'static' && coin.collectionType !== 'static_collection') return false;
         if (coinTypeFilter === 'dynamic' && coin.collectionType !== 'dynamic_collection') return false;
         if (coinTypeFilter === 'flavor' && coin.collectionType !== 'flavor_coin') return false;
-        if (coinTypeFilter === 'legacy' && coin.collectionType !== 'custom_product_list') return false;
+        if (coinTypeFilter === 'legacy' && coin.collectionType !== 'legacy') return false;
       }
 
       // Visibility filter
@@ -92,7 +77,7 @@ function ManageCoinsPageAdmin() {
       'static_collection': 'STATIC COLLECTION COIN',
       'dynamic_collection': 'DYNAMIC COLLECTION COIN',
       'flavor_coin': 'FLAVOR COIN',
-      'custom_product_list': 'LEGACY'
+      'legacy': 'LEGACY'
     };
     return typeMap[collectionType] || collectionType?.toUpperCase() || '-';
   };
