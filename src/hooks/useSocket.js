@@ -24,14 +24,6 @@ export function useSocket() {
     socket.on('connect', () => {
       console.log('✅ WebSocket connected');
       setIsConnected(true);
-
-      // Authenticate if user is logged in
-      if (isAuthenticated && user) {
-        const sessionId = localStorage.getItem('sessionId');
-        if (sessionId) {
-          socket.emit('authenticate', { sessionId });
-        }
-      }
     });
 
     socket.on('disconnect', () => {
