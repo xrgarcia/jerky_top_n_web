@@ -915,12 +915,12 @@
 }
 
 .coinbook-hero .achievement-coin {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: #5a4434;
+  background: #F5EBD8;
+  border-color: #8B7355;
 }
 
 .coinbook-hero .achievement-coin:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: #FFF5E6;
 }
 
 .coinbook-hero .achievement-coin:focus {
@@ -928,9 +928,13 @@
 }
 
 .coinbook-hero .achievement-coin.earned {
-  background: rgba(255, 255, 255, 0.12);
+  background: #FFFEF8;
 }
 
 .coinbook-hero .coin-name {
-  color: #E8D4A0;
+  color: #333;
+}
+
+.coinbook-hero .achievement-coin.locked .coin-name {
+  color: #999;
 }
