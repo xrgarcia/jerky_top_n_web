@@ -86,49 +86,38 @@ function ManageCoinsPageAdmin() {
   };
 
   const handleConfirmRecalculate = async () => {
-    console.log('🔄 Recalculate confirmed, starting process...');
     setIsConfirmModalOpen(false);
     
     const { coin } = confirmModalData;
-    console.log('📋 Recalculating coin:', coin);
-    
     const loadingToast = toast.loading(`Recalculating "${coin.name}" for all users...`, {
       duration: 0
     });
-    console.log('⏳ Loading toast displayed:', loadingToast);
 
     try {
-      console.log('🚀 Calling API to recalculate coin ID:', coin.id);
       const result = await recalculateCoinMutation.mutateAsync(coin.id);
-      console.log('✅ API response received:', result);
       
       // Hide loading toast
       toast.dismiss(loadingToast);
-      console.log('❌ Loading toast dismissed');
       
       // Show success with stats
       const stats = result.stats || {};
-      console.log('📊 Stats extracted:', stats);
-      
-      const successMessage = `${coin.name} recalculated!\n` +
+      toast.success(
+        `${coin.name} recalculated!\n` +
         `Processed: ${stats.processed || 0} users\n` +
         `New awards: ${stats.newAwards || 0}\n` +
         `Tier upgrades: ${stats.tierUpgrades || 0}` +
-        (stats.errors ? `\nErrors: ${stats.errors}` : '');
-      
-      console.log('📢 Showing success toast:', successMessage);
-      toast.success(successMessage, { duration: 7000 });
-      console.log('✅ Success toast should be visible now');
+        (stats.errors ? `\nErrors: ${stats.errors}` : ''),
+        { duration: 7000 }
+      );
     } catch (error) {
-      console.error('❌ Error during recalculation:', error);
-      
       // Hide loading toast
       toast.dismiss(loadingToast);
       
       // Show error
-      const errorMessage = `Failed to recalculate ${coin.name}\n${error.message || 'Unknown error'}`;
-      console.log('🚨 Showing error toast:', errorMessage);
-      toast.error(errorMessage, { duration: 7000 });
+      toast.error(
+        `Failed to recalculate ${coin.name}\n${error.message || 'Unknown error'}`,
+        { duration: 7000 }
+      );
     }
   };
 

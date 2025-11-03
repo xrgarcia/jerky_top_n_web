@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { broadcastAuthChange } from '../../context/AuthContext';
 import { useSocket } from '../../hooks/useSocket';
 import Header from './Header';
@@ -96,6 +97,33 @@ function AppLayout() {
         </Routes>
       </main>
       <Footer />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 5000,
+          style: {
+            zIndex: 100000,
+          },
+          success: {
+            style: {
+              background: '#7b8b52',
+              color: 'white',
+            },
+          },
+          error: {
+            style: {
+              background: '#d9534f',
+              color: 'white',
+            },
+          },
+          loading: {
+            style: {
+              background: '#5bc0de',
+              color: 'white',
+            },
+          },
+        }}
+      />
     </div>
   );
 }
