@@ -111,27 +111,29 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
       {/* Collapsed state - show next milestone preview */}
       {isCollapsed && nextMilestone && (
         <div className="collapsed-milestone-preview">
-          <div className="milestone-preview-label">
-            {nextMilestone.achievementIconType === 'image' ? (
-              <img 
-                src={nextMilestone.achievementIcon} 
-                alt={nextMilestone.achievementName}
-                className="milestone-preview-icon-img"
-              />
-            ) : (
-              <span className="milestone-preview-icon">{nextMilestone.achievementIcon || '🎯'}</span>
-            )}
-            <span className="milestone-preview-name">
-              {nextMilestone.achievementName || 'Next Milestone'}: {nextMilestone.label || nextMilestone.target + ' rankings'}
-            </span>
+          <div className="collapsed-milestone-content">
+            <div className="milestone-preview-label">
+              {nextMilestone.achievementIconType === 'image' ? (
+                <img 
+                  src={nextMilestone.achievementIcon} 
+                  alt={nextMilestone.achievementName}
+                  className="milestone-preview-icon-img"
+                />
+              ) : (
+                <span className="milestone-preview-icon">{nextMilestone.achievementIcon || '🎯'}</span>
+              )}
+              <span className="milestone-preview-name">
+                {nextMilestone.achievementName || 'Next Milestone'}: {nextMilestone.label || nextMilestone.target + ' rankings'}
+              </span>
+            </div>
+            <div className="progress-bar">
+              <div 
+                className="progress-fill" 
+                style={{ width: `${nextMilestone.progress}%` }}
+              ></div>
+            </div>
+            <div className="milestone-preview-status">{nextMilestone.remaining} more to go!</div>
           </div>
-          <div className="progress-bar">
-            <div 
-              className="progress-fill" 
-              style={{ width: `${nextMilestone.progress}%` }}
-            ></div>
-          </div>
-          <div className="milestone-preview-status">{nextMilestone.remaining} more to go!</div>
         </div>
       )}
 

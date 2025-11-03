@@ -153,9 +153,17 @@
 
 /* Collapsed Milestone Preview */
 .collapsed-milestone-preview {
-  padding: 16px 20px;
+  padding: 20px;
   background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
   border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.collapsed-milestone-content {
+  background: #fff;
+  border: 2px solid #D4A574;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .milestone-preview-label {
@@ -890,7 +898,8 @@
     linear-gradient(to bottom, #F5EBD8 0%, #EDE0CE 100%);
 }
 
-.coinbook-hero .milestone-section {
+.coinbook-hero .milestone-section,
+.coinbook-hero .collapsed-milestone-content {
   background: rgba(255, 255, 255, 0.6);
   border-color: #8B7355;
 }
