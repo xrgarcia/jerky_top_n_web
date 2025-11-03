@@ -183,18 +183,31 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                   const tierClass = getTierClass(achievement);
                   const tierEmoji = getTierEmoji(achievement);
                   
+                  const tooltipId = `tooltip-${achievement.id}`;
+                  
+                  const handleActivate = () => {
+                    if (achievement.earned && achievement.code) {
+                      window.location.hash = `#coins/${achievement.code}`;
+                    }
+                  };
+                  
+                  const handleKeyDown = (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      handleActivate();
+                    }
+                  };
+                  
                   return (
                     <div
                       key={achievement.id}
                       className={`achievement-coin ${achievement.earned ? 'earned' : 'locked'} ${tierClass}`}
-                      onClick={() => {
-                        if (achievement.earned && achievement.code) {
-                          window.location.hash = `#coins/${achievement.code}`;
-                        }
-                      }}
+                      onClick={handleActivate}
+                      onKeyDown={handleKeyDown}
                       role="button"
-                      tabIndex={achievement.earned ? 0 : -1}
+                      tabIndex={0}
                       aria-label={achievement.earned ? achievement.name : 'Locked achievement'}
+                      aria-describedby={tooltipId}
                     >
                       <span className="coin-icon">
                         {renderIcon(achievement, 48)}
@@ -205,7 +218,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                       </span>
                       
                       {/* Tooltip */}
-                      <div className="achievement-tooltip">
+                      <div id={tooltipId} className="achievement-tooltip" role="tooltip">
                         {achievement.earned ? (
                           <>
                             <strong>{achievement.name}</strong>
