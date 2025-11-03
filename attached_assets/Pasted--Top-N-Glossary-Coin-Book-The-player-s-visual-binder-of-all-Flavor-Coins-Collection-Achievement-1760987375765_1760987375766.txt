@@ -15,9 +15,18 @@ While the underlying mechanics track exploration and discovery, these are presen
 
 ⸻
 
+Flavor
+
+A product available for purchase and ranking.
+Each flavor represents a unique jerky variety (e.g., Beef Teriyaki, Spicy Turkey, Original Elk).
+Ranking a purchased flavor contributes to Coin Book completion and may unlock various coin types.
+
+⸻
+
 Flavor Coin
 
-A coin earned when a user ranks a unique flavor for the first time.
+A coin earned when a user purchases AND ranks a unique flavor for the first time.
+Both actions are required: the flavor must be purchased from the store and then ranked by the user.
 Appears on the Flavor Coins Page of the Coin Book.
 Each coin represents both participation (XP) and flavor history.
 
