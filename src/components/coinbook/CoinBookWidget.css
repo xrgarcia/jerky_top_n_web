@@ -13,7 +13,7 @@
   width: 100%;
 }
 
-/* Wood grain texture effect */
+/* Enhanced Wood grain texture effect with horizontal grain lines */
 .coinbook-widget::before {
   content: '';
   position: absolute;
@@ -28,9 +28,33 @@
       transparent 2px,
       rgba(139, 115, 85, 0.03) 2px,
       rgba(139, 115, 85, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(139, 115, 85, 0.02) 20px,
+      transparent 40px,
+      rgba(139, 115, 85, 0.04) 60px,
+      transparent 80px
     );
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.6;
+}
+
+/* Subtle wood knots and variation */
+.coinbook-widget::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(139, 115, 85, 0.08), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(139, 115, 85, 0.06), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(139, 115, 85, 0.05), transparent);
+  pointer-events: none;
+  opacity: 0.4;
 }
 
 /* Header */
@@ -129,7 +153,7 @@
 /* Content */
 .coinbook-content {
   padding: 20px;
-  background: linear-gradient(to bottom, #f5f3ed 0%, #ebe8dc 100%);
+  background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
   animation: expandContent 0.3s ease;
 }
 
@@ -245,7 +269,7 @@
 }
 
 .achievement-coin:focus {
-  outline: 2px solid #c4a962;
+  outline: 2px solid #D4A574;
   outline-offset: 2px;
 }
 
@@ -328,7 +352,7 @@
 
 /* Loading State */
 .coinbook-widget.loading {
-  background: linear-gradient(135deg, #f5f3ed 0%, #ebe8dc 100%);
+  background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);
   padding: 40px 20px;
   min-height: 200px;
   display: flex;
@@ -433,4 +457,309 @@
   .coin-name {
     font-size: 9px;
   }
+}
+
+/* =================================================================
+   WOOD THEME CLASSES - Switch between these to change the look!
+   Usage: Add class to .coinbook-widget (e.g., "coinbook-widget coinbook-oak")
+   ================================================================= */
+
+/* THEME 1: Light Oak/Maple - Bright & Warm */
+.coinbook-oak {
+  background: linear-gradient(135deg, #F5EBD8 0%, #EDE0CE 100%);
+  border-color: #C8A882;
+}
+
+.coinbook-oak::before {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(200, 168, 130, 0.04) 2px,
+      rgba(200, 168, 130, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(200, 168, 130, 0.03) 20px,
+      transparent 40px,
+      rgba(200, 168, 130, 0.05) 60px,
+      transparent 80px
+    );
+}
+
+.coinbook-oak::after {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(200, 168, 130, 0.09), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(200, 168, 130, 0.07), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(200, 168, 130, 0.06), transparent);
+}
+
+.coinbook-oak .coinbook-header {
+  background: linear-gradient(135deg, #D4A574 0%, #C09660 100%);
+}
+
+.coinbook-oak .coinbook-header:hover {
+  background: linear-gradient(135deg, #E0B684 0%, #D0A670 100%);
+}
+
+.coinbook-oak .coinbook-header:focus {
+  outline-color: #C8A882;
+}
+
+.coinbook-oak .chevron {
+  color: #F5DEB3;
+}
+
+.coinbook-oak .coinbook-content {
+  background: linear-gradient(to bottom, #F5EBD8 0%, #EDE0CE 100%);
+}
+
+.coinbook-oak .milestone-section {
+  border-color: #D4A574;
+}
+
+.coinbook-oak .milestone-label,
+.coinbook-oak .milestone-status,
+.coinbook-oak .achievements-label,
+.coinbook-oak .coinbook-loading {
+  color: #3E2723;
+}
+
+.coinbook-oak .progress-fill {
+  background: linear-gradient(90deg, #D4A574 0%, #F5DEB3 100%);
+}
+
+.coinbook-oak .loading-spinner {
+  border-top-color: #D4A574;
+}
+
+.coinbook-oak .achievement-coin:focus {
+  outline-color: #D4A574;
+}
+
+/* THEME 2: Medium Walnut - Rich & Classic */
+.coinbook-walnut {
+  background: linear-gradient(135deg, #E8DDD0 0%, #DDD2C5 100%);
+  border-color: #8B4513;
+}
+
+.coinbook-walnut::before {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 69, 19, 0.04) 2px,
+      rgba(139, 69, 19, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(139, 69, 19, 0.03) 20px,
+      transparent 40px,
+      rgba(139, 69, 19, 0.05) 60px,
+      transparent 80px
+    );
+}
+
+.coinbook-walnut::after {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(139, 69, 19, 0.10), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(139, 69, 19, 0.08), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(139, 69, 19, 0.07), transparent);
+}
+
+.coinbook-walnut .coinbook-header {
+  background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
+}
+
+.coinbook-walnut .coinbook-header:hover {
+  background: linear-gradient(135deg, #B4623D 0%, #9F5523 100%);
+}
+
+.coinbook-walnut .coinbook-header:focus {
+  outline-color: #CD853F;
+}
+
+.coinbook-walnut .chevron {
+  color: #DEB887;
+}
+
+.coinbook-walnut .coinbook-content {
+  background: linear-gradient(to bottom, #E8DDD0 0%, #DDD2C5 100%);
+}
+
+.coinbook-walnut .milestone-section {
+  border-color: #A0522D;
+}
+
+.coinbook-walnut .milestone-label,
+.coinbook-walnut .milestone-status,
+.coinbook-walnut .achievements-label,
+.coinbook-walnut .coinbook-loading {
+  color: #2C1810;
+}
+
+.coinbook-walnut .progress-fill {
+  background: linear-gradient(90deg, #A0522D 0%, #CD853F 100%);
+}
+
+.coinbook-walnut .loading-spinner {
+  border-top-color: #A0522D;
+}
+
+.coinbook-walnut .achievement-coin:focus {
+  outline-color: #A0522D;
+}
+
+/* THEME 3: Natural Pine - Pale & Clean */
+.coinbook-pine {
+  background: linear-gradient(135deg, #FAF6EE 0%, #F0EBE3 100%);
+  border-color: #DEB887;
+}
+
+.coinbook-pine::before {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(222, 184, 135, 0.03) 2px,
+      rgba(222, 184, 135, 0.03) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(222, 184, 135, 0.02) 20px,
+      transparent 40px,
+      rgba(222, 184, 135, 0.04) 60px,
+      transparent 80px
+    );
+}
+
+.coinbook-pine::after {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(222, 184, 135, 0.07), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(222, 184, 135, 0.05), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(222, 184, 135, 0.04), transparent);
+}
+
+.coinbook-pine .coinbook-header {
+  background: linear-gradient(135deg, #F5DEB3 0%, #E8D4A0 100%);
+}
+
+.coinbook-pine .coinbook-header:hover {
+  background: linear-gradient(135deg, #FFE4BD 0%, #F2DEB0 100%);
+}
+
+.coinbook-pine .coinbook-header:focus {
+  outline-color: #DEB887;
+}
+
+.coinbook-pine .chevron {
+  color: #B8956F;
+}
+
+.coinbook-pine .coinbook-content {
+  background: linear-gradient(to bottom, #FAF6EE 0%, #F0EBE3 100%);
+}
+
+.coinbook-pine .milestone-section {
+  border-color: #DEB887;
+}
+
+.coinbook-pine .milestone-label,
+.coinbook-pine .milestone-status,
+.coinbook-pine .achievements-label,
+.coinbook-pine .coinbook-loading {
+  color: #3E2723;
+}
+
+.coinbook-pine .progress-fill {
+  background: linear-gradient(90deg, #DEB887 0%, #F5DEB3 100%);
+}
+
+.coinbook-pine .loading-spinner {
+  border-top-color: #DEB887;
+}
+
+.coinbook-pine .achievement-coin:focus {
+  outline-color: #DEB887;
+}
+
+/* THEME 4: Cherry/Mahogany - Warm & Sophisticated */
+.coinbook-cherry {
+  background: linear-gradient(135deg, #F0E4D8 0%, #E5D9CD 100%);
+  border-color: #A0522D;
+}
+
+.coinbook-cherry::before {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(160, 82, 45, 0.04) 2px,
+      rgba(160, 82, 45, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(160, 82, 45, 0.03) 20px,
+      transparent 40px,
+      rgba(160, 82, 45, 0.05) 60px,
+      transparent 80px
+    );
+}
+
+.coinbook-cherry::after {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(160, 82, 45, 0.09), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(160, 82, 45, 0.07), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(160, 82, 45, 0.06), transparent);
+}
+
+.coinbook-cherry .coinbook-header {
+  background: linear-gradient(135deg, #CD853F 0%, #B4743F 100%);
+}
+
+.coinbook-cherry .coinbook-header:hover {
+  background: linear-gradient(135deg, #D7954F 0%, #C4844F 100%);
+}
+
+.coinbook-cherry .coinbook-header:focus {
+  outline-color: #DEB887;
+}
+
+.coinbook-cherry .chevron {
+  color: #F5DEB3;
+}
+
+.coinbook-cherry .coinbook-content {
+  background: linear-gradient(to bottom, #F0E4D8 0%, #E5D9CD 100%);
+}
+
+.coinbook-cherry .milestone-section {
+  border-color: #CD853F;
+}
+
+.coinbook-cherry .milestone-label,
+.coinbook-cherry .milestone-status,
+.coinbook-cherry .achievements-label,
+.coinbook-cherry .coinbook-loading {
+  color: #2C1810;
+}
+
+.coinbook-cherry .progress-fill {
+  background: linear-gradient(90deg, #CD853F 0%, #DEB887 100%);
+}
+
+.coinbook-cherry .loading-spinner {
+  border-top-color: #CD853F;
+}
+
+.coinbook-cherry .achievement-coin:focus {
+  outline-color: #CD853F;
 }
