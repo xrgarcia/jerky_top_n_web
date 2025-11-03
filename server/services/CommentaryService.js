@@ -69,7 +69,10 @@ class CommentaryService {
           target: closestAchievement.target,
           remaining: closestAchievement.remaining,
           progress: closestAchievement.progress,
-          metricLabel: this._getMetricLabel(closestAchievement.type, closestAchievement.target)
+          metricLabel: this._getMetricLabel(closestAchievement.type, closestAchievement.target),
+          isTierUpgrade: closestAchievement.isTierUpgrade || false,
+          currentTier: closestAchievement.currentTier || null,
+          nextTier: closestAchievement.nextTier || null
         } : null
       };
     } catch (error) {
@@ -102,9 +105,29 @@ class CommentaryService {
   }
 
   /**
+   * Get tier-specific information (emoji and formatted name)
+   * @private
+   */
+  _getTierInfo(milestone) {
+    const tierEmojis = {
+      bronze: '🥉',
+      silver: '🥈',
+      gold: '🥇',
+      platinum: '💎',
+      diamond: '💠'
+    };
+
+    return {
+      emoji: tierEmojis[milestone.nextTier] || '⭐',
+      tierName: milestone.nextTier ? milestone.nextTier.charAt(0).toUpperCase() + milestone.nextTier.slice(1) : ''
+    };
+  }
+
+  /**
    * Generate contextual progress message based on user state
    * Uses intelligent percentage-based tiers when a milestone exists,
    * calculated from progress toward the SPECIFIC achievement (not total products)
+   * Supports tier upgrades for tiered achievements
    * @private
    */
   _generateProgressMessage(rankedCount, totalProducts, milestone, currentStreak) {
@@ -121,11 +144,17 @@ class CommentaryService {
     if (milestone) {
       const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
       const progressPercent = (milestone.current / milestone.target) * 100;
+      
+      // Get tier emoji and tier upgrade messaging if applicable
+      const tierInfo = milestone.isTierUpgrade ? this._getTierInfo(milestone) : null;
+      const achievementDisplay = tierInfo 
+        ? `${milestone.achievementName} ${tierInfo.emoji}` 
+        : `"${milestone.achievementName}"`;
 
       // TIER 1: Just started (0-10% progress)
       if (progressPercent <= 10) {
         return {
-          text: `Just getting started! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🎯`,
+          text: `Just getting started! ${milestone.remaining} more ${metricLabel} to unlock ${achievementDisplay} 🎯`,
           icon: '🚀'
         };
       }
@@ -133,7 +162,7 @@ class CommentaryService {
       // TIER 2: Early progress (11-25%)
       if (progressPercent <= 25) {
         return {
-          text: `Great start! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🌟`,
+          text: `Great start! ${milestone.remaining} more ${metricLabel} to unlock ${achievementDisplay} 🌟`,
           icon: '✨'
         };
       }
@@ -141,7 +170,7 @@ class CommentaryService {
       // TIER 3: Building momentum (26-50%)
       if (progressPercent <= 50) {
         return {
-          text: `Making progress! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🔥`,
+          text: `Making progress! ${milestone.remaining} more ${metricLabel} for ${achievementDisplay} 🔥`,
           icon: '🔥'
         };
       }
@@ -149,7 +178,7 @@ class CommentaryService {
       // TIER 4: More than halfway (51-75%)
       if (progressPercent <= 75) {
         return {
-          text: `More than halfway! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 💪`,
+          text: `More than halfway! ${milestone.remaining} more ${metricLabel} for ${achievementDisplay} 💪`,
           icon: '💪'
         };
       }
@@ -157,14 +186,14 @@ class CommentaryService {
       // TIER 5: Almost there (76-90%)
       if (progressPercent <= 90) {
         return {
-          text: `Almost there! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🏆`,
+          text: `Almost there! ${milestone.remaining} more ${metricLabel} for ${achievementDisplay} 🏆`,
           icon: '🎯'
         };
       }
 
       // TIER 6: So close! (91-99%)
       return {
-        text: `So close! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" ⭐`,
+        text: `So close! ${milestone.remaining} more ${metricLabel} for ${achievementDisplay} ⭐`,
         icon: '⭐'
       };
     }

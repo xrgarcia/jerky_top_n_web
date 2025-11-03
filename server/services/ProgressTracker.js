@@ -66,6 +66,7 @@ class ProgressTracker {
 
   /**
    * Get the closest unearned achievement across all types (collection & engagement)
+   * Includes tier upgrade progress for partially-earned tiered achievements
    * @param {number} userId - User ID
    * @param {Object} stats - User stats object with all required data
    * @param {string} categoryFilter - Optional category filter ('ranking', 'engagement', 'flavor', etc.)
@@ -81,56 +82,124 @@ class ProgressTracker {
       const unearnedCount = achievements.filter(a => !a.earned).length;
       console.log(`   ✅ Earned: ${earnedCount} | 🔒 Unearned: ${unearnedCount}`);
       
-      // Filter to only unearned achievements with progress data
-      const unearnedAchievements = achievements
+      // Filter to unearned achievements OR earned tiered achievements with tier upgrades available
+      const candidateAchievements = achievements
         .filter(a => {
-          // Must not be earned (check both earned flag and earnedAt timestamp)
-          if (a.earned || a.earnedAt) return false;
-          // Must have progress data
-          if (!a.progress) return false;
           // Apply category filter if specified (e.g., only 'ranking' achievements)
           if (categoryFilter && a.category !== categoryFilter) return false;
-          // Accept if has either engagement format (current/required) OR collection format (totalRanked/totalAvailable)
-          return (a.progress.required !== undefined) || (a.progress.totalAvailable !== undefined);
+          
+          // Must have progress data
+          if (!a.progress) return false;
+          
+          // Case 1: Unearned achievements (normal case)
+          if (!a.earned && !a.earnedAt) {
+            // Accept if has either engagement format (current/required) OR collection format (totalRanked/totalAvailable)
+            return (a.progress.required !== undefined) || (a.progress.totalAvailable !== undefined);
+          }
+          
+          // Case 2: Earned tiered achievements with tier upgrades available
+          if ((a.earned || a.earnedAt) && a.hasTiers && a.tierThresholds) {
+            const tierOrder = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+            const currentTierIndex = tierOrder.indexOf(a.currentTier);
+            const maxTierIndex = tierOrder.length - 1;
+            
+            // Only include if there's a higher tier available
+            if (currentTierIndex >= 0 && currentTierIndex < maxTierIndex) {
+              console.log(`🔼 Tier upgrade available: ${a.name} (${a.currentTier} → next tier)`);
+              return true;
+            }
+          }
+          
+          return false;
         })
         .map(a => {
-          // Collection achievements use totalRanked/totalAvailable/percentage
-          // Engagement achievements use current/required (need to calculate percentage)
-          const isCollection = a.progress.totalAvailable !== undefined;
+          // Check if this is a tier upgrade scenario
+          const isTierUpgrade = (a.earned || a.earnedAt) && a.hasTiers && a.tierThresholds;
           
-          const current = isCollection ? (a.progress.totalRanked || 0) : (a.progress.current || 0);
-          const required = isCollection ? (a.progress.totalAvailable || 1) : (a.progress.required || 1);
-          const percentage = isCollection && a.progress.percentage !== undefined 
-            ? a.progress.percentage 
-            : Math.min(100, (current / required) * 100);
-          
-          return {
-            achievementId: a.id,
-            achievementName: a.name,
-            achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
-            achievementIconType: a.iconType,
-            current,
-            target: required,
-            remaining: Math.max(0, required - current),
-            progress: percentage,
-            type: a.requirement?.type || 'unknown',
-            label: this.getAchievementLabel(a),
-            collectionType: a.collectionType,
-            category: a.category,
-          };
+          if (isTierUpgrade) {
+            // Calculate progress toward next tier
+            const tierOrder = ['bronze', 'silver', 'gold', 'platinum', 'diamond'];
+            const currentTierIndex = tierOrder.indexOf(a.currentTier);
+            const nextTier = tierOrder[currentTierIndex + 1];
+            const nextTierThreshold = a.tierThresholds[nextTier];
+            
+            // Guard: Skip if next tier threshold is missing
+            if (!nextTierThreshold || nextTierThreshold <= 0) {
+              console.warn(`⚠️ Missing or invalid tier threshold for ${a.name} → ${nextTier}`);
+              return null;
+            }
+            
+            const currentPercentage = a.progress.percentage || 0;
+            const progressTowardNextTier = (currentPercentage / nextTierThreshold) * 100;
+            
+            // Calculate how many more products needed
+            const totalAvailable = a.progress.totalAvailable || 1;
+            const currentRanked = a.progress.totalRanked || 0;
+            const requiredForNextTier = Math.ceil((nextTierThreshold / 100) * totalAvailable);
+            const remaining = Math.max(0, requiredForNextTier - currentRanked);
+            
+            console.log(`🎯 Tier upgrade: ${a.name} - ${currentRanked}/${requiredForNextTier} for ${nextTier} (${progressTowardNextTier.toFixed(1)}%)`);
+            
+            return {
+              achievementId: a.id,
+              achievementName: a.name,
+              achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
+              achievementIconType: a.iconType,
+              current: currentRanked,
+              target: requiredForNextTier,
+              remaining,
+              progress: progressTowardNextTier,
+              type: a.requirement?.type || 'unknown',
+              label: this.getAchievementLabel(a),
+              collectionType: a.collectionType,
+              category: a.category,
+              isTierUpgrade: true,
+              currentTier: a.currentTier,
+              nextTier,
+            };
+          } else {
+            // Normal unearned achievement
+            const isCollection = a.progress.totalAvailable !== undefined;
+            
+            const current = isCollection ? (a.progress.totalRanked || 0) : (a.progress.current || 0);
+            const required = isCollection ? (a.progress.totalAvailable || 1) : (a.progress.required || 1);
+            const percentage = isCollection && a.progress.percentage !== undefined 
+              ? a.progress.percentage 
+              : Math.min(100, (current / required) * 100);
+            
+            return {
+              achievementId: a.id,
+              achievementName: a.name,
+              achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
+              achievementIconType: a.iconType,
+              current,
+              target: required,
+              remaining: Math.max(0, required - current),
+              progress: percentage,
+              type: a.requirement?.type || 'unknown',
+              label: this.getAchievementLabel(a),
+              collectionType: a.collectionType,
+              category: a.category,
+              isTierUpgrade: false,
+            };
+          }
         });
       
-      console.log(`📊 ProgressTracker: ${unearnedAchievements.length} unearned achievements have progress data`);
+      // Filter out any null values from the mapping (e.g., invalid tier thresholds)
+      const validAchievements = candidateAchievements.filter(a => a !== null);
+      
+      console.log(`📊 ProgressTracker: ${validAchievements.length} achievements have progress data (including tier upgrades)`);
       
       // Sort by progress percentage (descending) to get the closest one
-      const sortedByProgress = unearnedAchievements.sort((a, b) => b.progress - a.progress);
+      const sortedByProgress = validAchievements.sort((a, b) => b.progress - a.progress);
       
       if (sortedByProgress.length > 0) {
         const closest = sortedByProgress[0];
-        console.log(`🎯 Closest unearned achievement: ${closest.achievementName} (${closest.progress.toFixed(1)}% complete - ${closest.current}/${closest.target})`);
+        const tierInfo = closest.isTierUpgrade ? ` (${closest.currentTier} → ${closest.nextTier})` : '';
+        console.log(`🎯 Closest milestone: ${closest.achievementName}${tierInfo} (${closest.progress.toFixed(1)}% complete - ${closest.current}/${closest.target})`);
         return closest;
       } else {
-        console.log(`✅ ProgressTracker: No unearned achievements with progress data (user may have earned all available achievements)`);
+        console.log(`✅ ProgressTracker: No achievements with progress data (user may have earned all available achievements)`);
         return null;
       }
     } catch (error) {
