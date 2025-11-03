@@ -315,11 +315,11 @@ class CommentaryService {
    */
   _generateCollectionMessage(rankedCount, remaining, totalProducts, percentage, context) {
     // Define message templates by context - simple percentage-based tiers
-    // Uses Coin Book and Flavor Coin terminology from the glossary
+    // Uses "flavors" terminology and focuses on Coin Book completion
     const templates = {
       available_products: {
-        tier_0: { text: "Start filling your Coin Book! Rank your purchases 🪙", icon: '🪙', color: 'blue' },
-        tier_1_10: { text: `${remaining} flavors left to complete your Coin Book! Keep ranking 🪙`, icon: '🪙', color: 'blue' },
+        tier_0: { text: "Start filling your Coin Book! Rank flavors to complete it 📖", icon: '📖', color: 'blue' },
+        tier_1_10: { text: `${remaining} flavors left to complete your Coin Book! Keep ranking 📖`, icon: '📖', color: 'blue' },
         tier_11_20: { text: `Building momentum! ${remaining} flavors left to complete your Coin Book 💪`, icon: '💪', color: 'green' },
         tier_21_30: { text: `Great progress! ${remaining} flavors left to complete your Coin Book 🔥`, icon: '🔥', color: 'orange' },
         tier_31_40: { text: `Over one-third done! ${remaining} flavors left to complete your Coin Book ⭐`, icon: '⭐', color: 'purple' },
@@ -332,18 +332,18 @@ class CommentaryService {
         tier_100: { text: "Coin Book complete! You've ranked them all 👑", icon: '👑', color: 'rainbow' }
       },
       coin_book: {
-        tier_0: { text: 'Start ranking to unlock achievements!', icon: '🎯', color: 'blue' },
-        tier_1_10: { text: `${rankedCount} ranked! Keep going 🚀`, icon: '🚀', color: 'blue' },
-        tier_11_20: { text: `${rankedCount} ranked! Building momentum 💪`, icon: '💪', color: 'green' },
-        tier_21_30: { text: `${rankedCount} ranked! Great progress 🔥`, icon: '🔥', color: 'orange' },
-        tier_31_40: { text: `${rankedCount} ranked! Over one-third done ⭐`, icon: '⭐', color: 'purple' },
-        tier_41_50: { text: `${rankedCount} ranked! Almost halfway 🎯`, icon: '🎯', color: 'purple' },
-        tier_51_60: { text: `${rankedCount} ranked! Past halfway 🏆`, icon: '🏆', color: 'gold' },
-        tier_61_70: { text: `${rankedCount} ranked! Two-thirds done 💎`, icon: '💎', color: 'gold' },
-        tier_71_80: { text: `${rankedCount} ranked! Home stretch 🌟`, icon: '🌟', color: 'gold' },
-        tier_81_90: { text: `${rankedCount} ranked! Nearly there ⚡`, icon: '⚡', color: 'gold' },
-        tier_91_99: { text: `${rankedCount} ranked! So close 🎉`, icon: '🎉', color: 'rainbow' },
-        tier_100: { text: 'All products ranked! 👑', icon: '👑', color: 'rainbow' }
+        tier_0: { text: 'Start ranking flavors to fill your Coin Book!', icon: '📖', color: 'blue' },
+        tier_1_10: { text: `${remaining} flavors left to complete your Coin Book! Keep ranking 📖`, icon: '📖', color: 'blue' },
+        tier_11_20: { text: `Building momentum! ${remaining} flavors left to complete your Coin Book 💪`, icon: '💪', color: 'green' },
+        tier_21_30: { text: `Great progress! ${remaining} flavors left to complete your Coin Book 🔥`, icon: '🔥', color: 'orange' },
+        tier_31_40: { text: `Over one-third done! ${remaining} flavors left to complete your Coin Book ⭐`, icon: '⭐', color: 'purple' },
+        tier_41_50: { text: `Almost halfway! ${remaining} flavors left to complete your Coin Book 🎯`, icon: '🎯', color: 'purple' },
+        tier_51_60: { text: `Past halfway! ${remaining} flavors left to complete your Coin Book 🏆`, icon: '🏆', color: 'gold' },
+        tier_61_70: { text: `Two-thirds done! Only ${remaining} flavors left to complete your Coin Book 💎`, icon: '💎', color: 'gold' },
+        tier_71_80: { text: `Home stretch! ${remaining} flavors left to complete your Coin Book 🌟`, icon: '🌟', color: 'gold' },
+        tier_81_90: { text: `Nearly complete! Just ${remaining} flavors left to complete your Coin Book ⚡`, icon: '⚡', color: 'gold' },
+        tier_91_99: { text: `So close! Only ${remaining} flavors left to complete your Coin Book 🎉`, icon: '🎉', color: 'rainbow' },
+        tier_100: { text: "Coin Book complete! You've ranked them all 👑", icon: '👑', color: 'rainbow' }
       }
     };
 
