@@ -35,7 +35,7 @@ function ManageCoinsPageAdmin() {
     return coins.filter(coin => {
       // Coin type filter
       if (coinTypeFilter !== 'all') {
-        if (coinTypeFilter === 'engagement' && coin.collectionType !== 'engagement_coin') return false;
+        if (coinTypeFilter === 'engagement' && coin.collectionType !== 'engagement_collection') return false;
         if (coinTypeFilter === 'static' && coin.collectionType !== 'static_collection') return false;
         if (coinTypeFilter === 'dynamic' && coin.collectionType !== 'dynamic_collection') return false;
         if (coinTypeFilter === 'flavor' && coin.collectionType !== 'flavor_coin') return false;
