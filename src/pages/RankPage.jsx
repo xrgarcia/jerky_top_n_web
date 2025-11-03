@@ -309,8 +309,9 @@ export default function RankPage() {
           {/* Coin Book Widget - Shows user's achievement progress */}
           <CoinBookWidget defaultCollapsed={true} />
           
-          <div className="rank-column ranks-column">
-            <div className="header-with-status">
+          <div className="rank-columns-grid">
+            <div className="rank-column ranks-column">
+              <div className="header-with-status">
               <h2>Your Rankings</h2>
               {saveStatus.state !== 'idle' && (
                 <div className={`save-status-inline save-status-${saveStatus.state}`}>
@@ -355,9 +356,9 @@ export default function RankPage() {
               )}
             </div>
           </div>
-        
-        <div className="rank-column products-column">
-          <h2>Available Products</h2>
+          
+            <div className="rank-column products-column">
+              <h2>Available Products</h2>
           {collectionProgress && (
             <div className="collection-progress-bar">
               <div className="progress-header">
@@ -435,10 +436,11 @@ export default function RankPage() {
                 <p>Search for products or click "Search" to see all available products you can rank.</p>
               </div>
             )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      </div>
     </DndContext>
   );
 }

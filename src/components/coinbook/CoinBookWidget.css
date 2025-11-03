@@ -1,8 +1,8 @@
 /* CoinBookWidget - Wood-inspired, earth-tone coin book design */
 
 .coinbook-widget {
-  background: linear-gradient(135deg, #f5f3ed 0%, #ebe8dc 100%);
-  border: 3px solid #7b8b52;
+  background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);
+  border: 3px solid #8B7355;
   border-radius: 16px;
   box-shadow: 
     0 4px 12px rgba(0, 0, 0, 0.15),
@@ -10,6 +10,7 @@
   margin-bottom: 24px;
   overflow: hidden;
   position: relative;
+  width: 100%;
 }
 
 /* Wood grain texture effect */
@@ -25,8 +26,8 @@
       90deg,
       transparent,
       transparent 2px,
-      rgba(123, 139, 82, 0.03) 2px,
-      rgba(123, 139, 82, 0.03) 4px
+      rgba(139, 115, 85, 0.03) 2px,
+      rgba(139, 115, 85, 0.03) 4px
     );
   pointer-events: none;
   opacity: 0.5;
@@ -38,7 +39,7 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background: linear-gradient(135deg, #7b8b52 0%, #6a7847 100%);
+  background: linear-gradient(135deg, #8B7355 0%, #6D5A47 100%);
   border: none;
   padding: 16px 20px;
   cursor: pointer;
@@ -48,11 +49,11 @@
 }
 
 .coinbook-header:hover {
-  background: linear-gradient(135deg, #8a9a62 0%, #7a8857 100%);
+  background: linear-gradient(135deg, #9A8265 0%, #7A6A57 100%);
 }
 
 .coinbook-header:focus {
-  outline: 2px solid #c4a962;
+  outline: 2px solid #D4A574;
   outline-offset: -2px;
 }
 
@@ -71,7 +72,7 @@
 }
 
 .chevron {
-  color: #c4a962;
+  color: #D4A574;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
 }
@@ -146,7 +147,7 @@
 /* Milestone Section */
 .milestone-section {
   background: #fff;
-  border: 2px solid #c4a962;
+  border: 2px solid #D4A574;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
@@ -159,7 +160,7 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #5a4a2a;
+  color: #4a3a1a;
   margin-bottom: 10px;
 }
 
@@ -189,7 +190,7 @@
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7b8b52 0%, #c4a962 100%);
+  background: linear-gradient(90deg, #8B7355 0%, #D4A574 100%);
   border-radius: 7px;
   transition: width 0.5s ease;
   box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
@@ -197,7 +198,7 @@
 
 .milestone-status {
   font-size: 13px;
-  color: #7b8b52;
+  color: #4a3a1a;
   margin-top: 8px;
   font-weight: 600;
 }
@@ -210,7 +211,7 @@
 .achievements-label {
   font-size: 14px;
   font-weight: 700;
-  color: #5a4a2a;
+  color: #4a3a1a;
   margin-bottom: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -337,14 +338,14 @@
 
 .coinbook-loading {
   text-align: center;
-  color: #7b8b52;
+  color: #4a3a1a;
 }
 
 .loading-spinner {
   width: 40px;
   height: 40px;
   border: 4px solid #e9e6d9;
-  border-top-color: #7b8b52;
+  border-top-color: #8B7355;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 16px;
