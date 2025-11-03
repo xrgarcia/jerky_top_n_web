@@ -203,6 +203,25 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                         {achievement.earned ? achievement.name : '???'}
                         {tierEmoji && <span className="tier-emoji"> {tierEmoji}</span>}
                       </span>
+                      
+                      {/* Tooltip */}
+                      <div className="achievement-tooltip">
+                        {achievement.earned ? (
+                          <>
+                            <strong>{achievement.name}</strong>
+                            {achievement.description && (
+                              <span className="tooltip-description">{achievement.description}</span>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <strong>Locked Achievement</strong>
+                            {achievement.requirement_hint && (
+                              <span className="requirement-hint">{achievement.requirement_hint}</span>
+                            )}
+                          </>
+                        )}
+                      </div>
                     </div>
                   );
                 })}
