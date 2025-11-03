@@ -313,6 +313,18 @@
   min-height: 120px;
 }
 
+/* Tier badge overlay in corner */
+.tier-badge-overlay {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 20px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  z-index: 2;
+  pointer-events: none;
+}
+
 .achievement-coin:hover {
   transform: translateY(-4px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
@@ -360,13 +372,13 @@
 .achievement-coin.locked {
   background: #f5f5f5;
   border-color: #ddd;
-  opacity: 0.6;
-  cursor: default;
+  opacity: 0.7;
+  cursor: pointer;
 }
 
 .achievement-coin.locked:hover {
-  transform: none;
-  box-shadow: none;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .coin-icon {
@@ -462,6 +474,23 @@
   font-size: 11px;
   color: #E8D4A0;
   font-style: normal;
+  margin-top: 4px;
+}
+
+.tooltip-tier {
+  display: block;
+  margin-top: 6px;
+  font-size: 12px;
+  color: #FFE4B3;
+  font-weight: 600;
+}
+
+.tooltip-tier-progress {
+  display: block;
+  font-size: 10px;
+  color: #D4C5A0;
+  font-weight: normal;
+  margin-top: 2px;
 }
 
 .requirement-hint {

@@ -209,30 +209,36 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                       aria-label={achievement.earned ? achievement.name : 'Locked achievement'}
                       aria-describedby={tooltipId}
                     >
+                      {/* Tier badge overlay for tiered achievements */}
+                      {achievement.hasTiers && tierEmoji && (
+                        <span className="tier-badge-overlay">{tierEmoji}</span>
+                      )}
+                      
                       <span className="coin-icon">
                         {renderIcon(achievement, 48)}
                       </span>
                       <span className="coin-name">
-                        {achievement.earned ? achievement.name : '???'}
-                        {tierEmoji && <span className="tier-emoji"> {tierEmoji}</span>}
+                        {achievement.earned ? achievement.name : achievement.name || '???'}
                       </span>
                       
-                      {/* Tooltip */}
+                      {/* Tooltip - Show for all non-hidden achievements */}
                       <div id={tooltipId} className="achievement-tooltip" role="tooltip">
-                        {achievement.earned ? (
-                          <>
-                            <strong>{achievement.name}</strong>
-                            {achievement.description && (
-                              <span className="tooltip-description">{achievement.description}</span>
+                        <strong>{achievement.name || 'Locked Achievement'}</strong>
+                        {achievement.description && (
+                          <span className="tooltip-description">{achievement.description}</span>
+                        )}
+                        {achievement.hasTiers && achievement.currentTier && (
+                          <span className="tooltip-tier">
+                            {tierEmoji} {achievement.currentTier.charAt(0).toUpperCase() + achievement.currentTier.slice(1)} Tier
+                            {achievement.progress && achievement.progress.percentage < 100 && achievement.tierThresholds && (
+                              <span className="tooltip-tier-progress">
+                                {' '}({achievement.progress.percentage.toFixed(0)}% - {achievement.progress.totalRanked}/{achievement.progress.totalAvailable} ranked)
+                              </span>
                             )}
-                          </>
-                        ) : (
-                          <>
-                            <strong>Locked Achievement</strong>
-                            {achievement.requirement_hint && (
-                              <span className="requirement-hint">{achievement.requirement_hint}</span>
-                            )}
-                          </>
+                          </span>
+                        )}
+                        {!achievement.earned && achievement.requirement_hint && (
+                          <span className="requirement-hint">{achievement.requirement_hint}</span>
                         )}
                       </div>
                     </div>
