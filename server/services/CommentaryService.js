@@ -310,48 +310,69 @@ class CommentaryService {
 
   /**
    * Generate contextual collection messages based on progress tier and context
+   * Simple percentage-based tiers every 10% with encouraging variations
    * @private
    */
   _generateCollectionMessage(rankedCount, remaining, totalProducts, percentage, context) {
-    // Define message templates by context
+    // Define message templates by context - simple percentage-based tiers
     const templates = {
       available_products: {
-        empty: { text: "Let's start your flavor journey! Search to find products 🚀", icon: '🚀', color: 'blue' },
-        starting: { text: `You've tasted ${rankedCount} flavor${rankedCount !== 1 ? 's' : ''}—let's find your next favorite!`, icon: '✨', color: 'green' },
-        momentum: { text: `${rankedCount} down, ${remaining} to go! You're on a roll 🔥`, icon: '🔥', color: 'orange' },
-        halfway: { text: `Halfway there! ${remaining} more flavors await 💪`, icon: '💪', color: 'purple' },
-        advanced: { text: `Impressive! Only ${remaining} left to complete your collection 🏆`, icon: '🎖️', color: 'gold' },
-        nearComplete: { text: `Almost legendary! Just ${remaining} more 👑`, icon: '👑', color: 'gold' },
-        complete: { text: "Legend status! You've ranked them all 🎉", icon: '🎉', color: 'rainbow' }
+        tier_0: { text: "Let's start your flavor journey! Search to find products 🚀", icon: '🚀', color: 'blue' },
+        tier_1_10: { text: `Just starting out! ${remaining} more flavors to explore 🚀`, icon: '🚀', color: 'blue' },
+        tier_11_20: { text: `Building momentum! ${remaining} flavors still to discover 💪`, icon: '💪', color: 'green' },
+        tier_21_30: { text: `Making great progress! ${remaining} more to go 🔥`, icon: '🔥', color: 'orange' },
+        tier_31_40: { text: `Over one-third complete! ${remaining} flavors await ⭐`, icon: '⭐', color: 'purple' },
+        tier_41_50: { text: `Almost halfway there! ${remaining} more to explore 🎯`, icon: '🎯', color: 'purple' },
+        tier_51_60: { text: `Past halfway! ${remaining} flavors to go 🏆`, icon: '🏆', color: 'gold' },
+        tier_61_70: { text: `Two-thirds done! Only ${remaining} left 💎`, icon: '💎', color: 'gold' },
+        tier_71_80: { text: `On the home stretch! ${remaining} more 🌟`, icon: '🌟', color: 'gold' },
+        tier_81_90: { text: `Nearly complete! Just ${remaining} to go ⚡`, icon: '⚡', color: 'gold' },
+        tier_91_99: { text: `So close to legend status! Only ${remaining} left 🎉`, icon: '🎉', color: 'rainbow' },
+        tier_100: { text: "Legend status! You've ranked them all 👑", icon: '👑', color: 'rainbow' }
       },
       coin_book: {
-        empty: { text: 'Start ranking to unlock achievements!', icon: '🎯', color: 'blue' },
-        starting: { text: `${rankedCount} ranked—keep going to unlock more!`, icon: '⭐', color: 'green' },
-        momentum: { text: `${rankedCount} products ranked! Achievements await 🔥`, icon: '🔥', color: 'orange' },
-        halfway: { text: `${rankedCount} ranked—you're unstoppable! 💪`, icon: '💪', color: 'purple' },
-        advanced: { text: `${rankedCount} ranked! Almost at legend status 🏆`, icon: '🏆', color: 'gold' },
-        nearComplete: { text: `${rankedCount} ranked! Finish strong 👑`, icon: '👑', color: 'gold' },
-        complete: { text: 'All products ranked! 🎉', icon: '🎉', color: 'rainbow' }
+        tier_0: { text: 'Start ranking to unlock achievements!', icon: '🎯', color: 'blue' },
+        tier_1_10: { text: `${rankedCount} ranked! Keep going 🚀`, icon: '🚀', color: 'blue' },
+        tier_11_20: { text: `${rankedCount} ranked! Building momentum 💪`, icon: '💪', color: 'green' },
+        tier_21_30: { text: `${rankedCount} ranked! Great progress 🔥`, icon: '🔥', color: 'orange' },
+        tier_31_40: { text: `${rankedCount} ranked! Over one-third done ⭐`, icon: '⭐', color: 'purple' },
+        tier_41_50: { text: `${rankedCount} ranked! Almost halfway 🎯`, icon: '🎯', color: 'purple' },
+        tier_51_60: { text: `${rankedCount} ranked! Past halfway 🏆`, icon: '🏆', color: 'gold' },
+        tier_61_70: { text: `${rankedCount} ranked! Two-thirds done 💎`, icon: '💎', color: 'gold' },
+        tier_71_80: { text: `${rankedCount} ranked! Home stretch 🌟`, icon: '🌟', color: 'gold' },
+        tier_81_90: { text: `${rankedCount} ranked! Nearly there ⚡`, icon: '⚡', color: 'gold' },
+        tier_91_99: { text: `${rankedCount} ranked! So close 🎉`, icon: '🎉', color: 'rainbow' },
+        tier_100: { text: 'All products ranked! 👑', icon: '👑', color: 'rainbow' }
       }
     };
 
     const contextTemplates = templates[context] || templates.available_products;
 
-    // Tier logic (matches ranking progress tiers for consistency)
+    // Simple 10% tier logic based on actual percentage
     if (rankedCount === 0) {
-      return contextTemplates.empty;
-    } else if (rankedCount <= 5) {
-      return contextTemplates.starting;
-    } else if (rankedCount <= 15) {
-      return contextTemplates.momentum;
-    } else if (percentage < 60) {
-      return contextTemplates.halfway;
-    } else if (percentage < 85) {
-      return contextTemplates.advanced;
-    } else if (rankedCount < totalProducts) {
-      return contextTemplates.nearComplete;
+      return contextTemplates.tier_0;
+    } else if (percentage <= 10) {
+      return contextTemplates.tier_1_10;
+    } else if (percentage <= 20) {
+      return contextTemplates.tier_11_20;
+    } else if (percentage <= 30) {
+      return contextTemplates.tier_21_30;
+    } else if (percentage <= 40) {
+      return contextTemplates.tier_31_40;
+    } else if (percentage <= 50) {
+      return contextTemplates.tier_41_50;
+    } else if (percentage <= 60) {
+      return contextTemplates.tier_51_60;
+    } else if (percentage <= 70) {
+      return contextTemplates.tier_61_70;
+    } else if (percentage <= 80) {
+      return contextTemplates.tier_71_80;
+    } else if (percentage <= 90) {
+      return contextTemplates.tier_81_90;
+    } else if (percentage < 100) {
+      return contextTemplates.tier_91_99;
     } else {
-      return contextTemplates.complete;
+      return contextTemplates.tier_100;
     }
   }
 
