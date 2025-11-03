@@ -412,11 +412,18 @@ export default function RankPage() {
                         <img 
                           src={commentary.nextMilestone.icon} 
                           alt={commentary.nextMilestone.name}
+                          title={commentary.nextMilestone.name}
                           className="milestone-icon-image"
-                          style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle' }}
+                          style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle', cursor: 'help' }}
                         />
                       ) : (
-                        <span className="milestone-icon-emoji">{commentary.nextMilestone.icon}</span>
+                        <span 
+                          className="milestone-icon-emoji" 
+                          title={commentary.nextMilestone.name}
+                          style={{ cursor: 'help' }}
+                        >
+                          {commentary.nextMilestone.icon}
+                        </span>
                       )}{' '}
                       {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
                       {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}

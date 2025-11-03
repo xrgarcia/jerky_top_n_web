@@ -150,8 +150,9 @@ class CommentaryService {
       const tierInfo = milestone.isTierUpgrade ? this._getTierInfo(milestone) : null;
       
       // Different display format for tier upgrades vs new achievements
+      // For tier upgrades, include both the tier AND the achievement name for clarity
       const achievementDisplay = tierInfo 
-        ? `${tierInfo.tierName} tier ${tierInfo.emoji}` 
+        ? `${tierInfo.tierName} tier ${tierInfo.emoji} in ${milestone.achievementName}` 
         : `"${milestone.achievementName}"`;
       
       // Different action verb for tier upgrades vs new achievements
