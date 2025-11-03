@@ -150,6 +150,46 @@
   white-space: nowrap;
 }
 
+/* Collapsed Milestone Preview */
+.collapsed-milestone-preview {
+  padding: 16px 20px;
+  background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.milestone-preview-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4a3a1a;
+  margin-bottom: 10px;
+}
+
+.milestone-preview-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.milestone-preview-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.milestone-preview-name {
+  flex: 1;
+  color: inherit;
+}
+
+.milestone-preview-status {
+  font-size: 12px;
+  color: #4a3a1a;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
 /* Content */
 .coinbook-content {
   padding: 20px;
@@ -526,6 +566,7 @@
 .coinbook-oak .milestone-status,
 .coinbook-oak .achievements-label,
 .coinbook-oak .coin-name,
+.coinbook-oak .stat-value,
 .coinbook-oak .coinbook-loading {
   color: #3E2723;
 }
@@ -603,6 +644,7 @@
 .coinbook-walnut .milestone-status,
 .coinbook-walnut .achievements-label,
 .coinbook-walnut .coin-name,
+.coinbook-walnut .stat-value,
 .coinbook-walnut .coinbook-loading {
   color: #2C1810;
 }
@@ -680,6 +722,7 @@
 .coinbook-pine .milestone-status,
 .coinbook-pine .achievements-label,
 .coinbook-pine .coin-name,
+.coinbook-pine .stat-value,
 .coinbook-pine .coinbook-loading {
   color: #3E2723;
 }
@@ -757,6 +800,7 @@
 .coinbook-cherry .milestone-status,
 .coinbook-cherry .achievements-label,
 .coinbook-cherry .coin-name,
+.coinbook-cherry .stat-value,
 .coinbook-cherry .coinbook-loading {
   color: #2C1810;
 }
