@@ -829,3 +829,108 @@
 .coinbook-cherry .achievement-coin:focus {
   outline-color: #CD853F;
 }
+
+/* THEME 5: Hero/Dark - Inspired by home page hero section */
+.coinbook-hero {
+  background: linear-gradient(135deg, #4a3728 0%, #3d2e22 100%);
+  border-color: #5a4434;
+}
+
+.coinbook-hero::before {
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(90, 68, 52, 0.04) 2px,
+      rgba(90, 68, 52, 0.04) 4px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      rgba(90, 68, 52, 0.03) 20px,
+      transparent 40px,
+      rgba(90, 68, 52, 0.05) 60px,
+      transparent 80px
+    );
+}
+
+.coinbook-hero::after {
+  background-image: 
+    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(90, 68, 52, 0.10), transparent),
+    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(90, 68, 52, 0.08), transparent),
+    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(90, 68, 52, 0.07), transparent);
+}
+
+.coinbook-hero .coinbook-header {
+  background: linear-gradient(135deg, #5a4434 0%, #4a3728 100%);
+}
+
+.coinbook-hero .coinbook-header:hover {
+  background: linear-gradient(135deg, #6a5444 0%, #5a4738 100%);
+}
+
+.coinbook-hero .coinbook-header:focus {
+  outline-color: #8B7355;
+}
+
+.coinbook-hero .chevron {
+  color: #D4A574;
+}
+
+.coinbook-hero .coinbook-content,
+.coinbook-hero .collapsed-milestone-preview {
+  background: linear-gradient(to bottom, #4a3728 0%, #3d2e22 100%);
+}
+
+.coinbook-hero .milestone-section {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #8B7355;
+}
+
+.coinbook-hero .milestone-label,
+.coinbook-hero .milestone-name,
+.coinbook-hero .milestone-status,
+.coinbook-hero .achievements-label,
+.coinbook-hero .coin-name,
+.coinbook-hero .milestone-preview-label,
+.coinbook-hero .milestone-preview-name,
+.coinbook-hero .milestone-preview-status,
+.coinbook-hero .coinbook-loading {
+  color: #F5E6D3;
+}
+
+.coinbook-hero .progress-bar {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: #5a4434;
+}
+
+.coinbook-hero .progress-fill {
+  background: linear-gradient(90deg, #D4A574 0%, #F5DEB3 100%);
+}
+
+.coinbook-hero .loading-spinner {
+  border-color: rgba(255, 255, 255, 0.1);
+  border-top-color: #D4A574;
+}
+
+.coinbook-hero .achievement-coin {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: #5a4434;
+}
+
+.coinbook-hero .achievement-coin:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.coinbook-hero .achievement-coin:focus {
+  outline-color: #D4A574;
+}
+
+.coinbook-hero .achievement-coin.earned {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.coinbook-hero .coin-name {
+  color: #E8D4A0;
+}
