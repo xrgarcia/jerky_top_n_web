@@ -6,7 +6,16 @@
   cursor: grabbing;
 }
 
+/* Grey overlay when dragging - product stays in place */
 .product-card.dragging {
-  opacity: 0.8;
-  z-index: 1000;
+  opacity: 0.5;
+  position: relative;
+}
+
+/* Overlay clone shown by DragOverlay */
+.product-card.dragging-overlay {
+  opacity: 0.9;
+  cursor: grabbing;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  transform: rotate(2deg);
 }

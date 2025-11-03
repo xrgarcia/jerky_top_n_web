@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
@@ -143,11 +143,20 @@ export default function RankPage() {
   );
 
   // Filter out already-ranked products (optimistic UI)
+  // BUT keep product visible during drag (don't filter out activeId)
   const availableProducts = useMemo(() => {
     if (!Array.isArray(products) || !getRankedProductIds) return [];
     const rankedIds = new Set(getRankedProductIds());
-    return products.filter(p => p && !rankedIds.has(p.id));
-  }, [products, getRankedProductIds]);
+    const activeDragProductId = activeId?.startsWith('product-') ? activeId.replace('product-', '') : null;
+    
+    return products.filter(p => {
+      if (!p) return false;
+      // Keep product visible if it's being dragged (even if ranked)
+      if (activeDragProductId && p.id === activeDragProductId) return true;
+      // Otherwise filter out ranked products
+      return !rankedIds.has(p.id);
+    });
+  }, [products, getRankedProductIds, activeId]);
   
   const handleSearch = async () => {
     setLoading(true);
@@ -269,6 +278,13 @@ export default function RankPage() {
     return slotsArray;
   }, [slotCount, rankedProducts]);
   
+  // Get the active dragged product for DragOverlay
+  const activeProduct = useMemo(() => {
+    if (!activeId || !activeId.startsWith('product-')) return null;
+    const productId = activeId.replace('product-', '');
+    return products.find(p => p && p.id === productId) || null;
+  }, [activeId, products]);
+  
   // Drag handlers
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
@@ -278,7 +294,10 @@ export default function RankPage() {
     const { active, over } = event;
     setActiveId(null);
     
-    if (!over) return;
+    if (!over) {
+      // Drag cancelled - product stays in available list
+      return;
+    }
     
     const activeId = active.id;
     const overId = over.id;
@@ -290,8 +309,11 @@ export default function RankPage() {
       
       if (product && overId.startsWith('slot-')) {
         const position = parseInt(overId.replace('slot-', ''));
+        // Product gets added to ranking and automatically removed from available list
+        // by the useMemo filter (rankedIds check)
         addRanking(product, position);
       }
+      // If dropped outside a slot, product stays in available list (no action needed)
     }
     // Check if reordering within slots
     else if (activeId.startsWith('slot-') && overId.startsWith('slot-')) {
@@ -481,7 +503,11 @@ export default function RankPage() {
             {!loading && !error && availableProducts.length > 0 && (
               <div className="products-grid">
                 {availableProducts.map(product => (
-                  <DraggableProduct key={product.id} product={product} />
+                  <DraggableProduct 
+                    key={product.id} 
+                    product={product}
+                    isDragging={activeId === `product-${product.id}`}
+                  />
                 ))}
               </div>
             )}
@@ -502,6 +528,30 @@ export default function RankPage() {
         </div>
       </div>
       </div>
+      
+      {/* DragOverlay shows clone of dragged product while original stays in place with grey overlay */}
+      <DragOverlay>
+        {activeProduct ? (
+          <div className="product-card dragging-overlay">
+            <div className="product-image">
+              {activeProduct.image ? (
+                <img src={activeProduct.image} alt={activeProduct.title} />
+              ) : (
+                <div className="no-image">No Image</div>
+              )}
+            </div>
+            <div className="product-info">
+              <h3 className="product-name">{activeProduct.title}</h3>
+              {activeProduct.vendor && (
+                <p className="product-vendor">{activeProduct.vendor}</p>
+              )}
+              {activeProduct.price && (
+                <p className="product-price">${activeProduct.price}</p>
+              )}
+            </div>
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }

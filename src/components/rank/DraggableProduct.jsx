@@ -1,20 +1,20 @@
 import { useDraggable } from '@dnd-kit/core';
 import './DraggableProduct.css';
 
-export function DraggableProduct({ product }) {
-  const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
+export function DraggableProduct({ product, isDragging: isBeingDragged }) {
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: `product-${product.id}`,
   });
 
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  } : undefined;
+  // No transform - keep product in original position
+  // DragOverlay handles the visual feedback of dragging
+  const style = {};
 
   return (
     <div
       ref={setNodeRef}
       style={style}
-      className={`product-card ${isDragging ? 'dragging' : ''}`}
+      className={`product-card ${isBeingDragged ? 'dragging' : ''}`}
       {...listeners}
       {...attributes}
     >
