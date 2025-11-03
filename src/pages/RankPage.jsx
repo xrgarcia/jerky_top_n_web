@@ -358,7 +358,7 @@ export default function RankPage() {
           </div>
           
             <div className="rank-column products-column">
-              <h2>Available Products</h2>
+              <h2>Purchased Products</h2>
           {collectionProgress && (
             <div className="collection-progress-bar">
               <div className="progress-header">
@@ -413,7 +413,7 @@ export default function RankPage() {
 
             {!loading && !error && hasSearched && products.length === 0 && (
               <div className="empty-state">
-                No products found. Try a different search term or click Search to see all available products.
+                No products found. Try a different search term or click Search to see all purchased products.
               </div>
             )}
 
@@ -433,7 +433,7 @@ export default function RankPage() {
 
             {!hasSearched && (
               <div className="initial-state">
-                <p>Search for products or click "Search" to see all available products you can rank.</p>
+                <p>Search for products or click "Search" to see all purchased products you can rank.</p>
               </div>
             )}
             </div>
