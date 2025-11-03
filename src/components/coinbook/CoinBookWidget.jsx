@@ -63,12 +63,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
         />
       );
     }
-    // Handle missing, empty, or zero icon values to prevent rendering "0"
-    const icon = achievement.icon;
-    if (!icon || icon === 0 || icon === '0') {
-      return '🏆'; // Default placeholder emoji
-    }
-    return icon;
+    return achievement.icon;
   };
 
   return (
@@ -215,7 +210,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                       aria-describedby={tooltipId}
                     >
                       {/* Tier badge overlay for tiered achievements */}
-                      {achievement.hasTiers && tierEmoji && (
+                      {!!achievement.hasTiers && tierEmoji && (
                         <span className="tier-badge-overlay">{tierEmoji}</span>
                       )}
                       
@@ -232,7 +227,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                         {achievement.description && (
                           <span className="tooltip-description">{achievement.description}</span>
                         )}
-                        {achievement.hasTiers && achievement.currentTier && (
+                        {!!achievement.hasTiers && achievement.currentTier && (
                           <span className="tooltip-tier">
                             {tierEmoji} {achievement.currentTier.charAt(0).toUpperCase() + achievement.currentTier.slice(1)} Tier
                             {achievement.progress && achievement.progress.percentage < 100 && achievement.tierThresholds && (
