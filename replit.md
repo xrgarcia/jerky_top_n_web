@@ -40,7 +40,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Search**: Global unified search for products and community members.
 - **Styling**: Custom CSS with an earth-tone palette.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
-- **Toast Notifications**: Sequential queue-based display system (FIFO) prevents message overlap, showing one toast at a time with 300ms transition delay and configurable duration (default 5s).
+- **Toast Notifications**: Sequential queue-based display system (FIFO) prevents message overlap, showing one toast at a time with 300ms transition delay and configurable duration (default 5s). WebSocket events (achievements:earned, flavor_coins:earned, tier:upgrade) trigger toasts with tier-specific formatting and emojis (🥉🥈🥇💎💠).
 
 **Feature Specifications:**
 - **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and hybrid reliability system. Non-employee users can only rank purchased products.
