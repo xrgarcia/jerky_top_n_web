@@ -9,6 +9,7 @@ import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
+import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './RankPage.css';
 
 export default function RankPage() {
@@ -305,6 +306,9 @@ export default function RankPage() {
     >
       <div className="rank-page">
         <div className="rank-container">
+          {/* Coin Book Widget - Shows user's achievement progress */}
+          <CoinBookWidget defaultCollapsed={true} />
+          
           <div className="rank-column ranks-column">
             <div className="header-with-status">
               <h2>Your Rankings</h2>
