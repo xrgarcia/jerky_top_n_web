@@ -47,6 +47,7 @@ export function useCoinBookWebSocket() {
           showToast({
             type: 'achievement',
             icon: achievement.icon || '🏆',
+            iconType: achievement.iconType || 'emoji',
             title,
             message,
             duration: 6000
@@ -69,6 +70,7 @@ export function useCoinBookWebSocket() {
           showToast({
             type: 'info',
             icon: coin.icon || '🪙',
+            iconType: coin.iconType || 'emoji',
             title: '🪙 Flavor Coin Earned!',
             message: coin.name || coin.flavorName || 'New Flavor Coin',
             duration: 5000
@@ -91,6 +93,7 @@ export function useCoinBookWebSocket() {
         showToast({
           type: 'achievement',
           icon: achievement.icon || '⬆️',
+          iconType: achievement.iconType || 'emoji',
           title: '⬆️ Tier Upgraded!',
           message: `${achievement.name} - ${tierEmoji} ${achievement.tier.charAt(0).toUpperCase() + achievement.tier.slice(1)}`,
           duration: 6000

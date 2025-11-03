@@ -50,9 +50,9 @@ export function ToastProvider({ children }) {
     };
   }, []);
 
-  const showToast = useCallback(({ type = 'info', icon = '🔔', title = '', message = '', duration = 5000 }) => {
+  const showToast = useCallback(({ type = 'info', icon = '🔔', iconType = 'emoji', title = '', message = '', duration = 5000 }) => {
     const id = Date.now() + Math.random();
-    const toast = { id, type, icon, title, message, duration };
+    const toast = { id, type, icon, iconType, title, message, duration };
 
     queueRef.current.push(toast);
     console.log(`📥 Toast added to queue (${queueRef.current.length} in queue)`);
@@ -84,7 +84,13 @@ export function ToastProvider({ children }) {
             className={`toast toast-${currentToast.type} show`}
             onClick={removeToast}
           >
-            <div className="toast-icon">{currentToast.icon}</div>
+            <div className="toast-icon">
+              {currentToast.iconType === 'image' ? (
+                <img src={currentToast.icon} alt="achievement" className="toast-icon-img" />
+              ) : (
+                <span className="toast-icon-emoji">{currentToast.icon}</span>
+              )}
+            </div>
             <div className="toast-content">
               {currentToast.title && <div className="toast-title">{currentToast.title}</div>}
               <div className="toast-message">{currentToast.message}</div>
