@@ -67,7 +67,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
   };
 
   return (
-    <div className={`coinbook-widget coinbook-oak ${isCollapsed ? 'collapsed' : 'expanded'}`}>
+    <div className={`coinbook-widget coinbook-walnut ${isCollapsed ? 'collapsed' : 'expanded'}`}>
       {/* Header with toggle button */}
       <button 
         className="coinbook-header" 
