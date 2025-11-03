@@ -132,7 +132,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                 style={{ width: `${nextMilestone.progress}%` }}
               ></div>
             </div>
-            <div className="milestone-preview-status">{nextMilestone.remaining} more to go!</div>
+            <div className="milestone-preview-status">{nextMilestone.actionText || `${nextMilestone.remaining} more to go!`}</div>
           </div>
         </div>
       )}
@@ -163,7 +163,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                   style={{ width: `${nextMilestone.progress}%` }}
                 ></div>
               </div>
-              <div className="milestone-status">{nextMilestone.remaining} more to go!</div>
+              <div className="milestone-status">{nextMilestone.actionText || `${nextMilestone.remaining} more to go!`}</div>
             </div>
           ) : (
             <div className="milestone-section">

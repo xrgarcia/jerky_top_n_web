@@ -140,7 +140,7 @@ class ProgressTracker {
             
             console.log(`🎯 Tier upgrade: ${a.name} - ${currentRanked}/${requiredForNextTier} for ${nextTier} (${progressTowardNextTier.toFixed(1)}%)`);
             
-            return {
+            const milestone = {
               achievementId: a.id,
               achievementName: a.name,
               achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
@@ -157,6 +157,11 @@ class ProgressTracker {
               currentTier: a.currentTier,
               nextTier,
             };
+            
+            // Add contextual action text
+            milestone.actionText = this._generateActionText(milestone);
+            
+            return milestone;
           } else {
             // Normal unearned achievement
             const isCollection = a.progress.totalAvailable !== undefined;
@@ -167,7 +172,7 @@ class ProgressTracker {
               ? a.progress.percentage 
               : Math.min(100, (current / required) * 100);
             
-            return {
+            const milestone = {
               achievementId: a.id,
               achievementName: a.name,
               achievementIcon: a.iconType === 'image' ? a.icon : a.icon,
@@ -182,6 +187,11 @@ class ProgressTracker {
               category: a.category,
               isTierUpgrade: false,
             };
+            
+            // Add contextual action text
+            milestone.actionText = this._generateActionText(milestone);
+            
+            return milestone;
           }
         });
       
@@ -233,6 +243,82 @@ class ProgressTracker {
     };
     
     return labels[type] || achievement.name;
+  }
+
+  /**
+   * Generate contextual action text for milestone
+   * Tells user exactly what to do to earn the achievement
+   * @private
+   */
+  _generateActionText(milestone) {
+    const { type, remaining, achievementName, isTierUpgrade, nextTier } = milestone;
+    
+    // Tier upgrade messaging
+    if (isTierUpgrade) {
+      const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+      const tierEmoji = tierEmojis[nextTier] || '';
+      const tierName = nextTier ? nextTier.charAt(0).toUpperCase() + nextTier.slice(1) : 'next tier';
+      
+      // Extract collection type from achievement name if present
+      const collectionHint = achievementName.toLowerCase().includes('hot') ? 'hot products' :
+                            achievementName.toLowerCase().includes('original') ? 'original products' :
+                            achievementName.toLowerCase().includes('exotic') ? 'exotic products' :
+                            'products';
+      
+      return `Rank ${remaining} more ${collectionHint} to upgrade to ${tierName} ${tierEmoji}`;
+    }
+    
+    // Action text by achievement type
+    const pluralize = (count, singular, plural) => count === 1 ? singular : (plural || singular + 's');
+    
+    switch (type) {
+      case 'streak_days':
+        return `Rank a product for ${remaining} more ${pluralize(remaining, 'day')}`;
+      
+      case 'login_streak_days':
+        return `Log in for ${remaining} more ${pluralize(remaining, 'day')}`;
+      
+      case 'rank_count':
+        return `Rank ${remaining} more ${pluralize(remaining, 'product')}`;
+      
+      case 'rank_all_products':
+        return `Rank ${remaining} more ${pluralize(remaining, 'product')} to complete the entire collection`;
+      
+      case 'static_collection':
+      case 'flavor_coin':
+        return `Rank ${remaining} more ${pluralize(remaining, 'product')} to complete ${achievementName}`;
+      
+      case 'rank_collection':
+        return `Complete ${remaining} more ${pluralize(remaining, 'collection')} to earn ${achievementName}`;
+      
+      case 'rank_animal_categories':
+        return `Rank products from ${remaining} more ${pluralize(remaining, 'animal category', 'animal categories')} to earn ${achievementName}`;
+      
+      case 'rank_vendors':
+        return `Rank products from ${remaining} more ${pluralize(remaining, 'vendor')} to earn ${achievementName}`;
+      
+      case 'search_count':
+        return `Search ${remaining} more ${pluralize(remaining, 'time')}`;
+      
+      case 'page_view_count':
+        return `View ${remaining} more ${pluralize(remaining, 'page')}`;
+      
+      case 'product_view_count':
+        return `View ${remaining} more ${pluralize(remaining, 'product')}`;
+      
+      case 'unique_product_view_count':
+        return `View ${remaining} more unique ${pluralize(remaining, 'product')}`;
+      
+      case 'profile_view_count':
+        return `View ${remaining} more ${pluralize(remaining, 'profile')}`;
+      
+      case 'unique_profile_view_count':
+        return `View ${remaining} more unique ${pluralize(remaining, 'profile')}`;
+      
+      default:
+        // Generic fallback
+        return `Complete ${remaining} more ${pluralize(remaining, 'item')}`;
+    }
   }
 
   /**
