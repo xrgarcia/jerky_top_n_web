@@ -418,9 +418,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
         </div>
         
         <div className="modal-body">
-          {/* BASIC INFORMATION */}
+          {/* STEP 1: BASIC IDENTITY */}
           <section className="form-section">
-            <h3 className="section-title">BASIC INFORMATION</h3>
+            <h3 className="section-title">1. BASIC INFORMATION</h3>
             
             <div className="form-group">
               <label>Code (unique identifier)*</label>
@@ -436,7 +436,34 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
             
             <div className="form-group">
-              <label>Icon*</label>
+              <label>Name*</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="e.g., Original Master"
+                className="form-input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label>Description*</label>
+              <textarea
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="Describe how users earn this achievement..."
+                className="form-textarea"
+                rows={3}
+              />
+            </div>
+          </section>
+          
+          {/* STEP 2: ICON */}
+          <section className="form-section">
+            <h3 className="section-title">2. ICON</h3>
+            
+            <div className="form-group">
+              <label>Icon Type*</label>
               <div className="icon-type-selector">
                 <label className="radio-label">
                   <input
@@ -501,61 +528,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 </div>
               )}
             </div>
-            
-            <div className="form-group">
-              <label>Name*</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="e.g., Original Master"
-                className="form-input"
-              />
-            </div>
-            
-            <div className="form-group">
-              <label>Description*</label>
-              <textarea
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                placeholder="Describe how users earn this achievement..."
-                className="form-textarea"
-                rows={3}
-              />
-            </div>
-            
-            <div className="form-row">
-              <div className="form-group half-width">
-                <label>Points</label>
-                <input
-                  type="number"
-                  value={points}
-                  onChange={(e) => setPoints(e.target.value)}
-                  min="0"
-                  className="form-input"
-                />
-              </div>
-              
-              <div className="form-group half-width">
-                <label>Active Status</label>
-                <select
-                  value={isActive}
-                  onChange={(e) => setIsActive(parseInt(e.target.value))}
-                  className="form-select"
-                >
-                  <option value={1}>Active</option>
-                  <option value={0}>Inactive</option>
-                </select>
-              </div>
-            </div>
           </section>
           
-          {/* COLLECTION TYPE */}
+          {/* STEP 3: COIN TYPE & REQUIREMENTS */}
           <section className="form-section">
-            <h3 className="section-title">COLLECTION TYPE</h3>
+            <h3 className="section-title">3. COIN TYPE</h3>
             
             <div className="form-group">
-              <label>Coin Type*</label>
+              <label>Type*</label>
               <select
                 value={collectionType}
                 onChange={(e) => setCollectionType(e.target.value)}
@@ -567,65 +547,24 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 <option value="flavor_coin">Flavor Coin</option>
                 <option value="legacy">Pre-Defined List of Products (Legacy)</option>
               </select>
-            </div>
-            
-            <div className="form-group">
-              <label>Category (Optional)</label>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="form-select"
-              >
-                <option value="">None - No category</option>
-                <option value="ranking">Ranking</option>
-                <option value="streak">Streak</option>
-                <option value="discovery">Discovery</option>
-                <option value="social">Social</option>
-                <option value="special">Special</option>
-              </select>
-              <p className="form-hint">Categorizes the coin for organizational purposes</p>
-            </div>
-            
-            <div className="form-group checkbox-group">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={isHidden === 1}
-                  onChange={(e) => setIsHidden(e.target.checked ? 1 : 0)}
-                />
-                Hidden Coin (unlock criteria not shown)
-              </label>
-              {isHidden === 1 && (
-                <p className="form-hint">Users must earn this achievement first before this one can be unlocked</p>
-              )}
-            </div>
-            
-            <div className="form-group">
-              <label>Prerequisite Achievement (Optional)</label>
-              <select
-                value={prerequisiteAchievementId || ''}
-                onChange={(e) => setPrerequisiteAchievementId(e.target.value ? parseInt(e.target.value) : null)}
-                className="form-select"
-              >
-                <option value="">None - No prerequisite required</option>
-                {allCoins
-                  .filter(c => c.id !== coin?.id)
-                  .map(c => (
-                    <option key={c.id} value={c.id}>{c.name}</option>
-                  ))}
-              </select>
-              {prerequisiteAchievementId && (
-                <p className="form-hint">Users must earn this achievement first before this one can be unlocked</p>
-              )}
+              <p className="form-hint">
+                {collectionType === 'engagement_coin' && 'Manually awarded for user actions like rankings, streaks, etc.'}
+                {collectionType === 'static_collection' && 'Users earn tiers by ranking products from a custom-selected list'}
+                {collectionType === 'dynamic_collection' && 'Auto-updates based on criteria like brand, animal, or all products'}
+                {collectionType === 'flavor_coin' && 'Single product achievement for tasting a specific flavor'}
+                {collectionType === 'legacy' && 'Legacy coin type with pre-defined product list'}
+              </p>
             </div>
           </section>
           
-          {/* PRODUCT SELECTOR (for static collections only) */}
+          {/* STEP 4: REQUIREMENTS (for collection types) */}
           {shouldShowProductSelector(collectionType) && (
             <section className="form-section">
-              <h3 className="section-title">SELECT PRODUCTS FOR COLLECTION</h3>
+              <h3 className="section-title">4. PRODUCT SELECTION</h3>
               <p className="section-description">
-                Search and select products to include in this custom collection. Users will earn tiers based on how many of these products they rank.
+                {collectionType === 'flavor_coin' 
+                  ? 'Select the single product that represents this flavor achievement.'
+                  : 'Search and select products to include in this collection. Users will earn tiers based on how many of these products they rank.'}
               </p>
               
               <div className="product-selector">
@@ -716,10 +655,10 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </section>
           )}
           
-          {/* DYNAMIC COLLECTION SELECTOR */}
+          {/* STEP 4: DYNAMIC COLLECTION CONFIG */}
           {collectionType === 'dynamic_collection' && (
             <section className="form-section">
-              <h3 className="section-title">DYNAMIC COLLECTION CONFIGURATION</h3>
+              <h3 className="section-title">4. DYNAMIC COLLECTION CRITERIA</h3>
               
               <div className="form-group">
                 <label>Dynamic Collection Type*</label>
@@ -789,9 +728,82 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </section>
           )}
           
-          {/* TIER CONFIGURATION */}
+          {/* STEP 5: CONFIGURATION */}
           <section className="form-section">
-            <h3 className="section-title">TIER CONFIGURATION</h3>
+            <h3 className="section-title">5. CONFIGURATION</h3>
+            
+            <div className="form-row">
+              <div className="form-group half-width">
+                <label>Points</label>
+                <input
+                  type="number"
+                  value={points}
+                  onChange={(e) => setPoints(e.target.value)}
+                  min="0"
+                  className="form-input"
+                />
+                <p className="form-hint">Points awarded when users earn this achievement</p>
+              </div>
+              
+              <div className="form-group half-width">
+                <label>Category (Optional)</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="form-select"
+                >
+                  <option value="">None</option>
+                  <option value="ranking">Ranking</option>
+                  <option value="streak">Streak</option>
+                  <option value="discovery">Discovery</option>
+                  <option value="social">Social</option>
+                  <option value="special">Special</option>
+                </select>
+              </div>
+            </div>
+          </section>
+          
+          {/* STEP 6: VISIBILITY & ACCESS */}
+          <section className="form-section">
+            <h3 className="section-title">6. VISIBILITY & ACCESS</h3>
+            
+            <div className="form-group checkbox-group">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={isHidden === 1}
+                  onChange={(e) => setIsHidden(e.target.checked ? 1 : 0)}
+                />
+                Hidden Coin (unlock criteria not shown to users)
+              </label>
+              {isHidden === 1 && (
+                <p className="form-hint">Users won't see the requirements until they earn it</p>
+              )}
+            </div>
+            
+            <div className="form-group">
+              <label>Prerequisite Achievement (Optional)</label>
+              <select
+                value={prerequisiteAchievementId || ''}
+                onChange={(e) => setPrerequisiteAchievementId(e.target.value ? parseInt(e.target.value) : null)}
+                className="form-select"
+              >
+                <option value="">None - No prerequisite required</option>
+                {allCoins
+                  .filter(c => c.id !== coin?.id)
+                  .map(c => (
+                    <option key={c.id} value={c.id}>{c.name}</option>
+                  ))}
+              </select>
+              {prerequisiteAchievementId && (
+                <p className="form-hint">Users must earn the prerequisite achievement before this one unlocks</p>
+              )}
+            </div>
+          </section>
+          
+          {/* STEP 7: TIER PROGRESSION */}
+          <section className="form-section">
+            <h3 className="section-title">7. TIER PROGRESSION</h3>
             
             <div className="form-group">
               <label className="checkbox-label">
@@ -891,6 +903,24 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 </div>
               </div>
             )}
+          </section>
+          
+          {/* STEP 8: STATUS */}
+          <section className="form-section">
+            <h3 className="section-title">8. STATUS</h3>
+            
+            <div className="form-group">
+              <label>Active Status</label>
+              <select
+                value={isActive}
+                onChange={(e) => setIsActive(parseInt(e.target.value))}
+                className="form-select"
+              >
+                <option value={1}>✅ Active - Users can earn this achievement</option>
+                <option value={0}>⛔ Inactive - Hidden from all users</option>
+              </select>
+              <p className="form-hint">Inactive coins won't be visible or earnable by users</p>
+            </div>
           </section>
         </div>
         
