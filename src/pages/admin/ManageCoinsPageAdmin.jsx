@@ -161,13 +161,13 @@ function ManageCoinsPageAdmin() {
 
   const getCoinTypeDisplay = (collectionType) => {
     const typeMap = {
-      'engagement_coin': 'ENGAGEMENT COIN',
-      'static_collection': 'STATIC COLLECTION COIN',
-      'dynamic_collection': 'DYNAMIC COLLECTION COIN',
-      'flavor_coin': 'FLAVOR COIN',
-      'legacy': 'LEGACY'
+      'engagement_coin': 'Engagement',
+      'static_collection': 'Static Collection',
+      'dynamic_collection': 'Dynamic Collection',
+      'flavor_coin': 'Flavor',
+      'legacy': 'Legacy'
     };
-    return typeMap[collectionType] || collectionType?.toUpperCase() || '-';
+    return typeMap[collectionType] || collectionType || '-';
   };
 
   if (error) {
@@ -342,14 +342,6 @@ function ManageCoinsPageAdmin() {
                         title="Recalculate awards"
                       >
                         🔄
-                      </button>
-                      <button
-                        className="action-btn toggle-btn"
-                        onClick={() => handleToggleCoin(coin)}
-                        disabled={toggleCoinMutation.isPending}
-                        title={coin.isActive ? 'Deactivate' : 'Activate'}
-                      >
-                        {coin.isActive ? '🔵' : '⚫'}
                       </button>
                       <button
                         className="action-btn delete-btn"
