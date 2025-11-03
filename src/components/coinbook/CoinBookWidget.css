@@ -400,6 +400,78 @@
   margin-left: 2px;
 }
 
+/* Achievement Tooltip */
+.achievement-tooltip {
+  display: none;
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  background: #4a3728;
+  color: #F5E6D3;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+  white-space: normal;
+  width: 220px;
+  text-align: center;
+  z-index: 10000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+  border: 1px solid #5a4434;
+}
+
+.achievement-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 7px solid transparent;
+  border-top-color: #4a3728;
+}
+
+.achievement-coin:hover .achievement-tooltip,
+.achievement-coin:focus .achievement-tooltip {
+  display: block;
+  animation: tooltipFadeIn 0.2s ease;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.achievement-tooltip strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: #F5DEB3;
+}
+
+.tooltip-description {
+  display: block;
+  font-size: 11px;
+  color: #E8D4A0;
+  font-style: normal;
+}
+
+.requirement-hint {
+  display: block;
+  margin-top: 6px;
+  font-size: 11px;
+  color: #C8A882;
+  font-style: italic;
+}
+
 /* Loading State */
 .coinbook-widget.loading {
   background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);
