@@ -338,6 +338,18 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
       }
     }
     
+    // Validate engagement collection requirements
+    if (collectionType === 'engagement_collection') {
+      if (!engagementType) {
+        toast.error('Please select how users earn this engagement coin');
+        return false;
+      }
+      if (!engagementValue || parseInt(engagementValue) <= 0) {
+        toast.error('Please enter a valid requirement value (greater than 0)');
+        return false;
+      }
+    }
+    
     // Validate dynamic collection requirements
     if (collectionType === 'dynamic_collection') {
       if (dynamicCollectionType === 'brand_collection' && selectedBrands.length === 0) {
