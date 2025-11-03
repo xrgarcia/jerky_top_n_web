@@ -1,4 +1,5 @@
 const { eq, sql } = require('drizzle-orm');
+const { TIER_EMOJIS } = require('../../shared/constants/tierEmojis');
 
 /**
  * CommentaryService - Generates contextual, encouraging messages for user journeys
@@ -110,16 +111,8 @@ class CommentaryService {
    * @private
    */
   _getTierInfo(milestone) {
-    const tierEmojis = {
-      bronze: '🥉',
-      silver: '🥈',
-      gold: '🥇',
-      platinum: '💎',
-      diamond: '💠'
-    };
-
     return {
-      emoji: tierEmojis[milestone.nextTier] || '⭐',
+      emoji: TIER_EMOJIS[milestone.nextTier] || '⭐',
       tierName: milestone.nextTier ? milestone.nextTier.charAt(0).toUpperCase() + milestone.nextTier.slice(1) : ''
     };
   }

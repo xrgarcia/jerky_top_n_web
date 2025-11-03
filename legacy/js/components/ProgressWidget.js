@@ -209,7 +209,7 @@ class ProgressWidget {
                 
                 // Get tier for display (currentTier for dynamic collections, tier for legacy)
                 const displayTier = achievement.currentTier || achievement.tier;
-                const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
+                const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '👑', diamond: '💠' };
                 const tierEmoji = displayTier ? tierEmojis[displayTier] || '' : '';
                 const tierLabel = displayTier ? `${displayTier.charAt(0).toUpperCase() + displayTier.slice(1)}` : '';
                 

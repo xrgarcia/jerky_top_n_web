@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSocket } from './useSocket';
 import { useToast } from '../context/ToastContext';
+import { TIER_EMOJIS } from '../../shared/constants/tierEmojis.mjs';
 
 export function useCoinBookWebSocket() {
   const { socket } = useSocket();
@@ -13,14 +14,6 @@ export function useCoinBookWebSocket() {
 
     console.log('🪙 Setting up coin book WebSocket listeners...');
 
-    const tierEmojis = {
-      bronze: '🥉',
-      silver: '🥈',
-      gold: '🥇',
-      platinum: '💎',
-      diamond: '💠'
-    };
-
     // Listen for new achievements
     const handleAchievementsEarned = (data) => {
       console.log('🏆 Achievements earned event:', data);
@@ -29,7 +22,7 @@ export function useCoinBookWebSocket() {
       if (data.achievements && data.achievements.length > 0) {
         data.achievements.forEach(achievement => {
           const isTierUpgrade = achievement.isTierUpgrade;
-          const tierEmoji = tierEmojis[achievement.tier] || '⭐';
+          const tierEmoji = TIER_EMOJIS[achievement.tier] || '⭐';
           
           let title = '🎉 Achievement Unlocked!';
           let message = achievement.name;
@@ -88,7 +81,7 @@ export function useCoinBookWebSocket() {
       
       if (data.achievement) {
         const achievement = data.achievement;
-        const tierEmoji = tierEmojis[achievement.tier] || '⭐';
+        const tierEmoji = TIER_EMOJIS[achievement.tier] || '⭐';
         
         showToast({
           type: 'achievement',

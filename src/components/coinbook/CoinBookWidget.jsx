@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAchievements, useGamificationProgress } from '../../hooks/useCoinBook';
 import { useCoinBookWebSocket } from '../../hooks/useCoinBookWebSocket';
+import { TIER_EMOJIS } from '../../../shared/constants/tierEmojis.mjs';
 import './CoinBookWidget.css';
 
 export default function CoinBookWidget({ defaultCollapsed = false }) {
@@ -48,8 +49,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
   // Get tier emoji
   const getTierEmoji = (achievement) => {
     const displayTier = achievement.currentTier || achievement.tier;
-    const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
-    return displayTier ? tierEmojis[displayTier] || '' : '';
+    return displayTier ? TIER_EMOJIS[displayTier] || '' : '';
   };
 
   // Render achievement icon (emoji or image)

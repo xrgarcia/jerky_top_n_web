@@ -133,7 +133,7 @@ class NotificationWidget {
       bronze: '🥉',
       silver: '🥈',
       gold: '🥇',
-      platinum: '💎',
+      platinum: '👑',
       diamond: '💠'
     };
     

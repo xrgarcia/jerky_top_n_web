@@ -331,7 +331,7 @@ function renderDynamicCollection() {
       'bronze': '🥉',
       'silver': '🥈',
       'gold': '🥇',
-      'platinum': '💎',
+      'platinum': '👑',
       'diamond': '💠'
     };
     

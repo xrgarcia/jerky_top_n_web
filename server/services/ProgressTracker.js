@@ -1,3 +1,5 @@
+const { TIER_EMOJIS } = require('../../shared/constants/tierEmojis');
+
 /**
  * ProgressTracker - Domain service for tracking user progress and milestones
  */
@@ -255,8 +257,7 @@ class ProgressTracker {
     
     // Tier upgrade messaging
     if (isTierUpgrade) {
-      const tierEmojis = { bronze: '🥉', silver: '🥈', gold: '🥇', platinum: '💎', diamond: '💠' };
-      const tierEmoji = tierEmojis[nextTier] || '';
+      const tierEmoji = TIER_EMOJIS[nextTier] || '';
       const tierName = nextTier ? nextTier.charAt(0).toUpperCase() + nextTier.slice(1) : 'next tier';
       
       // Extract collection type from achievement name if present
