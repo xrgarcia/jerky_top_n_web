@@ -6,6 +6,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
+import { useSocket } from '../hooks/useSocket';
 import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
@@ -14,6 +15,7 @@ import './RankPage.css';
 
 export default function RankPage() {
   const queryClient = useQueryClient();
+  const { socket } = useSocket();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [lastSearchedTerm, setLastSearchedTerm] = useState(searchParams.get('search') || '');
@@ -295,6 +297,31 @@ export default function RankPage() {
   const handleDragCancel = () => {
     setActiveId(null);
   };
+
+  // WebSocket listener: Invalidate commentary when ranking achievements are earned
+  useEffect(() => {
+    if (!socket) return;
+
+    const handleAchievementsEarned = (data) => {
+      // Only invalidate commentary if a RANKING category achievement was earned
+      if (data.achievements && data.achievements.length > 0) {
+        const hasRankingAchievement = data.achievements.some(
+          achievement => achievement.category === 'ranking'
+        );
+        
+        if (hasRankingAchievement) {
+          // Invalidate commentary to fetch the NEW next milestone
+          queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
+        }
+      }
+    };
+
+    socket.on('achievements:earned', handleAchievementsEarned);
+
+    return () => {
+      socket.off('achievements:earned', handleAchievementsEarned);
+    };
+  }, [socket, queryClient]);
 
   return (
     <DndContext
