@@ -1,8 +1,8 @@
 /**
  * Feature Flags (ESM wrapper)
- * Single source of truth: featureFlags.js
+ * Single source of truth: featureFlags.json
  */
 
-const flags = require('./featureFlags.js');
+import featureFlags from './featureFlags.json' assert { type: 'json' };
 
-export const FEATURE_FLAGS = flags.FEATURE_FLAGS;
+export const FEATURE_FLAGS = featureFlags;
