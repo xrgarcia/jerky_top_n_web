@@ -3,6 +3,7 @@ import { getPersistentQueue } from '../utils/PersistentQueue';
 import { generateUUID } from '../utils/uuid';
 import { retryWithBackoff } from '../utils/retryWithBackoff';
 import { api } from '../utils/api';
+import { FEATURE_FLAGS } from '../../shared/constants/featureFlags.mjs';
 
 export function useRanking(options = {}) {
   const { onSaveComplete, maxRankableCount } = options;
@@ -162,18 +163,20 @@ export function useRanking(options = {}) {
         productData: product
       });
       
-      // Renumber all rankings
-      const renumbered = newRankings.map((r, index) => ({
-        ...r,
-        ranking: index + 1
-      }));
+      // Conditionally renumber based on feature flag
+      const finalRankings = FEATURE_FLAGS.AUTO_FILL_RANKING_GAPS
+        ? newRankings.map((r, index) => ({
+            ...r,
+            ranking: index + 1
+          }))
+        : newRankings; // Preserve original rankings with gaps
       
       console.log(`✅ Added/moved "${product.title}" to position ${position}`);
       
       // Trigger auto-save with position info
-      scheduleAutoSave(renumbered, position);
+      scheduleAutoSave(finalRankings, position);
       
-      return renumbered;
+      return finalRankings;
     });
   }, []);
   
@@ -188,18 +191,20 @@ export function useRanking(options = {}) {
       
       const filtered = prev.filter(r => r.productData.id !== productId);
       
-      // Renumber remaining rankings
-      const renumbered = filtered.map((r, index) => ({
-        ...r,
-        ranking: index + 1
-      }));
+      // Conditionally renumber based on feature flag
+      const finalRankings = FEATURE_FLAGS.AUTO_FILL_RANKING_GAPS
+        ? filtered.map((r, index) => ({
+            ...r,
+            ranking: index + 1
+          }))
+        : filtered; // Preserve original rankings with gaps
       
       console.log(`🗑️ Removed product ${productId} from position ${removedPosition}`);
       
       // Trigger auto-save with removed position (negative to indicate removal)
-      scheduleAutoSave(renumbered, removedPosition ? -removedPosition : null);
+      scheduleAutoSave(finalRankings, removedPosition ? -removedPosition : null);
       
-      return renumbered;
+      return finalRankings;
     });
   }, []);
   
@@ -212,18 +217,20 @@ export function useRanking(options = {}) {
       const [moved] = newRankings.splice(fromIndex, 1);
       newRankings.splice(toIndex, 0, moved);
       
-      // Renumber all rankings
-      const renumbered = newRankings.map((r, index) => ({
-        ...r,
-        ranking: index + 1
-      }));
+      // Conditionally renumber based on feature flag
+      const finalRankings = FEATURE_FLAGS.AUTO_FILL_RANKING_GAPS
+        ? newRankings.map((r, index) => ({
+            ...r,
+            ranking: index + 1
+          }))
+        : newRankings; // Preserve original rankings with gaps
       
       console.log(`🔄 Reordered: position ${fromIndex + 1} → ${toIndex + 1}`);
       
       // Trigger auto-save
-      scheduleAutoSave(renumbered);
+      scheduleAutoSave(finalRankings);
       
-      return renumbered;
+      return finalRankings;
     });
   }, []);
   
