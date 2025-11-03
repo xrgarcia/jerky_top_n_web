@@ -763,9 +763,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
           </section>
           
-          {/* STEP 6: VISIBILITY & ACCESS */}
+          {/* STEP 6: VISIBILITY */}
           <section className="form-section">
-            <h3 className="section-title">6. VISIBILITY & ACCESS</h3>
+            <h3 className="section-title">6. VISIBILITY</h3>
             
             <div className="form-group checkbox-group">
               <label className="checkbox-label">
@@ -780,6 +780,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 <p className="form-hint">Users won't see the requirements until they earn it</p>
               )}
             </div>
+          </section>
+          
+          {/* STEP 7: PREREQUISITE */}
+          <section className="form-section">
+            <h3 className="section-title">7. PREREQUISITE ACHIEVEMENT</h3>
             
             <div className="form-group">
               <label>Prerequisite Achievement (Optional)</label>
@@ -801,9 +806,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
           </section>
           
-          {/* STEP 7: TIER PROGRESSION */}
+          {/* STEP 8: TIER PROGRESSION */}
           <section className="form-section">
-            <h3 className="section-title">7. TIER PROGRESSION</h3>
+            <h3 className="section-title">8. TIER PROGRESSION</h3>
             
             <div className="form-group">
               <label className="checkbox-label">
@@ -905,9 +910,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             )}
           </section>
           
-          {/* STEP 8: STATUS */}
+          {/* STEP 9: STATUS */}
           <section className="form-section">
-            <h3 className="section-title">8. STATUS</h3>
+            <h3 className="section-title">9. STATUS</h3>
             
             <div className="form-group">
               <label>Active Status</label>
