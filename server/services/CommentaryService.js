@@ -318,18 +318,18 @@ class CommentaryService {
     // Uses Coin Book and Flavor Coin terminology from the glossary
     const templates = {
       available_products: {
-        tier_0: { text: "Start filling your Coin Book! Rank your purchases to claim Flavor Coins 🪙", icon: '🪙', color: 'blue' },
-        tier_1_10: { text: `${remaining} Flavor Coins waiting in your stash! Keep ranking 🪙`, icon: '🪙', color: 'blue' },
-        tier_11_20: { text: `Building momentum! ${remaining} Flavor Coins in your stash—rank to claim them 💪`, icon: '💪', color: 'green' },
-        tier_21_30: { text: `Great progress! ${remaining} Flavor Coins from your purchases waiting to be claimed 🔥`, icon: '🔥', color: 'orange' },
-        tier_31_40: { text: `Over one-third collected! ${remaining} more Flavor Coins in your stash ⭐`, icon: '⭐', color: 'purple' },
-        tier_41_50: { text: `Almost halfway! ${remaining} more Flavor Coins to add to your Coin Book 🎯`, icon: '🎯', color: 'purple' },
-        tier_51_60: { text: `Past halfway! ${remaining} Flavor Coins left in your stash 🏆`, icon: '🏆', color: 'gold' },
-        tier_61_70: { text: `Two-thirds collected! Only ${remaining} Flavor Coins in your stash left to claim 💎`, icon: '💎', color: 'gold' },
-        tier_71_80: { text: `Home stretch! ${remaining} Flavor Coins from your stash left to rank 🌟`, icon: '🌟', color: 'gold' },
-        tier_81_90: { text: `Nearly complete! Just ${remaining} Flavor Coins in your stash left to collect ⚡`, icon: '⚡', color: 'gold' },
-        tier_91_99: { text: `So close! Only ${remaining} Flavor Coins from your purchases until complete 🎉`, icon: '🎉', color: 'rainbow' },
-        tier_100: { text: "Collection complete! Every Flavor Coin claimed 👑", icon: '👑', color: 'rainbow' }
+        tier_0: { text: "Start filling your Coin Book! Rank your purchases 🪙", icon: '🪙', color: 'blue' },
+        tier_1_10: { text: `${remaining} flavors left to complete your Coin Book! Keep ranking 🪙`, icon: '🪙', color: 'blue' },
+        tier_11_20: { text: `Building momentum! ${remaining} flavors left to complete your Coin Book 💪`, icon: '💪', color: 'green' },
+        tier_21_30: { text: `Great progress! ${remaining} flavors left to complete your Coin Book 🔥`, icon: '🔥', color: 'orange' },
+        tier_31_40: { text: `Over one-third done! ${remaining} flavors left to complete your Coin Book ⭐`, icon: '⭐', color: 'purple' },
+        tier_41_50: { text: `Almost halfway! ${remaining} flavors left to complete your Coin Book 🎯`, icon: '🎯', color: 'purple' },
+        tier_51_60: { text: `Past halfway! ${remaining} flavors left to complete your Coin Book 🏆`, icon: '🏆', color: 'gold' },
+        tier_61_70: { text: `Two-thirds done! Only ${remaining} flavors left to complete your Coin Book 💎`, icon: '💎', color: 'gold' },
+        tier_71_80: { text: `Home stretch! ${remaining} flavors left to complete your Coin Book 🌟`, icon: '🌟', color: 'gold' },
+        tier_81_90: { text: `Nearly complete! Just ${remaining} flavors left to complete your Coin Book ⚡`, icon: '⚡', color: 'gold' },
+        tier_91_99: { text: `So close! Only ${remaining} flavors left to complete your Coin Book 🎉`, icon: '🎉', color: 'rainbow' },
+        tier_100: { text: "Coin Book complete! You've ranked them all 👑", icon: '👑', color: 'rainbow' }
       },
       coin_book: {
         tier_0: { text: 'Start ranking to unlock achievements!', icon: '🎯', color: 'blue' },
