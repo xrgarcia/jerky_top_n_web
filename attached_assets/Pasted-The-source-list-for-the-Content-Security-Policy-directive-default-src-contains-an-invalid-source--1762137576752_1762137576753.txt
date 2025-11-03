@@ -1,0 +1,193 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+ 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+ Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+ [LaunchDarkly] LaunchDarkly client initialized
+ Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2
+ Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+ Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2
+ Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar67%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+injected.js:27 📋 React Query: Auth response: Object
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: Object
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ Loaded 57 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: Object
+injected.js:27 ✅ Added/moved "All-Natural Wild Boar Jerky - Maple" to position 58
+injected.js:27 📝 Queued operation: 8e6a46b4 for rank undefined
+injected.js:27 💾 Persisted 58 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "All-Natural Wild Boar Jerky - Original" to position 59
+injected.js:27 📊 Expanded slots to 72 (59 ranked)
+injected.js:27 📝 Queued operation: f4d71bae for rank undefined
+injected.js:27 💾 Persisted 59 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 8e6a46b4
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Bacon Jerky - Barbecue" to position 60
+injected.js:27 📝 Queued operation: d21f0cb9 for rank undefined
+injected.js:27 💾 Persisted 60 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Bacon Jerky - Honey Pepper" to position 61
+injected.js:27 📝 Queued operation: 36285c94 for rank undefined
+injected.js:27 💾 Persisted 61 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: d21f0cb9
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Bacon Jerky - Jalapeno" to position 62
+injected.js:27 📝 Queued operation: 8c34b202 for rank undefined
+injected.js:27 💾 Persisted 62 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Bacon Jerky - Maple" to position 63
+injected.js:27 📝 Queued operation: 049d50e9 for rank undefined
+injected.js:27 💾 Persisted 63 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 8c34b202
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Bacon Jerky - Original" to position 66
+injected.js:27 📝 Queued operation: 56e20a4e for rank undefined
+injected.js:27 💾 Persisted 64 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Bacon Jerky - Sriracha" to position 66
+injected.js:27 📝 Queued operation: b38c3185 for rank undefined
+injected.js:27 💾 Persisted 65 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 56e20a4e
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Black Pepper Steak Bites" to position 67
+injected.js:27 📝 Queued operation: 7335ec3b for rank undefined
+injected.js:27 💾 Persisted 66 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Garlic Black Pepper Beef Jerky - Limited Edition Test Kitchen Jerky" to position 67
+injected.js:27 📝 Queued operation: c55bd3c1 for rank undefined
+injected.js:27 💾 Persisted 67 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 7335ec3b
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Honey Mustard BBQ Steak Bites" to position 68
+injected.js:27 📝 Queued operation: 6a947e8c for rank undefined
+injected.js:27 💾 Persisted 68 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: c55bd3c1
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Honey Teriyaki Steak Bites" to position 70
+injected.js:27 📊 Expanded slots to 82 (69 ranked)
+injected.js:27 📝 Queued operation: 7ea7cda5 for rank undefined
+injected.js:27 💾 Persisted 69 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Old Fashioned Style Beef Jerky - Garlic" to position 70
+injected.js:27 📝 Queued operation: b588331f for rank undefined
+injected.js:27 💾 Persisted 70 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Old Fashioned Style Beef Jerky - Hickory" to position 71
+injected.js:27 📝 Queued operation: 20e05b96 for rank undefined
+injected.js:27 💾 Persisted 71 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 7ea7cda5
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Old Fashioned Style Beef Jerky - Hot" to position 73
+injected.js:27 📝 Queued operation: 7bb93da8 for rank undefined
+injected.js:27 💾 Persisted 72 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: b588331f
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Old Fashioned Style Beef Jerky - Jalapeno" to position 73
+injected.js:27 📝 Queued operation: 597a50a0 for rank undefined
+injected.js:27 💾 Persisted 73 ranking(s) to IndexedDB
+injected.js:27 ✅ Added/moved "Old Fashioned Style Beef Jerky - Peppered" to position 74
+injected.js:27 📝 Queued operation: 655aef19 for rank undefined
+injected.js:27 💾 Persisted 74 ranking(s) to IndexedDB
+injected.js:27 🏆 Achievements earned event: Object
+injected.js:27 ✅ Completed operation: 597a50a0
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 ✅ Added/moved "Pineapple Teriyaki Chicken Jerky - Limited Edition Test Kitchen Jerky" to position 75
+injected.js:27 📝 Queued operation: 37f0b782 for rank undefined
+injected.js:27 💾 Persisted 75 ranking(s) to IndexedDB
+injected.js:27 ✅ Completed operation: 655aef19
+injected.js:27 ✅ Cleared persisted operation after successful save
+stallwart.build.js:1 stallwart: failed ping 1
