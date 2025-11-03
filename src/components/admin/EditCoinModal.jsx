@@ -355,6 +355,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // Build requirement object based on coin type
   const buildRequirement = () => {
+    // Engagement collections
+    if (collectionType === 'engagement_collection') {
+      return JSON.stringify({
+        type: engagementType,
+        value: parseInt(engagementValue) || 0
+      });
+    }
+    
     // Dynamic collections
     if (collectionType === 'dynamic_collection') {
       if (dynamicCollectionType === 'complete_collection') {
