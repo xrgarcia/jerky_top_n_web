@@ -755,6 +755,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                   <option value="">None</option>
                   <option value="ranking">Ranking</option>
                   <option value="streak">Streak</option>
+                  <option value="explore">Explore</option>
                   <option value="discovery">Discovery</option>
                   <option value="social">Social</option>
                   <option value="special">Special</option>
