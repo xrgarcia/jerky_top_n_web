@@ -27,6 +27,7 @@ import SentryIssueDetailsPage from '../../pages/admin/SentryIssueDetailsPage';
 import DataPage from '../../pages/admin/DataPage';
 
 import './AppLayout.css';
+import '../../styles/toast.admin.css';
 
 function AppLayout() {
   // Initialize WebSocket connection for real-time updates
@@ -101,26 +102,21 @@ function AppLayout() {
         position="top-right"
         toastOptions={{
           duration: 5000,
+          className: 'admin-toast',
           style: {
             zIndex: 100000,
           },
           success: {
-            style: {
-              background: '#7b8b52',
-              color: 'white',
-            },
+            className: 'admin-toast admin-toast-success',
+            icon: '✅',
           },
           error: {
-            style: {
-              background: '#d9534f',
-              color: 'white',
-            },
+            className: 'admin-toast admin-toast-error',
+            icon: '❌',
           },
           loading: {
-            style: {
-              background: '#5bc0de',
-              color: 'white',
-            },
+            className: 'admin-toast admin-toast-loading',
+            icon: '⏳',
           },
         }}
       />

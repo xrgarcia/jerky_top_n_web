@@ -1,0 +1,165 @@
+/* Wood-inspired, earth-tone toast notifications for admin dashboard */
+
+/* Base toast styling */
+.admin-toast {
+  position: relative;
+  background: linear-gradient(135deg, #f5f1e8 0%, #ede7db 100%);
+  border: 2px solid #c4a962;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 12px rgba(123, 139, 82, 0.15),
+    0 2px 4px rgba(0, 0, 0, 0.1);
+  color: #3d3d3d;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 16px 20px;
+  min-width: 320px;
+  max-width: 420px;
+  backdrop-filter: blur(8px);
+}
+
+/* Toast content wrapper */
+.admin-toast > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+/* Toast icon styling */
+.admin-toast .toast-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Toast message text */
+.admin-toast .toast-message {
+  flex: 1;
+  white-space: pre-line;
+  font-weight: 500;
+}
+
+/* Success toast variant */
+.admin-toast-success {
+  background: linear-gradient(135deg, #5d6a3e 0%, #4d5a2e 100%);
+  border-color: #3d4a1e;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.admin-toast-success .toast-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Error toast variant */
+.admin-toast-error {
+  background: linear-gradient(135deg, #b94a48 0%, #a43c3a 100%);
+  border-color: #8b312e;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.admin-toast-error .toast-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Loading toast variant */
+.admin-toast-loading {
+  background: linear-gradient(135deg, #6b5340 0%, #5a4230 100%);
+  border-color: #4a3220;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.admin-toast-loading .toast-icon {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+  animation: rotate 1s linear infinite;
+}
+
+/* Info toast variant */
+.admin-toast-info {
+  background: linear-gradient(135deg, #5bc0de 0%, #46b8da 100%);
+  border-color: #31b0d5;
+  color: white;
+}
+
+/* Keyframe for loading spinner */
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Hover effect */
+.admin-toast:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 16px rgba(123, 139, 82, 0.2),
+    0 4px 8px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+/* Enter animation */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Exit animation */
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Apply animations */
+.admin-toast {
+  animation: slideInRight 0.3s ease-out;
+}
+
+/* Wood grain texture overlay (subtle) */
+.admin-toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0.3;
+}
+
+/* Stats formatting for multi-line messages */
+.admin-toast .toast-message strong {
+  font-weight: 600;
+}
+
+/* Divider line for multi-section messages */
+.admin-toast .toast-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  margin: 8px 0;
+}
