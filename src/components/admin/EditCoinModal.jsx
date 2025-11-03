@@ -46,6 +46,10 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   const [selectedBrands, setSelectedBrands] = useState([]);
   const [selectedAnimals, setSelectedAnimals] = useState([]);
   
+  // Engagement collection state
+  const [engagementType, setEngagementType] = useState('');
+  const [engagementValue, setEngagementValue] = useState('');
+  
   // Requirement state
   const [requirement, setRequirement] = useState('');
   
@@ -109,6 +113,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
               setSelectedAnimals(req.animals);
             }
           }
+          
+          // Handle engagement collections
+          if (coin.collectionType === 'engagement_collection') {
+            if (req.type) {
+              setEngagementType(req.type);
+              setEngagementValue(req.value || '');
+            }
+          }
         } catch (e) {
           console.error('Error parsing coin requirement:', e);
         }
@@ -138,6 +150,8 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setDynamicCollectionType('complete_collection');
     setSelectedBrands([]);
     setSelectedAnimals([]);
+    setEngagementType('');
+    setEngagementValue('');
     setHasTiers(0);
     setTierThresholds({ bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100 });
     setProteinCategories([]);
