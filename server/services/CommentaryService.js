@@ -103,11 +103,11 @@ class CommentaryService {
 
   /**
    * Generate contextual progress message based on user state
+   * Uses intelligent percentage-based tiers when a milestone exists,
+   * calculated from progress toward the SPECIFIC achievement (not total products)
    * @private
    */
   _generateProgressMessage(rankedCount, totalProducts, milestone, currentStreak) {
-    const percentage = (rankedCount / totalProducts) * 100;
-
     // STATE: No rankings yet
     if (rankedCount === 0) {
       return {
@@ -116,30 +116,68 @@ class CommentaryService {
       };
     }
 
-    // STATE: Early (1-5 ranked)
-    if (rankedCount <= 5) {
-      if (milestone) {
-        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
+    // If we have a milestone, use SMART percentage-based messaging
+    // based on progress toward the SPECIFIC achievement
+    if (milestone) {
+      const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
+      const progressPercent = (milestone.current / milestone.target) * 100;
+
+      // TIER 1: Just started (0-10% progress)
+      if (progressPercent <= 10) {
         return {
-          text: `Great start! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🎯`,
+          text: `Just getting started! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🎯`,
+          icon: '🚀'
+        };
+      }
+
+      // TIER 2: Early progress (11-25%)
+      if (progressPercent <= 25) {
+        return {
+          text: `Great start! ${milestone.remaining} more ${metricLabel} to unlock "${milestone.achievementName}" 🌟`,
           icon: '✨'
         };
       }
+
+      // TIER 3: Building momentum (26-50%)
+      if (progressPercent <= 50) {
+        return {
+          text: `Making progress! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🔥`,
+          icon: '🔥'
+        };
+      }
+
+      // TIER 4: More than halfway (51-75%)
+      if (progressPercent <= 75) {
+        return {
+          text: `More than halfway! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 💪`,
+          icon: '💪'
+        };
+      }
+
+      // TIER 5: Almost there (76-90%)
+      if (progressPercent <= 90) {
+        return {
+          text: `Almost there! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🏆`,
+          icon: '🎯'
+        };
+      }
+
+      // TIER 6: So close! (91-99%)
+      return {
+        text: `So close! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" ⭐`,
+        icon: '⭐'
+      };
+    }
+
+    // FALLBACK: No milestone available - use general encouragement based on total count
+    if (rankedCount <= 5) {
       return {
         text: 'Great start! Keep discovering flavors 🔍',
         icon: '✨'
       };
     }
 
-    // STATE: Building momentum (6-15 ranked)
     if (rankedCount <= 15) {
-      if (milestone && milestone.remaining <= 5) {
-        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
-        return {
-          text: `${milestone.remaining} ${metricLabel} away from "${milestone.achievementName}"! 🎯`,
-          icon: '🔥'
-        };
-      }
       if (currentStreak >= 3) {
         return {
           text: `${currentStreak}-day streak! Keep the momentum going 🔥`,
@@ -152,51 +190,28 @@ class CommentaryService {
       };
     }
 
-    // STATE: Establishing habits (16-30 ranked)
     if (rankedCount <= 30) {
-      if (milestone && milestone.remaining <= 3) {
-        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
-        return {
-          text: `So close! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" ⭐`,
-          icon: '🎯'
-        };
-      }
       return {
         text: `${rankedCount} flavors explored! You're a jerky connoisseur 🌟`,
         icon: '🌟'
       };
     }
 
-    // STATE: Halfway milestone (31-50 ranked)
+    const percentage = (rankedCount / totalProducts) * 100;
     if (percentage < 60) {
-      if (milestone) {
-        return {
-          text: `Halfway there! Next up: "${milestone.achievementName}" 💪`,
-          icon: '💪'
-        };
-      }
       return {
-        text: 'Halfway to legendary status! 💪',
+        text: 'Keep building your collection! 💪',
         icon: '💪'
       };
     }
 
-    // STATE: Advanced collector (51-75 ranked)
     if (percentage < 85) {
-      if (milestone && milestone.remaining <= 5) {
-        const metricLabel = this._getMetricLabel(milestone.type, milestone.remaining);
-        return {
-          text: `Almost there! ${milestone.remaining} more ${metricLabel} for "${milestone.achievementName}" 🏆`,
-          icon: '🔥'
-        };
-      }
       return {
         text: 'Impressive collection! The finish line is in sight 🎖️',
         icon: '🎖️'
       };
     }
 
-    // STATE: Near complete (76-88 ranked)
     if (rankedCount < totalProducts) {
       const remaining = totalProducts - rankedCount;
       return {
@@ -205,7 +220,7 @@ class CommentaryService {
       };
     }
 
-    // STATE: Complete collection
+    // Complete collection
     return {
       text: "You've ranked them all! Legend status achieved 🎉",
       icon: '🎉'
