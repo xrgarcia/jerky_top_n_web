@@ -51,7 +51,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Leaderboard**: Top 50 rankers with engagement scores and badges.
 - **User Profile**: Personal stats and rankings.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
-- **Ranking Commentary**: Dynamic, contextual encouragement messages adapting to user progress and streaks.
+- **Ranking Commentary**: Dynamic, contextual encouragement messages adapting to user progress and streaks, filtered to show only `category='ranking'` achievements.
 - **Collection Progress Bar**: User-specific progress tracking on the Rank page, indicating progress towards achievements.
 - **Coin Book Widget**: Wood-inspired, collapsible achievement tracker on the Rank page featuring:
     - Wood-frame design with earth-tone palette (sage green #7b8b52, earthy gold #c4a962)

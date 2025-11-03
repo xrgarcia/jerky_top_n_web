@@ -50,7 +50,9 @@ class CommentaryService {
         leaderboardPosition: 0,
       };
 
-      const closestAchievement = await this.progressTracker.getClosestUnearnedAchievement(userId, userStats);
+      // IMPORTANT: Only show 'ranking' category achievements in ranking progress commentary
+      // This excludes flavor coins, engagement achievements, etc.
+      const closestAchievement = await this.progressTracker.getClosestUnearnedAchievement(userId, userStats, 'ranking');
 
       // Generate contextual message based on progress tier
       const message = this._generateProgressMessage(rankedCount, totalRankableProducts, closestAchievement, currentStreak);

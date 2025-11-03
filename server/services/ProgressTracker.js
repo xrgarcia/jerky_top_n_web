@@ -68,9 +68,10 @@ class ProgressTracker {
    * Get the closest unearned achievement across all types (collection & engagement)
    * @param {number} userId - User ID
    * @param {Object} stats - User stats object with all required data
+   * @param {string} categoryFilter - Optional category filter ('ranking', 'engagement', 'flavor', etc.)
    * @returns {Object|null} The closest unearned achievement with progress data
    */
-  async getClosestUnearnedAchievement(userId, stats) {
+  async getClosestUnearnedAchievement(userId, stats, categoryFilter = null) {
     try {
       // Get all achievements with their current progress (both collection and engagement)
       const achievements = await this.engagementManager.getAchievementsWithProgress(userId, stats);
@@ -83,7 +84,12 @@ class ProgressTracker {
       // Filter to only unearned achievements with progress data
       const unearnedAchievements = achievements
         .filter(a => {
-          if (a.earned || !a.progress) return false;
+          // Must not be earned (check both earned flag and earnedAt timestamp)
+          if (a.earned || a.earnedAt) return false;
+          // Must have progress data
+          if (!a.progress) return false;
+          // Apply category filter if specified (e.g., only 'ranking' achievements)
+          if (categoryFilter && a.category !== categoryFilter) return false;
           // Accept if has either engagement format (current/required) OR collection format (totalRanked/totalAvailable)
           return (a.progress.required !== undefined) || (a.progress.totalAvailable !== undefined);
         })
