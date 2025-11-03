@@ -161,7 +161,7 @@ function ManageCoinsPageAdmin() {
 
   const getCoinTypeDisplay = (collectionType) => {
     const typeMap = {
-      'engagement_coin': 'Engagement',
+      'engagement_collection': 'Engagement',
       'static_collection': 'Static Collection',
       'dynamic_collection': 'Dynamic Collection',
       'flavor_coin': 'Flavor',

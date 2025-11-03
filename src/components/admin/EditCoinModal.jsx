@@ -19,7 +19,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   const [iconPreview, setIconPreview] = useState(null);
   
   // Collection Type state
-  const [collectionType, setCollectionType] = useState('engagement_coin');
+  const [collectionType, setCollectionType] = useState('engagement_collection');
   const [category, setCategory] = useState('');
   const [isHidden, setIsHidden] = useState(0);
   const [prerequisiteAchievementId, setPrerequisiteAchievementId] = useState(null);
@@ -70,7 +70,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
         setIconPreview(coin.icon);
       }
       
-      setCollectionType(coin.collectionType || 'engagement_coin');
+      setCollectionType(coin.collectionType || 'engagement_collection');
       setCategory(coin.category || '');
       setIsHidden(coin.isHidden || 0);
       setPrerequisiteAchievementId(coin.prerequisiteAchievementId || null);
@@ -141,7 +141,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setIcon('🏆');
     setIconFile(null);
     setIconPreview(null);
-    setCollectionType('engagement_coin');
+    setCollectionType('engagement_collection');
     setCategory('');
     setIsHidden(0);
     setPrerequisiteAchievementId(null);
@@ -165,7 +165,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // Helper to check if this is any collection type
   const isCollectionType = (type) => {
-    return ['static_collection', 'dynamic_collection', 'legacy', 'flavor_coin'].includes(type);
+    return ['engagement_collection', 'static_collection', 'dynamic_collection', 'legacy', 'flavor_coin'].includes(type);
   };
   
   // Handle icon file upload
@@ -575,14 +575,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 onChange={(e) => setCollectionType(e.target.value)}
                 className="form-select"
               >
-                <option value="engagement_coin">Engagement Coin</option>
+                <option value="engagement_collection">Engagement Coin</option>
                 <option value="static_collection">Static Collection Coin</option>
                 <option value="dynamic_collection">Dynamic Collection Coin</option>
                 <option value="flavor_coin">Flavor Coin</option>
                 <option value="legacy">Pre-Defined List of Products (Legacy)</option>
               </select>
               <p className="form-hint">
-                {collectionType === 'engagement_coin' && 'Manually awarded for user actions like rankings, streaks, etc.'}
+                {collectionType === 'engagement_collection' && 'Awarded for user actions like rankings, searches, streaks, etc.'}
                 {collectionType === 'static_collection' && 'Users earn tiers by ranking products from a custom-selected list'}
                 {collectionType === 'dynamic_collection' && 'Auto-updates based on criteria like brand, animal, or all products'}
                 {collectionType === 'flavor_coin' && 'Single product achievement for tasting a specific flavor'}
