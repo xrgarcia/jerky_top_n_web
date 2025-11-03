@@ -1,11 +1,5 @@
 .product-card {
   cursor: grab;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.product-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .product-card:active {
@@ -14,6 +8,5 @@
 
 .product-card.dragging {
   opacity: 0.8;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   z-index: 1000;
 }

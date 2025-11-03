@@ -20,7 +20,6 @@
 .ranking-slot.drag-over {
   border-color: #8B4513;
   background-color: #fef8f0;
-  box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.3);
 }
 
 .ranking-slot.dragging {
@@ -30,11 +29,6 @@
 .ranking-slot.empty {
   border-style: dashed;
   background-color: #fafafa;
-}
-
-.ranking-slot.empty:hover {
-  border-color: #8B4513;
-  background-color: #fef8f0;
 }
 
 .slot-number {
@@ -120,18 +114,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
   flex-shrink: 0;
   padding: 0;
 }
 
 .remove-button:hover {
   background-color: #c0392b;
-  transform: scale(1.1);
-}
-
-.remove-button:active {
-  transform: scale(0.95);
 }
 
 .no-image {

@@ -5,7 +5,7 @@ import { retryWithBackoff } from '../utils/retryWithBackoff';
 import { api } from '../utils/api';
 
 export function useRanking(options = {}) {
-  const { onSaveComplete } = options;
+  const { onSaveComplete, maxRankableCount } = options;
   const [rankedProducts, setRankedProducts] = useState([]);
   const [slotCount, setSlotCount] = useState(10);
   const [saveStatus, setSaveStatus] = useState({ state: 'idle', message: '' }); // idle, saving, saved, error
@@ -26,13 +26,29 @@ export function useRanking(options = {}) {
     loadRankings();
   }, []);
   
-  // Auto-expand slots when getting full
+  // Clamp slotCount when maxRankableCount becomes available
+  useEffect(() => {
+    if (maxRankableCount && slotCount > maxRankableCount) {
+      console.log(`📊 Clamping slots from ${slotCount} to ${maxRankableCount} (max rankable products)`);
+      setSlotCount(maxRankableCount);
+    }
+  }, [maxRankableCount]);
+  
+  // Auto-expand slots when getting full (capped to maxRankableCount)
   useEffect(() => {
     if (rankedProducts.length >= slotCount - 3) {
-      setSlotCount(prev => prev + 10);
-      console.log(`📊 Expanded slots to ${slotCount + 10} (${rankedProducts.length} ranked)`);
+      setSlotCount(prev => {
+        const newCount = prev + 10;
+        // Cap to maxRankableCount if available
+        if (maxRankableCount && newCount > maxRankableCount) {
+          console.log(`📊 Capped slots to ${maxRankableCount} (max rankable products)`);
+          return maxRankableCount;
+        }
+        console.log(`📊 Expanded slots to ${newCount} (${rankedProducts.length} ranked)`);
+        return newCount;
+      });
     }
-  }, [rankedProducts.length, slotCount]);
+  }, [rankedProducts.length, slotCount, maxRankableCount]);
   
   /**
    * Load existing rankings from backend
@@ -48,9 +64,15 @@ export function useRanking(options = {}) {
         setRankedProducts(sorted);
         console.log(`✅ Loaded ${sorted.length} existing rankings`);
         
-        // Set slot count to accommodate rankings + buffer
+        // Set slot count to accommodate rankings + buffer (capped to maxRankableCount)
         if (sorted.length > 0) {
-          setSlotCount(Math.max(10, sorted.length + 5));
+          const calculatedCount = Math.max(10, sorted.length + 5);
+          if (maxRankableCount && calculatedCount > maxRankableCount) {
+            setSlotCount(maxRankableCount);
+            console.log(`📊 Initial slot count capped to ${maxRankableCount} (max rankable products)`);
+          } else {
+            setSlotCount(calculatedCount);
+          }
         }
       }
       

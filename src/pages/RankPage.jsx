@@ -24,6 +24,21 @@ export default function RankPage() {
   const [error, setError] = useState(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [activeId, setActiveId] = useState(null);
+  const [maxRankableCount, setMaxRankableCount] = useState(null);
+  
+  // Fetch total rankable product count on mount
+  useEffect(() => {
+    const fetchMaxRankableCount = async () => {
+      try {
+        const data = await api.get('/products/rankable/count');
+        setMaxRankableCount(data.totalRankable);
+        console.log(`📊 User can rank up to ${data.totalRankable} products`);
+      } catch (err) {
+        console.error('Failed to fetch max rankable count:', err);
+      }
+    };
+    fetchMaxRankableCount();
+  }, []);
   
   // Ranking state management with callback to refetch products after save
   const {
@@ -36,6 +51,7 @@ export default function RankPage() {
     reorderRankings,
     getRankedProductIds
   } = useRanking({
+    maxRankableCount,
     onSaveComplete: (rankings, position) => {
       // Silently refetch to replenish available products without visual flashing
       // The optimistic UI keeps the list stable while fetching happens in background
@@ -330,6 +346,14 @@ export default function RankPage() {
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
+      autoScroll={{
+        acceleration: 3,
+        interval: 10,
+        threshold: {
+          x: 0.2,
+          y: 0.2
+        }
+      }}
     >
       <div className="rank-page">
         <div className="rank-container">

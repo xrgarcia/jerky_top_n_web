@@ -1734,6 +1734,58 @@ app.get('/api/products/rankable', async (req, res) => {
   }
 });
 
+// Get total count of products user can rank (including already ranked)
+app.get('/api/products/rankable/count', async (req, res) => {
+  try {
+    const sessionId = req.cookies.session_id || req.query.sessionId;
+    if (!sessionId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    
+    const session = await storage.getSession(sessionId);
+    if (!session) {
+      return res.status(401).json({ error: 'Invalid session' });
+    }
+    
+    const userId = session.userId;
+    const user = await storage.getUserById(userId);
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    
+    let totalRankableCount = 0;
+    
+    // Employees can rank all products
+    if (user.role === 'employee' || user.role === 'employee_admin') {
+      totalRankableCount = getRankableProductCount();
+      console.log(`📊 Employee ${userId} can rank ${totalRankableCount} products (all products)`);
+    } else {
+      // Non-employees can only rank purchased products
+      if (purchaseHistoryService) {
+        const purchasedProductIds = await purchaseHistoryService.getPurchasedProductIds(userId);
+        totalRankableCount = purchasedProductIds.length;
+        console.log(`📊 User ${userId} can rank ${totalRankableCount} products (purchased products)`);
+      } else {
+        // Fallback if purchase history not configured
+        totalRankableCount = getRankableProductCount();
+        console.log(`📊 User ${userId} can rank ${totalRankableCount} products (purchase history not configured)`);
+      }
+    }
+    
+    res.json({ 
+      totalRankable: totalRankableCount,
+      isEmployee: user.role === 'employee' || user.role === 'employee_admin'
+    });
+    
+  } catch (error) {
+    console.error('Get rankable count error:', error);
+    Sentry.captureException(error, {
+      tags: { service: 'products', endpoint: '/api/products/rankable/count' }
+    });
+    res.status(500).json({ error: 'Failed to get rankable count' });
+  }
+});
+
 // Save product ranking
 app.post('/api/rankings/product', async (req, res) => {
   try {
