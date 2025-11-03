@@ -880,11 +880,18 @@
 
 .coinbook-hero .coinbook-content,
 .coinbook-hero .collapsed-milestone-preview {
-  background: linear-gradient(to bottom, #4a3728 0%, #3d2e22 100%);
+  background: 
+    radial-gradient(ellipse 200px 150px at 0% 0%, rgba(74, 55, 40, 0.25), transparent 70%),
+    radial-gradient(ellipse 180px 180px at 100% 0%, rgba(61, 46, 34, 0.2), transparent 65%),
+    radial-gradient(ellipse 220px 120px at 0% 100%, rgba(74, 55, 40, 0.3), transparent 75%),
+    radial-gradient(ellipse 160px 200px at 100% 100%, rgba(61, 46, 34, 0.22), transparent 70%),
+    radial-gradient(ellipse 140px 100px at 75% 50%, rgba(74, 55, 40, 0.12), transparent 60%),
+    radial-gradient(ellipse 120px 90px at 20% 60%, rgba(61, 46, 34, 0.15), transparent 65%),
+    linear-gradient(to bottom, #F5EBD8 0%, #EDE0CE 100%);
 }
 
 .coinbook-hero .milestone-section {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.6);
   border-color: #8B7355;
 }
 
@@ -897,12 +904,12 @@
 .coinbook-hero .milestone-preview-name,
 .coinbook-hero .milestone-preview-status,
 .coinbook-hero .coinbook-loading {
-  color: #F5E6D3;
+  color: #3E2723;
 }
 
 .coinbook-hero .progress-bar {
-  background: rgba(0, 0, 0, 0.3);
-  border-color: #5a4434;
+  background: #e9e6d9;
+  border-color: #d4cfba;
 }
 
 .coinbook-hero .progress-fill {
@@ -910,8 +917,8 @@
 }
 
 .coinbook-hero .loading-spinner {
-  border-color: rgba(255, 255, 255, 0.1);
-  border-top-color: #D4A574;
+  border-color: #e9e6d9;
+  border-top-color: #8B7355;
 }
 
 .coinbook-hero .achievement-coin {
