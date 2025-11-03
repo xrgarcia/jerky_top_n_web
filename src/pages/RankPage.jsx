@@ -336,7 +336,7 @@ export default function RankPage() {
     setActiveId(null);
   };
 
-  // WebSocket listener: Invalidate commentary when ranking achievements are earned
+  // WebSocket listener: Invalidate commentary when ranking achievements are earned or tiers upgraded
   useEffect(() => {
     if (!socket) return;
 
@@ -353,11 +353,20 @@ export default function RankPage() {
         }
       }
     };
+    
+    const handleTierUpgrade = (data) => {
+      // Invalidate commentary when tier upgrades happen
+      // This ensures the commentary reflects the new tier and next milestone
+      console.log('🔼 Tier upgrade detected, refreshing ranking commentary:', data);
+      queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
+    };
 
     socket.on('achievements:earned', handleAchievementsEarned);
+    socket.on('tier:upgrade', handleTierUpgrade);
 
     return () => {
       socket.off('achievements:earned', handleAchievementsEarned);
+      socket.off('tier:upgrade', handleTierUpgrade);
     };
   }, [socket, queryClient]);
 
