@@ -553,7 +553,8 @@
   color: #F5DEB3;
 }
 
-.coinbook-oak .coinbook-content {
+.coinbook-oak .coinbook-content,
+.coinbook-oak .collapsed-milestone-preview {
   background: linear-gradient(to bottom, #F5EBD8 0%, #EDE0CE 100%);
 }
 
@@ -567,6 +568,9 @@
 .coinbook-oak .achievements-label,
 .coinbook-oak .coin-name,
 .coinbook-oak .stat-value,
+.coinbook-oak .milestone-preview-label,
+.coinbook-oak .milestone-preview-name,
+.coinbook-oak .milestone-preview-status,
 .coinbook-oak .coinbook-loading {
   color: #3E2723;
 }
@@ -631,7 +635,8 @@
   color: #DEB887;
 }
 
-.coinbook-walnut .coinbook-content {
+.coinbook-walnut .coinbook-content,
+.coinbook-walnut .collapsed-milestone-preview {
   background: linear-gradient(to bottom, #E8DDD0 0%, #DDD2C5 100%);
 }
 
@@ -645,6 +650,9 @@
 .coinbook-walnut .achievements-label,
 .coinbook-walnut .coin-name,
 .coinbook-walnut .stat-value,
+.coinbook-walnut .milestone-preview-label,
+.coinbook-walnut .milestone-preview-name,
+.coinbook-walnut .milestone-preview-status,
 .coinbook-walnut .coinbook-loading {
   color: #2C1810;
 }
@@ -709,7 +717,8 @@
   color: #B8956F;
 }
 
-.coinbook-pine .coinbook-content {
+.coinbook-pine .coinbook-content,
+.coinbook-pine .collapsed-milestone-preview {
   background: linear-gradient(to bottom, #FAF6EE 0%, #F0EBE3 100%);
 }
 
@@ -723,6 +732,9 @@
 .coinbook-pine .achievements-label,
 .coinbook-pine .coin-name,
 .coinbook-pine .stat-value,
+.coinbook-pine .milestone-preview-label,
+.coinbook-pine .milestone-preview-name,
+.coinbook-pine .milestone-preview-status,
 .coinbook-pine .coinbook-loading {
   color: #3E2723;
 }
@@ -787,7 +799,8 @@
   color: #F5DEB3;
 }
 
-.coinbook-cherry .coinbook-content {
+.coinbook-cherry .coinbook-content,
+.coinbook-cherry .collapsed-milestone-preview {
   background: linear-gradient(to bottom, #F0E4D8 0%, #E5D9CD 100%);
 }
 
@@ -801,6 +814,9 @@
 .coinbook-cherry .achievements-label,
 .coinbook-cherry .coin-name,
 .coinbook-cherry .stat-value,
+.coinbook-cherry .milestone-preview-label,
+.coinbook-cherry .milestone-preview-name,
+.coinbook-cherry .milestone-preview-status,
 .coinbook-cherry .coinbook-loading {
   color: #2C1810;
 }
