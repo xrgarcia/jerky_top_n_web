@@ -145,9 +145,10 @@
   line-height: 1;
 }
 
-.coinbook-stat-value {
+.cb-badge-text {
   font-size: 13px;
   white-space: nowrap;
+  color: inherit;
 }
 
 /* Collapsed Milestone Preview */
@@ -567,7 +568,7 @@
 .coinbook-oak .milestone-status,
 .coinbook-oak .achievements-label,
 .coinbook-oak .coin-name,
-.coinbook-oak .coinbook-stat-value,
+.coinbook-oak .cb-badge-text,
 .coinbook-oak .milestone-preview-label,
 .coinbook-oak .milestone-preview-name,
 .coinbook-oak .milestone-preview-status,
@@ -649,7 +650,7 @@
 .coinbook-walnut .milestone-status,
 .coinbook-walnut .achievements-label,
 .coinbook-walnut .coin-name,
-.coinbook-walnut .coinbook-stat-value,
+.coinbook-walnut .cb-badge-text,
 .coinbook-walnut .milestone-preview-label,
 .coinbook-walnut .milestone-preview-name,
 .coinbook-walnut .milestone-preview-status,
@@ -731,7 +732,7 @@
 .coinbook-pine .milestone-status,
 .coinbook-pine .achievements-label,
 .coinbook-pine .coin-name,
-.coinbook-pine .coinbook-stat-value,
+.coinbook-pine .cb-badge-text,
 .coinbook-pine .milestone-preview-label,
 .coinbook-pine .milestone-preview-name,
 .coinbook-pine .milestone-preview-status,
@@ -813,7 +814,7 @@
 .coinbook-cherry .milestone-status,
 .coinbook-cherry .achievements-label,
 .coinbook-cherry .coin-name,
-.coinbook-cherry .coinbook-stat-value,
+.coinbook-cherry .cb-badge-text,
 .coinbook-cherry .milestone-preview-label,
 .coinbook-cherry .milestone-preview-name,
 .coinbook-cherry .milestone-preview-status,

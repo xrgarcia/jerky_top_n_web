@@ -97,12 +97,12 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
           )}
           <span className="stat-badge">
             <span className="stat-icon">🏆</span>
-            <span className="coinbook-stat-value">{progress.totalRankings} Ranked</span>
+            <span className="cb-badge-text">{progress.totalRankings} Ranked</span>
           </span>
           {progress.currentStreak > 0 && (
             <span className="stat-badge">
               <span className="stat-icon">🔥</span>
-              <span className="coinbook-stat-value">{progress.currentStreak} Day Streak</span>
+              <span className="cb-badge-text">{progress.currentStreak} Day Streak</span>
             </span>
           )}
         </div>
