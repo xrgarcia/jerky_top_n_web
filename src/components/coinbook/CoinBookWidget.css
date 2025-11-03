@@ -201,6 +201,7 @@
 
 .milestone-name {
   flex: 1;
+  color: inherit;
 }
 
 .progress-bar {
@@ -521,8 +522,10 @@
 }
 
 .coinbook-oak .milestone-label,
+.coinbook-oak .milestone-name,
 .coinbook-oak .milestone-status,
 .coinbook-oak .achievements-label,
+.coinbook-oak .coin-name,
 .coinbook-oak .coinbook-loading {
   color: #3E2723;
 }
@@ -596,8 +599,10 @@
 }
 
 .coinbook-walnut .milestone-label,
+.coinbook-walnut .milestone-name,
 .coinbook-walnut .milestone-status,
 .coinbook-walnut .achievements-label,
+.coinbook-walnut .coin-name,
 .coinbook-walnut .coinbook-loading {
   color: #2C1810;
 }
@@ -671,8 +676,10 @@
 }
 
 .coinbook-pine .milestone-label,
+.coinbook-pine .milestone-name,
 .coinbook-pine .milestone-status,
 .coinbook-pine .achievements-label,
+.coinbook-pine .coin-name,
 .coinbook-pine .coinbook-loading {
   color: #3E2723;
 }
@@ -746,8 +753,10 @@
 }
 
 .coinbook-cherry .milestone-label,
+.coinbook-cherry .milestone-name,
 .coinbook-cherry .milestone-status,
 .coinbook-cherry .achievements-label,
+.coinbook-cherry .coin-name,
 .coinbook-cherry .coinbook-loading {
   color: #2C1810;
 }
