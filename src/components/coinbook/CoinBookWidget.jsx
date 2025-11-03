@@ -63,7 +63,12 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
         />
       );
     }
-    return achievement.icon;
+    // Handle missing, empty, or zero icon values to prevent rendering "0"
+    const icon = achievement.icon;
+    if (!icon || icon === 0 || icon === '0') {
+      return '🏆'; // Default placeholder emoji
+    }
+    return icon;
   };
 
   return (
