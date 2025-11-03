@@ -37,12 +37,6 @@ function ToolsLayout() {
             </h1>
             <p className="tools-subtitle">Management tools for jerky.com employees</p>
           </div>
-          <div className="tools-header-action">
-            <button className="refresh-btn" onClick={() => window.location.reload()}>
-              <span className="icon">🔄</span>
-              <span>Refresh Data</span>
-            </button>
-          </div>
         </div>
       </div>
 
