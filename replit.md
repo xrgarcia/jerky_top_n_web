@@ -57,7 +57,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
     - Wood-frame design with earth-tone palette (sage green #7b8b52, earthy gold #c4a962)
     - Collapsed state: User stats (rankings, streak), last earned achievement icon
     - Expanded state: Next milestone with progress bar + achievement grid with tier-based colored borders
-    - Real-time updates via WebSocket (achievements:earned, flavor_coins:earned, tier:upgrade events)
+    - Real-time updates via WebSocket (achievements:earned, flavor_coins:earned, tier:upgrade, gamification:progress:updated events)
+    - Progress updates broadcast after rankings saved, triggering live refresh of "Your Progress" section
     - Custom hooks for `/api/gamification/achievements` and `/api/gamification/progress` endpoints
 - **Admin Tools**: React-based dashboard with:
     - EmployeeRoute protection, `employee_admin` role.

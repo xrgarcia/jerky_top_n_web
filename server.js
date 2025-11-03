@@ -2135,6 +2135,16 @@ app.post('/api/rankings/products', async (req, res) => {
             console.log(`🏆 User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
               achievementsToEmit.map(a => a.name).join(', '));
           }
+          
+          // Broadcast progress update via WebSocket to refresh "Your Progress" section
+          if (gamificationServices?.wsGateway) {
+            const { getRoomName } = require('./server/websocket/gateway');
+            io.to(getRoomName(`user:${userId}`)).emit('gamification:progress:updated', {
+              userId,
+              timestamp: new Date().toISOString()
+            });
+            console.log(`📊 Progress update emitted for user ${userId}`);
+          }
         } catch (gamificationError) {
           console.error('Error processing gamification:', gamificationError);
           Sentry.captureException(gamificationError, {

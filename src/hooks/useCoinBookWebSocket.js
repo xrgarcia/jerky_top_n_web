@@ -104,9 +104,16 @@ export function useCoinBookWebSocket() {
       queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
     };
 
+    // Listen for progress updates (no toast, just refresh data)
+    const handleProgressUpdate = (data) => {
+      console.log('📊 Progress update event:', data);
+      queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
+    };
+
     socket.on('achievements:earned', handleAchievementsEarned);
     socket.on('flavor_coins:earned', handleFlavorCoinsEarned);
     socket.on('tier:upgrade', handleTierUpgrade);
+    socket.on('gamification:progress:updated', handleProgressUpdate);
 
     // Cleanup
     return () => {
@@ -114,6 +121,7 @@ export function useCoinBookWebSocket() {
       socket.off('achievements:earned', handleAchievementsEarned);
       socket.off('flavor_coins:earned', handleFlavorCoinsEarned);
       socket.off('tier:upgrade', handleTierUpgrade);
+      socket.off('gamification:progress:updated', handleProgressUpdate);
     };
   }, [socket, queryClient, showToast]);
 
