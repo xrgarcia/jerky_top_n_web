@@ -591,7 +591,59 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </div>
           </section>
           
-          {/* STEP 4: REQUIREMENTS (for collection types) */}
+          {/* STEP 4: UNLOCK REQUIREMENTS (Engagement Coins Only) */}
+          {collectionType === 'engagement_collection' && (
+            <section className="form-section">
+              <h3 className="section-title">4. UNLOCK REQUIREMENTS</h3>
+              <p className="section-description">
+                Define how users earn this achievement. For Dynamic Collections, requirements are automatic based on protein categories + tier thresholds.
+              </p>
+              
+              <div className="form-group">
+                <label>How do users earn this achievement?*</label>
+                <select
+                  value={engagementType}
+                  onChange={(e) => setEngagementType(e.target.value)}
+                  className="form-select"
+                >
+                  <option value="">-- Select Requirement Type --</option>
+                  <option value="rank_count">Rank a certain number of products</option>
+                  <option value="search_count">Perform searches</option>
+                  <option value="product_view_count">View product detail pages</option>
+                  <option value="unique_product_view_count">Browse unique products</option>
+                  <option value="profile_view_count">View user profiles</option>
+                  <option value="unique_profile_view_count">Visit unique user profiles</option>
+                  <option value="daily_login_streak">Login daily for consecutive days</option>
+                  <option value="daily_rank_streak">Rank products daily for consecutive days</option>
+                </select>
+              </div>
+              
+              {engagementType && (
+                <div className="form-group">
+                  <label>
+                    {engagementType === 'rank_count' && 'How many products must be ranked?'}
+                    {engagementType === 'search_count' && 'How many searches must be performed?'}
+                    {engagementType === 'product_view_count' && 'How many product detail pages must be viewed?'}
+                    {engagementType === 'unique_product_view_count' && 'How many unique products must be browsed?'}
+                    {engagementType === 'profile_view_count' && 'How many user profiles must be viewed?'}
+                    {engagementType === 'unique_profile_view_count' && 'How many unique user profiles must be visited?'}
+                    {engagementType === 'daily_login_streak' && 'How many consecutive login days are required?'}
+                    {engagementType === 'daily_rank_streak' && 'How many consecutive ranking days are required?'}
+                  </label>
+                  <input
+                    type="number"
+                    value={engagementValue}
+                    onChange={(e) => setEngagementValue(e.target.value)}
+                    min="1"
+                    placeholder="e.g., 10"
+                    className="form-input"
+                  />
+                </div>
+              )}
+            </section>
+          )}
+          
+          {/* PRODUCT SELECTION (for collection types) */}
           {shouldShowProductSelector(collectionType) && (
             <section className="form-section">
               <h3 className="section-title">4. PRODUCT SELECTION</h3>
@@ -840,58 +892,6 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
               )}
             </div>
           </section>
-          
-          {/* STEP 7.5: UNLOCK REQUIREMENTS (Engagement Coins Only) */}
-          {collectionType === 'engagement_collection' && (
-            <section className="form-section">
-              <h3 className="section-title">UNLOCK REQUIREMENTS</h3>
-              <p className="section-description">
-                Define how users earn this achievement. For Dynamic Collections, requirements are automatic based on protein categories + tier thresholds.
-              </p>
-              
-              <div className="form-group">
-                <label>How do users earn this achievement?*</label>
-                <select
-                  value={engagementType}
-                  onChange={(e) => setEngagementType(e.target.value)}
-                  className="form-select"
-                >
-                  <option value="">-- Select Requirement Type --</option>
-                  <option value="rank_count">Rank a certain number of products</option>
-                  <option value="search_count">Perform searches</option>
-                  <option value="product_view_count">View product detail pages</option>
-                  <option value="unique_product_view_count">Browse unique products</option>
-                  <option value="profile_view_count">View user profiles</option>
-                  <option value="unique_profile_view_count">Visit unique user profiles</option>
-                  <option value="daily_login_streak">Login daily for consecutive days</option>
-                  <option value="daily_rank_streak">Rank products daily for consecutive days</option>
-                </select>
-              </div>
-              
-              {engagementType && (
-                <div className="form-group">
-                  <label>
-                    {engagementType === 'rank_count' && 'How many products must be ranked?'}
-                    {engagementType === 'search_count' && 'How many searches must be performed?'}
-                    {engagementType === 'product_view_count' && 'How many product detail pages must be viewed?'}
-                    {engagementType === 'unique_product_view_count' && 'How many unique products must be browsed?'}
-                    {engagementType === 'profile_view_count' && 'How many user profiles must be viewed?'}
-                    {engagementType === 'unique_profile_view_count' && 'How many unique user profiles must be visited?'}
-                    {engagementType === 'daily_login_streak' && 'How many consecutive login days are required?'}
-                    {engagementType === 'daily_rank_streak' && 'How many consecutive ranking days are required?'}
-                  </label>
-                  <input
-                    type="number"
-                    value={engagementValue}
-                    onChange={(e) => setEngagementValue(e.target.value)}
-                    min="1"
-                    placeholder="e.g., 10"
-                    className="form-input"
-                  />
-                </div>
-              )}
-            </section>
-          )}
           
           {/* STEP 8: TIER PROGRESSION */}
           <section className="form-section">
