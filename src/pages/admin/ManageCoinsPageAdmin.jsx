@@ -198,31 +198,31 @@ function ManageCoinsPageAdmin() {
           className={`filter-btn ${coinTypeFilter === 'all' ? 'active' : ''}`}
           onClick={() => setCoinTypeFilter('all')}
         >
-          All Coins
+          All
         </button>
         <button
           className={`filter-btn ${coinTypeFilter === 'engagement' ? 'active' : ''}`}
           onClick={() => setCoinTypeFilter('engagement')}
         >
-          🎯 Engagement Coins
+          🎯 Engagement
         </button>
         <button
           className={`filter-btn ${coinTypeFilter === 'static' ? 'active' : ''}`}
           onClick={() => setCoinTypeFilter('static')}
         >
-          🏛️ Static Collection Coins
+          🏛️ Static Collection
         </button>
         <button
           className={`filter-btn ${coinTypeFilter === 'dynamic' ? 'active' : ''}`}
           onClick={() => setCoinTypeFilter('dynamic')}
         >
-          📊 Dynamic Collection Coins
+          📊 Dynamic Collection
         </button>
         <button
           className={`filter-btn ${coinTypeFilter === 'flavor' ? 'active' : ''}`}
           onClick={() => setCoinTypeFilter('flavor')}
         >
-          🍊 Flavor Coins
+          🍊 Flavor
         </button>
         <button
           className={`filter-btn ${coinTypeFilter === 'legacy' ? 'active' : ''}`}
