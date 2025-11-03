@@ -40,7 +40,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Search**: Global unified search for products and community members.
 - **Styling**: Custom CSS with an earth-tone palette.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
-- **Toast Notifications**: Sequential queue-based display system (FIFO) prevents message overlap, showing one toast at a time with 300ms transition delay and configurable duration (default 5s). WebSocket events (achievements:earned, flavor_coins:earned, tier:upgrade) trigger toasts with tier-specific formatting and emojis (🥉🥈🥇💎💠).
+- **Toast Notifications**: Sequential queue-based display system (FIFO) prevents message overlap, showing one toast at a time with 300ms transition delay and configurable duration (default 5s). WebSocket events (achievements:earned, flavor_coins:earned, tier:upgrade) trigger toasts with tier-specific formatting and emojis (🥉🥈🥇👑💠).
+- **Tier Emoji System**: Centralized tier emoji constants using JSON-based single source of truth (`shared/constants/tierEmojis.json`) with module wrappers for both CommonJS (backend) and ESM (frontend). Tier emojis: bronze (🥉), silver (🥈), gold (🥇), platinum (👑 crown - visually distinct from diamond), diamond (💠). Used by: ProgressTracker, CommentaryService, CoinBookWidget, useCoinBookWebSocket hook, and legacy widgets.
 
 **Feature Specifications:**
 - **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and hybrid reliability system. Non-employee users can only rank purchased products.
