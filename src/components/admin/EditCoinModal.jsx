@@ -369,40 +369,40 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   const buildRequirement = () => {
     // Engagement collections
     if (collectionType === 'engagement_collection') {
-      return JSON.stringify({
+      return {
         type: engagementType,
         value: parseInt(engagementValue) || 0
-      });
+      };
     }
     
     // Dynamic collections
     if (collectionType === 'dynamic_collection') {
       if (dynamicCollectionType === 'complete_collection') {
-        return JSON.stringify({ type: 'complete_collection' });
+        return { type: 'complete_collection' };
       } else if (dynamicCollectionType === 'brand_collection') {
-        return JSON.stringify({ 
+        return { 
           type: 'brand_collection', 
           brands: selectedBrands 
-        });
+        };
       } else if (dynamicCollectionType === 'animal_collection') {
-        return JSON.stringify({ 
+        return { 
           type: 'animal_collection', 
           animals: selectedAnimals 
-        });
+        };
       }
     }
     
     // Static collections and flavor coins (with product IDs)
     if (shouldShowProductSelector(collectionType)) {
-      return JSON.stringify({
+      return {
         type: collectionType === 'flavor_coin' ? 'flavor_coin' : 'static_collection',
         productIds: selectedProductIds,
         requiredCount: selectedProductIds.length
-      });
+      };
     }
     
     // For engagement coins, just return a simple requirement
-    return requirement || JSON.stringify({ type: 'engagement' });
+    return requirement || { type: 'engagement' };
   };
   
   // Handle form submission
