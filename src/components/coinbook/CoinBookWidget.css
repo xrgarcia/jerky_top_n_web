@@ -8,7 +8,7 @@
     0 4px 12px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
   margin-bottom: 24px;
-  overflow: hidden;
+  overflow: visible;
   position: relative;
   width: 100%;
 }
@@ -39,6 +39,7 @@
     );
   pointer-events: none;
   opacity: 0.6;
+  border-radius: inherit;
 }
 
 /* Subtle wood knots and variation */
@@ -55,6 +56,7 @@
     radial-gradient(ellipse 40px 30px at 50% 50%, rgba(139, 115, 85, 0.05), transparent);
   pointer-events: none;
   opacity: 0.4;
+  border-radius: inherit;
 }
 
 /* Header */
@@ -204,6 +206,7 @@
   padding: 20px;
   background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
   animation: expandContent 0.3s ease;
+  overflow: visible;
 }
 
 @keyframes expandContent {
@@ -280,6 +283,7 @@
 /* Achievements Section */
 .achievements-section {
   margin-top: 20px;
+  overflow: visible;
 }
 
 .achievements-label {
@@ -295,6 +299,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
   gap: 14px;
+  overflow: visible;
 }
 
 /* Achievement Coins */
