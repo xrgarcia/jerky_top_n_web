@@ -65,6 +65,7 @@ class CommentaryService {
         nextMilestone: closestAchievement ? {
           name: closestAchievement.achievementName,
           icon: closestAchievement.achievementIcon,
+          iconType: closestAchievement.achievementIconType || 'emoji',
           current: closestAchievement.current,
           target: closestAchievement.target,
           remaining: closestAchievement.remaining,

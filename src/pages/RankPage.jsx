@@ -353,7 +353,17 @@ export default function RankPage() {
                   <span className="commentary-message">{commentary.message}</span>
                   {commentary.nextMilestone && (
                     <div className="milestone-hint">
-                      {commentary.nextMilestone.icon} {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
+                      {commentary.nextMilestone.iconType === 'image' ? (
+                        <img 
+                          src={commentary.nextMilestone.icon} 
+                          alt={commentary.nextMilestone.name}
+                          className="milestone-icon-image"
+                          style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle' }}
+                        />
+                      ) : (
+                        <span className="milestone-icon-emoji">{commentary.nextMilestone.icon}</span>
+                      )}{' '}
+                      {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
                       {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
                     </div>
                   )}
