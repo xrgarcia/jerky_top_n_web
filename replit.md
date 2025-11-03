@@ -52,6 +52,12 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
 - **Ranking Commentary**: Dynamic, contextual encouragement messages adapting to user progress and streaks.
 - **Collection Progress Bar**: User-specific progress tracking on the Rank page, indicating progress towards achievements.
+- **Coin Book Widget**: Wood-inspired, collapsible achievement tracker on the Rank page featuring:
+    - Wood-frame design with earth-tone palette (sage green #7b8b52, earthy gold #c4a962)
+    - Collapsed state: User stats (rankings, streak), last earned achievement icon
+    - Expanded state: Next milestone with progress bar + achievement grid with tier-based colored borders
+    - Real-time updates via WebSocket (achievements:earned, flavor_coins:earned, tier:upgrade events)
+    - Custom hooks for `/api/gamification/achievements` and `/api/gamification/progress` endpoints
 - **Admin Tools**: React-based dashboard with:
     - EmployeeRoute protection, `employee_admin` role.
     - Nested routing (`/admin/tools/*`).
