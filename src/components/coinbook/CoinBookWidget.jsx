@@ -12,7 +12,6 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
   useCoinBookWebSocket();
 
   const achievements = achievementsData?.achievements || [];
-  const stats = achievementsData?.stats || {};
   const progress = progressData?.progress || null;
   const nextMilestone = progress?.nextMilestones?.[0] || null;
 
