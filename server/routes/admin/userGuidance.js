@@ -59,7 +59,7 @@ function createUserGuidanceAdminRoutes(services) {
       
       const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
       
-      const countQuery = `
+      let countQuery = `
         SELECT COUNT(DISTINCT u.id) as total
         FROM users u
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
@@ -67,11 +67,19 @@ function createUserGuidanceAdminRoutes(services) {
         ${whereClause}
       `;
       
-      const countResult = await db.execute(sql.raw(countQuery, params));
+      let countParams = [...params];
+      let paramIndex = params.length;
+      
+      // Replace placeholders with actual $1, $2, etc.
+      for (let i = 0; i < paramIndex; i++) {
+        countQuery = countQuery.replace(`$${i + 1}`, `$${i + 1}`);
+      }
+      
+      const countResult = await db.execute(sql.raw(countQuery, countParams));
       const totalCount = parseInt(countResult.rows[0]?.total) || 0;
       const totalPages = Math.ceil(totalCount / limit);
       
-      const dataQuery = `
+      let dataQuery = `
         SELECT 
           u.id,
           u.email,
@@ -96,10 +104,10 @@ function createUserGuidanceAdminRoutes(services) {
         GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
                  uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community_id, tc.name
         ORDER BY ${sortField} ${sortDirection}
-        LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+        LIMIT ${limit} OFFSET ${offset}
       `;
       
-      const dataParams = [...params, limit, offset];
+      const dataParams = [...params];
       const usersResult = await db.execute(sql.raw(dataQuery, dataParams));
       
       const users = usersResult.rows.map(user => ({
