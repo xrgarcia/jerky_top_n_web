@@ -67,7 +67,21 @@ The application utilizes a modern web architecture for responsiveness, scalabili
     - EmployeeRoute protection, `employee_admin` role.
     - Nested routing (`/admin/tools/*`).
     - Super Admin Access: Dynamic backend-driven access control with immediate cache invalidation.
-    - Six Sections: Manage Coins, Live Users, Manage Products (searchable table, multi-filter UI, edit modal with optimistic updates), Customer Order Items (7 filters, sortable columns, pagination, WebSocket live updates, linkable URL state), Sentry Errors, Manage Data (super admin-only).
+    - Seven Sections: Manage Coins, Live Users, Manage Products (searchable table, multi-filter UI, edit modal with optimistic updates), Customer Order Items (7 filters, sortable columns, pagination, WebSocket live updates, linkable URL state), Sentry Errors, Manage Data (super admin-only), User Guidance (classification analytics).
+- **Personalized Guidance System**: AI-driven user journey optimization featuring:
+    - Event-driven classification engine analyzing user behavior patterns
+    - Four classification dimensions: Journey Stage (new_user → engaged_explorer → dedicated_collector → completionist), Engagement Level (low/medium/high), Activity Type (casual_browser → active_ranker → super_user), Taste Community (6 communities based on flavor/animal preferences)
+    - Rule-based analysis system with configurable thresholds (JSON-based config, admin-editable)
+    - Activity tracking with intelligent batching (10 activities/5 seconds) for performance
+    - Comprehensive activity logging: searches, product views, profile views, rankings, coins earned, logins, purchases
+    - Real-time WebSocket updates for classification changes and guidance refresh
+    - Targeted message templates personalized per classification (journey stage, engagement level, taste community)
+    - Frontend widget with earth-tone styling positioned above Coin Book on Rank page
+    - Collapsible interface with dynamic content refresh on user activity
+    - Admin dashboard tab with searchable user classifications table, detailed view modals, color-coded badges
+    - Future-ready for status/flair system integration (badges, journey icons, engagement indicators)
+    - Services: UserClassificationService, TasteCommunityService, ActivityTrackingService, PersonalizedGuidanceService
+    - Database tables: user_activities, user_classifications, taste_communities, classification_config
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
