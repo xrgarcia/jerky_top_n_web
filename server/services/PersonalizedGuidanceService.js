@@ -267,32 +267,47 @@ class PersonalizedGuidanceService {
     const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS: Browse and discover
     if (journeyStage === 'new_user') {
+      const baseText = "Browse our full catalog of jerky flavors! When you find ones you've tried, head to the Rank page to add them to your collection and earn Flavor Coins.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Discover Your Next Favorite!',
         icon: '🔍',
         type: 'discovery',
-        text: "Browse our full catalog of jerky flavors! When you find ones you've tried, head to the Rank page to add them to your collection and earn Flavor Coins."
+        text
       };
     }
 
     // NARROW FOCUS: Encourage exploration
     if (explorationBreadth === 'narrow' && focusAreas.length > 0) {
       const focusText = focusAreas.slice(0, 2).join(' and ');
+      const baseText = `You seem to love ${focusText} - awesome! But there's more to explore. Try new flavor profiles and protein types to earn Engagement Coins.`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Try new flavor profiles and protein types to earn Engagement Coins and unlock collection achievements!`;
+      
       return {
         title: 'Branch Out & Discover!',
         icon: '🌟',
         type: 'exploration',
-        text: `You seem to love ${focusText} - awesome! But there's more to explore. Try new flavor profiles and protein types to earn Engagement Coins and unlock collection achievements!`
+        text
       };
     }
 
     // POWER USERS: Complete the catalog
     if (journeyStage === 'power_user') {
+      const baseText = "You're a flavor explorer extraordinaire! Find products you haven't ranked yet and add them to your collection.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Every new flavor brings you closer to 100% catalog completion!`;
+      
       return {
         title: 'Complete Your Catalog!',
         icon: '📚',
         type: 'completion',
-        text: "You're a flavor explorer extraordinaire! Find products you haven't ranked yet and add them to your collection. Every new flavor brings you closer to 100% catalog completion!"
+        text
       };
     }
 
@@ -319,31 +334,46 @@ class PersonalizedGuidanceService {
     const achievementHook = this._formatAchievementHook(nextAchievement);
     // WITH COMMUNITY: Connect with tribe
     if (community) {
+      const baseText = `You're part of the ${community.name} community! ${community.description} Check out what fellow members are ranking and compare your collections!`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: `${community.icon} ${community.name}`,
         icon: '👥',
         type: 'community',
-        text: `You're part of the ${community.name} community! ${community.description} Check out what fellow members are ranking and compare your collections!`
+        text
       };
     }
 
     // NEW USERS: Explain community
     if (journeyStage === 'new_user') {
+      const baseText = "See what other jerky lovers are ranking! As you rank more flavors, you'll be matched with a community of people who share your taste preferences.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Find Your Flavor Tribe!',
         icon: '🤝',
         type: 'community',
-        text: "See what other jerky lovers are ranking! As you rank more flavors, you'll be matched with a community of people who share your taste preferences."
+        text
       };
     }
 
     // POWER USERS: Compete
     if (journeyStage === 'power_user') {
+      const baseText = "Check out the leaderboard and see how your collection stacks up! Find players with similar tastes and discover flavors you might be missing.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Compare & Compete!',
         icon: '🏅',
         type: 'competition',
-        text: "Check out the leaderboard and see how your collection stacks up! Find players with similar tastes and discover flavors you might be missing."
+        text
       };
     }
 
@@ -370,21 +400,31 @@ class PersonalizedGuidanceService {
     const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS: Explain achievements
     if (journeyStage === 'new_user') {
+      const baseText = "This is your Coin Book! Every flavor you rank, search you make, and streak you maintain earns achievements and coins.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Start ranking to unlock your first coin!`;
+      
       return {
         title: 'Your Achievement Journey!',
         icon: '🎖️',
         type: 'achievement',
-        text: "This is your Coin Book! Every flavor you rank, search you make, and streak you maintain earns achievements and coins. Start ranking to unlock your first coin!"
+        text
       };
     }
 
     // POWER USERS: Push completion
     if (journeyStage === 'power_user') {
+      const baseText = "You're on fire! Track your progress toward Diamond tier and complete every collection.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Unlock all the coins to become a true jerky legend!`;
+      
       return {
         title: 'Complete Your Coin Book!',
         icon: '💎',
         type: 'completion',
-        text: "You're on fire! Track your progress toward Diamond tier and complete every collection. Unlock all the coins to become a true jerky legend!"
+        text
       };
     }
 
@@ -410,52 +450,77 @@ class PersonalizedGuidanceService {
     const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS
     if (journeyStage === 'new_user') {
+      const baseText = "Rank the flavors you've purchased to earn Flavor Coins and unlock achievements. Each ranking helps you discover your taste profile!";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Welcome to the Coin Book!',
         icon: '👋',
         type: 'onboarding',
-        text: "Rank the flavors you've purchased to earn Flavor Coins and unlock achievements. Each ranking helps you discover your taste profile!"
+        text
       };
     }
 
     // DORMANT
     if (journeyStage === 'dormant') {
+      const baseText = "New flavors have been added since your last visit! Come back and rank your recent purchases to earn more coins.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} See how your collection has grown!`;
+      
       return {
         title: 'We Missed You!',
         icon: '🎯',
         type: 'reengagement',
-        text: "New flavors have been added since your last visit! Come back and rank your recent purchases to earn more coins and see how your collection has grown."
+        text
       };
     }
 
     // POWER USERS
     if (journeyStage === 'power_user') {
       const communityText = community ? ` You're a valued ${community.icon} ${community.name} member!` : '';
+      const baseText = `${rankedCount} flavors ranked!${communityText} Keep building your collection and climbing the leaderboard.`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText}!`;
+      
       return {
         title: "You're a Flavor Legend!",
         icon: '🌟',
         type: 'celebration',
-        text: `${rankedCount} flavors ranked!${communityText} Keep building your collection and climbing the leaderboard!`
+        text
       };
     }
 
     // ENGAGED
     if (journeyStage === 'engaged') {
+      const baseText = "You're making great progress! Keep your ranking streak alive to earn Engagement Coins.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Unlock tiered achievements!`;
+      
       return {
         title: 'Building Your Collection!',
         icon: '🎖️',
         type: 'momentum',
-        text: "You're making great progress! Keep your ranking streak alive to earn Engagement Coins and unlock tiered achievements."
+        text
       };
     }
 
     // EXPLORING
     if (journeyStage === 'exploring') {
+      const baseText = `${rankedCount} flavors ranked! Use the search feature to find more products you've tried, and check out the community to see what others are ranking.`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Great Progress!',
         icon: '📈',
         type: 'guidance',
-        text: `${rankedCount} flavors ranked! Use the search feature to find more products you've tried, and check out the community to see what others are ranking.`
+        text
       };
     }
 
