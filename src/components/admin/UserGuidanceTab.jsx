@@ -13,6 +13,7 @@ export default function UserGuidanceTab() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
+  const [filterOptions, setFilterOptions] = useState({ journeyStages: [], engagementLevels: [], tasteCommunities: [] });
 
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 20;
@@ -25,8 +26,18 @@ export default function UserGuidanceTab() {
   const classified = searchParams.get('classified') || '';
 
   useEffect(() => {
+    fetchFilterOptions();
     fetchUserClassifications();
   }, [page, limit, search, sortBy, sortOrder, journeyStage, engagementLevel, tasteCommunity, classified]);
+
+  const fetchFilterOptions = async () => {
+    try {
+      const data = await api.get('/admin/user-classifications/filter-options');
+      setFilterOptions(data);
+    } catch (err) {
+      console.error('Failed to fetch filter options:', err);
+    }
+  };
 
   const fetchUserClassifications = async () => {
     try {
@@ -158,10 +169,11 @@ export default function UserGuidanceTab() {
             className="filter-select"
           >
             <option value="">All Journey Stages</option>
-            <option value="new_user">New User</option>
-            <option value="engaged_explorer">Engaged Explorer</option>
-            <option value="dedicated_collector">Dedicated Collector</option>
-            <option value="completionist">Completionist</option>
+            {filterOptions.journeyStages.map(stage => (
+              <option key={stage} value={stage}>
+                {stage.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
+              </option>
+            ))}
           </select>
 
           <select
@@ -170,9 +182,24 @@ export default function UserGuidanceTab() {
             className="filter-select"
           >
             <option value="">All Engagement Levels</option>
-            <option value="low">Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
+            {filterOptions.engagementLevels.map(level => (
+              <option key={level} value={level}>
+                {level.charAt(0).toUpperCase() + level.slice(1)}
+              </option>
+            ))}
+          </select>
+
+          <select
+            value={tasteCommunity}
+            onChange={(e) => handleFilterChange('tasteCommunity', e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Taste Communities</option>
+            {filterOptions.tasteCommunities.map(community => (
+              <option key={community} value={community}>
+                {community}
+              </option>
+            ))}
           </select>
 
           <select

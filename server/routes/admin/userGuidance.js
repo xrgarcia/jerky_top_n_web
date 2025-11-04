@@ -7,6 +7,47 @@ const express = require('express');
 function createUserGuidanceAdminRoutes(services) {
   const router = express.Router();
   
+  // GET /api/admin/user-classifications/filter-options - Get distinct filter values from database
+  router.get('/user-classifications/filter-options', async (req, res) => {
+    try {
+      const { db } = services;
+      const { sql } = require('drizzle-orm');
+      
+      // Get distinct journey stages
+      const journeyStagesResult = await db.execute(sql`
+        SELECT DISTINCT journey_stage
+        FROM user_classifications
+        WHERE journey_stage IS NOT NULL
+        ORDER BY journey_stage
+      `);
+      
+      // Get distinct engagement levels
+      const engagementLevelsResult = await db.execute(sql`
+        SELECT DISTINCT engagement_level
+        FROM user_classifications
+        WHERE engagement_level IS NOT NULL
+        ORDER BY engagement_level
+      `);
+      
+      // Get distinct taste communities
+      const tasteCommunitiesResult = await db.execute(sql`
+        SELECT DISTINCT tc.name
+        FROM taste_communities tc
+        INNER JOIN user_classifications uc ON tc.id = uc.taste_community_id
+        ORDER BY tc.name
+      `);
+      
+      res.json({
+        journeyStages: journeyStagesResult.rows.map(r => r.journey_stage),
+        engagementLevels: engagementLevelsResult.rows.map(r => r.engagement_level),
+        tasteCommunities: tasteCommunitiesResult.rows.map(r => r.name)
+      });
+    } catch (error) {
+      console.error('Error fetching filter options:', error);
+      res.status(500).json({ error: 'Failed to fetch filter options' });
+    }
+  });
+  
   // GET /api/admin/user-classifications - Get user classifications with pagination, sorting, and filtering
   router.get('/user-classifications', async (req, res) => {
     try {
