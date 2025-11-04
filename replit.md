@@ -8,6 +8,11 @@ A web application for ranking jerky products, designed to be a comprehensive and
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
+## Recent Changes
+- **Nov 2025**: Engagement coin tracking migration - Updated `EngagementManager` to read from `user_activities` table instead of legacy tables (`user_product_searches`, `page_views`). Added search activity tracking and achievement checking to `/api/products/rankable` endpoint. Now tracks searches, product views, and profile views in unified `user_activities` table for engagement coin awards ("Be Curious", "Expand Your Horizons", etc.).
+- **Nov 2025**: Major ranking sync fix - replaced UUID-based queue with single "current_state" operation using constant ID. Implemented smart auto-recovery on page load (prefers source with more products), added employee Force Sync button for manual recovery. Fixed critical data loss issue where IndexedDB had more products than backend.
+- **Nov 2025**: Search filter persistence - added fallback chain (lastSearchedTerm → URL search param → empty) to preserve filters after ranking operations.
+
 ## System Architecture
 The application utilizes a modern web architecture for responsiveness, scalability, and real-time interaction, built upon a recent migration to React.
 

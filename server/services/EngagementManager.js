@@ -374,13 +374,16 @@ class EngagementManager {
    */
   async calculateSearchEngagement(userId) {
     const { sql } = require('drizzle-orm');
-    const { userProductSearches } = require('../../shared/schema');
-    const { eq } = require('drizzle-orm');
+    const { userActivities } = require('../../shared/schema');
+    const { eq, and } = require('drizzle-orm');
 
     const result = await this.db
       .select({ count: sql`count(*)::int` })
-      .from(userProductSearches)
-      .where(eq(userProductSearches.userId, userId));
+      .from(userActivities)
+      .where(and(
+        eq(userActivities.userId, userId),
+        eq(userActivities.activityType, 'search')
+      ));
 
     const totalSearches = result[0]?.count || 0;
 
@@ -395,18 +398,27 @@ class EngagementManager {
 
   /**
    * Calculate page view engagement metrics for a user
+   * NOTE: This counts ALL page views (products, profiles, etc.)
+   * For specific page types, use calculateProductViewEngagement or calculateProfileViewEngagement
    * @param {number} userId - User ID
    * @returns {Promise<Object>} Page view engagement data
    */
   async calculatePageViewEngagement(userId) {
     const { sql } = require('drizzle-orm');
-    const { pageViews } = require('../../shared/schema');
-    const { eq } = require('drizzle-orm');
+    const { userActivities } = require('../../shared/schema');
+    const { eq, or, and } = require('drizzle-orm');
 
+    // Count all page views (product_view + profile_view activities)
     const result = await this.db
       .select({ count: sql`count(*)::int` })
-      .from(pageViews)
-      .where(eq(pageViews.userId, userId));
+      .from(userActivities)
+      .where(and(
+        eq(userActivities.userId, userId),
+        or(
+          eq(userActivities.activityType, 'product_view'),
+          eq(userActivities.activityType, 'profile_view')
+        )
+      ));
 
     const totalPageViews = result[0]?.count || 0;
 
@@ -489,27 +501,27 @@ class EngagementManager {
    */
   async calculateProductViewEngagement(userId, unique = false) {
     const { sql } = require('drizzle-orm');
-    const { pageViews } = require('../../shared/schema');
+    const { userActivities } = require('../../shared/schema');
     const { eq, and } = require('drizzle-orm');
 
     let result;
     if (unique) {
-      // Count distinct product identifiers
+      // Count distinct products viewed (stored in activity_data JSON as shopifyProductId)
       result = await this.db
-        .select({ count: sql`count(distinct page_identifier)::int` })
-        .from(pageViews)
+        .select({ count: sql`count(distinct (activity_data->>'shopifyProductId')::text)::int` })
+        .from(userActivities)
         .where(and(
-          eq(pageViews.userId, userId),
-          eq(pageViews.pageType, 'product_detail')
+          eq(userActivities.userId, userId),
+          eq(userActivities.activityType, 'product_view')
         ));
     } else {
       // Count total product views
       result = await this.db
         .select({ count: sql`count(*)::int` })
-        .from(pageViews)
+        .from(userActivities)
         .where(and(
-          eq(pageViews.userId, userId),
-          eq(pageViews.pageType, 'product_detail')
+          eq(userActivities.userId, userId),
+          eq(userActivities.activityType, 'product_view')
         ));
     }
 
@@ -533,27 +545,27 @@ class EngagementManager {
    */
   async calculateProfileViewEngagement(userId, unique = false) {
     const { sql } = require('drizzle-orm');
-    const { pageViews } = require('../../shared/schema');
+    const { userActivities } = require('../../shared/schema');
     const { eq, and } = require('drizzle-orm');
 
     let result;
     if (unique) {
-      // Count distinct profile identifiers
+      // Count distinct profile views (stored in activity_data JSON as profileUserId)
       result = await this.db
-        .select({ count: sql`count(distinct page_identifier)::int` })
-        .from(pageViews)
+        .select({ count: sql`count(distinct (activity_data->>'profileUserId')::int)::int` })
+        .from(userActivities)
         .where(and(
-          eq(pageViews.userId, userId),
-          eq(pageViews.pageType, 'profile')
+          eq(userActivities.userId, userId),
+          eq(userActivities.activityType, 'profile_view')
         ));
     } else {
       // Count total profile views
       result = await this.db
         .select({ count: sql`count(*)::int` })
-        .from(pageViews)
+        .from(userActivities)
         .where(and(
-          eq(pageViews.userId, userId),
-          eq(pageViews.pageType, 'profile')
+          eq(userActivities.userId, userId),
+          eq(userActivities.activityType, 'profile_view')
         ));
     }
 

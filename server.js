@@ -1722,6 +1722,75 @@ app.get('/api/products/rankable', async (req, res) => {
     
     console.log(`🎯 User ${userId}: Page ${pageNum} (indices ${startIndex}-${endIndex}) → Returning ${transformedProducts.length} products out of ${totalProducts} total unranked`);
     
+    // Track search activity and check for engagement achievements (fire-and-forget)
+    if (query && query.trim() && gamificationServices?.activityTrackingService) {
+      (async () => {
+        try {
+          // Track the search activity
+          await gamificationServices.activityTrackingService.trackSearch(userId, query.trim(), transformedProducts.length, 'rank_page');
+          
+          // Check for engagement achievements
+          if (gamificationServices?.engagementManager) {
+            const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
+            
+            if (engagementUpdates.length > 0) {
+              console.log(`🎯 [RANK PAGE SEARCH] User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+              
+              // Convert engagement updates into achievement format for notifications
+              const newEngagementAchievements = [];
+              for (const update of engagementUpdates) {
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    newEngagementAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    newEngagementAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
+                }
+              }
+              
+              // Filter out recently emitted achievements to prevent duplicate toasts
+              let achievementsToEmit = newEngagementAchievements;
+              if (newEngagementAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
+                const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, newEngagementAchievements);
+                achievementsToEmit = filtered;
+                
+                if (skipped.length > 0) {
+                  console.log(`🔇 [RANK PAGE SEARCH] Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}`);
+                }
+              }
+              
+              // Invalidate caches if achievements were earned
+              if (newEngagementAchievements.length > 0) {
+                if (gamificationServices?.homeStatsService) {
+                  gamificationServices.homeStatsService.invalidateCache();
+                }
+                if (gamificationServices?.leaderboardManager) {
+                  gamificationServices.leaderboardManager.leaderboardCache.invalidate();
+                }
+              }
+              
+              // Broadcast new achievements via WebSocket
+              if (achievementsToEmit.length > 0 && gamificationServices?.wsGateway) {
+                gamificationServices.wsGateway.emitAchievements(userId, achievementsToEmit);
+                console.log(`🏆 [RANK PAGE SEARCH] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
+                  achievementsToEmit.map(a => a.name).join(', '));
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to track search and check achievements:', err);
+        }
+      })();
+    }
+    
     res.json({ 
       products: transformedProducts,
       hasMore: endIndex < totalProducts,
