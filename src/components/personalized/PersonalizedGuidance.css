@@ -25,32 +25,28 @@
 }
 
 .guidance-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
+  display: inline;
 }
 
 .guidance-title {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: #2c2c2c;
+  display: inline;
+  color: #4a4a4a;
   font-weight: 700;
-  font-size: 28px;
-  line-height: 1.2;
+  font-size: 20px;
+  line-height: 1.6;
 }
 
 .guidance-icon {
-  font-size: 36px;
-  flex-shrink: 0;
+  font-size: 20px;
+  margin-right: 4px;
 }
 
 .guidance-label {
-  color: #2c2c2c;
+  color: #4a4a4a;
 }
 
 .guidance-content {
-  margin-top: 0;
+  display: inline;
 }
 
 .guidance-message {
@@ -59,6 +55,7 @@
   line-height: 1.6;
   margin: 0;
   font-weight: 400;
+  display: inline;
 }
 
 .guidance-action {
@@ -77,11 +74,11 @@
   }
 
   .guidance-title {
-    font-size: 24px;
+    font-size: 18px;
   }
 
   .guidance-icon {
-    font-size: 30px;
+    font-size: 18px;
   }
 
   .guidance-message {
