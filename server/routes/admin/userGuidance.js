@@ -28,58 +28,47 @@ function createUserGuidanceAdminRoutes(services) {
       const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'created_at';
       const sortDirection = sortOrder.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
       
-      let whereConditions = [];
-      let params = [];
+      // Build WHERE clause filters using Drizzle's sql template literals for proper parameter binding
+      const filters = [];
       
       if (search) {
-        whereConditions.push(`(u.email ILIKE $${params.length + 1} OR u.display_name ILIKE $${params.length + 1})`);
-        params.push(`%${search}%`);
+        const searchPattern = `%${search}%`;
+        filters.push(sql`(u.email ILIKE ${searchPattern} OR u.display_name ILIKE ${searchPattern})`);
       }
       
       if (journeyStage) {
-        whereConditions.push(`uc.journey_stage = $${params.length + 1}`);
-        params.push(journeyStage);
+        filters.push(sql`uc.journey_stage = ${journeyStage}`);
       }
       
       if (engagementLevel) {
-        whereConditions.push(`uc.engagement_level = $${params.length + 1}`);
-        params.push(engagementLevel);
+        filters.push(sql`uc.engagement_level = ${engagementLevel}`);
       }
       
       if (tasteCommunity) {
-        whereConditions.push(`tc.name = $${params.length + 1}`);
-        params.push(tasteCommunity);
+        filters.push(sql`tc.name = ${tasteCommunity}`);
       }
       
       if (classified === 'true') {
-        whereConditions.push(`uc.user_id IS NOT NULL`);
+        filters.push(sql`uc.user_id IS NOT NULL`);
       } else if (classified === 'false') {
-        whereConditions.push(`uc.user_id IS NULL`);
+        filters.push(sql`uc.user_id IS NULL`);
       }
       
-      const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+      const whereClause = filters.length > 0 ? sql`WHERE ${sql.join(filters, sql` AND `)}` : sql``;
       
-      let countQuery = `
+      // Build count query with proper parameter binding using sql template
+      const countResult = await db.execute(sql`
         SELECT COUNT(DISTINCT u.id) as total
         FROM users u
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
         LEFT JOIN taste_communities tc ON uc.taste_community_id = tc.id
         ${whereClause}
-      `;
-      
-      let countParams = [...params];
-      let paramIndex = params.length;
-      
-      // Replace placeholders with actual $1, $2, etc.
-      for (let i = 0; i < paramIndex; i++) {
-        countQuery = countQuery.replace(`$${i + 1}`, `$${i + 1}`);
-      }
-      
-      const countResult = await db.execute(sql.raw(countQuery, countParams));
+      `);
       const totalCount = parseInt(countResult.rows[0]?.total) || 0;
       const totalPages = Math.ceil(totalCount / limit);
       
-      let dataQuery = `
+      // Build data query with proper parameter binding using sql template
+      const usersResult = await db.execute(sql`
         SELECT 
           u.id,
           u.email,
@@ -103,12 +92,9 @@ function createUserGuidanceAdminRoutes(services) {
         ${whereClause}
         GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
                  uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community_id, tc.name
-        ORDER BY ${sortField} ${sortDirection}
+        ORDER BY ${sql.raw(sortField)} ${sql.raw(sortDirection)}
         LIMIT ${limit} OFFSET ${offset}
-      `;
-      
-      const dataParams = [...params];
-      const usersResult = await db.execute(sql.raw(dataQuery, dataParams));
+      `);
       
       const users = usersResult.rows.map(user => ({
         id: user.id,
