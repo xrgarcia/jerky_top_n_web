@@ -508,6 +508,25 @@
   font-style: italic;
 }
 
+.tooltip-progress {
+  display: block;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(245, 230, 211, 0.2);
+  font-size: 11px;
+  color: #d4cfba;
+  font-weight: 600;
+}
+
+.tooltip-progress-remaining {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+  color: #c4a962;
+  font-weight: normal;
+  font-style: italic;
+}
+
 /* Loading State */
 .coinbook-widget.loading {
   background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);

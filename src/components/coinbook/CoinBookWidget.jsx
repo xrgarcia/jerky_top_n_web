@@ -68,6 +68,43 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
     return achievement.icon;
   };
 
+  // Format progress text for engagement achievements
+  const getProgressText = (achievement) => {
+    if (!achievement.progress || achievement.earned) {
+      return null;
+    }
+
+    const { current, required } = achievement.progress;
+    if (current === undefined || required === undefined) {
+      return null;
+    }
+
+    const remaining = Math.max(0, required - current);
+    
+    // Map requirement type to friendly text (pluralized for natural reading)
+    const typeLabels = {
+      'search_count': 'searches',
+      'unique_product_view_count': 'unique product views',
+      'product_view_count': 'product views',
+      'unique_profile_view_count': 'unique profile views',
+      'profile_view_count': 'profile views',
+      'streak_days': 'streak days',
+      'daily_login_streak': 'daily logins'
+    };
+
+    const requirementType = achievement.requirement?.type;
+    const label = typeLabels[requirementType] || 'items';
+
+    return {
+      current,
+      required,
+      remaining,
+      label,
+      text: `${current} of ${required} ${label}`,
+      remainingText: `${remaining} more ${label} to unlock`
+    };
+  };
+
   return (
     <div className={`coinbook-widget coinbook-hero ${isCollapsed ? 'collapsed' : 'expanded'}`}>
       {/* Header with toggle button */}
@@ -241,6 +278,17 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                         {!achievement.earned && achievement.requirement_hint && (
                           <span className="requirement-hint">{achievement.requirement_hint}</span>
                         )}
+                        {(() => {
+                          const progressInfo = getProgressText(achievement);
+                          return progressInfo && (
+                            <span className="tooltip-progress">
+                              📊 Progress: {progressInfo.text}
+                              {progressInfo.remaining > 0 && (
+                                <span className="tooltip-progress-remaining"> ({progressInfo.remainingText})</span>
+                              )}
+                            </span>
+                          );
+                        })()}
                       </div>
                     </div>
                   );
