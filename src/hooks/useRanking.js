@@ -246,29 +246,33 @@ export function useRanking(options = {}) {
   
   /**
    * Reorder rankings (drag and drop within rankings column)
+   * Delegates to addRanking to leverage push-down logic
    */
   const reorderRankings = useCallback((fromIndex, toIndex) => {
     setRankedProducts(prev => {
-      const newRankings = [...prev];
-      const [moved] = newRankings.splice(fromIndex, 1);
-      newRankings.splice(toIndex, 0, moved);
+      // Get the product being moved and its target position
+      const movedProduct = prev[fromIndex];
+      if (!movedProduct) return prev;
       
-      // Conditionally renumber based on feature flag
-      const finalRankings = FEATURE_FLAGS.AUTO_FILL_RANKING_GAPS
-        ? newRankings.map((r, index) => ({
-            ...r,
-            ranking: index + 1
-          }))
-        : newRankings; // Preserve original rankings with gaps
+      // Calculate target ranking position (toIndex is array index, need ranking number)
+      const targetPosition = prev[toIndex]?.ranking;
+      if (!targetPosition) return prev;
       
-      console.log(`🔄 Reordered: position ${fromIndex + 1} → ${toIndex + 1}`);
+      console.log(`🔄 Reordering: Moving "${movedProduct.productData.title}" to position ${targetPosition}`);
       
-      // Trigger auto-save
-      scheduleAutoSave(finalRankings);
-      
-      return finalRankings;
+      // Use addRanking which handles push-down logic automatically
+      // This will remove the product from its current position and insert at target
+      // No need to manually splice or renumber - addRanking handles it all
+      return prev; // Return current state, addRanking will update via its own setRankedProducts
     });
-  }, []);
+    
+    // Actually trigger the move via addRanking (outside setRankedProducts to avoid nesting)
+    const movedProduct = rankedProducts[fromIndex];
+    const targetPosition = rankedProducts[toIndex]?.ranking;
+    if (movedProduct && targetPosition) {
+      addRanking(movedProduct.productData, targetPosition);
+    }
+  }, [rankedProducts, addRanking]);
   
   /**
    * Schedule auto-save with 800ms debounce
