@@ -17,9 +17,9 @@
   cursor: grabbing;
 }
 
+/* Remove drag-over highlighting for uniform UX */
 .ranking-slot.drag-over {
-  border-color: #8B4513;
-  background-color: #fef8f0;
+  /* No special styling - matches purchased products behavior */
 }
 
 .ranking-slot.dragging {

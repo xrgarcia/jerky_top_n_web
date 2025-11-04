@@ -279,12 +279,26 @@ export default function RankPage() {
     return slotsArray;
   }, [slotCount, rankedProducts]);
   
-  // Get the active dragged product for DragOverlay
-  const activeProduct = useMemo(() => {
-    if (!activeId || !activeId.startsWith('product-')) return null;
-    const productId = activeId.replace('product-', '');
-    return products.find(p => p && p.id === productId) || null;
-  }, [activeId, products]);
+  // Get the active dragged item for DragOverlay (product or ranked slot)
+  const activeDragItem = useMemo(() => {
+    if (!activeId) return null;
+    
+    // Dragging from purchased products
+    if (activeId.startsWith('product-')) {
+      const productId = activeId.replace('product-', '');
+      const product = products.find(p => p && p.id === productId);
+      return product ? { type: 'product', data: product } : null;
+    }
+    
+    // Dragging from ranked slots
+    if (activeId.startsWith('slot-')) {
+      const position = parseInt(activeId.replace('slot-', ''));
+      const rankedItem = rankedProducts.find(r => r && r.ranking === position);
+      return rankedItem ? { type: 'slot', data: rankedItem.productData, position } : null;
+    }
+    
+    return null;
+  }, [activeId, products, rankedProducts]);
   
   // Drag handlers
   const handleDragStart = (event) => {
@@ -559,24 +573,24 @@ export default function RankPage() {
       </div>
       </div>
       
-      {/* DragOverlay shows clone of dragged product while original stays in place with grey overlay */}
+      {/* DragOverlay shows clone of dragged item (product or ranked slot) with uniform styling */}
       <DragOverlay>
-        {activeProduct ? (
+        {activeDragItem ? (
           <div className="product-card dragging-overlay">
             <div className="product-image">
-              {activeProduct.image ? (
-                <img src={activeProduct.image} alt={activeProduct.title} />
+              {activeDragItem.data.image ? (
+                <img src={activeDragItem.data.image} alt={activeDragItem.data.title} />
               ) : (
                 <div className="no-image">No Image</div>
               )}
             </div>
             <div className="product-info">
-              <h3 className="product-name">{activeProduct.title}</h3>
-              {activeProduct.vendor && (
-                <p className="product-vendor">{activeProduct.vendor}</p>
+              <h3 className="product-name">{activeDragItem.data.title}</h3>
+              {activeDragItem.data.vendor && (
+                <p className="product-vendor">{activeDragItem.data.vendor}</p>
               )}
-              {activeProduct.price && (
-                <p className="product-price">${activeProduct.price}</p>
+              {activeDragItem.data.price && (
+                <p className="product-price">${activeDragItem.data.price}</p>
               )}
             </div>
           </div>

@@ -12,10 +12,9 @@ export function SortableSlot({ position, product, onRemove, isDragging }) {
     isOver
   } = useSortable({ id: `slot-${position}` });
 
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  };
+  // Remove transform/transition - keep items stationary like DraggableProduct
+  // DragOverlay will show the visual feedback
+  const style = {};
 
   const handleRemove = (e) => {
     e.stopPropagation();
