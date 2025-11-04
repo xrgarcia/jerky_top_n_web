@@ -111,21 +111,10 @@ export function useRanking(options = {}) {
         if (pending.length > 1) {
           console.warn(`⚠️ Found ${pending.length} legacy operations - performing backfill merge`);
           
-          // Use current in-memory state if available, otherwise take latest operation
-          if (rankedProducts.length > 0) {
-            console.log(`📊 Using in-memory state (${rankedProducts.length} products) for backfill`);
-            operationToSave = {
-              operationId: 'current_state',
-              rankings: rankedProducts,
-              rankingListId: 'default',
-              timestamp: Date.now()
-            };
-          } else {
-            // Fallback: Sort by timestamp and take latest
-            const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
-            operationToSave = sorted[0];
-            console.log(`📊 Using latest operation (${operationToSave.rankings.length} products) for backfill`);
-          }
+          // Sort by timestamp and take latest
+          const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
+          operationToSave = sorted[0];
+          console.log(`📊 Using latest operation (${operationToSave.rankings.length} products) for backfill`);
         } else {
           // Single operation (expected after migration)
           operationToSave = pending[0];
@@ -134,18 +123,27 @@ export function useRanking(options = {}) {
         const recoveredCount = operationToSave.rankings.length;
         const inMemoryCount = rankedProducts.length;
         
-        // SAFETY CHECK: Warn if recovered count doesn't match in-memory count
-        if (inMemoryCount > 0 && recoveredCount !== inMemoryCount) {
-          console.error(`❌ DATA MISMATCH: Recovered ${recoveredCount} products but in-memory has ${inMemoryCount}!`);
-          console.error(`❌ Using in-memory state (${inMemoryCount}) to prevent data loss`);
-          
-          // Override with in-memory state to prevent data loss
+        // CRITICAL FIX: Prefer whichever source has MORE products to prevent data loss
+        // If IndexedDB has more products than in-memory (which was loaded from backend),
+        // that means IndexedDB has unflushed changes - use it!
+        if (recoveredCount > inMemoryCount) {
+          console.warn(`📊 IndexedDB has MORE products (${recoveredCount}) than in-memory (${inMemoryCount}) - using IndexedDB to prevent data loss!`);
+          // Use operationToSave as-is (IndexedDB snapshot)
+        } else if (inMemoryCount > recoveredCount) {
+          console.warn(`📊 In-memory has MORE products (${inMemoryCount}) than IndexedDB (${recoveredCount}) - using in-memory state!`);
+          // Override with in-memory state
           operationToSave = {
             operationId: 'current_state',
             rankings: rankedProducts,
             rankingListId: 'default',
             timestamp: Date.now()
           };
+        } else if (inMemoryCount > 0 && recoveredCount === inMemoryCount) {
+          console.log(`✅ IndexedDB and in-memory match (${recoveredCount} products) - using IndexedDB`);
+          // They match, use IndexedDB (operationToSave as-is)
+        } else {
+          console.log(`📊 Using IndexedDB snapshot (${recoveredCount} products)`);
+          // Use IndexedDB (operationToSave as-is)
         }
         
         console.log(`📤 Saving ${operationToSave.rankings.length} rankings to backend...`);
@@ -154,7 +152,12 @@ export function useRanking(options = {}) {
           // Send the authoritative state (throwOnError=true ensures we know if it fails)
           await saveToBackend(operationToSave.rankings, null, null, true);
           
-          // Only clear ALL operations after CONFIRMED successful save
+          // CRITICAL FIX: Update local state to reflect recovered rankings
+          // This ensures the UI shows the correct count immediately
+          setRankedProducts(operationToSave.rankings);
+          console.log(`✅ Updated local state with ${operationToSave.rankings.length} recovered rankings`);
+          
+          // Only clear ALL operations after CONFIRMED successful save AND state update
           for (const operation of pending) {
             await persistentQueue.current.complete(operation.operationId);
           }
@@ -167,11 +170,12 @@ export function useRanking(options = {}) {
           throw error; // Re-throw to prevent callback
         }
         
-        // Recovery complete - trigger single callback
+        // Recovery complete - trigger single callback with UPDATED state
         isRecovering.current = false;
         if (onSaveComplete) {
           console.log('✅ Recovery complete - triggering single refresh');
-          onSaveComplete(rankedProducts, null);
+          // Pass the recovered rankings, not the old stale state
+          onSaveComplete(operationToSave.rankings, null);
         }
       }
     } catch (error) {

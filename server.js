@@ -2240,6 +2240,63 @@ app.post('/api/rankings/products', async (req, res) => {
   }
 });
 
+// Reconciliation endpoint: Check which products are missing from backend
+app.post('/api/rankings/reconcile', async (req, res) => {
+  try {
+    const { productIds } = req.body;
+    
+    // Get session from cookie
+    const sessionId = req.cookies.session_id;
+    
+    if (!sessionId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    // Verify session
+    const session = await storage.getSession(sessionId);
+    if (!session) {
+      return res.status(401).json({ error: 'Invalid session' });
+    }
+
+    const userId = session.userId;
+    
+    // Get all ranked product IDs for this user
+    const rankedProducts = await storage.getProductRankingsByUser(userId, 'default');
+    const rankedProductIds = new Set(rankedProducts.map(r => r.shopifyProductId));
+    
+    // Find products in frontend but not in backend
+    const missingFromBackend = productIds.filter(id => !rankedProductIds.has(id));
+    
+    // Find products in backend but not in frontend
+    const frontendSet = new Set(productIds);
+    const extraInBackend = rankedProducts
+      .map(r => r.shopifyProductId)
+      .filter(id => !frontendSet.has(id));
+    
+    console.log(`🔍 Reconciliation for user ${userId}:`);
+    console.log(`   Frontend has: ${productIds.length} products`);
+    console.log(`   Backend has: ${rankedProductIds.size} products`);
+    console.log(`   Missing from backend: ${missingFromBackend.length}`);
+    console.log(`   Extra in backend: ${extraInBackend.length}`);
+    
+    res.json({
+      frontendCount: productIds.length,
+      backendCount: rankedProductIds.size,
+      missingFromBackend,
+      extraInBackend,
+      inSync: missingFromBackend.length === 0 && extraInBackend.length === 0
+    });
+  } catch (error) {
+    console.error('Reconciliation failed:', error);
+    Sentry.captureException(error);
+    res.status(500).json({ error: 'Failed to reconcile rankings' });
+  }
+});
+
 // Get user's product rankings
 app.get('/api/rankings/products', async (req, res) => {
   try {

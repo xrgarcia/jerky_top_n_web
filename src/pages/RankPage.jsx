@@ -7,6 +7,7 @@ import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { useSocket } from '../hooks/useSocket';
+import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
@@ -17,6 +18,7 @@ import './RankPage.css';
 export default function RankPage() {
   const queryClient = useQueryClient();
   const { socket } = useSocket();
+  const { role } = useAuthStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [lastSearchedTerm, setLastSearchedTerm] = useState(searchParams.get('search') || '');
@@ -26,6 +28,7 @@ export default function RankPage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [activeId, setActiveId] = useState(null);
   const [maxRankableCount, setMaxRankableCount] = useState(null);
+  const [isSyncing, setIsSyncing] = useState(false);
   
   // Fetch total rankable product count on mount
   useEffect(() => {
@@ -273,6 +276,96 @@ export default function RankPage() {
     }
   };
   
+  // Force sync all rankings from IndexedDB to backend
+  const handleForceSync = async () => {
+    setIsSyncing(true);
+    
+    try {
+      // CRITICAL: Read from IndexedDB (persistent queue), NOT from rankedProducts state
+      // rankedProducts state might be stale (loaded from backend with missing items)
+      // IndexedDB has the authoritative local state
+      const { getPersistentQueue } = await import('../utils/PersistentQueue');
+      const queue = getPersistentQueue();
+      const pending = await queue.getPending();
+      
+      if (!pending || pending.length === 0) {
+        alert('No pending rankings in IndexedDB to sync. Try ranking some products first!');
+        setIsSyncing(false);
+        return;
+      }
+      
+      // Get the most complete snapshot from IndexedDB
+      const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
+      const mostRecentOperation = sorted[0];
+      const rankingsToSync = mostRecentOperation.rankings;
+      
+      if (!rankingsToSync || rankingsToSync.length === 0) {
+        alert('IndexedDB snapshot is empty. Cannot sync.');
+        setIsSyncing(false);
+        return;
+      }
+      
+      console.log(`🔍 Force Sync: Found ${rankingsToSync.length} products in IndexedDB`);
+      console.log(`🔍 In-memory state has: ${rankedProducts.length} products`);
+      
+      // Check reconciliation status
+      const productIds = rankingsToSync.map(r => r.productData.id);
+      const reconcileResult = await api.post('/rankings/reconcile', { productIds });
+      
+      console.log('🔍 Reconciliation result:', reconcileResult);
+      
+      const message = `Force Sync Analysis:
+      
+IndexedDB has: ${rankingsToSync.length} products
+Backend has: ${reconcileResult.backendCount} products
+Missing from backend: ${reconcileResult.missingFromBackend.length}
+Extra in backend: ${reconcileResult.extraInBackend.length}
+
+This will overwrite the backend with your IndexedDB state.
+
+Continue?`;
+      
+      if (!confirm(message)) {
+        setIsSyncing(false);
+        return;
+      }
+      
+      // Force save all rankings from IndexedDB to backend
+      await api.post('/rankings/products', {
+        rankingListId: 'default',
+        rankings: rankingsToSync.map(r => ({
+          productId: r.productData.id,
+          ranking: r.ranking,
+          productData: r.productData
+        }))
+      });
+      
+      // CRITICAL FIX: Update local state to reflect synced rankings
+      // This ensures the UI shows the correct count immediately
+      setRankedProducts(rankingsToSync);
+      console.log(`✅ Updated local state with ${rankingsToSync.length} synced rankings`);
+      
+      // Clear the IndexedDB queue after successful sync AND state update
+      await queue.clear();
+      
+      // Invalidate all caches to force refresh
+      queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
+      queryClient.invalidateQueries({ queryKey: ['collectionProgress'] });
+      queryClient.invalidateQueries({ queryKey: ['achievements'] });
+      queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
+      
+      alert(`✅ Successfully synced ${rankingsToSync.length} products from IndexedDB to backend!\n\nMissing products recovered: ${reconcileResult.missingFromBackend.length}\n\nPage will reload to refresh all data.`);
+      
+      // Reload the page to refresh all data
+      window.location.reload();
+    } catch (error) {
+      console.error('Force sync failed:', error);
+      alert(`❌ Force sync failed: ${error.message || 'Unknown error'}\n\nCheck console for details.`);
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+  
   /**
    * Handle product unranking with optimistic UI
    * Immediately adds product back to available products list (alphabetically sorted)
@@ -508,7 +601,19 @@ export default function RankPage() {
           </div>
           
             <div className="rank-column products-column">
-              <h2>Purchased Products</h2>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+            <h2>Purchased Products</h2>
+            {role === 'employee_admin' && rankedProducts.length > 0 && (
+              <button 
+                onClick={handleForceSync}
+                className="force-sync-button"
+                disabled={isSyncing}
+                title="Force sync all rankings from browser to backend"
+              >
+                {isSyncing ? '⏳ Syncing...' : '🔄 Force Sync'}
+              </button>
+            )}
+          </div>
           {collectionProgress && (
             <div className="collection-progress-bar">
               <div className="progress-header">

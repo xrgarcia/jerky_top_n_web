@@ -510,3 +510,33 @@
     font-size: 0.9rem;
   }
 }
+
+/* Force Sync Button */
+.force-sync-button {
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, #7b8b52, #6b7a45);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.force-sync-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #6b7a45, #5b6a35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.force-sync-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.force-sync-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
