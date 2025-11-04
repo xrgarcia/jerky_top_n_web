@@ -288,6 +288,84 @@ const systemConfig = pgTable('system_config', {
   updatedBy: text('updated_by'), // Email of admin who last updated
 });
 
+// User activities - comprehensive tracking for engagement analysis
+const userActivities = pgTable('user_activities', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  activityType: text('activity_type').notNull(), // 'search', 'product_view', 'profile_view', 'ranking_saved', 'coin_earned', 'login', 'purchase'
+  activityData: jsonb('activity_data'), // Additional context (e.g., search term, product ID, profile ID)
+  metadata: jsonb('metadata'), // Extra tracking data (e.g., referrer, device, location)
+  createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+  // Indexes for efficient activity queries
+  userIdIdx: index('idx_user_activities_user_id').on(table.userId),
+  userTypeIdx: index('idx_user_activities_user_type').on(table.userId, table.activityType),
+  createdAtIdx: index('idx_user_activities_created_at').on(table.createdAt),
+}));
+
+// Taste communities - groups of users with similar flavor preferences
+const tasteCommunities = pgTable('taste_communities', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(), // e.g., 'Heat Seekers', 'BBQ Lovers', 'Sweet Tooth', 'Exotic Explorers'
+  description: text('description').notNull(),
+  icon: text('icon').notNull(), // Emoji or image URL
+  criteria: jsonb('criteria').notNull(), // Rules for membership (e.g., {dominant_flavors: ['spicy', 'hot'], min_rankings: 10})
+  memberCount: integer('member_count').default(0),
+  isActive: integer('is_active').default(1), // 0 = inactive, 1 = active
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
+// User classifications - analyzed user journey state for personalized guidance
+const userClassifications = pgTable('user_classifications', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).unique().notNull(),
+  journeyStage: text('journey_stage').notNull(), // 'new_user', 'exploring', 'engaged', 'power_user', 'dormant'
+  engagementLevel: text('engagement_level').notNull(), // 'none', 'low', 'medium', 'high', 'very_high'
+  explorationBreadth: text('exploration_breadth').notNull(), // 'narrow', 'moderate', 'diverse'
+  focusAreas: jsonb('focus_areas'), // Array of dominant interests (e.g., ['spicy', 'beef', 'exotic'])
+  tasteCommunityId: integer('taste_community_id').references(() => tasteCommunities.id),
+  classificationData: jsonb('classification_data').notNull(), // Detailed metrics used for classification
+  lastCalculated: timestamp('last_calculated').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  userIdIdx: index('idx_user_classifications_user_id').on(table.userId),
+  communityIdIdx: index('idx_user_classifications_community_id').on(table.tasteCommunityId),
+}));
+
+// Classification configuration - rules and thresholds for user analysis
+const classificationConfig = pgTable('classification_config', {
+  id: serial('id').primaryKey(),
+  configKey: text('config_key').unique().notNull(), // e.g., 'journey_stage_thresholds', 'engagement_rules'
+  configValue: jsonb('config_value').notNull(), // JSON object with rules/thresholds
+  description: text('description'),
+  updatedAt: timestamp('updated_at').defaultNow(),
+  updatedBy: text('updated_by'), // Email of admin who last updated
+});
+
+// Relations for new tables
+const userActivitiesRelations = relations(userActivities, ({ one }) => ({
+  user: one(users, {
+    fields: [userActivities.userId],
+    references: [users.id],
+  }),
+}));
+
+const userClassificationsRelations = relations(userClassifications, ({ one }) => ({
+  user: one(users, {
+    fields: [userClassifications.userId],
+    references: [users.id],
+  }),
+  tasteCommunity: one(tasteCommunities, {
+    fields: [userClassifications.tasteCommunityId],
+    references: [tasteCommunities.id],
+  }),
+}));
+
+const tasteCommunitiesRelations = relations(tasteCommunities, ({ many }) => ({
+  userClassifications: many(userClassifications),
+}));
+
 module.exports = {
   users,
   sessions,
@@ -306,6 +384,10 @@ module.exports = {
   rankingOperations,
   customerOrderItems,
   systemConfig,
+  userActivities,
+  tasteCommunities,
+  userClassifications,
+  classificationConfig,
   usersRelations,
   sessionsRelations,
   rankingsRelations,
@@ -314,4 +396,7 @@ module.exports = {
   userAchievementsRelations,
   streaksRelations,
   activityLogsRelations,
+  userActivitiesRelations,
+  userClassificationsRelations,
+  tasteCommunitiesRelations,
 };
