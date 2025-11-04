@@ -63,7 +63,7 @@ function createUserGuidanceAdminRoutes(services) {
         SELECT COUNT(DISTINCT u.id) as total
         FROM users u
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
-        LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
+        LEFT JOIN taste_communities tc ON uc.taste_community_id = tc.id
         ${whereClause}
       `;
       
@@ -86,15 +86,15 @@ function createUserGuidanceAdminRoutes(services) {
           uc.journey_stage,
           uc.engagement_level,
           uc.exploration_breadth,
-          uc.taste_community as taste_community_id,
+          uc.taste_community_id,
           tc.name as taste_community_name
         FROM users u
         LEFT JOIN product_rankings pr ON u.id = pr.user_id
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
-        LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
+        LEFT JOIN taste_communities tc ON uc.taste_community_id = tc.id
         ${whereClause}
         GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
-                 uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community, tc.name
+                 uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community_id, tc.name
         ORDER BY ${sortField} ${sortDirection}
         LIMIT $${params.length + 1} OFFSET $${params.length + 2}
       `;
