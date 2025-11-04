@@ -64,6 +64,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
     - Progress updates broadcast after rankings saved, triggering live refresh of "Your Progress" section
     - Custom hooks for `/api/gamification/achievements` and `/api/gamification/progress` endpoints
     - Clickable coins navigate to dynamic profile pages
+    - Strategic CSS: Coins use 120px minmax grid width, 12px font, overflow-wrap for natural word boundaries (prevents mid-word breaking like "Gett ing Star ted"), with proportional responsive breakpoints (tablet: 100px/11px, mobile: 85px/10px)
 - **Coin Type Configuration**: Database-driven system for managing coin branding and messaging:
     - `coin_type_config` table stores metadata for 5 coin types (engagement, static collection, dynamic collection, flavor, legacy)
     - Admin UI at `/admin/tools/coin-types` for editing display names, taglines, descriptions, icons, colors, and how-to-earn instructions
