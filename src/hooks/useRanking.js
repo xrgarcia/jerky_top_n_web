@@ -147,7 +147,7 @@ export function useRanking(options = {}) {
    */
   const addRanking = useCallback((product, position) => {
     setRankedProducts(prev => {
-      const newRankings = [...prev];
+      let newRankings = [...prev];
       
       // Find if product already ranked
       const existingIndex = newRankings.findIndex(r => r.productData.id === product.id);
@@ -157,11 +157,47 @@ export function useRanking(options = {}) {
         newRankings.splice(existingIndex, 1);
       }
       
+      // Check if push-down feature is enabled
+      if (FEATURE_FLAGS.ALLOW_INSERT_TO_PUSH_DOWN_RANKINGS) {
+        // Check if target position is occupied
+        const targetOccupied = newRankings.some(r => r.ranking === position);
+        
+        if (targetOccupied) {
+          // Get all items at or above target position, sorted ascending by rank
+          const itemsToPush = newRankings
+            .filter(r => r.ranking >= position)
+            .sort((a, b) => a.ranking - b.ranking);
+          
+          // Use cursor to track next available position, shifting items sequentially
+          // Stop when we hit a gap (non-contiguous ranks)
+          let cursor = position;
+          let pushedCount = 0;
+          
+          for (const item of itemsToPush) {
+            // Check if this item is at the expected cursor position
+            if (item.ranking === cursor) {
+              // Shift it down by one
+              item.ranking = cursor + 1;
+              cursor++; // Move cursor to next position
+              pushedCount++;
+            } else {
+              // Found a gap (item.ranking > cursor), stop pushing
+              break;
+            }
+          }
+          
+          console.log(`🔽 Pushed down ${pushedCount} items starting from position ${position}`);
+        }
+      }
+      
       // Insert at new position
-      newRankings.splice(position - 1, 0, {
+      newRankings.push({
         ranking: position,
         productData: product
       });
+      
+      // Sort by ranking to maintain order
+      newRankings.sort((a, b) => a.ranking - b.ranking);
       
       // Conditionally renumber based on feature flag
       const finalRankings = FEATURE_FLAGS.AUTO_FILL_RANKING_GAPS
