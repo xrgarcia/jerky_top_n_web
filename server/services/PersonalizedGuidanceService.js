@@ -3,6 +3,7 @@ const tasteCommunityService = require('./TasteCommunityService');
 
 /**
  * PersonalizedGuidanceService - Generates page-aware, journey-specific guidance
+ * Enhanced with achievement progress integration for tactical context
  * 
  * Design principles:
  * - Encourage action (no passive messages)
@@ -10,15 +11,26 @@ const tasteCommunityService = require('./TasteCommunityService');
  * - Clear CTAs (no unsupervised thinking)
  * - Fun jerky.com voice
  * - Context-aware (page + journey stage)
+ * - Achievement-enriched (strategic + tactical hooks)
  */
 class PersonalizedGuidanceService {
+  /**
+   * @param {ProgressTracker} progressTracker - Progress tracking service
+   * @param {UserStatsAggregator} userStatsAggregator - Stats aggregation service
+   */
+  constructor(progressTracker, userStatsAggregator) {
+    this.progressTracker = progressTracker;
+    this.userStatsAggregator = userStatsAggregator;
+  }
+
   /**
    * Get personalized guidance for user
    * @param {number} userId - User ID
    * @param {string} pageContext - Page context: 'rank', 'products', 'community', 'coinbook', 'general'
+   * @param {number} totalRankableProducts - Total rankable products count
    * @returns {object} Guidance data with message, type, and classification
    */
-  async getGuidance(userId, pageContext = 'general') {
+  async getGuidance(userId, pageContext = 'general', totalRankableProducts = 162) {
     // Get or create classification
     let classification = await userClassificationService.getUserClassification(userId);
     
@@ -39,8 +51,19 @@ class PersonalizedGuidanceService {
       community = await tasteCommunityService.getCommunity(classification.tasteCommunityId);
     }
 
-    // Generate page-aware, journey-aware message
-    const message = this._generateMessage(classification, community, pageContext);
+    // Get user stats for achievement tracking
+    const stats = await this.userStatsAggregator.getStatsForAchievements(userId, totalRankableProducts);
+
+    // Get closest achievement filtered by page context
+    const categoryFilter = this._getRelevantCategory(pageContext);
+    const nextAchievement = await this.progressTracker.getClosestUnearnedAchievement(
+      userId, 
+      stats, 
+      categoryFilter
+    );
+
+    // Generate page-aware, journey-aware message enriched with achievement context
+    const message = this._generateMessage(classification, community, pageContext, nextAchievement);
 
     return {
       message: message.text,
@@ -64,106 +87,184 @@ class PersonalizedGuidanceService {
 
   /**
    * Generate page-aware, journey-specific message
+   * Enhanced with achievement hooks when available
    * @private
    */
-  _generateMessage(classification, community, pageContext) {
+  _generateMessage(classification, community, pageContext, nextAchievement = null) {
     const { journeyStage, engagementLevel, explorationBreadth, focusAreas, classificationData } = classification;
     const rankedCount = classificationData?.totalRankings || 0;
 
     // RANK PAGE - Action-focused, drag-and-drop emphasis
     if (pageContext === 'rank') {
-      return this._getRankPageMessage(journeyStage, engagementLevel, rankedCount, community);
+      return this._getRankPageMessage(journeyStage, engagementLevel, rankedCount, community, nextAchievement);
     }
 
     // PRODUCTS PAGE - Discovery and catalog exploration
     if (pageContext === 'products') {
-      return this._getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas);
+      return this._getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas, nextAchievement);
     }
 
     // COMMUNITY PAGE - Social connection and comparison
     if (pageContext === 'community') {
-      return this._getCommunityPageMessage(journeyStage, engagementLevel, community);
+      return this._getCommunityPageMessage(journeyStage, engagementLevel, community, nextAchievement);
     }
 
     // COIN BOOK PAGE - Achievement hunting
     if (pageContext === 'coinbook') {
-      return this._getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount);
+      return this._getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount, nextAchievement);
     }
 
     // GENERAL / FALLBACK - Journey-based only
-    return this._getGeneralMessage(journeyStage, engagementLevel, rankedCount, community);
+    return this._getGeneralMessage(journeyStage, engagementLevel, rankedCount, community, nextAchievement);
+  }
+
+  /**
+   * Determine relevant achievement category filter based on page context
+   * Smart filtering ensures achievements match the page's purpose
+   * @private
+   */
+  _getRelevantCategory(pageContext) {
+    const categoryMap = {
+      rank: 'ranking',        // Rank page: Show ranking achievements only
+      products: 'engagement', // Products page: Show engagement achievements (searches, views)
+      community: 'engagement', // Community page: Show engagement achievements
+      coinbook: null,         // Coin Book: Show ALL achievements (no filter)
+      general: null           // General: Show ALL achievements
+    };
+    return categoryMap[pageContext] || null;
+  }
+
+  /**
+   * Format achievement hook for message enhancement
+   * Converts achievement data into user-friendly tactical context
+   * @private
+   */
+  _formatAchievementHook(achievement) {
+    if (!achievement) return null;
+
+    const { remaining, achievementName, achievementIcon, isTierUpgrade, nextTier, current, target } = achievement;
+    
+    // Format tier upgrade messaging
+    if (isTierUpgrade) {
+      const tierName = nextTier ? nextTier.charAt(0).toUpperCase() + nextTier.slice(1) : '';
+      return {
+        text: `${remaining} more to unlock ${tierName} tier ${achievementIcon}!`,
+        detail: `${current}/${target} for ${achievementName}`
+      };
+    }
+    
+    // Format regular achievement messaging
+    return {
+      text: `${remaining} more to unlock "${achievementName}" ${achievementIcon}!`,
+      detail: `${current}/${target} progress`
+    };
   }
 
   /**
    * RANK PAGE: Encourage ranking action
+   * Enhanced with achievement hooks
    * @private
    */
-  _getRankPageMessage(journeyStage, engagementLevel, rankedCount, community) {
+  _getRankPageMessage(journeyStage, engagementLevel, rankedCount, community, nextAchievement) {
+    const achievementHook = this._formatAchievementHook(nextAchievement);
+
     // NEW USERS: Onboarding, explain the mechanic
     if (journeyStage === 'new_user') {
+      const baseText = "Ready to build your flavor profile? Drag products below to rank them from favorite to least favorite. Each ranking earns you Flavor Coins and unlocks achievements!";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Welcome to Your Flavor Ranking!',
         icon: '🎯',
         type: 'onboarding',
-        text: "Ready to build your flavor profile? Drag products below to rank them from favorite to least favorite. Each ranking earns you Flavor Coins and unlocks achievements!"
+        text
       };
     }
 
     // DORMANT: Re-engagement
     if (journeyStage === 'dormant') {
+      const baseText = "We've missed you! New flavors are waiting to be ranked. Jump back in and keep building your collection - your progress is still here!";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : baseText;
+      
       return {
         title: 'Welcome Back, Flavor Hunter!',
         icon: '🔥',
         type: 'reengagement',
-        text: "We've missed you! New flavors are waiting to be ranked. Jump back in and keep building your collection - your progress is still here!"
+        text
       };
     }
 
     // POWER USERS: Challenge and competition
     if (journeyStage === 'power_user') {
       const communityBadge = community ? ` ${community.icon}` : '';
+      const baseText = `${rankedCount} flavors ranked! Keep that streak alive and climb the leaderboard.`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Every new ranking brings you closer to completing your Coin Book!`;
+      
       return {
         title: `You're Crushing It${communityBadge}`,
         icon: '🏆',
         type: 'challenge',
-        text: `${rankedCount} flavors ranked! Keep that streak alive and climb the leaderboard. Every new ranking brings you closer to completing your Coin Book!`
+        text
       };
     }
 
     // ENGAGED: Momentum and streaks
     if (journeyStage === 'engaged') {
+      const baseText = "You're on a roll! Rank more flavors today to maintain your streak.";
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} The more you rank, the more coins you earn!`;
+      
       return {
         title: 'Keep the Momentum Going!',
         icon: '💪',
         type: 'momentum',
-        text: "You're on a roll! Rank more flavors today to maintain your streak and unlock tiered achievements. The more you rank, the more coins you earn!"
+        text
       };
     }
 
     // EXPLORING: Discovery and next steps
     if (journeyStage === 'exploring') {
+      const baseText = `${rankedCount} flavors ranked so far! Try the search feature below to find flavors you've purchased, then drag them into your ranking.`;
+      const text = achievementHook 
+        ? `${baseText} ${achievementHook.text}`
+        : `${baseText} Each one gets you closer to unlocking new coins!`;
+      
       return {
         title: 'Great Start!',
         icon: '🚀',
         type: 'discovery',
-        text: `${rankedCount} flavors ranked so far! Try the search feature below to find flavors you've purchased, then drag them into your ranking. Each one gets you closer to unlocking new coins!`
+        text
       };
     }
 
     // DEFAULT
+    const baseText = "Drag products to rank them! Every ranking earns Flavor Coins and brings you closer to completing your collection.";
+    const text = achievementHook 
+      ? `${baseText} ${achievementHook.text}`
+      : baseText;
+    
     return {
       title: 'Build Your Rankings',
       icon: '📊',
       type: 'general',
-      text: "Drag products to rank them! Every ranking earns Flavor Coins and brings you closer to completing your collection."
+      text
     };
   }
 
   /**
    * PRODUCTS PAGE: Discovery and catalog browsing
+   * Enhanced with engagement achievement hooks
    * @private
    */
-  _getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas) {
+  _getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas, nextAchievement) {
+    const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS: Browse and discover
     if (journeyStage === 'new_user') {
       return {
@@ -196,19 +297,26 @@ class PersonalizedGuidanceService {
     }
 
     // EXPLORING/ENGAGED: Search and filter
+    const baseText = "Use filters to find flavors that match your taste! Try different animals, flavor profiles, or brands.";
+    const text = achievementHook 
+      ? `${baseText} ${achievementHook.text}`
+      : `${baseText} The more you explore, the more you'll discover!`;
+    
     return {
       title: 'Explore the Catalog!',
       icon: '🎯',
       type: 'discovery',
-      text: "Use filters to find flavors that match your taste! Try different animals, flavor profiles, or brands. The more you explore, the more you'll discover!"
+      text
     };
   }
 
   /**
    * COMMUNITY PAGE: Social connection
+   * Enhanced with engagement achievement hooks
    * @private
    */
-  _getCommunityPageMessage(journeyStage, engagementLevel, community) {
+  _getCommunityPageMessage(journeyStage, engagementLevel, community, nextAchievement) {
+    const achievementHook = this._formatAchievementHook(nextAchievement);
     // WITH COMMUNITY: Connect with tribe
     if (community) {
       return {
@@ -240,19 +348,26 @@ class PersonalizedGuidanceService {
     }
 
     // DEFAULT
+    const baseText = "See what the community is ranking! Compare collections, discover popular flavors, and find your flavor tribe.";
+    const text = achievementHook 
+      ? `${baseText} ${achievementHook.text}`
+      : baseText;
+    
     return {
       title: 'Connect with Fellow Rankers!',
       icon: '👋',
       type: 'community',
-      text: "See what the community is ranking! Compare collections, discover popular flavors, and find your flavor tribe."
+      text
     };
   }
 
   /**
    * COIN BOOK PAGE: Achievement hunting
+   * Perfect for showing ALL achievement progress
    * @private
    */
-  _getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount) {
+  _getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount, nextAchievement) {
+    const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS: Explain achievements
     if (journeyStage === 'new_user') {
       return {
@@ -274,11 +389,16 @@ class PersonalizedGuidanceService {
     }
 
     // EXPLORING/ENGAGED: Next milestone
+    const baseText = "Each achievement brings you closer to completing your Coin Book!";
+    const text = achievementHook 
+      ? `${baseText} ${achievementHook.text} Check your progress bars and jump to the Rank page to keep earning!`
+      : `${baseText} Check your progress bars to see what's next, then jump to the Rank page to keep earning!`;
+    
     return {
       title: 'Unlock More Coins!',
       icon: '🪙',
       type: 'progress',
-      text: "Each achievement brings you closer to completing your Coin Book! Check your progress bars to see what's next, then jump to the Rank page to keep earning!"
+      text
     };
   }
 
@@ -286,7 +406,8 @@ class PersonalizedGuidanceService {
    * GENERAL / FALLBACK: Journey-based messaging
    * @private
    */
-  _getGeneralMessage(journeyStage, engagementLevel, rankedCount, community) {
+  _getGeneralMessage(journeyStage, engagementLevel, rankedCount, community, nextAchievement) {
+    const achievementHook = this._formatAchievementHook(nextAchievement);
     // NEW USERS
     if (journeyStage === 'new_user') {
       return {
@@ -339,11 +460,16 @@ class PersonalizedGuidanceService {
     }
 
     // DEFAULT
+    const baseText = "Every flavor you rank brings you closer to completing collections and unlocking new achievements!";
+    const text = achievementHook 
+      ? `${baseText} ${achievementHook.text}`
+      : baseText;
+    
     return {
       title: 'Build Your Coin Book!',
       icon: '📖',
       type: 'general',
-      text: "Every flavor you rank brings you closer to completing collections and unlocking new achievements!"
+      text
     };
   }
 
@@ -364,9 +490,9 @@ class PersonalizedGuidanceService {
       classificationData: { totalRankings: 0 }
     };
 
-    return this._generateMessage(mockClassification, community, pageContext);
+    return this._generateMessage(mockClassification, community, pageContext, null);
   }
 }
 
-const personalizedGuidanceService = new PersonalizedGuidanceService();
-module.exports = personalizedGuidanceService;
+// Export class for dependency injection
+module.exports = PersonalizedGuidanceService;

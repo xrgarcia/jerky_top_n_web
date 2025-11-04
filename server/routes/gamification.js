@@ -952,8 +952,11 @@ function createGamificationRoutes(services) {
       // Get page context from query parameter (rank, products, community, coinbook, general)
       const pageContext = req.query.page || 'general';
       
-      // Get personalized, page-aware guidance (handles classification internally)
-      const guidance = await services.personalizedGuidanceService.getGuidance(userId, pageContext);
+      // Get total rankable products count
+      const totalRankableProducts = services.getRankableProductCount();
+      
+      // Get personalized, page-aware guidance with achievement hooks (handles classification internally)
+      const guidance = await services.personalizedGuidanceService.getGuidance(userId, pageContext, totalRankableProducts);
 
       res.json({
         classification: guidance.classification,

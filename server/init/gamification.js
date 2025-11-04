@@ -63,7 +63,9 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const activityTrackingService = ActivityTrackingService; // Singleton instance
   const userClassificationService = UserClassificationService; // Singleton instance
   const tasteCommunityService = TasteCommunityService; // Singleton instance
-  const personalizedGuidanceService = PersonalizedGuidanceService; // Singleton instance
+  
+  // PersonalizedGuidanceService with dependency injection
+  const personalizedGuidanceService = new PersonalizedGuidanceService(progressTracker, userStatsAggregator);
 
   // Initialize RecentAchievementTracker for duplicate toast prevention
   await recentAchievementTracker.initialize();
