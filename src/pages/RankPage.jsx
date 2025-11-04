@@ -11,6 +11,7 @@ import { api } from '../utils/api';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
+import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './RankPage.css';
 
 export default function RankPage() {
@@ -388,6 +389,9 @@ export default function RankPage() {
     >
       <div className="rank-page">
         <div className="rank-container">
+          {/* Personalized Guidance - Shows user-specific tips and recommendations */}
+          <PersonalizedGuidance />
+          
           {/* Coin Book Widget - Shows user's achievement progress */}
           <CoinBookWidget defaultCollapsed={true} />
           

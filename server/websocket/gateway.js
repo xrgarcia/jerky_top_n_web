@@ -423,6 +423,36 @@ class WebSocketGateway {
     });
     console.log(`📦 Broadcasting customer orders update to admin room (${this.room('admin:customer-orders')}): ${data.action} - ${data.orderNumber}`);
   }
+
+  emitClassificationUpdate(userId, classification) {
+    const hasSocket = this.hasAuthenticatedSocket(userId);
+    
+    if (hasSocket) {
+      const roomName = this.room(`user:${userId}`);
+      console.log(`🎯 Emitting classification update to user ${userId} (room: ${roomName})`);
+      this.io.to(roomName).emit('classification:updated', {
+        classification,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      console.log(`📥 User ${userId} classification updated but no authenticated socket`);
+    }
+  }
+
+  emitGuidanceUpdate(userId, guidance) {
+    const hasSocket = this.hasAuthenticatedSocket(userId);
+    
+    if (hasSocket) {
+      const roomName = this.room(`user:${userId}`);
+      console.log(`💡 Emitting guidance update to user ${userId} (room: ${roomName})`);
+      this.io.to(roomName).emit('guidance:updated', {
+        guidance,
+        timestamp: new Date().toISOString()
+      });
+    } else {
+      console.log(`📥 User ${userId} guidance updated but no authenticated socket`);
+    }
+  }
 }
 
 module.exports = WebSocketGateway;

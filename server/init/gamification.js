@@ -23,6 +23,10 @@ const FlavorCoinManager = require('../services/FlavorCoinManager');
 const CollectionManager = require('../services/CollectionManager');
 const RecentAchievementTracker = require('../services/RecentAchievementTracker');
 const CommentaryService = require('../services/CommentaryService');
+const ActivityTrackingService = require('../services/ActivityTrackingService');
+const UserClassificationService = require('../services/UserClassificationService');
+const TasteCommunityService = require('../services/TasteCommunityService');
+const PersonalizedGuidanceService = require('../services/PersonalizedGuidanceService');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -56,6 +60,10 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const userStatsAggregator = new UserStatsAggregator(leaderboardManager, streakManager, productsService);
   const recentAchievementTracker = RecentAchievementTracker;
   const commentaryService = new CommentaryService({ db, progressTracker, engagementManager, streakManager, achievementRepo });
+  const activityTrackingService = ActivityTrackingService; // Singleton instance
+  const userClassificationService = UserClassificationService; // Singleton instance
+  const tasteCommunityService = TasteCommunityService; // Singleton instance
+  const personalizedGuidanceService = PersonalizedGuidanceService; // Singleton instance
 
   // Initialize RecentAchievementTracker for duplicate toast prevention
   await recentAchievementTracker.initialize();
@@ -81,6 +89,10 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     collectionManager,
     recentAchievementTracker,
     commentaryService,
+    activityTrackingService,
+    userClassificationService,
+    tasteCommunityService,
+    personalizedGuidanceService,
     fetchAllShopifyProducts,
     getRankableProductCount,
     productsService,

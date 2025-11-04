@@ -721,6 +721,20 @@ app.get('/api/customer/magic-login', async (req, res, next) => {
     });
 
     console.log(`✅ 90-day session created for jerky.com customer: ${customer.displayName} (secure: ${isSecure})`);
+    
+    // Trigger classification update after login
+    if (gamificationServices?.activityTrackingService && gamificationServices?.userClassificationService) {
+      setImmediate(async () => {
+        try {
+          await gamificationServices.activityTrackingService.trackLogin(dbUser.id);
+          await gamificationServices.activityTrackingService.flush(dbUser.id);
+          await gamificationServices.userClassificationService.classifyUser(dbUser.id);
+          console.log(`🎯 Classification updated for user ${dbUser.id} after login`);
+        } catch (err) {
+          console.error('Failed to update classification after login:', err);
+        }
+      });
+    }
 
     // Redirect back to rankings app with session
     const appDomain = getAppDomainFromRequest(req);
@@ -1932,6 +1946,19 @@ app.post('/api/rankings/products', async (req, res) => {
       gamificationServices.homeStatsService.invalidateCache();
     }
     
+    // Trigger classification update after rankings saved
+    if (gamificationServices?.activityTrackingService && gamificationServices?.userClassificationService) {
+      setImmediate(async () => {
+        try {
+          await gamificationServices.activityTrackingService.flush(userId);
+          await gamificationServices.userClassificationService.classifyUser(userId);
+          console.log(`🎯 Classification updated for user ${userId} after ranking save`);
+        } catch (err) {
+          console.error('Failed to update classification:', err);
+        }
+      });
+    }
+    
     // Invalidate leaderboard cache since rankings affect top rankers
     if (gamificationServices?.leaderboardManager) {
       gamificationServices.leaderboardManager.leaderboardCache.invalidate();
@@ -2695,6 +2722,32 @@ app.get('/api/products/:productId/stats', async (req, res) => {
     const { db } = require('./server/db.js');
     const { sql } = require('drizzle-orm');
     
+    // Track product view activity
+    let userId = null;
+    try {
+      const sessionId = req.cookies.session_id;
+      if (sessionId) {
+        const session = await storage.getSession(sessionId);
+        if (session) {
+          userId = session.userId;
+          
+          // Track product view for personalized guidance
+          if (gamificationServices?.activityTrackingService) {
+            const product = await db.execute(sql`
+              SELECT pm.title
+              FROM products_metadata pm
+              WHERE pm.shopify_product_id = ${productId}
+              LIMIT 1
+            `);
+            const productTitle = product.rows[0]?.title || 'Unknown Product';
+            gamificationServices.activityTrackingService.trackProductView(userId, productId, productTitle);
+          }
+        }
+      }
+    } catch (err) {
+      // Continue without tracking
+    }
+    
     // Get product statistics from rankings
     const stats = await db.execute(sql`
       SELECT 
@@ -2794,6 +2847,29 @@ app.get('/api/community/users/:userId/rankings', async (req, res) => {
     
     const { db } = require('./server/db.js');
     const { sql } = require('drizzle-orm');
+    
+    // Track profile view activity
+    let viewerUserId = null;
+    try {
+      const sessionId = req.cookies.session_id;
+      if (sessionId) {
+        const session = await storage.getSession(sessionId);
+        if (session) {
+          viewerUserId = session.userId;
+          
+          // Track profile view for personalized guidance (only if viewing someone else's profile)
+          if (viewerUserId && viewerUserId.toString() !== userId && gamificationServices?.activityTrackingService) {
+            const viewedUser = await db.execute(sql`
+              SELECT display_name FROM users WHERE id = ${userId} LIMIT 1
+            `);
+            const viewedUserName = viewedUser.rows[0]?.display_name || 'Unknown User';
+            gamificationServices.activityTrackingService.trackProfileView(viewerUserId, parseInt(userId), viewedUserName);
+          }
+        }
+      }
+    } catch (err) {
+      // Continue without tracking
+    }
     
     // Get user info
     const userResult = await db.execute(sql`
@@ -3267,6 +3343,11 @@ if (databaseAvailable && storage) {
       const createSentryRoutes = require('./server/routes/admin/sentry');
       const sentryRouter = createSentryRoutes(storage);
       adminRouter.use(sentryRouter);
+      
+      // Add User Guidance admin routes
+      const createUserGuidanceAdminRoutes = require('./server/routes/admin/userGuidance');
+      const userGuidanceRouter = createUserGuidanceAdminRoutes(services);
+      adminRouter.use(userGuidanceRouter);
       
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');

@@ -934,6 +934,47 @@ function createGamificationRoutes(services) {
     return labels[requirementType] || requirementType;
   }
 
+  // GET /api/gamification/user-guidance - Get personalized guidance for current user
+  router.get('/user-guidance', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await services.storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      const userId = session.userId;
+      
+      // Get classification for user
+      const classification = await services.userClassificationService.getUserClassification(userId);
+      
+      // Get personalized guidance message
+      const guidance = await services.personalizedGuidanceService.getGuidanceMessage(classification);
+
+      res.json({
+        classification: {
+          journeyStage: classification.journeyStage,
+          engagementLevel: classification.engagementLevel,
+          explorationBreadth: classification.explorationBreadth,
+          tasteCommunity: classification.tasteCommunity
+        },
+        guidance: {
+          message: guidance.message,
+          icon: guidance.icon,
+          priority: guidance.priority,
+          action: guidance.action
+        }
+      });
+    } catch (error) {
+      console.error('Error fetching user guidance:', error);
+      res.status(500).json({ error: 'Failed to fetch user guidance' });
+    }
+  });
+
   return router;
 }
 
