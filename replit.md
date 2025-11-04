@@ -42,7 +42,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Styling**: Custom CSS with an earth-tone palette.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 - **Feature Flags**: JSON-based configuration system (`featureFlags.json`) for cross-environment compatibility (e.g., `AUTO_FILL_RANKING_GAPS`).
-- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior (Journey Stage, Engagement Level, Activity Type, Taste Community) to provide targeted, action-oriented messages with CTAs. Rule-based analysis with configurable thresholds and real-time WebSocket updates.
+- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior (Journey Stage, Engagement Level, Activity Type, Taste Community) to provide targeted, action-oriented messages with CTAs. Rule-based analysis with configurable thresholds and real-time WebSocket updates. Enhanced with achievement hooks via dependency injection (ProgressTracker + UserStatsAggregator) to append tactical achievement progress (e.g., "3 more flavors to unlock Silver 🥈") to strategic journey messages, with smart category filtering by page context (rank→ranking achievements, products/community→engagement achievements, coinbook→all achievements).
 - **Engagement Tracking**: `EngagementManager` reads from a unified `user_activities` table for tracking searches, product views, and profile views for engagement coin awards.
 
 **Feature Specifications:**
