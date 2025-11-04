@@ -48,12 +48,42 @@ export default function RankPage() {
     // Only auto-search if 3+ characters and different from last searched term
     if (trimmedTerm.length >= 3 && trimmedTerm !== lastSearchedTerm) {
       const timer = setTimeout(() => {
-        handleSearch();
+        setLoading(true);
+        setError(null);
+        setHasSearched(true);
+        setLastSearchedTerm(trimmedTerm);
+        
+        if (trimmedTerm) {
+          setSearchParams({ search: trimmedTerm });
+        } else {
+          setSearchParams({});
+        }
+
+        const params = new URLSearchParams({
+          excludeRanked: 'true',
+          limit: '50',
+          sort: 'name-asc'
+        });
+        
+        if (trimmedTerm) {
+          params.set('query', trimmedTerm);
+        }
+
+        api.get(`/products/rankable?${params.toString()}`)
+          .then(data => {
+            setProducts(Array.isArray(data) ? data : (data?.products ?? []));
+            setLoading(false);
+          })
+          .catch(err => {
+            setError(err.message || 'Failed to load products');
+            setProducts([]);
+            setLoading(false);
+          });
       }, 400); // 400ms debounce
       
       return () => clearTimeout(timer);
     }
-  }, [searchTerm]);
+  }, [searchTerm, lastSearchedTerm, setSearchParams]);
   
   // Ranking state management with callback to refetch products after save
   const {
@@ -513,7 +543,12 @@ export default function RankPage() {
               className="search-button"
               disabled={loading}
             >
-              {loading ? 'Searching...' : 'Search'}
+              {loading ? (
+                <>
+                  <span className="button-spinner"></span>
+                  Search
+                </>
+              ) : 'Search'}
             </button>
           </div>
 
