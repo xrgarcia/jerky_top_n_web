@@ -322,12 +322,22 @@ export default function RankPage() {
       const toPos = parseInt(overId.replace('slot-', ''));
       
       if (fromPos !== toPos && Array.isArray(rankedProducts)) {
-        // Find the actual indices in rankedProducts array
-        const fromIndex = rankedProducts.findIndex(r => r && r.ranking === fromPos);
-        const toIndex = rankedProducts.findIndex(r => r && r.ranking === toPos);
+        // Find the product at the source position
+        const fromProduct = rankedProducts.find(r => r && r.ranking === fromPos);
         
-        if (fromIndex !== -1 && toIndex !== -1) {
-          reorderRankings(fromIndex, toIndex);
+        if (fromProduct) {
+          // Check if target position is occupied
+          const toProduct = rankedProducts.find(r => r && r.ranking === toPos);
+          
+          if (toProduct) {
+            // Both positions have products - use reorderRankings
+            const fromIndex = rankedProducts.findIndex(r => r && r.ranking === fromPos);
+            const toIndex = rankedProducts.findIndex(r => r && r.ranking === toPos);
+            reorderRankings(fromIndex, toIndex);
+          } else {
+            // Target is empty - use addRanking to move to that position
+            addRanking(fromProduct.productData, toPos);
+          }
         }
       }
     }
