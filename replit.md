@@ -63,11 +63,18 @@ The application utilizes a modern web architecture for responsiveness, scalabili
     - Real-time updates via WebSocket (achievements:earned, flavor_coins:earned, tier:upgrade, gamification:progress:updated events)
     - Progress updates broadcast after rankings saved, triggering live refresh of "Your Progress" section
     - Custom hooks for `/api/gamification/achievements` and `/api/gamification/progress` endpoints
+    - Clickable coins navigate to dynamic profile pages
+- **Coin Type Configuration**: Database-driven system for managing coin branding and messaging:
+    - `coin_type_config` table stores metadata for 5 coin types (engagement, static collection, dynamic collection, flavor, legacy)
+    - Admin UI at `/admin/tools/coin-types` for editing display names, taglines, descriptions, icons, colors, and how-to-earn instructions
+    - Public API endpoints for fetching configs (`/api/coin-types` and `/api/coin-types/:type`)
+    - Dynamic coin profile pages at `/coinbook/:coinId` showing achievement details, progress tracking, type-specific branding, and CTAs
+    - Allows content updates without code deployments
 - **Admin Tools**: React-based dashboard with:
     - EmployeeRoute protection, `employee_admin` role.
     - Nested routing (`/admin/tools/*`).
     - Super Admin Access: Dynamic backend-driven access control with immediate cache invalidation.
-    - Seven Sections: Manage Coins, Live Users, Manage Products (searchable table, multi-filter UI, edit modal with optimistic updates), Customer Order Items (7 filters, sortable columns, pagination, WebSocket live updates, linkable URL state), Sentry Errors, Manage Data (super admin-only), User Guidance (classification analytics).
+    - Eight Sections: Manage Coins, Coin Types (database-driven config for coin branding/messaging), Live Users, Manage Products (searchable table, multi-filter UI, edit modal with optimistic updates), Customer Order Items (7 filters, sortable columns, pagination, WebSocket live updates, linkable URL state), Sentry Errors, Manage Data (super admin-only), User Guidance (classification analytics).
 - **Personalized Guidance System**: AI-driven user journey optimization featuring:
     - Event-driven classification engine analyzing user behavior patterns
     - Four classification dimensions: Journey Stage (new_user → engaged_explorer → dedicated_collector → completionist), Engagement Level (low/medium/high), Activity Type (casual_browser → active_ranker → super_user), Taste Community (6 communities based on flavor/animal preferences)
