@@ -4,6 +4,7 @@ import { api } from '../../utils/api';
 import toast from 'react-hot-toast';
 import './UserGuidanceTab.css';
 
+// Admin interface for managing user classifications and personalized guidance
 export default function UserGuidanceTab() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState([]);
