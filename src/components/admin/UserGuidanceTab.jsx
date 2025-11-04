@@ -141,13 +141,13 @@ export default function UserGuidanceTab() {
       </div>
 
       <div className="filters-section">
-        <div className="search-box">
+        <div className="user-guidance-search-container">
           <input
             type="text"
             placeholder="Search users by email or name..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            className="search-input"
+            className="user-guidance-search-field"
           />
         </div>
 

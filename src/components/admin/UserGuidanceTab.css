@@ -24,9 +24,28 @@
   margin-bottom: 20px;
 }
 
-.user-guidance-tab .search-box {
+.user-guidance-search-container {
   margin-bottom: 16px;
-  display: block !important; /* Override AdminPages.css hiding rule */
+  display: block !important;
+  visibility: visible !important;
+  height: auto !important;
+  opacity: 1 !important;
+}
+
+.user-guidance-search-field {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  display: block !important;
+  visibility: visible !important;
+}
+
+.user-guidance-search-field:focus {
+  outline: none;
+  border-color: #7b8b52;
 }
 
 .filter-controls {
@@ -52,20 +71,6 @@
 
 .filter-select:hover {
   border-color: #c4a962;
-}
-
-.search-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 10px 14px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: #7b8b52;
 }
 
 .loading-state {
