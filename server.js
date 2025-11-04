@@ -214,21 +214,13 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve React build static files with smart caching
+// Serve React build static files with NO caching (temporary fix for browser cache issues)
 app.use(express.static('public/dist', {
   setHeaders: (res, path) => {
-    if (path.endsWith('.html')) {
-      // HTML files: never cache (always fetch fresh)
-      res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-      res.setHeader('Pragma', 'no-cache');
-      res.setHeader('Expires', '0');
-    } else if (path.match(/\.(js|css)$/) && path.match(/-[a-zA-Z0-9]{8,}\.(js|css)$/)) {
-      // Hashed JS/CSS files: cache for 1 year (immutable)
-      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
-    } else {
-      // Other static assets: cache for 1 hour
-      res.setHeader('Cache-Control', 'public, max-age=3600');
-    }
+    // Force no caching on ALL static files
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
   }
 }));
 
