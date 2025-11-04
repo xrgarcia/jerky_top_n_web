@@ -516,9 +516,9 @@ export default function RankPage() {
                 <span className="progress-message">{collectionProgress.message}</span>
               </div>
               <div className="progress-stats">
-                <div className="progress-track">
+                <div className="collection-progress-track">
                   <div 
-                    className={`progress-fill progress-${collectionProgress.progressColor}`}
+                    className={`collection-progress-fill progress-${collectionProgress.progressColor}`}
                     style={{ width: `${collectionProgress.percentage}%` }}
                   ></div>
                 </div>

@@ -122,7 +122,7 @@
   gap: 0.5rem;
 }
 
-.progress-track {
+.collection-progress-track {
   height: 8px;
   background: #e9ecef;
   border-radius: 4px;
@@ -130,7 +130,7 @@
   position: relative;
 }
 
-.progress-fill {
+.collection-progress-fill {
   height: 100%;
   border-radius: 4px;
   transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
@@ -138,7 +138,7 @@
   overflow: hidden;
 }
 
-.progress-fill::after {
+.collection-progress-fill::after {
   content: '';
   position: absolute;
   top: 0;
@@ -163,28 +163,28 @@
   }
 }
 
-/* Progress color themes */
-.progress-blue {
+/* Progress color themes - scoped to collection progress bar for higher specificity */
+.collection-progress-bar .progress-blue {
   background: linear-gradient(90deg, #3498db, #5dade2);
 }
 
-.progress-green {
+.collection-progress-bar .progress-green {
   background: linear-gradient(90deg, #27ae60, #52be80);
 }
 
-.progress-orange {
+.collection-progress-bar .progress-orange {
   background: linear-gradient(90deg, #e67e22, #f39c12);
 }
 
-.progress-purple {
+.collection-progress-bar .progress-purple {
   background: linear-gradient(90deg, #8e44ad, #a569bd);
 }
 
-.progress-gold {
+.collection-progress-bar .progress-gold {
   background: linear-gradient(90deg, #c4a962, #d4af37);
 }
 
-.progress-rainbow {
+.collection-progress-bar .progress-rainbow {
   background: linear-gradient(90deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db, #9b59b6);
   background-size: 200% 100%;
   animation: rainbow 3s linear infinite;
@@ -199,7 +199,7 @@
   }
 }
 
-.progress-gray {
+.collection-progress-bar .progress-gray {
   background: #95a5a6;
 }
 
