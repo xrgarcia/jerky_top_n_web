@@ -424,7 +424,30 @@
   padding: 16px 20px;
   border-top: 1px solid #eee;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.btn-recalculate {
+  padding: 8px 20px;
+  background: #c4a962;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-recalculate:hover:not(:disabled) {
+  background: #b39952;
+}
+
+.btn-recalculate:disabled {
+  background: #d4c992;
+  cursor: not-allowed;
+  opacity: 0.7;
 }
 
 .btn-close-modal {

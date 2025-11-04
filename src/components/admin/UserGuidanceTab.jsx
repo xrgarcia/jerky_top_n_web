@@ -11,6 +11,7 @@ export default function UserGuidanceTab() {
   const [pagination, setPagination] = useState({ page: 1, limit: 20, totalCount: 0, totalPages: 0 });
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
+  const [recalculating, setRecalculating] = useState(false);
 
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 20;
@@ -60,6 +61,31 @@ export default function UserGuidanceTab() {
     } catch (err) {
       console.error('Failed to fetch user details:', err);
       toast.error('Failed to load user details');
+    }
+  };
+
+  const handleRecalculate = async () => {
+    if (!selectedUser?.user?.id) return;
+    
+    try {
+      setRecalculating(true);
+      const data = await api.post(`/admin/user-classifications/${selectedUser.user.id}/recalculate`);
+      
+      if (data.success) {
+        toast.success('Classification recalculated successfully!');
+        
+        // Refresh the user details
+        const updatedData = await api.get(`/admin/user-classifications/${selectedUser.user.id}`);
+        setSelectedUser(updatedData);
+        
+        // Refresh the table data to show updated classification
+        await fetchUserClassifications();
+      }
+    } catch (err) {
+      console.error('Failed to recalculate classification:', err);
+      toast.error('Failed to recalculate classification');
+    } finally {
+      setRecalculating(false);
     }
   };
 
@@ -365,6 +391,13 @@ export default function UserGuidanceTab() {
             </div>
 
             <div className="modal-footer">
+              <button 
+                onClick={handleRecalculate} 
+                disabled={recalculating}
+                className="btn-recalculate"
+              >
+                {recalculating ? 'Recalculating...' : 'Recalculate Classification'}
+              </button>
               <button onClick={() => setShowDetailModal(false)} className="btn-close-modal">
                 Close
               </button>
