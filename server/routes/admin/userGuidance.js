@@ -7,14 +7,48 @@ const express = require('express');
 function createUserGuidanceAdminRoutes(services) {
   const router = express.Router();
   
-  // GET /api/admin/user-classifications - Get all user classifications with stats
+  // GET /api/admin/user-classifications - Get user classifications with pagination, sorting, and filtering
   router.get('/user-classifications', async (req, res) => {
     try {
       const { db, userClassificationService, storage } = services;
       const { sql } = require('drizzle-orm');
       
-      // Get all users with classification data
-      const usersResult = await db.execute(sql`
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 20;
+      const offset = (page - 1) * limit;
+      const search = req.query.search || '';
+      const sortBy = req.query.sortBy || 'created_at';
+      const sortOrder = req.query.sortOrder || 'desc';
+      const journeyStage = req.query.journeyStage || '';
+      const engagementLevel = req.query.engagementLevel || '';
+      const tasteCommunity = req.query.tasteCommunity || '';
+      const classified = req.query.classified || '';
+      
+      const allowedSortFields = ['email', 'display_name', 'created_at', 'ranked_count'];
+      const sortField = allowedSortFields.includes(sortBy) ? sortBy : 'created_at';
+      const sortDirection = sortOrder.toLowerCase() === 'asc' ? 'ASC' : 'DESC';
+      
+      let whereConditions = [];
+      let params = [];
+      
+      if (search) {
+        whereConditions.push(`(u.email ILIKE $${params.length + 1} OR u.display_name ILIKE $${params.length + 1})`);
+        params.push(`%${search}%`);
+      }
+      
+      const countQuery = `
+        SELECT COUNT(DISTINCT u.id) as total
+        FROM users u
+        LEFT JOIN user_classifications uc ON u.id = uc.user_id
+        LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
+        ${whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''}
+      `;
+      
+      const countResult = await db.execute(sql.raw(countQuery, params));
+      const totalCount = parseInt(countResult.rows[0]?.total) || 0;
+      const totalPages = Math.ceil(totalCount / limit);
+      
+      const dataQuery = `
         SELECT 
           u.id,
           u.email,
@@ -25,48 +59,65 @@ function createUserGuidanceAdminRoutes(services) {
           u.created_at,
           COUNT(DISTINCT pr.shopify_product_id) as ranked_count,
           COUNT(DISTINCT pr.ranking_list_id) as ranking_lists_count,
-          MAX(pr.updated_at) as last_ranking_at
+          MAX(pr.updated_at) as last_ranking_at,
+          uc.journey_stage,
+          uc.engagement_level,
+          uc.exploration_breadth,
+          uc.taste_community as taste_community_id,
+          tc.name as taste_community_name
         FROM users u
         LEFT JOIN product_rankings pr ON u.id = pr.user_id
-        GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at
-        ORDER BY u.created_at DESC
-        LIMIT 100
-      `);
+        LEFT JOIN user_classifications uc ON u.id = uc.user_id
+        LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
+        ${whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''}
+        GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
+                 uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community, tc.name
+        ORDER BY ${sortField} ${sortDirection}
+        LIMIT $${params.length + 1} OFFSET $${params.length + 2}
+      `;
       
-      const users = await Promise.all(usersResult.rows.map(async (user) => {
-        // Get classification for each user
-        const classification = await userClassificationService.getUserClassification(user.id);
-        
-        // If classification has tasteCommunityId, fetch community name
-        let tasteCommunity = null;
-        if (classification?.tasteCommunityId) {
-          const communityResult = await db.execute(sql`
-            SELECT name FROM taste_communities WHERE id = ${classification.tasteCommunityId}
-          `);
-          tasteCommunity = communityResult.rows[0]?.name || null;
-        }
-        
-        return {
-          id: user.id,
-          email: user.email,
-          displayName: user.display_name,
-          firstName: user.first_name,
-          lastName: user.last_name,
-          role: user.role,
-          createdAt: user.created_at,
-          rankedCount: parseInt(user.ranked_count) || 0,
-          rankingListsCount: parseInt(user.ranking_lists_count) || 0,
-          lastRankingAt: user.last_ranking_at,
-          classification: classification ? {
-            journeyStage: classification.journeyStage,
-            engagementLevel: classification.engagementLevel,
-            explorationBreadth: classification.explorationBreadth,
-            tasteCommunity: tasteCommunity
-          } : null
-        };
+      params.push(limit, offset);
+      const usersResult = await db.execute(sql.raw(dataQuery, params));
+      
+      const users = usersResult.rows.map(user => ({
+        id: user.id,
+        email: user.email,
+        displayName: user.display_name,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        role: user.role,
+        createdAt: user.created_at,
+        rankedCount: parseInt(user.ranked_count) || 0,
+        rankingListsCount: parseInt(user.ranking_lists_count) || 0,
+        lastRankingAt: user.last_ranking_at,
+        classification: user.journey_stage ? {
+          journeyStage: user.journey_stage,
+          engagementLevel: user.engagement_level,
+          explorationBreadth: user.exploration_breadth,
+          tasteCommunity: user.taste_community_name
+        } : null
       }));
       
-      res.json({ users });
+      const filteredUsers = users.filter(user => {
+        if (journeyStage && user.classification?.journeyStage !== journeyStage) return false;
+        if (engagementLevel && user.classification?.engagementLevel !== engagementLevel) return false;
+        if (tasteCommunity && user.classification?.tasteCommunity !== tasteCommunity) return false;
+        if (classified === 'true' && !user.classification) return false;
+        if (classified === 'false' && user.classification) return false;
+        return true;
+      });
+      
+      res.json({ 
+        users: filteredUsers,
+        pagination: {
+          page,
+          limit,
+          totalCount,
+          totalPages,
+          hasNext: page < totalPages,
+          hasPrev: page > 1
+        }
+      });
     } catch (error) {
       console.error('Error fetching user classifications:', error);
       res.status(500).json({ error: 'Failed to fetch user classifications' });
