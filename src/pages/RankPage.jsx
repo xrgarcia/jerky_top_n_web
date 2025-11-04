@@ -515,7 +515,7 @@ export default function RankPage() {
                 <span className="progress-icon">{collectionProgress.icon}</span>
                 <span className="progress-message">{collectionProgress.message}</span>
               </div>
-              <div className="progress-stats">
+              <div className="collection-progress-stats">
                 <div className="collection-progress-track">
                   <div 
                     className={`collection-progress-fill progress-${collectionProgress.progressColor}`}

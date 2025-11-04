@@ -116,7 +116,7 @@
   flex: 1;
 }
 
-.progress-stats {
+.collection-progress-stats {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
