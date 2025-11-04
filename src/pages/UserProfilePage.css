@@ -83,7 +83,8 @@
   letter-spacing: 0.5px;
 }
 
-.user-top-products {
+/* All Rankings Section */
+.user-all-rankings {
   background: white;
   border-radius: 12px;
   padding: 30px;
@@ -91,49 +92,158 @@
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.user-top-products h2 {
+.rankings-header h2 {
   font-size: 1.8em;
   color: #333;
   margin-bottom: 20px;
 }
 
-.top-products-list {
-  display: grid;
+.rankings-controls {
+  display: flex;
+  flex-direction: column;
   gap: 15px;
+  margin-bottom: 20px;
 }
 
-.top-product-item {
+.animal-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  border: 2px solid #e0ddd0;
+  background: white;
+  color: #666;
+  border-radius: 20px;
+  font-size: 0.9em;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filter-btn:hover {
+  border-color: #7b8b52;
+  color: #7b8b52;
+}
+
+.filter-btn.active {
+  background: #7b8b52;
+  border-color: #7b8b52;
+  color: white;
+}
+
+.rankings-search {
+  padding: 12px 16px;
+  border: 2px solid #e0ddd0;
+  border-radius: 8px;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.rankings-search:focus {
+  border-color: #7b8b52;
+}
+
+.rankings-list {
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-right: 10px;
+}
+
+.rankings-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.rankings-list::-webkit-scrollbar-track {
+  background: #f5f3ed;
+  border-radius: 10px;
+}
+
+.rankings-list::-webkit-scrollbar-thumb {
+  background: #c4a962;
+  border-radius: 10px;
+}
+
+.rankings-list::-webkit-scrollbar-thumb:hover {
+  background: #7b8b52;
+}
+
+.ranking-item {
   display: flex;
   align-items: center;
   gap: 15px;
   padding: 15px;
   background: #f5f3ed;
   border-radius: 8px;
-  transition: background 0.2s;
+  transition: all 0.2s;
 }
 
-.top-product-item:hover {
+.ranking-item:hover {
   background: #ebe9dd;
+  transform: translateX(5px);
 }
 
-.top-product-rank {
+.ranking-number {
   font-size: 1.5em;
   font-weight: 700;
   color: #c4a962;
-  min-width: 40px;
+  min-width: 50px;
+  text-align: center;
 }
 
-.top-product-image {
+.ranking-image {
   width: 60px;
   height: 60px;
   object-fit: cover;
   border-radius: 8px;
+  flex-shrink: 0;
 }
 
-.top-product-title {
+.ranking-details {
   flex: 1;
+  min-width: 0;
+}
+
+.ranking-title {
   font-size: 1.1em;
+  font-weight: 600;
   color: #333;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ranking-meta {
+  font-size: 0.85em;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.ranking-vendor {
+  color: #7b8b52;
+  font-weight: 500;
+}
+
+.ranking-animal,
+.ranking-flavor {
+  color: #888;
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+  font-style: italic;
 }
 
 .user-achievements {

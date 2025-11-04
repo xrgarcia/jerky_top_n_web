@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserProfile } from '../hooks/useCommunity';
 import './UserProfilePage.css';
@@ -6,6 +6,10 @@ import './UserProfilePage.css';
 function UserProfilePage() {
   const { userId } = useParams();
   const { data, isLoading, error } = useUserProfile(userId);
+  
+  // Filter and search state
+  const [animalFilter, setAnimalFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
 
   if (isLoading) {
     return (
@@ -33,6 +37,31 @@ function UserProfilePage() {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   };
+
+  // Get unique animal types for filter buttons
+  const animalTypes = useMemo(() => {
+    if (!topProducts) return [];
+    const types = [...new Set(topProducts.map(p => p.animalType).filter(Boolean))];
+    return types.sort();
+  }, [topProducts]);
+
+  // Filter and search products
+  const filteredProducts = useMemo(() => {
+    if (!topProducts) return [];
+    
+    return topProducts.filter(product => {
+      // Animal type filter
+      const matchesAnimal = animalFilter === 'all' || product.animalType === animalFilter;
+      
+      // Search filter (search in title, vendor, flavor)
+      const matchesSearch = searchQuery.trim() === '' || 
+        product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.vendor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.primaryFlavor?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesAnimal && matchesSearch;
+    });
+  }, [topProducts, animalFilter, searchQuery]);
 
   return (
     <div className="user-profile-page">
@@ -73,22 +102,64 @@ function UserProfilePage() {
         </div>
 
         {topProducts && topProducts.length > 0 && (
-          <div className="user-top-products">
-            <h2>🌟 Top Ranked Products</h2>
-            <div className="top-products-list">
-              {topProducts.map((product) => (
-                <div key={product.id} className="top-product-item">
-                  <div className="top-product-rank">#{product.rank}</div>
-                  {product.image && (
-                    <img 
-                      src={product.image} 
-                      alt={product.title} 
-                      className="top-product-image"
-                    />
-                  )}
-                  <div className="top-product-title">{product.title}</div>
-                </div>
-              ))}
+          <div className="user-all-rankings">
+            <div className="rankings-header">
+              <h2>🥩 All Flavor Rankings ({filteredProducts.length})</h2>
+            </div>
+
+            <div className="rankings-controls">
+              <div className="animal-filters">
+                <button 
+                  className={`filter-btn ${animalFilter === 'all' ? 'active' : ''}`}
+                  onClick={() => setAnimalFilter('all')}
+                >
+                  All
+                </button>
+                {animalTypes.map(type => (
+                  <button
+                    key={type}
+                    className={`filter-btn ${animalFilter === type ? 'active' : ''}`}
+                    onClick={() => setAnimalFilter(type)}
+                  >
+                    {type}
+                  </button>
+                ))}
+              </div>
+
+              <input
+                type="text"
+                className="rankings-search"
+                placeholder="Search flavors..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="rankings-list">
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <div key={product.id} className="ranking-item">
+                    <div className="ranking-number">#{product.rank}</div>
+                    {product.image && (
+                      <img 
+                        src={product.image} 
+                        alt={product.title} 
+                        className="ranking-image"
+                      />
+                    )}
+                    <div className="ranking-details">
+                      <div className="ranking-title">{product.title}</div>
+                      <div className="ranking-meta">
+                        {product.vendor && <span className="ranking-vendor">{product.vendor}</span>}
+                        {product.animalType && <span className="ranking-animal">• {product.animalType}</span>}
+                        {product.primaryFlavor && <span className="ranking-flavor">• {product.primaryFlavor}</span>}
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="no-results">No products match your filters</div>
+              )}
             </div>
           </div>
         )}

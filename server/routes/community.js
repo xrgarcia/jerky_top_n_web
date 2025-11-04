@@ -106,25 +106,31 @@ function createCommunityRoutes(services) {
       // Get earned achievements
       const achievements = await achievementRepo.getUserAchievements(userId);
 
-      // Get user's top 5 ranked products
-      const topRankingsResult = await db.execute(sql`
+      // Get user's ALL ranked products with metadata for filtering
+      const allRankingsResult = await db.execute(sql`
         SELECT 
           pr.shopify_product_id,
           pr.product_data,
           pr.ranking,
-          pr.created_at
+          pr.created_at,
+          pm.animal_type,
+          pm.primary_flavor,
+          pm.vendor
         FROM product_rankings pr
+        LEFT JOIN products_metadata pm ON pr.shopify_product_id = pm.shopify_product_id
         WHERE pr.user_id = ${userId}
           AND pr.ranking_list_id = 'default'
         ORDER BY pr.ranking ASC
-        LIMIT 5
       `);
 
-      const topProducts = topRankingsResult.rows.map(row => ({
+      const allProducts = allRankingsResult.rows.map(row => ({
         id: row.shopify_product_id,
         title: row.product_data?.title || 'Unknown Product',
         image: row.product_data?.image,
-        rank: row.ranking
+        rank: row.ranking,
+        animalType: row.animal_type,
+        primaryFlavor: row.primary_flavor,
+        vendor: row.vendor || row.product_data?.vendor
       }));
 
       // Calculate streak
@@ -163,7 +169,7 @@ function createCommunityRoutes(services) {
           currentTier: ach.currentTier,
           points: ach.pointsAwarded
         })),
-        topProducts
+        topProducts: allProducts
       });
     } catch (error) {
       console.error('Error fetching user profile:', error);
