@@ -1,5 +1,6 @@
 const { db } = require('../db');
 const { userActivities } = require('../../shared/schema');
+const { eq, and, gte, count, sql } = require('drizzle-orm');
 
 /**
  * ActivityTrackingService - Logs comprehensive user activities for engagement analysis
@@ -198,9 +199,9 @@ class ActivityTrackingService {
       .select()
       .from(userActivities)
       .where(
-        db.and(
-          db.eq(userActivities.userId, userId),
-          db.gte(userActivities.createdAt, cutoffDate)
+        and(
+          eq(userActivities.userId, userId),
+          gte(userActivities.createdAt, cutoffDate)
         )
       );
 

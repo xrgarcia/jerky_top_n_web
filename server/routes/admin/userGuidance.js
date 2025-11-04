@@ -48,12 +48,12 @@ function createUserGuidanceAdminRoutes(services) {
           rankedCount: parseInt(user.ranked_count) || 0,
           rankingListsCount: parseInt(user.ranking_lists_count) || 0,
           lastRankingAt: user.last_ranking_at,
-          classification: {
+          classification: classification ? {
             journeyStage: classification.journeyStage,
             engagementLevel: classification.engagementLevel,
             explorationBreadth: classification.explorationBreadth,
             tasteCommunity: classification.tasteCommunity
-          }
+          } : null
         };
       }));
       
