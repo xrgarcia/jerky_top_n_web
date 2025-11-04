@@ -1,5 +1,6 @@
 import React from 'react';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
+import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './CoinBookPage.css';
 
 function CoinBookPage() {
@@ -7,7 +8,7 @@ function CoinBookPage() {
     <div className="coinbook-page">
       <div className="coinbook-page-header">
         <h1>🪙 Coin Book</h1>
-        <p>Track your achievements and progress</p>
+        <PersonalizedGuidance page="coinbook" />
       </div>
       <CoinBookWidget defaultCollapsed={false} />
     </div>
