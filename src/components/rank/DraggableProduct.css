@@ -12,10 +12,7 @@
   position: relative;
 }
 
-/* Overlay clone shown by DragOverlay */
+/* Overlay clone shown by DragOverlay - clean with no effects */
 .product-card.dragging-overlay {
-  opacity: 0.9;
   cursor: grabbing;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-  transform: rotate(2deg);
 }
