@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const ProductRankingRepository = require('../repositories/ProductRankingRepository');
 
 /**
  * Community API Routes
@@ -97,24 +96,29 @@ function createCommunityRoutes(services) {
       const position = await leaderboardManager.getUserPosition(userId, 'all_time');
       
       // Get products ranked count
-      const rankedProductIds = await ProductRankingRepository.getRankedProductIdsByUser(userId, 'default');
-      const productsRanked = rankedProductIds.length;
+      const { sql } = require('drizzle-orm');
+      const productsRankedResult = await db.execute(sql`
+        SELECT COUNT(DISTINCT shopify_product_id) as count
+        FROM product_rankings
+        WHERE user_id = ${userId}
+          AND ranking_list_id = 'default'
+      `);
+      const productsRanked = parseInt(productsRankedResult.rows[0]?.count) || 0;
 
       // Get earned achievements
       const achievements = await achievementRepo.getUserAchievements(userId);
 
       // Get user's top 5 ranked products
-      const { sql } = require('drizzle-orm');
       const topRankingsResult = await db.execute(sql`
         SELECT 
           pr.shopify_product_id,
           pr.product_data,
-          pr.rank_position,
+          pr.ranking,
           pr.created_at
         FROM product_rankings pr
         WHERE pr.user_id = ${userId}
           AND pr.ranking_list_id = 'default'
-        ORDER BY pr.rank_position ASC
+        ORDER BY pr.ranking ASC
         LIMIT 5
       `);
 
@@ -122,7 +126,7 @@ function createCommunityRoutes(services) {
         id: row.shopify_product_id,
         title: row.product_data?.title || 'Unknown Product',
         image: row.product_data?.image,
-        rank: row.rank_position
+        rank: row.ranking
       }));
 
       // Calculate streak

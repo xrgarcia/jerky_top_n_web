@@ -55,6 +55,8 @@ class CommunityService {
 
     return results.rows.map(user => ({
       id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
       displayName: this.formatDisplayName(user),
       rankedCount: parseInt(user.ranked_count) || 0,
       rankingListsCount: parseInt(user.ranking_lists_count) || 0
@@ -98,6 +100,8 @@ class CommunityService {
 
     return results.rows.map(user => ({
       id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
       displayName: this.formatDisplayName(user),
       rankedCount: parseInt(user.ranked_count) || 0,
       type: 'user'
