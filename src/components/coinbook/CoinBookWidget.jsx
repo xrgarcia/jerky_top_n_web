@@ -94,8 +94,8 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
       const tierName = nextTier || 'next tier';
       label = `for ${tierName}`;
     } else if (achievement.collection_type === 'static_collection' || achievement.collection_type === 'dynamic_collection') {
-      // Collection achievement - use "products ranked"
-      label = 'products ranked';
+      // Collection achievement - use "flavors ranked"
+      label = 'flavors ranked';
     } else if (achievement.requirement?.type) {
       // Engagement achievement - map to specific activity type
       const typeLabels = {
