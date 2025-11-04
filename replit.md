@@ -46,6 +46,14 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Feature Specifications:**
 - **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and hybrid reliability system. Non-employee users can only rank purchased products.
+    - **Ranking Data Synchronization**: Robust sync system with automatic recovery and manual Force Sync (Nov 2025 fix):
+        - **IndexedDB Queue Pattern**: Single "current_state" operation with constant ID (not UUIDs) ensures complete state snapshots, preventing fragmented data loss
+        - **Auto-Recovery on Page Load**: Compares IndexedDB vs backend count, prefers whichever has MORE products, saves to backend, updates UI immediately
+        - **Force Sync Button**: Employee-only manual recovery that reads IndexedDB directly, shows reconciliation analysis, syncs to backend, updates UI state
+        - **Reconciliation Endpoint**: `/api/rankings/reconcile` compares frontend vs backend product IDs, returns missing/extra items for debugging
+        - **State Update Critical Path**: Both recovery paths call `setRankedProducts()` BEFORE clearing queue to ensure UI reflects recovered data
+        - **Backfill Migration**: Handles legacy multiple-operation queues by merging to single authoritative state
+        - Prevents data loss when IndexedDB has unflushed changes that backend lacks
 - **Products Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
 - **Shopify Webhook Integration**: Real-time sync for orders and products with HMAC SHA-256 verification.
