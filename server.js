@@ -2798,35 +2798,8 @@ app.get('/api/customer/rankings', async (req, res) => {
 });
 
 // Community API endpoints
-// GET /api/community/users - List all users with ranking statistics
-app.get('/api/community/users', async (req, res) => {
-  try {
-    if (!storage || !gamificationServices) {
-      return res.status(500).json({ error: 'Database not available' });
-    }
-    
-    const limit = parseInt(req.query.limit) || 20;
-    const offset = parseInt(req.query.offset) || 0;
-    
-    const communityService = gamificationServices.communityService;
-    const users = await communityService.getCommunityUsers(limit, offset);
-    
-    res.json({
-      users: users.map(user => ({
-        id: user.id,
-        displayShort: user.displayName,
-        rankedCount: user.rankedCount,
-        rankingListsCount: user.rankingListsCount
-      })),
-      limit,
-      offset
-    });
-    
-  } catch (error) {
-    console.error('Error fetching community users:', error);
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
+// REMOVED: Legacy /api/community/users route
+// Now handled by modular routes in server/routes/community.js via gamification initialization
 
 // GET /api/products/:productId/stats - Get product statistics
 app.get('/api/products/:productId/stats', async (req, res) => {

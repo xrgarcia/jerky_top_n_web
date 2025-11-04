@@ -27,10 +27,8 @@ function createCommunityRoutes(services) {
 
       let users;
       if (search.trim()) {
-        // Search by name OR products they've ranked
         users = await communityService.searchCommunityUsers(search, parseInt(limit));
       } else {
-        // Get all users with pagination
         users = await communityService.getCommunityUsers(parseInt(limit), offset);
       }
 
