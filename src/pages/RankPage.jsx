@@ -256,9 +256,12 @@ export default function RankPage() {
         sort: 'name-asc'
       });
       
-      // Use the last searched term, not current searchTerm (which might be mid-edit)
-      if (lastSearchedTerm) {
-        params.set('query', lastSearchedTerm);
+      // CRITICAL FIX: Check both lastSearchedTerm AND URL params to preserve search
+      // This handles the case where user loaded page with ?search=term but hasn't triggered a search yet
+      const searchTermToUse = lastSearchedTerm || searchParams.get('search') || '';
+      
+      if (searchTermToUse) {
+        params.set('query', searchTermToUse);
       }
 
       const data = await api.get(`/products/rankable?${params.toString()}`);
