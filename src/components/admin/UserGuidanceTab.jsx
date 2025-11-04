@@ -1,24 +1,49 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { api } from '../../utils/api';
 import toast from 'react-hot-toast';
 import './UserGuidanceTab.css';
 
 export default function UserGuidanceTab() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [pagination, setPagination] = useState({ page: 1, limit: 20, totalCount: 0, totalPages: 0 });
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
 
+  const page = parseInt(searchParams.get('page')) || 1;
+  const limit = parseInt(searchParams.get('limit')) || 20;
+  const search = searchParams.get('search') || '';
+  const sortBy = searchParams.get('sortBy') || 'created_at';
+  const sortOrder = searchParams.get('sortOrder') || 'desc';
+  const journeyStage = searchParams.get('journeyStage') || '';
+  const engagementLevel = searchParams.get('engagementLevel') || '';
+  const tasteCommunity = searchParams.get('tasteCommunity') || '';
+  const classified = searchParams.get('classified') || '';
+
   useEffect(() => {
     fetchUserClassifications();
-  }, []);
+  }, [page, limit, search, sortBy, sortOrder, journeyStage, engagementLevel, tasteCommunity, classified]);
 
   const fetchUserClassifications = async () => {
     try {
       setLoading(true);
-      const data = await api.get('/admin/user-classifications');
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+        ...(search && { search }),
+        sortBy,
+        sortOrder,
+        ...(journeyStage && { journeyStage }),
+        ...(engagementLevel && { engagementLevel }),
+        ...(tasteCommunity && { tasteCommunity }),
+        ...(classified && { classified })
+      });
+
+      const data = await api.get(`/admin/user-classifications?${params}`);
       setUsers(data.users || []);
+      setPagination(data.pagination || { page: 1, limit: 20, totalCount: 0, totalPages: 0 });
     } catch (err) {
       console.error('Failed to fetch user classifications:', err);
       toast.error('Failed to load user classifications');
@@ -38,10 +63,46 @@ export default function UserGuidanceTab() {
     }
   };
 
-  const filteredUsers = users.filter(user =>
-    user.email?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.displayName?.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const updateParams = (updates) => {
+    const newParams = new URLSearchParams(searchParams);
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value) {
+        newParams.set(key, value);
+      } else {
+        newParams.delete(key);
+      }
+    });
+    if (updates.page === undefined && !updates.limit) {
+      newParams.set('page', '1');
+    }
+    setSearchParams(newParams);
+  };
+
+  const handleSort = (field) => {
+    const newOrder = sortBy === field && sortOrder === 'asc' ? 'desc' : 'asc';
+    updateParams({ sortBy: field, sortOrder: newOrder, page: '1' });
+  };
+
+  const handleSearch = (value) => {
+    updateParams({ search: value, page: '1' });
+  };
+
+  const handleFilterChange = (filterType, value) => {
+    updateParams({ [filterType]: value, page: '1' });
+  };
+
+  const handlePageChange = (newPage) => {
+    updateParams({ page: newPage.toString() });
+  };
+
+  const handleLimitChange = (newLimit) => {
+    updateParams({ limit: newLimit.toString(), page: '1' });
+  };
+
+  const getSortIcon = (field) => {
+    if (sortBy !== field) return '↕';
+    return sortOrder === 'asc' ? '↑' : '↓';
+  };
 
   return (
     <div className="user-guidance-tab">
@@ -52,35 +113,79 @@ export default function UserGuidanceTab() {
         </p>
       </div>
 
-      <div className="search-box">
-        <input
-          type="text"
-          placeholder="Search users by email or name..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="search-input"
-        />
+      <div className="filters-section">
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Search users by email or name..."
+            value={search}
+            onChange={(e) => handleSearch(e.target.value)}
+            className="search-input"
+          />
+        </div>
+
+        <div className="filter-controls">
+          <select
+            value={journeyStage}
+            onChange={(e) => handleFilterChange('journeyStage', e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Journey Stages</option>
+            <option value="new_user">New User</option>
+            <option value="engaged_explorer">Engaged Explorer</option>
+            <option value="dedicated_collector">Dedicated Collector</option>
+            <option value="completionist">Completionist</option>
+          </select>
+
+          <select
+            value={engagementLevel}
+            onChange={(e) => handleFilterChange('engagementLevel', e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Engagement Levels</option>
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <select
+            value={classified}
+            onChange={(e) => handleFilterChange('classified', e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Users</option>
+            <option value="true">Classified Only</option>
+            <option value="false">Not Classified</option>
+          </select>
+        </div>
       </div>
 
       {loading ? (
         <div className="loading-state">Loading user classifications...</div>
       ) : (
-        <div className="users-table-container">
-          <table className="users-table">
-            <thead>
-              <tr>
-                <th>User</th>
-                <th>Email</th>
-                <th>Journey Stage</th>
-                <th>Engagement</th>
-                <th>Exploration</th>
-                <th>Taste Community</th>
-                <th>Ranked Count</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map(user => (
+        <>
+          <div className="users-table-container">
+            <table className="users-table">
+              <thead>
+                <tr>
+                  <th onClick={() => handleSort('display_name')} className="sortable-header">
+                    User {getSortIcon('display_name')}
+                  </th>
+                  <th onClick={() => handleSort('email')} className="sortable-header">
+                    Email {getSortIcon('email')}
+                  </th>
+                  <th>Journey Stage</th>
+                  <th>Engagement</th>
+                  <th>Exploration</th>
+                  <th>Taste Community</th>
+                  <th onClick={() => handleSort('ranked_count')} className="sortable-header">
+                    Ranked Count {getSortIcon('ranked_count')}
+                  </th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map(user => (
                 <tr key={user.id}>
                   <td>{user.displayName || 'Unknown'}</td>
                   <td className="email-cell">{user.email}</td>
@@ -125,16 +230,61 @@ export default function UserGuidanceTab() {
                     </button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+                ))}
+              </tbody>
+            </table>
 
-          {filteredUsers.length === 0 && (
-            <div className="empty-state">
-              {searchQuery ? 'No users match your search' : 'No users found'}
+            {users.length === 0 && (
+              <div className="empty-state">
+                {search ? 'No users match your search' : 'No users found'}
+              </div>
+            )}
+          </div>
+
+          {pagination.totalCount > 0 && (
+            <div className="pagination-controls">
+              <div className="pagination-info">
+                Showing {((page - 1) * limit) + 1} to {Math.min(page * limit, pagination.totalCount)} of {pagination.totalCount} users
+              </div>
+
+              <div className="pagination-buttons">
+                <button
+                  onClick={() => handlePageChange(page - 1)}
+                  disabled={!pagination.hasPrev}
+                  className="pagination-btn"
+                >
+                  Previous
+                </button>
+
+                <span className="page-indicator">
+                  Page {page} of {pagination.totalPages}
+                </span>
+
+                <button
+                  onClick={() => handlePageChange(page + 1)}
+                  disabled={!pagination.hasNext}
+                  className="pagination-btn"
+                >
+                  Next
+                </button>
+              </div>
+
+              <div className="page-size-selector">
+                <label>Per page:</label>
+                <select
+                  value={limit}
+                  onChange={(e) => handleLimitChange(e.target.value)}
+                  className="page-size-select"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                  <option value="100">100</option>
+                </select>
+              </div>
             </div>
           )}
-        </div>
+        </>
       )}
 
       {showDetailModal && selectedUser && (

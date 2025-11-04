@@ -20,8 +20,37 @@
   font-size: 14px;
 }
 
-.search-box {
+.filters-section {
   margin-bottom: 20px;
+}
+
+.search-box {
+  margin-bottom: 16px;
+}
+
+.filter-controls {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-select {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+
+.filter-select:focus {
+  outline: none;
+  border-color: #7b8b52;
+}
+
+.filter-select:hover {
+  border-color: #c4a962;
 }
 
 .search-input {
@@ -65,6 +94,16 @@
   color: #333;
   border-bottom: 2px solid #ddd;
   font-size: 13px;
+}
+
+.sortable-header {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+}
+
+.sortable-header:hover {
+  background: #e8ebe1;
 }
 
 .users-table td {
@@ -198,6 +237,81 @@
   text-align: center;
   padding: 40px;
   color: #999;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  margin-top: 20px;
+  border-top: 1px solid #eee;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.pagination-info {
+  color: #666;
+  font-size: 14px;
+}
+
+.pagination-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  background: #7b8b52;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: #6b7a45;
+}
+
+.pagination-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.page-indicator {
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 8px;
+}
+
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-size-selector label {
+  color: #666;
+  font-size: 14px;
+}
+
+.page-size-select {
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background: white;
+  cursor: pointer;
+}
+
+.page-size-select:focus {
+  outline: none;
+  border-color: #7b8b52;
 }
 
 .modal-overlay {
@@ -340,5 +454,24 @@
   .classification-grid,
   .activity-stats {
     grid-template-columns: 1fr;
+  }
+
+  .pagination-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .pagination-info,
+  .pagination-buttons,
+  .page-size-selector {
+    justify-content: center;
+  }
+
+  .filter-controls {
+    flex-direction: column;
+  }
+
+  .filter-select {
+    width: 100%;
   }
 }
