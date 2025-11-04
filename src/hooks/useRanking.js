@@ -90,7 +90,8 @@ export function useRanking(options = {}) {
   
   /**
    * Recover pending operations from IndexedDB (after page refresh)
-   * Optimized: Sends only the LATEST state instead of replaying all operations
+   * CRITICAL FIX: Now works with single authoritative "current_state" snapshot
+   * Includes backfill migration and safety checks to prevent data loss
    */
   const recoverPendingOperations = async () => {
     if (!persistentQueue.current) return;
@@ -99,31 +100,68 @@ export function useRanking(options = {}) {
       const pending = await persistentQueue.current.getPending();
       
       if (pending.length > 0) {
-        console.log(`🔄 Found ${pending.length} pending operation(s), recovering latest state...`);
+        console.log(`🔄 Found ${pending.length} pending operation(s), recovering...`);
         
         // Set recovery mode to skip individual callbacks
         isRecovering.current = true;
         
-        // Sort by timestamp to get the most recent operation (latest state)
-        // Copy array to avoid mutating original
-        const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
-        const latestOperation = sorted[0];
+        let operationToSave;
         
-        console.log(`📤 Sending latest state (${latestOperation.rankings.length} rankings) instead of replaying ${pending.length} operations`);
+        // BACKFILL MIGRATION: If multiple old-style operations exist, merge them
+        if (pending.length > 1) {
+          console.warn(`⚠️ Found ${pending.length} legacy operations - performing backfill merge`);
+          
+          // Use current in-memory state if available, otherwise take latest operation
+          if (rankedProducts.length > 0) {
+            console.log(`📊 Using in-memory state (${rankedProducts.length} products) for backfill`);
+            operationToSave = {
+              operationId: 'current_state',
+              rankings: rankedProducts,
+              rankingListId: 'default',
+              timestamp: Date.now()
+            };
+          } else {
+            // Fallback: Sort by timestamp and take latest
+            const sorted = [...pending].sort((a, b) => b.timestamp - a.timestamp);
+            operationToSave = sorted[0];
+            console.log(`📊 Using latest operation (${operationToSave.rankings.length} products) for backfill`);
+          }
+        } else {
+          // Single operation (expected after migration)
+          operationToSave = pending[0];
+        }
+        
+        const recoveredCount = operationToSave.rankings.length;
+        const inMemoryCount = rankedProducts.length;
+        
+        // SAFETY CHECK: Warn if recovered count doesn't match in-memory count
+        if (inMemoryCount > 0 && recoveredCount !== inMemoryCount) {
+          console.error(`❌ DATA MISMATCH: Recovered ${recoveredCount} products but in-memory has ${inMemoryCount}!`);
+          console.error(`❌ Using in-memory state (${inMemoryCount}) to prevent data loss`);
+          
+          // Override with in-memory state to prevent data loss
+          operationToSave = {
+            operationId: 'current_state',
+            rankings: rankedProducts,
+            rankingListId: 'default',
+            timestamp: Date.now()
+          };
+        }
+        
+        console.log(`📤 Saving ${operationToSave.rankings.length} rankings to backend...`);
         
         try {
-          // Send only the latest state (throwOnError=true ensures we know if it fails)
-          await saveToBackend(latestOperation.rankings, null, null, true);
+          // Send the authoritative state (throwOnError=true ensures we know if it fails)
+          await saveToBackend(operationToSave.rankings, null, null, true);
           
           // Only clear ALL operations after CONFIRMED successful save
-          // This prevents double-clearing and ensures atomic cleanup
           for (const operation of pending) {
             await persistentQueue.current.complete(operation.operationId);
           }
           
-          console.log(`✅ Cleared ${pending.length} operations from queue`);
+          console.log(`✅ Cleared ${pending.length} operation(s) from queue`);
         } catch (error) {
-          console.error('Failed to recover latest state, queue preserved for retry:', error);
+          console.error('Failed to recover state, queue preserved for retry:', error);
           // Leave queue intact on error so retry can happen next load
           isRecovering.current = false;
           throw error; // Re-throw to prevent callback
@@ -294,12 +332,16 @@ export function useRanking(options = {}) {
   
   /**
    * Immediately persist to IndexedDB (survives refresh)
+   * CRITICAL FIX: Store ONE authoritative snapshot with constant ID
+   * This prevents data loss during recovery
    */
   const persistToIndexedDB = async (rankings) => {
     if (!persistentQueue.current) return;
     
     try {
-      const operationId = generateUUID();
+      // ALWAYS use same operationId so we UPSERT instead of INSERT
+      // This ensures we only ever have ONE current state snapshot
+      const operationId = 'current_state';
       currentOperationId.current = operationId;
       
       await persistentQueue.current.enqueue({
@@ -309,7 +351,7 @@ export function useRanking(options = {}) {
         timestamp: Date.now()
       });
       
-      console.log(`💾 Persisted ${rankings.length} ranking(s) to IndexedDB`);
+      console.log(`💾 Persisted ${rankings.length} ranking(s) to IndexedDB (current state)`);
     } catch (error) {
       console.error('Failed to persist to IndexedDB:', error);
     }
