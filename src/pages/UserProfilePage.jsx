@@ -100,7 +100,7 @@ function UserProfilePage() {
               {achievements.map((achievement) => (
                 <div key={achievement.id} className="user-achievement-card">
                   <div className="user-achievement-icon">
-                    {achievement.iconType === 'url' ? (
+                    {achievement.iconType === 'image' ? (
                       <img 
                         src={achievement.icon} 
                         alt={achievement.name}
