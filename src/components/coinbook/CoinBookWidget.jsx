@@ -218,7 +218,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                       <span className="coin-icon">
                         {renderIcon(achievement, 48)}
                       </span>
-                      <span className="coin-name">
+                      <span className="achievement-coin-name">
                         {achievement.earned ? achievement.name : achievement.name || '???'}
                       </span>
                       

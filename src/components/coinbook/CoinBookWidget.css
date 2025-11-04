@@ -398,7 +398,7 @@
   opacity: 0.5;
 }
 
-.coin-name {
+.achievement-coin-name {
   font-size: 12px;
   font-weight: 600;
   color: #333;
@@ -410,7 +410,7 @@
   hyphens: auto;
 }
 
-.achievement-coin.locked .coin-name {
+.achievement-coin.locked .achievement-coin-name {
   color: #999;
 }
 
@@ -592,7 +592,7 @@
     font-size: 42px;
   }
 
-  .coin-name {
+  .achievement-coin-name {
     font-size: 11px;
   }
 }
@@ -612,7 +612,7 @@
     font-size: 38px;
   }
 
-  .coin-name {
+  .achievement-coin-name {
     font-size: 10px;
   }
 }
@@ -683,7 +683,7 @@
 .coinbook-oak .milestone-name,
 .coinbook-oak .milestone-status,
 .coinbook-oak .achievements-label,
-.coinbook-oak .coin-name,
+.coinbook-oak .achievement-coin-name,
 .coinbook-oak .milestone-preview-label,
 .coinbook-oak .milestone-preview-name,
 .coinbook-oak .milestone-preview-status,
@@ -764,7 +764,7 @@
 .coinbook-walnut .milestone-name,
 .coinbook-walnut .milestone-status,
 .coinbook-walnut .achievements-label,
-.coinbook-walnut .coin-name,
+.coinbook-walnut .achievement-coin-name,
 .coinbook-walnut .milestone-preview-label,
 .coinbook-walnut .milestone-preview-name,
 .coinbook-walnut .milestone-preview-status,
@@ -845,7 +845,7 @@
 .coinbook-pine .milestone-name,
 .coinbook-pine .milestone-status,
 .coinbook-pine .achievements-label,
-.coinbook-pine .coin-name,
+.coinbook-pine .achievement-coin-name,
 .coinbook-pine .milestone-preview-label,
 .coinbook-pine .milestone-preview-name,
 .coinbook-pine .milestone-preview-status,
@@ -926,7 +926,7 @@
 .coinbook-cherry .milestone-name,
 .coinbook-cherry .milestone-status,
 .coinbook-cherry .achievements-label,
-.coinbook-cherry .coin-name,
+.coinbook-cherry .achievement-coin-name,
 .coinbook-cherry .milestone-preview-label,
 .coinbook-cherry .milestone-preview-name,
 .coinbook-cherry .milestone-preview-status,
@@ -1016,7 +1016,7 @@
 .coinbook-hero .milestone-name,
 .coinbook-hero .milestone-status,
 .coinbook-hero .achievements-label,
-.coinbook-hero .coin-name,
+.coinbook-hero .achievement-coin-name,
 .coinbook-hero .milestone-preview-label,
 .coinbook-hero .milestone-preview-name,
 .coinbook-hero .milestone-preview-status,
@@ -1055,10 +1055,10 @@
   background: #FFFEF8;
 }
 
-.coinbook-hero .coin-name {
+.coinbook-hero .achievement-coin-name {
   color: #333;
 }
 
-.coinbook-hero .achievement-coin.locked .coin-name {
+.coinbook-hero .achievement-coin.locked .achievement-coin-name {
   color: #999;
 }
