@@ -1,4 +1,4 @@
-const db = require('../db');
+const { db } = require('../db');
 const { userClassifications, classificationConfig, productRankings, userAchievements, achievements, userActivities, productsMetadata, customerOrderItems } = require('../../shared/schema');
 const { eq, and, gte, count, sql } = require('drizzle-orm');
 
