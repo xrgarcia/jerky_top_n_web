@@ -14,6 +14,7 @@ function ToolsLayout() {
     { path: '/admin/tools/live-users', label: 'Live Users', icon: '👥' },
     { path: '/admin/tools/products', label: 'Manage Products', icon: '🥩' },
     { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },
+    { path: '/admin/tools/user-guidance', label: 'User Guidance', icon: '🎯' },
     { path: '/admin/tools/sentry', label: 'Sentry Issues', icon: '🔍' },
   ];
   
