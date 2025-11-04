@@ -150,10 +150,10 @@ function createUserGuidanceAdminRoutes(services) {
   router.get('/user-classifications/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
-      const { db, userClassificationService, activityTrackingService, storage } = services;
+      const { db, userClassificationService, activityTrackingService, tasteCommunityService } = services;
       const { sql } = require('drizzle-orm');
       
-      // Get user info
+      // Get user info with ranking stats
       const userResult = await db.execute(sql`
         SELECT 
           u.id,
@@ -162,9 +162,14 @@ function createUserGuidanceAdminRoutes(services) {
           u.first_name,
           u.last_name,
           u.role,
-          u.created_at
+          u.created_at,
+          COUNT(DISTINCT pr.shopify_product_id) as ranked_count,
+          COUNT(DISTINCT pr.ranking_list_id) as ranking_lists_count,
+          MAX(pr.updated_at) as last_ranking_at
         FROM users u
+        LEFT JOIN product_rankings pr ON u.id = pr.user_id
         WHERE u.id = ${userId}
+        GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at
       `);
       
       if (userResult.rows.length === 0) {
@@ -173,11 +178,32 @@ function createUserGuidanceAdminRoutes(services) {
       
       const user = userResult.rows[0];
       
-      // Get full classification with reasoning
-      const classification = await userClassificationService.getUserClassificationWithReasoning(userId);
+      // Get classification from database
+      const classification = await userClassificationService.getUserClassification(userId);
       
-      // Get activity summary
-      const activities = await activityTrackingService.getActivitySummary(userId);
+      // Get taste community details if assigned
+      let tasteCommunity = null;
+      if (classification && classification.tasteCommunityId) {
+        tasteCommunity = await tasteCommunityService.getCommunity(classification.tasteCommunityId);
+      }
+      
+      // Get activity summary (last 30 days)
+      const activities = await activityTrackingService.getUserActivitySummary(userId, 30);
+      
+      // Build classification response with reasoning
+      const classificationResponse = classification ? {
+        journeyStage: classification.journeyStage,
+        engagementLevel: classification.engagementLevel,
+        explorationBreadth: classification.explorationBreadth,
+        focusAreas: classification.focusAreas,
+        tasteCommunity: tasteCommunity ? {
+          id: tasteCommunity.id,
+          name: tasteCommunity.name,
+          description: tasteCommunity.description
+        } : null,
+        reasoning: classification.classificationData || {},
+        lastCalculated: classification.lastCalculated
+      } : null;
       
       res.json({
         user: {
@@ -187,9 +213,12 @@ function createUserGuidanceAdminRoutes(services) {
           firstName: user.first_name,
           lastName: user.last_name,
           role: user.role,
-          createdAt: user.created_at
+          createdAt: user.created_at,
+          rankedCount: parseInt(user.ranked_count) || 0,
+          rankingListsCount: parseInt(user.ranking_lists_count) || 0,
+          lastRankingAt: user.last_ranking_at
         },
-        classification,
+        classification: classificationResponse,
         activities
       });
     } catch (error) {
