@@ -227,6 +227,65 @@ function createUserGuidanceAdminRoutes(services) {
     }
   });
   
+  // POST /api/admin/user-classifications/:userId/recalculate - Recalculate classification for a specific user
+  router.post('/user-classifications/:userId/recalculate', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { userClassificationService, tasteCommunityService, io } = services;
+      
+      console.log(`🔄 Admin triggering classification recalculation for user ${userId}`);
+      
+      // Recalculate user classification
+      const classification = await userClassificationService.classifyUser(userId);
+      
+      // Assign taste community
+      await tasteCommunityService.assignCommunity(userId);
+      
+      // Get the updated classification with taste community
+      const updatedClassification = await userClassificationService.getUserClassification(userId);
+      
+      // Get taste community details if assigned
+      let tasteCommunity = null;
+      if (updatedClassification && updatedClassification.tasteCommunityId) {
+        tasteCommunity = await tasteCommunityService.getCommunity(updatedClassification.tasteCommunityId);
+      }
+      
+      // Build response
+      const classificationResponse = updatedClassification ? {
+        journeyStage: updatedClassification.journeyStage,
+        engagementLevel: updatedClassification.engagementLevel,
+        explorationBreadth: updatedClassification.explorationBreadth,
+        focusAreas: updatedClassification.focusAreas,
+        tasteCommunity: tasteCommunity ? {
+          id: tasteCommunity.id,
+          name: tasteCommunity.name,
+          description: tasteCommunity.description
+        } : null,
+        reasoning: updatedClassification.classificationData || {},
+        lastCalculated: updatedClassification.lastCalculated
+      } : null;
+      
+      // Broadcast classification update via WebSocket
+      if (io) {
+        const socketRoom = `${process.env.NODE_ENV === 'production' ? 'prod' : 'dev'}:user:${userId}`;
+        io.to(socketRoom).emit('classification:updated', {
+          classification: classificationResponse
+        });
+        console.log(`📡 Broadcasting classification update to ${socketRoom}`);
+      }
+      
+      console.log(`✅ Classification recalculated for user ${userId}: ${updatedClassification?.journeyStage}, ${updatedClassification?.engagementLevel}`);
+      
+      res.json({
+        success: true,
+        classification: classificationResponse
+      });
+    } catch (error) {
+      console.error('Error recalculating user classification:', error);
+      res.status(500).json({ error: 'Failed to recalculate classification' });
+    }
+  });
+  
   // GET /api/admin/classification-config - Get classification configuration
   router.get('/classification-config', async (req, res) => {
     try {
