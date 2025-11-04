@@ -12,6 +12,7 @@ import EmployeeRoute from '../auth/EmployeeRoute';
 import HomePage from '../../pages/HomePage';
 import ProductsPage from '../../pages/ProductsPage';
 import CoinBookPage from '../../pages/CoinBookPage';
+import CoinProfilePage from '../../pages/CoinProfilePage';
 import CommunityPage from '../../pages/CommunityPage';
 import LeaderboardPage from '../../pages/LeaderboardPage';
 import ProfilePage from '../../pages/ProfilePage';
@@ -19,6 +20,7 @@ import RankPage from '../../pages/RankPage';
 import LoginPage from '../../pages/LoginPage';
 import ToolsLayout from '../../pages/admin/ToolsLayout';
 import ManageCoinsPageAdmin from '../../pages/admin/ManageCoinsPageAdmin';
+import CoinTypesPageAdmin from '../../pages/admin/CoinTypesPageAdmin';
 import LiveUsersPage from '../../pages/admin/LiveUsersPage';
 import ProductsPageAdmin from '../../pages/admin/ProductsPageAdmin';
 import OrderItemsPage from '../../pages/admin/OrderItemsPage';
@@ -61,6 +63,11 @@ function AppLayout() {
               <CoinBookPage />
             </ProtectedRoute>
           } />
+          <Route path="/coinbook/:coinId" element={
+            <ProtectedRoute>
+              <CoinProfilePage />
+            </ProtectedRoute>
+          } />
           <Route path="/rank" element={
             <ProtectedRoute>
               <RankPage />
@@ -89,6 +96,7 @@ function AppLayout() {
           }>
             <Route index element={<ManageCoinsPageAdmin />} />
             <Route path="coins" element={<ManageCoinsPageAdmin />} />
+            <Route path="coin-types" element={<CoinTypesPageAdmin />} />
             <Route path="live-users" element={<LiveUsersPage />} />
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />

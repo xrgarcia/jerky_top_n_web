@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAchievements, useGamificationProgress } from '../../hooks/useCoinBook';
 import { useCoinBookWebSocket } from '../../hooks/useCoinBookWebSocket';
 import { TIER_EMOJIS } from '../../../shared/constants/tierEmojis.mjs';
 import './CoinBookWidget.css';
 
 export default function CoinBookWidget({ defaultCollapsed = false }) {
+  const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
   const { data: achievementsData, isLoading: achievementsLoading } = useAchievements();
   const { data: progressData, isLoading: progressLoading } = useGamificationProgress();
@@ -186,9 +188,8 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                   const tooltipId = `tooltip-${achievement.id}`;
                   
                   const handleActivate = () => {
-                    if (achievement.earned && achievement.code) {
-                      window.location.hash = `#coins/${achievement.code}`;
-                    }
+                    // Navigate to coin profile page (works for both earned and locked coins)
+                    navigate(`/coinbook/${achievement.id}`);
                   };
                   
                   const handleKeyDown = (e) => {

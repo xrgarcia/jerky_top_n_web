@@ -1,0 +1,255 @@
+.coin-profile-page {
+  min-height: calc(100vh - 200px);
+  padding: 2rem;
+  background: linear-gradient(135deg, #f5f3ed 0%, #e8e6dd 100%);
+}
+
+.coin-profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.coin-profile-page.loading,
+.coin-profile-page.error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e9ecef;
+  border-top-color: #7b8b52;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Header */
+.coin-header {
+  margin-bottom: 2rem;
+}
+
+.back-btn {
+  background: white;
+  border: 1px solid #dee2e6;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  color: #495057;
+}
+
+.back-btn:hover {
+  background: #f8f9fa;
+  border-color: #adb5bd;
+}
+
+/* Hero Section */
+.coin-hero {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #7b8b52;
+  margin-bottom: 2rem;
+}
+
+.coin-type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 2rem;
+}
+
+.badge-icon {
+  font-size: 1.1rem;
+}
+
+.coin-icon-container {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.coin-icon-emoji {
+  font-size: 6rem;
+  line-height: 1;
+}
+
+.coin-icon-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+.tier-badge {
+  position: absolute;
+  bottom: -10px;
+  right: -10px;
+  font-size: 2rem;
+  background: white;
+  border-radius: 50%;
+  padding: 0.25rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.locked-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 4rem;
+  opacity: 0.3;
+}
+
+.coin-name {
+  font-size: 2.5rem;
+  color: #2c3e50;
+  margin-bottom: 0.5rem;
+}
+
+.coin-tagline {
+  font-size: 1.1rem;
+  color: #7f8c8d;
+  margin-bottom: 1rem;
+}
+
+.earned-date {
+  display: inline-block;
+  background: #d4edda;
+  color: #155724;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* Sections */
+.coin-section {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.coin-section h2 {
+  font-size: 1.5rem;
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.coin-description,
+.coin-section p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #495057;
+}
+
+/* Progress */
+.progress-bar-container {
+  width: 100%;
+  height: 32px;
+  background: #e9ecef;
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: #7b8b52;
+  transition: width 0.3s ease;
+  border-radius: 16px;
+}
+
+.progress-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.current-tier {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* How to Earn */
+.how-to-earn {
+  border-left: 4px solid #7b8b52;
+  background: #f8f9fa;
+}
+
+/* Coin Type Info */
+.coin-type-info {
+  background: linear-gradient(135deg, #fef9ec 0%, #f8f5e9 100%);
+}
+
+/* CTA */
+.cta-section {
+  text-align: center;
+  padding: 2rem;
+}
+
+.cta-btn {
+  background: #7b8b52;
+  color: white;
+  border: none;
+  padding: 1rem 2.5rem;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
+}
+
+.cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(123, 139, 82, 0.4);
+}
+
+.cta-btn:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .coin-profile-page {
+    padding: 1rem;
+  }
+
+  .coin-hero {
+    padding: 2rem 1.5rem;
+  }
+
+  .coin-name {
+    font-size: 2rem;
+  }
+
+  .coin-icon-emoji {
+    font-size: 4.5rem;
+  }
+
+  .coin-section {
+    padding: 1.5rem;
+  }
+}

@@ -113,6 +113,20 @@ const achievements = pgTable('achievements', {
   updatedAt: timestamp('updated_at').defaultNow(),
 });
 
+// Coin type configuration - defines branding and content for each coin type
+const coinTypeConfig = pgTable('coin_type_config', {
+  collectionType: text('collection_type').primaryKey(), // 'engagement_collection', 'static_collection', 'dynamic_collection', 'flavor_coin', 'legacy'
+  displayName: text('display_name').notNull(), // e.g., 'Engagement Coins'
+  tagline: text('tagline').notNull(), // e.g., 'Earned through active participation'
+  description: text('description').notNull(), // Full description of this coin type
+  icon: text('icon').notNull(), // Emoji icon for this coin type
+  color: text('color').notNull(), // Hex color for branding (e.g., '#c4a962')
+  howToEarn: text('how_to_earn').notNull(), // Instructions on earning these coins
+  metadata: jsonb('metadata'), // Additional flexible data
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+});
+
 // User achievements - badges earned by users
 const userAchievements = pgTable('user_achievements', {
   id: serial('id').primaryKey(),
@@ -375,6 +389,7 @@ module.exports = {
   userProductSearches,
   flavorCoins,
   achievements,
+  coinTypeConfig,
   userAchievements,
   streaks,
   activityLogs,

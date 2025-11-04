@@ -2768,6 +2768,45 @@ app.get('/api/products/:productId/stats', async (req, res) => {
   }
 });
 
+// Coin Types Routes - Public API for coin type configurations
+const { coinTypeConfig } = require('./shared/schema');
+const { eq: eqCoinType } = require('drizzle-orm');
+
+// GET /api/coin-types - Get all coin type configurations
+app.get('/api/coin-types', async (req, res) => {
+  try {
+    const { db } = require('./server/db.js');
+    const configs = await db.select().from(coinTypeConfig);
+    res.json({ configs });
+  } catch (error) {
+    console.error('Error fetching coin type configs:', error);
+    res.status(500).json({ error: 'Failed to fetch coin type configurations' });
+  }
+});
+
+// GET /api/coin-types/:type - Get specific coin type configuration
+app.get('/api/coin-types/:type', async (req, res) => {
+  try {
+    const { db } = require('./server/db.js');
+    const { type } = req.params;
+    
+    const config = await db
+      .select()
+      .from(coinTypeConfig)
+      .where(eqCoinType(coinTypeConfig.collectionType, type))
+      .limit(1);
+
+    if (config.length === 0) {
+      return res.status(404).json({ error: 'Coin type configuration not found' });
+    }
+
+    res.json(config[0]);
+  } catch (error) {
+    console.error('Error fetching coin type config:', error);
+    res.status(500).json({ error: 'Failed to fetch coin type configuration' });
+  }
+});
+
 // GET /api/profile - Get current user profile
 app.get('/api/profile', async (req, res) => {
   try {
@@ -3340,6 +3379,11 @@ if (databaseAvailable && storage) {
       const createUserGuidanceAdminRoutes = require('./server/routes/admin/userGuidance');
       const userGuidanceRouter = createUserGuidanceAdminRoutes(services);
       adminRouter.use(userGuidanceRouter);
+      
+      // Add Coin Types admin routes
+      const createCoinTypesAdminRoutes = require('./server/routes/admin/coinTypes');
+      const coinTypesAdminRouter = createCoinTypesAdminRoutes(storage, db);
+      adminRouter.use(coinTypesAdminRouter);
       
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
