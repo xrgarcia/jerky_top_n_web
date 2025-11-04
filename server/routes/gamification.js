@@ -949,25 +949,17 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
       
-      // Get classification for user
-      const classification = await services.userClassificationService.getUserClassification(userId);
-      
-      // Get personalized guidance message
-      const guidance = await services.personalizedGuidanceService.getGuidanceMessage(classification);
+      // Get personalized guidance (handles classification internally)
+      const guidance = await services.personalizedGuidanceService.getGuidance(userId);
 
       res.json({
-        classification: {
-          journeyStage: classification.journeyStage,
-          engagementLevel: classification.engagementLevel,
-          explorationBreadth: classification.explorationBreadth,
-          tasteCommunity: classification.tasteCommunity
-        },
+        classification: guidance.classification,
         guidance: {
           message: guidance.message,
-          icon: guidance.icon,
-          priority: guidance.priority,
-          action: guidance.action
-        }
+          type: guidance.type,
+          icon: guidance.icon
+        },
+        stats: guidance.stats
       });
     } catch (error) {
       console.error('Error fetching user guidance:', error);
