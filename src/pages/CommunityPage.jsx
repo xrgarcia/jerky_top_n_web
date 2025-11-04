@@ -1,25 +1,53 @@
 import React, { useState } from 'react';
-import { useCommunityUsers } from '../hooks/useCommunity';
+import { Link } from 'react-router-dom';
+import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
+import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './CommunityPage.css';
 
 function CommunityPage() {
   const [search, setSearch] = useState('');
   const { data, isLoading, error } = useCommunityUsers({ search });
+  const { data: topRankers, isLoading: loadingTop } = useLeaderboard({ limit: 5 });
 
   const users = data?.users || [];
+  const top5 = topRankers || [];
 
   return (
     <div className="community-page">
       <div className="community-container">
         <div className="community-header">
           <h1>👥 Community</h1>
-          <p>Discover other jerky enthusiasts</p>
+          <PersonalizedGuidance pageContext="community" />
         </div>
+
+        {!loadingTop && top5.length > 0 && (
+          <div className="top-rankers-widget">
+            <h2>🏆 Top 5 Rankers</h2>
+            <div className="top-rankers-list">
+              {top5.map((ranker, index) => (
+                <Link 
+                  key={ranker.userId} 
+                  to={`/community/${ranker.userId}`}
+                  className="top-ranker-item"
+                >
+                  <div className="top-ranker-position">#{index + 1}</div>
+                  <div className="top-ranker-avatar">
+                    {ranker.displayName?.charAt(0)}
+                  </div>
+                  <div className="top-ranker-info">
+                    <div className="top-ranker-name">{ranker.displayName}</div>
+                    <div className="top-ranker-score">{ranker.engagementScore} pts</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
 
         <div className="search-bar">
           <input
             type="text"
-            placeholder="Search community members..."
+            placeholder="Search by name or flavor..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="search-input"
@@ -32,9 +60,13 @@ function CommunityPage() {
         {!isLoading && !error && (
           <div className="users-grid">
             {users.map(user => (
-              <div key={user.user_id} className="user-card">
+              <Link 
+                key={user.user_id} 
+                to={`/community/${user.user_id}`}
+                className="user-card"
+              >
                 <div className="user-avatar">
-                  {user.first_name?.charAt(0)}{user.last_name?.charAt(0)}
+                  {user.display_name?.charAt(0)}
                 </div>
                 <h3 className="user-name">{user.display_name}</h3>
                 <div className="user-stats">
@@ -51,7 +83,7 @@ function CommunityPage() {
                   <div className="user-badges">
                     {user.badges.slice(0, 3).map((badge, i) => (
                       <span key={i} className="badge" title={badge.name}>
-                        {badge.icon?.startsWith('/') ? (
+                        {badge.iconType === 'url' ? (
                           <img src={badge.icon} alt={badge.name} className="badge-img" />
                         ) : (
                           badge.icon
@@ -60,7 +92,7 @@ function CommunityPage() {
                     ))}
                   </div>
                 )}
-              </div>
+              </Link>
             ))}
           </div>
         )}

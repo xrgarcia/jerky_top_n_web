@@ -14,6 +14,7 @@ import ProductsPage from '../../pages/ProductsPage';
 import CoinBookPage from '../../pages/CoinBookPage';
 import CoinProfilePage from '../../pages/CoinProfilePage';
 import CommunityPage from '../../pages/CommunityPage';
+import UserProfilePage from '../../pages/UserProfilePage';
 import LeaderboardPage from '../../pages/LeaderboardPage';
 import ProfilePage from '../../pages/ProfilePage';
 import RankPage from '../../pages/RankPage';
@@ -76,6 +77,11 @@ function AppLayout() {
           <Route path="/community" element={
             <ProtectedRoute>
               <CommunityPage />
+            </ProtectedRoute>
+          } />
+          <Route path="/community/:userId" element={
+            <ProtectedRoute>
+              <UserProfilePage />
             </ProtectedRoute>
           } />
           <Route path="/leaderboard" element={
