@@ -283,43 +283,7 @@
   }
 }
 
-/* Drag overlay - fixed size to match product cards */
-.product-card-overlay {
-  width: 200px;
-  background: white;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border: 2px solid #8B4513;
-  cursor: grabbing;
-  opacity: 0.95;
-  transition: none !important;
-  transform: translate3d(0, 0, 0);
-  will-change: transform;
-}
-
-.product-card-overlay .product-image {
-  width: 100%;
-  height: 200px;
-  background-color: #f8f8f8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-card-overlay .product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.product-card-overlay .product-info {
-  padding: 1rem;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
+/* Drag overlay styles consolidated in DragStyles.css */
 
 /* Search box */
 .search-box {

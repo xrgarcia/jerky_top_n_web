@@ -1,5 +1,6 @@
 import { useDraggable } from '@dnd-kit/core';
 import './DraggableProduct.css';
+import './DragStyles.css';
 
 export function DraggableProduct({ product, isDragging: isBeingDragged }) {
   const { attributes, listeners, setNodeRef } = useDraggable({

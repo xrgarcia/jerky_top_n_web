@@ -1,6 +1,7 @@
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import './SortableSlot.css';
+import './DragStyles.css';
 
 export function SortableSlot({ position, product, onRemove, isDragging }) {
   const {

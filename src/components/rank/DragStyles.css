@@ -1,0 +1,44 @@
+/* ===================================
+   CONSOLIDATED DRAG & DROP STYLES
+   Single source of truth for all drag behavior
+   =================================== */
+
+/* Product Card - Base States */
+.product-card {
+  cursor: grab;
+}
+
+.product-card:active {
+  cursor: grabbing;
+}
+
+/* Product Card - While Dragging (original stays in place) */
+.product-card.dragging {
+  opacity: 0.5;
+  position: relative;
+}
+
+/* Product Card - DragOverlay Clone (clean, no effects) */
+.product-card.dragging-overlay {
+  cursor: grabbing;
+}
+
+/* Ranking Slot - Base States */
+.ranking-slot {
+  cursor: grab;
+}
+
+.ranking-slot:active {
+  cursor: grabbing;
+}
+
+/* Ranking Slot - While Dragging (original stays in place) */
+.ranking-slot.dragging {
+  opacity: 0.5;
+}
+
+/* Ranking Slot - Drop Target Highlighting */
+.ranking-slot.drag-over {
+  border-color: #8B4513;
+  background-color: #fef8f0;
+}

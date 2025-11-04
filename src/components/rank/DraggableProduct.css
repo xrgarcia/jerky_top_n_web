@@ -1,18 +1,1 @@
-.product-card {
-  cursor: grab;
-}
-
-.product-card:active {
-  cursor: grabbing;
-}
-
-/* Grey overlay when dragging - product stays in place */
-.product-card.dragging {
-  opacity: 0.5;
-  position: relative;
-}
-
-/* Overlay clone shown by DragOverlay - clean with no effects */
-.product-card.dragging-overlay {
-  cursor: grabbing;
-}
+/* Drag styles moved to DragStyles.css for consolidation */

@@ -8,23 +8,11 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  cursor: grab;
   position: relative;
   flex-shrink: 0;
 }
 
-.ranking-slot:active {
-  cursor: grabbing;
-}
-
-.ranking-slot.drag-over {
-  border-color: #8B4513;
-  background-color: #fef8f0;
-}
-
-.ranking-slot.dragging {
-  opacity: 0.5;
-}
+/* Drag states moved to DragStyles.css for consolidation */
 
 .ranking-slot.empty {
   border-style: dashed;
