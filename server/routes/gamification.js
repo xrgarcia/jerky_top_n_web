@@ -949,12 +949,16 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
       
-      // Get personalized guidance (handles classification internally)
-      const guidance = await services.personalizedGuidanceService.getGuidance(userId);
+      // Get page context from query parameter (rank, products, community, coinbook, general)
+      const pageContext = req.query.page || 'general';
+      
+      // Get personalized, page-aware guidance (handles classification internally)
+      const guidance = await services.personalizedGuidanceService.getGuidance(userId, pageContext);
 
       res.json({
         classification: guidance.classification,
         guidance: {
+          title: guidance.title,
           message: guidance.message,
           type: guidance.type,
           icon: guidance.icon

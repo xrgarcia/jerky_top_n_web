@@ -2,22 +2,23 @@ const userClassificationService = require('./UserClassificationService');
 const tasteCommunityService = require('./TasteCommunityService');
 
 /**
- * PersonalizedGuidanceService - Generates targeted guidance messages based on user classification
+ * PersonalizedGuidanceService - Generates page-aware, journey-specific guidance
  * 
- * Message categories:
- * 1. New users - explain the game
- * 2. Low engagement - encourage exploration  
- * 3. Narrow focus - encourage discovery
- * 4. High performers - positive reinforcement
- * 5. Community-based - connect with similar users
+ * Design principles:
+ * - Encourage action (no passive messages)
+ * - Push completionist behavior
+ * - Clear CTAs (no unsupervised thinking)
+ * - Fun jerky.com voice
+ * - Context-aware (page + journey stage)
  */
 class PersonalizedGuidanceService {
   /**
    * Get personalized guidance for user
    * @param {number} userId - User ID
+   * @param {string} pageContext - Page context: 'rank', 'products', 'community', 'coinbook', 'general'
    * @returns {object} Guidance data with message, type, and classification
    */
-  async getGuidance(userId) {
+  async getGuidance(userId, pageContext = 'general') {
     // Get or create classification
     let classification = await userClassificationService.getUserClassification(userId);
     
@@ -38,11 +39,12 @@ class PersonalizedGuidanceService {
       community = await tasteCommunityService.getCommunity(classification.tasteCommunityId);
     }
 
-    // Generate message based on classification
-    const message = this._generateMessage(classification, community);
+    // Generate page-aware, journey-aware message
+    const message = this._generateMessage(classification, community, pageContext);
 
     return {
       message: message.text,
+      title: message.title,
       type: message.type,
       icon: message.icon,
       classification: {
@@ -61,94 +63,294 @@ class PersonalizedGuidanceService {
   }
 
   /**
-   * Generate personalized message based on classification
+   * Generate page-aware, journey-specific message
+   * @private
    */
-  _generateMessage(classification, community) {
-    const { journeyStage, engagementLevel, explorationBreadth, focusAreas } = classification;
+  _generateMessage(classification, community, pageContext) {
+    const { journeyStage, engagementLevel, explorationBreadth, focusAreas, classificationData } = classification;
+    const rankedCount = classificationData?.totalRankings || 0;
 
-    // Priority 1: New users need onboarding
+    // RANK PAGE - Action-focused, drag-and-drop emphasis
+    if (pageContext === 'rank') {
+      return this._getRankPageMessage(journeyStage, engagementLevel, rankedCount, community);
+    }
+
+    // PRODUCTS PAGE - Discovery and catalog exploration
+    if (pageContext === 'products') {
+      return this._getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas);
+    }
+
+    // COMMUNITY PAGE - Social connection and comparison
+    if (pageContext === 'community') {
+      return this._getCommunityPageMessage(journeyStage, engagementLevel, community);
+    }
+
+    // COIN BOOK PAGE - Achievement hunting
+    if (pageContext === 'coinbook') {
+      return this._getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount);
+    }
+
+    // GENERAL / FALLBACK - Journey-based only
+    return this._getGeneralMessage(journeyStage, engagementLevel, rankedCount, community);
+  }
+
+  /**
+   * RANK PAGE: Encourage ranking action
+   * @private
+   */
+  _getRankPageMessage(journeyStage, engagementLevel, rankedCount, community) {
+    // NEW USERS: Onboarding, explain the mechanic
     if (journeyStage === 'new_user') {
       return {
+        title: 'Welcome to Your Flavor Ranking!',
+        icon: '🎯',
         type: 'onboarding',
-        icon: '👋',
-        text: "Welcome to the Coin Book! As you rank flavors you've purchased, you'll earn Flavor Coins and unlock achievements. Each ranking helps you discover your taste profile and connects you with a community of fellow jerky enthusiasts."
+        text: "Ready to build your flavor profile? Drag products below to rank them from favorite to least favorite. Each ranking earns you Flavor Coins and unlocks achievements!"
       };
     }
 
-    // Priority 2: Dormant users need re-engagement
+    // DORMANT: Re-engagement
     if (journeyStage === 'dormant') {
       return {
+        title: 'Welcome Back, Flavor Hunter!',
+        icon: '🔥',
         type: 'reengagement',
-        icon: '🎯',
-        text: "We've missed you! New flavors have been added since your last visit. Come back and rank your recent purchases to earn more coins and see how your collection has grown."
+        text: "We've missed you! New flavors are waiting to be ranked. Jump back in and keep building your collection - your progress is still here!"
       };
     }
 
-    // Priority 3: High performers get positive reinforcement
-    if (journeyStage === 'power_user' && engagementLevel === 'very_high') {
-      const communityText = community 
-        ? ` You're a valued member of the ${community.icon} ${community.name} community!`
-        : '';
+    // POWER USERS: Challenge and competition
+    if (journeyStage === 'power_user') {
+      const communityBadge = community ? ` ${community.icon}` : '';
       return {
-        type: 'celebration',
-        icon: '🌟',
-        text: `You're crushing it! With your collection progress and engagement, you're one of our top players.${communityText} Keep exploring new flavors to unlock even more achievements.`
+        title: `You're Crushing It${communityBadge}`,
+        icon: '🏆',
+        type: 'challenge',
+        text: `${rankedCount} flavors ranked! Keep that streak alive and climb the leaderboard. Every new ranking brings you closer to completing your Coin Book!`
       };
     }
 
-    // Priority 4: Narrow focus + low engagement = encourage exploration
-    if (explorationBreadth === 'narrow' && (engagementLevel === 'none' || engagementLevel === 'low')) {
-      const focusText = focusAreas.length > 0 
-        ? ` You seem to enjoy ${focusAreas.slice(0, 2).join(' and ')} flavors.`
-        : '';
+    // ENGAGED: Momentum and streaks
+    if (journeyStage === 'engaged') {
       return {
-        type: 'exploration',
-        icon: '🔍',
-        text: `${focusText} Try branching out! Ranking different flavor profiles and protein types will help you discover new favorites and earn more Engagement Coins.`
+        title: 'Keep the Momentum Going!',
+        icon: '💪',
+        type: 'momentum',
+        text: "You're on a roll! Rank more flavors today to maintain your streak and unlock tiered achievements. The more you rank, the more coins you earn!"
       };
     }
 
-    // Priority 5: Community-based guidance
-    if (community) {
-      const memberCount = community.memberCount || 0;
-      return {
-        type: 'community',
-        icon: community.icon,
-        text: `You're part of the ${community.name} community! ${community.description} Connect with ${memberCount} other members who share your taste.`
-      };
-    }
-
-    // Priority 6: Engaged users - encourage consistency
-    if (journeyStage === 'engaged' && engagementLevel === 'medium') {
-      return {
-        type: 'encouragement',
-        icon: '🎖️',
-        text: "You're building a solid collection! Keep your ranking streak going to earn more Engagement Coins and unlock tiered achievements."
-      };
-    }
-
-    // Priority 7: Exploring users - guide next steps
+    // EXPLORING: Discovery and next steps
     if (journeyStage === 'exploring') {
-      const rankedCount = classification.classificationData?.totalRankings || 0;
       return {
-        type: 'guidance',
-        icon: '📈',
-        text: `Great start with ${rankedCount} flavors ranked! Try the search feature to find flavors that match your preferences, and check out the community to see what other players are ranking.`
+        title: 'Great Start!',
+        icon: '🚀',
+        type: 'discovery',
+        text: `${rankedCount} flavors ranked so far! Try the search feature below to find flavors you've purchased, then drag them into your ranking. Each one gets you closer to unlocking new coins!`
       };
     }
 
-    // Default: Generic encouragement
+    // DEFAULT
     return {
+      title: 'Build Your Rankings',
+      icon: '📊',
       type: 'general',
+      text: "Drag products to rank them! Every ranking earns Flavor Coins and brings you closer to completing your collection."
+    };
+  }
+
+  /**
+   * PRODUCTS PAGE: Discovery and catalog browsing
+   * @private
+   */
+  _getProductsPageMessage(journeyStage, engagementLevel, explorationBreadth, focusAreas) {
+    // NEW USERS: Browse and discover
+    if (journeyStage === 'new_user') {
+      return {
+        title: 'Discover Your Next Favorite!',
+        icon: '🔍',
+        type: 'discovery',
+        text: "Browse our full catalog of jerky flavors! When you find ones you've tried, head to the Rank page to add them to your collection and earn Flavor Coins."
+      };
+    }
+
+    // NARROW FOCUS: Encourage exploration
+    if (explorationBreadth === 'narrow' && focusAreas.length > 0) {
+      const focusText = focusAreas.slice(0, 2).join(' and ');
+      return {
+        title: 'Branch Out & Discover!',
+        icon: '🌟',
+        type: 'exploration',
+        text: `You seem to love ${focusText} - awesome! But there's more to explore. Try new flavor profiles and protein types to earn Engagement Coins and unlock collection achievements!`
+      };
+    }
+
+    // POWER USERS: Complete the catalog
+    if (journeyStage === 'power_user') {
+      return {
+        title: 'Complete Your Catalog!',
+        icon: '📚',
+        type: 'completion',
+        text: "You're a flavor explorer extraordinaire! Find products you haven't ranked yet and add them to your collection. Every new flavor brings you closer to 100% catalog completion!"
+      };
+    }
+
+    // EXPLORING/ENGAGED: Search and filter
+    return {
+      title: 'Explore the Catalog!',
+      icon: '🎯',
+      type: 'discovery',
+      text: "Use filters to find flavors that match your taste! Try different animals, flavor profiles, or brands. The more you explore, the more you'll discover!"
+    };
+  }
+
+  /**
+   * COMMUNITY PAGE: Social connection
+   * @private
+   */
+  _getCommunityPageMessage(journeyStage, engagementLevel, community) {
+    // WITH COMMUNITY: Connect with tribe
+    if (community) {
+      return {
+        title: `${community.icon} ${community.name}`,
+        icon: '👥',
+        type: 'community',
+        text: `You're part of the ${community.name} community! ${community.description} Check out what fellow members are ranking and compare your collections!`
+      };
+    }
+
+    // NEW USERS: Explain community
+    if (journeyStage === 'new_user') {
+      return {
+        title: 'Find Your Flavor Tribe!',
+        icon: '🤝',
+        type: 'community',
+        text: "See what other jerky lovers are ranking! As you rank more flavors, you'll be matched with a community of people who share your taste preferences."
+      };
+    }
+
+    // POWER USERS: Compete
+    if (journeyStage === 'power_user') {
+      return {
+        title: 'Compare & Compete!',
+        icon: '🏅',
+        type: 'competition',
+        text: "Check out the leaderboard and see how your collection stacks up! Find players with similar tastes and discover flavors you might be missing."
+      };
+    }
+
+    // DEFAULT
+    return {
+      title: 'Connect with Fellow Rankers!',
+      icon: '👋',
+      type: 'community',
+      text: "See what the community is ranking! Compare collections, discover popular flavors, and find your flavor tribe."
+    };
+  }
+
+  /**
+   * COIN BOOK PAGE: Achievement hunting
+   * @private
+   */
+  _getCoinBookPageMessage(journeyStage, engagementLevel, rankedCount) {
+    // NEW USERS: Explain achievements
+    if (journeyStage === 'new_user') {
+      return {
+        title: 'Your Achievement Journey!',
+        icon: '🎖️',
+        type: 'achievement',
+        text: "This is your Coin Book! Every flavor you rank, search you make, and streak you maintain earns achievements and coins. Start ranking to unlock your first coin!"
+      };
+    }
+
+    // POWER USERS: Push completion
+    if (journeyStage === 'power_user') {
+      return {
+        title: 'Complete Your Coin Book!',
+        icon: '💎',
+        type: 'completion',
+        text: "You're on fire! Track your progress toward Diamond tier and complete every collection. Unlock all the coins to become a true jerky legend!"
+      };
+    }
+
+    // EXPLORING/ENGAGED: Next milestone
+    return {
+      title: 'Unlock More Coins!',
+      icon: '🪙',
+      type: 'progress',
+      text: "Each achievement brings you closer to completing your Coin Book! Check your progress bars to see what's next, then jump to the Rank page to keep earning!"
+    };
+  }
+
+  /**
+   * GENERAL / FALLBACK: Journey-based messaging
+   * @private
+   */
+  _getGeneralMessage(journeyStage, engagementLevel, rankedCount, community) {
+    // NEW USERS
+    if (journeyStage === 'new_user') {
+      return {
+        title: 'Welcome to the Coin Book!',
+        icon: '👋',
+        type: 'onboarding',
+        text: "Rank the flavors you've purchased to earn Flavor Coins and unlock achievements. Each ranking helps you discover your taste profile!"
+      };
+    }
+
+    // DORMANT
+    if (journeyStage === 'dormant') {
+      return {
+        title: 'We Missed You!',
+        icon: '🎯',
+        type: 'reengagement',
+        text: "New flavors have been added since your last visit! Come back and rank your recent purchases to earn more coins and see how your collection has grown."
+      };
+    }
+
+    // POWER USERS
+    if (journeyStage === 'power_user') {
+      const communityText = community ? ` You're a valued ${community.icon} ${community.name} member!` : '';
+      return {
+        title: "You're a Flavor Legend!",
+        icon: '🌟',
+        type: 'celebration',
+        text: `${rankedCount} flavors ranked!${communityText} Keep building your collection and climbing the leaderboard!`
+      };
+    }
+
+    // ENGAGED
+    if (journeyStage === 'engaged') {
+      return {
+        title: 'Building Your Collection!',
+        icon: '🎖️',
+        type: 'momentum',
+        text: "You're making great progress! Keep your ranking streak alive to earn Engagement Coins and unlock tiered achievements."
+      };
+    }
+
+    // EXPLORING
+    if (journeyStage === 'exploring') {
+      return {
+        title: 'Great Progress!',
+        icon: '📈',
+        type: 'guidance',
+        text: `${rankedCount} flavors ranked! Use the search feature to find more products you've tried, and check out the community to see what others are ranking.`
+      };
+    }
+
+    // DEFAULT
+    return {
+      title: 'Build Your Coin Book!',
       icon: '📖',
-      text: "Keep building your Coin Book! Every flavor you rank brings you closer to completing collections and unlocking new achievements."
+      type: 'general',
+      text: "Every flavor you rank brings you closer to completing collections and unlocking new achievements!"
     };
   }
 
   /**
    * Get message based on specific classification override (for admin testing)
    */
-  async getMessageForClassification(journeyStage, engagementLevel, explorationBreadth, focusAreas = [], communityId = null) {
+  async getMessageForClassification(journeyStage, engagementLevel, explorationBreadth, focusAreas = [], communityId = null, pageContext = 'general') {
     let community = null;
     if (communityId) {
       community = await tasteCommunityService.getCommunity(communityId);
@@ -159,10 +361,10 @@ class PersonalizedGuidanceService {
       engagementLevel,
       explorationBreadth,
       focusAreas,
-      classificationData: {}
+      classificationData: { totalRankings: 0 }
     };
 
-    return this._generateMessage(mockClassification, community);
+    return this._generateMessage(mockClassification, community, pageContext);
   }
 }
 

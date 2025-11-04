@@ -3,7 +3,7 @@ import { useSocket } from '../../hooks/useSocket';
 import { api } from '../../utils/api';
 import './PersonalizedGuidance.css';
 
-export default function PersonalizedGuidance() {
+export default function PersonalizedGuidance({ page = 'general' }) {
   const [guidance, setGuidance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,7 +13,7 @@ export default function PersonalizedGuidance() {
   const fetchGuidance = async () => {
     try {
       setLoading(true);
-      const data = await api.get('/gamification/user-guidance');
+      const data = await api.get(`/gamification/user-guidance?page=${page}`);
       setGuidance(data);
       setError(null);
     } catch (err) {
@@ -26,7 +26,7 @@ export default function PersonalizedGuidance() {
 
   useEffect(() => {
     fetchGuidance();
-  }, []);
+  }, [page]);
 
   useEffect(() => {
     if (!socket) return;
@@ -72,7 +72,7 @@ export default function PersonalizedGuidance() {
       <div className="guidance-header" onClick={() => setIsCollapsed(!isCollapsed)}>
         <div className="guidance-title">
           <span className="guidance-icon">{guidanceMessage.icon}</span>
-          <span className="guidance-label">Personalized Tip</span>
+          <span className="guidance-label">{guidanceMessage.title || 'Personalized Tip'}</span>
         </div>
         <button className="collapse-btn" aria-label={isCollapsed ? 'Expand' : 'Collapse'}>
           {isCollapsed ? '▼' : '▲'}

@@ -533,7 +533,7 @@ Continue?`;
       <div className="rank-page">
         <div className="rank-container">
           {/* Personalized Guidance - Shows user-specific tips and recommendations */}
-          <PersonalizedGuidance />
+          <PersonalizedGuidance page="rank" />
           
           {/* Coin Book Widget - Shows user's achievement progress */}
           <CoinBookWidget defaultCollapsed={true} />
