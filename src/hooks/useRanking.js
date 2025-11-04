@@ -291,6 +291,7 @@ export function useRanking(options = {}) {
           await api.post('/rankings/products', {
             rankingListId: 'default',
             rankings: rankings.map(r => ({
+              productId: r.productData.id,
               ranking: r.ranking,
               productData: r.productData
             }))
