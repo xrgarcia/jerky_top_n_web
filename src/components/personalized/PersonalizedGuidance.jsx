@@ -7,7 +7,6 @@ export default function PersonalizedGuidance({ page = 'general' }) {
   const [guidance, setGuidance] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const { socket } = useSocket();
 
   const fetchGuidance = async () => {
@@ -68,27 +67,22 @@ export default function PersonalizedGuidance({ page = 'general' }) {
   const { guidance: guidanceMessage } = guidance;
 
   return (
-    <div className={`personalized-guidance ${isCollapsed ? 'collapsed' : ''}`}>
-      <div className="guidance-header" onClick={() => setIsCollapsed(!isCollapsed)}>
+    <div className="personalized-guidance">
+      <div className="guidance-header">
         <div className="guidance-title">
           <span className="guidance-icon">{guidanceMessage.icon}</span>
           <span className="guidance-label">{guidanceMessage.title || 'Personalized Tip'}</span>
         </div>
-        <button className="collapse-btn" aria-label={isCollapsed ? 'Expand' : 'Collapse'}>
-          {isCollapsed ? '▼' : '▲'}
-        </button>
       </div>
       
-      {!isCollapsed && (
-        <div className="guidance-content">
-          <p className="guidance-message">{guidanceMessage.message}</p>
-          {guidanceMessage.action && (
-            <div className="guidance-action">
-              <span className="action-label">{guidanceMessage.action}</span>
-            </div>
-          )}
-        </div>
-      )}
+      <div className="guidance-content">
+        <p className="guidance-message">{guidanceMessage.message}</p>
+        {guidanceMessage.action && (
+          <div className="guidance-action">
+            <span className="action-label">{guidanceMessage.action}</span>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

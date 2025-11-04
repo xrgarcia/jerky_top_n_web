@@ -2,14 +2,10 @@
   background: linear-gradient(135deg, #7b8b52 0%, #6b7a45 100%);
   border: 2px solid #c4a962;
   border-radius: 12px;
-  padding: 16px;
+  padding: 28px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
-}
-
-.personalized-guidance.collapsed {
-  padding: 12px 16px;
 }
 
 .personalized-guidance.loading {
@@ -37,23 +33,21 @@
 
 .guidance-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  cursor: pointer;
-  user-select: none;
+  margin-bottom: 12px;
 }
 
 .guidance-title {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   color: #fff;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 700;
+  font-size: 26px;
 }
 
 .guidance-icon {
-  font-size: 24px;
+  font-size: 32px;
   flex-shrink: 0;
 }
 
@@ -61,30 +55,14 @@
   color: #f5f5dc;
 }
 
-.collapse-btn {
-  background: transparent;
-  border: none;
-  color: #c4a962;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: transform 0.2s;
-}
-
-.collapse-btn:hover {
-  transform: scale(1.1);
-}
-
 .guidance-content {
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(196, 169, 98, 0.3);
+  margin-top: 0;
 }
 
 .guidance-message {
   color: #fff;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 19px;
+  line-height: 1.7;
   margin: 0 0 12px 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
@@ -104,19 +82,19 @@
 
 @media (max-width: 768px) {
   .personalized-guidance {
-    padding: 14px;
+    padding: 20px;
     margin-bottom: 16px;
   }
 
   .guidance-title {
-    font-size: 15px;
+    font-size: 22px;
   }
 
   .guidance-icon {
-    font-size: 20px;
+    font-size: 28px;
   }
 
   .guidance-message {
-    font-size: 14px;
+    font-size: 17px;
   }
 }
