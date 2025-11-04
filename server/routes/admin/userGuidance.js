@@ -37,6 +37,15 @@ function createUserGuidanceAdminRoutes(services) {
         // Get classification for each user
         const classification = await userClassificationService.getUserClassification(user.id);
         
+        // If classification has tasteCommunityId, fetch community name
+        let tasteCommunity = null;
+        if (classification?.tasteCommunityId) {
+          const communityResult = await db.execute(sql`
+            SELECT name FROM taste_communities WHERE id = ${classification.tasteCommunityId}
+          `);
+          tasteCommunity = communityResult.rows[0]?.name || null;
+        }
+        
         return {
           id: user.id,
           email: user.email,
@@ -52,7 +61,7 @@ function createUserGuidanceAdminRoutes(services) {
             journeyStage: classification.journeyStage,
             engagementLevel: classification.engagementLevel,
             explorationBreadth: classification.explorationBreadth,
-            tasteCommunity: classification.tasteCommunity
+            tasteCommunity: tasteCommunity
           } : null
         };
       }));

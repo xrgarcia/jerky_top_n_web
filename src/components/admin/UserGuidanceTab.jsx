@@ -85,22 +85,34 @@ export default function UserGuidanceTab() {
                   <td>{user.displayName || 'Unknown'}</td>
                   <td className="email-cell">{user.email}</td>
                   <td>
-                    <span className={`badge badge-journey badge-${user.classification.journeyStage}`}>
-                      {user.classification.journeyStage.replace('_', ' ')}
-                    </span>
+                    {user.classification ? (
+                      <span className={`badge badge-journey badge-${user.classification.journeyStage}`}>
+                        {user.classification.journeyStage.replace('_', ' ')}
+                      </span>
+                    ) : (
+                      <span className="badge badge-unclassified">Not Classified</span>
+                    )}
                   </td>
                   <td>
-                    <span className={`badge badge-engagement badge-${user.classification.engagementLevel}`}>
-                      {user.classification.engagementLevel.replace('_', ' ')}
-                    </span>
+                    {user.classification ? (
+                      <span className={`badge badge-engagement badge-${user.classification.engagementLevel}`}>
+                        {user.classification.engagementLevel.replace('_', ' ')}
+                      </span>
+                    ) : (
+                      <span className="text-muted">—</span>
+                    )}
                   </td>
                   <td>
-                    <span className="badge badge-exploration">
-                      {user.classification.explorationBreadth}
-                    </span>
+                    {user.classification ? (
+                      <span className="badge badge-exploration">
+                        {user.classification.explorationBreadth}
+                      </span>
+                    ) : (
+                      <span className="text-muted">—</span>
+                    )}
                   </td>
                   <td>
-                    {user.classification.tasteCommunity || 
+                    {user.classification?.tasteCommunity || 
                       <span className="text-muted">None</span>}
                   </td>
                   <td className="text-center">{user.rankedCount}</td>
