@@ -3,13 +3,14 @@ import './DraggableProduct.css';
 import './DragStyles.css';
 
 export function DraggableProduct({ product, isDragging: isBeingDragged }) {
-  const { attributes, listeners, setNodeRef } = useDraggable({
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: `product-${product.id}`,
   });
 
-  // No transform - keep product in original position
-  // DragOverlay handles the visual feedback of dragging
-  const style = {};
+  // Apply transform so item follows cursor when dragged
+  const style = transform ? {
+    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
+  } : {};
 
   return (
     <div

@@ -13,9 +13,11 @@ export function SortableSlot({ position, product, onRemove, isDragging }) {
     isOver
   } = useSortable({ id: `slot-${position}` });
 
-  // Remove transform/transition - keep items stationary like DraggableProduct
-  // DragOverlay will show the visual feedback
-  const style = {};
+  // Apply transform and transition so item moves during drag/reorder
+  const style = {
+    transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+    transition,
+  };
 
   const handleRemove = (e) => {
     e.stopPropagation();

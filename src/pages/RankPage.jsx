@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors, DragOverlay } from '@dnd-kit/core';
+import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
@@ -279,27 +279,6 @@ export default function RankPage() {
     return slotsArray;
   }, [slotCount, rankedProducts]);
   
-  // Get the active dragged item for DragOverlay (product or ranked slot)
-  const activeDragItem = useMemo(() => {
-    if (!activeId) return null;
-    
-    // Dragging from purchased products
-    if (activeId.startsWith('product-')) {
-      const productId = activeId.replace('product-', '');
-      const product = products.find(p => p && p.id === productId);
-      return product ? { type: 'product', data: product } : null;
-    }
-    
-    // Dragging from ranked slots
-    if (activeId.startsWith('slot-')) {
-      const position = parseInt(activeId.replace('slot-', ''));
-      const rankedItem = rankedProducts.find(r => r && r.ranking === position);
-      return rankedItem ? { type: 'slot', data: rankedItem.productData, position } : null;
-    }
-    
-    return null;
-  }, [activeId, products, rankedProducts]);
-  
   // Drag handlers
   const handleDragStart = (event) => {
     setActiveId(event.active.id);
@@ -572,30 +551,6 @@ export default function RankPage() {
         </div>
       </div>
       </div>
-      
-      {/* DragOverlay shows clone of dragged item (product or ranked slot) with uniform styling */}
-      <DragOverlay>
-        {activeDragItem ? (
-          <div className="product-card dragging-overlay">
-            <div className="product-image">
-              {activeDragItem.data.image ? (
-                <img src={activeDragItem.data.image} alt={activeDragItem.data.title} />
-              ) : (
-                <div className="no-image">No Image</div>
-              )}
-            </div>
-            <div className="product-info">
-              <h3 className="product-name">{activeDragItem.data.title}</h3>
-              {activeDragItem.data.vendor && (
-                <p className="product-vendor">{activeDragItem.data.vendor}</p>
-              )}
-              {activeDragItem.data.price && (
-                <p className="product-price">${activeDragItem.data.price}</p>
-              )}
-            </div>
-          </div>
-        ) : null}
-      </DragOverlay>
     </DndContext>
   );
 }
