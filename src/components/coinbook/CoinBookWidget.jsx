@@ -68,39 +68,69 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
     return achievement.icon;
   };
 
-  // Format progress text for engagement achievements
+  // Format progress text for ALL achievement types (universal)
   const getProgressText = (achievement) => {
+    // Only show for locked achievements with progress data
     if (!achievement.progress || achievement.earned) {
       return null;
     }
 
-    const { current, required } = achievement.progress;
-    if (current === undefined || required === undefined) {
+    const { current, required, target, isTierUpgrade, nextTier } = achievement.progress;
+    
+    // Use 'target' as fallback for 'required' (backend uses both field names)
+    const requiredCount = required !== undefined ? required : target;
+    
+    if (current === undefined || requiredCount === undefined) {
       return null;
     }
 
-    const remaining = Math.max(0, required - current);
+    const remaining = Math.max(0, requiredCount - current);
     
-    // Map requirement type to friendly text (pluralized for natural reading)
-    const typeLabels = {
-      'search_count': 'searches',
-      'unique_product_view_count': 'unique product views',
-      'product_view_count': 'product views',
-      'unique_profile_view_count': 'unique profile views',
-      'profile_view_count': 'profile views',
-      'streak_days': 'streak days',
-      'daily_login_streak': 'daily logins'
-    };
+    // Smart label detection based on achievement type
+    let label;
+    
+    if (isTierUpgrade || nextTier) {
+      // Tiered achievement - show next tier name
+      const tierName = nextTier || 'next tier';
+      label = `for ${tierName}`;
+    } else if (achievement.collection_type === 'static_collection' || achievement.collection_type === 'dynamic_collection') {
+      // Collection achievement - use "products ranked"
+      label = 'products ranked';
+    } else if (achievement.requirement?.type) {
+      // Engagement achievement - map to specific activity type
+      const typeLabels = {
+        'search_count': 'searches',
+        'unique_product_view_count': 'unique product views',
+        'product_view_count': 'product views',
+        'unique_profile_view_count': 'unique profile views',
+        'profile_view_count': 'profile views',
+        'streak_days': 'streak days',
+        'daily_login_streak': 'daily logins'
+      };
+      label = typeLabels[achievement.requirement.type] || 'items';
+    } else {
+      // Fallback for unknown types
+      label = 'items';
+    }
 
-    const requirementType = achievement.requirement?.type;
-    const label = typeLabels[requirementType] || 'items';
+    // For tier upgrades, format differently
+    if (isTierUpgrade || nextTier) {
+      return {
+        current,
+        required: requiredCount,
+        remaining,
+        label,
+        text: `${current} of ${requiredCount} ${label}`,
+        remainingText: `${remaining} more to unlock`
+      };
+    }
 
     return {
       current,
-      required,
+      required: requiredCount,
       remaining,
       label,
-      text: `${current} of ${required} ${label}`,
+      text: `${current} of ${requiredCount} ${label}`,
       remainingText: `${remaining} more ${label} to unlock`
     };
   };
