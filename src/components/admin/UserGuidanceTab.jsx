@@ -153,30 +153,37 @@ export default function UserGuidanceTab() {
 
               <div className="classification-details">
                 <h5>Classification</h5>
-                <div className="classification-grid">
-                  <div className="classification-item">
-                    <label>Journey Stage:</label>
-                    <span className={`badge badge-journey badge-${selectedUser.classification.journeyStage}`}>
-                      {selectedUser.classification.journeyStage.replace('_', ' ')}
-                    </span>
+                {selectedUser.classification ? (
+                  <div className="classification-grid">
+                    <div className="classification-item">
+                      <label>Journey Stage:</label>
+                      <span className={`badge badge-journey badge-${selectedUser.classification.journeyStage}`}>
+                        {selectedUser.classification.journeyStage.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <div className="classification-item">
+                      <label>Engagement Level:</label>
+                      <span className={`badge badge-engagement badge-${selectedUser.classification.engagementLevel}`}>
+                        {selectedUser.classification.engagementLevel.replace('_', ' ')}
+                      </span>
+                    </div>
+                    <div className="classification-item">
+                      <label>Exploration Breadth:</label>
+                      <span className="badge badge-exploration">
+                        {selectedUser.classification.explorationBreadth}
+                      </span>
+                    </div>
+                    <div className="classification-item">
+                      <label>Taste Community:</label>
+                      <span>{selectedUser.classification.tasteCommunity || 'None'}</span>
+                    </div>
                   </div>
-                  <div className="classification-item">
-                    <label>Engagement Level:</label>
-                    <span className={`badge badge-engagement badge-${selectedUser.classification.engagementLevel}`}>
-                      {selectedUser.classification.engagementLevel.replace('_', ' ')}
-                    </span>
+                ) : (
+                  <div className="not-classified-message">
+                    <span className="badge badge-unclassified">Not Classified</span>
+                    <p>This user has not been classified yet. Users are classified after they demonstrate activity patterns through rankings, searches, and product interactions.</p>
                   </div>
-                  <div className="classification-item">
-                    <label>Exploration Breadth:</label>
-                    <span className="badge badge-exploration">
-                      {selectedUser.classification.explorationBreadth}
-                    </span>
-                  </div>
-                  <div className="classification-item">
-                    <label>Taste Community:</label>
-                    <span>{selectedUser.classification.tasteCommunity || 'None'}</span>
-                  </div>
-                </div>
+                )}
               </div>
 
               {selectedUser.activities && (

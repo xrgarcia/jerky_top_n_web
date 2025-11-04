@@ -157,6 +157,28 @@
   font-style: italic;
 }
 
+.not-classified-message {
+  text-align: center;
+  padding: 24px;
+  background: #f9faf6;
+  border-radius: 8px;
+  border: 2px dashed #c4a962;
+}
+
+.not-classified-message .badge {
+  margin-bottom: 12px;
+  background: #f0f2eb;
+  color: #6b7a45;
+  border: 1px solid #c4a962;
+}
+
+.not-classified-message p {
+  margin: 0;
+  color: #5a6642;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .btn-view-details {
   padding: 6px 12px;
   background: #7b8b52;
