@@ -3,14 +3,12 @@ import './DraggableProduct.css';
 import './DragStyles.css';
 
 export function DraggableProduct({ product, isDragging: isBeingDragged }) {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const { attributes, listeners, setNodeRef } = useDraggable({
     id: `product-${product.id}`,
   });
 
-  // Apply transform so item follows cursor when dragged
-  const style = transform ? {
-    transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-  } : {};
+  // Keep product in place - just apply opacity via CSS when dragging
+  const style = {};
 
   return (
     <div
