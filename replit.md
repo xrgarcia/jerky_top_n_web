@@ -9,7 +9,7 @@ A web application for ranking jerky products, designed to be a comprehensive and
 - Responsive design for all devices
 
 ## Recent Changes
-- **Nov 2025**: Coin Book progress tracking - Enhanced CoinBookWidget tooltips to display real-time progress for locked engagement achievements. Shows "X of Y [label]" format (e.g., "3 of 10 searches", "85 of 102 unique product views") with optional remaining count. Supports all engagement requirement types (searches, product views, profile views, streaks) with grammatically correct labels.
+- **Nov 2025**: Universal Coin Book progress tracking - Enhanced CoinBookWidget tooltips to display real-time progress for ALL locked achievement types (not just engagement). Shows "X of Y [label]" format with smart label detection: tiered achievements display "for [next tier]" (e.g., "50 of 100 for silver"), collection achievements show "products ranked", and engagement achievements show specific activity types ("searches", "unique product views", "streak days"). Handles both 'required' and 'target' field names from backend, guards against undefined values, and displays optional remaining count.
 - **Nov 2025**: Engagement coin tracking migration - Updated `EngagementManager` to read from `user_activities` table instead of legacy tables (`user_product_searches`, `page_views`). Added search activity tracking and achievement checking to `/api/products/rankable` endpoint. Now tracks searches, product views, and profile views in unified `user_activities` table for engagement coin awards ("Be Curious", "Expand Your Horizons", etc.).
 - **Nov 2025**: Major ranking sync fix - replaced UUID-based queue with single "current_state" operation using constant ID. Implemented smart auto-recovery on page load (prefers source with more products), added employee Force Sync button for manual recovery. Fixed critical data loss issue where IndexedDB had more products than backend.
 - **Nov 2025**: Search filter persistence - added fallback chain (lastSearchedTerm → URL search param → empty) to preserve filters after ranking operations.
@@ -79,7 +79,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
     - Custom hooks for `/api/gamification/achievements` and `/api/gamification/progress` endpoints
     - Clickable coins navigate to dynamic profile pages
     - Strategic CSS: Coins use 120px minmax grid width, 12px font, overflow-wrap for natural word boundaries (prevents mid-word breaking like "Gett ing Star ted"), with proportional responsive breakpoints (tablet: 100px/11px, mobile: 85px/10px)
-    - Engagement Progress Tooltips: Locked engagement achievements display real-time progress ("X of Y [label]" format) with remaining count. Supports all requirement types: searches, product views, profile views, streak days, daily logins
+    - Universal Progress Tooltips: ALL locked achievements with progress data display real-time tracking in tooltips. Smart label detection: tiered → "X of Y for [next tier]", collection → "X of Y products ranked", engagement → "X of Y [activity type]". Shows optional remaining count and handles both backend field name formats ('required' and 'target')
 - **Coin Type Configuration**: Database-driven system for managing coin branding and messaging:
     - `coin_type_config` table stores metadata for 5 coin types (engagement, static collection, dynamic collection, flavor, legacy)
     - Admin UI at `/admin/tools/coin-types` for editing display names, taglines, descriptions, icons, colors, and how-to-earn instructions
