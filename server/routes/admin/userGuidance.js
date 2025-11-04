@@ -36,12 +36,35 @@ function createUserGuidanceAdminRoutes(services) {
         params.push(`%${search}%`);
       }
       
+      if (journeyStage) {
+        whereConditions.push(`uc.journey_stage = $${params.length + 1}`);
+        params.push(journeyStage);
+      }
+      
+      if (engagementLevel) {
+        whereConditions.push(`uc.engagement_level = $${params.length + 1}`);
+        params.push(engagementLevel);
+      }
+      
+      if (tasteCommunity) {
+        whereConditions.push(`tc.name = $${params.length + 1}`);
+        params.push(tasteCommunity);
+      }
+      
+      if (classified === 'true') {
+        whereConditions.push(`uc.user_id IS NOT NULL`);
+      } else if (classified === 'false') {
+        whereConditions.push(`uc.user_id IS NULL`);
+      }
+      
+      const whereClause = whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : '';
+      
       const countQuery = `
         SELECT COUNT(DISTINCT u.id) as total
         FROM users u
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
         LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
-        ${whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''}
+        ${whereClause}
       `;
       
       const countResult = await db.execute(sql.raw(countQuery, params));
@@ -69,15 +92,15 @@ function createUserGuidanceAdminRoutes(services) {
         LEFT JOIN product_rankings pr ON u.id = pr.user_id
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
         LEFT JOIN taste_communities tc ON uc.taste_community = tc.id
-        ${whereConditions.length > 0 ? `WHERE ${whereConditions.join(' AND ')}` : ''}
+        ${whereClause}
         GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
                  uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community, tc.name
         ORDER BY ${sortField} ${sortDirection}
         LIMIT $${params.length + 1} OFFSET $${params.length + 2}
       `;
       
-      params.push(limit, offset);
-      const usersResult = await db.execute(sql.raw(dataQuery, params));
+      const dataParams = [...params, limit, offset];
+      const usersResult = await db.execute(sql.raw(dataQuery, dataParams));
       
       const users = usersResult.rows.map(user => ({
         id: user.id,
@@ -98,17 +121,8 @@ function createUserGuidanceAdminRoutes(services) {
         } : null
       }));
       
-      const filteredUsers = users.filter(user => {
-        if (journeyStage && user.classification?.journeyStage !== journeyStage) return false;
-        if (engagementLevel && user.classification?.engagementLevel !== engagementLevel) return false;
-        if (tasteCommunity && user.classification?.tasteCommunity !== tasteCommunity) return false;
-        if (classified === 'true' && !user.classification) return false;
-        if (classified === 'false' && user.classification) return false;
-        return true;
-      });
-      
       res.json({ 
-        users: filteredUsers,
+        users,
         pagination: {
           page,
           limit,
