@@ -41,6 +41,20 @@ export default function RankPage() {
     fetchMaxRankableCount();
   }, []);
   
+  // Auto-search after typing 3+ characters (debounced)
+  useEffect(() => {
+    const trimmedTerm = searchTerm.trim();
+    
+    // Only auto-search if 3+ characters and different from last searched term
+    if (trimmedTerm.length >= 3 && trimmedTerm !== lastSearchedTerm) {
+      const timer = setTimeout(() => {
+        handleSearch();
+      }, 400); // 400ms debounce
+      
+      return () => clearTimeout(timer);
+    }
+  }, [searchTerm]);
+  
   // Ranking state management with callback to refetch products after save
   const {
     rankedProducts,
