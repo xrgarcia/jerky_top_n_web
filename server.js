@@ -466,6 +466,33 @@ async function getAuthLimiter() {
   return rateLimiters.authLimiter;
 }
 
+/**
+ * Unified search tracking helper - writes to BOTH tracking systems
+ * @param {string} searchTerm - The search query
+ * @param {number} resultCount - Number of results returned
+ * @param {number|null} userId - User ID (null for anonymous)
+ * @param {string} context - Search context: 'products', 'rank_page', 'global_search', 'product_rankings'
+ */
+async function trackUserSearch(searchTerm, resultCount, userId, context) {
+  if (!searchTerm || !searchTerm.trim()) return;
+  
+  try {
+    // 1. Log to user_product_searches (legacy analytics system)
+    if (storage) {
+      await storage.logProductSearch(searchTerm, resultCount, userId, context);
+    }
+    
+    // 2. Log to user_activities (gamification system - powers "be Curious" coin)
+    if (userId && gamificationServices?.activityTrackingService) {
+      await gamificationServices.activityTrackingService.trackSearch(userId, searchTerm, resultCount, context);
+    }
+    
+    console.log(`🔍 Search tracked in both systems: "${searchTerm}" (${resultCount} results) by user ${userId || 'anonymous'} on ${context}`);
+  } catch (error) {
+    console.error('❌ Error tracking search:', error);
+  }
+}
+
 // Magic link email authentication endpoint
 app.post('/api/customer/email-login', async (req, res, next) => {
   const limiter = await getAuthLimiter();
