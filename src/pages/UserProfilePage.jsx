@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { useUserProfile } from '../hooks/useCommunity';
 import './UserProfilePage.css';
 
@@ -81,7 +81,7 @@ function UserProfilePage() {
           <div className="user-stat-card">
             <div className="user-stat-icon">🥩</div>
             <div className="user-stat-value">{stats.productsRanked}</div>
-            <div className="user-stat-label">Products Ranked</div>
+            <div className="user-stat-label">Flavors Ranked</div>
           </div>
           <div className="user-stat-card">
             <div className="user-stat-icon">🏆</div>
@@ -175,7 +175,11 @@ function UserProfilePage() {
             <h2>🪙 Coin Collection ({stats.achievementsEarned})</h2>
             <div className="user-achievements-grid">
               {achievements.map((achievement) => (
-                <div key={achievement.id} className="user-achievement-card">
+                <Link 
+                  key={achievement.id} 
+                  to={`/coinbook/${achievement.id}`}
+                  className="user-achievement-card"
+                >
                   <div className="user-achievement-icon">
                     {achievement.iconType === 'image' ? (
                       <img 
@@ -192,7 +196,7 @@ function UserProfilePage() {
                     <div className="user-achievement-tier">{achievement.currentTier}</div>
                   )}
                   <div className="user-achievement-points">{achievement.points} pts</div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

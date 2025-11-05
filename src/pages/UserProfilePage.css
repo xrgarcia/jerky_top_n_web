@@ -272,7 +272,10 @@
   padding: 20px;
   text-align: center;
   transition: transform 0.2s, box-shadow 0.2s;
-  cursor: default;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
 
 .user-achievement-card:hover {
