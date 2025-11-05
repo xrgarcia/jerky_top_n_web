@@ -34,13 +34,6 @@ export default function RankPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   
-  // DEBUG: Track lastSearchedTerm changes
-  useEffect(() => {
-    console.log('🔍 DEBUG: lastSearchedTerm changed to:', lastSearchedTerm || '(empty)');
-    console.log('🔍 DEBUG: searchParams.get("search"):', searchParams.get('search') || '(empty)');
-    console.log('🔍 DEBUG: searchTerm input:', searchTerm || '(empty)');
-  }, [lastSearchedTerm]);
-  
   // Fetch total rankable product count on mount
   useEffect(() => {
     const fetchMaxRankableCount = async () => {
@@ -99,48 +92,7 @@ export default function RankPage() {
     }
   }, [searchTerm, lastSearchedTerm, setSearchParams]);
   
-  /**
-   * Silent refetch to replenish available products without showing loading state
-   * Uses lastSearchedTerm to ensure we refetch the same query that's currently displayed
-   * This prevents visual flashing while keeping the list up-to-date
-   */
-  const handleSearchSilent = async () => {
-    try {
-      const params = new URLSearchParams({
-        excludeRanked: 'true',
-        limit: '50',
-        sort: 'name-asc'
-      });
-      
-      // CRITICAL FIX: Check both lastSearchedTerm AND URL params to preserve search
-      // This handles the case where user loaded page with ?search=term but hasn't triggered a search yet
-      const searchTermToUse = lastSearchedTerm || searchParams.get('search') || '';
-      
-      console.log('🔍 handleSearchSilent - searchTermToUse:', searchTermToUse);
-      console.log('🔍 handleSearchSilent - lastSearchedTerm:', lastSearchedTerm);
-      console.log('🔍 handleSearchSilent - URL search param:', searchParams.get('search'));
-      
-      if (searchTermToUse) {
-        params.set('query', searchTermToUse);
-      }
-
-      const apiUrl = `/products/rankable?${params.toString()}`;
-      console.log('🔍 handleSearchSilent - Fetching:', apiUrl);
-      
-      const data = await api.get(apiUrl);
-      const productsArray = Array.isArray(data) ? data : (data?.products ?? []);
-      
-      console.log('🔍 handleSearchSilent - Received', productsArray.length, 'products');
-      
-      // Silently update products without triggering loading state
-      setProducts(productsArray);
-    } catch (err) {
-      // Silent failure - don't show error to user
-      console.error('Background refetch failed:', err);
-    }
-  };
-  
-  // Ranking state management with callback to refetch products after save
+  // Ranking state management - uses pure optimistic UI (no refetch needed)
   const {
     rankedProducts,
     slotCount,
@@ -155,13 +107,7 @@ export default function RankPage() {
   } = useRanking({
     maxRankableCount,
     onSaveComplete: (rankings, position) => {
-      console.log('🔄 onSaveComplete called - refetching products with search term:', lastSearchedTerm || searchParams.get('search') || '(none)');
-      
-      // Silently refetch to replenish available products without visual flashing
-      // The optimistic UI keeps the list stable while fetching happens in background
-      handleSearchSilent();
-      
-      // Always invalidate commentaries to update progress
+      // Pure optimistic UI - no refetch needed, just invalidate progress queries
       queryClient.invalidateQueries({ queryKey: ['rankingCommentary'] });
       queryClient.invalidateQueries({ queryKey: ['collectionProgress'] });
     }
@@ -175,31 +121,21 @@ export default function RankPage() {
   
   // Modal handlers
   const handleOpenModal = (product) => {
-    console.log('🔍 DEBUG: Modal opened for product:', product.title);
-    console.log('🔍 DEBUG: lastSearchedTerm at modal open:', lastSearchedTerm || '(empty)');
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
   
   const handleCloseModal = () => {
-    console.log('🔍 DEBUG: Modal closed');
-    console.log('🔍 DEBUG: lastSearchedTerm at modal close:', lastSearchedTerm || '(empty)');
     setIsModalOpen(false);
     setSelectedProduct(null);
   };
   
   const handleReplace = (product, position) => {
-    console.log('🔍 DEBUG: REPLACE called - product:', product.title, 'position:', position);
-    console.log('🔍 DEBUG: lastSearchedTerm before REPLACE:', lastSearchedTerm || '(empty)');
     replaceRanking(product, position);
-    console.log('🔍 DEBUG: lastSearchedTerm after REPLACE:', lastSearchedTerm || '(empty)');
   };
   
   const handleInsert = (product, position) => {
-    console.log('🔍 DEBUG: INSERT called - product:', product.title, 'position:', position);
-    console.log('🔍 DEBUG: lastSearchedTerm before INSERT:', lastSearchedTerm || '(empty)');
     insertRanking(product, position);
-    console.log('🔍 DEBUG: lastSearchedTerm after INSERT:', lastSearchedTerm || '(empty)');
   };
   
   // Generate celebratory message based on position
