@@ -15,6 +15,14 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 - **Engagement Achievement Fix**: Fixed `/api/gamification/achievements` endpoint to fetch engagement metrics (totalSearches, totalPageViews, totalProductViews, uniqueProductViews, totalProfileViews, uniqueProfileViews) in parallel with ranking stats, resolving issue where engagement achievements (like "be curious") showed 0 progress. Added null-safe error handling with fallback defaults to prevent endpoint failures.
 - **Ranking Race Condition Fix**: Implemented sequence-based staleness detection in `useRanking.js` to prevent data loss during rapid ranking operations. Each auto-save receives a monotonically increasing sequence number, and both initial saves and background retries check for staleness before executing. This ensures that older saves (including failed retries) cannot overwrite newer rankings, eliminating race conditions while maintaining crash-resilient IndexedDB persistence.
 - **Mobile-Responsive Rank Page**: Improved mobile UX (<768px) by reordering sections (Purchased Products first, Your Rankings second) and making "Your Rankings" collapsible with a toggle button. Rankings section is collapsed by default on mobile to save screen space while keeping easy access via earth-tone styled toggle button. Desktop layout remains unchanged. Uses lazy state initialization to prevent flash of expanded content on initial render.
+- **Site-wide Mobile Responsiveness Fixes**: Comprehensive mobile optimization to prevent horizontal scrolling and ensure all content fits within viewport:
+  - Added `overflow-x: hidden` to body element to prevent horizontal scrolling
+  - Implemented responsive navigation with flexbox wrapping: logo and user actions on first row, nav links on second row on mobile (<768px)
+  - All navigation elements use `flex-shrink: 1` to allow compression within viewport
+  - Search bar reduces from 280px to 160px on mobile, 120px on small mobile (<480px)
+  - Navigation links remain accessible with reduced sizing (11px at 768px, 10px at 480px) and wrapping
+  - Enhanced RankingModal with proper mobile centering: reduced backdrop padding (12px mobile, 8px small mobile), modal width 100% on mobile
+  - Responsive breakpoints: mobile (<768px), small mobile (<480px), tablet (768-1024px)
 
 ## User Preferences
 - Clean, professional design aesthetic
