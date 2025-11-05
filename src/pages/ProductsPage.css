@@ -89,6 +89,29 @@
   line-height: 1.4;
 }
 
+.product-flavor {
+  margin-bottom: 10px;
+}
+
+.flavor-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #8b6914 0%, #a67c1a 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(139, 105, 20, 0.2);
+}
+
+.flavor-badge:hover {
+  background: linear-gradient(135deg, #a67c1a 0%, #c8961e 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(139, 105, 20, 0.3);
+}
+
 .product-tags {
   display: flex;
   gap: 8px;

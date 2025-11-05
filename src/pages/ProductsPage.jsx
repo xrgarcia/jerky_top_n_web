@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import './ProductsPage.css';
 
@@ -54,6 +55,18 @@ function ProductsPage() {
                   <img src={product.image} alt={product.title} className="product-image" />
                 )}
                 <h3 className="product-title">{product.title}</h3>
+                
+                {product.primaryFlavor && (
+                  <div className="product-flavor">
+                    <Link 
+                      to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
+                      className="flavor-badge"
+                    >
+                      {product.primaryFlavor}
+                    </Link>
+                  </div>
+                )}
+                
                 {product.tags && (
                   <div className="product-tags">
                     {product.tags.split(',').slice(0, 3).map((tag, i) => (
@@ -61,10 +74,10 @@ function ProductsPage() {
                     ))}
                   </div>
                 )}
-                {product.stats && (
+                {product.rankingCount !== undefined && (
                   <div className="product-stats">
-                    <span>Avg Position: {product.stats.avgPosition?.toFixed(1) || 'N/A'}</span>
-                    <span>{product.stats.rankCount || 0} rankings</span>
+                    <span>Avg Position: {product.avgRank?.toFixed(1) || 'N/A'}</span>
+                    <span>{product.rankingCount || 0} rankings</span>
                   </div>
                 )}
               </div>
