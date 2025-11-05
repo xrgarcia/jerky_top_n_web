@@ -499,6 +499,105 @@ export function useRanking(options = {}) {
   };
   
   /**
+   * Replace product at specific position (REPLACE action from modal)
+   * The old product is removed entirely, not returned to available list
+   */
+  const replaceRanking = useCallback((product, position) => {
+    setRankedProducts(prev => {
+      // Check if product already ranked at a different position
+      const existingIndex = prev.findIndex(r => r.productData.id === product.id);
+      
+      if (existingIndex !== -1) {
+        const existingPosition = prev[existingIndex].ranking;
+        console.warn(`⚠️ Product "${product.title}" already ranked at position ${existingPosition}`);
+        return prev; // Don't allow duplicate ranking
+      }
+      
+      // Remove product at target position (if exists)
+      const newRankings = prev.filter(r => r.ranking !== position);
+      
+      // Add new product at this position
+      newRankings.push({
+        ranking: position,
+        productData: product
+      });
+      
+      // Sort by ranking
+      newRankings.sort((a, b) => a.ranking - b.ranking);
+      
+      console.log(`🔄 Replaced position ${position} with "${product.title}"`);
+      
+      // Trigger auto-save
+      scheduleAutoSave(newRankings, position);
+      
+      return newRankings;
+    });
+  }, []);
+  
+  /**
+   * Insert product at specific position (INSERT action from modal)
+   * Pushes existing products down, displaced product returns to available list
+   */
+  const insertRanking = useCallback((product, position) => {
+    setRankedProducts(prev => {
+      // Check if product already ranked
+      const existingIndex = prev.findIndex(r => r.productData.id === product.id);
+      
+      if (existingIndex !== -1) {
+        const existingPosition = prev[existingIndex].ranking;
+        console.warn(`⚠️ Product "${product.title}" already ranked at position ${existingPosition}`);
+        return prev; // Don't allow duplicate ranking
+      }
+      
+      let newRankings = [...prev];
+      
+      // Check if target position is occupied
+      const targetOccupied = newRankings.some(r => r.ranking === position);
+      
+      if (targetOccupied) {
+        // Get all items at or above target position, sorted ascending by rank
+        const itemsToPush = newRankings
+          .filter(r => r.ranking >= position)
+          .sort((a, b) => a.ranking - b.ranking);
+        
+        // Use cursor to track next available position, shifting items sequentially
+        let cursor = position;
+        let pushedCount = 0;
+        
+        for (const item of itemsToPush) {
+          if (item.ranking === cursor) {
+            // Shift it down by one
+            item.ranking = cursor + 1;
+            cursor++;
+            pushedCount++;
+          } else {
+            // Found a gap, stop pushing
+            break;
+          }
+        }
+        
+        console.log(`🔽 INSERT pushed down ${pushedCount} items starting from position ${position}`);
+      }
+      
+      // Insert new product at position
+      newRankings.push({
+        ranking: position,
+        productData: product
+      });
+      
+      // Sort by ranking
+      newRankings.sort((a, b) => a.ranking - b.ranking);
+      
+      console.log(`✅ Inserted "${product.title}" at position ${position}`);
+      
+      // Trigger auto-save
+      scheduleAutoSave(newRankings, position);
+      
+      return newRankings;
+    });
+  }, []);
+  
+  /**
    * Get list of ranked product IDs (for filtering available products)
    */
   const getRankedProductIds = useCallback(() => {
@@ -513,6 +612,8 @@ export function useRanking(options = {}) {
     addRanking,
     removeRanking,
     reorderRankings,
+    replaceRanking,
+    insertRanking,
     getRankedProductIds,
     refresh: loadRankings
   };
