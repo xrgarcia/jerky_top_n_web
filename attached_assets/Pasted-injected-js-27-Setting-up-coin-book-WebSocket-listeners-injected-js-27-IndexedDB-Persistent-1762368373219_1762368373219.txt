@@ -1,0 +1,49 @@
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 📊 User can rank up to 162 products
+injected.js:27 ✅ Loaded 8 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Added/moved "All-Natural Alligator Jerky - Original" to position 9
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 9 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:45:32.433Z'}
+injected.js:27 ✅ Added/moved "All-Natural Alligator Jerky - Cajun" to position 10
+injected.js:27 📊 Expanded slots to 23 (10 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 10 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🎉 Achievement Unlocked! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:45:34.794Z'}
+injected.js:27 ✅ Added/moved "All-Natural Alligator Jerky - Hickory" to position 11
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 11 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:45:38.896Z'}
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: 🎉 Achievement Unlocked! (0 remaining in queue)
+injected.js:27 ✅ Added/moved "All-Natural Alpaca Jerky - Original" to position 12
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 12 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:45:45.004Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ✅ Added/moved "All-Natural Antelope Jerky - Original" to position 13
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 13 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:45:53.545Z'}
