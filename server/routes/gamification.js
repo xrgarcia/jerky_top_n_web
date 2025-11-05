@@ -47,16 +47,61 @@ function createGamificationRoutes(services) {
       const totalRankableProducts = services.getRankableProductCount();
       console.log(`✅ Product count retrieved: ${totalRankableProducts} rankable products`);
 
-      // Use UserStatsAggregator to batch all user stats queries (Facade Pattern)
-      console.log(`🔄 Batching user stats queries...`);
-      const stats = await userStatsAggregator.getStatsForAchievements(userId, totalRankableProducts);
+      // Batch 1: Fetch ranking stats and engagement metrics in parallel (scalability optimized)
+      console.log(`🔄 Batching user stats and engagement metrics queries...`);
+      const [stats, searchData, pageViewData, productViewData, profileViewData] = await Promise.all([
+        userStatsAggregator.getStatsForAchievements(userId, totalRankableProducts),
+        engagementManager.calculateSearchEngagement(userId).catch(err => {
+          console.error('⚠️ Error fetching search engagement:', err);
+          return { totalSearches: 0 };
+        }),
+        engagementManager.calculatePageViewEngagement(userId).catch(err => {
+          console.error('⚠️ Error fetching page view engagement:', err);
+          return { totalPageViews: 0 };
+        }),
+        engagementManager.calculateProductViewEngagement(userId, false).catch(err => {
+          console.error('⚠️ Error fetching product view engagement:', err);
+          return { totalProductViews: 0 };
+        }),
+        engagementManager.calculateProfileViewEngagement(userId, false).catch(err => {
+          console.error('⚠️ Error fetching profile view engagement:', err);
+          return { totalProfileViews: 0 };
+        })
+      ]);
       console.log(`✅ User stats aggregated: position ${stats.leaderboardPosition}, streak ${stats.currentStreak}`);
+      console.log(`✅ Engagement metrics: ${searchData?.totalSearches || 0} searches, ${pageViewData?.totalPageViews || 0} page views`);
 
-      console.log(`🔄 Getting achievements with progress...`);
-      const achievements = await engagementManager.getAchievementsWithProgress(userId, stats);
+      // Batch 2: Fetch unique engagement metrics in parallel
+      console.log(`🔄 Fetching unique engagement metrics...`);
+      const [uniqueProductViewData, uniqueProfileViewData] = await Promise.all([
+        engagementManager.calculateProductViewEngagement(userId, true).catch(err => {
+          console.error('⚠️ Error fetching unique product view engagement:', err);
+          return { uniqueProductViews: 0 };
+        }),
+        engagementManager.calculateProfileViewEngagement(userId, true).catch(err => {
+          console.error('⚠️ Error fetching unique profile view engagement:', err);
+          return { uniqueProfileViews: 0 };
+        })
+      ]);
+      console.log(`✅ Unique engagement metrics: ${uniqueProductViewData?.uniqueProductViews || 0} unique products, ${uniqueProfileViewData?.uniqueProfileViews || 0} unique profiles`);
+
+      // Merge engagement metrics into stats object for complete achievement evaluation
+      // Use null-safe access with defaults to handle edge cases
+      const completeStats = {
+        ...stats,
+        totalSearches: searchData?.totalSearches || 0,
+        totalPageViews: pageViewData?.totalPageViews || 0,
+        totalProductViews: productViewData?.totalProductViews || 0,
+        uniqueProductViews: uniqueProductViewData?.uniqueProductViews || 0,
+        totalProfileViews: profileViewData?.totalProfileViews || 0,
+        uniqueProfileViews: uniqueProfileViewData?.uniqueProfileViews || 0
+      };
+
+      console.log(`🔄 Getting achievements with progress (complete stats)...`);
+      const achievements = await engagementManager.getAchievementsWithProgress(userId, completeStats);
       console.log(`✅ Achievements fetched successfully for user ${userId}: ${achievements.length} achievement(s)`);
 
-      res.json({ achievements, stats });
+      res.json({ achievements, stats: completeStats });
     } catch (error) {
       console.error('❌ Error fetching achievements:', error);
       console.error('Error message:', error.message);
