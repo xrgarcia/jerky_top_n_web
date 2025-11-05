@@ -15,7 +15,6 @@ export function useRanking(options = {}) {
   const [saveStatus, setSaveStatus] = useState({ state: 'idle', message: '' }); // idle, saving, saved, error
   const [isLoading, setIsLoading] = useState(true);
   
-  const saveTimeoutRef = useRef(null);
   const persistentQueue = useRef(null);
   const currentOperationId = useRef(null);
   const isRecovering = useRef(false); // Track if we're in recovery mode
@@ -354,18 +353,17 @@ export function useRanking(options = {}) {
   
   /**
    * Schedule auto-save with 800ms debounce
+   * CRITICAL FIX: No longer cancels pending saves to prevent data loss during rapid ranking
+   * Each ranking operation schedules its own backend save - later saves naturally override earlier ones
    */
   const scheduleAutoSave = (rankings, position = null) => {
-    // Clear existing timeout
-    if (saveTimeoutRef.current) {
-      clearTimeout(saveTimeoutRef.current);
-    }
-    
-    // Immediately persist to IndexedDB
+    // Immediately persist to IndexedDB (survives crashes/refreshes)
     persistToIndexedDB(rankings);
     
     // Schedule backend save after debounce
-    saveTimeoutRef.current = setTimeout(() => {
+    // Note: We intentionally don't cancel previous timeouts to ensure all saves complete
+    // This prevents data loss when ranking products rapidly
+    setTimeout(() => {
       saveToBackend(rankings, null, position);
     }, 800);
   };
