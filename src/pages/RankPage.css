@@ -468,6 +468,49 @@
   text-align: center;
 }
 
+/* Mobile Toggle Button */
+.mobile-collapse-toggle {
+  background: linear-gradient(135deg, #7b8b52, #6b7a45);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-height: 44px;
+  min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-collapse-toggle:hover {
+  background: linear-gradient(135deg, #6b7a45, #5b6a35);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-collapse-toggle:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Collapsible Rankings Content */
+.rankings-content {
+  max-height: 10000px;
+  overflow: hidden;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  opacity: 1;
+}
+
+.rankings-content.collapsed {
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
+}
+
 /* Responsive design */
 @media (max-width: 968px) {
   .rank-container {
@@ -481,6 +524,30 @@
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
+  }
+}
+
+/* Mobile-specific: Reorder columns and responsive breakpoint */
+@media (max-width: 768px) {
+  .rank-columns-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  /* Purchased Products appears first */
+  .products-column {
+    order: 1;
+  }
+  
+  /* Your Rankings appears second */
+  .ranks-column {
+    order: 2;
+  }
+  
+  .rank-column {
+    min-height: auto;
+    max-height: none;
   }
 }
 
