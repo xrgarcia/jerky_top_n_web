@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
+import MobileNavDrawer from './MobileNavDrawer';
 import './Nav.css';
 
 function Nav() {
@@ -10,6 +11,7 @@ function Nav() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState({ products: [], users: [] });
   const [showDropdown, setShowDropdown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchRef = useRef(null);
 
   const isActive = (path) => {
@@ -72,6 +74,18 @@ function Nav() {
   return (
     <nav className="main-nav">
       <div className="nav-container">
+        <button 
+          className="hamburger-btn" 
+          onClick={() => setMobileMenuOpen(true)}
+          aria-label="Open navigation menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <line x1="3" y1="12" x2="21" y2="12" />
+            <line x1="3" y1="18" x2="21" y2="18" />
+          </svg>
+        </button>
+
         <a href="https://jerky.com" className="logo" target="_blank" rel="noopener noreferrer">
           <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_150x.png?v=1678208718" alt="Jerky.com Logo" className="logo-img" loading="eager" />
         </a>
@@ -196,6 +210,12 @@ function Nav() {
           )}
         </div>
       </div>
+
+      <MobileNavDrawer 
+        isOpen={mobileMenuOpen} 
+        onClose={() => setMobileMenuOpen(false)}
+        isEmployee={isEmployee}
+      />
     </nav>
   );
 }
