@@ -1,0 +1,1587 @@
+injected.js:27 ✅ Added/moved "All-Natural Elk Jerky - Original" to position 15
+injected.js:27 📊 Expanded slots to 28 (15 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 15 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🎉 Achievement Unlocked! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:51:24.026Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar2lj%3A:151  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:3001/ 502 (Bad Gateway)
+(anonymous) @ workspace_iframe.html?initialPath=%2F&id=%3Ar2lj%3A:151
+workspace_iframe.html?initialPath=%2F&id=%3Ar2lj%3A:151  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:3001/ 502 (Bad Gateway)
+(anonymous) @ workspace_iframe.htm…F&id=%3Ar2lj%3A:151
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:3001/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar2lj%3A:151  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:3001/ 502 (Bad Gateway)
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…F&id=%3Ar2lj%3A:151
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+index-CnEN7BLr-1762368827274.js:265 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+_onClose @ index-CnEN7BLr-1762368827274.js:265
+t @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+onclose @ index-CnEN7BLr-1762368827274.js:265
+_close @ index-CnEN7BLr-1762368827274.js:265
+_destroy @ index-CnEN7BLr-1762368827274.js:265
+destroy @ index-CnEN7BLr-1762368827274.js:265
+disconnect @ index-CnEN7BLr-1762368827274.js:265
+(anonymous) @ index-CnEN7BLr-1762368827274.js:265
+fa @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+wx @ index-CnEN7BLr-1762368827274.js:48
+rd @ index-CnEN7BLr-1762368827274.js:48
+Nx @ index-CnEN7BLr-1762368827274.js:48
+_x @ index-CnEN7BLr-1762368827274.js:48
+hx @ index-CnEN7BLr-1762368827274.js:48
+fx @ index-CnEN7BLr-1762368827274.js:48
+Dx @ index-CnEN7BLr-1762368827274.js:48
+Pl @ index-CnEN7BLr-1762368827274.js:48
+Rx @ index-CnEN7BLr-1762368827274.js:48
+(anonymous) @ index-CnEN7BLr-1762368827274.js:48
+setTimeout
+(anonymous) @ index-CnEN7BLr-1762368827274.js:86
+EO @ index-CnEN7BLr-1762368827274.js:61
+u @ index-CnEN7BLr-1762368827274.js:61
+batch @ index-CnEN7BLr-1762368827274.js:61
+#a @ index-CnEN7BLr-1762368827274.js:61
+setData @ index-CnEN7BLr-1762368827274.js:61
+fetch @ index-CnEN7BLr-1762368827274.js:61
+await in fetch
+#d @ index-CnEN7BLr-1762368827274.js:61
+onSubscribe @ index-CnEN7BLr-1762368827274.js:61
+subscribe @ index-CnEN7BLr-1762368827274.js:61
+(anonymous) @ index-CnEN7BLr-1762368827274.js:61
+HS @ index-CnEN7BLr-1762368827274.js:48
+Ml @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+wx @ index-CnEN7BLr-1762368827274.js:48
+(anonymous) @ index-CnEN7BLr-1762368827274.js:48
+K @ index-CnEN7BLr-1762368827274.js:25
+index-CnEN7BLr-1762368827274.js:265 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+_onClose @ index-CnEN7BLr-1762368827274.js:265
+t @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+onclose @ index-CnEN7BLr-1762368827274.js:265
+_close @ index-CnEN7BLr-1762368827274.js:265
+_destroy @ index-CnEN7BLr-1762368827274.js:265
+destroy @ index-CnEN7BLr-1762368827274.js:265
+disconnect @ index-CnEN7BLr-1762368827274.js:265
+(anonymous) @ index-CnEN7BLr-1762368827274.js:265
+fa @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+wx @ index-CnEN7BLr-1762368827274.js:48
+rd @ index-CnEN7BLr-1762368827274.js:48
+Nx @ index-CnEN7BLr-1762368827274.js:48
+_x @ index-CnEN7BLr-1762368827274.js:48
+hx @ index-CnEN7BLr-1762368827274.js:48
+fx @ index-CnEN7BLr-1762368827274.js:48
+Dx @ index-CnEN7BLr-1762368827274.js:48
+Pl @ index-CnEN7BLr-1762368827274.js:48
+Rx @ index-CnEN7BLr-1762368827274.js:48
+(anonymous) @ index-CnEN7BLr-1762368827274.js:48
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 📊 User can rank up to 162 products
+injected.js:27 ✅ Loaded 15 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Added/moved "All-Natural Kangaroo Jerky - Original" to position 16
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 16 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 50 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🪙 Original Master Coin Earned! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:54:36.926Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+index-CnEN7BLr-1762368827274.js:265 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+_onClose @ index-CnEN7BLr-1762368827274.js:265
+t @ index-CnEN7BLr-1762368827274.js:265
+close @ index-CnEN7BLr-1762368827274.js:265
+onclose @ index-CnEN7BLr-1762368827274.js:265
+_close @ index-CnEN7BLr-1762368827274.js:265
+_destroy @ index-CnEN7BLr-1762368827274.js:265
+destroy @ index-CnEN7BLr-1762368827274.js:265
+disconnect @ index-CnEN7BLr-1762368827274.js:265
+(anonymous) @ index-CnEN7BLr-1762368827274.js:265
+fa @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+$l @ index-CnEN7BLr-1762368827274.js:48
+ox @ index-CnEN7BLr-1762368827274.js:48
+wx @ index-CnEN7BLr-1762368827274.js:48
+rd @ index-CnEN7BLr-1762368827274.js:48
+Nx @ index-CnEN7BLr-1762368827274.js:48
+_x @ index-CnEN7BLr-1762368827274.js:48
+hx @ index-CnEN7BLr-1762368827274.js:48
+fx @ index-CnEN7BLr-1762368827274.js:48
+Dx @ index-CnEN7BLr-1762368827274.js:48
+Pl @ index-CnEN7BLr-1762368827274.js:48
+Rx @ index-CnEN7BLr-1762368827274.js:48
+(anonymous) @ index-CnEN7BLr-1762368827274.js:48
+setTimeout
+(anonymous) @ index-CnEN7BLr-1762368827274.js:86
+EO @ index-CnEN7BLr-1762368827274.js:61
+u @ index-CnEN7BLr-1762368827274.js:61
+batch @ index-CnEN7BLr-1762368827274.js:61
+#a @ index-CnEN7BLr-1762368827274.js:61
+setData @ index-CnEN7BLr-1762368827274.js:61
+fetch @ index-CnEN7BLr-1762368827274.js:61
+await in fetch
+#d @ index-CnEN7BLr-1762368827274.js:61
+onSubscribe @ index-CnEN7BLr-1762368827274.js:61
+subscribe @ index-CnEN7BLr-1762368827274.js:61
+(anonymous) @ index-CnEN7BLr-1762368827274.js:61
+HS @ index-CnEN7BLr-1762368827274.js:48
+Ml @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+Fr @ index-CnEN7BLr-1762368827274.js:48
+sx @ index-CnEN7BLr-1762368827274.js:48
+wx @ index-CnEN7BLr-1762368827274.js:48
+(anonymous) @ index-CnEN7BLr-1762368827274.js:48
+K @ index-CnEN7BLr-1762368827274.js:25
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 📊 User can rank up to 162 products
+injected.js:27 ✅ Loaded 16 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Added/moved "All-Natural Lamb Jerky - Original" to position 17
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 17 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 10 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:02.283Z'}
+injected.js:27 ✅ Added/moved "All-Natural Ostrich Jerky - Original" to position 18
+injected.js:27 📊 Expanded slots to 31 (18 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 18 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 9 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:08.093Z'}
+injected.js:27 ✅ Added/moved "All-Natural Rainbow Trout Jerky - Original" to position 19
+injected.js:27 📝 Queued operation: current_ for rank undefined
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 💾 Persisted 19 ranking(s) to IndexedDB (current state)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Completed operation: current_
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Cleared persisted operation after successful save
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - URL search param: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Received 8 products
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:14.121Z'}
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Added/moved "All-Natural Salmon Jerky - Original" to position 20
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📝 Queued operation: current_ for rank undefined
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 💾 Persisted 20 ranking(s) to IndexedDB (current state)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Completed operation: current_
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Cleared persisted operation after successful save
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - URL search param: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Received 7 products
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📥 Toast added to queue (1 in queue)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🎬 Showing toast: ⬆️ Original Master Tier Upgraded! (0 remaining in queue)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:18.310Z'}
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Added/moved "All-Natural Turkey Jerky - Original" to position 21
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📝 Queued operation: current_ for rank undefined
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 💾 Persisted 21 ranking(s) to IndexedDB (current state)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Completed operation: current_
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Cleared persisted operation after successful save
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - URL search param: original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 🔍 handleSearchSilent - Received 6 products
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:20.238Z'}
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Added/moved "All-Natural Venison Jerky - Original" to position 22
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 📝 Queued operation: current_ for rank undefined
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 💾 Persisted 22 ranking(s) to IndexedDB (current state)
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Completed operation: current_
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/static/devtools/injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 5 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:22.732Z'}
+injected.js:27 ✅ Added/moved "All-Natural Wild Boar Jerky - Original" to position 23
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 23 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Exotic Hunter Tier Upgraded! (0 remaining in queue)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 4 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:25.439Z'}
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Original Master Tier Upgraded! (0 remaining in queue)
+injected.js:27 ✅ Added/moved "Bacon Jerky - Original" to position 24
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 24 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 3 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:34.633Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ✅ Added/moved "Soft and Tender Style Beef Jerky - Original" to position 25
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 25 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 2 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🪙 Quarter Century Coin Earned! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:38.883Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen - Original Tri-Tip Beef Jerky - 2.5 oz." to position 26
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 26 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 1 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:43.664Z'}
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Original Master Tier Upgraded! (0 remaining in queue)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #32 - Original Tri-Tip Beef Jerky" to position 27
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 27 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 0 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T18:55:47.282Z'}
+injected.js:27 ✅ Toast dismissed, processing next (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Original Master Tier Upgraded! (0 remaining in queue)
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ✅ Added/moved "All-Natural Beef Jerky - Hot" to position 28
+injected.js:27 📊 Expanded slots to 41 (28 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 28 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 0 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:00:57.899Z'}
+injected.js:27 ✅ Added/moved "All-Natural Buffalo Jerky - Hot" to position 29
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 29 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 0 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:01:15.689Z'}
+injected.js:27 ✅ Added/moved "All-Natural Elk Jerky - Hot" to position 30
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 30 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: original
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: original
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: original
+injected.js:27 🔍 handleSearchSilent - URL search param: original
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc&query=original
+injected.js:27 🔍 handleSearchSilent - Received 0 products
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: 🪙 Hot Elk Coin Earned! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:02:09.929Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+ The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+uX @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+ The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+uX @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+ The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+e @ ed1e693c96a75807.js:2
+uX @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+uY @ ed1e693c96a75807.js:2
+uq @ ed1e693c96a75807.js:2
+ 🔍 React Query: Fetching auth status...
+ 📡 BroadcastChannel initialized for auth events
+ ✅ Sentry error tracking initialized (development)
+ 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+ ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+ WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ index-fadla4ah-1762369658722.js:265
+close @ index-fadla4ah-1762369658722.js:265
+_onClose @ index-fadla4ah-1762369658722.js:265
+t @ index-fadla4ah-1762369658722.js:265
+close @ index-fadla4ah-1762369658722.js:265
+onclose @ index-fadla4ah-1762369658722.js:265
+_close @ index-fadla4ah-1762369658722.js:265
+_destroy @ index-fadla4ah-1762369658722.js:265
+destroy @ index-fadla4ah-1762369658722.js:265
+disconnect @ index-fadla4ah-1762369658722.js:265
+(anonymous) @ index-fadla4ah-1762369658722.js:265
+fa @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+$l @ index-fadla4ah-1762369658722.js:48
+ox @ index-fadla4ah-1762369658722.js:48
+wx @ index-fadla4ah-1762369658722.js:48
+rd @ index-fadla4ah-1762369658722.js:48
+Nx @ index-fadla4ah-1762369658722.js:48
+_x @ index-fadla4ah-1762369658722.js:48
+hx @ index-fadla4ah-1762369658722.js:48
+fx @ index-fadla4ah-1762369658722.js:48
+Dx @ index-fadla4ah-1762369658722.js:48
+Pl @ index-fadla4ah-1762369658722.js:48
+Rx @ index-fadla4ah-1762369658722.js:48
+(anonymous) @ index-fadla4ah-1762369658722.js:48
+setTimeout
+(anonymous) @ index-fadla4ah-1762369658722.js:86
+EO @ index-fadla4ah-1762369658722.js:61
+u @ index-fadla4ah-1762369658722.js:61
+batch @ index-fadla4ah-1762369658722.js:61
+#a @ index-fadla4ah-1762369658722.js:61
+setData @ index-fadla4ah-1762369658722.js:61
+fetch @ index-fadla4ah-1762369658722.js:61
+await in fetch
+#d @ index-fadla4ah-1762369658722.js:61
+onSubscribe @ index-fadla4ah-1762369658722.js:61
+subscribe @ index-fadla4ah-1762369658722.js:61
+(anonymous) @ index-fadla4ah-1762369658722.js:61
+HS @ index-fadla4ah-1762369658722.js:48
+Ml @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+qr @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+qr @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+qr @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+qr @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+qr @ index-fadla4ah-1762369658722.js:48
+sx @ index-fadla4ah-1762369658722.js:48
+wx @ index-fadla4ah-1762369658722.js:48
+(anonymous) @ index-fadla4ah-1762369658722.js:48
+le @ index-fadla4ah-1762369658722.js:25
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ 🪙 Setting up coin book WebSocket listeners...
+ ✅ IndexedDB PersistentQueue ready
+ 📊 User can rank up to 162 products
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ Loaded 30 existing rankings
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ Inserted "All-Natural Beef Jerky - Black Truffle and Sea Salt" at position 31
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 31 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 🔄 onSaveComplete called - refetching products with search term: (none)
+ 🔍 handleSearchSilent - searchTermToUse: 
+ 🔍 handleSearchSilent - lastSearchedTerm: 
+ 🔍 handleSearchSilent - URL search param: null
+ 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+ 🔍 handleSearchSilent - Received 50 products
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:10:07.214Z'}
+ ✅ Inserted "All-Natural Beef Jerky - Blackened Cajun" at position 32
+ 📊 Expanded slots to 45 (32 ranked)
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 32 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 🔄 onSaveComplete called - refetching products with search term: (none)
+ 🔍 handleSearchSilent - searchTermToUse: 
+ 🔍 handleSearchSilent - lastSearchedTerm: 
+ 🔍 handleSearchSilent - URL search param: null
+ 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+ 🔍 handleSearchSilent - Received 50 products
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:10:25.739Z'}
+ ❌ WebSocket disconnected
+ ❌ WebSocket disconnected
+ ❌ WebSocket disconnected
+ 🪙 Cleaning up coin book WebSocket listeners
+ 🪙 Setting up coin book WebSocket listeners...
+ 📊 User can rank up to 162 products
+ ✅ Loaded 32 existing rankings
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ Added/moved "All-Natural Venison Jerky - Hot" to position 33
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 33 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 🔄 onSaveComplete called - refetching products with search term: (none)
+ 🔍 handleSearchSilent - searchTermToUse: 
+ 🔍 handleSearchSilent - lastSearchedTerm: 
+ 🔍 handleSearchSilent - URL search param: null
+ 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+ 🔍 handleSearchSilent - Received 50 products
+ 🏆 Achievements earned event: {achievements: Array(1)}
+ 📥 Toast added to queue (1 in queue)
+ 🎬 Showing toast: ⬆️ Exotic Hunter Tier Upgraded! (0 remaining in queue)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:11:19.910Z'}
+ ✅ Toast dismissed, processing next (0 in queue)
