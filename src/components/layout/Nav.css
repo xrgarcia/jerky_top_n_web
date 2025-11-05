@@ -281,3 +281,115 @@
   text-align: center;
   color: #999;
 }
+
+/* Mobile Responsiveness (<768px) */
+@media (max-width: 767px) {
+  .nav-container {
+    padding: 0 15px;
+    gap: 10px;
+  }
+
+  .logo-img {
+    height: 50px;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .search-container {
+    min-width: 0;
+    flex: 1;
+    max-width: 200px;
+  }
+
+  .nav-search-input {
+    font-size: 14px;
+    padding: 10px 12px;
+    padding-right: 6px;
+  }
+
+  .search-btn {
+    padding: 10px 10px 10px 0;
+  }
+
+  .main-nav .user-avatar {
+    width: 28px !important;
+    height: 28px !important;
+    font-size: 12px !important;
+  }
+
+  .logout-btn {
+    padding: 5px;
+  }
+
+  .logout-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* Small Mobile (<480px) */
+@media (max-width: 479px) {
+  .nav-container {
+    padding: 0 10px;
+    gap: 8px;
+  }
+
+  .logo-img {
+    height: 40px;
+  }
+
+  .search-container {
+    max-width: 150px;
+  }
+
+  .nav-search-input {
+    font-size: 13px;
+    padding: 8px 10px;
+    padding-right: 4px;
+  }
+
+  .nav-search-input::placeholder {
+    font-size: 12px;
+  }
+
+  .search-btn {
+    padding: 8px 8px 8px 0;
+  }
+
+  .search-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .main-nav .user-avatar {
+    width: 24px !important;
+    height: 24px !important;
+    font-size: 11px !important;
+  }
+
+  .logout-btn {
+    padding: 4px;
+  }
+}
+
+/* Tablet (768px - 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .nav-container {
+    padding: 0 20px;
+  }
+
+  .nav-links {
+    gap: 12px;
+  }
+
+  .nav-link {
+    font-size: 12px;
+    padding: 7px 8px;
+  }
+
+  .search-container {
+    min-width: 200px;
+  }
+}
