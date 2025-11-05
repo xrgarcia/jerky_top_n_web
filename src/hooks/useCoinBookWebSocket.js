@@ -24,16 +24,15 @@ export function useCoinBookWebSocket() {
           const isTierUpgrade = achievement.isTierUpgrade;
           const tierEmoji = TIER_EMOJIS[achievement.tier] || '⭐';
           
-          let title = '🎉 Achievement Unlocked!';
-          let message = achievement.name;
-          let description = achievement.description;
+          let title = `🪙 ${achievement.name} Coin Earned!`;
+          let message = achievement.description || achievement.name;
           
           if (isTierUpgrade) {
-            title = '⬆️ Tier Upgraded!';
-            message = `${achievement.name} - ${tierEmoji} ${achievement.tier.charAt(0).toUpperCase() + achievement.tier.slice(1)}`;
+            title = `⬆️ ${achievement.name} Tier Upgraded!`;
+            message = `${tierEmoji} ${achievement.tier.charAt(0).toUpperCase() + achievement.tier.slice(1)}`;
             
             if (achievement.pointsGained) {
-              description = `+${achievement.pointsGained} points earned! ${achievement.description || ''}`;
+              message += ` - +${achievement.pointsGained} points earned!`;
             }
           }
           
@@ -60,12 +59,13 @@ export function useCoinBookWebSocket() {
       // Show toast for flavor coins
       if (data.coins && data.coins.length > 0) {
         data.coins.forEach(coin => {
+          const flavorName = coin.flavorDisplay || coin.name || coin.flavorName || 'Flavor';
           showToast({
             type: 'info',
-            icon: coin.icon || '🪙',
+            icon: coin.flavorIcon || coin.icon || '🪙',
             iconType: coin.iconType || 'emoji',
-            title: '🪙 Flavor Coin Earned!',
-            message: coin.name || coin.flavorName || 'New Flavor Coin',
+            title: `🪙 ${flavorName} Coin Earned!`,
+            message: 'Rank unique flavors to expand your collection',
             duration: 5000
           });
         });
