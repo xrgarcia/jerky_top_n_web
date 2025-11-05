@@ -629,67 +629,82 @@ Continue?`;
           <div className="rank-columns-grid">
             <div className="rank-column ranks-column">
               <div className="header-with-status">
-              <h2>Your Rankings</h2>
-              {saveStatus.state !== 'idle' && (
-                <div className={`save-status-inline save-status-${saveStatus.state}`}>
-                  {getCelebratoryMessage(saveStatus.state, saveStatus.position)}
-                </div>
-              )}
-            </div>
-            <div className="sub-header">
-              {commentary ? (
-                <div className="ranking-commentary">
-                  <span className="commentary-icon">{commentary.icon}</span>
-                  <span className="commentary-message">{commentary.message}</span>
-                  {commentary.nextMilestone && (
-                    <div className="milestone-hint">
-                      {commentary.nextMilestone.iconType === 'image' ? (
-                        <img 
-                          src={commentary.nextMilestone.icon} 
-                          alt={commentary.nextMilestone.name}
-                          title={commentary.nextMilestone.name}
-                          className="milestone-icon-image"
-                          style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle', cursor: 'help' }}
-                        />
-                      ) : (
-                        <span 
-                          className="milestone-icon-emoji" 
-                          title={commentary.nextMilestone.name}
-                          style={{ cursor: 'help' }}
-                        >
-                          {commentary.nextMilestone.icon}
-                        </span>
-                      )}{' '}
-                      {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
-                      {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
+                <h2>
+                  Your Rankings
+                  {isMobile && ` (${rankedProducts.length} ranked)`}
+                </h2>
+                {isMobile && (
+                  <button 
+                    className="mobile-collapse-toggle"
+                    onClick={() => setIsRankingsCollapsed(!isRankingsCollapsed)}
+                    aria-label={isRankingsCollapsed ? "Expand rankings" : "Collapse rankings"}
+                  >
+                    {isRankingsCollapsed ? '▼' : '▲'}
+                  </button>
+                )}
+                {saveStatus.state !== 'idle' && (
+                  <div className={`save-status-inline save-status-${saveStatus.state}`}>
+                    {getCelebratoryMessage(saveStatus.state, saveStatus.position)}
+                  </div>
+                )}
+              </div>
+              
+              <div className={`rankings-content ${isRankingsCollapsed ? 'collapsed' : ''}`}>
+                <div className="sub-header">
+                  {commentary ? (
+                    <div className="ranking-commentary">
+                      <span className="commentary-icon">{commentary.icon}</span>
+                      <span className="commentary-message">{commentary.message}</span>
+                      {commentary.nextMilestone && (
+                        <div className="milestone-hint">
+                          {commentary.nextMilestone.iconType === 'image' ? (
+                            <img 
+                              src={commentary.nextMilestone.icon} 
+                              alt={commentary.nextMilestone.name}
+                              title={commentary.nextMilestone.name}
+                              className="milestone-icon-image"
+                              style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle', cursor: 'help' }}
+                            />
+                          ) : (
+                            <span 
+                              className="milestone-icon-emoji" 
+                              title={commentary.nextMilestone.name}
+                              style={{ cursor: 'help' }}
+                            >
+                              {commentary.nextMilestone.icon}
+                            </span>
+                          )}{' '}
+                          {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
+                          {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="ranking-progress">
+                      {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
                     </div>
                   )}
                 </div>
-              ) : (
-                <div className="ranking-progress">
-                  {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
+                
+                <div className="slots-container">
+                  {rankingsLoading ? (
+                    <div className="loading-state">Loading rankings...</div>
+                  ) : (
+                    <SortableContext items={slots.map(s => `slot-${s.position}`)} strategy={verticalListSortingStrategy}>
+                      {slots.map(slot => (
+                        <SortableSlot
+                          key={slot.position}
+                          position={slot.position}
+                          product={slot.product}
+                          onRemove={handleRemoveRanking}
+                          isDragging={activeId === `slot-${slot.position}`}
+                        />
+                      ))}
+                    </SortableContext>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
-            
-            <div className="slots-container">
-              {rankingsLoading ? (
-                <div className="loading-state">Loading rankings...</div>
-              ) : (
-                <SortableContext items={slots.map(s => `slot-${s.position}`)} strategy={verticalListSortingStrategy}>
-                  {slots.map(slot => (
-                    <SortableSlot
-                      key={slot.position}
-                      position={slot.position}
-                      product={slot.product}
-                      onRemove={handleRemoveRanking}
-                      isDragging={activeId === `slot-${slot.position}`}
-                    />
-                  ))}
-                </SortableContext>
-              )}
-            </div>
-          </div>
           
             <div className="rank-column products-column">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
