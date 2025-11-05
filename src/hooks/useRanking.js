@@ -18,6 +18,7 @@ export function useRanking(options = {}) {
   const persistentQueue = useRef(null);
   const currentOperationId = useRef(null);
   const isRecovering = useRef(false); // Track if we're in recovery mode
+  const saveSequenceRef = useRef(0); // Monotonically increasing counter to detect stale saves
   
   // Initialize persistent queue
   useEffect(() => {
@@ -353,18 +354,21 @@ export function useRanking(options = {}) {
   
   /**
    * Schedule auto-save with 800ms debounce
-   * CRITICAL FIX: No longer cancels pending saves to prevent data loss during rapid ranking
-   * Each ranking operation schedules its own backend save - later saves naturally override earlier ones
+   * CRITICAL FIX: Uses sequence numbers to prevent stale saves from overwriting newer ones
+   * Each ranking operation gets a unique sequence number - older saves are skipped if superseded
    */
   const scheduleAutoSave = (rankings, position = null) => {
+    // Increment sequence number for this save
+    saveSequenceRef.current += 1;
+    const saveSequence = saveSequenceRef.current;
+    
     // Immediately persist to IndexedDB (survives crashes/refreshes)
     persistToIndexedDB(rankings);
     
-    // Schedule backend save after debounce
-    // Note: We intentionally don't cancel previous timeouts to ensure all saves complete
-    // This prevents data loss when ranking products rapidly
+    // Schedule backend save after debounce with sequence number
+    // If a newer save completes first, this older save will be skipped
     setTimeout(() => {
-      saveToBackend(rankings, null, position);
+      saveToBackend(rankings, null, position, false, saveSequence);
     }, 800);
   };
   
@@ -408,8 +412,15 @@ export function useRanking(options = {}) {
   /**
    * Save rankings to backend with retry
    * @param {boolean} throwOnError - If true, throws errors instead of scheduling retries (used during recovery)
+   * @param {number} saveSequence - Sequence number to detect stale saves (optional, used in auto-save)
    */
-  const saveToBackend = async (rankings, operationId = null, position = null, throwOnError = false) => {
+  const saveToBackend = async (rankings, operationId = null, position = null, throwOnError = false, saveSequence = null) => {
+    // Check if this is a stale save (newer save has been scheduled)
+    if (saveSequence !== null && saveSequence < saveSequenceRef.current) {
+      console.log(`⏭️ Skipping stale save (sequence ${saveSequence}, current is ${saveSequenceRef.current})`);
+      return;
+    }
+    
     setSaveStatus({ state: 'saving', message: 'Saving...', position });
     
     const idToComplete = operationId || currentOperationId.current;
@@ -487,10 +498,11 @@ export function useRanking(options = {}) {
       if (throwOnError) {
         throw error;
       } else {
-        // Keep trying in background
+        // Keep trying in background with same sequence number
+        // This ensures stale retries are also skipped if a newer save has completed
         setTimeout(() => {
           console.log('🔄 Retrying save in background...');
-          saveToBackend(rankings, idToComplete);
+          saveToBackend(rankings, idToComplete, position, false, saveSequence);
         }, 5000);
       }
     }
