@@ -83,16 +83,9 @@ function ProductsPage() {
                   )}
                 </div>
                 
-                {product.rankingCount !== undefined && (
-                  <div className="product-stats">
-                    <span className="stat-badge">
-                      Avg Position: {product.avgRank?.toFixed(1) || 'N/A'}
-                    </span>
-                    <span className="stat-badge">
-                      {product.rankingCount || 0} rankings
-                    </span>
-                  </div>
-                )}
+                <div className="product-stats" style={{fontSize: '0.85rem', color: '#555', padding: '8px 0'}}>
+                  Stats: ID={product.id}
+                </div>
               </div>
             ))}
           </div>
