@@ -83,8 +83,39 @@ function ProductsPage() {
                   )}
                 </div>
                 
-                <div className="product-stats" style={{fontSize: '0.85rem', color: '#555', padding: '8px 0'}}>
-                  Avg: {product.avgRank?.toFixed(1) || 'N/A'} • {product.rankingCount || 0} rankings
+                <div style={{
+                  marginTop: '12px',
+                  paddingTop: '12px',
+                  borderTop: '1px solid #e5e5e5',
+                  display: 'flex',
+                  gap: '8px',
+                  justifyContent: 'center',
+                  flexWrap: 'wrap'
+                }}>
+                  <span style={{
+                    background: 'linear-gradient(135deg, #f5f3ed 0%, #faf9f5 100%)',
+                    color: '#5a5046',
+                    padding: '6px 12px',
+                    borderRadius: '12px',
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    border: '1px solid #e8e6df',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    📊 Avg: {product.avgRank?.toFixed(1) || 'N/A'}
+                  </span>
+                  <span style={{
+                    background: 'linear-gradient(135deg, #e8f4ea 0%, #f0f8f2 100%)',
+                    color: '#2d5f3d',
+                    padding: '6px 12px',
+                    borderRadius: '12px',
+                    fontSize: '0.8rem',
+                    fontWeight: '600',
+                    border: '1px solid #c4e0cc',
+                    whiteSpace: 'nowrap'
+                  }}>
+                    🏆 {product.rankingCount || 0} ranking{product.rankingCount !== 1 ? 's' : ''}
+                  </span>
                 </div>
               </div>
             ))}
