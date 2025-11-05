@@ -84,7 +84,7 @@ function ProductsPage() {
                 </div>
                 
                 <div className="product-stats" style={{fontSize: '0.85rem', color: '#555', padding: '8px 0'}}>
-                  Stats: ID={product.id}
+                  Avg: {product.avgRank?.toFixed(1) || 'N/A'} • {product.rankingCount || 0} rankings
                 </div>
               </div>
             ))}
