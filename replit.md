@@ -11,6 +11,7 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 - **ProductsPage Updates**: Complete rebranding with clickable product cards and flavor badges
 - **Product Detail Page**: New comprehensive detail page (`ProductDetailPage`) showing product image, metadata, pricing, flavor information (with clickable flavor links to profile pages), ranking statistics, and tags
 - **Flavor Navigation**: Product cards now display clickable flavor badges that link to flavor profile pages (e.g., clicking "savory" shows all savory products)
+- **Unified Search Tracking**: Implemented `trackUserSearch()` helper function that writes to both `user_product_searches` (legacy analytics) and `user_activities` (gamification) tables, ensuring all search activity across the site contributes to "be Curious" coin progress
 
 ## User Preferences
 - Clean, professional design aesthetic
@@ -52,6 +53,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 - **Feature Flags**: JSON-based configuration system (`featureFlags.json`) for cross-environment compatibility (e.g., `AUTO_FILL_RANKING_GAPS`).
 - **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior (Journey Stage, Engagement Level, Activity Type, Taste Community) to provide targeted, action-oriented messages with CTAs. Rule-based analysis with configurable thresholds and real-time WebSocket updates. Enhanced with achievement hooks via dependency injection (ProgressTracker + UserStatsAggregator) to append tactical achievement progress (e.g., "3 more flavors to unlock Silver 🥈") to strategic journey messages, with smart category filtering by page context (rank→ranking achievements, products/community→engagement achievements, coinbook→all achievements).
+- **Dual Activity Tracking**: `trackUserSearch()` helper writes to both `user_product_searches` (legacy analytics) and `user_activities` (gamification) tables for all search operations across the application (Flavors page, Rank page, Global search).
 - **Engagement Tracking**: `EngagementManager` reads from a unified `user_activities` table for tracking searches, product views, and profile views for engagement coin awards.
 
 **Feature Specifications:**
