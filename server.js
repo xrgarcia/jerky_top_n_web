@@ -1809,6 +1809,91 @@ app.get('/api/products/rankable', async (req, res) => {
   }
 });
 
+// Main products endpoint with filtering (for ProductsPage)
+app.get('/api/products', async (req, res) => {
+  try {
+    const { search = '', sort = 'name', animal = '', flavor = '', page = 1, limit = 50 } = req.query;
+    
+    console.log(`📦 GET /api/products - search: "${search}", sort: ${sort}, animal: ${animal}, flavor: ${flavor}, page: ${page}, limit: ${limit}`);
+    
+    if (!shopifyAvailable) {
+      return res.status(503).json({ 
+        error: 'Products service unavailable',
+        message: 'Shopify credentials not configured',
+        products: []
+      });
+    }
+    
+    // Use unified ProductsService with shared cache instances
+    const { db } = require('./server/db.js');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+    
+    const metadataService = new ProductsMetadataService(db);
+    
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      async (products) => {
+        await metadataService.syncProductsMetadata(products);
+        await metadataService.cleanupOrphanedProducts(products);
+      },
+      metadataCache,
+      rankingStatsCache
+    );
+    
+    // Get all products with search applied
+    let products = await productsService.getAllProducts({ query: search });
+    
+    // Apply animal filter if specified
+    if (animal) {
+      const animalLower = animal.toLowerCase();
+      products = products.filter(p => p.animalType?.toLowerCase() === animalLower);
+    }
+    
+    // Apply flavor filter if specified
+    if (flavor) {
+      const flavorLower = flavor.toLowerCase();
+      products = products.filter(p => p.primaryFlavor?.toLowerCase() === flavorLower);
+    }
+    
+    // Apply sorting
+    if (sort === 'popularity') {
+      products.sort((a, b) => (b.rankingCount || 0) - (a.rankingCount || 0));
+    } else if (sort === 'rating') {
+      products.sort((a, b) => (a.avgRank || 999) - (b.avgRank || 999));
+    } else {
+      // Default: sort by name
+      products.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    
+    // Calculate pagination
+    const pageNum = parseInt(page, 10);
+    const limitNum = parseInt(limit, 10);
+    const total = products.length;
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = startIndex + limitNum;
+    const paginatedProducts = products.slice(startIndex, endIndex);
+    
+    res.json({
+      products: paginatedProducts,
+      total,
+      page: pageNum,
+      limit: limitNum
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products' },
+      extra: { query: req.query }
+    });
+    res.status(500).json({ 
+      error: 'Failed to fetch products',
+      message: error.message
+    });
+  }
+});
+
 // Get total count of products user can rank (including already ranked)
 app.get('/api/products/rankable/count', async (req, res) => {
   try {

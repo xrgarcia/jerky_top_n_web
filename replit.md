@@ -1,7 +1,12 @@
 # Jerky Top N Web Application
 
 ## Overview
-A web application for ranking jerky products, designed to be a comprehensive and engaging platform for jerky enthusiasts. The project aims to provide users with the ability to view top-rated products, create personal rankings, and interact within a community. Its core ambition is to become a leading platform in the jerky enthusiast community through gamification, social interaction, and advanced product filtering capabilities, with a business vision to capture a significant market share in the niche online food review and community space.
+A web application for ranking jerky flavors, designed to be a comprehensive and engaging platform for jerky enthusiasts. The project aims to provide users with the ability to view top-rated flavors, create personal rankings, and interact within a community. Its core ambition is to become a leading platform in the jerky enthusiast community through gamification, social interaction, and advanced flavor filtering capabilities, with a business vision to capture a significant market share in the niche online food review and community space.
+
+## Recent Changes (November 5, 2025)
+- **Products → Flavors Rebranding**: Renamed "Products" to "Flavors" throughout the application to better reflect the focus on jerky flavors
+- **New API Endpoint**: Added `/api/products` GET endpoint to support the Flavors page with filtering by search, animal type, flavor, sorting, and pagination
+- **ProductsPage Updates**: Complete rebranding including heading, description, search placeholder, loading messages, and error messages
 
 ## User Preferences
 - Clean, professional design aesthetic

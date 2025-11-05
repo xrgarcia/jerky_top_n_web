@@ -16,14 +16,14 @@ function ProductsPage() {
     <div className="products-page">
       <div className="products-container">
         <div className="products-header">
-          <h1>Products</h1>
-          <p>Browse and explore our jerky products</p>
+          <h1>Flavors</h1>
+          <p>Browse and explore our jerky flavors</p>
         </div>
 
         <div className="products-filters">
           <input
             type="text"
-            placeholder="Search products..."
+            placeholder="Search flavors..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="search-input"
@@ -43,8 +43,8 @@ function ProductsPage() {
           </select>
         </div>
 
-        {isLoading && <div className="loading">Loading products...</div>}
-        {error && <div className="error">Failed to load products</div>}
+        {isLoading && <div className="loading">Loading flavors...</div>}
+        {error && <div className="error">Failed to load flavors</div>}
 
         {!isLoading && !error && (
           <div className="products-grid">
@@ -73,7 +73,7 @@ function ProductsPage() {
         )}
 
         {!isLoading && !error && products.length === 0 && (
-          <div className="no-results">No products found</div>
+          <div className="no-results">No flavors found</div>
         )}
       </div>
     </div>
