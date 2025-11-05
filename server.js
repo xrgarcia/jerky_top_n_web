@@ -1936,7 +1936,7 @@ app.get('/api/products', async (req, res) => {
             if (engagementUpdates.length > 0) {
               console.log(`🎯 [PRODUCTS PAGE] User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
               
-              // Emit achievement notifications via WebSocket
+              // Convert engagement updates into achievement format for notifications
               const newEngagementAchievements = [];
               for (const update of engagementUpdates) {
                 const updates = Array.isArray(update) ? update : [update];
@@ -1956,17 +1956,32 @@ app.get('/api/products', async (req, res) => {
                 }
               }
               
-              // Filter duplicates and emit
+              // Filter out recently emitted achievements to prevent duplicate toasts
+              let achievementsToEmit = newEngagementAchievements;
               if (newEngagementAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
                 const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, newEngagementAchievements);
-                
-                if (filtered.length > 0 && websocketGateway) {
-                  websocketGateway.emitAchievements(userId, filtered);
-                }
+                achievementsToEmit = filtered;
                 
                 if (skipped.length > 0) {
                   console.log(`🔇 [PRODUCTS PAGE] Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}`);
                 }
+              }
+              
+              // Invalidate caches if achievements were earned
+              if (newEngagementAchievements.length > 0) {
+                if (gamificationServices?.homeStatsService) {
+                  gamificationServices.homeStatsService.invalidateCache();
+                }
+                if (gamificationServices?.leaderboardManager) {
+                  gamificationServices.leaderboardManager.leaderboardCache.invalidate();
+                }
+              }
+              
+              // Broadcast new achievements via WebSocket
+              if (achievementsToEmit.length > 0 && gamificationServices?.wsGateway) {
+                gamificationServices.wsGateway.emitAchievements(userId, achievementsToEmit);
+                console.log(`🏆 [PRODUCTS PAGE] User ${userId} earned ${achievementsToEmit.length} new achievement(s):`, 
+                  achievementsToEmit.map(a => a.name).join(', '));
               }
             }
           }
