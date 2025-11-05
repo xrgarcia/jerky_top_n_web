@@ -52,29 +52,6 @@ export function useCoinBookWebSocket() {
       queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
     };
 
-    // Listen for new flavor coins
-    const handleFlavorCoinsEarned = (data) => {
-      console.log('🪙 Flavor coins earned event:', data);
-      
-      // Show toast for flavor coins
-      if (data.coins && data.coins.length > 0) {
-        data.coins.forEach(coin => {
-          const flavorName = coin.flavorDisplay || coin.name || coin.flavorName || 'Flavor';
-          showToast({
-            type: 'info',
-            icon: coin.flavorIcon || coin.icon || '🪙',
-            iconType: coin.iconType || 'emoji',
-            title: `🪙 ${flavorName} Coin Earned!`,
-            message: 'Rank unique flavors to expand your collection',
-            duration: 5000
-          });
-        });
-      }
-      
-      queryClient.invalidateQueries({ queryKey: ['achievements'] });
-      queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
-    };
-
     // Listen for tier upgrades
     const handleTierUpgrade = (data) => {
       console.log('⬆️ Tier upgrade event:', data);
@@ -104,7 +81,6 @@ export function useCoinBookWebSocket() {
     };
 
     socket.on('achievements:earned', handleAchievementsEarned);
-    socket.on('flavor_coins:earned', handleFlavorCoinsEarned);
     socket.on('tier:upgrade', handleTierUpgrade);
     socket.on('gamification:progress:updated', handleProgressUpdate);
 
@@ -112,7 +88,6 @@ export function useCoinBookWebSocket() {
     return () => {
       console.log('🪙 Cleaning up coin book WebSocket listeners');
       socket.off('achievements:earned', handleAchievementsEarned);
-      socket.off('flavor_coins:earned', handleFlavorCoinsEarned);
       socket.off('tier:upgrade', handleTierUpgrade);
       socket.off('gamification:progress:updated', handleProgressUpdate);
     };

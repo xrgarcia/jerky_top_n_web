@@ -7,7 +7,6 @@ const AchievementRepository = require('../repositories/AchievementRepository');
 const StreakRepository = require('../repositories/StreakRepository');
 const ActivityLogRepository = require('../repositories/ActivityLogRepository');
 const ProductViewRepository = require('../repositories/ProductViewRepository');
-const FlavorCoinRepository = require('../repositories/FlavorCoinRepository');
 const ProductsMetadataRepository = require('../repositories/ProductsMetadataRepository');
 
 const EngagementManager = require('../services/EngagementManager');
@@ -19,7 +18,6 @@ const CommunityService = require('../services/CommunityService');
 const PageViewService = require('../services/PageViewService');
 const UserStatsAggregator = require('../services/UserStatsAggregator');
 const CacheWarmer = require('../services/CacheWarmer');
-const FlavorCoinManager = require('../services/FlavorCoinManager');
 const CollectionManager = require('../services/CollectionManager');
 const RecentAchievementTracker = require('../services/RecentAchievementTracker');
 const CommentaryService = require('../services/CommentaryService');
@@ -43,7 +41,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const streakRepo = new StreakRepository(db);
   const activityLogRepo = new ActivityLogRepository(db);
   const productViewRepo = new ProductViewRepository(db);
-  const flavorCoinRepo = new FlavorCoinRepository(db);
   const productsMetadataRepo = new ProductsMetadataRepository(db);
 
   // Initialize cache instances
@@ -53,7 +50,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
   const leaderboardManager = new LeaderboardManager(db);
-  const flavorCoinManager = new FlavorCoinManager(flavorCoinRepo, productsMetadataRepo, activityLogRepo);
   const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db, collectionManager, engagementManager);
   const pageViewService = new PageViewService(db, productViewRepo);
@@ -78,7 +74,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     streakRepo,
     activityLogRepo,
     productViewRepo,
-    flavorCoinRepo,
     productsMetadataRepo,
     communityService,
     engagementManager,
@@ -88,7 +83,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     pageViewService,
     homeStatsService,
     userStatsAggregator,
-    flavorCoinManager,
     collectionManager,
     recentAchievementTracker,
     commentaryService,

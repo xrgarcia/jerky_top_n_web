@@ -78,17 +78,6 @@ const userProductSearches = pgTable('user_product_searches', {
   searchedAt: timestamp('searched_at').defaultNow(),
 });
 
-// Flavor Coins - earned when ranking unique flavors for the first time
-const flavorCoins = pgTable('flavor_coins', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id).notNull(),
-  flavorType: text('flavor_type').notNull(), // e.g., 'sweet', 'spicy', 'savory', 'smoky'
-  flavorDisplay: text('flavor_display').notNull(), // e.g., 'Sweet', 'Spicy'
-  flavorIcon: text('flavor_icon').notNull(), // Emoji icon
-  shopifyProductId: text('shopify_product_id').notNull(), // First product that earned this coin
-  earnedAt: timestamp('earned_at').defaultNow(),
-});
-
 // Achievement definitions - types of badges users can earn
 const achievements = pgTable('achievements', {
   id: serial('id').primaryKey(),
@@ -237,20 +226,12 @@ const customerOrderItems = pgTable('customer_order_items', {
 }));
 
 // Relations
-const flavorCoinsRelations = relations(flavorCoins, ({ one }) => ({
-  user: one(users, {
-    fields: [flavorCoins.userId],
-    references: [users.id],
-  }),
-}));
-
 const usersRelations = relations(users, ({ many }) => ({
   rankings: many(rankings),
   sessions: many(sessions),
   achievements: many(userAchievements),
   streaks: many(streaks),
   activityLogs: many(activityLogs),
-  flavorCoins: many(flavorCoins),
 }));
 
 const sessionsRelations = relations(sessions, ({ one }) => ({
@@ -391,7 +372,6 @@ module.exports = {
   magicLinks,
   productRankings,
   userProductSearches,
-  flavorCoins,
   achievements,
   coinTypeConfig,
   userAchievements,
@@ -410,7 +390,6 @@ module.exports = {
   usersRelations,
   sessionsRelations,
   rankingsRelations,
-  flavorCoinsRelations,
   achievementsRelations,
   userAchievementsRelations,
   streaksRelations,

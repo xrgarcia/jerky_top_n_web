@@ -2333,26 +2333,8 @@ app.post('/api/rankings/products', async (req, res) => {
             completedAnimalCategories,
           };
           
-          // Check and award flavor coins for newly ranked products
-          const { flavorCoinManager, collectionManager } = gamificationServices;
-          const newFlavorCoins = [];
-          
-          if (flavorCoinManager) {
-            for (const ranking of rankings) {
-              const coins = await flavorCoinManager.checkAndAwardFlavorCoins(userId, ranking.productData.id);
-              newFlavorCoins.push(...coins);
-            }
-            
-            if (newFlavorCoins.length > 0) {
-              console.log(`🪙 User ${userId} earned ${newFlavorCoins.length} new Flavor Coin(s)`);
-              if (io) {
-                const { getRoomName } = require('./server/websocket/gateway');
-                io.to(getRoomName(`user:${userId}`)).emit('flavor_coins:earned', { coins: newFlavorCoins });
-              }
-            }
-          }
-          
           // Update dynamic collection progress
+          const { collectionManager } = gamificationServices;
           const newCollectionAchievements = [];
           if (collectionManager) {
             const collectionUpdates = await collectionManager.checkAndUpdateDynamicCollections(userId);

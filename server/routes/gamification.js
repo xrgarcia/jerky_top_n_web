@@ -517,29 +517,6 @@ function createGamificationRoutes(services) {
     }
   });
 
-  // Get user's flavor coins
-  router.get('/flavor-coins', async (req, res) => {
-    try {
-      const sessionId = req.cookies.session_id;
-      if (!sessionId) {
-        return res.status(401).json({ error: 'Not authenticated' });
-      }
-
-      const session = await services.storage.getSession(sessionId);
-      if (!session) {
-        return res.status(401).json({ error: 'Invalid session' });
-      }
-
-      const userId = session.userId;
-      const flavorCoins = await services.flavorCoinManager.getUserFlavorCoins(userId);
-      
-      res.json({ flavorCoins });
-    } catch (error) {
-      console.error('Error fetching flavor coins:', error);
-      res.status(500).json({ error: 'Failed to fetch flavor coins' });
-    }
-  });
-
   // Get collections progress
   router.get('/collections-progress', async (req, res) => {
     try {

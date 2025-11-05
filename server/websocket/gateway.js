@@ -109,11 +109,6 @@ class WebSocketGateway {
           console.log(`📬 Sending ${pendingData.achievements.length} pending achievement(s) to user ${session.userId} room (age: ${Math.round(age/1000)}s)`);
           this.io.to(this.room(`user:${session.userId}`)).emit('achievements:earned', { achievements: pendingData.achievements });
         }
-        
-        if (pendingData.flavorCoins && pendingData.flavorCoins.length > 0) {
-          console.log(`📬 Sending ${pendingData.flavorCoins.length} pending flavor coin(s) to user ${session.userId} room`);
-          this.io.to(this.room(`user:${session.userId}`)).emit('flavor_coins:earned', { coins: pendingData.flavorCoins });
-        }
       } else {
         console.log(`⏰ Discarding stale pending achievements for user ${session.userId} (age: ${Math.round(age/1000)}s)`);
       }
@@ -330,7 +325,7 @@ class WebSocketGateway {
     } else {
       // No authenticated socket, queue for later delivery
       const pendingKey = userId;
-      const existingData = this.pendingAchievements.get(pendingKey) || { achievements: [], flavorCoins: [], timestamp: Date.now() };
+      const existingData = this.pendingAchievements.get(pendingKey) || { achievements: [], timestamp: Date.now() };
       
       // Merge new achievements with existing pending ones (prevent duplicates by code)
       const existingCodes = new Set(existingData.achievements.map(a => a.code || a.name));
@@ -342,29 +337,6 @@ class WebSocketGateway {
         this.pendingAchievements.set(pendingKey, existingData);
         console.log(`📥 Queued ${newAchievements.length} achievement(s) for user ${userId} (no socket)`);
       }
-    }
-  }
-
-  /**
-   * Safely emit flavor coins to user - queues them if socket not authenticated
-   */
-  emitFlavorCoins(userId, coins) {
-    const hasSocket = this.hasAuthenticatedSocket(userId);
-    
-    if (hasSocket) {
-      // User has authenticated socket, emit directly
-      this.io.to(this.room(`user:${userId}`)).emit('flavor_coins:earned', { coins });
-      console.log(`✅ Emitted ${coins.length} flavor coin(s) to authenticated user ${userId}`);
-    } else {
-      // No authenticated socket, queue for later delivery
-      const pendingKey = userId;
-      const existingData = this.pendingAchievements.get(pendingKey) || { achievements: [], flavorCoins: [], timestamp: Date.now() };
-      
-      // Accumulate ALL coins (don't deduplicate) - multiple drops of same flavor are valid
-      existingData.flavorCoins.push(...coins);
-      existingData.timestamp = Date.now(); // Update timestamp
-      this.pendingAchievements.set(pendingKey, existingData);
-      console.log(`📥 Queued ${coins.length} flavor coin(s) for user ${userId} (no authenticated socket, total pending: ${existingData.flavorCoins.length})`);
     }
   }
 
