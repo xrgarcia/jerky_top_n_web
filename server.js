@@ -1902,6 +1902,70 @@ app.get('/api/products', async (req, res) => {
     const endIndex = startIndex + limitNum;
     const paginatedProducts = products.slice(startIndex, endIndex);
     
+    // Track search activity if search term provided (fire-and-forget)
+    if (search && search.trim()) {
+      (async () => {
+        try {
+          // Extract userId from session
+          let userId = null;
+          const sessionId = req.cookies.session_id;
+          if (sessionId && storage) {
+            const session = await storage.getSession(sessionId);
+            if (session) {
+              userId = session.userId;
+            }
+          }
+          
+          // Track in both systems
+          await trackUserSearch(search.trim(), paginatedProducts.length, userId, 'products');
+          
+          // Check for engagement achievements if user is authenticated
+          if (userId && gamificationServices?.engagementManager) {
+            const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
+            
+            if (engagementUpdates.length > 0) {
+              console.log(`🎯 [PRODUCTS PAGE] User ${userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+              
+              // Emit achievement notifications via WebSocket
+              const newEngagementAchievements = [];
+              for (const update of engagementUpdates) {
+                const updates = Array.isArray(update) ? update : [update];
+                
+                for (const singleUpdate of updates) {
+                  if (singleUpdate.type === 'new') {
+                    newEngagementAchievements.push(singleUpdate.achievement);
+                  } else if (singleUpdate.type === 'tier_upgrade') {
+                    newEngagementAchievements.push({
+                      ...singleUpdate.achievement,
+                      tier: singleUpdate.newTier,
+                      previousTier: singleUpdate.previousTier,
+                      pointsGained: singleUpdate.pointsGained,
+                      isTierUpgrade: true
+                    });
+                  }
+                }
+              }
+              
+              // Filter duplicates and emit
+              if (newEngagementAchievements.length > 0 && gamificationServices?.recentAchievementTracker) {
+                const { filtered, skipped } = await gamificationServices.recentAchievementTracker.filterAchievements(userId, newEngagementAchievements);
+                
+                if (filtered.length > 0 && websocketGateway) {
+                  websocketGateway.emitAchievements(userId, filtered);
+                }
+                
+                if (skipped.length > 0) {
+                  console.log(`🔇 [PRODUCTS PAGE] Skipped ${skipped.length} recently emitted achievement(s) for user ${userId}`);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Failed to track search and check achievements:', err);
+        }
+      })();
+    }
+    
     res.json({
       products: paginatedProducts,
       total,
