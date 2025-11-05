@@ -155,7 +155,7 @@ function createCommunityRoutes(services) {
         stats: {
           productsRanked,
           engagementScore: position?.engagementScore || 0,
-          leaderboardPosition: position?.position || null,
+          leaderboardPosition: position?.rank || null,
           currentStreak,
           achievementsEarned: achievements.length
         },
