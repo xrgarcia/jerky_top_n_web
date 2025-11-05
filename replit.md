@@ -63,7 +63,13 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
-- **Error Tracking**: Sentry.io (backend and frontend with session replay).
+- **Error Tracking**: Sentry.io with comprehensive integration:
+  - **Backend**: Node.js SDK with request tracing, breadcrumbs, and user context
+  - **Frontend**: React SDK (@sentry/react) with session replay, React error boundaries, and detailed error context
+  - **Error Queue**: Queues errors that occur before Sentry initialization and flushes after DSN loads
+  - **User Context**: Automatically sets user ID, email, and role on login and after Sentry initialization
+  - **Instrumentation**: RankPage and useRanking hook instrumented with breadcrumbs (search, force sync, API flow) and comprehensive error captures including page, user, operation, result, error type, and operation-specific metadata
+  - **Error Boundary**: React ErrorBoundary wrapping AppLayout provides user-facing fallback UI for uncaught errors
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
 - **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icons.
