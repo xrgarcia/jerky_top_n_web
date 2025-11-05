@@ -214,7 +214,6 @@ function Nav() {
       <MobileNavDrawer 
         isOpen={mobileMenuOpen} 
         onClose={() => setMobileMenuOpen(false)}
-        isEmployee={isEmployee}
       />
     </nav>
   );
