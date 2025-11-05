@@ -129,6 +129,15 @@ module.exports = function createDataManagementRoutes(storage, db) {
       
       await db.execute(sql`TRUNCATE TABLE user_achievements CASCADE`);
       console.log('🗑️ Truncated user_achievements');
+      
+      await db.execute(sql`TRUNCATE TABLE user_activities CASCADE`);
+      console.log('🗑️ Truncated user_activities');
+      
+      await db.execute(sql`TRUNCATE TABLE streaks CASCADE`);
+      console.log('🗑️ Truncated streaks');
+      
+      await db.execute(sql`TRUNCATE TABLE flavor_coins CASCADE`);
+      console.log('🗑️ Truncated flavor_coins');
 
       
       // Clear all system caches after deletion
