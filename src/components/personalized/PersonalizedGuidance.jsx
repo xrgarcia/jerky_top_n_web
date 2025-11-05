@@ -3,6 +3,69 @@ import { useSocket } from '../../hooks/useSocket';
 import { api } from '../../utils/api';
 import './PersonalizedGuidance.css';
 
+/**
+ * Parse message text and convert image paths to actual <img> elements
+ * Handles paths like: /objects/achievement-icons/uuid.png
+ */
+function parseMessageWithImages(message) {
+  if (!message) return null;
+  
+  // Regex to match image paths (supports /path/to/file.png, .jpg, .svg, .gif, .webp)
+  const imagePathRegex = /(\/[\w\-\/]+\.(?:png|jpg|jpeg|svg|gif|webp))/gi;
+  
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  
+  // Find all image paths in the message
+  while ((match = imagePathRegex.exec(message)) !== null) {
+    // Add text before the image
+    if (match.index > lastIndex) {
+      parts.push({
+        type: 'text',
+        content: message.slice(lastIndex, match.index)
+      });
+    }
+    
+    // Add the image
+    parts.push({
+      type: 'image',
+      content: match[1]
+    });
+    
+    lastIndex = match.index + match[1].length;
+  }
+  
+  // Add remaining text after last image
+  if (lastIndex < message.length) {
+    parts.push({
+      type: 'text',
+      content: message.slice(lastIndex)
+    });
+  }
+  
+  // If no images found, return plain text
+  if (parts.length === 0) {
+    return message;
+  }
+  
+  // Render parts with images as actual <img> tags
+  return parts.map((part, index) => {
+    if (part.type === 'image') {
+      return (
+        <img 
+          key={index}
+          src={part.content} 
+          alt="achievement icon" 
+          className="guidance-inline-icon"
+          style={{ height: '1.2em', width: '1.2em', verticalAlign: 'middle', marginLeft: '2px', marginRight: '2px' }}
+        />
+      );
+    }
+    return <span key={index}>{part.content}</span>;
+  });
+}
+
 export default function PersonalizedGuidance({ page = 'general' }) {
   const [guidance, setGuidance] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -76,7 +139,7 @@ export default function PersonalizedGuidance({ page = 'general' }) {
       </div>
       
       <div className="guidance-content">
-        <p className="guidance-message">{guidanceMessage.message}</p>
+        <p className="guidance-message">{parseMessageWithImages(guidanceMessage.message)}</p>
         {guidanceMessage.action && (
           <div className="guidance-action">
             <span className="action-label">{guidanceMessage.action}</span>
