@@ -230,6 +230,10 @@ const customerOrderItems = pgTable('customer_order_items', {
   userIdIdx: index('idx_customer_order_items_user_id').on(table.userId),
   userProductIdx: index('idx_customer_order_items_user_product').on(table.userId, table.shopifyProductId),
   userDateIdx: index('idx_customer_order_items_user_date').on(table.userId, table.orderDate),
+  // Admin query optimization indexes
+  orderDateIdx: index('idx_customer_order_items_order_date').on(table.orderDate),
+  fulfillmentStatusIdx: index('idx_customer_order_items_fulfillment_status').on(table.fulfillmentStatus),
+  orderDateStatusIdx: index('idx_customer_order_items_date_status').on(table.orderDate, table.fulfillmentStatus),
 }));
 
 // Relations

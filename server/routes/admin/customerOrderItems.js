@@ -51,10 +51,13 @@ module.exports = function createCustomerOrdersRoutes(db) {
         sortOrder
       };
 
+      const startTime = Date.now();
       const [orders, total] = await Promise.all([
         repository.getOrders(filters),
         repository.getOrdersCount(filters)
       ]);
+      const queryTime = Date.now() - startTime;
+      console.log(`⏱️ Customer orders query completed in ${queryTime}ms (returned ${orders.length} orders, total: ${total})`);
 
       // Format dates to ISO strings and extract lineItemData fields for frontend
       const formattedOrders = orders.map(order => ({
