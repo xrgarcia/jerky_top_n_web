@@ -154,6 +154,7 @@
   flex-direction: column;
   gap: 12px;
   padding-right: 10px;
+  outline: none;
 }
 
 .rankings-list::-webkit-scrollbar {

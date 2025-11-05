@@ -138,6 +138,8 @@ function UserProfilePage() {
 
             <div 
               className="rankings-list"
+              tabIndex="-1"
+              onMouseEnter={(e) => e.currentTarget.focus({ preventScroll: true })}
               onMouseLeave={(e) => e.currentTarget.blur()}
             >
               {filteredProducts.length > 0 ? (
