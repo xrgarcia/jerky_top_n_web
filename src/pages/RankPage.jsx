@@ -12,6 +12,7 @@ import { api } from '../utils/api';
 import { addBreadcrumb, captureError } from '../utils/sentry';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
+import { RankingModal } from '../components/rank/RankingModal';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './RankPage.css';
@@ -30,6 +31,8 @@ export default function RankPage() {
   const [activeId, setActiveId] = useState(null);
   const [maxRankableCount, setMaxRankableCount] = useState(null);
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   
   // Fetch total rankable product count on mount
   useEffect(() => {
@@ -139,6 +142,8 @@ export default function RankPage() {
     addRanking,
     removeRanking,
     reorderRankings,
+    replaceRanking,
+    insertRanking,
     getRankedProductIds
   } = useRanking({
     maxRankableCount,
@@ -160,6 +165,25 @@ export default function RankPage() {
   
   // Fetch collection progress for Available Products section
   const { data: collectionProgress } = useCollectionProgress('available_products');
+  
+  // Modal handlers
+  const handleOpenModal = (product) => {
+    setSelectedProduct(product);
+    setIsModalOpen(true);
+  };
+  
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedProduct(null);
+  };
+  
+  const handleReplace = (product, position) => {
+    replaceRanking(product, position);
+  };
+  
+  const handleInsert = (product, position) => {
+    insertRanking(product, position);
+  };
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
@@ -769,6 +793,7 @@ Continue?`;
                     key={product.id} 
                     product={product}
                     isDragging={activeId === `product-${product.id}`}
+                    onRankClick={handleOpenModal}
                   />
                 ))}
               </div>
@@ -790,6 +815,16 @@ Continue?`;
         </div>
       </div>
       </div>
+      
+      <RankingModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        product={selectedProduct}
+        rankedProducts={rankedProducts}
+        slotCount={slotCount}
+        onReplace={handleReplace}
+        onInsert={handleInsert}
+      />
     </DndContext>
   );
 }
