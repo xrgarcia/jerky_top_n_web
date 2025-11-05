@@ -105,7 +105,7 @@
   margin: 0 auto 40px;
 }
 
-.search-input {
+.page-search-input {
   width: 100%;
   padding: 15px 25px;
   border: 2px solid #ddd;
@@ -114,7 +114,7 @@
   transition: border-color 0.2s;
 }
 
-.search-input:focus {
+.page-search-input:focus {
   outline: none;
   border-color: #6B8E23;
 }

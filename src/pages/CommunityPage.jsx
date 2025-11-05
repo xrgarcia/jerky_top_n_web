@@ -50,7 +50,7 @@ function CommunityPage() {
             placeholder="Search by name or flavor..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="search-input"
+            className="page-search-input"
           />
         </div>
 
