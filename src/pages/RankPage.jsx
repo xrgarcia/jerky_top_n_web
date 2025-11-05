@@ -35,10 +35,15 @@ export default function RankPage() {
   const [selectedProduct, setSelectedProduct] = useState(null);
   
   // Mobile-specific: collapsible rankings state
-  const [isMobile, setIsMobile] = useState(false);
-  const [isRankingsCollapsed, setIsRankingsCollapsed] = useState(false);
+  // Initialize based on current screen size to avoid flash
+  const [isMobile, setIsMobile] = useState(() => 
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  );
+  const [isRankingsCollapsed, setIsRankingsCollapsed] = useState(() => 
+    typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
+  );
   
-  // Detect mobile screen size
+  // Detect mobile screen size changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
     
@@ -47,9 +52,6 @@ export default function RankPage() {
       // Collapse rankings by default on mobile, expand on desktop
       setIsRankingsCollapsed(e.matches);
     };
-    
-    // Set initial state
-    handleMediaChange(mediaQuery);
     
     // Listen for changes
     mediaQuery.addEventListener('change', handleMediaChange);
