@@ -112,7 +112,7 @@ function Nav() {
           <div className="search-container" ref={searchRef}>
             <input
               type="text"
-              className="search-input"
+              className="nav-search-input"
               placeholder="Search for people or product"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}

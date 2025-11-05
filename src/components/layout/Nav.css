@@ -141,7 +141,7 @@
   border-color: rgba(255, 255, 255, 1);
 }
 
-.search-input {
+.nav-search-input {
   background: transparent !important;
   background-color: transparent !important;
   border: none !important;
@@ -160,7 +160,7 @@
   cursor: text;
 }
 
-.search-input:focus {
+.nav-search-input:focus {
   border: none !important;
   outline: none !important;
   box-shadow: none !important;
@@ -168,16 +168,16 @@
   background-color: transparent !important;
 }
 
-.search-input:-webkit-autofill,
-.search-input:-webkit-autofill:hover,
-.search-input:-webkit-autofill:focus,
-.search-input:-webkit-autofill:active {
+.nav-search-input:-webkit-autofill,
+.nav-search-input:-webkit-autofill:hover,
+.nav-search-input:-webkit-autofill:focus,
+.nav-search-input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 30px #2c2c2c inset !important;
   -webkit-text-fill-color: rgba(255, 255, 255, 0.9) !important;
   caret-color: rgba(255, 255, 255, 0.9);
 }
 
-.search-input::placeholder {
+.nav-search-input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
