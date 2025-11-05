@@ -34,6 +34,29 @@ export default function RankPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   
+  // Mobile-specific: collapsible rankings state
+  const [isMobile, setIsMobile] = useState(false);
+  const [isRankingsCollapsed, setIsRankingsCollapsed] = useState(false);
+  
+  // Detect mobile screen size
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    
+    const handleMediaChange = (e) => {
+      setIsMobile(e.matches);
+      // Collapse rankings by default on mobile, expand on desktop
+      setIsRankingsCollapsed(e.matches);
+    };
+    
+    // Set initial state
+    handleMediaChange(mediaQuery);
+    
+    // Listen for changes
+    mediaQuery.addEventListener('change', handleMediaChange);
+    
+    return () => mediaQuery.removeEventListener('change', handleMediaChange);
+  }, []);
+  
   // Fetch total rankable product count on mount
   useEffect(() => {
     const fetchMaxRankableCount = async () => {
