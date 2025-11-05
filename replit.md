@@ -47,12 +47,13 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Feature Specifications:**
 - **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system. Non-employee users can only rank purchased products. A robust sync system with automatic recovery (prefers source with more products) and manual "Force Sync" for employees using IndexedDB state snapshots.
-- **Products Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination. Search filters persist across ranking operations.
+- **Products Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination. Search filters persist across ranking operations. Navigation renamed to "Flavors" to better reflect product focus.
+- **Flavor Profile Pages**: Dynamic pages for each flavor type (sweet, spicy, smoky, etc.) displaying all products with that flavor. Features animal type filtering, search functionality, and product stats. URLs are normalized and encoded to handle edge cases.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
 - **Shopify Webhook Integration**: Real-time sync for orders and products with HMAC SHA-256 verification.
 - **Community**: User discovery, search, profiles with ranking stats, top rankers widget.
 - **Leaderboard**: Top 50 rankers with engagement scores and badges.
-- **User Profile**: Personal stats and rankings.
+- **User Profile**: Personal stats renamed to "Flavors Ranked" instead of "Products Ranked". Public profiles feature clickable flavor links in the "All Flavor Rankings" section that navigate to dedicated flavor profile pages. Achievement coins are clickable and link to their respective coin profile pages.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
 - **Ranking Commentary**: Dynamic, contextual encouragement messages based on progress toward specific ranking achievements.
 - **Collection Progress Commentary**: Percentage-based encouragement messages focusing on "flavors" remaining to complete the "Coin Book."

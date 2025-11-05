@@ -158,7 +158,13 @@ function UserProfilePage() {
                       <div className="ranking-meta">
                         {product.vendor && <span className="ranking-vendor">{product.vendor}</span>}
                         {product.animalType && <span className="ranking-animal">• {product.animalType}</span>}
-                        {product.primaryFlavor && <span className="ranking-flavor">• {product.primaryFlavor}</span>}
+                        {product.primaryFlavor && (
+                          <span className="ranking-flavor">
+                            • <Link to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`} className="flavor-link">
+                              {product.primaryFlavor}
+                            </Link>
+                          </span>
+                        )}
                       </div>
                     </div>
                   </div>

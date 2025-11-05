@@ -81,7 +81,7 @@ function Nav() {
             Home
           </Link>
           <Link to="/products" className={`nav-link ${isActive('/products')}`}>
-            Products
+            Flavors
           </Link>
           {isAuthenticated && (
             <Link to="/rank" className={`nav-link ${isActive('/rank')}`}>

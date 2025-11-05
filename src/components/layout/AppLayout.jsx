@@ -11,6 +11,7 @@ import EmployeeRoute from '../auth/EmployeeRoute';
 
 import HomePage from '../../pages/HomePage';
 import ProductsPage from '../../pages/ProductsPage';
+import FlavorProfilePage from '../../pages/FlavorProfilePage';
 import CoinBookPage from '../../pages/CoinBookPage';
 import CoinProfilePage from '../../pages/CoinProfilePage';
 import CommunityPage from '../../pages/CommunityPage';
@@ -57,6 +58,7 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/flavors/:flavorId" element={<FlavorProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           
           <Route path="/coinbook" element={
