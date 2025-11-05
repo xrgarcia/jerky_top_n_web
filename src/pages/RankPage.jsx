@@ -102,6 +102,8 @@ export default function RankPage() {
   } = useRanking({
     maxRankableCount,
     onSaveComplete: (rankings, position) => {
+      console.log('🔄 onSaveComplete called - refetching products with search term:', lastSearchedTerm || searchParams.get('search') || '(none)');
+      
       // Silently refetch to replenish available products without visual flashing
       // The optimistic UI keeps the list stable while fetching happens in background
       handleSearchSilent();
@@ -285,13 +287,24 @@ export default function RankPage() {
       // This handles the case where user loaded page with ?search=term but hasn't triggered a search yet
       const searchTermToUse = lastSearchedTerm || searchParams.get('search') || '';
       
+      console.log('🔍 handleSearchSilent - searchTermToUse:', searchTermToUse);
+      console.log('🔍 handleSearchSilent - lastSearchedTerm:', lastSearchedTerm);
+      console.log('🔍 handleSearchSilent - URL search param:', searchParams.get('search'));
+      
       if (searchTermToUse) {
         params.set('query', searchTermToUse);
       }
 
-      const data = await api.get(`/products/rankable?${params.toString()}`);
+      const apiUrl = `/products/rankable?${params.toString()}`;
+      console.log('🔍 handleSearchSilent - Fetching:', apiUrl);
+      
+      const data = await api.get(apiUrl);
+      const productsArray = Array.isArray(data) ? data : (data?.products ?? []);
+      
+      console.log('🔍 handleSearchSilent - Received', productsArray.length, 'products');
+      
       // Silently update products without triggering loading state
-      setProducts(Array.isArray(data) ? data : (data?.products ?? []));
+      setProducts(productsArray);
     } catch (err) {
       // Silent failure - don't show error to user
       console.error('Background refetch failed:', err);
