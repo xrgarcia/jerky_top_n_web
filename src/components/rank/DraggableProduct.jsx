@@ -2,13 +2,20 @@ import { useDraggable } from '@dnd-kit/core';
 import './DraggableProduct.css';
 import './DragStyles.css';
 
-export function DraggableProduct({ product, isDragging: isBeingDragged }) {
+export function DraggableProduct({ product, isDragging: isBeingDragged, onRankClick }) {
   const { attributes, listeners, setNodeRef } = useDraggable({
     id: `product-${product.id}`,
   });
 
   // Keep product in place - just apply opacity via CSS when dragging
   const style = {};
+
+  const handleRankClick = (e) => {
+    e.stopPropagation();
+    if (onRankClick) {
+      onRankClick(product);
+    }
+  };
 
   return (
     <div
@@ -34,6 +41,15 @@ export function DraggableProduct({ product, isDragging: isBeingDragged }) {
           <p className="product-price">${product.price}</p>
         )}
       </div>
+      {onRankClick && (
+        <button 
+          className="rank-button"
+          onClick={handleRankClick}
+          aria-label={`Rank ${product.title}`}
+        >
+          Rank This Product
+        </button>
+      )}
     </div>
   );
 }
