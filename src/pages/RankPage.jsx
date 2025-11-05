@@ -89,6 +89,47 @@ export default function RankPage() {
     }
   }, [searchTerm, lastSearchedTerm, setSearchParams]);
   
+  /**
+   * Silent refetch to replenish available products without showing loading state
+   * Uses lastSearchedTerm to ensure we refetch the same query that's currently displayed
+   * This prevents visual flashing while keeping the list up-to-date
+   */
+  const handleSearchSilent = async () => {
+    try {
+      const params = new URLSearchParams({
+        excludeRanked: 'true',
+        limit: '50',
+        sort: 'name-asc'
+      });
+      
+      // CRITICAL FIX: Check both lastSearchedTerm AND URL params to preserve search
+      // This handles the case where user loaded page with ?search=term but hasn't triggered a search yet
+      const searchTermToUse = lastSearchedTerm || searchParams.get('search') || '';
+      
+      console.log('🔍 handleSearchSilent - searchTermToUse:', searchTermToUse);
+      console.log('🔍 handleSearchSilent - lastSearchedTerm:', lastSearchedTerm);
+      console.log('🔍 handleSearchSilent - URL search param:', searchParams.get('search'));
+      
+      if (searchTermToUse) {
+        params.set('query', searchTermToUse);
+      }
+
+      const apiUrl = `/products/rankable?${params.toString()}`;
+      console.log('🔍 handleSearchSilent - Fetching:', apiUrl);
+      
+      const data = await api.get(apiUrl);
+      const productsArray = Array.isArray(data) ? data : (data?.products ?? []);
+      
+      console.log('🔍 handleSearchSilent - Received', productsArray.length, 'products');
+      
+      // Silently update products without triggering loading state
+      setProducts(productsArray);
+    } catch (err) {
+      // Silent failure - don't show error to user
+      console.error('Background refetch failed:', err);
+    }
+  };
+  
   // Ranking state management with callback to refetch products after save
   const {
     rankedProducts,
@@ -267,47 +308,6 @@ export default function RankPage() {
       });
     } finally {
       setLoading(false);
-    }
-  };
-
-  /**
-   * Silent refetch to replenish available products without showing loading state
-   * Uses lastSearchedTerm to ensure we refetch the same query that's currently displayed
-   * This prevents visual flashing while keeping the list up-to-date
-   */
-  const handleSearchSilent = async () => {
-    try {
-      const params = new URLSearchParams({
-        excludeRanked: 'true',
-        limit: '50',
-        sort: 'name-asc'
-      });
-      
-      // CRITICAL FIX: Check both lastSearchedTerm AND URL params to preserve search
-      // This handles the case where user loaded page with ?search=term but hasn't triggered a search yet
-      const searchTermToUse = lastSearchedTerm || searchParams.get('search') || '';
-      
-      console.log('🔍 handleSearchSilent - searchTermToUse:', searchTermToUse);
-      console.log('🔍 handleSearchSilent - lastSearchedTerm:', lastSearchedTerm);
-      console.log('🔍 handleSearchSilent - URL search param:', searchParams.get('search'));
-      
-      if (searchTermToUse) {
-        params.set('query', searchTermToUse);
-      }
-
-      const apiUrl = `/products/rankable?${params.toString()}`;
-      console.log('🔍 handleSearchSilent - Fetching:', apiUrl);
-      
-      const data = await api.get(apiUrl);
-      const productsArray = Array.isArray(data) ? data : (data?.products ?? []);
-      
-      console.log('🔍 handleSearchSilent - Received', productsArray.length, 'products');
-      
-      // Silently update products without triggering loading state
-      setProducts(productsArray);
-    } catch (err) {
-      // Silent failure - don't show error to user
-      console.error('Background refetch failed:', err);
     }
   };
 
