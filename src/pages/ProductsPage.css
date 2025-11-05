@@ -31,7 +31,7 @@
   flex-wrap: wrap;
 }
 
-.search-input,
+.page-search-input,
 .sort-select,
 .filter-select {
   padding: 12px 20px;
@@ -42,12 +42,12 @@
   transition: border-color 0.2s;
 }
 
-.search-input {
+.page-search-input {
   flex: 1;
   min-width: 300px;
 }
 
-.search-input:focus,
+.page-search-input:focus,
 .sort-select:focus,
 .filter-select:focus {
   outline: none;
@@ -161,7 +161,7 @@
     flex-direction: column;
   }
 
-  .search-input {
+  .page-search-input {
     min-width: 100%;
   }
 

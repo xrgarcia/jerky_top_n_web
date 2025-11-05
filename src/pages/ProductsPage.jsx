@@ -27,7 +27,7 @@ function ProductsPage() {
             placeholder="Search flavors..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="search-input"
+            className="page-search-input"
           />
 
           <select value={sort} onChange={(e) => setSort(e.target.value)} className="sort-select">
