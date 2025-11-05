@@ -1,0 +1,753 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+42812cfb2a98934c.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+42812cfb2a98934c.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+42812cfb2a98934c.js:2 [LaunchDarkly] LaunchDarkly client initialized
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar7v%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: (empty)
+injected.js:27 🔍 DEBUG: searchParams.get("search"): (empty)
+injected.js:27 🔍 DEBUG: searchTerm input: (empty)
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 📊 User can rank up to 162 products
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Loaded 122 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #10 - Green Salsa Biltong Beef Jerky 2oz" to position 123
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 123 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #11 - Sweet & Spicy Tri-Tip Beef Jerky" to position 124
+injected.js:27 📊 Expanded slots to 137 (124 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 124 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #14 - Prime Rib Beef Jerky" to position 125
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 125 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 38 products
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #15 - Taco Beef Jerky" to position 126
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 126 ranking(s) to IndexedDB (current state)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:22:57.357Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #16 - Sweet Thai Chili Beef Jerky" to position 127
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 127 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #17 - French Onion Beef Jerky" to position 128
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 128 ranking(s) to IndexedDB (current state)
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 37 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:22:59.725Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #18 - Ranch Beef Jerky" to position 129
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 129 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #19 - Pizza Beef Jerky" to position 130
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 130 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 34 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:02.203Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #2 - Sweet Chipotle Adobo Beef Jerky 2oz" to position 131
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 131 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #20 - Candied Bacon Jerky" to position 132
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 132 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #21 - Garlic Black Pepper Beef Jerky" to position 133
+injected.js:27 🔍 handleSearchSilent - Received 33 products
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 133 ranking(s) to IndexedDB (current state)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:04.443Z'}
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 32 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:06.718Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 29 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:08.968Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 31 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:11.285Z'}
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 30 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:23:13.273Z'}
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: hot
+injected.js:27 🔍 DEBUG: searchParams.get("search"): (empty)
+injected.js:27 🔍 DEBUG: searchTerm input: hot
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: haban
+injected.js:27 🔍 DEBUG: searchParams.get("search"): hot
+injected.js:27 🔍 DEBUG: searchTerm input: haban
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: jal
+injected.js:27 🔍 DEBUG: searchParams.get("search"): haban
+injected.js:27 🔍 DEBUG: searchTerm input: jal
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: elk
+injected.js:27 🔍 DEBUG: searchParams.get("search"): jal
+injected.js:27 🔍 DEBUG: searchTerm input: elk
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: boar
+injected.js:27 🔍 DEBUG: searchParams.get("search"): elk
+injected.js:27 🔍 DEBUG: searchTerm input: boar
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: beef
+injected.js:27 🔍 DEBUG: searchParams.get("search"): boar
+injected.js:27 🔍 DEBUG: searchTerm input: beef
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #22 - Pineapple Teriyaki Beef Jerky" to position 134
+injected.js:27 📊 Expanded slots to 147 (134 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 134 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #27 - Fajita Lime Beef Jerky" to position 135
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 135 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #28 - Everything Bagel Beef Jerky" to position 136
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 136 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 28 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:03.835Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #25 - Nashville Rub Beef Jerky" to position 137
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 137 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 27 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:05.933Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #26 - Honey Bourbon Beef Jerky" to position 138
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 138 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #29 - BBQ Ranch Beef Jerky 2oz" to position 139
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 139 ranking(s) to IndexedDB (current state)
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 26 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:08.230Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 25 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:10.571Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 24 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:12.924Z'}
+injected.js:27 🔍 DEBUG: lastSearchedTerm changed to: pork
+injected.js:27 🔍 DEBUG: searchParams.get("search"): beef
+injected.js:27 🔍 DEBUG: searchTerm input: pork
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🔄 onSaveComplete called - refetching products with search term: (none)
+injected.js:27 🔍 handleSearchSilent - searchTermToUse: 
+injected.js:27 🔍 handleSearchSilent - lastSearchedTerm: 
+injected.js:27 🔍 handleSearchSilent - URL search param: null
+injected.js:27 🔍 handleSearchSilent - Fetching: /products/rankable?excludeRanked=true&limit=50&sort=name-asc
+injected.js:27 🔍 handleSearchSilent - Received 23 products
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:24:15.131Z'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'battery'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'battery'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'battery'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'layout-animations'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'layout-animations'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'layout-animations'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'legacy-image-formats'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'legacy-image-formats'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'legacy-image-formats'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'navigation-override'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'navigation-override'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'navigation-override'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'oversized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'oversized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'oversized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'publickey-credentials'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'publickey-credentials'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'publickey-credentials'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'speaker-selection'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'speaker-selection'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'speaker-selection'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unoptimized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unoptimized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unsized-media'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unsized-media'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Arkd%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ IndexedDB PersistentQueue ready
+injected.js:27 ✅ WebSocket connected
+injected.js:27 📊 User can rank up to 162 products
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Loaded 139 existing rankings
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #23 - Al Pastor Pork Jerky" to position 140
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 140 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #36 - Maple Sriracha Bacon Jerky 1.75oz" to position 141
+injected.js:27 📊 Expanded slots to 154 (141 ranked)
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 141 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:33:59.802Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:34:02.203Z'}
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #24 - Chipotle Bourbon Buffalo Jerky" to position 142
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 142 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #4 - Maple Bourbon Beef Jerky 2oz" to position 143
+injected.js:27 📝 Queued operation: current_ for rank undefined
+injected.js:27 💾 Persisted 143 ranking(s) to IndexedDB (current state)
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 🏆 Achievements earned event: {achievements: Array(1)}
+injected.js:27 📥 Toast added to queue (1 in queue)
+injected.js:27 🎬 Showing toast: ⬆️ Exotic Hunter Tier Upgraded! (0 remaining in queue)
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:34:44.753Z'}
+injected.js:27 ✅ Completed operation: current_
+injected.js:27 ✅ Cleared persisted operation after successful save
+injected.js:27 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:34:47.045Z'}
+injected.js:27 ✅ Toast dismissed, processing next (0 in queue)
+injected.js:27 ✅ Added/moved "Test Kitchen Batch #3 - Chile Limon Beef Jerky 2oz" to position 144
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 144 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #30 - Garlic Parmesan Beef Jerky 2oz" to position 145
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 145 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #31 - Honey Chipotle Beef Jerky" to position 146
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 146 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ ✅ Added/moved "Test Kitchen Batch #33 - Bleu Cheese Steak Beef Jerky" to position 147
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 147 ranking(s) to IndexedDB (current state)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:34:55.137Z'}
+ ✅ Added/moved "Test Kitchen Batch #34 - Honey Sriracha Beef Jerky 2oz" to position 148
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 148 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ ✅ Added/moved "Test Kitchen Batch #35 - Orange Teriyaki Beef Jerky 2oz" to position 149
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 149 ranking(s) to IndexedDB (current state)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:34:57.631Z'}
+ ✅ Added/moved "Test Kitchen Batch #38 - Garlic AF Beef Jerky 2oz" to position 150
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 150 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:00.162Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:02.794Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:05.543Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:07.975Z'}
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:10.568Z'}
+ ✅ Added/moved "Test Kitchen Batch #39 - Chimichurri Beef Jerky 2oz" to position 151
+ 📊 Capped slots to 162 (max rankable products)
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 151 ranking(s) to IndexedDB (current state)
+ ❌ WebSocket disconnected
+ ❌ WebSocket disconnected
+ ❌ WebSocket disconnected
+ ❌ WebSocket disconnected
+ 🔍 React Query: Fetching auth status...
+ 📡 BroadcastChannel initialized for auth events
+ ✅ Sentry error tracking initialized (development)
+ 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+ ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ 🪙 Setting up coin book WebSocket listeners...
+ ✅ IndexedDB PersistentQueue ready
+ 📊 User can rank up to 162 products
+ ✅ WebSocket connected
+ ✅ Loaded 150 existing rankings
+ 🔄 Found 1 pending operation(s), recovering...
+ 📊 IndexedDB has MORE products (151) than in-memory (0) - using IndexedDB to prevent data loss!
+(anonymous) @ injected.js:27
+(anonymous) @ index-DyWKX7mc-1762371300847.js:77
+(anonymous) @ injected.js:27
+A @ index-DyWKX7mc-1762371300847.js:269
+await in A
+j @ index-DyWKX7mc-1762371300847.js:269
+await in j
+(anonymous) @ index-DyWKX7mc-1762371300847.js:269
+Ml @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+Hr @ index-DyWKX7mc-1762371300847.js:48
+sx @ index-DyWKX7mc-1762371300847.js:48
+wx @ index-DyWKX7mc-1762371300847.js:48
+rd @ index-DyWKX7mc-1762371300847.js:48
+Dx @ index-DyWKX7mc-1762371300847.js:48
+Pl @ index-DyWKX7mc-1762371300847.js:48
+Nx @ index-DyWKX7mc-1762371300847.js:48
+_x @ index-DyWKX7mc-1762371300847.js:48
+hx @ index-DyWKX7mc-1762371300847.js:48
+fx @ index-DyWKX7mc-1762371300847.js:48
+Ax @ index-DyWKX7mc-1762371300847.js:48
+re @ index-DyWKX7mc-1762371300847.js:25
+ 📤 Saving 151 rankings to backend...
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ WebSocket connected
+ 🔐 Socket authenticated: {userId: 2}
+ ✅ Updated local state with 151 recovered rankings
+ ✅ Completed operation: current_
+ ✅ Cleared 1 operation(s) from queue
+ ✅ Recovery complete - triggering single refresh
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:26.174Z'}
+ ✅ Added/moved "Test Kitchen Batch #40 - Cherryaki Beef Jerky 2oz" to position 152
+ 📊 Capped slots to 162 (max rankable products)
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 152 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #41 - Dill Pickle Beef Jerky 2oz" to position 153
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 153 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #42 - Pina Colada Beef Jerky 2oz" to position 154
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 154 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #43 - Yellow Mustard Beef Jerky 2oz" to position 155
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 155 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:51.225Z'}
+ ✅ Added/moved "Test Kitchen Batch #44 - Orange Liqueur Beef Jerky 2oz" to position 156
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 156 ranking(s) to IndexedDB (current state)
+ ✅ Added/moved "Test Kitchen Batch #5 - Rosemary Garlic Beef Jerky 2oz" to position 157
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 157 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ ✅ Added/moved "Test Kitchen Batch #8 - Honey Mustard BBQ 2oz" to position 158
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 158 ranking(s) to IndexedDB (current state)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:53.843Z'}
+ ✅ Added/moved "Test Kitchen Batch #8 - Honey Mustard BBQ Beef Jerky" to position 159
+ 📊 Capped slots to 162 (max rankable products)
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 159 ranking(s) to IndexedDB (current state)
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:56.224Z'}
+ ✅ Added/moved "Test Kitchen Batch #6 - Rootbeer Beef Jerky 2oz" to position 160
+ 📊 Capped slots to 162 (max rankable products)
+ 📝 Queued operation: current_ for rank undefined
+ 💾 Persisted 160 ranking(s) to IndexedDB (current state)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:35:58.939Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:36:01.301Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:36:04.132Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 🏆 Achievements earned event: {achievements: Array(1)}
+ 📥 Toast added to queue (1 in queue)
+ 🎬 Showing toast: 🪙 BBQ Boss Coin Earned! (0 remaining in queue)
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:36:07.139Z'}
+ ✅ Completed operation: current_
+ ✅ Cleared persisted operation after successful save
+ 📊 Progress update event: {userId: 2, timestamp: '2025-11-05T19:36:09.469Z'}
+ ✅ Toast dismissed, processing next (0 in queue)
