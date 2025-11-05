@@ -48,12 +48,18 @@ export default function RankPage() {
     fetchMaxRankableCount();
   }, []);
   
-  // Auto-search after typing 3+ characters (debounced)
+  // Auto-search after typing 3+ characters (debounced), or when clearing search
   useEffect(() => {
     const trimmedTerm = searchTerm.trim();
     
-    // Only auto-search if 3+ characters and different from last searched term
-    if (trimmedTerm.length >= 3 && trimmedTerm !== lastSearchedTerm) {
+    // Auto-search if:
+    // 1. User typed 3+ characters and it's different from last search, OR
+    // 2. User cleared the search (empty string) and there was a previous search
+    const shouldSearch = 
+      (trimmedTerm.length >= 3 && trimmedTerm !== lastSearchedTerm) ||
+      (trimmedTerm.length === 0 && lastSearchedTerm !== '');
+    
+    if (shouldSearch) {
       const timer = setTimeout(() => {
         setLoading(true);
         setError(null);
