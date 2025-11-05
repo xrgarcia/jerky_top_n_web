@@ -11,6 +11,32 @@ function UserProfilePage() {
   const [animalFilter, setAnimalFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // ALL HOOKS MUST BE CALLED BEFORE ANY CONDITIONAL RETURNS
+  // Get unique animal types for filter buttons
+  const animalTypes = useMemo(() => {
+    if (!data?.topProducts) return [];
+    const types = [...new Set(data.topProducts.map(p => p.animalType).filter(Boolean))];
+    return types.sort();
+  }, [data?.topProducts]);
+
+  // Filter and search products
+  const filteredProducts = useMemo(() => {
+    if (!data?.topProducts) return [];
+    
+    return data.topProducts.filter(product => {
+      // Animal type filter
+      const matchesAnimal = animalFilter === 'all' || product.animalType === animalFilter;
+      
+      // Search filter (search in title, vendor, flavor)
+      const matchesSearch = searchQuery.trim() === '' || 
+        product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.vendor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.primaryFlavor?.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      return matchesAnimal && matchesSearch;
+    });
+  }, [data?.topProducts, animalFilter, searchQuery]);
+
   if (isLoading) {
     return (
       <div className="user-profile-page">
@@ -37,31 +63,6 @@ function UserProfilePage() {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   };
-
-  // Get unique animal types for filter buttons
-  const animalTypes = useMemo(() => {
-    if (!topProducts) return [];
-    const types = [...new Set(topProducts.map(p => p.animalType).filter(Boolean))];
-    return types.sort();
-  }, [topProducts]);
-
-  // Filter and search products
-  const filteredProducts = useMemo(() => {
-    if (!topProducts) return [];
-    
-    return topProducts.filter(product => {
-      // Animal type filter
-      const matchesAnimal = animalFilter === 'all' || product.animalType === animalFilter;
-      
-      // Search filter (search in title, vendor, flavor)
-      const matchesSearch = searchQuery.trim() === '' || 
-        product.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.vendor?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.primaryFlavor?.toLowerCase().includes(searchQuery.toLowerCase());
-      
-      return matchesAnimal && matchesSearch;
-    });
-  }, [topProducts, animalFilter, searchQuery]);
 
   return (
     <div className="user-profile-page">

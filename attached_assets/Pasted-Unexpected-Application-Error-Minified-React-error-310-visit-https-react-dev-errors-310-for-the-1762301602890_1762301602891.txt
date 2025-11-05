@@ -1,0 +1,21 @@
+Unexpected Application Error!
+Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+Error: Minified React error #310; visit https://react.dev/errors/310 for the full message or use the non-minified dev environment for full errors and additional helpful warnings.
+    at en (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:49541)
+    at Object.u_ [as useMemo] (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:57107)
+    at KA.Fe.useMemo (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:17:7374)
+    at N9 (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:265:85522)
+    at Ep (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:48263)
+    at Hp (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:71090)
+    at F_ (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:81451)
+    at vx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:117280)
+    at Zk (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:116324)
+    at dm (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:116154)
+    at fx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:112936)
+    at Dx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:124906)
+    at Pl (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:123454)
+    at Rx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:123734)
+    at https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C-GEsAht-1762301359824.js:48:124966
+💿 Hey developer 👋
+
+You can provide a way better UX than this when your app throws errors by providing your own ErrorBoundary or errorElement prop on your route.
