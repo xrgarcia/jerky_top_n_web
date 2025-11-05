@@ -34,6 +34,13 @@ export default function RankPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   
+  // DEBUG: Track lastSearchedTerm changes
+  useEffect(() => {
+    console.log('🔍 DEBUG: lastSearchedTerm changed to:', lastSearchedTerm || '(empty)');
+    console.log('🔍 DEBUG: searchParams.get("search"):', searchParams.get('search') || '(empty)');
+    console.log('🔍 DEBUG: searchTerm input:', searchTerm || '(empty)');
+  }, [lastSearchedTerm]);
+  
   // Fetch total rankable product count on mount
   useEffect(() => {
     const fetchMaxRankableCount = async () => {
@@ -168,21 +175,31 @@ export default function RankPage() {
   
   // Modal handlers
   const handleOpenModal = (product) => {
+    console.log('🔍 DEBUG: Modal opened for product:', product.title);
+    console.log('🔍 DEBUG: lastSearchedTerm at modal open:', lastSearchedTerm || '(empty)');
     setSelectedProduct(product);
     setIsModalOpen(true);
   };
   
   const handleCloseModal = () => {
+    console.log('🔍 DEBUG: Modal closed');
+    console.log('🔍 DEBUG: lastSearchedTerm at modal close:', lastSearchedTerm || '(empty)');
     setIsModalOpen(false);
     setSelectedProduct(null);
   };
   
   const handleReplace = (product, position) => {
+    console.log('🔍 DEBUG: REPLACE called - product:', product.title, 'position:', position);
+    console.log('🔍 DEBUG: lastSearchedTerm before REPLACE:', lastSearchedTerm || '(empty)');
     replaceRanking(product, position);
+    console.log('🔍 DEBUG: lastSearchedTerm after REPLACE:', lastSearchedTerm || '(empty)');
   };
   
   const handleInsert = (product, position) => {
+    console.log('🔍 DEBUG: INSERT called - product:', product.title, 'position:', position);
+    console.log('🔍 DEBUG: lastSearchedTerm before INSERT:', lastSearchedTerm || '(empty)');
     insertRanking(product, position);
+    console.log('🔍 DEBUG: lastSearchedTerm after INSERT:', lastSearchedTerm || '(empty)');
   };
   
   // Generate celebratory message based on position
