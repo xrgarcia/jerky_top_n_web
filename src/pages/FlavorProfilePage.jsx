@@ -127,34 +127,35 @@ function FlavorProfilePage() {
               <div className="flavor-products-grid">
                 {filteredProducts.length > 0 ? (
                   filteredProducts.map((product) => (
-                    <Link 
-                      key={product.id} 
-                      to={`/products/${product.id}`}
-                      className="flavor-product-card"
-                    >
-                      {product.image && (
-                        <img 
-                          src={product.image} 
-                          alt={product.title} 
-                          className="flavor-product-image"
-                        />
-                      )}
-                      <div className="flavor-product-details">
-                        <div className="flavor-product-title">{product.title}</div>
-                        <div className="flavor-product-meta">
-                          {product.vendor && <span className="flavor-product-vendor">{product.vendor}</span>}
-                          {product.animalType && <span className="flavor-product-animal">• {product.animalType}</span>}
-                        </div>
-                        {product.stats && (
-                          <div className="flavor-product-stats">
-                            <span>{product.stats.rankCount || 0} rankings</span>
-                            {product.stats.avgPosition && (
-                              <span>Avg: #{product.stats.avgPosition.toFixed(1)}</span>
-                            )}
-                          </div>
+                    <div key={product.id} className="flavor-product-card">
+                      <Link 
+                        to={`/products/${product.id}`}
+                        className="flavor-product-link"
+                      >
+                        {product.image && (
+                          <img 
+                            src={product.image} 
+                            alt={product.title} 
+                            className="flavor-product-image"
+                          />
                         )}
-                      </div>
-                    </Link>
+                        <div className="flavor-product-details">
+                          <div className="flavor-product-title">{product.title}</div>
+                          <div className="flavor-product-meta">
+                            {product.vendor && <span className="flavor-product-vendor">{product.vendor}</span>}
+                            {product.animalType && <span className="flavor-product-animal">• {product.animalType}</span>}
+                          </div>
+                          {product.rankingCount !== undefined && (
+                            <div className="flavor-product-stats">
+                              <span>{product.rankingCount || 0} rankings</span>
+                              {product.avgRank && (
+                                <span>Avg: #{product.avgRank.toFixed(1)}</span>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      </Link>
+                    </div>
                   ))
                 ) : (
                   <div className="no-results">No products match your filters</div>

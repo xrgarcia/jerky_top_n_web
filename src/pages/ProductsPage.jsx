@@ -51,16 +51,19 @@ function ProductsPage() {
           <div className="products-grid">
             {products.map(product => (
               <div key={product.id} className="product-card">
-                {product.image && (
-                  <img src={product.image} alt={product.title} className="product-image" />
-                )}
-                <h3 className="product-title">{product.title}</h3>
+                <Link to={`/products/${product.id}`} className="product-card-link">
+                  {product.image && (
+                    <img src={product.image} alt={product.title} className="product-image" />
+                  )}
+                  <h3 className="product-title">{product.title}</h3>
+                </Link>
                 
                 {product.primaryFlavor && (
                   <div className="product-flavor">
                     <Link 
                       to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
                       className="flavor-badge"
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {product.primaryFlavor}
                     </Link>

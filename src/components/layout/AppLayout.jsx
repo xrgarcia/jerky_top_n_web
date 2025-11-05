@@ -11,6 +11,7 @@ import EmployeeRoute from '../auth/EmployeeRoute';
 
 import HomePage from '../../pages/HomePage';
 import ProductsPage from '../../pages/ProductsPage';
+import ProductDetailPage from '../../pages/ProductDetailPage';
 import FlavorProfilePage from '../../pages/FlavorProfilePage';
 import CoinBookPage from '../../pages/CoinBookPage';
 import CoinProfilePage from '../../pages/CoinProfilePage';
@@ -58,6 +59,7 @@ function AppLayout() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
+          <Route path="/products/:productId" element={<ProductDetailPage />} />
           <Route path="/flavors/:flavorId" element={<FlavorProfilePage />} />
           <Route path="/login" element={<LoginPage />} />
           

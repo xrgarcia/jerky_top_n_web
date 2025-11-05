@@ -1894,6 +1894,62 @@ app.get('/api/products', async (req, res) => {
   }
 });
 
+// GET /api/products/:productId - Get single product details
+app.get('/api/products/:productId', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    console.log(`📦 GET /api/products/${productId} - Fetching product details`);
+    
+    if (!shopifyAvailable) {
+      return res.status(503).json({ 
+        error: 'Products service unavailable',
+        message: 'Shopify credentials not configured'
+      });
+    }
+    
+    const { db } = require('./server/db.js');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+    
+    const metadataService = new ProductsMetadataService(db);
+    
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      async (products) => {
+        await metadataService.syncProductsMetadata(products);
+        await metadataService.cleanupOrphanedProducts(products);
+      },
+      metadataCache,
+      rankingStatsCache
+    );
+    
+    // Get all products (from cache if available)
+    const allProducts = await productsService.getAllProducts({});
+    
+    // Find the specific product
+    const product = allProducts.find(p => p.id === productId);
+    
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    console.log(`✅ Found product: ${product.title}`);
+    res.json(product);
+  } catch (error) {
+    console.error('Error fetching product:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ 
+      error: 'Failed to fetch product',
+      message: error.message
+    });
+  }
+});
+
 // Get total count of products user can rank (including already ranked)
 app.get('/api/products/rankable/count', async (req, res) => {
   try {

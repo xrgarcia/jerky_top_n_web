@@ -5,8 +5,12 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 
 ## Recent Changes (November 5, 2025)
 - **Products → Flavors Rebranding**: Renamed "Products" to "Flavors" throughout the application to better reflect the focus on jerky flavors
-- **New API Endpoint**: Added `/api/products` GET endpoint to support the Flavors page with filtering by search, animal type, flavor, sorting, and pagination
-- **ProductsPage Updates**: Complete rebranding including heading, description, search placeholder, loading messages, and error messages
+- **New API Endpoints**: 
+  - Added `/api/products` GET endpoint for Flavors page with filtering by search, animal type, flavor, sorting, and pagination
+  - Added `/api/products/:productId` GET endpoint for individual product details
+- **ProductsPage Updates**: Complete rebranding with clickable product cards and flavor badges
+- **Product Detail Page**: New comprehensive detail page (`ProductDetailPage`) showing product image, metadata, pricing, flavor information (with clickable flavor links to profile pages), ranking statistics, and tags
+- **Flavor Navigation**: Product cards now display clickable flavor badges that link to flavor profile pages (e.g., clicking "savory" shows all savory products)
 
 ## User Preferences
 - Clean, professional design aesthetic
@@ -52,7 +56,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Feature Specifications:**
 - **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system. Non-employee users can only rank purchased products. A robust sync system with automatic recovery (prefers source with more products) and manual "Force Sync" for employees using IndexedDB state snapshots.
-- **Products Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination. Search filters persist across ranking operations. Navigation renamed to "Flavors" to better reflect product focus.
+- **Flavors Page**: Advanced sorting, filtering (animal, flavor), client-side instant search, and server-side pagination. Product cards are clickable and navigate to individual product detail pages. Each card displays a clickable flavor badge linking to flavor profile pages.
+- **Product Detail Page**: Comprehensive product information including image, brand, animal type, primary/secondary flavors (with clickable links), pricing, ranking statistics (total rankings, unique rankers, average/best positions), and product tags. Features a "Back to Flavors" navigation link.
 - **Flavor Profile Pages**: Dynamic pages for each flavor type (sweet, spicy, smoky, etc.) displaying all products with that flavor. Features animal type filtering, search functionality, and product stats. URLs are normalized and encoded to handle edge cases.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
 - **Shopify Webhook Integration**: Real-time sync for orders and products with HMAC SHA-256 verification.
