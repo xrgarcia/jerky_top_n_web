@@ -51,6 +51,10 @@ function ProductsPage() {
           <div className="products-grid">
             {products.map(product => (
               <div key={product.id} className="product-card">
+                {product.vendor && (
+                  <div className="product-brand">{product.vendor}</div>
+                )}
+                
                 <Link to={`/products/${product.id}`} className="product-card-link">
                   {product.image && (
                     <img src={product.image} alt={product.title} className="product-image" />
@@ -58,8 +62,12 @@ function ProductsPage() {
                   <h3 className="product-title">{product.title}</h3>
                 </Link>
                 
-                {product.primaryFlavor && (
-                  <div className="product-flavor">
+                {product.price && (
+                  <div className="product-price">${product.price}</div>
+                )}
+                
+                <div className="product-badges">
+                  {product.primaryFlavor && (
                     <Link 
                       to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
                       className="flavor-badge"
@@ -67,20 +75,22 @@ function ProductsPage() {
                     >
                       {product.primaryFlavor}
                     </Link>
-                  </div>
-                )}
+                  )}
+                  {product.animalDisplay && (
+                    <span className="animal-badge">
+                      {product.animalIcon && `${product.animalIcon} `}{product.animalDisplay}
+                    </span>
+                  )}
+                </div>
                 
-                {product.tags && (
-                  <div className="product-tags">
-                    {product.tags.split(',').slice(0, 3).map((tag, i) => (
-                      <span key={i} className="product-tag">{tag.trim()}</span>
-                    ))}
-                  </div>
-                )}
                 {product.rankingCount !== undefined && (
                   <div className="product-stats">
-                    <span>Avg Position: {product.avgRank?.toFixed(1) || 'N/A'}</span>
-                    <span>{product.rankingCount || 0} rankings</span>
+                    <span className="stat-badge">
+                      Avg Position: {product.avgRank?.toFixed(1) || 'N/A'}
+                    </span>
+                    <span className="stat-badge">
+                      {product.rankingCount || 0} rankings
+                    </span>
                   </div>
                 )}
               </div>
