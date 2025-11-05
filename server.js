@@ -1568,8 +1568,8 @@ app.get('/api/products/search', async (req, res) => {
       // Fire-and-forget logging and achievement checking
       (async () => {
         try {
-          // Log the search
-          await storage.logProductSearch(searchTerm, resultCount, userId, 'product_rankings');
+          // Log the search in both systems
+          await trackUserSearch(searchTerm, resultCount, userId, 'product_rankings');
           
           // Check for engagement achievements if user is authenticated
           if (userId && gamificationServices?.engagementManager) {
@@ -1750,11 +1750,11 @@ app.get('/api/products/rankable', async (req, res) => {
     console.log(`🎯 User ${userId}: Page ${pageNum} (indices ${startIndex}-${endIndex}) → Returning ${transformedProducts.length} products out of ${totalProducts} total unranked`);
     
     // Track search activity and check for engagement achievements (fire-and-forget)
-    if (query && query.trim() && gamificationServices?.activityTrackingService) {
+    if (query && query.trim()) {
       (async () => {
         try {
-          // Track the search activity
-          await gamificationServices.activityTrackingService.trackSearch(userId, query.trim(), transformedProducts.length, 'rank_page');
+          // Track the search activity in both systems
+          await trackUserSearch(query.trim(), transformedProducts.length, userId, 'rank_page');
           
           // Check for engagement achievements
           if (gamificationServices?.engagementManager) {
@@ -3473,8 +3473,8 @@ app.get('/api/search/global', async (req, res) => {
       // Fire-and-forget logging and achievement checking
       (async () => {
         try {
-          // Log the search
-          await storage.logProductSearch(searchQuery, resultCount, userId, 'global_search');
+          // Log the search in both systems
+          await trackUserSearch(searchQuery, resultCount, userId, 'global_search');
           
           // Check for engagement achievements if user is authenticated
           if (userId && gamificationServices?.engagementManager) {
