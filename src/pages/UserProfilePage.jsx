@@ -136,7 +136,10 @@ function UserProfilePage() {
               />
             </div>
 
-            <div className="rankings-list">
+            <div 
+              className="rankings-list"
+              onMouseLeave={(e) => e.currentTarget.blur()}
+            >
               {filteredProducts.length > 0 ? (
                 filteredProducts.map((product) => (
                   <div key={product.id} className="ranking-item">
