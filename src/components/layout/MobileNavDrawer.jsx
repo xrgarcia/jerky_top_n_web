@@ -46,32 +46,32 @@ export default function MobileNavDrawer({ isOpen, onClose }) {
         </div>
         
         <nav className="mobile-nav-links">
-          <Link to="/" className="mobile-nav-link">
+          <Link to="/" className="mobile-nav-link" onClick={onClose}>
             Home
           </Link>
-          <Link to="/products" className="mobile-nav-link">
+          <Link to="/products" className="mobile-nav-link" onClick={onClose}>
             Flavors
           </Link>
           {isAuthenticated && (
-            <Link to="/rank" className="mobile-nav-link">
+            <Link to="/rank" className="mobile-nav-link" onClick={onClose}>
               Rank
             </Link>
           )}
-          <Link to="/coinbook" className="mobile-nav-link">
+          <Link to="/coinbook" className="mobile-nav-link" onClick={onClose}>
             Coin Book
           </Link>
           {isAuthenticated && (
             <>
-              <Link to="/community" className="mobile-nav-link">
+              <Link to="/community" className="mobile-nav-link" onClick={onClose}>
                 Community
               </Link>
-              <Link to="/leaderboard" className="mobile-nav-link">
+              <Link to="/leaderboard" className="mobile-nav-link" onClick={onClose}>
                 Leaderboard
               </Link>
             </>
           )}
           {isEmployee && (
-            <Link to="/admin/tools" className="mobile-nav-link">
+            <Link to="/admin/tools" className="mobile-nav-link" onClick={onClose}>
               Tools
             </Link>
           )}
