@@ -1573,6 +1573,11 @@ app.get('/api/products/search', async (req, res) => {
           
           // Check for engagement achievements if user is authenticated
           if (userId && gamificationServices?.engagementManager) {
+            // Flush batched activities to ensure achievement check sees latest data
+            if (gamificationServices?.activityTrackingService) {
+              await gamificationServices.activityTrackingService.flush();
+            }
+            
             const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
             
             if (engagementUpdates.length > 0) {
@@ -1758,6 +1763,11 @@ app.get('/api/products/rankable', async (req, res) => {
           
           // Check for engagement achievements
           if (gamificationServices?.engagementManager) {
+            // Flush batched activities to ensure achievement check sees latest data
+            if (gamificationServices?.activityTrackingService) {
+              await gamificationServices.activityTrackingService.flush();
+            }
+            
             const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
             
             if (engagementUpdates.length > 0) {
@@ -3478,6 +3488,11 @@ app.get('/api/search/global', async (req, res) => {
           
           // Check for engagement achievements if user is authenticated
           if (userId && gamificationServices?.engagementManager) {
+            // Flush batched activities to ensure achievement check sees latest data
+            if (gamificationServices?.activityTrackingService) {
+              await gamificationServices.activityTrackingService.flush();
+            }
+            
             const engagementUpdates = await gamificationServices.engagementManager.checkAndUpdateEngagementAchievements(userId);
             
             if (engagementUpdates.length > 0) {
