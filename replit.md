@@ -13,6 +13,7 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 - **Flavor Navigation**: Product cards now display clickable flavor badges that link to flavor profile pages (e.g., clicking "savory" shows all savory products)
 - **Unified Search Tracking**: Implemented `trackUserSearch()` helper function that writes to both `user_product_searches` (legacy analytics) and `user_activities` (gamification) tables, ensuring all search activity across the site contributes to "be Curious" coin progress
 - **Engagement Achievement Fix**: Fixed `/api/gamification/achievements` endpoint to fetch engagement metrics (totalSearches, totalPageViews, totalProductViews, uniqueProductViews, totalProfileViews, uniqueProfileViews) in parallel with ranking stats, resolving issue where engagement achievements (like "be curious") showed 0 progress. Added null-safe error handling with fallback defaults to prevent endpoint failures.
+- **Ranking Race Condition Fix**: Implemented sequence-based staleness detection in `useRanking.js` to prevent data loss during rapid ranking operations. Each auto-save receives a monotonically increasing sequence number, and both initial saves and background retries check for staleness before executing. This ensures that older saves (including failed retries) cannot overwrite newer rankings, eliminating race conditions while maintaining crash-resilient IndexedDB persistence.
 
 ## User Preferences
 - Clean, professional design aesthetic
