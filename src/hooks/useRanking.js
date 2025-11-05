@@ -4,9 +4,12 @@ import { generateUUID } from '../utils/uuid';
 import { retryWithBackoff } from '../utils/retryWithBackoff';
 import { api } from '../utils/api';
 import { FEATURE_FLAGS } from '../../shared/constants/featureFlags.mjs';
+import { captureError, addBreadcrumb } from '../utils/sentry';
+import { useAuthStore } from '../store/authStore';
 
 export function useRanking(options = {}) {
   const { onSaveComplete, maxRankableCount } = options;
+  const { user, userRole } = useAuthStore();
   const [rankedProducts, setRankedProducts] = useState([]);
   const [slotCount, setSlotCount] = useState(10);
   const [saveStatus, setSaveStatus] = useState({ state: 'idle', message: '' }); // idle, saving, saved, error
@@ -83,6 +86,16 @@ export function useRanking(options = {}) {
     } catch (error) {
       console.error('Failed to load rankings:', error);
       setSaveStatus({ state: 'error', message: 'Failed to load rankings' });
+      
+      captureError(error, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'loadRankings',
+        result: 'failure',
+        message: `Failed to load user rankings from backend: ${error.message}`,
+        errorType: error.name || 'RankingLoadError',
+        apiEndpoint: '/rankings/products',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -165,6 +178,19 @@ export function useRanking(options = {}) {
           console.log(`✅ Cleared ${pending.length} operation(s) from queue`);
         } catch (error) {
           console.error('Failed to recover state, queue preserved for retry:', error);
+          
+          captureError(error, {
+            page: 'RankPage',
+            user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+            operation: 'recoverPendingOperations',
+            result: 'failure',
+            message: `Failed to recover ${operationToSave.rankings.length} pending rankings from IndexedDB: ${error.message}`,
+            errorType: error.name || 'RankingRecoveryError',
+            indexedDBCount: operationToSave.rankings.length,
+            backendCount: inMemoryCount,
+            apiEndpoint: '/rankings/products',
+          });
+          
           // Leave queue intact on error so retry can happen next load
           isRecovering.current = false;
           throw error; // Re-throw to prevent callback
@@ -180,6 +206,16 @@ export function useRanking(options = {}) {
       }
     } catch (error) {
       console.error('Failed to recover pending operations:', error);
+      
+      captureError(error, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'recoverPendingOperations',
+        result: 'failure',
+        message: `Failed to check for pending ranking operations in IndexedDB: ${error.message}`,
+        errorType: error.name || 'IndexedDBAccessError',
+      });
+      
       isRecovering.current = false;
     }
   };
@@ -358,6 +394,16 @@ export function useRanking(options = {}) {
       console.log(`💾 Persisted ${rankings.length} ranking(s) to IndexedDB (current state)`);
     } catch (error) {
       console.error('Failed to persist to IndexedDB:', error);
+      
+      captureError(error, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'persistToIndexedDB',
+        result: 'failure',
+        message: `Failed to persist ${rankings.length} rankings to IndexedDB: ${error.message}`,
+        errorType: error.name || 'IndexedDBPersistError',
+        rankingCount: rankings.length,
+      });
     }
   };
   
@@ -421,6 +467,21 @@ export function useRanking(options = {}) {
       setSaveStatus({ 
         state: 'error', 
         message: error.message || 'Save failed. Will retry...' 
+      });
+      
+      captureError(error, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'saveToBackend',
+        result: 'failure',
+        message: `Failed to save ${rankings.length} rankings to backend: ${error.message}`,
+        errorType: error.name || 'RankingSaveError',
+        rankingCount: rankings.length,
+        position: position || 'N/A',
+        isRecoveryMode: throwOnError,
+        operationId: idToComplete,
+        apiEndpoint: '/rankings/products',
+        willRetry: !throwOnError,
       });
       
       // During recovery, throw errors so caller knows save failed

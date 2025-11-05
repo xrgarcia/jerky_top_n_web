@@ -9,6 +9,7 @@ import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { useSocket } from '../hooks/useSocket';
 import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
+import { addBreadcrumb, captureError } from '../utils/sentry';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
@@ -221,6 +222,12 @@ export default function RankPage() {
       setSearchParams({});
     }
 
+    addBreadcrumb(
+      `User searched for products: "${termToSearch || '(all)'}"`,
+      'user_action',
+      { searchTerm: termToSearch, page: 'RankPage' }
+    );
+
     try {
       const params = new URLSearchParams({
         excludeRanked: 'true',
@@ -235,9 +242,27 @@ export default function RankPage() {
       const data = await api.get(`/products/rankable?${params.toString()}`);
       // API returns { products: [...] } not a bare array
       setProducts(Array.isArray(data) ? data : (data?.products ?? []));
+      
+      addBreadcrumb(
+        `Search returned ${Array.isArray(data) ? data.length : (data?.products?.length || 0)} products`,
+        'api_response',
+        { resultCount: Array.isArray(data) ? data.length : (data?.products?.length || 0) }
+      );
     } catch (err) {
       setError(err.message || 'Failed to load products');
       setProducts([]);
+      
+      const { user, userRole } = useAuthStore.getState();
+      captureError(err, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'handleSearch',
+        result: 'failure',
+        message: `Failed to search for rankable products: ${err.message}`,
+        errorType: err.name || 'ProductSearchError',
+        searchTerm: termToSearch,
+        apiEndpoint: '/products/rankable',
+      });
     } finally {
       setLoading(false);
     }
@@ -283,6 +308,12 @@ export default function RankPage() {
   const handleForceSync = async () => {
     setIsSyncing(true);
     
+    addBreadcrumb(
+      'User initiated Force Sync',
+      'user_action',
+      { page: 'RankPage', inMemoryCount: rankedProducts.length }
+    );
+    
     try {
       // CRITICAL: Read from IndexedDB (persistent queue), NOT from rankedProducts state
       // rankedProducts state might be stale (loaded from backend with missing items)
@@ -311,11 +342,27 @@ export default function RankPage() {
       console.log(`🔍 Force Sync: Found ${rankingsToSync.length} products in IndexedDB`);
       console.log(`🔍 In-memory state has: ${rankedProducts.length} products`);
       
+      addBreadcrumb(
+        `Force Sync: Found ${rankingsToSync.length} rankings in IndexedDB`,
+        'sync',
+        { indexedDBCount: rankingsToSync.length, inMemoryCount: rankedProducts.length }
+      );
+      
       // Check reconciliation status
       const productIds = rankingsToSync.map(r => r.productData.id);
       const reconcileResult = await api.post('/rankings/reconcile', { productIds });
       
       console.log('🔍 Reconciliation result:', reconcileResult);
+      
+      addBreadcrumb(
+        `Reconciliation complete`,
+        'api_response',
+        { 
+          backendCount: reconcileResult.backendCount,
+          missingCount: reconcileResult.missingFromBackend.length,
+          extraCount: reconcileResult.extraInBackend.length
+        }
+      );
       
       const message = `Force Sync Analysis:
       
@@ -329,9 +376,12 @@ This will overwrite the backend with your IndexedDB state.
 Continue?`;
       
       if (!confirm(message)) {
+        addBreadcrumb('User cancelled Force Sync', 'user_action');
         setIsSyncing(false);
         return;
       }
+      
+      addBreadcrumb('User confirmed Force Sync', 'user_action');
       
       // Force save all rankings from IndexedDB to backend
       await api.post('/rankings/products', {
@@ -357,12 +407,31 @@ Continue?`;
       queryClient.invalidateQueries({ queryKey: ['achievements'] });
       queryClient.invalidateQueries({ queryKey: ['gamificationProgress'] });
       
+      addBreadcrumb(
+        `Force Sync successful: Synced ${rankingsToSync.length} rankings`,
+        'sync',
+        { syncedCount: rankingsToSync.length, recoveredCount: reconcileResult.missingFromBackend.length }
+      );
+      
       alert(`✅ Successfully synced ${rankingsToSync.length} products from IndexedDB to backend!\n\nMissing products recovered: ${reconcileResult.missingFromBackend.length}\n\nPage will reload to refresh all data.`);
       
       // Reload the page to refresh all data
       window.location.reload();
     } catch (error) {
       console.error('Force sync failed:', error);
+      
+      const { user, userRole } = useAuthStore.getState();
+      captureError(error, {
+        page: 'RankPage',
+        user: user ? { id: user.id, email: user.email, role: userRole } : undefined,
+        operation: 'handleForceSync',
+        result: 'failure',
+        message: `Force sync failed when syncing IndexedDB rankings to backend: ${error.message}`,
+        errorType: error.name || 'ForceSyncError',
+        inMemoryCount: rankedProducts.length,
+        apiEndpoint: '/rankings/products',
+      });
+      
       alert(`❌ Force sync failed: ${error.message || 'Unknown error'}\n\nCheck console for details.`);
     } finally {
       setIsSyncing(false);
