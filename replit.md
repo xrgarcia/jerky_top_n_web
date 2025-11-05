@@ -48,7 +48,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Timestamp Handling**: All database timestamps are ISO 8601 UTC; client-side relative time calculation.
 - **Performance**: OOP design patterns, caching, query optimization.
 - **Search**: Global unified search for products and community members.
-- **Styling**: Custom CSS with an earth-tone palette.
+- **Styling**: Custom CSS with an earth-tone palette and **component-scoped class names** to prevent global CSS conflicts (e.g., `.nav-search-input`, `.page-search-input`, `.admin-search-input`).
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 - **Feature Flags**: JSON-based configuration system (`featureFlags.json`) for cross-environment compatibility (e.g., `AUTO_FILL_RANKING_GAPS`).
 - **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior (Journey Stage, Engagement Level, Activity Type, Taste Community) to provide targeted, action-oriented messages with CTAs. Rule-based analysis with configurable thresholds and real-time WebSocket updates. Enhanced with achievement hooks via dependency injection (ProgressTracker + UserStatsAggregator) to append tactical achievement progress (e.g., "3 more flavors to unlock Silver 🥈") to strategic journey messages, with smart category filtering by page context (rank→ranking achievements, products/community→engagement achievements, coinbook→all achievements).
