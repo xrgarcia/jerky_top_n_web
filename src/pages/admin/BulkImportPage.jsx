@@ -299,7 +299,7 @@ function BulkImportPage() {
               <>
                 <span className="pipeline-title">Import Complete</span>
                 <span className="pipeline-subtitle">
-                  {currentStats ? `${currentStats.customersFetched || 0} customers processed: ${currentStats.usersCreated || 0} new, ${currentStats.usersUpdated || 0} updated` : 'Processing complete'}
+                  {currentStats ? `Processed ${currentStats.customersFetched || 0} customers: created ${currentStats.usersCreated || 0} new users, updated ${currentStats.usersUpdated || 0} existing users` : 'Processing complete'}
                 </span>
               </>
             ) : (
@@ -419,7 +419,7 @@ function BulkImportPage() {
                 <div className="complete-icon">✅</div>
                 <div className="complete-text">
                   <h4>Import Complete!</h4>
-                  <p>Successfully processed {currentStats.customersFetched || 0} customers from Shopify</p>
+                  <p>Fetched {currentStats.customersFetched || 0} customers from Shopify, created {currentStats.usersCreated || 0} new users and updated {currentStats.usersUpdated || 0} existing users</p>
                 </div>
               </div>
               <div className="step-stats-grid">
@@ -435,9 +435,9 @@ function BulkImportPage() {
                   <div className="step-stat-value">{currentStats.usersUpdated || 0}</div>
                   <div className="step-stat-label">Existing Users Updated</div>
                 </div>
-                <div className="step-stat success">
+                <div className="step-stat">
                   <div className="step-stat-value">{currentStats.jobsEnqueued || 0}</div>
-                  <div className="step-stat-label">Jobs Processed</div>
+                  <div className="step-stat-label">Jobs Enqueued</div>
                 </div>
               </div>
             </div>
