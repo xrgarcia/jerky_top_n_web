@@ -27,6 +27,8 @@ const FlavorProfileCommunityService = require('../services/FlavorProfileCommunit
 const PersonalizedGuidanceService = require('../services/PersonalizedGuidanceService');
 const ClassificationQueue = require('../services/ClassificationQueue');
 const ClassificationWorker = require('../services/ClassificationWorker');
+const BulkImportQueue = require('../services/BulkImportQueue');
+const BulkImportWorker = require('../services/BulkImportWorker');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -141,6 +143,17 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   await classificationWorker.initialize();
   
   services.classificationWorker = classificationWorker;
+  
+  // Initialize BulkImportQueue (BullMQ with Redis)
+  const bulkImportQueue = BulkImportQueue; // Singleton instance
+  await bulkImportQueue.initialize();
+  
+  // Initialize BulkImportWorker (BullMQ background processor)
+  const bulkImportWorker = BulkImportWorker; // Singleton instance
+  await bulkImportWorker.initialize();
+  
+  services.bulkImportQueue = bulkImportQueue;
+  services.bulkImportWorker = bulkImportWorker;
 
   // Seed achievements (this also warms AchievementCache)
   engagementManager.seedAchievements().then(() => {

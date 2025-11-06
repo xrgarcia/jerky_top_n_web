@@ -3727,6 +3727,11 @@ if (databaseAvailable && storage) {
       const coinTypesAdminRouter = createCoinTypesAdminRoutes(storage, db);
       adminRouter.use(coinTypesAdminRouter);
       
+      // Add Bulk Import admin routes
+      const createBulkImportRoutes = require('./server/routes/admin/bulkImport');
+      const bulkImportRouter = createBulkImportRoutes(storage, db);
+      adminRouter.use(bulkImportRouter);
+      
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
