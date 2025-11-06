@@ -9,6 +9,11 @@ class ShopifyCustomersService {
     this.shopDomain = 'jerky-com.myshopify.com';
     this.apiVersion = '2023-10';
     this.accessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
+    
+    // Cache customer count to avoid excessive API calls
+    this.customerCountCache = null;
+    this.customerCountCacheTime = null;
+    this.CACHE_TTL = 60000; // 1 minute cache
   }
 
   /**
@@ -21,12 +26,23 @@ class ShopifyCustomersService {
 
   /**
    * Get total customer count from Shopify
+   * @param {Object} options - Query options
+   * @param {boolean} options.bypassCache - Force fresh API call, ignoring cache
    * @returns {Promise<number>} Total customer count
    */
-  async getCustomerCount() {
+  async getCustomerCount(options = {}) {
+    const { bypassCache = false } = options;
+    
     if (!this.accessToken) {
       console.warn('⚠️ Shopify Admin Access Token not configured');
       return 0;
+    }
+    
+    // Return cached count if valid and not bypassing cache
+    const now = Date.now();
+    if (!bypassCache && this.customerCountCache !== null && this.customerCountCacheTime && (now - this.customerCountCacheTime < this.CACHE_TTL)) {
+      console.log(`📊 Shopify customer count (cached): ${this.customerCountCache.toLocaleString()}`);
+      return this.customerCountCache;
     }
 
     try {
@@ -56,7 +72,11 @@ class ShopifyCustomersService {
       const data = await response.json();
       const count = data.count || 0;
       
-      console.log(`📊 Shopify customer count: ${count.toLocaleString()}`);
+      // Update cache
+      this.customerCountCache = count;
+      this.customerCountCacheTime = Date.now();
+      
+      console.log(`📊 Shopify customer count (fresh): ${count.toLocaleString()}`);
       return count;
 
     } catch (error) {

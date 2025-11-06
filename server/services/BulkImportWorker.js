@@ -20,6 +20,10 @@ class BulkImportWorker {
     this.worker = null;
     this.services = null;
     this.purchaseHistoryService = new PurchaseHistoryService();
+    
+    // Throttle Shopify stats broadcasts to avoid excessive API calls
+    this.lastShopifyStatsBroadcast = null;
+    this.SHOPIFY_STATS_THROTTLE = 10000; // Broadcast at most every 10 seconds
   }
 
   /**
@@ -243,13 +247,27 @@ class BulkImportWorker {
   /**
    * Broadcast Shopify stats (DB vs Shopify comparison) to connected WebSocket clients
    * Used for real-time updates of the gap metric during imports
+   * @param {Object} options - Broadcast options
+   * @param {boolean} options.force - Force broadcast even if throttled
+   * @param {boolean} options.bypassCache - Force fresh data from Shopify API
    */
-  async broadcastShopifyStats() {
+  async broadcastShopifyStats(options = {}) {
+    const { force = false, bypassCache = false } = options;
+    
     try {
       const bulkImportService = require('./BulkImportService');
       
-      // Get Shopify stats
-      const shopifyStats = await bulkImportService.getShopifyStats();
+      // Throttle broadcasts unless forced
+      const now = Date.now();
+      if (!force && this.lastShopifyStatsBroadcast && (now - this.lastShopifyStatsBroadcast < this.SHOPIFY_STATS_THROTTLE)) {
+        return; // Skip this broadcast - too soon after last one
+      }
+      
+      // Get Shopify stats (with optional cache bypass for final/forced broadcasts)
+      const shopifyStats = await bulkImportService.getShopifyStats({ bypassCache });
+      
+      // Update last broadcast time
+      this.lastShopifyStatsBroadcast = now;
       
       // Get WebSocket gateway from services
       const wsGateway = this.services?.wsGateway;

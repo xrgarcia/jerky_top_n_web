@@ -99,6 +99,15 @@ class BulkImportService {
       this.currentImportStats.phase = 'completed';
       this.currentImportStats.completedAt = new Date().toISOString();
 
+      // Broadcast final Shopify stats with cache bypass for accurate gap metric
+      try {
+        const bulkImportWorker = require('./BulkImportWorker');
+        await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
+        console.log('📊 Broadcasted final Shopify stats (bypassed cache)');
+      } catch (error) {
+        console.error('⚠️ Failed to broadcast final stats:', error.message);
+      }
+
       const finalStats = {
         success: true,
         ...this.currentImportStats
@@ -369,12 +378,16 @@ class BulkImportService {
 
   /**
    * Get Shopify stats vs database stats
+   * @param {Object} options - Query options
+   * @param {boolean} options.bypassCache - Force fresh data from Shopify API
    * @returns {Promise<Object>} Shopify and database statistics
    */
-  async getShopifyStats() {
+  async getShopifyStats(options = {}) {
+    const { bypassCache = false } = options;
+    
     try {
-      // Get Shopify customer count
-      const shopifyCustomerCount = await this.shopifyCustomersService.getCustomerCount();
+      // Get Shopify customer count (with cache control)
+      const shopifyCustomerCount = await this.shopifyCustomersService.getCustomerCount({ bypassCache });
       
       // Get database user counts
       const [totalUsers] = await primaryDb

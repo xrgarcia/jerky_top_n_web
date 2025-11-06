@@ -69,10 +69,13 @@ module.exports = function createBulkImportRoutes(storage, db) {
   /**
    * GET /api/admin/bulk-import/shopify-stats
    * Get Shopify customer count vs database user stats
+   * Query params:
+   * - bypassCache: true/false - Force fresh data from Shopify API
    */
   router.get('/bulk-import/shopify-stats', requireEmployeeAdmin, async (req, res) => {
     try {
-      const stats = await bulkImportService.getShopifyStats();
+      const bypassCache = req.query.bypassCache === 'true';
+      const stats = await bulkImportService.getShopifyStats({ bypassCache });
       res.json(stats);
     } catch (error) {
       console.error('Error getting Shopify stats:', error);
