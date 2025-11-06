@@ -61,6 +61,49 @@ class FlavorCommunityService {
   }
 
   /**
+   * Update flavor community configuration
+   * @param {object} configData - Configuration data
+   * @param {string} updatedByEmail - Email of user making the update
+   * @returns {object} Updated configuration
+   */
+  async updateConfig(configData, updatedByEmail) {
+    const { enthusiast_top_pct, explorer_bottom_pct, min_products_for_state, delivered_status } = configData;
+
+    // Validate input
+    if (enthusiast_top_pct < 1 || enthusiast_top_pct > 100) {
+      throw new Error('enthusiast_top_pct must be between 1 and 100');
+    }
+    if (explorer_bottom_pct < 1 || explorer_bottom_pct > 100) {
+      throw new Error('explorer_bottom_pct must be between 1 and 100');
+    }
+    if (min_products_for_state < 0) {
+      throw new Error('min_products_for_state must be >= 0');
+    }
+
+    const newConfig = {
+      enthusiast_top_pct: parseInt(enthusiast_top_pct),
+      explorer_bottom_pct: parseInt(explorer_bottom_pct),
+      min_products_for_state: parseInt(min_products_for_state),
+      delivered_status: delivered_status || 'delivered'
+    };
+
+    // Update config in database
+    await db
+      .update(classificationConfig)
+      .set({
+        configValue: newConfig,
+        updatedAt: new Date(),
+        updatedBy: updatedByEmail
+      })
+      .where(eq(classificationConfig.configKey, 'flavor_community_thresholds'));
+
+    // Invalidate cache
+    this.invalidateConfigCache();
+
+    return newConfig;
+  }
+
+  /**
    * Update user's flavor communities based on current behavior
    * @param {number} userId - User ID
    * @returns {array} Array of flavor community states

@@ -22,7 +22,7 @@ function createFlavorCommunitiesRoutes(services) {
         return res.status(401).json({ error: 'Authentication required' });
       }
 
-      const session = await storage.getSessionBySessionId(sessionId);
+      const session = await storage.getSession(sessionId);
       if (!session) {
         return res.status(401).json({ error: 'Invalid or expired session' });
       }
@@ -168,54 +168,28 @@ function createFlavorCommunitiesRoutes(services) {
    */
   router.post('/config', requireAuth, requireAdmin, async (req, res) => {
     try {
-      const { classificationConfig } = require('../../shared/schema');
-      const { eq } = require('drizzle-orm');
-
-      const user = await db
-        .select()
-        .from(users)
-        .where(eq(users.id, req.session.userId))
-        .limit(1);
-
       const { enthusiast_top_pct, explorer_bottom_pct, min_products_for_state, delivered_status } = req.body;
 
-      // Validate input
-      if (enthusiast_top_pct < 1 || enthusiast_top_pct > 100) {
-        return res.status(400).json({ error: 'enthusiast_top_pct must be between 1 and 100' });
-      }
-      if (explorer_bottom_pct < 1 || explorer_bottom_pct > 100) {
-        return res.status(400).json({ error: 'explorer_bottom_pct must be between 1 and 100' });
-      }
-      if (min_products_for_state < 0) {
-        return res.status(400).json({ error: 'min_products_for_state must be >= 0' });
-      }
-
-      const newConfig = {
-        enthusiast_top_pct: parseInt(enthusiast_top_pct),
-        explorer_bottom_pct: parseInt(explorer_bottom_pct),
-        min_products_for_state: parseInt(min_products_for_state),
-        delivered_status: delivered_status || 'delivered'
-      };
-
-      // Update config in database
-      await db
-        .update(classificationConfig)
-        .set({
-          configValue: newConfig,
-          updatedAt: new Date(),
-          updatedBy: user[0].email
-        })
-        .where(eq(classificationConfig.configKey, 'flavor_community_thresholds'));
-
-      // Invalidate cache
-      flavorCommunityService.invalidateConfigCache();
+      // Delegate to service (follows OOP principles)
+      const updatedConfig = await flavorCommunityService.updateConfig({
+        enthusiast_top_pct,
+        explorer_bottom_pct,
+        min_products_for_state,
+        delivered_status
+      }, req.user.email);
 
       res.json({ 
-        config: newConfig,
+        config: updatedConfig,
         message: 'Configuration updated successfully'
       });
     } catch (error) {
       console.error('Error updating flavor community config:', error);
+      
+      // Handle validation errors
+      if (error.message.includes('must be')) {
+        return res.status(400).json({ error: error.message });
+      }
+      
       res.status(500).json({ error: 'Failed to update configuration' });
     }
   });
