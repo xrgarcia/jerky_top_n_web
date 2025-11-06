@@ -131,7 +131,7 @@ class BulkImportService {
     
     const usersToImport = [];
     let totalCustomersFetched = 0;
-    let pageInfo = null;
+    let sinceId = null;
     const pageSize = 250;
     
     // Determine fetch strategy
@@ -142,24 +142,25 @@ class BulkImportService {
     
     this.currentImportStats.phase = 'fetching_customers';
     
-    // Keep fetching pages until we have enough unprocessed users or run out
+    // Keep fetching batches until we have enough unprocessed users or run out
     let currentPage = 0;
-    while (currentPage < maxPages) {
+    let hasMore = true;
+    
+    while (hasMore && currentPage < maxPages) {
       currentPage++;
       
-      // Fetch one page of customers
-      const fetchResult = await this.shopifyCustomersService.fetchAllCustomers({
-        limit: pageSize,
-        maxPages: 1,
-        pageInfo: pageInfo
+      // Fetch one batch of customers using cursor pagination
+      const batchResult = await this.shopifyCustomersService.fetchCustomerBatch({
+        sinceId: sinceId,
+        limit: pageSize
       });
       
-      if (!fetchResult.customers || fetchResult.customers.length === 0) {
+      if (!batchResult.customers || batchResult.customers.length === 0) {
         console.log(`📭 No more customers to fetch (reached end at page ${currentPage})`);
         break;
       }
       
-      const customers = fetchResult.customers;
+      const customers = batchResult.customers;
       totalCustomersFetched += customers.length;
       this.currentImportStats.customersFetched = totalCustomersFetched;
       
@@ -171,6 +172,7 @@ class BulkImportService {
         // Stop if we're in legacy mode and hit maxCustomers limit
         if (!useIntelligentMode && maxCustomers && totalCustomersFetched > maxCustomers) {
           console.log(`🛑 Reached maxCustomers limit (${maxCustomers})`);
+          hasMore = false;
           break;
         }
         
@@ -192,7 +194,7 @@ class BulkImportService {
             
             // In intelligent mode, stop when we've found enough unprocessed users
             if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
-              console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers})`);
+              console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers}) after checking ${totalCustomersFetched} customers across ${currentPage} pages`);
               return usersToImport;
             }
           }
@@ -207,21 +209,17 @@ class BulkImportService {
         }
       }
       
-      // Check if we should continue to next page
-      if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
-        console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers})`);
-        break;
-      }
+      // Update cursor for next batch
+      sinceId = batchResult.nextSinceId;
+      hasMore = batchResult.hasMore;
       
-      // Update page info for next iteration
-      pageInfo = fetchResult.pageInfo;
-      if (!pageInfo || !pageInfo.hasNextPage) {
+      if (!hasMore) {
         console.log(`📭 No more pages available (processed ${currentPage} pages)`);
         break;
       }
     }
     
-    console.log(`✅ Fetched ${totalCustomersFetched} total customers, identified ${usersToImport.length} unprocessed users`);
+    console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} unprocessed users`);
     return usersToImport;
   }
 

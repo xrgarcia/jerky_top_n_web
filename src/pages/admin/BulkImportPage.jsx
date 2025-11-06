@@ -10,6 +10,9 @@ function BulkImportPage() {
   const [reimportAll, setReimportAll] = useState(false);
   const [targetUnprocessedUsers, setTargetUnprocessedUsers] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [workerProgressState, setWorkerProgressState] = useState('idle');
+  const [lastCompletedStats, setLastCompletedStats] = useState(null);
+  const completionTimerRef = React.useRef(null);
   const { socket } = useSocket();
 
   // Fetch import progress
@@ -176,6 +179,46 @@ function BulkImportPage() {
   const completedJobs = queue.completed || 0;
   const progressPercent = totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 0;
 
+  // Track worker progress state transitions
+  useEffect(() => {
+    const hasActiveJobs = (queue.active || 0) > 0 || (queue.waiting || 0) > 0;
+    
+    if (hasActiveJobs) {
+      // Jobs are running - clear completion timer and set to active
+      if (completionTimerRef.current) {
+        clearTimeout(completionTimerRef.current);
+        completionTimerRef.current = null;
+      }
+      setWorkerProgressState('active');
+      setLastCompletedStats(null); // Clear old completion stats
+    } else if (workerProgressState === 'active' && !hasActiveJobs) {
+      // Jobs just finished - capture stats and show "Recently Completed" for 10 seconds
+      setLastCompletedStats({
+        completed: queue.completed || 0,
+        failed: queue.failed || 0,
+        usersImported: users.imported || 0,
+        timestamp: new Date()
+      });
+      setWorkerProgressState('recentlyCompleted');
+      
+      // Auto-return to idle after 10 seconds (store in ref to prevent cleanup)
+      completionTimerRef.current = setTimeout(() => {
+        setWorkerProgressState('idle');
+        completionTimerRef.current = null;
+      }, 10000);
+    }
+    // If we're in recentlyCompleted or idle, let the timer run (don't clear it)
+  }, [queue.active, queue.waiting, queue.completed, queue.failed, users.imported, workerProgressState]);
+
+  // Cleanup timer on unmount
+  useEffect(() => {
+    return () => {
+      if (completionTimerRef.current) {
+        clearTimeout(completionTimerRef.current);
+      }
+    };
+  }, []);
+
   return (
     <div className="bulk-import-page">
       <div className="bulk-import-header">
@@ -237,34 +280,73 @@ function BulkImportPage() {
         </div>
       </div>
 
-      {/* Worker Progress - Real-time processing status */}
-      {(queue.active > 0 || queue.waiting > 0) && (
-        <div className="worker-progress-card">
-          <h3>🔄 Worker Progress (Live)</h3>
-          <div className="worker-progress-grid">
-            <div className="worker-stat active-workers">
-              <div className="worker-stat-value">{queue.active || 0}</div>
-              <div className="worker-stat-label">Processing Now</div>
+      {/* Worker Progress - Always visible with state transitions */}
+      <div className={`worker-progress-card worker-state-${workerProgressState}`}>
+        {workerProgressState === 'active' && (
+          <>
+            <h3>🔄 Worker Progress (Live)</h3>
+            <div className="worker-progress-grid">
+              <div className="worker-stat active-workers">
+                <div className="worker-stat-value">{queue.active || 0}</div>
+                <div className="worker-stat-label">Processing Now</div>
+              </div>
+              <div className="worker-stat waiting-jobs">
+                <div className="worker-stat-value">{queue.waiting || 0}</div>
+                <div className="worker-stat-label">In Queue</div>
+              </div>
+              <div className="worker-stat users-in-progress">
+                <div className="worker-stat-value">{users.inProgress || 0}</div>
+                <div className="worker-stat-label">Users Processing</div>
+              </div>
+              <div className="worker-stat users-remaining">
+                <div className="worker-stat-value">{users.pending || 0}</div>
+                <div className="worker-stat-label">Users Remaining</div>
+              </div>
             </div>
-            <div className="worker-stat waiting-jobs">
-              <div className="worker-stat-value">{queue.waiting || 0}</div>
-              <div className="worker-stat-label">In Queue</div>
+            <div className="worker-progress-note">
+              <span className="pulse-indicator"></span>
+              <span>Live updates via WebSocket</span>
             </div>
-            <div className="worker-stat users-in-progress">
-              <div className="worker-stat-value">{users.inProgress || 0}</div>
-              <div className="worker-stat-label">Users Processing</div>
+          </>
+        )}
+
+        {workerProgressState === 'recentlyCompleted' && lastCompletedStats && (
+          <>
+            <h3>✅ Import Completed</h3>
+            <div className="worker-completed-message">
+              <div className="completed-summary">
+                <p className="completed-main">
+                  Just finished importing! {lastCompletedStats.usersImported} users processed successfully.
+                </p>
+                <div className="completed-stats-inline">
+                  <span className="completed-stat success">
+                    ✓ {lastCompletedStats.completed} jobs completed
+                  </span>
+                  {lastCompletedStats.failed > 0 && (
+                    <span className="completed-stat failed">
+                      ✗ {lastCompletedStats.failed} failed
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
-            <div className="worker-stat users-remaining">
-              <div className="worker-stat-value">{users.pending || 0}</div>
-              <div className="worker-stat-label">Users Remaining</div>
+            <div className="worker-progress-note">
+              <span className="checkmark-indicator">✓</span>
+              <span>Import completed at {lastCompletedStats.timestamp.toLocaleTimeString()}</span>
             </div>
-          </div>
-          <div className="worker-progress-note">
-            <span className="pulse-indicator"></span>
-            <span>Live updates via WebSocket</span>
-          </div>
-        </div>
-      )}
+          </>
+        )}
+
+        {workerProgressState === 'idle' && (
+          <>
+            <h3>⏸️ Worker Status</h3>
+            <div className="worker-idle-message">
+              <p>No active import jobs running.</p>
+              <p className="idle-hint">Start an import to see real-time worker progress here.</p>
+            </div>
+          </>
+        )}
+      </div>
 
       {/* Queue Statistics */}
       <div className="queue-card">
