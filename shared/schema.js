@@ -342,6 +342,31 @@ const classificationConfig = pgTable('classification_config', {
   updatedBy: text('updated_by'), // Email of admin who last updated
 });
 
+// User flavor communities - tracks user journey through flavor profile micro-communities
+const userFlavorCommunities = pgTable('user_flavor_communities', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  flavorProfile: text('flavor_profile').notNull(), // e.g., 'sweet', 'spicy', 'savory', 'smoky', 'bbq', 'hot', 'teriyaki'
+  communityState: text('community_state').notNull(), // 'curious', 'seeker', 'taster', 'enthusiast', 'explorer'
+  productsPurchased: integer('products_purchased').default(0), // Total products purchased with this flavor
+  productsDelivered: integer('products_delivered').default(0), // Total products delivered with this flavor
+  productsRanked: integer('products_ranked').default(0), // Total products ranked with this flavor
+  avgRankPosition: integer('avg_rank_position'), // Average ranking position (1 = top rank, higher = lower rank)
+  highestRankPosition: integer('highest_rank_position'), // Best (lowest number) ranking position
+  lowestRankPosition: integer('lowest_rank_position'), // Worst (highest number) ranking position
+  lastActivityAt: timestamp('last_activity_at').defaultNow(), // Last search, purchase, or ranking for this flavor
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  // Unique constraint: one record per user per flavor profile
+  uniqueUserFlavor: unique().on(table.userId, table.flavorProfile),
+  // Indexes for efficient queries
+  userIdIdx: index('idx_user_flavor_communities_user_id').on(table.userId),
+  flavorProfileIdx: index('idx_user_flavor_communities_flavor').on(table.flavorProfile),
+  communityStateIdx: index('idx_user_flavor_communities_state').on(table.communityState),
+  userFlavorStateIdx: index('idx_user_flavor_communities_user_flavor_state').on(table.userId, table.flavorProfile, table.communityState),
+}));
+
 // Relations for new tables
 const userActivitiesRelations = relations(userActivities, ({ one }) => ({
   user: one(users, {
@@ -363,6 +388,13 @@ const userClassificationsRelations = relations(userClassifications, ({ one }) =>
 
 const tasteCommunitiesRelations = relations(tasteCommunities, ({ many }) => ({
   userClassifications: many(userClassifications),
+}));
+
+const userFlavorCommunitiesRelations = relations(userFlavorCommunities, ({ one }) => ({
+  user: one(users, {
+    fields: [userFlavorCommunities.userId],
+    references: [users.id],
+  }),
 }));
 
 module.exports = {
@@ -387,6 +419,7 @@ module.exports = {
   tasteCommunities,
   userClassifications,
   classificationConfig,
+  userFlavorCommunities,
   usersRelations,
   sessionsRelations,
   rankingsRelations,
@@ -397,4 +430,5 @@ module.exports = {
   userActivitiesRelations,
   userClassificationsRelations,
   tasteCommunitiesRelations,
+  userFlavorCommunitiesRelations,
 };
