@@ -102,15 +102,21 @@ module.exports = function createBulkImportRoutes(storage, db) {
   /**
    * POST /api/admin/bulk-import/start
    * Start bulk import of all Shopify customers
+   * Body params:
+   *   - reimportAll: boolean - Force reimport even if already imported
+   *   - targetUnprocessedUsers: number - Intelligent mode: find and import X unprocessed users
+   *   - maxCustomers: number - Legacy mode: fetch up to X customers total
    */
   router.post('/bulk-import/start', requireEmployeeAdmin, async (req, res) => {
     try {
-      const { reimportAll = false, maxCustomers = null } = req.body;
+      const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = req.body;
 
-      console.log(`🚀 Admin ${req.user.email} starting bulk import (reimportAll: ${reimportAll}, maxCustomers: ${maxCustomers})`);
+      const mode = targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'all');
+      console.log(`🚀 Admin ${req.user.email} starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
 
       const result = await bulkImportService.startBulkImport({
         reimportAll,
+        targetUnprocessedUsers,
         maxCustomers
       });
 

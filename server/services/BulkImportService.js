@@ -33,11 +33,12 @@ class BulkImportService {
    * Start bulk import of all Shopify customers
    * @param {Object} options - Import options
    * @param {boolean} options.reimportAll - Force reimport of all users (default: false)
-   * @param {number} options.maxCustomers - Limit number of customers to import (testing)
+   * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to import (intelligent mode)
+   * @param {number} options.maxCustomers - Limit total customers to fetch (deprecated, use targetUnprocessedUsers)
    * @returns {Promise<Object>} Import result
    */
   async startBulkImport(options = {}) {
-    const { reimportAll = false, maxCustomers = null } = options;
+    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = options;
 
     if (this.importInProgress) {
       return {
@@ -66,57 +67,15 @@ class BulkImportService {
         errors: 0
       };
 
-      console.log(`🚀 Starting bulk import (reimportAll: ${reimportAll}, maxCustomers: ${maxCustomers || 'unlimited'})`);
+      const mode = targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'unlimited');
+      console.log(`🚀 Starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
 
-      // Step 1: Fetch all customers from Shopify
-      console.log('📥 Fetching all customers from Shopify...');
-      const fetchResult = await this.shopifyCustomersService.fetchAllCustomers({
-        limit: 250,
-        maxPages: maxCustomers ? Math.ceil(maxCustomers / 250) : 1000
+      // Step 1 & 2: Intelligently fetch customers and identify unprocessed users
+      const usersToImport = await this.fetchUnprocessedUsers({
+        reimportAll,
+        targetUnprocessedUsers,
+        maxCustomers
       });
-
-      let customers = fetchResult.customers;
-      this.currentImportStats.customersFetched = customers.length;
-
-      if (maxCustomers) {
-        customers = customers.slice(0, maxCustomers);
-      }
-
-      console.log(`✅ Fetched ${customers.length} customers from Shopify`);
-
-      // Step 2: Create/update user records in database
-      this.currentImportStats.phase = 'creating_users';
-      console.log('💾 Creating/updating user records...');
-
-      const usersToImport = [];
-
-      for (const customer of customers) {
-        try {
-          const result = await this.createOrUpdateUser(customer, reimportAll);
-          
-          if (result.created) {
-            this.currentImportStats.usersCreated++;
-          } else if (result.updated) {
-            this.currentImportStats.usersUpdated++;
-          }
-
-          if (result.shouldImport) {
-            usersToImport.push({
-              userId: result.userId,
-              shopifyCustomerId: customer.id.toString(),
-              email: customer.email
-            });
-          }
-        } catch (error) {
-          console.error(`❌ Error creating/updating user for customer ${customer.id}:`, error);
-          this.currentImportStats.errors++;
-          
-          Sentry.captureException(error, {
-            tags: { service: 'bulk-import', phase: 'create_user' },
-            extra: { customerId: customer.id, email: customer.email }
-          });
-        }
-      }
 
       console.log(`✅ Created ${this.currentImportStats.usersCreated} users, updated ${this.currentImportStats.usersUpdated} users`);
 
@@ -157,6 +116,113 @@ class BulkImportService {
         error: error.message
       };
     }
+  }
+
+  /**
+   * Intelligently fetch unprocessed users by paginating through Shopify customers
+   * @param {Object} options - Fetch options
+   * @param {boolean} options.reimportAll - Force reimport even if already imported
+   * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to find
+   * @param {number} options.maxCustomers - Maximum total customers to fetch
+   * @returns {Promise<Array>} Array of users to import
+   */
+  async fetchUnprocessedUsers(options = {}) {
+    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = options;
+    
+    const usersToImport = [];
+    let totalCustomersFetched = 0;
+    let pageInfo = null;
+    const pageSize = 250;
+    
+    // Determine fetch strategy
+    const useIntelligentMode = targetUnprocessedUsers !== null;
+    const maxPages = maxCustomers ? Math.ceil(maxCustomers / pageSize) : 1000;
+    
+    console.log(`📥 Fetching customers from Shopify (${useIntelligentMode ? `intelligent: target ${targetUnprocessedUsers} unprocessed` : `legacy: max ${maxCustomers || 'unlimited'} customers`})...`);
+    
+    this.currentImportStats.phase = 'fetching_customers';
+    
+    // Keep fetching pages until we have enough unprocessed users or run out
+    let currentPage = 0;
+    while (currentPage < maxPages) {
+      currentPage++;
+      
+      // Fetch one page of customers
+      const fetchResult = await this.shopifyCustomersService.fetchAllCustomers({
+        limit: pageSize,
+        maxPages: 1,
+        pageInfo: pageInfo
+      });
+      
+      if (!fetchResult.customers || fetchResult.customers.length === 0) {
+        console.log(`📭 No more customers to fetch (reached end at page ${currentPage})`);
+        break;
+      }
+      
+      const customers = fetchResult.customers;
+      totalCustomersFetched += customers.length;
+      this.currentImportStats.customersFetched = totalCustomersFetched;
+      
+      console.log(`📄 Fetched page ${currentPage}: ${customers.length} customers (total: ${totalCustomersFetched})`);
+      
+      // Process each customer on this page
+      this.currentImportStats.phase = 'processing_customers';
+      for (const customer of customers) {
+        // Stop if we're in legacy mode and hit maxCustomers limit
+        if (!useIntelligentMode && maxCustomers && totalCustomersFetched > maxCustomers) {
+          console.log(`🛑 Reached maxCustomers limit (${maxCustomers})`);
+          break;
+        }
+        
+        try {
+          const result = await this.createOrUpdateUser(customer, reimportAll);
+          
+          if (result.created) {
+            this.currentImportStats.usersCreated++;
+          } else if (result.updated) {
+            this.currentImportStats.usersUpdated++;
+          }
+          
+          if (result.shouldImport) {
+            usersToImport.push({
+              userId: result.userId,
+              shopifyCustomerId: customer.id.toString(),
+              email: customer.email
+            });
+            
+            // In intelligent mode, stop when we've found enough unprocessed users
+            if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
+              console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers})`);
+              return usersToImport;
+            }
+          }
+        } catch (error) {
+          console.error(`❌ Error creating/updating user for customer ${customer.id}:`, error);
+          this.currentImportStats.errors++;
+          
+          Sentry.captureException(error, {
+            tags: { service: 'bulk-import', phase: 'create_user' },
+            extra: { customerId: customer.id, email: customer.email }
+          });
+        }
+      }
+      
+      // Check if we should continue to next page
+      if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
+        console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers})`);
+        break;
+      }
+      
+      // Update page info for next iteration
+      pageInfo = fetchResult.pageInfo;
+      if (!pageInfo || !pageInfo.hasNextPage) {
+        console.log(`📭 No more pages available (processed ${currentPage} pages)`);
+        break;
+      }
+    }
+    
+    console.log(`✅ Fetched ${totalCustomersFetched} total customers, identified ${usersToImport.length} unprocessed users`);
+    return usersToImport;
   }
 
   /**

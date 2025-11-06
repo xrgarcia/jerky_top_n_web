@@ -8,7 +8,7 @@ function BulkImportPage() {
   const queryClient = useQueryClient();
   const [wsConnected, setWsConnected] = useState(false);
   const [reimportAll, setReimportAll] = useState(false);
-  const [maxCustomers, setMaxCustomers] = useState('');
+  const [targetUnprocessedUsers, setTargetUnprocessedUsers] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { socket } = useSocket();
 
@@ -98,7 +98,7 @@ function BulkImportPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           reimportAll,
-          maxCustomers: maxCustomers ? parseInt(maxCustomers) : null
+          targetUnprocessedUsers: targetUnprocessedUsers ? parseInt(targetUnprocessedUsers) : null
         })
       });
       if (!res.ok) {
@@ -299,17 +299,20 @@ function BulkImportPage() {
 
           <div className="option-group">
             <label className="input-label">
-              Max Customers (optional, for testing):
+              Number of Unprocessed Users to Import (intelligent mode):
               <input
                 type="number"
-                value={maxCustomers}
-                onChange={(e) => setMaxCustomers(e.target.value)}
-                placeholder="Leave empty for all"
+                value={targetUnprocessedUsers}
+                onChange={(e) => setTargetUnprocessedUsers(e.target.value)}
+                placeholder="Leave empty to import all"
                 className="number-input"
                 disabled={importInProgress}
                 min="1"
               />
             </label>
+            <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
+              System will automatically find and import this many users who haven't been imported yet
+            </small>
           </div>
         </div>
 
