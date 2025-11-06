@@ -18,13 +18,16 @@ const classificationQueue = require('./ClassificationQueue');
 class BulkImportWorker {
   constructor() {
     this.worker = null;
+    this.services = null;
     this.purchaseHistoryService = new PurchaseHistoryService();
   }
 
   /**
    * Initialize the worker with Redis connection
+   * @param {Object} services - Services object containing wsGateway
    */
-  async initialize() {
+  async initialize(services = {}) {
+    this.services = services;
     try {
       const redis = await redisClient.connect();
       
@@ -214,12 +217,12 @@ class BulkImportWorker {
       const BulkImportQueue = require('./BulkImportQueue');
       const stats = await BulkImportQueue.getStats();
       
-      // Get WebSocket gateway instance
-      const { getGateway } = require('../websocket/gateway');
-      const gateway = getGateway();
-      
-      if (gateway && gateway.io) {
-        gateway.io.to('admin:queue-monitor').emit('bulk-import:stats', stats);
+      // Get WebSocket gateway from services
+      const wsGateway = this.services?.wsGateway;
+      if (wsGateway && wsGateway.io) {
+        // Broadcast to admin queue monitor room
+        const roomName = wsGateway.room('admin', 'queue-monitor');
+        wsGateway.io.to(roomName).emit('bulk-import:stats', stats);
       }
     } catch (error) {
       console.error('❌ Failed to broadcast bulk import queue stats:', error);

@@ -1,6 +1,6 @@
 const { primaryDb } = require('../db-primary');
 const { users } = require('../../shared/schema');
-const { eq, or, isNull } = require('drizzle-orm');
+const { eq, or, isNull, sql, count } = require('drizzle-orm');
 const ShopifyCustomersService = require('./ShopifyCustomersService');
 const bulkImportQueue = require('./BulkImportQueue');
 const Sentry = require('@sentry/node');
@@ -258,16 +258,16 @@ class BulkImportService {
       
       // Get user counts from database
       const [totalUsers] = await primaryDb
-        .select({ count: primaryDb.fn.count() })
+        .select({ count: count() })
         .from(users);
 
       const [importedUsers] = await primaryDb
-        .select({ count: primaryDb.fn.count() })
+        .select({ count: count() })
         .from(users)
         .where(eq(users.fullHistoryImported, true));
 
       const [pendingUsers] = await primaryDb
-        .select({ count: primaryDb.fn.count() })
+        .select({ count: count() })
         .from(users)
         .where(or(
           eq(users.importStatus, 'pending'),
@@ -275,12 +275,12 @@ class BulkImportService {
         ));
 
       const [inProgressUsers] = await primaryDb
-        .select({ count: primaryDb.fn.count() })
+        .select({ count: count() })
         .from(users)
         .where(eq(users.importStatus, 'in_progress'));
 
       const [failedUsers] = await primaryDb
-        .select({ count: primaryDb.fn.count() })
+        .select({ count: count() })
         .from(users)
         .where(eq(users.importStatus, 'failed'));
 
@@ -289,11 +289,11 @@ class BulkImportService {
         currentImportStats: this.currentImportStats,
         queue: queueStats,
         users: {
-          total: totalUsers.count,
-          imported: importedUsers.count,
-          pending: pendingUsers.count,
-          inProgress: inProgressUsers.count,
-          failed: failedUsers.count
+          total: Number(totalUsers?.count || 0),
+          imported: Number(importedUsers?.count || 0),
+          pending: Number(pendingUsers?.count || 0),
+          inProgress: Number(inProgressUsers?.count || 0),
+          failed: Number(failedUsers?.count || 0)
         }
       };
     } catch (error) {

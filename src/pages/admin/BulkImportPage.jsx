@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSocket } from '../../hooks/useSocket';
+import toast from 'react-hot-toast';
 import './BulkImportPage.css';
 
 function BulkImportPage() {
@@ -108,10 +109,10 @@ function BulkImportPage() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      alert(`Import started successfully! ${data.jobsEnqueued} jobs enqueued.`);
+      toast.success(`Import started successfully! ${data.jobsEnqueued} jobs enqueued.`);
     },
     onError: (error) => {
-      alert(`Failed to start import: ${error.message}`);
+      toast.error(`Failed to start import: ${error.message}`);
     }
   });
 
@@ -127,17 +128,20 @@ function BulkImportPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      alert('Queue cleaned successfully');
+      toast.success('Queue cleaned successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to clean queue: ${error.message}`);
     }
   });
 
   const handleStartImport = () => {
     if (!statusData?.shopifyApiAvailable) {
-      alert('Shopify API is not configured. Please set SHOPIFY_ADMIN_ACCESS_TOKEN.');
+      toast.error('Shopify API is not configured. Please set SHOPIFY_ADMIN_ACCESS_TOKEN.');
       return;
     }
 
-    // Show confirmation modal instead of browser confirm
+    // Show confirmation modal
     setShowConfirmModal(true);
   };
 
