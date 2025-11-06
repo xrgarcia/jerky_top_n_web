@@ -76,9 +76,10 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Architecture**: Event-driven BullMQ-based background processing with ShopifyCustomersService (paginated customer fetching), BulkImportService (orchestration), BulkImportQueue (job management), and BulkImportWorker (background processing with concurrency of 3).
   - **Database Tracking**: Users table includes `fullHistoryImported`, `historyImportedAt`, `lastOrderSyncedAt`, and `importStatus` fields for tracking import completion.
   - **Worker Integration**: BulkImportWorker reuses existing PurchaseHistoryService for order synchronization, updates user status fields, and triggers ClassificationQueue jobs for personalized guidance.
-  - **Admin Interface**: BulkImportPage.jsx provides real-time progress monitoring via WebSocket with queue statistics, import status, and controls for full or incremental imports.
+  - **Admin Interface**: BulkImportPage.jsx provides real-time progress monitoring via WebSocket with queue statistics, import status, and controls for full or incremental imports. UI displays clear breakdown distinguishing customers fetched vs new users created vs existing users updated.
   - **WebSocket Updates**: Real-time queue stats broadcast to 'admin:queue-monitor' room for live progress tracking with safe fallback handling for race conditions.
   - **API Routes**: Super admin protected endpoints at `/api/admin/bulk-import/*` for starting imports, checking status, and monitoring progress.
+  - **UI Organization**: Logical information hierarchy with Import Pipeline at top, Current Step Details below, Shopify vs Database comparison showing the gap, System Status for health checks, and Import Controls at bottom.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
