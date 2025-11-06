@@ -1,6 +1,7 @@
 const { db } = require('../db');
 const { userClassifications, classificationConfig, productRankings, userAchievements, achievements, userActivities, productsMetadata, customerOrderItems } = require('../../shared/schema');
 const { eq, and, gte, count, sql } = require('drizzle-orm');
+const flavorCommunityService = require('./FlavorCommunityService');
 
 /**
  * UserClassificationService - Analyzes user behavior and assigns classification attributes
@@ -11,6 +12,7 @@ const { eq, and, gte, count, sql } = require('drizzle-orm');
  * 3. Exploration Breadth: narrow, moderate, diverse
  * 4. Focus Areas: dominant flavor/animal preferences
  * 5. Taste Community: assigned community based on preferences
+ * 6. Flavor Communities: micro-communities per flavor profile (curious/seeker/taster/enthusiast/explorer)
  */
 class UserClassificationService {
   constructor() {
@@ -66,6 +68,9 @@ class UserClassificationService {
     const explorationBreadth = this._determineExplorationBreadth(userData, config);
     const focusAreas = this._determineFocusAreas(userData);
 
+    // Update flavor communities (micro-communities per flavor profile)
+    const flavorCommunities = await flavorCommunityService.updateUserFlavorCommunities(userId);
+
     const classificationData = {
       totalRankings: userData.totalRankings,
       totalEngagementCoins: userData.totalEngagementCoins,
@@ -76,7 +81,8 @@ class UserClassificationService {
       daysSinceRegistration: userData.daysSinceRegistration,
       flavorDistribution: userData.flavorDistribution,
       animalDistribution: userData.animalDistribution,
-      longestStreak: userData.longestStreak
+      longestStreak: userData.longestStreak,
+      flavorCommunities: flavorCommunities // Add flavor communities to classification data
     };
 
     // Store or update classification
