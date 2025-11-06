@@ -183,9 +183,18 @@ class BulkImportService {
       // Process each customer on this page
       this.currentImportStats.phase = 'processing_customers';
       for (const customer of customers) {
-        // Check if we've hit our customer limit
-        if (customerLimit && totalCustomersFetched >= customerLimit) {
-          console.log(`🛑 Reached customer limit (${customerLimit})`);
+        // Check stopping conditions based on mode
+        if (useFullImportMode && batchSize) {
+          // Full Import Mode: stop when we've CREATED the target number of NEW users
+          if (this.currentImportStats.usersCreated >= batchSize) {
+            console.log(`🛑 Full Import Mode: Created target number of new users (${batchSize})`);
+            console.log(`   📊 Checked ${totalCustomersFetched} customers to find ${this.currentImportStats.usersCreated} new users`);
+            hasMore = false;
+            break;
+          }
+        } else if (customerLimit && totalCustomersFetched >= customerLimit) {
+          // Legacy/Incremental Mode: stop when we've FETCHED the target number of customers
+          console.log(`🛑 Reached customer fetch limit (${customerLimit})`);
           hasMore = false;
           break;
         }
@@ -198,6 +207,11 @@ class BulkImportService {
           
           if (result.created) {
             this.currentImportStats.usersCreated++;
+            
+            // Progress update for Full Import Mode
+            if (useFullImportMode && this.currentImportStats.usersCreated % 100 === 0) {
+              console.log(`📊 Full Import Progress: Created ${this.currentImportStats.usersCreated}/${batchSize || 'unlimited'} new users (checked ${totalCustomersFetched} customers)`);
+            }
           } else if (result.updated) {
             this.currentImportStats.usersUpdated++;
           }
@@ -226,6 +240,12 @@ class BulkImportService {
         }
       }
       
+      // Check if we should stop (don't overwrite if already set to false)
+      if (!hasMore) {
+        // Stop condition already met (e.g., Full Import Mode hit target)
+        break;
+      }
+      
       // Update cursor for next batch (use Link header URL)
       nextPageUrl = batchResult.nextPageUrl;
       hasMore = batchResult.hasMore;
@@ -237,11 +257,19 @@ class BulkImportService {
       
       // Status update
       if (totalCustomersFetched % 1000 === 0) {
-        console.log(`📊 Progress: ${totalCustomersFetched} customers processed, ${usersToImport.length} to import`);
+        if (useFullImportMode) {
+          console.log(`📊 Progress: Checked ${totalCustomersFetched} customers, created ${this.currentImportStats.usersCreated} new users (target: ${batchSize || 'unlimited'})`);
+        } else {
+          console.log(`📊 Progress: ${totalCustomersFetched} customers processed, ${usersToImport.length} to import`);
+        }
       }
     }
     
-    console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} users to import (created: ${this.currentImportStats.usersCreated}, updated: ${this.currentImportStats.usersUpdated})`);
+    if (useFullImportMode) {
+      console.log(`✅ Full Import Complete: Created ${this.currentImportStats.usersCreated} new users by checking ${totalCustomersFetched} customers across ${currentPage} pages (updated: ${this.currentImportStats.usersUpdated}, jobs to enqueue: ${usersToImport.length})`);
+    } else {
+      console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} users to import (created: ${this.currentImportStats.usersCreated}, updated: ${this.currentImportStats.usersUpdated})`);
+    }
     return usersToImport;
   }
 
