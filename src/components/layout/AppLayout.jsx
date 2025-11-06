@@ -32,6 +32,7 @@ import SentryPage from '../../pages/admin/SentryPage';
 import SentryIssueDetailsPage from '../../pages/admin/SentryIssueDetailsPage';
 import DataPage from '../../pages/admin/DataPage';
 import UserGuidanceTab from '../../components/admin/UserGuidanceTab';
+import QueueMonitorPage from '../../pages/admin/QueueMonitorPage';
 
 import './AppLayout.css';
 import '../../styles/toast.admin.css';
@@ -113,6 +114,7 @@ function AppLayout() {
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />
             <Route path="user-guidance" element={<UserGuidanceTab />} />
+            <Route path="queue-monitor" element={<QueueMonitorPage />} />
             <Route path="sentry" element={<SentryPage />} />
             <Route path="sentry/:issueId" element={<SentryIssueDetailsPage />} />
             <Route path="data" element={<DataPage />} />
