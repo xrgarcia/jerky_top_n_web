@@ -135,7 +135,8 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const classificationWorker = new ClassificationWorker({
     userClassificationService,
     personalizedGuidanceService,
-    getRankableProductCount
+    getRankableProductCount,
+    wsGateway  // Add WebSocket gateway for real-time queue stats broadcasting
   });
   await classificationWorker.initialize();
   
