@@ -249,17 +249,15 @@ function BulkImportPage() {
     if (importInProgress && currentStats) {
       const phase = currentStats.phase;
       if (phase === 'fetching_customers' || phase === 'processing_customers') return 1;
-      if (phase === 'enqueuing_jobs') return 2;
-      if (phase === 'completed') return 4;
-      // Default to step 3 if import is in progress but phase isn't clear
-      return 3;
+      if (phase === 'enqueuing_jobs' || phase === 'completed') return 2;
+      return 2;
     }
     
-    // If jobs are still running (queue has active/waiting), we're in step 3
-    if (queue.active > 0 || queue.waiting > 0) return 3;
+    // If jobs are still running (queue has active/waiting), we're in step 2
+    if (queue.active > 0 || queue.waiting > 0) return 2;
     
-    // If recently completed, show step 4
-    if (currentStats && currentStats.phase === 'completed') return 4;
+    // If recently completed and no jobs running, show step 3
+    if (currentStats && currentStats.phase === 'completed' && queue.active === 0 && queue.waiting === 0) return 3;
     
     // Default: ready to start (step 0 means idle/ready state)
     return 0;
@@ -269,12 +267,11 @@ function BulkImportPage() {
   const hasRecentImport = currentStats && currentStats.phase === 'completed';
   const steps = [
     { id: 1, label: 'Fetch Customers', icon: '📥', desc: 'Fetching from Shopify' },
-    { id: 2, label: 'Create Users', icon: '👤', desc: 'Creating database records' },
-    { id: 3, label: 'Process Jobs', icon: '⚙️', desc: 'Importing orders & classifying' },
-    { id: 4, label: 'Complete', icon: '✅', desc: 'All users processed' }
+    { id: 2, label: 'Import Users', icon: '👥', desc: 'Creating records, importing orders & classifying' },
+    { id: 3, label: 'Complete', icon: '✅', desc: 'All users processed' }
   ];
   
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   return (
     <div className="bulk-import-page">
@@ -321,7 +318,7 @@ function BulkImportPage() {
                 <span className="pipeline-title">Ready to Import</span>
                 <span className="pipeline-subtitle">Configure import settings below and click Start</span>
               </>
-            ) : currentStep === 4 ? (
+            ) : currentStep === 3 ? (
               <>
                 <span className="pipeline-title">Import Complete</span>
                 <span className="pipeline-subtitle">
@@ -349,7 +346,7 @@ function BulkImportPage() {
                   <div className="step-label">{step.label}</div>
                   <div className="step-desc">{step.desc}</div>
                 </div>
-                {step.id < 4 && <div className="step-connector"></div>}
+                {step.id < 3 && <div className="step-connector"></div>}
               </div>
             ))}
           </div>
@@ -383,26 +380,7 @@ function BulkImportPage() {
             </div>
           )}
 
-          {currentStep === 2 && currentStats && (
-            <div className="step-details">
-              <div className="step-stats-grid">
-                <div className="step-stat">
-                  <div className="step-stat-value">{currentStats.usersCreated || 0}</div>
-                  <div className="step-stat-label">Users Created</div>
-                </div>
-                <div className="step-stat">
-                  <div className="step-stat-value">{currentStats.usersUpdated || 0}</div>
-                  <div className="step-stat-label">Users Updated</div>
-                </div>
-                <div className="step-stat">
-                  <div className="step-stat-value">{currentStats.jobsEnqueued || 0}</div>
-                  <div className="step-stat-label">Jobs Enqueued</div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 3 && (
+          {currentStep === 2 && (
             <div className="step-details">
               <div className="step-main-stat">
                 <div className="main-stat-value">{queue.active || 0}</div>
@@ -434,12 +412,12 @@ function BulkImportPage() {
                 </div>
               </div>
               <div className="step-note">
-                <small>Each job imports orders and calculates user classification</small>
+                <small>Each job creates user records, imports orders, and calculates classifications</small>
               </div>
             </div>
           )}
 
-          {currentStep === 4 && currentStats && (
+          {currentStep === 3 && currentStats && (
             <div className="step-details">
               <div className="step-complete-message">
                 <div className="complete-icon">✅</div>

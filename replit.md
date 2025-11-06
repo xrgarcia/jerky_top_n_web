@@ -79,7 +79,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Admin Interface**: BulkImportPage.jsx provides real-time progress monitoring via WebSocket with queue statistics, import status, and controls for full or incremental imports. UI displays clear breakdown distinguishing customers fetched vs new users created vs existing users updated.
   - **WebSocket Updates**: Real-time queue stats broadcast to 'admin:queue-monitor' room for live progress tracking with safe fallback handling for race conditions.
   - **API Routes**: Super admin protected endpoints at `/api/admin/bulk-import/*` for starting imports, checking status, and monitoring progress.
-  - **UI Organization**: Logical information hierarchy with Import Pipeline at top, Current Step Details below, Shopify vs Database comparison showing the gap, System Status for health checks, and Import Controls at bottom.
+  - **UI Organization**: Logical 3-step pipeline (Fetch Customers → Import Users → Complete) with System Status at top, Shopify gap metric, Import Pipeline visualization, Current Step Details, and Import Controls at bottom.
+  - **BullMQ Configuration**: Classification queue retains 100 completed jobs, Bulk Import queue retains 50,000 completed jobs to prevent counter capping during large imports.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
