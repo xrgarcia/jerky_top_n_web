@@ -7,7 +7,7 @@ const router = express.Router();
  */
 
 function createFlavorCommunitiesRoutes(services) {
-  const { flavorCommunityService, db } = services;
+  const { flavorCommunityService, db, storage } = services;
   const { users } = require('../../shared/schema');
   const { eq } = require('drizzle-orm');
 
@@ -15,10 +15,36 @@ function createFlavorCommunitiesRoutes(services) {
    * Middleware: Verify user authentication and authorization
    */
   const requireAuth = async (req, res, next) => {
-    if (!req.session?.userId) {
-      return res.status(401).json({ error: 'Authentication required' });
+    try {
+      const sessionId = req.cookies.session_id;
+      
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Authentication required' });
+      }
+
+      const session = await storage.getSessionBySessionId(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid or expired session' });
+      }
+
+      const user = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, session.userId))
+        .limit(1);
+
+      if (!user.length) {
+        return res.status(401).json({ error: 'User not found' });
+      }
+
+      req.session = session;
+      req.userId = session.userId;
+      req.user = user[0];
+      next();
+    } catch (error) {
+      console.error('Error in requireAuth:', error);
+      return res.status(500).json({ error: 'Internal server error' });
     }
-    next();
   };
 
   /**
@@ -26,7 +52,7 @@ function createFlavorCommunitiesRoutes(services) {
    */
   const requireSelfOrAdmin = async (req, res, next) => {
     const requestedUserId = parseInt(req.params.userId);
-    const currentUserId = req.session.userId;
+    const currentUserId = req.userId;
 
     if (isNaN(requestedUserId)) {
       return res.status(400).json({ error: 'Invalid user ID' });
@@ -38,13 +64,8 @@ function createFlavorCommunitiesRoutes(services) {
     }
 
     // Check if user is admin
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, currentUserId))
-      .limit(1);
-
-    if (!user.length || user[0].role !== 'employee_admin') {
+    const hasAccess = req.user.role === 'employee_admin' || (req.user.email && req.user.email.endsWith('@jerky.com'));
+    if (!hasAccess) {
       return res.status(403).json({ error: 'Access denied' });
     }
 
@@ -98,17 +119,10 @@ function createFlavorCommunitiesRoutes(services) {
    * Middleware: Require employee_admin role
    */
   const requireAdmin = async (req, res, next) => {
-    if (!req.session?.userId) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const user = await db
-      .select()
-      .from(users)
-      .where(eq(users.id, req.session.userId))
-      .limit(1);
-
-    if (!user.length || user[0].role !== 'employee_admin') {
+    // User info is already attached by requireAuth middleware
+    const hasAccess = req.user.role === 'employee_admin' || (req.user.email && req.user.email.endsWith('@jerky.com'));
+    
+    if (!hasAccess) {
       return res.status(403).json({ error: 'Admin access required' });
     }
 
