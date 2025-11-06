@@ -1,20 +1,20 @@
 const { db } = require('../db');
-const { userFlavorCommunities, customerOrderItems, productRankings, productsMetadata, userActivities, classificationConfig } = require('../../shared/schema');
+const { userFlavorProfileCommunities, customerOrderItems, productRankings, productsMetadata, userActivities, classificationConfig } = require('../../shared/schema');
 const { eq, and, sql, inArray } = require('drizzle-orm');
 
 /**
- * FlavorCommunityService - Manages flavor profile micro-communities
+ * FlavorProfileCommunityService - Manages flavor profile micro-communities
  * 
  * Community States (Lifecycle):
- * 1. curious: User searches/views products with this flavor but hasn't purchased
- * 2. seeker: User purchased products with this flavor (not yet delivered)
- * 3. taster: User has delivered products with this flavor (must have tried it)
- * 4. enthusiast: User ranked products with this flavor highly (loves it!)
- * 5. explorer: User ranked products with this flavor low (took a risk - positive!)
+ * 1. curious: User searches/views products with this flavor profile but hasn't purchased
+ * 2. seeker: User purchased products with this flavor profile (not yet delivered)
+ * 3. taster: User has delivered products with this flavor profile (must have tried it)
+ * 4. enthusiast: User ranked products with this flavor profile highly (loves it!)
+ * 5. explorer: User ranked products with this flavor profile low (took a risk - positive!)
  * 
  * A user can be in different states for different flavor profiles simultaneously.
  */
-class FlavorCommunityService {
+class FlavorProfileCommunityService {
   constructor() {
     this.configCache = null;
     this.configCacheTime = null;
@@ -119,13 +119,13 @@ class FlavorCommunityService {
     for (const [flavorProfile, data] of Object.entries(flavorInteractions)) {
       const state = this._calculateCommunityState(data, config);
       
-      // Upsert flavor community record
+      // Upsert flavor profile community record
       const existing = await db
         .select()
-        .from(userFlavorCommunities)
+        .from(userFlavorProfileCommunities)
         .where(and(
-          eq(userFlavorCommunities.userId, userId),
-          eq(userFlavorCommunities.flavorProfile, flavorProfile)
+          eq(userFlavorProfileCommunities.userId, userId),
+          eq(userFlavorProfileCommunities.flavorProfile, flavorProfile)
         ))
         .limit(1);
 
@@ -146,12 +146,12 @@ class FlavorCommunityService {
       if (existing.length > 0) {
         // Update existing record
         await db
-          .update(userFlavorCommunities)
+          .update(userFlavorProfileCommunities)
           .set(communityData)
-          .where(eq(userFlavorCommunities.id, existing[0].id));
+          .where(eq(userFlavorProfileCommunities.id, existing[0].id));
       } else {
         // Insert new record
-        await db.insert(userFlavorCommunities).values(communityData);
+        await db.insert(userFlavorProfileCommunities).values(communityData);
       }
 
       flavorCommunities.push({
@@ -165,39 +165,39 @@ class FlavorCommunityService {
   }
 
   /**
-   * Get user's flavor community states
+   * Get user's flavor profile community states
    * @param {number} userId - User ID
-   * @returns {array} Flavor communities with states
+   * @returns {array} Flavor profile communities with states
    */
   async getUserFlavorCommunities(userId) {
     const communities = await db
       .select()
-      .from(userFlavorCommunities)
-      .where(eq(userFlavorCommunities.userId, userId));
+      .from(userFlavorProfileCommunities)
+      .where(eq(userFlavorProfileCommunities.userId, userId));
 
     return communities;
   }
 
   /**
-   * Get flavor community summary across all users
+   * Get flavor profile community summary across all users
    * @param {string} flavorProfile - Flavor profile (e.g., 'sweet', 'spicy')
    * @returns {object} Summary with counts per state
    */
   async getFlavorCommunitySummary(flavorProfile = null) {
     let query = db
       .select({
-        flavorProfile: userFlavorCommunities.flavorProfile,
-        communityState: userFlavorCommunities.communityState,
-        userCount: sql`COUNT(DISTINCT ${userFlavorCommunities.userId})::int`
+        flavorProfile: userFlavorProfileCommunities.flavorProfile,
+        communityState: userFlavorProfileCommunities.communityState,
+        userCount: sql`COUNT(DISTINCT ${userFlavorProfileCommunities.userId})::int`
       })
-      .from(userFlavorCommunities);
+      .from(userFlavorProfileCommunities);
 
     if (flavorProfile) {
-      query = query.where(eq(userFlavorCommunities.flavorProfile, flavorProfile));
+      query = query.where(eq(userFlavorProfileCommunities.flavorProfile, flavorProfile));
     }
 
     const results = await query
-      .groupBy(userFlavorCommunities.flavorProfile, userFlavorCommunities.communityState);
+      .groupBy(userFlavorProfileCommunities.flavorProfile, userFlavorProfileCommunities.communityState);
 
     return results;
   }
@@ -465,8 +465,8 @@ class FlavorCommunityService {
     }
 
     // 4. Curious: Searches/views but no purchases
-    return 'curious'; // Exploring/curious about this flavor
+    return 'curious'; // Exploring/curious about this flavor profile
   }
 }
 
-module.exports = new FlavorCommunityService();
+module.exports = new FlavorProfileCommunityService();
