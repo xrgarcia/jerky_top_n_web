@@ -10,13 +10,32 @@ function FlavorCommunitiesPageAdmin() {
   const [formData, setFormData] = useState({});
 
   // Fetch flavor community configuration
-  const { data: config, isLoading } = useQuery({
+  const { data: config, isLoading, error } = useQuery({
     queryKey: ['admin', 'flavor-communities-config'],
     queryFn: async () => {
+      console.log('🔍 Fetching flavor communities config...');
       const response = await api.get('/flavor-communities/config');
+      console.log('✅ Config response:', response);
       return response.config || {};
+    },
+    retry: 1,
+    onError: (err) => {
+      console.error('❌ Error fetching config:', err);
+      toast.error('Failed to load configuration: ' + (err.message || 'Unknown error'));
     }
   });
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="coin-types-admin">
+        <div className="page-header">
+          <h2>🌶️ Flavor Communities Configuration</h2>
+          <p style={{color: 'red'}}>Error loading configuration: {error.message}</p>
+        </div>
+      </div>
+    );
+  }
 
   // Update flavor community configuration
   const updateMutation = useMutation({
