@@ -57,11 +57,10 @@ function BulkImportPage() {
     // Listen for real-time bulk import stats updates
     const handleBulkImportStats = (data) => {
       console.log('📦 Bulk import stats update received:', data);
-      // Update progress query data
-      queryClient.setQueryData(['bulkImportProgress'], (oldData) => ({
-        ...oldData,
-        queue: data
-      }));
+      // Update progress query data with safe fallback
+      queryClient.setQueryData(['bulkImportProgress'], (oldData) => 
+        oldData ? { ...oldData, queue: data } : { queue: data }
+      );
     };
 
     socket.on('subscription:confirmed', handleSubscriptionConfirmed);

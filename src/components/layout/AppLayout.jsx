@@ -33,6 +33,7 @@ import SentryIssueDetailsPage from '../../pages/admin/SentryIssueDetailsPage';
 import DataPage from '../../pages/admin/DataPage';
 import UserGuidanceTab from '../../components/admin/UserGuidanceTab';
 import QueueMonitorPage from '../../pages/admin/QueueMonitorPage';
+import BulkImportPage from '../../pages/admin/BulkImportPage';
 
 import './AppLayout.css';
 import '../../styles/toast.admin.css';
@@ -115,6 +116,7 @@ function AppLayout() {
             <Route path="orders" element={<OrderItemsPage />} />
             <Route path="user-guidance" element={<UserGuidanceTab />} />
             <Route path="queue-monitor" element={<QueueMonitorPage />} />
+            <Route path="bulk-import" element={<BulkImportPage />} />
             <Route path="sentry" element={<SentryPage />} />
             <Route path="sentry/:issueId" element={<SentryIssueDetailsPage />} />
             <Route path="data" element={<DataPage />} />

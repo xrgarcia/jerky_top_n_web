@@ -18,6 +18,7 @@ function ToolsLayout() {
     { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },
     { path: '/admin/tools/user-guidance', label: 'User Guidance', icon: '🎯' },
     { path: '/admin/tools/queue-monitor', label: 'Queue Monitor', icon: '🔄' },
+    { path: '/admin/tools/bulk-import', label: 'Bulk Import', icon: '📦' },
     { path: '/admin/tools/sentry', label: 'Sentry Issues', icon: '🔍' },
   ];
   
