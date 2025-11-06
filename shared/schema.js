@@ -352,6 +352,24 @@ const userFlavorProfileCommunities = pgTable('user_flavor_profile_communities', 
   userFlavorStateIdx: index('idx_user_flavor_profile_communities_user_flavor_state').on(table.userId, table.flavorProfile, table.communityState),
 }));
 
+// User guidance cache - pre-calculated personalized guidance messages
+const userGuidanceCache = pgTable('user_guidance_cache', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).notNull(),
+  pageContext: text('page_context').notNull(), // 'rank', 'products', 'community', 'coinbook', 'general'
+  guidanceData: jsonb('guidance_data').notNull(), // Complete guidance object { title, message, type, icon, classification, stats }
+  calculatedAt: timestamp('calculated_at').defaultNow().notNull(),
+  createdAt: timestamp('created_at').defaultNow(),
+  updatedAt: timestamp('updated_at').defaultNow(),
+}, (table) => ({
+  // Unique constraint: one cached guidance per user per page context
+  uniqueUserPage: unique().on(table.userId, table.pageContext),
+  // Index for efficient user lookups
+  userIdIdx: index('idx_user_guidance_cache_user_id').on(table.userId),
+  // Index for cache freshness queries
+  calculatedAtIdx: index('idx_user_guidance_cache_calculated_at').on(table.calculatedAt),
+}));
+
 // Relations for new tables
 const userActivitiesRelations = relations(userActivities, ({ one }) => ({
   user: one(users, {
@@ -370,6 +388,13 @@ const userClassificationsRelations = relations(userClassifications, ({ one }) =>
 const userFlavorProfileCommunitiesRelations = relations(userFlavorProfileCommunities, ({ one }) => ({
   user: one(users, {
     fields: [userFlavorProfileCommunities.userId],
+    references: [users.id],
+  }),
+}));
+
+const userGuidanceCacheRelations = relations(userGuidanceCache, ({ one }) => ({
+  user: one(users, {
+    fields: [userGuidanceCache.userId],
     references: [users.id],
   }),
 }));
@@ -396,6 +421,7 @@ module.exports = {
   userClassifications,
   classificationConfig,
   userFlavorProfileCommunities,
+  userGuidanceCache,
   usersRelations,
   sessionsRelations,
   rankingsRelations,
@@ -406,4 +432,5 @@ module.exports = {
   userActivitiesRelations,
   userClassificationsRelations,
   userFlavorProfileCommunitiesRelations,
+  userGuidanceCacheRelations,
 };
