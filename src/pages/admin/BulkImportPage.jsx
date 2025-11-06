@@ -368,11 +368,11 @@ function BulkImportPage() {
               <p>
                 {reimportAll 
                   ? 'This will REIMPORT ALL users, even those already imported. This may take a significant amount of time and will trigger classification jobs for all users.' 
-                  : 'This will import all Shopify customers and their complete order history. This may take a significant amount of time.'}
+                  : 'This will import Shopify customers and their complete order history. This may take a significant amount of time.'}
               </p>
-              {maxCustomers && (
+              {targetUnprocessedUsers && (
                 <p className="modal-detail">
-                  <strong>Limit:</strong> {maxCustomers} customer{parseInt(maxCustomers) !== 1 ? 's' : ''}
+                  <strong>Target:</strong> {targetUnprocessedUsers} unprocessed user{parseInt(targetUnprocessedUsers) !== 1 ? 's' : ''}
                 </p>
               )}
               <p className="modal-warning">
