@@ -129,7 +129,7 @@ function FlavorCommunitiesPageAdmin() {
             transition: 'all 0.2s ease'
           }}
         >
-          <span>📖 How Flavor Communities Work</span>
+          <span>📖 How Flavor Profile Communities Work</span>
           <span style={{ fontSize: '1.5rem' }}>{isAccordionOpen ? '−' : '+'}</span>
         </button>
         
@@ -145,7 +145,7 @@ function FlavorCommunitiesPageAdmin() {
               lineHeight: '1.6'
             }}
           >
-            <h3 style={{ marginTop: 0, color: '#5a4a3a' }}>Understanding Flavor Communities</h3>
+            <h3 style={{ marginTop: 0, color: '#5a4a3a' }}>Understanding Flavor Profile Communities</h3>
             
             <p style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
               Think of flavor communities like a journey your customers take with each <strong>flavor profile</strong> they discover. 
