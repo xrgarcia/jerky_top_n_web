@@ -975,8 +975,8 @@ function createGamificationRoutes(services) {
       const pageContext = req.query.page || 'general';
       
       // CACHE-FIRST ARCHITECTURE: Try to read from cache
-      const { primaryDb } = require('../../db-primary');
-      const { userGuidanceCache } = require('../../../shared/schema');
+      const { primaryDb } = require('../db-primary');
+      const { userGuidanceCache } = require('../../shared/schema');
       const { eq, and } = require('drizzle-orm');
       
       const cached = await primaryDb
