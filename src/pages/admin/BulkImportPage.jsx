@@ -8,6 +8,7 @@ function BulkImportPage() {
   const [wsConnected, setWsConnected] = useState(false);
   const [reimportAll, setReimportAll] = useState(false);
   const [maxCustomers, setMaxCustomers] = useState('');
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const { socket } = useSocket();
 
   // Fetch import progress
@@ -136,13 +137,17 @@ function BulkImportPage() {
       return;
     }
 
-    const confirmMessage = reimportAll 
-      ? 'This will REIMPORT ALL users, even those already imported. Continue?' 
-      : 'This will import all Shopify customers. Continue?';
-    
-    if (!confirm(confirmMessage)) return;
+    // Show confirmation modal instead of browser confirm
+    setShowConfirmModal(true);
+  };
 
+  const handleConfirmImport = () => {
+    setShowConfirmModal(false);
     startImportMutation.mutate();
+  };
+
+  const handleCancelImport = () => {
+    setShowConfirmModal(false);
   };
 
   const progress = progressData || {};
@@ -344,6 +349,46 @@ function BulkImportPage() {
           <strong>Note:</strong> Jobs process in the background. You can safely close this page during import.
         </p>
       </div>
+
+      {/* Confirmation Modal */}
+      {showConfirmModal && (
+        <div className="modal-overlay" onClick={handleCancelImport}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>⚠️ Confirm Bulk Import</h3>
+            </div>
+            <div className="modal-body">
+              <p>
+                {reimportAll 
+                  ? 'This will REIMPORT ALL users, even those already imported. This may take a significant amount of time and will trigger classification jobs for all users.' 
+                  : 'This will import all Shopify customers and their complete order history. This may take a significant amount of time.'}
+              </p>
+              {maxCustomers && (
+                <p className="modal-detail">
+                  <strong>Limit:</strong> {maxCustomers} customer{parseInt(maxCustomers) !== 1 ? 's' : ''}
+                </p>
+              )}
+              <p className="modal-warning">
+                Do you want to continue?
+              </p>
+            </div>
+            <div className="modal-actions">
+              <button 
+                onClick={handleCancelImport}
+                className="btn-modal-cancel"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={handleConfirmImport}
+                className="btn-modal-confirm"
+              >
+                {reimportAll ? 'Reimport All' : 'Start Import'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -371,6 +371,121 @@
   margin: 0;
 }
 
+/* Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(61, 40, 23, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 32px rgba(61, 40, 23, 0.25);
+  animation: modalSlideIn 0.2s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #e8e4de;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #3d2817;
+  font-weight: 600;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-body p {
+  margin: 0 0 16px 0;
+  color: #6b5a47;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.modal-body p:last-child {
+  margin-bottom: 0;
+}
+
+.modal-detail {
+  background: #f5f5f3;
+  padding: 12px;
+  border-radius: 6px;
+  border-left: 4px solid #8b6e4e;
+}
+
+.modal-warning {
+  font-weight: 500;
+  color: #3d2817;
+}
+
+.modal-actions {
+  padding: 16px 24px 24px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn-modal-cancel,
+.btn-modal-confirm {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-modal-cancel {
+  background: white;
+  color: #6b5a47;
+  border: 2px solid #e8e4de;
+}
+
+.btn-modal-cancel:hover {
+  background: #f5f5f3;
+  border-color: #c4b5a4;
+}
+
+.btn-modal-confirm {
+  background: #8b6e4e;
+  color: white;
+}
+
+.btn-modal-confirm:hover {
+  background: #6b5a47;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(61, 40, 23, 0.15);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .bulk-import-page {
@@ -388,6 +503,15 @@
 
   .btn-primary,
   .btn-secondary {
+    width: 100%;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+  }
+
+  .btn-modal-cancel,
+  .btn-modal-confirm {
     width: 100%;
   }
 }
