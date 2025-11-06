@@ -158,25 +158,23 @@ class ShopifyCustomersService {
 
   /**
    * Fetch a single batch of customers (for progressive loading)
+   * Uses proper cursor-based pagination via Link headers
    * @param {Object} options - Pagination options
-   * @param {string} options.sinceId - Fetch customers after this ID
+   * @param {string} options.pageUrl - Full URL for next page (from Link header)
    * @param {number} options.limit - Results per page (max 250)
-   * @returns {Promise<Object>} { customers: Array, hasMore: boolean, nextSinceId: string }
+   * @returns {Promise<Object>} { customers: Array, hasMore: boolean, nextPageUrl: string }
    */
   async fetchCustomerBatch(options = {}) {
-    const { sinceId, limit = 250 } = options;
+    const { pageUrl, limit = 250 } = options;
 
     if (!this.accessToken) {
       console.warn('⚠️ Shopify Admin Access Token not configured');
-      return { customers: [], hasMore: false, nextSinceId: null };
+      return { customers: [], hasMore: false, nextPageUrl: null };
     }
 
     try {
-      // Build URL with since_id for cursor-based pagination
-      let url = `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers.json?limit=${limit}`;
-      if (sinceId) {
-        url += `&since_id=${sinceId}`;
-      }
+      // Use provided page URL or build initial URL
+      const url = pageUrl || `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers.json?limit=${limit}`;
 
       const response = await fetch(url, {
         method: 'GET',
@@ -189,27 +187,23 @@ class ShopifyCustomersService {
       if (!response.ok) {
         const errorText = await response.text();
         console.error(`❌ Shopify API error (${response.status}):`, errorText);
-        return { customers: [], hasMore: false, nextSinceId: null };
+        return { customers: [], hasMore: false, nextPageUrl: null };
       }
 
       const data = await response.json();
       const customers = data.customers || [];
 
-      // Check if there are more results
+      // Parse Link header for next page URL (proper cursor pagination)
       const linkHeader = response.headers.get('Link');
-      const hasMore = linkHeader && linkHeader.includes('rel="next"');
-      
-      // Get the last customer ID for next batch
-      const nextSinceId = customers.length > 0 
-        ? customers[customers.length - 1].id 
-        : null;
+      const nextPageUrl = this._parseNextPageUrl(linkHeader);
+      const hasMore = !!nextPageUrl;
 
       console.log(`📦 Fetched batch: ${customers.length} customers (hasMore: ${hasMore})`);
 
       return {
         customers,
         hasMore,
-        nextSinceId
+        nextPageUrl
       };
 
     } catch (error) {
@@ -218,7 +212,7 @@ class ShopifyCustomersService {
         tags: { service: 'shopify-customers' }
       });
       
-      return { customers: [], hasMore: false, nextSinceId: null };
+      return { customers: [], hasMore: false, nextPageUrl: null };
     }
   }
 

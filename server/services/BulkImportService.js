@@ -141,14 +141,14 @@ class BulkImportService {
     
     const usersToImport = [];
     let totalCustomersFetched = 0;
-    let sinceId = null;
+    let nextPageUrl = null; // Use Link header pagination instead of since_id
     const pageSize = 250;
     
     // Determine fetch strategy
     const useIntelligentMode = targetUnprocessedUsers !== null && !fullImport;
     const useFullImportMode = fullImport;
     const customerLimit = fullImport ? batchSize : maxCustomers;
-    const maxPages = customerLimit ? Math.ceil(customerLimit / pageSize) : 1000;
+    const maxPages = customerLimit ? Math.ceil(customerLimit / pageSize) : 10000; // Increased safety limit
     
     const modeDesc = useFullImportMode 
       ? `full import (limit: ${customerLimit || 'unlimited'} customers)` 
@@ -165,9 +165,9 @@ class BulkImportService {
     while (hasMore && currentPage < maxPages) {
       currentPage++;
       
-      // Fetch one batch of customers using cursor pagination
+      // Fetch one batch of customers using proper cursor pagination
       const batchResult = await this.shopifyCustomersService.fetchCustomerBatch({
-        sinceId: sinceId,
+        pageUrl: nextPageUrl,
         limit: pageSize
       });
       
@@ -226,8 +226,8 @@ class BulkImportService {
         }
       }
       
-      // Update cursor for next batch
-      sinceId = batchResult.nextSinceId;
+      // Update cursor for next batch (use Link header URL)
+      nextPageUrl = batchResult.nextPageUrl;
       hasMore = batchResult.hasMore;
       
       if (!hasMore) {
