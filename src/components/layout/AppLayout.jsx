@@ -24,6 +24,7 @@ import LoginPage from '../../pages/LoginPage';
 import ToolsLayout from '../../pages/admin/ToolsLayout';
 import ManageCoinsPageAdmin from '../../pages/admin/ManageCoinsPageAdmin';
 import CoinTypesPageAdmin from '../../pages/admin/CoinTypesPageAdmin';
+import FlavorCommunitiesPageAdmin from '../../pages/admin/FlavorCommunitiesPageAdmin';
 import LiveUsersPage from '../../pages/admin/LiveUsersPage';
 import ProductsPageAdmin from '../../pages/admin/ProductsPageAdmin';
 import OrderItemsPage from '../../pages/admin/OrderItemsPage';
@@ -107,6 +108,7 @@ function AppLayout() {
             <Route index element={<ManageCoinsPageAdmin />} />
             <Route path="coins" element={<ManageCoinsPageAdmin />} />
             <Route path="coin-types" element={<CoinTypesPageAdmin />} />
+            <Route path="flavor-communities" element={<FlavorCommunitiesPageAdmin />} />
             <Route path="live-users" element={<LiveUsersPage />} />
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />
