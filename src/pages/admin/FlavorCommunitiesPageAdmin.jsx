@@ -88,7 +88,7 @@ function FlavorCommunitiesPageAdmin() {
     return (
       <div className="coin-types-admin">
         <div className="page-header">
-          <h2>🌶️ Flavor Communities Configuration</h2>
+          <h2>🌶️ Flavor Profile Communities Configuration</h2>
           <p style={{color: 'red'}}>Error loading configuration: {error.message}</p>
         </div>
       </div>
@@ -104,7 +104,7 @@ function FlavorCommunitiesPageAdmin() {
   return (
     <div className="coin-types-admin">
       <div className="page-header">
-        <h2>🌶️ Flavor Communities Configuration</h2>
+        <h2>🌶️ Flavor Profile Communities Configuration</h2>
         <p>Manage thresholds for flavor profile micro-community lifecycle states</p>
       </div>
 
@@ -320,7 +320,7 @@ function FlavorCommunitiesPageAdmin() {
         <div className="modal-overlay" onClick={handleCancel}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>Edit Flavor Communities Configuration</h3>
+              <h3>Edit Flavor Profile Communities Configuration</h3>
               <button className="close-btn" onClick={handleCancel}>×</button>
             </div>
 
