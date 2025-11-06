@@ -7,19 +7,58 @@ const router = express.Router();
  */
 
 function createFlavorCommunitiesRoutes(services) {
-  const { flavorCommunityService } = services;
+  const { flavorCommunityService, db } = services;
+  const { users } = require('../../shared/schema');
+  const { eq } = require('drizzle-orm');
+
+  /**
+   * Middleware: Verify user authentication and authorization
+   */
+  const requireAuth = async (req, res, next) => {
+    if (!req.session?.userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+    next();
+  };
+
+  /**
+   * Middleware: Verify user can access requested userId (self or admin)
+   */
+  const requireSelfOrAdmin = async (req, res, next) => {
+    const requestedUserId = parseInt(req.params.userId);
+    const currentUserId = req.session.userId;
+
+    if (isNaN(requestedUserId)) {
+      return res.status(400).json({ error: 'Invalid user ID' });
+    }
+
+    // Allow if user is requesting their own data
+    if (requestedUserId === currentUserId) {
+      return next();
+    }
+
+    // Check if user is admin
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, currentUserId))
+      .limit(1);
+
+    if (!user.length || user[0].role !== 'employee_admin') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    next();
+  };
 
   /**
    * GET /api/flavor-communities/users/:userId
    * Get user's flavor community states across all flavor profiles
+   * Requires: User must be authenticated and accessing their own data or be admin
    */
-  router.get('/users/:userId', async (req, res) => {
+  router.get('/users/:userId', requireAuth, requireSelfOrAdmin, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
-      if (isNaN(userId)) {
-        return res.status(400).json({ error: 'Invalid user ID' });
-      }
 
       const communities = await flavorCommunityService.getUserFlavorCommunities(userId);
       
@@ -36,14 +75,11 @@ function createFlavorCommunitiesRoutes(services) {
   /**
    * POST /api/flavor-communities/users/:userId/refresh
    * Recalculate user's flavor communities
+   * Requires: User must be authenticated and accessing their own data or be admin
    */
-  router.post('/users/:userId/refresh', async (req, res) => {
+  router.post('/users/:userId/refresh', requireAuth, requireSelfOrAdmin, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
-      
-      if (isNaN(userId)) {
-        return res.status(400).json({ error: 'Invalid user ID' });
-      }
 
       const communities = await flavorCommunityService.updateUserFlavorCommunities(userId);
       
@@ -59,11 +95,32 @@ function createFlavorCommunitiesRoutes(services) {
   });
 
   /**
-   * GET /api/flavor-communities/summary
+   * Middleware: Require employee_admin role
+   */
+  const requireAdmin = async (req, res, next) => {
+    if (!req.session?.userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, req.session.userId))
+      .limit(1);
+
+    if (!user.length || user[0].role !== 'employee_admin') {
+      return res.status(403).json({ error: 'Admin access required' });
+    }
+
+    next();
+  };
+
+  /**
+   * GET /api/flavor-communities/summary (Admin only)
    * Get summary of flavor community distribution
    * Query params: flavorProfile (optional)
    */
-  router.get('/summary', async (req, res) => {
+  router.get('/summary', requireAuth, requireAdmin, async (req, res) => {
     try {
       const { flavorProfile } = req.query;
       
@@ -77,10 +134,10 @@ function createFlavorCommunitiesRoutes(services) {
   });
 
   /**
-   * GET /api/flavor-communities/config
+   * GET /api/flavor-communities/config (Admin only)
    * Get current flavor community configuration
    */
-  router.get('/config', async (req, res) => {
+  router.get('/config', requireAuth, requireAdmin, async (req, res) => {
     try {
       const config = await flavorCommunityService.getConfig();
       
@@ -95,15 +152,9 @@ function createFlavorCommunitiesRoutes(services) {
    * POST /api/flavor-communities/config (Admin only)
    * Update flavor community configuration
    */
-  router.post('/config', async (req, res) => {
+  router.post('/config', requireAuth, requireAdmin, async (req, res) => {
     try {
-      // Check if user is admin (employee_admin role)
-      if (!req.session?.userId) {
-        return res.status(401).json({ error: 'Unauthorized' });
-      }
-
-      const { db } = services;
-      const { users, classificationConfig } = require('../../shared/schema');
+      const { classificationConfig } = require('../../shared/schema');
       const { eq } = require('drizzle-orm');
 
       const user = await db
@@ -111,10 +162,6 @@ function createFlavorCommunitiesRoutes(services) {
         .from(users)
         .where(eq(users.id, req.session.userId))
         .limit(1);
-
-      if (!user.length || user[0].role !== 'employee_admin') {
-        return res.status(403).json({ error: 'Admin access required' });
-      }
 
       const { enthusiast_top_pct, explorer_bottom_pct, min_products_for_state, delivered_status } = req.body;
 
