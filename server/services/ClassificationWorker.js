@@ -56,12 +56,14 @@ class ClassificationWorker {
         }
       );
 
-      this.worker.on('completed', (job) => {
+      this.worker.on('completed', async (job) => {
         console.log(`✅ Classification job completed for user ${job.data.userId}`);
+        await this.broadcastQueueStats();
       });
 
-      this.worker.on('failed', (job, err) => {
+      this.worker.on('failed', async (job, err) => {
         console.error(`❌ Classification job failed for user ${job?.data?.userId}:`, err.message);
+        await this.broadcastQueueStats();
       });
 
       this.worker.on('error', (err) => {
@@ -183,6 +185,24 @@ class ClassificationWorker {
     } catch (error) {
       console.error(`❌ Error caching guidance for user ${userId} / ${pageContext}:`, error);
       // Don't throw - allow other page contexts to succeed
+    }
+  }
+
+  /**
+   * Broadcast queue statistics to admin users via WebSocket
+   */
+  async broadcastQueueStats() {
+    try {
+      const ClassificationQueue = require('./ClassificationQueue');
+      const stats = await ClassificationQueue.getStats();
+      
+      // Get WebSocket gateway from services (injected during initialization)
+      const wsGateway = this.services.wsGateway;
+      if (wsGateway) {
+        wsGateway.broadcastQueueStats(stats);
+      }
+    } catch (error) {
+      console.error('❌ Error broadcasting queue stats:', error);
     }
   }
 

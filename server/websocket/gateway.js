@@ -407,6 +407,14 @@ class WebSocketGateway {
     console.log(`📦 Broadcasting customer orders update to admin room (${this.room('admin:customer-orders')}): ${data.action} - ${data.orderNumber}`);
   }
 
+  /**
+   * Broadcast queue statistics to admin users
+   */
+  broadcastQueueStats(stats) {
+    const adminRoom = this.room('admin:queue-monitor');
+    this.io.to(adminRoom).emit('queue:stats-update', { stats, timestamp: new Date().toISOString() });
+  }
+
   emitClassificationUpdate(userId, classification) {
     const hasSocket = this.hasAuthenticatedSocket(userId);
     
