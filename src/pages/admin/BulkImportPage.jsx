@@ -285,7 +285,7 @@ function BulkImportPage() {
   return (
     <div className="bulk-import-page">
       <div className="bulk-import-header">
-        <h2>📦 Bulk Customer Import</h2>
+        <h2>📦 Customer Import</h2>
         <p className="bulk-import-subtitle">
           Import Shopify customers and their complete order history
         </p>
@@ -552,7 +552,7 @@ function BulkImportPage() {
             disabled={importInProgress || startImportMutation.isPending || !statusData?.shopifyApiAvailable}
             className="btn-primary"
           >
-            {startImportMutation.isPending ? 'Starting...' : '🚀 Start Bulk Import'}
+            {startImportMutation.isPending ? 'Starting...' : '🚀 Start Customer Import'}
           </button>
 
           <button
