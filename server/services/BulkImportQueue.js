@@ -46,11 +46,11 @@ class BulkImportQueue {
           },
           removeOnComplete: {
             age: 7200, // Keep completed jobs for 2 hours
-            count: 500, // Keep last 500 completed jobs
+            count: 50000, // Keep last 50,000 completed jobs (supports large imports)
           },
           removeOnFail: {
             age: 86400, // Keep failed jobs for 24 hours
-            count: 1000, // Keep last 1000 failed jobs
+            count: 10000, // Keep last 10,000 failed jobs
           },
         },
       });
