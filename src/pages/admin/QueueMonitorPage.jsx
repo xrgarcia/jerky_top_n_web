@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSocket } from '../../hooks/useSocket';
+import toast from 'react-hot-toast';
 import './QueueMonitorPage.css';
 
 function QueueMonitorPage() {
@@ -71,7 +72,10 @@ function QueueMonitorPage() {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['queueStats']);
       setSelectedUserId('');
-      alert(data.message || 'Job enqueued successfully');
+      toast.success(data.message || 'Job enqueued successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to enqueue job: ${error.message}`);
     }
   });
 
@@ -87,7 +91,10 @@ function QueueMonitorPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries(['queueStats']);
-      alert('Queue cleaned successfully');
+      toast.success('Queue cleaned successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to clean queue: ${error.message}`);
     }
   });
 
@@ -97,7 +104,7 @@ function QueueMonitorPage() {
   const handleEnqueue = (e) => {
     e.preventDefault();
     if (!selectedUserId || isNaN(selectedUserId)) {
-      alert('Please enter a valid user ID');
+      toast.error('Please enter a valid user ID');
       return;
     }
     enqueueMutation.mutate(parseInt(selectedUserId));
