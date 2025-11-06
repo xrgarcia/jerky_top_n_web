@@ -14,6 +14,10 @@ const users = pgTable('users', {
   accessToken: text('access_token'),
   refreshToken: text('refresh_token'),
   tokenExpiry: timestamp('token_expiry'),
+  fullHistoryImported: boolean('full_history_imported').default(false).notNull(), // Bulk import completion flag
+  historyImportedAt: timestamp('history_imported_at'), // When bulk import completed
+  lastOrderSyncedAt: timestamp('last_order_synced_at'), // Last time orders were synced
+  importStatus: text('import_status').default('pending').notNull(), // 'pending', 'in_progress', 'completed', 'failed'
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
