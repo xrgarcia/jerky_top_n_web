@@ -147,21 +147,27 @@ function FlavorCommunitiesPageAdmin() {
           >
             <h3 style={{ marginTop: 0, color: '#5a4a3a' }}>Understanding Flavor Communities</h3>
             
-            <p style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>
-              Think of flavor communities like a journey your customers take with each flavor they discover. 
-              As they interact with products featuring a specific flavor (like "Teriyaki" or "BBQ"), they naturally 
-              progress through different stages of their flavor exploration.
+            <p style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>
+              Think of flavor communities like a journey your customers take with each <strong>flavor profile</strong> they discover. 
+              As they interact with products featuring a specific flavor profile (like "Teriyaki" or "BBQ"), they naturally 
+              progress through different stages of their exploration.
+            </p>
+            
+            <p style={{ fontSize: '0.95rem', marginBottom: '1.5rem', padding: '0.75rem', background: '#f8f5f0', borderRadius: '6px', color: '#666' }}>
+              <strong>Note:</strong> A <em>flavor profile</em> is a taste category (like Savory, Sweet, Spicy, Teriyaki, BBQ, etc.) 
+              that can appear across many different products. This is different from a <em>flavor</em>, which refers to a specific 
+              product (like "Beef Teriyaki" or "Spicy Turkey").
             </p>
 
             <div style={{ marginBottom: '1.5rem' }}>
-              <h4 style={{ color: '#8b6f47', marginBottom: '0.5rem' }}>🗺️ The Flavor Journey</h4>
-              <p>Each customer moves through these stages for every flavor they encounter:</p>
+              <h4 style={{ color: '#8b6f47', marginBottom: '0.5rem' }}>🗺️ The Flavor Profile Journey</h4>
+              <p>Each customer moves through these stages for every flavor profile they encounter:</p>
             </div>
 
             <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>1. 🤔 Curious</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                They've browsed or searched for products with this flavor, but haven't bought anything yet. 
+                They've browsed or searched for products with this flavor profile, but haven't bought anything yet. 
                 They're window shopping and learning what's available.
               </p>
             </div>
@@ -169,15 +175,15 @@ function FlavorCommunitiesPageAdmin() {
             <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>2. 🔍 Seeker</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                They've purchased products with this flavor! The order is on its way, and they're excited to try it. 
-                They've committed to exploring this flavor.
+                They've purchased products with this flavor profile! The order is on its way, and they're excited to try it. 
+                They've committed to exploring this flavor profile.
               </p>
             </div>
 
             <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>3. 👅 Taster</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                Their order has been delivered! They've tried the flavor and are forming their opinion. 
+                Their order has been delivered! They've tried the flavor profile and are forming their opinion. 
                 At this stage, they're still discovering whether they love it or not.
               </p>
             </div>
@@ -185,8 +191,8 @@ function FlavorCommunitiesPageAdmin() {
             <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', marginBottom: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>4. 🌟 Enthusiast</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                They love this flavor! After ranking several products with this flavor, their rankings show they 
-                consistently rate it highly. These customers are passionate advocates for this flavor.
+                They love this flavor profile! After ranking several products with this flavor profile, their rankings show they 
+                consistently rate it highly. These customers are passionate advocates for this flavor profile.
               </p>
               <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
                 → Determined by the "Enthusiast Top %" threshold (e.g., top 40% of rankers)
@@ -196,7 +202,7 @@ function FlavorCommunitiesPageAdmin() {
             <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', marginBottom: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>5. 🧭 Explorer</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                They're adventurous! After trying this flavor, they've ranked it lower compared to others—but 
+                They're adventurous! After trying this flavor profile, they've ranked it lower compared to others—but 
                 that's positive! It means they're exploring different options and discovering what they like best.
               </p>
               <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
@@ -207,8 +213,8 @@ function FlavorCommunitiesPageAdmin() {
             <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
               <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>6. 🎯 Moderate</h5>
               <p style={{ margin: 0, color: '#666' }}>
-                They like this flavor, but it's not their absolute favorite or their least favorite. 
-                They fall somewhere in the middle, enjoying it alongside other flavors.
+                They like this flavor profile, but it's not their absolute favorite or their least favorite. 
+                They fall somewhere in the middle, enjoying it alongside other flavor profiles.
               </p>
               <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
                 → Automatically assigned to everyone between Enthusiast and Explorer percentages
@@ -218,12 +224,12 @@ function FlavorCommunitiesPageAdmin() {
             <div style={{ marginTop: '2rem', padding: '1rem', background: '#f0f8f0', borderRadius: '6px', border: '1px solid #c8e6c9' }}>
               <h4 style={{ color: '#2e7d32', marginTop: 0 }}>💡 Why This Matters</h4>
               <p style={{ margin: 0 }}>
-                Understanding where customers are in their flavor journey helps you:
+                Understanding where customers are in their flavor profile journey helps you:
               </p>
               <ul style={{ marginBottom: 0, paddingLeft: '1.5rem' }}>
-                <li>Identify which flavors have passionate fan bases (Enthusiasts)</li>
+                <li>Identify which flavor profiles have passionate fan bases (Enthusiasts)</li>
                 <li>Discover which customers are still exploring and might need recommendations</li>
-                <li>See which flavors generate the most engagement across all stages</li>
+                <li>See which flavor profiles generate the most engagement across all stages</li>
                 <li>Understand the complete customer experience from curiosity to loyalty</li>
               </ul>
             </div>
