@@ -84,6 +84,13 @@ function BulkImportPage() {
       });
     };
 
+    // Listen for real-time Shopify stats updates (gap metric)
+    const handleShopifyStatsUpdate = (data) => {
+      console.log('📊 Shopify stats update received:', data);
+      // Update shopify stats query data for real-time gap updates
+      queryClient.setQueryData(['shopifyStats'], data);
+    };
+
     // Legacy handler for old queue stats events
     const handleBulkImportStats = (data) => {
       console.log('📦 Bulk import stats update received (legacy):', data);
@@ -106,6 +113,7 @@ function BulkImportPage() {
 
     socket.on('subscription:confirmed', handleSubscriptionConfirmed);
     socket.on('bulk-import:progress', handleBulkImportProgress);
+    socket.on('shopify-stats:update', handleShopifyStatsUpdate);
     socket.on('bulk-import:stats', handleBulkImportStats);
 
     // Cleanup on unmount
@@ -114,6 +122,7 @@ function BulkImportPage() {
       socket.emit('unsubscribe:queue-monitor');
       socket.off('subscription:confirmed', handleSubscriptionConfirmed);
       socket.off('bulk-import:progress', handleBulkImportProgress);
+      socket.off('shopify-stats:update', handleShopifyStatsUpdate);
       socket.off('bulk-import:stats', handleBulkImportStats);
       setWsConnected(false);
     };
@@ -300,11 +309,19 @@ function BulkImportPage() {
         </div>
       </div>
 
-      {/* SECTION 2: Shopify Gap - Key Metric */}
-      {shopifyStats && !shopifyStats.error && shopifyStats.gap?.missingUsers > 0 && (
+      {/* SECTION 2: Database Stats - Real-time Updates */}
+      {shopifyStats && !shopifyStats.error && (
         <div className="shopify-gap-compact">
-          <span className="gap-label">📊 {shopifyStats.gap?.missingUsers?.toLocaleString() || 0} customers need importing</span>
-          <span className="gap-percent">({100 - (shopifyStats.gap?.percentageInDb || 0)}% of Shopify total)</span>
+          <div className="gap-metric">
+            <span className="gap-label">👥 {shopifyStats.database?.totalUsers?.toLocaleString() || 0} users in database</span>
+            <span className="gap-percent">({shopifyStats.gap?.percentageInDb || 0}% of Shopify total)</span>
+          </div>
+          {shopifyStats.gap?.missingUsers > 0 && (
+            <div className="gap-metric">
+              <span className="gap-label">📊 {shopifyStats.gap?.missingUsers?.toLocaleString() || 0} customers need importing</span>
+              <span className="gap-percent">({(100 - (shopifyStats.gap?.percentageInDb || 0)).toFixed(1)}% remaining)</span>
+            </div>
+          )}
         </div>
       )}
 

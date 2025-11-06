@@ -67,6 +67,7 @@ class BulkImportWorker {
       this.worker.on('completed', async (job) => {
         console.log(`✅ Import job completed for user ${job.data.userId} (${job.data.email})`);
         await this.broadcastProgress();
+        await this.broadcastShopifyStats(); // Real-time update of gap metric
       });
 
       this.worker.on('failed', async (job, err) => {
@@ -78,6 +79,7 @@ class BulkImportWorker {
         }
         
         await this.broadcastProgress();
+        await this.broadcastShopifyStats(); // Real-time update of gap metric
       });
 
       this.worker.on('error', (err) => {
@@ -235,6 +237,29 @@ class BulkImportWorker {
       }
     } catch (error) {
       console.error('❌ Failed to broadcast bulk import progress:', error);
+    }
+  }
+
+  /**
+   * Broadcast Shopify stats (DB vs Shopify comparison) to connected WebSocket clients
+   * Used for real-time updates of the gap metric during imports
+   */
+  async broadcastShopifyStats() {
+    try {
+      const bulkImportService = require('./BulkImportService');
+      
+      // Get Shopify stats
+      const shopifyStats = await bulkImportService.getShopifyStats();
+      
+      // Get WebSocket gateway from services
+      const wsGateway = this.services?.wsGateway;
+      if (wsGateway && wsGateway.io) {
+        // Broadcast to admin queue monitor room
+        const roomName = wsGateway.room('admin', 'queue-monitor');
+        wsGateway.io.to(roomName).emit('shopify-stats:update', shopifyStats);
+      }
+    } catch (error) {
+      console.error('❌ Failed to broadcast Shopify stats:', error);
     }
   }
 

@@ -31,9 +31,16 @@
   padding: 16px 24px;
   margin-bottom: 20px;
   display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shopify-gap-compact .gap-metric {
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
+  text-align: center;
 }
 
 .shopify-gap-compact .gap-label {
