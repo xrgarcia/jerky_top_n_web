@@ -2,12 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 /**
- * Flavor Communities API Routes
+ * Flavor Profile Communities API Routes
  * Handles flavor profile micro-community tracking and state management
  */
 
-function createFlavorCommunitiesRoutes(services) {
-  const { flavorCommunityService, db, storage } = services;
+function createFlavorProfileCommunitiesRoutes(services) {
+  const { flavorProfileCommunityService, db, storage } = services;
   const { users } = require('../../shared/schema');
   const { eq } = require('drizzle-orm');
 
@@ -73,45 +73,45 @@ function createFlavorCommunitiesRoutes(services) {
   };
 
   /**
-   * GET /api/flavor-communities/users/:userId
-   * Get user's flavor community states across all flavor profiles
+   * GET /api/flavor-profile-communities/users/:userId
+   * Get user's flavor profile community states across all flavor profiles
    * Requires: User must be authenticated and accessing their own data or be admin
    */
   router.get('/users/:userId', requireAuth, requireSelfOrAdmin, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
 
-      const communities = await flavorCommunityService.getUserFlavorCommunities(userId);
+      const communities = await flavorProfileCommunityService.getUserFlavorCommunities(userId);
       
       res.json({ 
         userId,
         flavorCommunities: communities 
       });
     } catch (error) {
-      console.error('Error fetching user flavor communities:', error);
-      res.status(500).json({ error: 'Failed to fetch flavor communities' });
+      console.error('Error fetching user flavor profile communities:', error);
+      res.status(500).json({ error: 'Failed to fetch flavor profile communities' });
     }
   });
 
   /**
-   * POST /api/flavor-communities/users/:userId/refresh
-   * Recalculate user's flavor communities
+   * POST /api/flavor-profile-communities/users/:userId/refresh
+   * Recalculate user's flavor profile communities
    * Requires: User must be authenticated and accessing their own data or be admin
    */
   router.post('/users/:userId/refresh', requireAuth, requireSelfOrAdmin, async (req, res) => {
     try {
       const userId = parseInt(req.params.userId);
 
-      const communities = await flavorCommunityService.updateUserFlavorCommunities(userId);
+      const communities = await flavorProfileCommunityService.updateUserFlavorCommunities(userId);
       
       res.json({ 
         userId,
         flavorCommunities: communities,
-        message: 'Flavor communities updated successfully'
+        message: 'Flavor profile communities updated successfully'
       });
     } catch (error) {
-      console.error('Error updating user flavor communities:', error);
-      res.status(500).json({ error: 'Failed to update flavor communities' });
+      console.error('Error updating user flavor profile communities:', error);
+      res.status(500).json({ error: 'Failed to update flavor profile communities' });
     }
   });
 
@@ -130,48 +130,48 @@ function createFlavorCommunitiesRoutes(services) {
   };
 
   /**
-   * GET /api/flavor-communities/summary (Admin only)
-   * Get summary of flavor community distribution
+   * GET /api/flavor-profile-communities/summary (Admin only)
+   * Get summary of flavor profile community distribution
    * Query params: flavorProfile (optional)
    */
   router.get('/summary', requireAuth, requireAdmin, async (req, res) => {
     try {
       const { flavorProfile } = req.query;
       
-      const summary = await flavorCommunityService.getFlavorCommunitySummary(flavorProfile || null);
+      const summary = await flavorProfileCommunityService.getFlavorCommunitySummary(flavorProfile || null);
       
       res.json({ summary });
     } catch (error) {
-      console.error('Error fetching flavor community summary:', error);
+      console.error('Error fetching flavor profile community summary:', error);
       res.status(500).json({ error: 'Failed to fetch summary' });
     }
   });
 
   /**
-   * GET /api/flavor-communities/config (Admin only)
-   * Get current flavor community configuration
+   * GET /api/flavor-profile-communities/config (Admin only)
+   * Get current flavor profile community configuration
    */
   router.get('/config', requireAuth, requireAdmin, async (req, res) => {
     try {
-      const config = await flavorCommunityService.getConfig();
+      const config = await flavorProfileCommunityService.getConfig();
       
       res.json({ config });
     } catch (error) {
-      console.error('Error fetching flavor community config:', error);
+      console.error('Error fetching flavor profile community config:', error);
       res.status(500).json({ error: 'Failed to fetch configuration' });
     }
   });
 
   /**
-   * POST /api/flavor-communities/config (Admin only)
-   * Update flavor community configuration
+   * POST /api/flavor-profile-communities/config (Admin only)
+   * Update flavor profile community configuration
    */
   router.post('/config', requireAuth, requireAdmin, async (req, res) => {
     try {
       const { enthusiast_top_pct, explorer_bottom_pct, min_products_for_state, delivered_status } = req.body;
 
       // Delegate to service (follows OOP principles)
-      const updatedConfig = await flavorCommunityService.updateConfig({
+      const updatedConfig = await flavorProfileCommunityService.updateConfig({
         enthusiast_top_pct,
         explorer_bottom_pct,
         min_products_for_state,
@@ -183,7 +183,7 @@ function createFlavorCommunitiesRoutes(services) {
         message: 'Configuration updated successfully'
       });
     } catch (error) {
-      console.error('Error updating flavor community config:', error);
+      console.error('Error updating flavor profile community config:', error);
       
       // Handle validation errors
       if (error.message.includes('must be')) {
@@ -197,4 +197,4 @@ function createFlavorCommunitiesRoutes(services) {
   return router;
 }
 
-module.exports = createFlavorCommunitiesRoutes;
+module.exports = createFlavorProfileCommunitiesRoutes;
