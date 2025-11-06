@@ -77,7 +77,7 @@ function FlavorCommunitiesPageAdmin() {
     setFormData({});
   };
 
-  if (isLoading) {
+  if (isLoading || !config) {
     return <div className="coin-types-admin loading">Loading flavor communities configuration...</div>;
   }
 

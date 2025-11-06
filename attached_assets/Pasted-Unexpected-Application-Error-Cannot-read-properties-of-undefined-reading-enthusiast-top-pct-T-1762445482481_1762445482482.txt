@@ -1,0 +1,18 @@
+Unexpected Application Error!
+Cannot read properties of undefined (reading 'enthusiast_top_pct')
+TypeError: Cannot read properties of undefined (reading 'enthusiast_top_pct')
+    at JY (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:291:10318)
+    at Np (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:48260)
+    at qp (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:71083)
+    at F_ (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:81444)
+    at vx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:117273)
+    at Zk (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:116317)
+    at fm (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:116147)
+    at fx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:112929)
+    at Dx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:124899)
+    at Pl (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:123447)
+    at Rx (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:123727)
+    at https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/assets/index-C3fSc9uD-1762445227484.js:48:124959
+💿 Hey developer 👋
+
+You can provide a way better UX than this when your app throws errors by providing your own ErrorBoundary or errorElement prop on your route.
