@@ -24,14 +24,14 @@ const CommentaryService = require('../services/CommentaryService');
 const ActivityTrackingService = require('../services/ActivityTrackingService');
 const UserClassificationService = require('../services/UserClassificationService');
 const TasteCommunityService = require('../services/TasteCommunityService');
-const FlavorCommunityService = require('../services/FlavorCommunityService');
+const FlavorProfileCommunityService = require('../services/FlavorProfileCommunityService');
 const PersonalizedGuidanceService = require('../services/PersonalizedGuidanceService');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
 const createGamificationRoutes = require('../routes/gamification');
 const createCommunityRoutes = require('../routes/community');
-const createFlavorCommunitiesRoutes = require('../routes/flavorCommunities');
+const createFlavorProfileCommunitiesRoutes = require('../routes/flavorProfileCommunities');
 const WebSocketGateway = require('../websocket/gateway');
 
 const { primaryDb } = require('../db-primary');
@@ -62,7 +62,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const activityTrackingService = ActivityTrackingService; // Singleton instance
   const userClassificationService = UserClassificationService; // Singleton instance
   const tasteCommunityService = TasteCommunityService; // Singleton instance
-  const flavorCommunityService = FlavorCommunityService; // Singleton instance
+  const flavorProfileCommunityService = FlavorProfileCommunityService; // Singleton instance
   
   // PersonalizedGuidanceService with dependency injection
   const personalizedGuidanceService = new PersonalizedGuidanceService(progressTracker, userStatsAggregator);
@@ -92,7 +92,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     activityTrackingService,
     userClassificationService,
     tasteCommunityService,
-    flavorCommunityService,
+    flavorProfileCommunityService,
     personalizedGuidanceService,
     fetchAllShopifyProducts,
     getRankableProductCount,
@@ -103,21 +103,21 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
 
   const gamificationRouter = createGamificationRoutes(services);
   const communityRouter = createCommunityRoutes(services);
-  const flavorCommunitiesRouter = createFlavorCommunitiesRoutes(services);
+  const flavorProfileCommunitiesRouter = createFlavorProfileCommunitiesRoutes(services);
   
   // Apply rate limiting middleware if provided
   if (rateLimiters) {
     app.use('/api/gamification', rateLimiters.apiLimiter, gamificationRouter);
     app.use('/api/community', rateLimiters.apiLimiter, communityRouter);
-    app.use('/api/flavor-communities', rateLimiters.apiLimiter, flavorCommunitiesRouter);
+    app.use('/api/flavor-profile-communities', rateLimiters.apiLimiter, flavorProfileCommunitiesRouter);
   } else {
     app.use('/api/gamification', gamificationRouter);
     app.use('/api/community', communityRouter);
-    app.use('/api/flavor-communities', flavorCommunitiesRouter);
+    app.use('/api/flavor-profile-communities', flavorProfileCommunitiesRouter);
   }
   console.log('✅ Gamification routes registered at /api/gamification');
   console.log('✅ Community routes registered at /api/community');
-  console.log('✅ Flavor communities routes registered at /api/flavor-communities');
+  console.log('✅ Flavor profile communities routes registered at /api/flavor-profile-communities');
 
   const wsGateway = new WebSocketGateway(io, services);
   console.log('✅ WebSocket gateway initialized');

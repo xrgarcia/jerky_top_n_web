@@ -1,7 +1,7 @@
 const { db } = require('../db');
 const { userClassifications, classificationConfig, productRankings, userAchievements, achievements, userActivities, productsMetadata, customerOrderItems } = require('../../shared/schema');
 const { eq, and, gte, count, sql } = require('drizzle-orm');
-const flavorCommunityService = require('./FlavorCommunityService');
+const flavorProfileCommunityService = require('./FlavorProfileCommunityService');
 
 /**
  * UserClassificationService - Analyzes user behavior and assigns classification attributes
@@ -68,8 +68,8 @@ class UserClassificationService {
     const explorationBreadth = this._determineExplorationBreadth(userData, config);
     const focusAreas = this._determineFocusAreas(userData);
 
-    // Update flavor communities (micro-communities per flavor profile)
-    const flavorCommunities = await flavorCommunityService.updateUserFlavorCommunities(userId);
+    // Update flavor profile communities (micro-communities per flavor profile)
+    const flavorCommunities = await flavorProfileCommunityService.updateUserFlavorCommunities(userId);
 
     const classificationData = {
       totalRankings: userData.totalRankings,
