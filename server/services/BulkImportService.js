@@ -147,11 +147,13 @@ class BulkImportService {
     // Determine fetch strategy
     const useIntelligentMode = targetUnprocessedUsers !== null && !fullImport;
     const useFullImportMode = fullImport;
-    const customerLimit = fullImport ? batchSize : maxCustomers;
+    // Full Import Mode: no customer limit (stop when we've created batchSize new users)
+    // Other modes: limit by total customers fetched
+    const customerLimit = fullImport ? null : maxCustomers;
     const maxPages = customerLimit ? Math.ceil(customerLimit / pageSize) : 10000; // Increased safety limit
     
     const modeDesc = useFullImportMode 
-      ? `full import (limit: ${customerLimit || 'unlimited'} customers)` 
+      ? `full import (create ${batchSize || 'unlimited'} new users)` 
       : (useIntelligentMode ? `intelligent: target ${targetUnprocessedUsers} unprocessed` : `legacy: max ${maxCustomers || 'unlimited'} customers`);
     
     console.log(`📥 Fetching customers from Shopify (${modeDesc})...`);
