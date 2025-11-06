@@ -1,0 +1,393 @@
+.bulk-import-page {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  background-color: #f9f9f7;
+  min-height: 100vh;
+}
+
+.bulk-import-header {
+  margin-bottom: 32px;
+}
+
+.bulk-import-header h2 {
+  font-size: 28px;
+  color: #3d2817;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.bulk-import-subtitle {
+  font-size: 15px;
+  color: #6b5a47;
+  margin: 0;
+}
+
+/* Cards */
+.status-card,
+.stats-card,
+.queue-card,
+.controls-card,
+.info-card {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 1px 3px rgba(61, 40, 23, 0.1);
+}
+
+.status-card h3,
+.stats-card h3,
+.queue-card h3,
+.controls-card h3,
+.info-card h4 {
+  font-size: 18px;
+  color: #3d2817;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+/* Status Grid */
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.status-label {
+  font-weight: 500;
+  color: #6b5a47;
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status-badge.available,
+.status-badge.connected {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.unavailable,
+.status-badge.disconnected {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-badge.in-progress {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.status-badge.idle {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+}
+
+.stat-box {
+  background: #f5f5f3;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border-left: 4px solid #6b5a47;
+}
+
+.stat-box.success {
+  border-left-color: #4caf50;
+}
+
+.stat-box.warning {
+  border-left-color: #ff9800;
+}
+
+.stat-box.info {
+  border-left-color: #2196f3;
+}
+
+.stat-box.danger {
+  border-left-color: #f44336;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 600;
+  color: #3d2817;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #6b5a47;
+}
+
+/* Progress Bar */
+.progress-container {
+  margin-bottom: 20px;
+}
+
+.progress-bar-wrapper {
+  width: 100%;
+  height: 24px;
+  background: #f5f5f3;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8b6e4e 0%, #a58968 100%);
+  transition: width 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.progress-text {
+  text-align: center;
+  font-size: 14px;
+  color: #6b5a47;
+  font-weight: 500;
+}
+
+/* Queue Stats Grid */
+.queue-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.queue-stat {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #f5f5f3;
+  border-radius: 6px;
+}
+
+.queue-stat-label {
+  font-size: 14px;
+  color: #6b5a47;
+  font-weight: 500;
+}
+
+.queue-stat-value {
+  font-size: 18px;
+  font-weight: 600;
+  color: #3d2817;
+}
+
+.queue-stat-value.waiting {
+  color: #ff9800;
+}
+
+.queue-stat-value.active {
+  color: #2196f3;
+}
+
+.queue-stat-value.completed {
+  color: #4caf50;
+}
+
+.queue-stat-value.failed {
+  color: #f44336;
+}
+
+/* Current Import Stats */
+.current-import-stats {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #e8e4de;
+}
+
+.current-import-stats h4 {
+  font-size: 16px;
+  color: #3d2817;
+  margin: 0 0 12px 0;
+}
+
+.import-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  font-size: 14px;
+  color: #6b5a47;
+}
+
+.import-stats-grid strong {
+  color: #3d2817;
+}
+
+/* Controls */
+.import-options {
+  margin-bottom: 24px;
+}
+
+.option-group {
+  margin-bottom: 16px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  color: #3d2817;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.input-label {
+  display: block;
+  font-size: 15px;
+  color: #3d2817;
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.number-input {
+  width: 100%;
+  max-width: 300px;
+  padding: 10px 12px;
+  border: 2px solid #e8e4de;
+  border-radius: 6px;
+  font-size: 15px;
+  color: #3d2817;
+  margin-top: 8px;
+}
+
+.number-input:focus {
+  outline: none;
+  border-color: #8b6e4e;
+}
+
+.number-input:disabled {
+  background: #f5f5f3;
+  cursor: not-allowed;
+}
+
+/* Button Group */
+.button-group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #8b6e4e;
+  color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #6b5a47;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(61, 40, 23, 0.15);
+}
+
+.btn-primary:disabled {
+  background: #c4b5a4;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-secondary {
+  background: white;
+  color: #8b6e4e;
+  border: 2px solid #8b6e4e;
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: #f5f5f3;
+  transform: translateY(-1px);
+}
+
+.btn-secondary:disabled {
+  border-color: #c4b5a4;
+  color: #c4b5a4;
+  cursor: not-allowed;
+}
+
+/* Info Card */
+.info-card {
+  background: #fffef8;
+  border-left: 4px solid #8b6e4e;
+}
+
+.info-card ol {
+  margin: 0 0 16px 0;
+  padding-left: 24px;
+  color: #6b5a47;
+  line-height: 1.7;
+}
+
+.info-card li {
+  margin-bottom: 8px;
+}
+
+.info-note {
+  background: #f5f5f3;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #6b5a47;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .bulk-import-page {
+    padding: 16px;
+  }
+
+  .stats-grid,
+  .queue-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+}
