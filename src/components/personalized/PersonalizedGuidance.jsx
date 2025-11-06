@@ -75,11 +75,13 @@ export default function PersonalizedGuidance({ page = 'general' }) {
   const fetchGuidance = async () => {
     try {
       setLoading(true);
+      console.log(`🎯 Fetching guidance for page: ${page}`);
       const data = await api.get(`/gamification/user-guidance?page=${page}`);
+      console.log('📦 Guidance API Response:', data);
       setGuidance(data);
       setError(null);
     } catch (err) {
-      console.error('Failed to fetch guidance:', err);
+      console.error('❌ Failed to fetch guidance:', err);
       setError('Unable to load personalized guidance');
     } finally {
       setLoading(false);
@@ -124,9 +126,11 @@ export default function PersonalizedGuidance({ page = 'general' }) {
   }
 
   if (error || !guidance) {
+    console.log('⚠️ No guidance to display:', { error, guidance, page });
     return null;
   }
 
+  console.log('✅ Rendering guidance:', guidance);
   const { guidance: guidanceMessage } = guidance;
 
   return (
