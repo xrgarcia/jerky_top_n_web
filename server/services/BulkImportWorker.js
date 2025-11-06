@@ -59,9 +59,14 @@ class BulkImportWorker {
         }
       );
 
+      this.worker.on('active', async (job) => {
+        console.log(`⚡ Import job started for user ${job.data.userId} (${job.data.email})`);
+        await this.broadcastProgress();
+      });
+
       this.worker.on('completed', async (job) => {
         console.log(`✅ Import job completed for user ${job.data.userId} (${job.data.email})`);
-        await this.broadcastQueueStats();
+        await this.broadcastProgress();
       });
 
       this.worker.on('failed', async (job, err) => {
@@ -72,7 +77,7 @@ class BulkImportWorker {
           await this.markImportFailed(job.data.userId, err.message);
         }
         
-        await this.broadcastQueueStats();
+        await this.broadcastProgress();
       });
 
       this.worker.on('error', (err) => {
@@ -210,7 +215,32 @@ class BulkImportWorker {
   }
 
   /**
+   * Broadcast comprehensive import progress to connected WebSocket clients
+   * Includes queue stats AND user statistics for real-time updates
+   */
+  async broadcastProgress() {
+    try {
+      const BulkImportQueue = require('./BulkImportQueue');
+      const bulkImportService = require('./BulkImportService');
+      
+      // Get comprehensive progress data
+      const progressData = await bulkImportService.getProgress();
+      
+      // Get WebSocket gateway from services
+      const wsGateway = this.services?.wsGateway;
+      if (wsGateway && wsGateway.io) {
+        // Broadcast to admin queue monitor room
+        const roomName = wsGateway.room('admin', 'queue-monitor');
+        wsGateway.io.to(roomName).emit('bulk-import:progress', progressData);
+      }
+    } catch (error) {
+      console.error('❌ Failed to broadcast bulk import progress:', error);
+    }
+  }
+
+  /**
    * Broadcast queue statistics to connected WebSocket clients
+   * @deprecated Use broadcastProgress() instead for comprehensive updates
    */
   async broadcastQueueStats() {
     try {

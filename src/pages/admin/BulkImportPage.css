@@ -28,7 +28,8 @@
 .stats-card,
 .queue-card,
 .controls-card,
-.info-card {
+.info-card,
+.worker-progress-card {
   background: white;
   border-radius: 8px;
   padding: 24px;
@@ -486,6 +487,102 @@
   box-shadow: 0 4px 8px rgba(61, 40, 23, 0.15);
 }
 
+/* Worker Progress Section */
+.worker-progress-card {
+  background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);
+  border: 2px solid #e8dcc8;
+}
+
+.worker-progress-card h3 {
+  font-size: 18px;
+  color: #3d2817;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.worker-progress-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.worker-stat {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border: 2px solid #e8dcc8;
+  transition: all 0.3s ease;
+}
+
+.worker-stat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(61, 40, 23, 0.1);
+}
+
+.worker-stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.worker-stat.active-workers .worker-stat-value {
+  color: #2196f3;
+}
+
+.worker-stat.waiting-jobs .worker-stat-value {
+  color: #ff9800;
+}
+
+.worker-stat.users-in-progress .worker-stat-value {
+  color: #9c27b0;
+}
+
+.worker-stat.users-remaining .worker-stat-value {
+  color: #f44336;
+}
+
+.worker-stat-label {
+  font-size: 14px;
+  color: #6b5a47;
+  font-weight: 500;
+}
+
+.worker-progress-note {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b5a47;
+  font-size: 13px;
+  padding: 12px;
+  background: rgba(139, 110, 78, 0.05);
+  border-radius: 6px;
+}
+
+.pulse-indicator {
+  width: 8px;
+  height: 8px;
+  background: #4caf50;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .bulk-import-page {
@@ -493,7 +590,8 @@
   }
 
   .stats-grid,
-  .queue-stats-grid {
+  .queue-stats-grid,
+  .worker-progress-grid {
     grid-template-columns: 1fr;
   }
 

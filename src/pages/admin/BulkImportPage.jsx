@@ -56,9 +56,18 @@ function BulkImportPage() {
       }
     };
 
-    // Listen for real-time bulk import stats updates
+    // Listen for real-time comprehensive progress updates (queue + user stats)
+    const handleBulkImportProgress = (data) => {
+      console.log('📦 Bulk import progress update received:', data);
+      // Update progress query data with complete real-time data
+      queryClient.setQueryData(['bulkImportProgress'], (oldData) => {
+        return data;
+      });
+    };
+
+    // Legacy handler for old queue stats events
     const handleBulkImportStats = (data) => {
-      console.log('📦 Bulk import stats update received:', data);
+      console.log('📦 Bulk import stats update received (legacy):', data);
       // Update progress query data with complete fallback for race condition
       queryClient.setQueryData(['bulkImportProgress'], (oldData) => {
         const defaults = {
@@ -77,6 +86,7 @@ function BulkImportPage() {
     };
 
     socket.on('subscription:confirmed', handleSubscriptionConfirmed);
+    socket.on('bulk-import:progress', handleBulkImportProgress);
     socket.on('bulk-import:stats', handleBulkImportStats);
 
     // Cleanup on unmount
@@ -84,6 +94,7 @@ function BulkImportPage() {
       console.log('📦 Unsubscribing from bulk import updates...');
       socket.emit('unsubscribe:queue-monitor');
       socket.off('subscription:confirmed', handleSubscriptionConfirmed);
+      socket.off('bulk-import:progress', handleBulkImportProgress);
       socket.off('bulk-import:stats', handleBulkImportStats);
       setWsConnected(false);
     };
@@ -225,6 +236,35 @@ function BulkImportPage() {
           </div>
         </div>
       </div>
+
+      {/* Worker Progress - Real-time processing status */}
+      {(queue.active > 0 || queue.waiting > 0) && (
+        <div className="worker-progress-card">
+          <h3>🔄 Worker Progress (Live)</h3>
+          <div className="worker-progress-grid">
+            <div className="worker-stat active-workers">
+              <div className="worker-stat-value">{queue.active || 0}</div>
+              <div className="worker-stat-label">Processing Now</div>
+            </div>
+            <div className="worker-stat waiting-jobs">
+              <div className="worker-stat-value">{queue.waiting || 0}</div>
+              <div className="worker-stat-label">In Queue</div>
+            </div>
+            <div className="worker-stat users-in-progress">
+              <div className="worker-stat-value">{users.inProgress || 0}</div>
+              <div className="worker-stat-label">Users Processing</div>
+            </div>
+            <div className="worker-stat users-remaining">
+              <div className="worker-stat-value">{users.pending || 0}</div>
+              <div className="worker-stat-label">Users Remaining</div>
+            </div>
+          </div>
+          <div className="worker-progress-note">
+            <span className="pulse-indicator"></span>
+            <span>Live updates via WebSocket</span>
+          </div>
+        </div>
+      )}
 
       {/* Queue Statistics */}
       <div className="queue-card">
