@@ -12,7 +12,7 @@ function ToolsLayout() {
   const tabs = [
     { path: '/admin/tools/coins', label: 'Manage Coins', icon: '🏆' },
     { path: '/admin/tools/coin-types', label: 'Coin Types', icon: '🪙' },
-    { path: '/admin/tools/flavor-communities', label: 'Flavor Profile Communities', icon: '🌶️' },
+    { path: '/admin/tools/flavor-profile-communities', label: 'Flavor Profile Communities', icon: '🌶️' },
     { path: '/admin/tools/live-users', label: 'Live Users', icon: '👥' },
     { path: '/admin/tools/products', label: 'Manage Products', icon: '🥩' },
     { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },

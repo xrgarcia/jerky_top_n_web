@@ -108,7 +108,7 @@ function AppLayout() {
             <Route index element={<ManageCoinsPageAdmin />} />
             <Route path="coins" element={<ManageCoinsPageAdmin />} />
             <Route path="coin-types" element={<CoinTypesPageAdmin />} />
-            <Route path="flavor-communities" element={<FlavorCommunitiesPageAdmin />} />
+            <Route path="flavor-profile-communities" element={<FlavorCommunitiesPageAdmin />} />
             <Route path="live-users" element={<LiveUsersPage />} />
             <Route path="products" element={<ProductsPageAdmin />} />
             <Route path="orders" element={<OrderItemsPage />} />

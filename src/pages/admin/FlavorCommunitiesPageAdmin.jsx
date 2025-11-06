@@ -10,25 +10,25 @@ function FlavorCommunitiesPageAdmin() {
   const [formData, setFormData] = useState({});
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
-  // Fetch flavor community configuration
+  // Fetch flavor profile community configuration
   const { data: config, isLoading, error } = useQuery({
-    queryKey: ['admin', 'flavor-communities-config'],
+    queryKey: ['admin', 'flavor-profile-communities-config'],
     queryFn: async () => {
-      console.log('🔍 Fetching flavor communities config...');
-      const response = await api.get('/flavor-communities/config');
+      console.log('🔍 Fetching flavor profile communities config...');
+      const response = await api.get('/flavor-profile-communities/config');
       console.log('✅ Config response:', response);
       return response.config || {};
     },
     retry: 1
   });
 
-  // Update flavor community configuration
+  // Update flavor profile community configuration
   const updateMutation = useMutation({
     mutationFn: async (data) => {
-      return await api.post('/flavor-communities/config', data);
+      return await api.post('/flavor-profile-communities/config', data);
     },
     onSuccess: (response) => {
-      queryClient.invalidateQueries(['admin', 'flavor-communities-config']);
+      queryClient.invalidateQueries(['admin', 'flavor-profile-communities-config']);
       toast.success(response.message || 'Configuration updated successfully!');
       setIsEditing(false);
     },
