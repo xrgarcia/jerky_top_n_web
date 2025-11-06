@@ -71,7 +71,14 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Collection Progress Bar**: User-specific progress tracking on the Rank page.
 - **Coin Book Widget**: Collapsible achievement tracker on the Rank page with user stats, last earned achievement, next milestone progress, and a grid of achievements with tier-based colored borders.
 - **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates to display names, taglines, descriptions, icons, colors, and how-to-earn instructions. Public API endpoints support fetching configurations, and dynamic coin profile pages.
-- **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, and user guidance analytics with flavor profile community filtering.
+- **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, user guidance analytics with flavor profile community filtering, and bulk import for historical Shopify data.
+- **Bulk Import System**: Comprehensive system for importing all Shopify customers and their complete purchase history into the platform with real-time monitoring.
+  - **Architecture**: Event-driven BullMQ-based background processing with ShopifyCustomersService (paginated customer fetching), BulkImportService (orchestration), BulkImportQueue (job management), and BulkImportWorker (background processing with concurrency of 3).
+  - **Database Tracking**: Users table includes `fullHistoryImported`, `historyImportedAt`, `lastOrderSyncedAt`, and `importStatus` fields for tracking import completion.
+  - **Worker Integration**: BulkImportWorker reuses existing PurchaseHistoryService for order synchronization, updates user status fields, and triggers ClassificationQueue jobs for personalized guidance.
+  - **Admin Interface**: BulkImportPage.jsx provides real-time progress monitoring via WebSocket with queue statistics, import status, and controls for full or incremental imports.
+  - **WebSocket Updates**: Real-time queue stats broadcast to 'admin:queue-monitor' room for live progress tracking with safe fallback handling for race conditions.
+  - **API Routes**: Super admin protected endpoints at `/api/admin/bulk-import/*` for starting imports, checking status, and monitoring progress.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
