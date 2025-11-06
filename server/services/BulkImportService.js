@@ -1,6 +1,6 @@
 const { primaryDb } = require('../db-primary');
 const { users } = require('../../shared/schema');
-const { eq, or, isNull, sql, count } = require('drizzle-orm');
+const { eq, count } = require('drizzle-orm');
 const ShopifyCustomersService = require('./ShopifyCustomersService');
 const bulkImportQueue = require('./BulkImportQueue');
 const Sentry = require('@sentry/node');
@@ -269,10 +269,7 @@ class BulkImportService {
       const [pendingUsers] = await primaryDb
         .select({ count: count() })
         .from(users)
-        .where(or(
-          eq(users.importStatus, 'pending'),
-          isNull(users.importStatus)
-        ));
+        .where(eq(users.importStatus, 'pending'));
 
       const [inProgressUsers] = await primaryDb
         .select({ count: count() })
