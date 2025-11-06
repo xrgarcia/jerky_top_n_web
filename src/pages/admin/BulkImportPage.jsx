@@ -298,7 +298,9 @@ function BulkImportPage() {
             ) : currentStep === 4 ? (
               <>
                 <span className="pipeline-title">Import Complete</span>
-                <span className="pipeline-subtitle">{users.imported || 0} users processed successfully</span>
+                <span className="pipeline-subtitle">
+                  {currentStats ? `${currentStats.customersFetched || 0} customers processed: ${currentStats.usersCreated || 0} new, ${currentStats.usersUpdated || 0} updated` : 'Processing complete'}
+                </span>
               </>
             ) : (
               <>
@@ -411,13 +413,31 @@ function BulkImportPage() {
             </div>
           )}
 
-          {currentStep === 4 && (
+          {currentStep === 4 && currentStats && (
             <div className="step-details">
               <div className="step-complete-message">
                 <div className="complete-icon">✅</div>
                 <div className="complete-text">
                   <h4>Import Complete!</h4>
-                  <p>{users.imported || 0} users successfully imported with full order history</p>
+                  <p>Successfully processed {currentStats.customersFetched || 0} customers from Shopify</p>
+                </div>
+              </div>
+              <div className="step-stats-grid">
+                <div className="step-stat success">
+                  <div className="step-stat-value">{currentStats.customersFetched || 0}</div>
+                  <div className="step-stat-label">Customers Fetched</div>
+                </div>
+                <div className="step-stat success">
+                  <div className="step-stat-value">{currentStats.usersCreated || 0}</div>
+                  <div className="step-stat-label">New Users Created</div>
+                </div>
+                <div className="step-stat">
+                  <div className="step-stat-value">{currentStats.usersUpdated || 0}</div>
+                  <div className="step-stat-label">Existing Users Updated</div>
+                </div>
+                <div className="step-stat success">
+                  <div className="step-stat-value">{currentStats.jobsEnqueued || 0}</div>
+                  <div className="step-stat-label">Jobs Processed</div>
                 </div>
               </div>
             </div>
@@ -425,25 +445,7 @@ function BulkImportPage() {
         </div>
       )}
 
-      {/* System Status - Compact */}
-      <div className="status-card-compact">
-        <div className="status-grid">
-          <div className="status-item">
-            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
-            <span className="status-label">Shopify API</span>
-          </div>
-          <div className="status-item">
-            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
-            <span className="status-label">WebSocket</span>
-          </div>
-          <div className="status-item">
-            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
-            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Shopify Statistics - Show the gap */}
+      {/* SECTION 3: Shopify vs Database - Key Metric at Top */}
       {shopifyStats && !shopifyStats.error && (
         <div className="shopify-stats-card">
           <h3>📊 Shopify vs Database</h3>
@@ -472,6 +474,25 @@ function BulkImportPage() {
           </div>
         </div>
       )}
+
+      {/* SECTION 4: System Status - Low Priority Info */}
+      <div className="status-card-compact">
+        <h3>🔌 System Status</h3>
+        <div className="status-grid">
+          <div className="status-item">
+            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
+            <span className="status-label">Shopify API</span>
+          </div>
+          <div className="status-item">
+            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
+            <span className="status-label">WebSocket</span>
+          </div>
+          <div className="status-item">
+            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
+            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
+          </div>
+        </div>
+      </div>
 
 
       {/* Controls */}
