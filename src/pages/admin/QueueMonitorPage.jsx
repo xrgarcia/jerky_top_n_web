@@ -140,6 +140,11 @@ function QueueMonitorPage() {
             Last updated: {new Date(timestamp).toLocaleTimeString()}
           </span>
         )}
+        <div className="queue-info">
+          <span className="info-text">
+            💡 Jobs process in milliseconds - most activity happens in "Completed"
+          </span>
+        </div>
       </div>
 
       {isLoading ? (
