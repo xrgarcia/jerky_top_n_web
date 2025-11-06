@@ -233,6 +233,27 @@ class WebSocketGateway {
         console.log(`📦 Socket ${socket.id} unsubscribed from customer orders updates`);
       });
 
+      socket.on('subscribe:queue-monitor', () => {
+        // Only allow admin users to subscribe to queue monitor updates
+        if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
+          socket.join(this.room('admin:queue-monitor'));
+          console.log(`📊 Socket ${socket.id} subscribed to queue monitor updates (room: ${this.room('admin:queue-monitor')})`);
+          
+          // Emit confirmation
+          socket.emit('subscription:confirmed', {
+            room: 'queue-monitor',
+            timestamp: new Date().toISOString()
+          });
+        } else {
+          console.log(`⚠️ Socket ${socket.id} denied queue-monitor subscription (not admin)`);
+        }
+      });
+
+      socket.on('unsubscribe:queue-monitor', () => {
+        socket.leave(this.room('admin:queue-monitor'));
+        console.log(`📊 Socket ${socket.id} unsubscribed from queue monitor updates`);
+      });
+
       socket.on('subscribe:live-users', async () => {
         if (!socket.userData || socket.userData.role !== 'employee_admin') {
           console.warn(`🚫 Unauthorized live-users subscription attempt from socket ${socket.id}`);

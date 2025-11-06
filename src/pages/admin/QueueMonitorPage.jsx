@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useSocket } from '../../hooks/useSocket';
 import './QueueMonitorPage.css';
 
 function QueueMonitorPage() {
   const queryClient = useQueryClient();
   const [selectedUserId, setSelectedUserId] = useState('');
-  const [autoRefresh, setAutoRefresh] = useState(true);
+  const [wsConnected, setWsConnected] = useState(false);
+  const { socket } = useSocket();
 
-  // Fetch queue stats with auto-refresh
+  // Fetch queue stats (initial load only, WebSocket handles updates)
   const { data: statsData, isLoading } = useQuery({
     queryKey: ['queueStats'],
     queryFn: async () => {
@@ -17,8 +19,44 @@ function QueueMonitorPage() {
       if (!res.ok) throw new Error('Failed to fetch queue stats');
       return res.json();
     },
-    refetchInterval: autoRefresh ? 3000 : false, // Auto-refresh every 3 seconds
+    staleTime: Infinity, // WebSocket will keep data fresh
   });
+
+  // Subscribe to WebSocket events for real-time updates
+  useEffect(() => {
+    if (!socket) return;
+
+    console.log('📊 Subscribing to queue monitor updates...');
+
+    // Subscribe to queue-monitor room
+    socket.emit('subscribe:queue-monitor');
+
+    // Listen for subscription confirmation
+    const handleSubscriptionConfirmed = (data) => {
+      if (data.room === 'queue-monitor') {
+        console.log('✅ Subscribed to queue monitor updates');
+        setWsConnected(true);
+      }
+    };
+
+    // Listen for real-time queue stats updates
+    const handleQueueStatsUpdate = (data) => {
+      console.log('📊 Queue stats update received:', data);
+      queryClient.setQueryData(['queueStats'], data);
+    };
+
+    socket.on('subscription:confirmed', handleSubscriptionConfirmed);
+    socket.on('queue:stats-update', handleQueueStatsUpdate);
+
+    // Cleanup on unmount
+    return () => {
+      console.log('📊 Unsubscribing from queue monitor updates...');
+      socket.emit('unsubscribe:queue-monitor');
+      socket.off('subscription:confirmed', handleSubscriptionConfirmed);
+      socket.off('queue:stats-update', handleQueueStatsUpdate);
+      setWsConnected(false);
+    };
+  }, [socket, queryClient]);
 
   // Manual enqueue mutation
   const enqueueMutation = useMutation({
@@ -65,24 +103,38 @@ function QueueMonitorPage() {
     enqueueMutation.mutate(parseInt(selectedUserId));
   };
 
+  const handleManualRefresh = () => {
+    queryClient.invalidateQueries(['queueStats']);
+  };
+
   return (
     <div className="queue-monitor-page">
       <div className="queue-monitor-header">
         <h2>🔄 Classification Queue Monitor</h2>
         <p className="queue-monitor-subtitle">
-          Real-time monitoring of background classification jobs
+          Real-time monitoring of background classification jobs via WebSocket
         </p>
       </div>
 
       <div className="queue-controls">
-        <label className="auto-refresh-toggle">
-          <input
-            type="checkbox"
-            checked={autoRefresh}
-            onChange={(e) => setAutoRefresh(e.target.checked)}
-          />
-          <span>Auto-refresh (3s)</span>
-        </label>
+        <div className="connection-status">
+          {wsConnected ? (
+            <span className="status-badge connected">
+              🟢 Live Updates Active
+            </span>
+          ) : (
+            <span className="status-badge disconnected">
+              🔴 Connecting...
+            </span>
+          )}
+        </div>
+        <button 
+          onClick={handleManualRefresh}
+          className="refresh-button"
+          disabled={isLoading}
+        >
+          🔄 Refresh Now
+        </button>
         {timestamp && (
           <span className="last-updated">
             Last updated: {new Date(timestamp).toLocaleTimeString()}
