@@ -8,6 +8,7 @@ function FlavorCommunitiesPageAdmin() {
   const queryClient = useQueryClient();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({});
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   // Fetch flavor community configuration
   const { data: config, isLoading, error } = useQuery({
@@ -105,6 +106,141 @@ function FlavorCommunitiesPageAdmin() {
       <div className="page-header">
         <h2>🌶️ Flavor Communities Configuration</h2>
         <p>Manage thresholds for flavor profile micro-community lifecycle states</p>
+      </div>
+
+      {/* How It Works Accordion */}
+      <div className="accordion-section" style={{ marginBottom: '2rem' }}>
+        <button 
+          className="accordion-header"
+          onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+          style={{
+            width: '100%',
+            padding: '1rem 1.5rem',
+            background: '#f8f5f0',
+            border: '2px solid #d4c5a9',
+            borderRadius: '8px',
+            cursor: 'pointer',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            fontSize: '1.1rem',
+            fontWeight: '600',
+            color: '#5a4a3a',
+            transition: 'all 0.2s ease'
+          }}
+        >
+          <span>📖 How Flavor Communities Work</span>
+          <span style={{ fontSize: '1.5rem' }}>{isAccordionOpen ? '−' : '+'}</span>
+        </button>
+        
+        {isAccordionOpen && (
+          <div 
+            className="accordion-content"
+            style={{
+              marginTop: '1rem',
+              padding: '1.5rem',
+              background: 'white',
+              border: '2px solid #d4c5a9',
+              borderRadius: '8px',
+              lineHeight: '1.6'
+            }}
+          >
+            <h3 style={{ marginTop: 0, color: '#5a4a3a' }}>Understanding Flavor Communities</h3>
+            
+            <p style={{ fontSize: '1rem', marginBottom: '1.5rem' }}>
+              Think of flavor communities like a journey your customers take with each flavor they discover. 
+              As they interact with products featuring a specific flavor (like "Teriyaki" or "BBQ"), they naturally 
+              progress through different stages of their flavor exploration.
+            </p>
+
+            <div style={{ marginBottom: '1.5rem' }}>
+              <h4 style={{ color: '#8b6f47', marginBottom: '0.5rem' }}>🗺️ The Flavor Journey</h4>
+              <p>Each customer moves through these stages for every flavor they encounter:</p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>1. 🤔 Curious</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                They've browsed or searched for products with this flavor, but haven't bought anything yet. 
+                They're window shopping and learning what's available.
+              </p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>2. 🔍 Seeker</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                They've purchased products with this flavor! The order is on its way, and they're excited to try it. 
+                They've committed to exploring this flavor.
+              </p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #d4c5a9', paddingLeft: '1rem', marginBottom: '1rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>3. 👅 Taster</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                Their order has been delivered! They've tried the flavor and are forming their opinion. 
+                At this stage, they're still discovering whether they love it or not.
+              </p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', marginBottom: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>4. 🌟 Enthusiast</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                They love this flavor! After ranking several products with this flavor, their rankings show they 
+                consistently rate it highly. These customers are passionate advocates for this flavor.
+              </p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
+                → Determined by the "Enthusiast Top %" threshold (e.g., top 40% of rankers)
+              </p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', marginBottom: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>5. 🧭 Explorer</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                They're adventurous! After trying this flavor, they've ranked it lower compared to others—but 
+                that's positive! It means they're exploring different options and discovering what they like best.
+              </p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
+                → Determined by the "Explorer Bottom %" threshold (e.g., bottom 40% of rankers)
+              </p>
+            </div>
+
+            <div style={{ borderLeft: '3px solid #8b6f47', paddingLeft: '1rem', background: '#fef9f3', padding: '0.75rem' }}>
+              <h5 style={{ color: '#5a4a3a', marginBottom: '0.3rem' }}>6. 🎯 Moderate</h5>
+              <p style={{ margin: 0, color: '#666' }}>
+                They like this flavor, but it's not their absolute favorite or their least favorite. 
+                They fall somewhere in the middle, enjoying it alongside other flavors.
+              </p>
+              <p style={{ margin: '0.5rem 0 0 0', fontSize: '0.9rem', fontStyle: 'italic', color: '#8b6f47' }}>
+                → Automatically assigned to everyone between Enthusiast and Explorer percentages
+              </p>
+            </div>
+
+            <div style={{ marginTop: '2rem', padding: '1rem', background: '#f0f8f0', borderRadius: '6px', border: '1px solid #c8e6c9' }}>
+              <h4 style={{ color: '#2e7d32', marginTop: 0 }}>💡 Why This Matters</h4>
+              <p style={{ margin: 0 }}>
+                Understanding where customers are in their flavor journey helps you:
+              </p>
+              <ul style={{ marginBottom: 0, paddingLeft: '1.5rem' }}>
+                <li>Identify which flavors have passionate fan bases (Enthusiasts)</li>
+                <li>Discover which customers are still exploring and might need recommendations</li>
+                <li>See which flavors generate the most engagement across all stages</li>
+                <li>Understand the complete customer experience from curiosity to loyalty</li>
+              </ul>
+            </div>
+
+            <div style={{ marginTop: '1.5rem', padding: '1rem', background: '#fff3e0', borderRadius: '6px', border: '1px solid #ffe0b2' }}>
+              <h4 style={{ color: '#e65100', marginTop: 0 }}>⚙️ Configuring the Thresholds</h4>
+              <p style={{ margin: '0 0 0.5rem 0' }}>
+                The settings below control how customers move from "Taster" to the ranked states:
+              </p>
+              <ul style={{ marginBottom: 0, paddingLeft: '1.5rem' }}>
+                <li><strong>Enthusiast Top %:</strong> What percentage of customers with the highest rankings become "Enthusiasts"</li>
+                <li><strong>Explorer Bottom %:</strong> What percentage of customers with lower rankings become "Explorers"</li>
+                <li><strong>Minimum Products:</strong> How many products they must rank before we categorize them (ensures meaningful data)</li>
+              </ul>
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="config-info-card">
