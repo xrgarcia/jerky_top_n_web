@@ -20,6 +20,56 @@ class ShopifyCustomersService {
   }
 
   /**
+   * Get total customer count from Shopify
+   * @returns {Promise<number>} Total customer count
+   */
+  async getCustomerCount() {
+    if (!this.accessToken) {
+      console.warn('⚠️ Shopify Admin Access Token not configured');
+      return 0;
+    }
+
+    try {
+      const url = `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers/count.json`;
+      
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'X-Shopify-Access-Token': this.accessToken,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error(`❌ Shopify customer count API error (${response.status}):`, errorText);
+        
+        Sentry.captureMessage(`Shopify customer count API error: ${response.status}`, {
+          level: 'error',
+          tags: { service: 'shopify-customers', shopify_status: response.status },
+          extra: { errorText }
+        });
+        
+        return 0;
+      }
+
+      const data = await response.json();
+      const count = data.count || 0;
+      
+      console.log(`📊 Shopify customer count: ${count.toLocaleString()}`);
+      return count;
+
+    } catch (error) {
+      console.error('❌ Error fetching customer count from Shopify:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'shopify-customers' }
+      });
+      
+      return 0;
+    }
+  }
+
+  /**
    * Fetch all customers from Shopify with pagination
    * @param {Object} options - Pagination options
    * @param {number} options.limit - Results per page (max 250)

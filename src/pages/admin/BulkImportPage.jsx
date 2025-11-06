@@ -9,6 +9,8 @@ function BulkImportPage() {
   const [wsConnected, setWsConnected] = useState(false);
   const [reimportAll, setReimportAll] = useState(false);
   const [targetUnprocessedUsers, setTargetUnprocessedUsers] = useState('');
+  const [fullImport, setFullImport] = useState(false);
+  const [batchSize, setBatchSize] = useState('');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [workerProgressState, setWorkerProgressState] = useState('idle');
   const [lastCompletedStats, setLastCompletedStats] = useState(null);
@@ -40,6 +42,20 @@ function BulkImportPage() {
       return res.json();
     },
     staleTime: 60000, // 1 minute
+  });
+
+  // Fetch Shopify stats
+  const { data: shopifyStats, isLoading: shopifyStatsLoading } = useQuery({
+    queryKey: ['shopifyStats'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/bulk-import/shopify-stats', {
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Failed to fetch Shopify stats');
+      return res.json();
+    },
+    staleTime: 30000, // 30 seconds
+    refetchInterval: 60000, // Refetch every minute
   });
 
   // Subscribe to WebSocket events for real-time updates
@@ -112,7 +128,9 @@ function BulkImportPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           reimportAll,
-          targetUnprocessedUsers: targetUnprocessedUsers ? parseInt(targetUnprocessedUsers) : null
+          targetUnprocessedUsers: targetUnprocessedUsers ? parseInt(targetUnprocessedUsers) : null,
+          fullImport,
+          batchSize: batchSize ? parseInt(batchSize) : null
         })
       });
       if (!res.ok) {
@@ -123,7 +141,8 @@ function BulkImportPage() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      toast.success(`Import started successfully! ${data.jobsEnqueued} jobs enqueued.`);
+      queryClient.invalidateQueries(['shopifyStats']);
+      toast.success(`Import started! Created ${data.usersCreated} users, enqueued ${data.jobsEnqueued} jobs.`);
     },
     onError: (error) => {
       toast.error(`Failed to start import: ${error.message}`);
@@ -252,6 +271,36 @@ function BulkImportPage() {
           </div>
         </div>
       </div>
+
+      {/* Shopify Statistics - Show the gap */}
+      {shopifyStats && !shopifyStats.error && (
+        <div className="shopify-stats-card">
+          <h3>📊 Shopify vs Database</h3>
+          <div className="shopify-stats-summary">
+            <div className="shopify-stat-main">
+              <div className="shopify-stat-box shopify">
+                <div className="shopify-stat-value">{shopifyStats.shopify?.totalCustomers?.toLocaleString() || 0}</div>
+                <div className="shopify-stat-label">Shopify Customers</div>
+              </div>
+              <div className="shopify-stat-arrow">→</div>
+              <div className="shopify-stat-box database">
+                <div className="shopify-stat-value">{shopifyStats.database?.totalUsers?.toLocaleString() || 0}</div>
+                <div className="shopify-stat-label">Database Users</div>
+              </div>
+              <div className="shopify-stat-box gap">
+                <div className="shopify-stat-value missing">{shopifyStats.gap?.missingUsers?.toLocaleString() || 0}</div>
+                <div className="shopify-stat-label">Missing</div>
+              </div>
+            </div>
+            {shopifyStats.gap?.missingUsers > 0 && (
+              <div className="shopify-warning">
+                <span className="warning-icon">⚠️</span>
+                <span>Only {shopifyStats.gap?.percentageInDb || 0}% of Shopify customers are in the database. Use <strong>Full Import Mode</strong> below to import all missing customers.</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* User Statistics */}
       <div className="stats-card">
@@ -407,6 +456,68 @@ function BulkImportPage() {
         <h3>Import Controls</h3>
         
         <div className="import-options">
+          <div className="option-group mode-selector">
+            <label className="checkbox-label full-import-toggle">
+              <input
+                type="checkbox"
+                checked={fullImport}
+                onChange={(e) => {
+                  setFullImport(e.target.checked);
+                  if (e.target.checked) {
+                    setTargetUnprocessedUsers(''); // Clear intelligent mode when switching to full import
+                  } else {
+                    setBatchSize(''); // Clear batch size when switching to incremental
+                  }
+                }}
+                disabled={importInProgress}
+              />
+              <span><strong>Full Import Mode</strong> - Create ALL missing customers from Shopify</span>
+            </label>
+          </div>
+
+          {fullImport ? (
+            <div className="option-group">
+              <label className="input-label">
+                Batch Size (customers to import per session):
+                <select
+                  value={batchSize}
+                  onChange={(e) => setBatchSize(e.target.value)}
+                  className="batch-size-select"
+                  disabled={importInProgress}
+                >
+                  <option value="">All Customers (⚠️ {shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'})</option>
+                  <option value="1000">1,000 customers</option>
+                  <option value="5000">5,000 customers</option>
+                  <option value="10000">10,000 customers</option>
+                  <option value="25000">25,000 customers</option>
+                  <option value="50000">50,000 customers</option>
+                  <option value="100000">100,000 customers</option>
+                </select>
+              </label>
+              <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
+                System will fetch and create users for up to {batchSize || 'ALL'} Shopify customers
+              </small>
+            </div>
+          ) : (
+            <div className="option-group">
+              <label className="input-label">
+                Number of Unprocessed Users to Import (intelligent mode):
+                <input
+                  type="number"
+                  value={targetUnprocessedUsers}
+                  onChange={(e) => setTargetUnprocessedUsers(e.target.value)}
+                  placeholder="Leave empty to import all unprocessed"
+                  className="number-input"
+                  disabled={importInProgress}
+                  min="1"
+                />
+              </label>
+              <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
+                System will automatically find and import this many users who haven't been imported yet
+              </small>
+            </div>
+          )}
+
           <div className="option-group">
             <label className="checkbox-label">
               <input
@@ -417,24 +528,6 @@ function BulkImportPage() {
               />
               <span>Reimport All Users (including already imported)</span>
             </label>
-          </div>
-
-          <div className="option-group">
-            <label className="input-label">
-              Number of Unprocessed Users to Import (intelligent mode):
-              <input
-                type="number"
-                value={targetUnprocessedUsers}
-                onChange={(e) => setTargetUnprocessedUsers(e.target.value)}
-                placeholder="Leave empty to import all"
-                className="number-input"
-                disabled={importInProgress}
-                min="1"
-              />
-            </label>
-            <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
-              System will automatically find and import this many users who haven't been imported yet
-            </small>
           </div>
         </div>
 
@@ -484,22 +577,42 @@ function BulkImportPage() {
         <div className="modal-overlay" onClick={handleCancelImport}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>⚠️ Confirm Bulk Import</h3>
+              <h3>⚠️ Confirm {fullImport ? 'Full' : 'Incremental'} Import</h3>
             </div>
             <div className="modal-body">
-              <p>
-                {reimportAll 
-                  ? 'This will REIMPORT ALL users, even those already imported. This may take a significant amount of time and will trigger classification jobs for all users.' 
-                  : 'This will import Shopify customers and their complete order history. This may take a significant amount of time.'}
-              </p>
-              {targetUnprocessedUsers && (
-                <p className="modal-detail">
-                  <strong>Target:</strong> {targetUnprocessedUsers} unprocessed user{parseInt(targetUnprocessedUsers) !== 1 ? 's' : ''}
-                </p>
+              {fullImport ? (
+                <>
+                  <p className="modal-main">
+                    <strong>Full Import Mode:</strong> This will create user records for {batchSize ? `up to ${parseInt(batchSize).toLocaleString()}` : `ALL ${shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'}`} Shopify customers and import their complete order history.
+                  </p>
+                  <p className="modal-detail">
+                    <strong>Estimated time:</strong> {batchSize ? 
+                      `~${Math.ceil(parseInt(batchSize) / 1000)} - ${Math.ceil(parseInt(batchSize) / 500)} minutes` : 
+                      shopifyStats?.gap?.missingUsers ? 
+                        `~${Math.ceil(shopifyStats.gap.missingUsers / 1000)} - ${Math.ceil(shopifyStats.gap.missingUsers / 100)} hours` : 
+                        'Unknown'}
+                  </p>
+                  <p className="modal-warning">
+                    This is a large operation that will run in the background. You can safely close this page during import.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    {reimportAll 
+                      ? 'This will REIMPORT ALL users, even those already imported. This may take a significant amount of time and will trigger classification jobs for all users.' 
+                      : 'This will find and import unprocessed users along with their complete order history.'}
+                  </p>
+                  {targetUnprocessedUsers && (
+                    <p className="modal-detail">
+                      <strong>Target:</strong> {targetUnprocessedUsers} unprocessed user{parseInt(targetUnprocessedUsers) !== 1 ? 's' : ''}
+                    </p>
+                  )}
+                  <p className="modal-warning">
+                    Do you want to continue?
+                  </p>
+                </>
               )}
-              <p className="modal-warning">
-                Do you want to continue?
-              </p>
             </div>
             <div className="modal-actions">
               <button 

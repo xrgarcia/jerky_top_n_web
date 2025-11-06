@@ -67,6 +67,20 @@ module.exports = function createBulkImportRoutes(storage, db) {
   });
 
   /**
+   * GET /api/admin/bulk-import/shopify-stats
+   * Get Shopify customer count vs database user stats
+   */
+  router.get('/bulk-import/shopify-stats', requireEmployeeAdmin, async (req, res) => {
+    try {
+      const stats = await bulkImportService.getShopifyStats();
+      res.json(stats);
+    } catch (error) {
+      console.error('Error getting Shopify stats:', error);
+      res.status(500).json({ error: 'Failed to get Shopify stats' });
+    }
+  });
+
+  /**
    * GET /api/admin/bulk-import/progress
    * Get current import progress and statistics
    */
@@ -106,18 +120,24 @@ module.exports = function createBulkImportRoutes(storage, db) {
    *   - reimportAll: boolean - Force reimport even if already imported
    *   - targetUnprocessedUsers: number - Intelligent mode: find and import X unprocessed users
    *   - maxCustomers: number - Legacy mode: fetch up to X customers total
+   *   - fullImport: boolean - Full import mode: create ALL missing customers
+   *   - batchSize: number - In full import mode, limit to this many customers (1000, 5000, etc)
    */
   router.post('/bulk-import/start', requireEmployeeAdmin, async (req, res) => {
     try {
-      const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = req.body;
+      const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = req.body;
 
-      const mode = targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'all');
+      const mode = fullImport 
+        ? `full import (batch: ${batchSize || 'unlimited'})` 
+        : (targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'incremental'));
       console.log(`🚀 Admin ${req.user.email} starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
 
       const result = await bulkImportService.startBulkImport({
         reimportAll,
         targetUnprocessedUsers,
-        maxCustomers
+        maxCustomers,
+        fullImport,
+        batchSize
       });
 
       if (result.success) {

@@ -34,11 +34,13 @@ class BulkImportService {
    * @param {Object} options - Import options
    * @param {boolean} options.reimportAll - Force reimport of all users (default: false)
    * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to import (intelligent mode)
-   * @param {number} options.maxCustomers - Limit total customers to fetch (deprecated, use targetUnprocessedUsers)
+   * @param {number} options.maxCustomers - Limit total customers to fetch (deprecated, use targetUnprocessedUsers or batchSize)
+   * @param {boolean} options.fullImport - Full import mode: create ALL missing customers from Shopify
+   * @param {number} options.batchSize - In full import mode, limit to this many customers (1000, 5000, 10000, etc)
    * @returns {Promise<Object>} Import result
    */
   async startBulkImport(options = {}) {
-    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = options;
+    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
 
     if (this.importInProgress) {
       return {
@@ -67,14 +69,18 @@ class BulkImportService {
         errors: 0
       };
 
-      const mode = targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'unlimited');
+      const mode = fullImport 
+        ? `full import (batch: ${batchSize || 'unlimited'})` 
+        : (targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'incremental'));
       console.log(`🚀 Starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
 
       // Step 1 & 2: Intelligently fetch customers and identify unprocessed users
       const usersToImport = await this.fetchUnprocessedUsers({
         reimportAll,
         targetUnprocessedUsers,
-        maxCustomers
+        maxCustomers,
+        fullImport,
+        batchSize
       });
 
       console.log(`✅ Created ${this.currentImportStats.usersCreated} users, updated ${this.currentImportStats.usersUpdated} users`);
@@ -123,11 +129,13 @@ class BulkImportService {
    * @param {Object} options - Fetch options
    * @param {boolean} options.reimportAll - Force reimport even if already imported
    * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to find
-   * @param {number} options.maxCustomers - Maximum total customers to fetch
+   * @param {number} options.maxCustomers - Maximum total customers to fetch (legacy)
+   * @param {boolean} options.fullImport - Full import mode: create ALL customers
+   * @param {number} options.batchSize - In full import mode, limit to this many customers
    * @returns {Promise<Array>} Array of users to import
    */
   async fetchUnprocessedUsers(options = {}) {
-    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null } = options;
+    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
     
     const usersToImport = [];
     let totalCustomersFetched = 0;
@@ -135,14 +143,20 @@ class BulkImportService {
     const pageSize = 250;
     
     // Determine fetch strategy
-    const useIntelligentMode = targetUnprocessedUsers !== null;
-    const maxPages = maxCustomers ? Math.ceil(maxCustomers / pageSize) : 1000;
+    const useIntelligentMode = targetUnprocessedUsers !== null && !fullImport;
+    const useFullImportMode = fullImport;
+    const customerLimit = fullImport ? batchSize : maxCustomers;
+    const maxPages = customerLimit ? Math.ceil(customerLimit / pageSize) : 1000;
     
-    console.log(`📥 Fetching customers from Shopify (${useIntelligentMode ? `intelligent: target ${targetUnprocessedUsers} unprocessed` : `legacy: max ${maxCustomers || 'unlimited'} customers`})...`);
+    const modeDesc = useFullImportMode 
+      ? `full import (limit: ${customerLimit || 'unlimited'} customers)` 
+      : (useIntelligentMode ? `intelligent: target ${targetUnprocessedUsers} unprocessed` : `legacy: max ${maxCustomers || 'unlimited'} customers`);
+    
+    console.log(`📥 Fetching customers from Shopify (${modeDesc})...`);
     
     this.currentImportStats.phase = 'fetching_customers';
     
-    // Keep fetching batches until we have enough unprocessed users or run out
+    // Keep fetching batches until we reach our limit or run out
     let currentPage = 0;
     let hasMore = true;
     
@@ -161,20 +175,21 @@ class BulkImportService {
       }
       
       const customers = batchResult.customers;
-      totalCustomersFetched += customers.length;
-      this.currentImportStats.customersFetched = totalCustomersFetched;
       
-      console.log(`📄 Fetched page ${currentPage}: ${customers.length} customers (total: ${totalCustomersFetched})`);
+      console.log(`📄 Fetched page ${currentPage}: ${customers.length} customers`);
       
       // Process each customer on this page
       this.currentImportStats.phase = 'processing_customers';
       for (const customer of customers) {
-        // Stop if we're in legacy mode and hit maxCustomers limit
-        if (!useIntelligentMode && maxCustomers && totalCustomersFetched > maxCustomers) {
-          console.log(`🛑 Reached maxCustomers limit (${maxCustomers})`);
+        // Check if we've hit our customer limit
+        if (customerLimit && totalCustomersFetched >= customerLimit) {
+          console.log(`🛑 Reached customer limit (${customerLimit})`);
           hasMore = false;
           break;
         }
+        
+        totalCustomersFetched++;
+        this.currentImportStats.customersFetched = totalCustomersFetched;
         
         try {
           const result = await this.createOrUpdateUser(customer, reimportAll);
@@ -192,7 +207,7 @@ class BulkImportService {
               email: customer.email
             });
             
-            // In intelligent mode, stop when we've found enough unprocessed users
+            // In intelligent mode (not full import), stop when we've found enough unprocessed users
             if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
               console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers}) after checking ${totalCustomersFetched} customers across ${currentPage} pages`);
               return usersToImport;
@@ -217,9 +232,14 @@ class BulkImportService {
         console.log(`📭 No more pages available (processed ${currentPage} pages)`);
         break;
       }
+      
+      // Status update
+      if (totalCustomersFetched % 1000 === 0) {
+        console.log(`📊 Progress: ${totalCustomersFetched} customers processed, ${usersToImport.length} to import`);
+      }
     }
     
-    console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} unprocessed users`);
+    console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} users to import (created: ${this.currentImportStats.usersCreated}, updated: ${this.currentImportStats.usersUpdated})`);
     return usersToImport;
   }
 
@@ -309,6 +329,52 @@ class BulkImportService {
     } catch (error) {
       console.error(`❌ Error in createOrUpdateUser for ${shopifyCustomerId}:`, error);
       throw error;
+    }
+  }
+
+  /**
+   * Get Shopify stats vs database stats
+   * @returns {Promise<Object>} Shopify and database statistics
+   */
+  async getShopifyStats() {
+    try {
+      // Get Shopify customer count
+      const shopifyCustomerCount = await this.shopifyCustomersService.getCustomerCount();
+      
+      // Get database user counts
+      const [totalUsers] = await primaryDb
+        .select({ count: count() })
+        .from(users);
+
+      const [importedUsers] = await primaryDb
+        .select({ count: count() })
+        .from(users)
+        .where(eq(users.fullHistoryImported, true));
+
+      const dbTotal = Number(totalUsers?.count || 0);
+      const dbImported = Number(importedUsers?.count || 0);
+      const dbMissing = Math.max(0, shopifyCustomerCount - dbTotal);
+
+      return {
+        shopify: {
+          totalCustomers: shopifyCustomerCount
+        },
+        database: {
+          totalUsers: dbTotal,
+          fullyImported: dbImported,
+          pending: dbTotal - dbImported
+        },
+        gap: {
+          missingUsers: dbMissing,
+          percentageInDb: shopifyCustomerCount > 0 ? ((dbTotal / shopifyCustomerCount) * 100).toFixed(1) : 0
+        }
+      };
+    } catch (error) {
+      console.error('❌ Error getting Shopify stats:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'bulk-import' }
+      });
+      return { error: error.message };
     }
   }
 
