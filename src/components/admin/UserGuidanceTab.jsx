@@ -13,7 +13,7 @@ export default function UserGuidanceTab() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [recalculating, setRecalculating] = useState(false);
-  const [filterOptions, setFilterOptions] = useState({ journeyStages: [], engagementLevels: [], tasteCommunities: [] });
+  const [filterOptions, setFilterOptions] = useState({ journeyStages: [], engagementLevels: [], flavorProfileCommunities: [] });
 
   const page = parseInt(searchParams.get('page')) || 1;
   const limit = parseInt(searchParams.get('limit')) || 20;
@@ -22,13 +22,13 @@ export default function UserGuidanceTab() {
   const sortOrder = searchParams.get('sortOrder') || 'desc';
   const journeyStage = searchParams.get('journeyStage') || '';
   const engagementLevel = searchParams.get('engagementLevel') || '';
-  const tasteCommunity = searchParams.get('tasteCommunity') || '';
+  const flavorProfileCommunity = searchParams.get('flavorProfileCommunity') || '';
   const classified = searchParams.get('classified') || '';
 
   useEffect(() => {
     fetchFilterOptions();
     fetchUserClassifications();
-  }, [page, limit, search, sortBy, sortOrder, journeyStage, engagementLevel, tasteCommunity, classified]);
+  }, [page, limit, search, sortBy, sortOrder, journeyStage, engagementLevel, flavorProfileCommunity, classified]);
 
   const fetchFilterOptions = async () => {
     try {
@@ -50,7 +50,7 @@ export default function UserGuidanceTab() {
         sortOrder,
         ...(journeyStage && { journeyStage }),
         ...(engagementLevel && { engagementLevel }),
-        ...(tasteCommunity && { tasteCommunity }),
+        ...(flavorProfileCommunity && { flavorProfileCommunity }),
         ...(classified && { classified })
       });
 
@@ -190,12 +190,12 @@ export default function UserGuidanceTab() {
           </select>
 
           <select
-            value={tasteCommunity}
-            onChange={(e) => handleFilterChange('tasteCommunity', e.target.value)}
+            value={flavorProfileCommunity}
+            onChange={(e) => handleFilterChange('flavorProfileCommunity', e.target.value)}
             className="filter-select"
           >
-            <option value="">All Taste Communities</option>
-            {filterOptions.tasteCommunities.map(community => (
+            <option value="">All Flavor Profile Communities</option>
+            {filterOptions.flavorProfileCommunities.map(community => (
               <option key={community} value={community}>
                 {community}
               </option>
@@ -231,7 +231,7 @@ export default function UserGuidanceTab() {
                   <th>Journey Stage</th>
                   <th>Engagement</th>
                   <th>Exploration</th>
-                  <th>Taste Community</th>
+                  <th>Flavor Profile</th>
                   <th onClick={() => handleSort('ranked_count')} className="sortable-header">
                     Ranked Count {getSortIcon('ranked_count')}
                   </th>
@@ -271,7 +271,7 @@ export default function UserGuidanceTab() {
                     )}
                   </td>
                   <td>
-                    {user.classification?.tasteCommunity || 
+                    {user.classification?.flavorProfileCommunity || 
                       <span className="text-muted">None</span>}
                   </td>
                   <td className="text-center">{user.rankedCount}</td>
@@ -378,8 +378,8 @@ export default function UserGuidanceTab() {
                       </span>
                     </div>
                     <div className="classification-item">
-                      <label>Taste Community:</label>
-                      <span>{selectedUser.classification.tasteCommunity || 'None'}</span>
+                      <label>Flavor Profile Community:</label>
+                      <span>{selectedUser.classification.flavorProfileCommunity || 'None'}</span>
                     </div>
                   </div>
                 ) : (

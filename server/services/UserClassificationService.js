@@ -98,7 +98,6 @@ class UserClassificationService {
       engagementLevel,
       explorationBreadth,
       focusAreas,
-      tasteCommunityId: null, // Will be set by CommunityService
       classificationData,
       lastCalculated: new Date(),
       updatedAt: new Date()

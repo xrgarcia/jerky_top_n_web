@@ -203,6 +203,64 @@ class FlavorProfileCommunityService {
   }
 
   /**
+   * Get user's dominant flavor profile community for display in User Guidance
+   * Returns the most advanced/engaged flavor profile community
+   * @param {number} userId - User ID
+   * @returns {string|null} Formatted string like "Teriyaki: Enthusiast" or null
+   */
+  async getUserDominantFlavorCommunity(userId) {
+    const communities = await this.getUserFlavorCommunities(userId);
+    
+    if (communities.length === 0) {
+      return null;
+    }
+
+    // State priority (higher = more advanced/engaged)
+    const statePriority = {
+      'enthusiast': 5,
+      'explorer': 4,
+      'taster': 3,
+      'seeker': 2,
+      'curious': 1
+    };
+
+    // Find the most advanced state
+    let dominant = communities[0];
+    let highestPriority = statePriority[dominant.communityState] || 0;
+
+    for (const community of communities) {
+      const priority = statePriority[community.communityState] || 0;
+      
+      // Prefer higher state priority, or more products ranked if same priority
+      if (priority > highestPriority || 
+          (priority === highestPriority && community.productsRanked > dominant.productsRanked)) {
+        dominant = community;
+        highestPriority = priority;
+      }
+    }
+
+    // Format for display: capitalize flavor profile and state
+    const formattedFlavor = this._formatFlavorName(dominant.flavorProfile);
+    const formattedState = dominant.communityState.charAt(0).toUpperCase() + dominant.communityState.slice(1);
+
+    return `${formattedFlavor}: ${formattedState}`;
+  }
+
+  /**
+   * Helper to format flavor profile name for display
+   * @private
+   */
+  _formatFlavorName(flavorProfile) {
+    if (!flavorProfile) return 'Unknown';
+    
+    // Capitalize first letter of each word
+    return flavorProfile
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  /**
    * Gather user's interactions with flavor profiles
    * @private
    */

@@ -302,19 +302,6 @@ const userActivities = pgTable('user_activities', {
   createdAtIdx: index('idx_user_activities_created_at').on(table.createdAt),
 }));
 
-// Taste communities - groups of users with similar flavor preferences
-const tasteCommunities = pgTable('taste_communities', {
-  id: serial('id').primaryKey(),
-  name: text('name').notNull(), // e.g., 'Heat Seekers', 'BBQ Lovers', 'Sweet Tooth', 'Exotic Explorers'
-  description: text('description').notNull(),
-  icon: text('icon').notNull(), // Emoji or image URL
-  criteria: jsonb('criteria').notNull(), // Rules for membership (e.g., {dominant_flavors: ['spicy', 'hot'], min_rankings: 10})
-  memberCount: integer('member_count').default(0),
-  isActive: integer('is_active').default(1), // 0 = inactive, 1 = active
-  createdAt: timestamp('created_at').defaultNow(),
-  updatedAt: timestamp('updated_at').defaultNow(),
-});
-
 // User classifications - analyzed user journey state for personalized guidance
 const userClassifications = pgTable('user_classifications', {
   id: serial('id').primaryKey(),
@@ -323,13 +310,11 @@ const userClassifications = pgTable('user_classifications', {
   engagementLevel: text('engagement_level').notNull(), // 'none', 'low', 'medium', 'high', 'very_high'
   explorationBreadth: text('exploration_breadth').notNull(), // 'narrow', 'moderate', 'diverse'
   focusAreas: jsonb('focus_areas'), // Array of dominant interests (e.g., ['spicy', 'beef', 'exotic'])
-  tasteCommunityId: integer('taste_community_id').references(() => tasteCommunities.id),
   classificationData: jsonb('classification_data').notNull(), // Detailed metrics used for classification
   lastCalculated: timestamp('last_calculated').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 }, (table) => ({
   userIdIdx: index('idx_user_classifications_user_id').on(table.userId),
-  communityIdIdx: index('idx_user_classifications_community_id').on(table.tasteCommunityId),
 }));
 
 // Classification configuration - rules and thresholds for user analysis
@@ -380,14 +365,6 @@ const userClassificationsRelations = relations(userClassifications, ({ one }) =>
     fields: [userClassifications.userId],
     references: [users.id],
   }),
-  tasteCommunity: one(tasteCommunities, {
-    fields: [userClassifications.tasteCommunityId],
-    references: [tasteCommunities.id],
-  }),
-}));
-
-const tasteCommunitiesRelations = relations(tasteCommunities, ({ many }) => ({
-  userClassifications: many(userClassifications),
 }));
 
 const userFlavorProfileCommunitiesRelations = relations(userFlavorProfileCommunities, ({ one }) => ({
@@ -416,7 +393,6 @@ module.exports = {
   customerOrderItems,
   systemConfig,
   userActivities,
-  tasteCommunities,
   userClassifications,
   classificationConfig,
   userFlavorProfileCommunities,
@@ -429,6 +405,5 @@ module.exports = {
   activityLogsRelations,
   userActivitiesRelations,
   userClassificationsRelations,
-  tasteCommunitiesRelations,
   userFlavorProfileCommunitiesRelations,
 };

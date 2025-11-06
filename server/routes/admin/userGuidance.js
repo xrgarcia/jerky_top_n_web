@@ -29,18 +29,17 @@ function createUserGuidanceAdminRoutes(services) {
         ORDER BY engagement_level
       `);
       
-      // Get distinct taste communities
-      const tasteCommunitiesResult = await db.execute(sql`
-        SELECT DISTINCT tc.name
-        FROM taste_communities tc
-        INNER JOIN user_classifications uc ON tc.id = uc.taste_community_id
-        ORDER BY tc.name
+      // Get distinct flavor profile communities
+      const flavorProfilesResult = await db.execute(sql`
+        SELECT DISTINCT flavor_profile
+        FROM user_flavor_profile_communities
+        ORDER BY flavor_profile
       `);
       
       res.json({
         journeyStages: journeyStagesResult.rows.map(r => r.journey_stage),
         engagementLevels: engagementLevelsResult.rows.map(r => r.engagement_level),
-        tasteCommunities: tasteCommunitiesResult.rows.map(r => r.name)
+        flavorProfileCommunities: flavorProfilesResult.rows.map(r => r.flavor_profile)
       });
     } catch (error) {
       console.error('Error fetching filter options:', error);
@@ -62,7 +61,7 @@ function createUserGuidanceAdminRoutes(services) {
       const sortOrder = req.query.sortOrder || 'desc';
       const journeyStage = req.query.journeyStage || '';
       const engagementLevel = req.query.engagementLevel || '';
-      const tasteCommunity = req.query.tasteCommunity || '';
+      const flavorProfileCommunity = req.query.flavorProfileCommunity || '';
       const classified = req.query.classified || '';
       
       const allowedSortFields = ['email', 'display_name', 'created_at', 'ranked_count'];
@@ -85,8 +84,12 @@ function createUserGuidanceAdminRoutes(services) {
         filters.push(sql`uc.engagement_level = ${engagementLevel}`);
       }
       
-      if (tasteCommunity) {
-        filters.push(sql`tc.name = ${tasteCommunity}`);
+      if (flavorProfileCommunity) {
+        filters.push(sql`EXISTS (
+          SELECT 1 FROM user_flavor_profile_communities ufpc 
+          WHERE ufpc.user_id = u.id 
+          AND ufpc.flavor_profile = ${flavorProfileCommunity}
+        )`);
       }
       
       if (classified === 'true') {
@@ -102,7 +105,6 @@ function createUserGuidanceAdminRoutes(services) {
         SELECT COUNT(DISTINCT u.id) as total
         FROM users u
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
-        LEFT JOIN taste_communities tc ON uc.taste_community_id = tc.id
         ${whereClause}
       `);
       const totalCount = parseInt(countResult.rows[0]?.total) || 0;
@@ -123,37 +125,40 @@ function createUserGuidanceAdminRoutes(services) {
           MAX(pr.updated_at) as last_ranking_at,
           uc.journey_stage,
           uc.engagement_level,
-          uc.exploration_breadth,
-          uc.taste_community_id,
-          tc.name as taste_community_name
+          uc.exploration_breadth
         FROM users u
         LEFT JOIN product_rankings pr ON u.id = pr.user_id
         LEFT JOIN user_classifications uc ON u.id = uc.user_id
-        LEFT JOIN taste_communities tc ON uc.taste_community_id = tc.id
         ${whereClause}
         GROUP BY u.id, u.email, u.display_name, u.first_name, u.last_name, u.role, u.created_at, 
-                 uc.journey_stage, uc.engagement_level, uc.exploration_breadth, uc.taste_community_id, tc.name
+                 uc.journey_stage, uc.engagement_level, uc.exploration_breadth
         ORDER BY ${sql.raw(sortField)} ${sql.raw(sortDirection)}
         LIMIT ${limit} OFFSET ${offset}
       `);
       
-      const users = usersResult.rows.map(user => ({
-        id: user.id,
-        email: user.email,
-        displayName: user.display_name,
-        firstName: user.first_name,
-        lastName: user.last_name,
-        role: user.role,
-        createdAt: user.created_at,
-        rankedCount: parseInt(user.ranked_count) || 0,
-        rankingListsCount: parseInt(user.ranking_lists_count) || 0,
-        lastRankingAt: user.last_ranking_at,
-        classification: user.journey_stage ? {
-          journeyStage: user.journey_stage,
-          engagementLevel: user.engagement_level,
-          explorationBreadth: user.exploration_breadth,
-          tasteCommunity: user.taste_community_name
-        } : null
+      // Get flavor profile communities for each user
+      const { flavorProfileCommunityService } = services;
+      const users = await Promise.all(usersResult.rows.map(async (user) => {
+        const flavorProfileCommunity = await flavorProfileCommunityService.getUserDominantFlavorCommunity(user.id);
+        
+        return {
+          id: user.id,
+          email: user.email,
+          displayName: user.display_name,
+          firstName: user.first_name,
+          lastName: user.last_name,
+          role: user.role,
+          createdAt: user.created_at,
+          rankedCount: parseInt(user.ranked_count) || 0,
+          rankingListsCount: parseInt(user.ranking_lists_count) || 0,
+          lastRankingAt: user.last_ranking_at,
+          classification: user.journey_stage ? {
+            journeyStage: user.journey_stage,
+            engagementLevel: user.engagement_level,
+            explorationBreadth: user.exploration_breadth,
+            flavorProfileCommunity: flavorProfileCommunity
+          } : null
+        };
       }));
       
       res.json({ 
@@ -177,7 +182,7 @@ function createUserGuidanceAdminRoutes(services) {
   router.get('/user-classifications/:userId', async (req, res) => {
     try {
       const { userId } = req.params;
-      const { db, userClassificationService, activityTrackingService, tasteCommunityService } = services;
+      const { db, userClassificationService, activityTrackingService, flavorProfileCommunityService } = services;
       const { sql } = require('drizzle-orm');
       
       // Get user info with ranking stats
@@ -208,11 +213,8 @@ function createUserGuidanceAdminRoutes(services) {
       // Get classification from database
       const classification = await userClassificationService.getUserClassification(userId);
       
-      // Get taste community details if assigned
-      let tasteCommunity = null;
-      if (classification && classification.tasteCommunityId) {
-        tasteCommunity = await tasteCommunityService.getCommunity(classification.tasteCommunityId);
-      }
+      // Get flavor profile community details
+      const flavorProfileCommunity = await flavorProfileCommunityService.getUserDominantFlavorCommunity(userId);
       
       // Get activity summary (last 30 days)
       const activities = await activityTrackingService.getUserActivitySummary(userId, 30);
@@ -223,11 +225,7 @@ function createUserGuidanceAdminRoutes(services) {
         engagementLevel: classification.engagementLevel,
         explorationBreadth: classification.explorationBreadth,
         focusAreas: classification.focusAreas,
-        tasteCommunity: tasteCommunity ? {
-          id: tasteCommunity.id,
-          name: tasteCommunity.name,
-          description: tasteCommunity.description
-        } : null,
+        flavorProfileCommunity: flavorProfileCommunity,
         reasoning: classification.classificationData || {},
         lastCalculated: classification.lastCalculated
       } : null;
@@ -258,24 +256,21 @@ function createUserGuidanceAdminRoutes(services) {
   router.post('/user-classifications/:userId/recalculate', async (req, res) => {
     try {
       const { userId } = req.params;
-      const { userClassificationService, tasteCommunityService, io } = services;
+      const { userClassificationService, flavorProfileCommunityService, io } = services;
       
       console.log(`🔄 Admin triggering classification recalculation for user ${userId}`);
       
       // Recalculate user classification
       const classification = await userClassificationService.classifyUser(userId);
       
-      // Assign taste community
-      await tasteCommunityService.assignCommunity(userId);
+      // Update flavor profile communities
+      await flavorProfileCommunityService.updateUserFlavorCommunities(userId);
       
-      // Get the updated classification with taste community
+      // Get the updated classification
       const updatedClassification = await userClassificationService.getUserClassification(userId);
       
-      // Get taste community details if assigned
-      let tasteCommunity = null;
-      if (updatedClassification && updatedClassification.tasteCommunityId) {
-        tasteCommunity = await tasteCommunityService.getCommunity(updatedClassification.tasteCommunityId);
-      }
+      // Get dominant flavor profile community
+      const flavorProfileCommunity = await flavorProfileCommunityService.getUserDominantFlavorCommunity(userId);
       
       // Build response
       const classificationResponse = updatedClassification ? {
@@ -283,11 +278,7 @@ function createUserGuidanceAdminRoutes(services) {
         engagementLevel: updatedClassification.engagementLevel,
         explorationBreadth: updatedClassification.explorationBreadth,
         focusAreas: updatedClassification.focusAreas,
-        tasteCommunity: tasteCommunity ? {
-          id: tasteCommunity.id,
-          name: tasteCommunity.name,
-          description: tasteCommunity.description
-        } : null,
+        flavorProfileCommunity: flavorProfileCommunity,
         reasoning: updatedClassification.classificationData || {},
         lastCalculated: updatedClassification.lastCalculated
       } : null;
@@ -345,36 +336,6 @@ function createUserGuidanceAdminRoutes(services) {
     } catch (error) {
       console.error('Error updating classification config:', error);
       res.status(500).json({ error: 'Failed to update classification config' });
-    }
-  });
-  
-  // GET /api/admin/taste-communities - Get all taste communities with member counts
-  router.get('/taste-communities', async (req, res) => {
-    try {
-      const { tasteCommunityService, db } = services;
-      const { sql } = require('drizzle-orm');
-      
-      // Get all communities
-      const communities = await tasteCommunityService.getAllCommunities();
-      
-      // Get member counts for each community
-      const communitiesWithCounts = await Promise.all(communities.map(async (community) => {
-        const membersResult = await db.execute(sql`
-          SELECT COUNT(*) as member_count
-          FROM user_classifications
-          WHERE taste_community = ${community.id}
-        `);
-        
-        return {
-          ...community,
-          memberCount: parseInt(membersResult.rows[0]?.member_count) || 0
-        };
-      }));
-      
-      res.json({ communities: communitiesWithCounts });
-    } catch (error) {
-      console.error('Error fetching taste communities:', error);
-      res.status(500).json({ error: 'Failed to fetch taste communities' });
     }
   });
   

@@ -1,5 +1,4 @@
 const userClassificationService = require('./UserClassificationService');
-const tasteCommunityService = require('./TasteCommunityService');
 
 /**
  * PersonalizedGuidanceService - Generates page-aware, journey-specific guidance
@@ -37,18 +36,6 @@ class PersonalizedGuidanceService {
     if (!classification) {
       // First time - classify user
       classification = await userClassificationService.classifyUser(userId);
-      
-      // Try to assign community
-      await tasteCommunityService.assignCommunity(userId);
-      
-      // Refresh classification to get community
-      classification = await userClassificationService.getUserClassification(userId);
-    }
-
-    // Get community info if assigned
-    let community = null;
-    if (classification.tasteCommunityId) {
-      community = await tasteCommunityService.getCommunity(classification.tasteCommunityId);
     }
 
     // Get user stats for achievement tracking
@@ -63,7 +50,7 @@ class PersonalizedGuidanceService {
     );
 
     // Generate page-aware, journey-aware message enriched with achievement context
-    const message = this._generateMessage(classification, community, pageContext, nextAchievement);
+    const message = this._generateMessage(classification, null, pageContext, nextAchievement);
 
     return {
       message: message.text,
@@ -74,12 +61,7 @@ class PersonalizedGuidanceService {
         journeyStage: classification.journeyStage,
         engagementLevel: classification.engagementLevel,
         explorationBreadth: classification.explorationBreadth,
-        focusAreas: classification.focusAreas || [],
-        community: community ? {
-          id: community.id,
-          name: community.name,
-          icon: community.icon
-        } : null
+        focusAreas: classification.focusAreas || []
       },
       stats: classification.classificationData
     };
@@ -541,12 +523,7 @@ class PersonalizedGuidanceService {
   /**
    * Get message based on specific classification override (for admin testing)
    */
-  async getMessageForClassification(journeyStage, engagementLevel, explorationBreadth, focusAreas = [], communityId = null, pageContext = 'general') {
-    let community = null;
-    if (communityId) {
-      community = await tasteCommunityService.getCommunity(communityId);
-    }
-
+  async getMessageForClassification(journeyStage, engagementLevel, explorationBreadth, focusAreas = [], pageContext = 'general') {
     const mockClassification = {
       journeyStage,
       engagementLevel,
@@ -555,7 +532,7 @@ class PersonalizedGuidanceService {
       classificationData: { totalRankings: 0 }
     };
 
-    return this._generateMessage(mockClassification, community, pageContext, null);
+    return this._generateMessage(mockClassification, null, pageContext, null);
   }
 }
 

@@ -23,7 +23,6 @@ const RecentAchievementTracker = require('../services/RecentAchievementTracker')
 const CommentaryService = require('../services/CommentaryService');
 const ActivityTrackingService = require('../services/ActivityTrackingService');
 const UserClassificationService = require('../services/UserClassificationService');
-const TasteCommunityService = require('../services/TasteCommunityService');
 const FlavorProfileCommunityService = require('../services/FlavorProfileCommunityService');
 const PersonalizedGuidanceService = require('../services/PersonalizedGuidanceService');
 
@@ -61,7 +60,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const commentaryService = new CommentaryService({ db, progressTracker, engagementManager, streakManager, achievementRepo });
   const activityTrackingService = ActivityTrackingService; // Singleton instance
   const userClassificationService = UserClassificationService; // Singleton instance
-  const tasteCommunityService = TasteCommunityService; // Singleton instance
   const flavorProfileCommunityService = FlavorProfileCommunityService; // Singleton instance
   
   // PersonalizedGuidanceService with dependency injection
@@ -91,7 +89,6 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     commentaryService,
     activityTrackingService,
     userClassificationService,
-    tasteCommunityService,
     flavorProfileCommunityService,
     personalizedGuidanceService,
     fetchAllShopifyProducts,

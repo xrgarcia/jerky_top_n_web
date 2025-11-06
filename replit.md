@@ -8,6 +8,12 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
+## Terminology
+**CRITICAL DISTINCTION:**
+- **Flavor Profile** = Taste category (e.g., Teriyaki, BBQ, Sweet, Spicy, Savory) - macro-level grouping
+- **Flavor** = Specific product characteristic - micro-level attribute
+- **Flavor Profile Communities** = User lifecycle tracking per flavor profile (Curious → Seeker → Taster → Enthusiast/Explorer/Moderate)
+
 ## System Architecture
 The application utilizes a modern web architecture for responsiveness, scalability, and real-time interaction, built upon a recent migration to React.
 
@@ -40,7 +46,9 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Styling**: Custom CSS with an earth-tone palette and component-scoped class names to prevent global CSS conflicts.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 - **Feature Flags**: JSON-based configuration system for cross-environment compatibility.
-- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior to provide targeted messages with CTAs. Enhanced with achievement hooks.
+- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior to provide targeted messages with CTAs. Enhanced with achievement hooks and flavor profile community integration.
+- **Flavor Profile Communities**: Micro-community system tracking user journey states (Curious → Seeker → Taster → Enthusiast/Explorer/Moderate) for each flavor profile (Teriyaki, BBQ, Sweet, Spicy, Savory) with admin-configurable thresholds. Integrated with User Guidance admin interface to display users' dominant flavor profile engagement.
+- **User Classification System**: `UserClassificationService` tracks journey stages, engagement levels, and exploration breadth. Works alongside `FlavorProfileCommunityService` to provide comprehensive user behavior analysis for personalized guidance.
 - **Dual Activity Tracking**: `trackUserSearch()` helper writes to both `user_product_searches` (legacy analytics) and `user_activities` (gamification) tables for all search operations.
 - **Engagement Tracking**: `EngagementManager` reads from a unified `user_activities` table for tracking searches, product views, and profile views for engagement coin awards.
 - **Ranking Race Condition Fix**: Implemented sequence-based staleness detection to prevent data loss during rapid ranking operations.
@@ -58,7 +66,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Collection Progress Bar**: User-specific progress tracking on the Rank page.
 - **Coin Book Widget**: Collapsible achievement tracker on the Rank page with user stats, last earned achievement, next milestone progress, and a grid of achievements with tier-based colored borders.
 - **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates to display names, taglines, descriptions, icons, colors, and how-to-earn instructions. Public API endpoints support fetching configurations, and dynamic coin profile pages.
-- **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, and user guidance analytics.
+- **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, and user guidance analytics with flavor profile community filtering.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
