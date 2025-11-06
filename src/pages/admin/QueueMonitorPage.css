@@ -30,19 +30,6 @@
   border: 1px solid var(--border);
 }
 
-.auto-refresh-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  font-size: 0.95rem;
-  color: var(--text-secondary);
-}
-
-.auto-refresh-toggle input {
-  cursor: pointer;
-}
-
 .connection-status {
   display: flex;
   align-items: center;
