@@ -23,6 +23,15 @@ Ranking a purchased flavor contributes to Coin Book completion and may unlock va
 
 ⸻
 
+Flavor Profile
+
+A taste category that describes the primary or secondary flavor characteristics of a product.
+Examples include Savory, Sweet, Spicy, Smoky, Teriyaki, BBQ, Original, Peppered, etc.
+Multiple products can share the same flavor profile (e.g., many products have "Teriyaki" or "Spicy" as their flavor profile).
+Used to organize and discover products by taste preference.
+
+⸻
+
 Flavor Coin
 
 A coin earned when a user purchases AND ranks a unique flavor for the first time.
