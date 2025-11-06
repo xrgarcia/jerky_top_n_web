@@ -130,12 +130,14 @@ class BulkImportService {
    * @param {boolean} options.reimportAll - Force reimport even if already imported
    * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to find
    * @param {number} options.maxCustomers - Maximum total customers to fetch (legacy)
-   * @param {boolean} options.fullImport - Full import mode: create ALL customers
+   * @param {boolean} options.fullImport - Full import mode: create ALL customers and enqueue ALL jobs
    * @param {number} options.batchSize - In full import mode, limit to this many customers
    * @returns {Promise<Array>} Array of users to import
    */
   async fetchUnprocessedUsers(options = {}) {
     const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
+    
+    console.log(`🔧 Import mode: fullImport=${fullImport}, reimportAll=${reimportAll}, batchSize=${batchSize || 'unlimited'}`);
     
     const usersToImport = [];
     let totalCustomersFetched = 0;
@@ -192,7 +194,7 @@ class BulkImportService {
         this.currentImportStats.customersFetched = totalCustomersFetched;
         
         try {
-          const result = await this.createOrUpdateUser(customer, reimportAll);
+          const result = await this.createOrUpdateUser(customer, reimportAll, fullImport);
           
           if (result.created) {
             this.currentImportStats.usersCreated++;
@@ -249,7 +251,7 @@ class BulkImportService {
    * @param {boolean} reimportAll - Force reimport even if already imported
    * @returns {Promise<Object>} { userId, created, updated, shouldImport }
    */
-  async createOrUpdateUser(customer, reimportAll = false) {
+  async createOrUpdateUser(customer, reimportAll = false, fullImport = false) {
     const shopifyCustomerId = customer.id.toString();
     const email = customer.email || `${shopifyCustomerId}@placeholder.jerky.com`;
 
@@ -281,7 +283,10 @@ class BulkImportService {
         }
 
         // Determine if should import
-        const shouldImport = reimportAll || !existingUser.fullHistoryImported;
+        // In Full Import Mode: enqueue ALL users
+        // In Reimport Mode: enqueue ALL users
+        // Otherwise: only enqueue users who haven't been fully imported yet
+        const shouldImport = fullImport || reimportAll || !existingUser.fullHistoryImported;
 
         // Reset import status if reimporting
         if (shouldImport && existingUser.fullHistoryImported) {
