@@ -25,6 +25,8 @@ const ActivityTrackingService = require('../services/ActivityTrackingService');
 const UserClassificationService = require('../services/UserClassificationService');
 const FlavorProfileCommunityService = require('../services/FlavorProfileCommunityService');
 const PersonalizedGuidanceService = require('../services/PersonalizedGuidanceService');
+const ClassificationQueue = require('../services/ClassificationQueue');
+const ClassificationWorker = require('../services/ClassificationWorker');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -67,6 +69,13 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
 
   // Initialize RecentAchievementTracker for duplicate toast prevention
   await recentAchievementTracker.initialize();
+  
+  // Initialize ClassificationQueue (BullMQ with Redis)
+  const classificationQueue = ClassificationQueue; // Singleton instance
+  await classificationQueue.initialize();
+  
+  // Inject classification queue into ActivityTrackingService
+  activityTrackingService.setClassificationQueue(classificationQueue);
 
   const services = {
     db,
@@ -91,6 +100,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     userClassificationService,
     flavorProfileCommunityService,
     personalizedGuidanceService,
+    classificationQueue,
     fetchAllShopifyProducts,
     getRankableProductCount,
     productsService,
@@ -120,6 +130,16 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   console.log('✅ WebSocket gateway initialized');
 
   services.wsGateway = wsGateway;
+  
+  // Initialize ClassificationWorker (BullMQ background processor)
+  const classificationWorker = new ClassificationWorker({
+    userClassificationService,
+    personalizedGuidanceService,
+    getRankableProductCount
+  });
+  await classificationWorker.initialize();
+  
+  services.classificationWorker = classificationWorker;
 
   // Seed achievements (this also warms AchievementCache)
   engagementManager.seedAchievements().then(() => {

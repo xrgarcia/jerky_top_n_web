@@ -14,6 +14,7 @@ const { eq, and, gte, count, sql } = require('drizzle-orm');
  * - Purchases
  * 
  * Uses batching to minimize database writes while ensuring data freshness
+ * Triggers classification queue for event-driven user classification
  */
 class ActivityTrackingService {
   constructor() {
@@ -22,6 +23,14 @@ class ActivityTrackingService {
     this.batchSize = 10; // Flush after 10 activities
     this.batchTimeout = 5000; // Flush every 5 seconds
     this.batchTimer = null;
+    this.classificationQueue = null; // Injected after initialization
+  }
+  
+  /**
+   * Set classification queue (dependency injection)
+   */
+  setClassificationQueue(queue) {
+    this.classificationQueue = queue;
   }
 
   /**
@@ -136,9 +145,9 @@ class ActivityTrackingService {
   }
 
   /**
-   * Flush batch queue to database
+   * Flush batch queue to database and trigger classification
    */
-  async flush() {
+  async flush(userId = null) {
     if (this.batchQueue.length === 0) {
       return;
     }
@@ -150,6 +159,20 @@ class ActivityTrackingService {
     try {
       await db.insert(userActivities).values(activities);
       console.log(`[ActivityTrackingService] Flushed ${activities.length} activities`);
+      
+      // Trigger classification for affected users
+      if (userId) {
+        // Specific user flush (e.g., before classification)
+        this._enqueueClassification(userId, 'batch_flush');
+      } else {
+        // General flush - enqueue for all unique users in batch
+        const uniqueUsers = new Set(activities.map(a => a.userId));
+        for (const uid of uniqueUsers) {
+          const userActivities = activities.filter(a => a.userId === uid);
+          const activityType = userActivities[0]?.activityType || 'batch_flush';
+          this._enqueueClassification(uid, activityType);
+        }
+      }
     } catch (error) {
       console.error('[ActivityTrackingService] Error flushing batch:', error);
       // Re-queue failed activities
@@ -158,13 +181,36 @@ class ActivityTrackingService {
   }
 
   /**
-   * Write single activity to database
+   * Write single activity to database and trigger classification
    */
   async _writeActivity(activity) {
     try {
       await db.insert(userActivities).values(activity);
+      
+      // Trigger classification queue for event-driven architecture
+      this._enqueueClassification(activity.userId, activity.activityType);
     } catch (error) {
       console.error('[ActivityTrackingService] Error writing activity:', error);
+    }
+  }
+  
+  /**
+   * Enqueue classification job based on activity
+   */
+  async _enqueueClassification(userId, activityType) {
+    if (!this.classificationQueue) {
+      return; // Queue not initialized
+    }
+    
+    try {
+      // Only enqueue for activity types that affect classification
+      const classificationTriggers = ['search', 'product_view', 'profile_view', 'ranking_saved', 'purchase'];
+      
+      if (classificationTriggers.includes(activityType)) {
+        await this.classificationQueue.enqueue(userId, activityType);
+      }
+    } catch (error) {
+      console.error('[ActivityTrackingService] Error enqueueing classification:', error);
     }
   }
 

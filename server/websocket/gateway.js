@@ -184,6 +184,17 @@ class WebSocketGateway {
           }
           
           this.broadcastActiveUsersUpdate();
+          
+          // Trigger classification queue for page views
+          if (this.services.classificationQueue) {
+            setImmediate(async () => {
+              try {
+                await this.services.classificationQueue.enqueue(socket.userId, 'page_view');
+              } catch (err) {
+                console.error('Failed to enqueue classification for page view:', err);
+              }
+            });
+          }
         }
       });
 

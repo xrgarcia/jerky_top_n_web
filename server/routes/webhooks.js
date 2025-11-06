@@ -6,7 +6,7 @@ const WebhookProductService = require('../services/WebhookProductService');
 const { db } = require('../db');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 
-function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}) {
+function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classificationQueue = null) {
   const router = express.Router();
   
   const verifier = new ShopifyWebhookVerifier(process.env.SHOPIFY_API_SECRET);
@@ -53,6 +53,18 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}) {
         }
         
         console.log('✅ Caches updated');
+        
+        // Trigger classification queue for purchase events
+        if (result.userId && classificationQueue && result.action !== 'deleted') {
+          setImmediate(async () => {
+            try {
+              await classificationQueue.enqueue(result.userId, 'purchase');
+              console.log(`📋 Enqueued classification job for user ${result.userId} (reason: purchase)`);
+            } catch (err) {
+              console.error('Failed to enqueue classification for purchase:', err);
+            }
+          });
+        }
       }
 
       res.status(200).json({ 

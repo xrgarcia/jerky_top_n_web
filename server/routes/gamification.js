@@ -956,7 +956,7 @@ function createGamificationRoutes(services) {
     return labels[requirementType] || requirementType;
   }
 
-  // GET /api/gamification/user-guidance - Get personalized guidance for current user
+  // GET /api/gamification/user-guidance - Get personalized guidance for current user (cache-first)
   router.get('/user-guidance', async (req, res) => {
     try {
       const sessionId = req.cookies.session_id;
@@ -974,10 +974,46 @@ function createGamificationRoutes(services) {
       // Get page context from query parameter (rank, products, community, coinbook, general)
       const pageContext = req.query.page || 'general';
       
-      // Get total rankable products count
-      const totalRankableProducts = services.getRankableProductCount();
+      // CACHE-FIRST ARCHITECTURE: Try to read from cache
+      const { primaryDb } = require('../../db-primary');
+      const { userGuidanceCache } = require('../../../shared/schema');
+      const { eq, and } = require('drizzle-orm');
       
-      // Get personalized, page-aware guidance with achievement hooks (handles classification internally)
+      const cached = await primaryDb
+        .select()
+        .from(userGuidanceCache)
+        .where(
+          and(
+            eq(userGuidanceCache.userId, userId),
+            eq(userGuidanceCache.pageContext, pageContext)
+          )
+        )
+        .limit(1);
+      
+      // Cache hit - return pre-calculated guidance
+      if (cached.length > 0) {
+        const cacheEntry = cached[0];
+        const age = Date.now() - new Date(cacheEntry.calculatedAt).getTime();
+        console.log(`✅ Cache hit for user ${userId} / ${pageContext} (age: ${Math.round(age/1000)}s)`);
+        
+        const guidanceData = cacheEntry.guidanceData;
+        return res.json({
+          classification: guidanceData.classification,
+          guidance: {
+            title: guidanceData.title,
+            message: guidanceData.message,
+            type: guidanceData.type,
+            icon: guidanceData.icon
+          },
+          stats: guidanceData.stats,
+          cached: true,
+          calculatedAt: cacheEntry.calculatedAt
+        });
+      }
+      
+      // Cache miss - fallback to real-time calculation
+      console.log(`⚠️ Cache miss for user ${userId} / ${pageContext} - calculating in real-time`);
+      const totalRankableProducts = services.getRankableProductCount();
       const guidance = await services.personalizedGuidanceService.getGuidance(userId, pageContext, totalRankableProducts);
 
       res.json({
@@ -988,7 +1024,8 @@ function createGamificationRoutes(services) {
           type: guidance.type,
           icon: guidance.icon
         },
-        stats: guidance.stats
+        stats: guidance.stats,
+        cached: false
       });
     } catch (error) {
       console.error('Error fetching user guidance:', error);

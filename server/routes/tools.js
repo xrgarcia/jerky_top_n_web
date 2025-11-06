@@ -250,6 +250,78 @@ function createToolsRoutes(services) {
     }
   });
 
+  // GET /api/tools/classification-queue/stats - Get queue statistics
+  router.get('/classification-queue/stats', checkEmployeeRole, async (req, res) => {
+    try {
+      const { classificationQueue } = services;
+      
+      if (!classificationQueue) {
+        return res.status(503).json({ error: 'Classification queue unavailable' });
+      }
+
+      const stats = await classificationQueue.getStats();
+      
+      res.json({ 
+        stats,
+        timestamp: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error('Error fetching classification queue stats:', error);
+      res.status(500).json({ error: 'Failed to fetch queue stats' });
+    }
+  });
+
+  // POST /api/tools/classification-queue/enqueue/:userId - Manually trigger classification for user
+  router.post('/classification-queue/enqueue/:userId', checkEmployeeRole, async (req, res) => {
+    try {
+      const { classificationQueue } = services;
+      const userId = parseInt(req.params.userId);
+      
+      if (!userId || isNaN(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+      
+      if (!classificationQueue) {
+        return res.status(503).json({ error: 'Classification queue unavailable' });
+      }
+
+      const enqueued = await classificationQueue.enqueue(userId, 'manual_admin');
+      
+      res.json({ 
+        success: true,
+        enqueued,
+        userId,
+        message: enqueued 
+          ? 'Classification job enqueued successfully' 
+          : 'Classification throttled (user already queued or recently processed)'
+      });
+    } catch (error) {
+      console.error('Error enqueueing classification job:', error);
+      res.status(500).json({ error: 'Failed to enqueue classification job' });
+    }
+  });
+
+  // POST /api/tools/classification-queue/clean - Clean completed and failed jobs
+  router.post('/classification-queue/clean', checkEmployeeRole, async (req, res) => {
+    try {
+      const { classificationQueue } = services;
+      
+      if (!classificationQueue) {
+        return res.status(503).json({ error: 'Classification queue unavailable' });
+      }
+
+      await classificationQueue.clean();
+      
+      res.json({ 
+        success: true,
+        message: 'Queue cleaned successfully'
+      });
+    } catch (error) {
+      console.error('Error cleaning classification queue:', error);
+      res.status(500).json({ error: 'Failed to clean queue' });
+    }
+  });
+
   return router;
 }
 

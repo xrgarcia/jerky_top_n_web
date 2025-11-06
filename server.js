@@ -2264,15 +2264,14 @@ app.post('/api/rankings/products', async (req, res) => {
       gamificationServices.homeStatsService.invalidateCache();
     }
     
-    // Trigger classification update after rankings saved
-    if (gamificationServices?.activityTrackingService && gamificationServices?.userClassificationService) {
+    // Trigger classification update via queue (event-driven architecture)
+    if (gamificationServices?.classificationQueue) {
       setImmediate(async () => {
         try {
-          await gamificationServices.activityTrackingService.flush(userId);
-          await gamificationServices.userClassificationService.classifyUser(userId);
-          console.log(`🎯 Classification updated for user ${userId} after ranking save`);
+          await gamificationServices.classificationQueue.enqueue(userId, 'ranking');
+          console.log(`📋 Enqueued classification job for user ${userId} (reason: ranking)`);
         } catch (err) {
-          console.error('Failed to update classification:', err);
+          console.error('Failed to enqueue classification:', err);
         }
       });
     }
@@ -3622,12 +3621,12 @@ if (databaseAvailable && storage) {
     app.set('gamificationServices', services);
     console.log('✅ Gamification services available for achievements');
     
-    // Mount Shopify webhook routes with WebSocket gateway and shared caches
+    // Mount Shopify webhook routes with WebSocket gateway, shared caches, and classification queue
     const createWebhookRoutes = require('./server/routes/webhooks');
     app.use('/api/webhooks/shopify', createWebhookRoutes(services.wsGateway, { 
       metadataCache, 
       rankingStatsCache 
-    }));
+    }, services.classificationQueue));
     console.log('📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*');
     
     // Register Shopify webhooks if credentials are available
