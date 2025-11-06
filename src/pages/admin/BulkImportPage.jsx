@@ -169,16 +169,21 @@ function BulkImportPage() {
   });
 
   const handleStartImport = () => {
+    console.log('🚀 Start Import clicked', { fullImport, batchSize, reimportAll, targetUnprocessedUsers, importInProgress });
+    
     if (!statusData?.shopifyApiAvailable) {
+      console.error('❌ Shopify API not available');
       toast.error('Shopify API is not configured. Please set SHOPIFY_ADMIN_ACCESS_TOKEN.');
       return;
     }
 
     // Show confirmation modal
+    console.log('✅ Opening confirmation modal');
     setShowConfirmModal(true);
   };
 
   const handleConfirmImport = () => {
+    console.log('✅ Import confirmed, triggering mutation', { fullImport, batchSize, reimportAll, targetUnprocessedUsers });
     setShowConfirmModal(false);
     startImportMutation.mutate();
   };
@@ -238,36 +243,202 @@ function BulkImportPage() {
     };
   }, []);
 
+  // Determine current pipeline step - always return a step, even when idle
+  const getCurrentStep = () => {
+    // If import is in progress, determine based on phase
+    if (importInProgress && currentStats) {
+      const phase = currentStats.phase;
+      if (phase === 'fetching_customers' || phase === 'processing_customers') return 1;
+      if (phase === 'enqueuing_jobs') return 2;
+      if (phase === 'completed') return 4;
+      // Default to step 3 if import is in progress but phase isn't clear
+      return 3;
+    }
+    
+    // If jobs are still running (queue has active/waiting), we're in step 3
+    if (queue.active > 0 || queue.waiting > 0) return 3;
+    
+    // If recently completed, show step 4
+    if (currentStats && currentStats.phase === 'completed') return 4;
+    
+    // Default: ready to start (step 0 means idle/ready state)
+    return 0;
+  };
+
+  const currentStep = getCurrentStep();
+  const hasRecentImport = currentStats && currentStats.phase === 'completed';
+  const steps = [
+    { id: 1, label: 'Fetch Customers', icon: '📥', desc: 'Fetching from Shopify' },
+    { id: 2, label: 'Create Users', icon: '👤', desc: 'Creating database records' },
+    { id: 3, label: 'Process Jobs', icon: '⚙️', desc: 'Importing orders & classifying' },
+    { id: 4, label: 'Complete', icon: '✅', desc: 'All users processed' }
+  ];
+  
+  const totalSteps = 4;
+
   return (
     <div className="bulk-import-page">
       <div className="bulk-import-header">
         <h2>📦 Bulk Customer Import</h2>
         <p className="bulk-import-subtitle">
-          Import all Shopify customers and their complete order history
+          Import Shopify customers and their complete order history
         </p>
       </div>
 
-      {/* API Status */}
-      <div className="status-card">
-        <h3>System Status</h3>
+      {/* SECTION 1: Overall Import Pipeline Status - Always Visible */}
+      <div className="pipeline-status-card">
+        <h3>📊 Import Pipeline</h3>
+        <div className="pipeline-overview">
+          <div className="pipeline-header">
+            {currentStep === 0 ? (
+              <>
+                <span className="pipeline-title">Ready to Import</span>
+                <span className="pipeline-subtitle">Configure import settings below and click Start</span>
+              </>
+            ) : currentStep === 4 ? (
+              <>
+                <span className="pipeline-title">Import Complete</span>
+                <span className="pipeline-subtitle">{users.imported || 0} users processed successfully</span>
+              </>
+            ) : (
+              <>
+                <span className="pipeline-title">
+                  {importInProgress ? `Step ${currentStep} of ${totalSteps}` : 'Processing'}
+                </span>
+                <span className="pipeline-subtitle">{steps[currentStep - 1].label}</span>
+              </>
+            )}
+          </div>
+          
+          <div className="pipeline-stepper">
+            {steps.map((step) => (
+              <div 
+                key={step.id}
+                className={`pipeline-step ${currentStep === step.id ? 'active' : ''} ${currentStep > step.id ? 'completed' : ''} ${currentStep < step.id ? 'pending' : ''} ${currentStep === 0 ? 'idle' : ''}`}
+              >
+                <div className="step-icon">{step.icon}</div>
+                <div className="step-content">
+                  <div className="step-label">{step.label}</div>
+                  <div className="step-desc">{step.desc}</div>
+                </div>
+                {step.id < 4 && <div className="step-connector"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 2: Current Step Details - Show when import is active or recently completed */}
+      {(importInProgress || hasRecentImport || (queue.active > 0 || queue.waiting > 0)) && currentStep > 0 && (
+        <div className="current-step-card">
+          <h3>🔍 Current Step: {steps[currentStep - 1].label}</h3>
+          
+          {currentStep === 1 && currentStats && (
+            <div className="step-details">
+              <div className="step-main-stat">
+                <div className="main-stat-value">{currentStats.customersFetched || 0}</div>
+                <div className="main-stat-label">Customers Fetched from Shopify</div>
+              </div>
+              {batchSize && (
+                <div className="step-progress-bar">
+                  <div className="progress-bar-wrapper">
+                    <div 
+                      className="progress-bar-fill"
+                      style={{ width: `${Math.min(100, ((currentStats.customersFetched || 0) / parseInt(batchSize)) * 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="progress-text">
+                    {currentStats.customersFetched || 0} of {parseInt(batchSize).toLocaleString()} customers
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {currentStep === 2 && currentStats && (
+            <div className="step-details">
+              <div className="step-stats-grid">
+                <div className="step-stat">
+                  <div className="step-stat-value">{currentStats.usersCreated || 0}</div>
+                  <div className="step-stat-label">Users Created</div>
+                </div>
+                <div className="step-stat">
+                  <div className="step-stat-value">{currentStats.usersUpdated || 0}</div>
+                  <div className="step-stat-label">Users Updated</div>
+                </div>
+                <div className="step-stat">
+                  <div className="step-stat-value">{currentStats.jobsEnqueued || 0}</div>
+                  <div className="step-stat-label">Jobs Enqueued</div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 3 && (
+            <div className="step-details">
+              <div className="step-main-stat">
+                <div className="main-stat-value">{queue.active || 0}</div>
+                <div className="main-stat-label">Workers Active</div>
+              </div>
+              <div className="step-progress-bar">
+                <div className="progress-bar-wrapper">
+                  <div 
+                    className="progress-bar-fill"
+                    style={{ width: `${progressPercent}%` }}
+                  ></div>
+                </div>
+                <div className="progress-text">
+                  {completedJobs} of {totalJobs} jobs completed ({progressPercent}%)
+                </div>
+              </div>
+              <div className="step-stats-grid">
+                <div className="step-stat">
+                  <div className="step-stat-value">{queue.waiting || 0}</div>
+                  <div className="step-stat-label">Waiting</div>
+                </div>
+                <div className="step-stat success">
+                  <div className="step-stat-value">{queue.completed || 0}</div>
+                  <div className="step-stat-label">Completed</div>
+                </div>
+                <div className="step-stat danger">
+                  <div className="step-stat-value">{queue.failed || 0}</div>
+                  <div className="step-stat-label">Failed</div>
+                </div>
+              </div>
+              <div className="step-note">
+                <small>Each job imports orders and calculates user classification</small>
+              </div>
+            </div>
+          )}
+
+          {currentStep === 4 && (
+            <div className="step-details">
+              <div className="step-complete-message">
+                <div className="complete-icon">✅</div>
+                <div className="complete-text">
+                  <h4>Import Complete!</h4>
+                  <p>{users.imported || 0} users successfully imported with full order history</p>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* System Status - Compact */}
+      <div className="status-card-compact">
         <div className="status-grid">
           <div className="status-item">
-            <span className="status-label">Shopify API:</span>
-            <span className={`status-badge ${statusData?.shopifyApiAvailable ? 'available' : 'unavailable'}`}>
-              {statusData?.shopifyApiAvailable ? '🟢 Connected' : '🔴 Not Configured'}
-            </span>
+            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
+            <span className="status-label">Shopify API</span>
           </div>
           <div className="status-item">
-            <span className="status-label">WebSocket:</span>
-            <span className={`status-badge ${wsConnected ? 'connected' : 'disconnected'}`}>
-              {wsConnected ? '🟢 Live Updates' : '🔴 Disconnected'}
-            </span>
+            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
+            <span className="status-label">WebSocket</span>
           </div>
           <div className="status-item">
-            <span className="status-label">Import Status:</span>
-            <span className={`status-badge ${importInProgress ? 'in-progress' : 'idle'}`}>
-              {importInProgress ? '⏳ In Progress' : '✅ Idle'}
-            </span>
+            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
+            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
           </div>
         </div>
       </div>
@@ -302,154 +473,6 @@ function BulkImportPage() {
         </div>
       )}
 
-      {/* User Statistics */}
-      <div className="stats-card">
-        <h3>User Statistics</h3>
-        <div className="stats-grid">
-          <div className="stat-box">
-            <div className="stat-value">{users.total || 0}</div>
-            <div className="stat-label">Total Users</div>
-          </div>
-          <div className="stat-box success">
-            <div className="stat-value">{users.imported || 0}</div>
-            <div className="stat-label">Fully Imported</div>
-          </div>
-          <div className="stat-box warning">
-            <div className="stat-value">{users.pending || 0}</div>
-            <div className="stat-label">Pending</div>
-          </div>
-          <div className="stat-box info">
-            <div className="stat-value">{users.inProgress || 0}</div>
-            <div className="stat-label">In Progress</div>
-          </div>
-          <div className="stat-box danger">
-            <div className="stat-value">{users.failed || 0}</div>
-            <div className="stat-label">Failed</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Worker Progress - Always visible with state transitions */}
-      <div className={`worker-progress-card worker-state-${workerProgressState}`}>
-        {workerProgressState === 'active' && (
-          <>
-            <h3>🔄 Worker Progress (Live)</h3>
-            <div className="worker-progress-grid">
-              <div className="worker-stat active-workers">
-                <div className="worker-stat-value">{queue.active || 0}</div>
-                <div className="worker-stat-label">Processing Now</div>
-              </div>
-              <div className="worker-stat waiting-jobs">
-                <div className="worker-stat-value">{queue.waiting || 0}</div>
-                <div className="worker-stat-label">In Queue</div>
-              </div>
-              <div className="worker-stat users-in-progress">
-                <div className="worker-stat-value">{users.inProgress || 0}</div>
-                <div className="worker-stat-label">Users Processing</div>
-              </div>
-              <div className="worker-stat users-remaining">
-                <div className="worker-stat-value">{users.pending || 0}</div>
-                <div className="worker-stat-label">Users Remaining</div>
-              </div>
-            </div>
-            <div className="worker-progress-note">
-              <span className="pulse-indicator"></span>
-              <span>Live updates via WebSocket</span>
-            </div>
-          </>
-        )}
-
-        {workerProgressState === 'recentlyCompleted' && lastCompletedStats && (
-          <>
-            <h3>✅ Import Completed</h3>
-            <div className="worker-completed-message">
-              <div className="completed-summary">
-                <p className="completed-main">
-                  Just finished importing! {lastCompletedStats.usersImported} users processed successfully.
-                </p>
-                <div className="completed-stats-inline">
-                  <span className="completed-stat success">
-                    ✓ {lastCompletedStats.completed} jobs completed
-                  </span>
-                  {lastCompletedStats.failed > 0 && (
-                    <span className="completed-stat failed">
-                      ✗ {lastCompletedStats.failed} failed
-                    </span>
-                  )}
-                </div>
-              </div>
-            </div>
-            <div className="worker-progress-note">
-              <span className="checkmark-indicator">✓</span>
-              <span>Import completed at {lastCompletedStats.timestamp.toLocaleTimeString()}</span>
-            </div>
-          </>
-        )}
-
-        {workerProgressState === 'idle' && (
-          <>
-            <h3>⏸️ Worker Status</h3>
-            <div className="worker-idle-message">
-              <p>No active import jobs running.</p>
-              <p className="idle-hint">Start an import to see real-time worker progress here.</p>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Queue Statistics */}
-      <div className="queue-card">
-        <h3>Queue Status</h3>
-        
-        {/* Progress Bar */}
-        {totalJobs > 0 && (
-          <div className="progress-container">
-            <div className="progress-bar-wrapper">
-              <div 
-                className="progress-bar-fill" 
-                style={{ width: `${progressPercent}%` }}
-              ></div>
-            </div>
-            <div className="progress-text">
-              {completedJobs} / {totalJobs} jobs completed ({progressPercent}%)
-            </div>
-          </div>
-        )}
-
-        <div className="queue-stats-grid">
-          <div className="queue-stat">
-            <span className="queue-stat-label">Waiting:</span>
-            <span className="queue-stat-value waiting">{queue.waiting || 0}</span>
-          </div>
-          <div className="queue-stat">
-            <span className="queue-stat-label">Active:</span>
-            <span className="queue-stat-value active">{queue.active || 0}</span>
-          </div>
-          <div className="queue-stat">
-            <span className="queue-stat-label">Completed:</span>
-            <span className="queue-stat-value completed">{queue.completed || 0}</span>
-          </div>
-          <div className="queue-stat">
-            <span className="queue-stat-label">Failed:</span>
-            <span className="queue-stat-value failed">{queue.failed || 0}</span>
-          </div>
-        </div>
-
-        {/* Current Import Stats */}
-        {currentStats && (
-          <div className="current-import-stats">
-            <h4>Current Import Progress</h4>
-            <div className="import-stats-grid">
-              <div><strong>Phase:</strong> {currentStats.phase}</div>
-              <div><strong>Customers Fetched:</strong> {currentStats.customersFetched}</div>
-              <div><strong>Users Created:</strong> {currentStats.usersCreated}</div>
-              <div><strong>Users Updated:</strong> {currentStats.usersUpdated}</div>
-              <div><strong>Jobs Enqueued:</strong> {currentStats.jobsEnqueued}</div>
-              <div><strong>Errors:</strong> {currentStats.errors}</div>
-            </div>
-          </div>
-        )}
-      </div>
 
       {/* Controls */}
       <div className="controls-card">
