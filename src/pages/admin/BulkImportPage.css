@@ -23,6 +23,31 @@
   margin: 0;
 }
 
+/* Shopify Gap Compact */
+.shopify-gap-compact {
+  background: linear-gradient(135deg, #fff8e1 0%, #ffe0b2 100%);
+  border: 2px solid #ff9800;
+  border-radius: 8px;
+  padding: 16px 24px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.shopify-gap-compact .gap-label {
+  font-size: 18px;
+  font-weight: 600;
+  color: #e65100;
+}
+
+.shopify-gap-compact .gap-percent {
+  font-size: 14px;
+  color: #f57c00;
+  font-weight: 500;
+}
+
 /* Pipeline Status Card */
 .pipeline-status-card {
   background: linear-gradient(135deg, #fff8f0 0%, #ffffff 100%);

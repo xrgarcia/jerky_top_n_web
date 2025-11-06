@@ -285,7 +285,33 @@ function BulkImportPage() {
         </p>
       </div>
 
-      {/* SECTION 1: Overall Import Pipeline Status - Always Visible */}
+      {/* SECTION 1: System Status - Health Check First */}
+      <div className="status-card-compact">
+        <div className="status-grid">
+          <div className="status-item">
+            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
+            <span className="status-label">Shopify API</span>
+          </div>
+          <div className="status-item">
+            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
+            <span className="status-label">WebSocket</span>
+          </div>
+          <div className="status-item">
+            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
+            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION 2: Shopify Gap - Key Metric */}
+      {shopifyStats && !shopifyStats.error && shopifyStats.gap?.missingUsers > 0 && (
+        <div className="shopify-gap-compact">
+          <span className="gap-label">📊 {shopifyStats.gap?.missingUsers?.toLocaleString() || 0} customers need importing</span>
+          <span className="gap-percent">({100 - (shopifyStats.gap?.percentageInDb || 0)}% of Shopify total)</span>
+        </div>
+      )}
+
+      {/* SECTION 3: Import Pipeline Status */}
       <div className="pipeline-status-card">
         <h3>📊 Import Pipeline</h3>
         <div className="pipeline-overview">
@@ -445,57 +471,7 @@ function BulkImportPage() {
         </div>
       )}
 
-      {/* SECTION 3: Shopify vs Database - Key Metric at Top */}
-      {shopifyStats && !shopifyStats.error && (
-        <div className="shopify-stats-card">
-          <h3>📊 Shopify vs Database</h3>
-          <div className="shopify-stats-summary">
-            <div className="shopify-stat-main">
-              <div className="shopify-stat-box shopify">
-                <div className="shopify-stat-value">{shopifyStats.shopify?.totalCustomers?.toLocaleString() || 0}</div>
-                <div className="shopify-stat-label">Shopify Customers</div>
-              </div>
-              <div className="shopify-stat-arrow">→</div>
-              <div className="shopify-stat-box database">
-                <div className="shopify-stat-value">{shopifyStats.database?.totalUsers?.toLocaleString() || 0}</div>
-                <div className="shopify-stat-label">Database Users</div>
-              </div>
-              <div className="shopify-stat-box gap">
-                <div className="shopify-stat-value missing">{shopifyStats.gap?.missingUsers?.toLocaleString() || 0}</div>
-                <div className="shopify-stat-label">Missing</div>
-              </div>
-            </div>
-            {shopifyStats.gap?.missingUsers > 0 && (
-              <div className="shopify-warning">
-                <span className="warning-icon">⚠️</span>
-                <span>Only {shopifyStats.gap?.percentageInDb || 0}% of Shopify customers are in the database. Use <strong>Full Import Mode</strong> below to import all missing customers.</span>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* SECTION 4: System Status - Low Priority Info */}
-      <div className="status-card-compact">
-        <h3>🔌 System Status</h3>
-        <div className="status-grid">
-          <div className="status-item">
-            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
-            <span className="status-label">Shopify API</span>
-          </div>
-          <div className="status-item">
-            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
-            <span className="status-label">WebSocket</span>
-          </div>
-          <div className="status-item">
-            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
-            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
-          </div>
-        </div>
-      </div>
-
-
-      {/* Controls */}
+      {/* SECTION 4: Import Controls */}
       <div className="controls-card">
         <h3>Import Controls</h3>
         
