@@ -36,6 +36,26 @@ class PurchaseHistoryService {
       console.log(`🔄 Starting order sync for user ${user.id} (${user.email})`);
       const startTime = Date.now();
 
+      // OPTIMIZATION: Check if customer has any orders before fetching them all
+      // This saves API calls and processing time for zero-order customers
+      const customerData = await this.ordersService.fetchCustomer(user.shopifyCustomerId);
+      
+      if (customerData && customerData.orders_count === 0) {
+        console.log(`⚡ Fast-path: User ${user.id} has 0 orders, skipping order fetch`);
+        
+        // Cache empty result to avoid repeated checks
+        this.cache.set(user.id, []);
+        
+        const duration = Date.now() - startTime;
+        return { 
+          success: true, 
+          itemsImported: 0, 
+          ordersProcessed: 0,
+          durationMs: duration,
+          fastPath: true 
+        };
+      }
+
       // 1. Fetch orders from Shopify
       const orders = await this.ordersService.fetchCustomerOrders(
         user.shopifyCustomerId,

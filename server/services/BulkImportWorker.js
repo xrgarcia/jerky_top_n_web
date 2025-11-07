@@ -55,10 +55,10 @@ class BulkImportWorker {
         async (job) => this.processJob(job),
         {
           connection: redisConfig,
-          concurrency: 3, // Process up to 3 imports concurrently (Shopify API rate limiting)
+          concurrency: 15, // Process up to 15 imports concurrently for faster throughput
           limiter: {
-            max: 5, // Max 5 jobs
-            duration: 1000, // Per second
+            max: 20, // Max 20 jobs
+            duration: 60000, // Per minute (aligns with Shopify's 120 req/min limit)
           },
         }
       );
@@ -90,7 +90,7 @@ class BulkImportWorker {
         console.error('❌ Bulk import worker error:', err);
       });
 
-      console.log('✅ Bulk import worker initialized (concurrency: 3)');
+      console.log('✅ Bulk import worker initialized (concurrency: 15, rate limit: 20 jobs/min)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize bulk import worker:', error);
@@ -131,7 +131,12 @@ class BulkImportWorker {
         throw new Error(syncResult.error || syncResult.reason || 'Order sync failed');
       }
 
-      console.log(`  ✓ Synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
+      // Log sync results with fast-path indicator
+      if (syncResult.fastPath) {
+        console.log(`  ⚡ Fast-path: 0 orders (saved Shopify API calls)`);
+      } else {
+        console.log(`  ✓ Synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
+      }
 
       // Step 4: Mark import as completed
       await this.markImportCompleted(userId);
