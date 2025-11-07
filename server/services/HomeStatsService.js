@@ -250,12 +250,13 @@ class HomeStatsService {
       // Total unique products ranked
       this.db.execute(sql`SELECT COUNT(DISTINCT shopify_product_id) as count FROM product_rankings`),
       
-      // Active users today (based on page views in US Central time)
+      // Active users today (based on page views OR rankings in US Central time)
       this.db.execute(sql`
         SELECT COUNT(DISTINCT user_id) as count 
-        FROM page_views 
+        FROM user_activities 
         WHERE user_id IS NOT NULL 
-        AND viewed_at >= ${startOfTodayCentral}
+        AND activity_type IN ('page_view', 'ranking_saved')
+        AND created_at >= ${startOfTodayCentral}
       `),
     ]);
 
@@ -360,9 +361,10 @@ class HomeStatsService {
       // Active users today (users who have page views or rankings)
       this.db.execute(sql`
         SELECT COUNT(DISTINCT user_id) as count 
-        FROM page_views 
+        FROM user_activities 
         WHERE user_id IS NOT NULL 
-        AND viewed_at >= ${startOfTodayCentral}
+        AND activity_type IN ('page_view', 'ranking_saved')
+        AND created_at >= ${startOfTodayCentral}
       `),
       
       // Achievements earned this week
