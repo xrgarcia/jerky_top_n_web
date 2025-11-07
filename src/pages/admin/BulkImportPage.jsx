@@ -158,6 +158,29 @@ function BulkImportPage() {
     }
   });
 
+  // Resume import mutation
+  const resumeImportMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/admin/bulk-import/resume', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Failed to resume import');
+      }
+      return res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['bulkImportProgress']);
+      queryClient.invalidateQueries(['shopifyStats']);
+      toast.success(`Resume successful! Enqueued ${data.jobsEnqueued} pending users.`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to resume import: ${error.message}`);
+    }
+  });
+
   // Clean queue mutation
   const cleanMutation = useMutation({
     mutationFn: async () => {
@@ -553,6 +576,15 @@ function BulkImportPage() {
             className="btn-primary"
           >
             {startImportMutation.isPending ? 'Starting...' : '🚀 Start Customer Import'}
+          </button>
+
+          <button
+            onClick={() => resumeImportMutation.mutate()}
+            disabled={importInProgress || resumeImportMutation.isPending || users.pending === 0}
+            className="btn-primary"
+            title={users.pending === 0 ? 'No pending users to enqueue' : `Enqueue ${users.pending?.toLocaleString()} pending users`}
+          >
+            {resumeImportMutation.isPending ? 'Resuming...' : `▶️ Resume Import (${users.pending?.toLocaleString() || 0} pending)`}
           </button>
 
           <button
