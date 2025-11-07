@@ -317,21 +317,22 @@ class BulkImportQueue {
       
       console.log('🔍 [getRedisStats] Redis connection obtained, querying stats...');
       
-      // First, check what keys exist
-      const allKeys = await redis.keys('bull:bulk-import:*').catch(err => { 
-        console.log('⚠️ keys() error:', err.message); 
-        return []; 
-      });
-      console.log(`🔍 [getRedisStats] Found ${allKeys.length} bull:bulk-import:* keys in Redis`);
+      // Helper function to add timeout to Redis commands
+      const withTimeout = (promise, ms = 3000, label = 'Redis command') => {
+        const timeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error(`${label} timeout (${ms}ms)`)), ms)
+        );
+        return Promise.race([promise, timeout]);
+      };
       
       // BullMQ stores different states in different Redis data structures:
       // - waiting, active: Redis Lists (use LLEN)
       // - completed, failed, delayed: Redis Sorted Sets (use ZCARD)
       const [waiting, active, completed, failed] = await Promise.all([
-        redis.llen('bull:bulk-import:wait').catch(err => { console.log('  ⚠️ llen wait error:', err.message); return 0; }),
-        redis.llen('bull:bulk-import:active').catch(err => { console.log('  ⚠️ llen active error:', err.message); return 0; }),
-        redis.zcard('bull:bulk-import:completed').catch(err => { console.log('  ⚠️ zcard completed error:', err.message); return 0; }),
-        redis.zcard('bull:bulk-import:failed').catch(err => { console.log('  ⚠️ zcard failed error:', err.message); return 0; }),
+        withTimeout(redis.llen('bull:bulk-import:wait'), 3000, 'llen wait').catch(err => { console.log('  ⚠️ llen wait error:', err.message); return 0; }),
+        withTimeout(redis.llen('bull:bulk-import:active'), 3000, 'llen active').catch(err => { console.log('  ⚠️ llen active error:', err.message); return 0; }),
+        withTimeout(redis.zcard('bull:bulk-import:completed'), 3000, 'zcard completed').catch(err => { console.log('  ⚠️ zcard completed error:', err.message); return 0; }),
+        withTimeout(redis.zcard('bull:bulk-import:failed'), 3000, 'zcard failed').catch(err => { console.log('  ⚠️ zcard failed error:', err.message); return 0; }),
       ]);
 
       const result = {
@@ -364,15 +365,31 @@ class BulkImportQueue {
     try {
       console.log('📊 [getStats] Fetching bulk-import queue statistics...');
       
-      // Get both BullMQ stats (retention-aware) and direct Redis counts
-      const [bullmqStats, redisStats] = await Promise.all([
-        (async () => {
+      // Get Redis stats (faster, more reliable)
+      const redisStats = await this.getRedisStats();
+      
+      // Try to get BullMQ stats with timeout to prevent hanging
+      let bullmqStats = {
+        waiting: 0,
+        active: 0,
+        completed: 0,
+        failed: 0,
+        delayed: 0,
+        total: 0,
+      };
+      
+      try {
+        const timeout = new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('BullMQ stats timeout (2s)')), 2000)
+        );
+        
+        const statsPromise = (async () => {
           const [waiting, active, completed, failed, delayed] = await Promise.all([
-            this.queue.getWaitingCount(),
-            this.queue.getActiveCount(),
-            this.queue.getCompletedCount(),
-            this.queue.getFailedCount(),
-            this.queue.getDelayedCount(),
+            this.queue.getWaitingCount().catch(() => 0),
+            this.queue.getActiveCount().catch(() => 0),
+            this.queue.getCompletedCount().catch(() => 0),
+            this.queue.getFailedCount().catch(() => 0),
+            this.queue.getDelayedCount().catch(() => 0),
           ]);
 
           return {
@@ -383,11 +400,15 @@ class BulkImportQueue {
             delayed,
             total: waiting + active + completed + failed + delayed,
           };
-        })(),
-        this.getRedisStats(),
-      ]);
+        })();
+        
+        bullmqStats = await Promise.race([statsPromise, timeout]);
+        console.log('📊 [getStats] BullMQ stats:', bullmqStats);
+      } catch (error) {
+        console.warn('⚠️ [getStats] BullMQ stats failed, using zeros:', error.message);
+        // Use zeros if BullMQ stats timeout or fail
+      }
 
-      console.log('📊 [getStats] BullMQ stats:', bullmqStats);
       console.log('📊 [getStats] Redis stats:', redisStats);
 
       const result = {
