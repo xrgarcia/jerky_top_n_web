@@ -470,6 +470,38 @@
   background: #6b7a45;
 }
 
+/* Calculation Section Divider */
+.calculation-section-divider {
+  margin: 24px 0 16px 0;
+  padding-bottom: 12px;
+  border-bottom: 2px solid #c4a962;
+}
+
+.section-title {
+  margin: 0;
+  color: #5a6642;
+  font-size: 17px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Journey Stage Calculation Info Section */
+.journey-stage-calculation-info {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9faf6;
+  border-radius: 8px;
+  border: 1px solid #e8ebe1;
+}
+
+.journey-stage-calculation-info h5 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+}
+
 /* Engagement Calculation Info Section */
 .engagement-calculation-info {
   margin-bottom: 24px;
@@ -489,6 +521,12 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+}
+
+.dual-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 .stat-item.highlight {
@@ -592,5 +630,9 @@
     flex-direction: column;
     align-items: stretch;
     gap: 8px;
+  }
+  
+  .dual-inputs {
+    grid-template-columns: 1fr;
   }
 }

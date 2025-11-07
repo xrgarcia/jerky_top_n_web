@@ -356,7 +356,7 @@ export default function UserGuidanceTab() {
               </div>
 
               <div className="classification-details">
-                <h5>Classification</h5>
+                <h5>Current Classification</h5>
                 {selectedUser.classification ? (
                   <div className="classification-grid">
                     <div className="classification-item">
@@ -390,9 +390,65 @@ export default function UserGuidanceTab() {
                 )}
               </div>
 
+              <div className="calculation-section-divider">
+                <h5 className="section-title">How Classifications Are Calculated</h5>
+              </div>
+
+              <div className="journey-stage-calculation-info">
+                <h5>Journey Stage Calculation</h5>
+                <div className="calculation-details">
+                  <div className="dual-inputs">
+                    <div className="stat-item highlight">
+                      <label>Total Rankings (Lifetime):</label>
+                      <span className="activity-count">{selectedUser.stats?.totalRankings || 0}</span>
+                    </div>
+                    <div className="stat-item highlight">
+                      <label>Activities (Last 30 Days):</label>
+                      <span className="activity-count">{selectedUser.activities?.activities30d || 0}</span>
+                    </div>
+                  </div>
+                  <div className="threshold-guide">
+                    <p className="guide-intro">Journey stage is based on lifetime rankings AND recent activity (checked in priority order):</p>
+                    <ul className="threshold-list">
+                      <li><strong>Dormant:</strong> 30+ days since last activity</li>
+                      <li><strong>New User:</strong> 0 rankings, registered within 7 days</li>
+                      <li><strong>Power User:</strong> 31+ rankings AND 20+ activities (30 days)</li>
+                      <li><strong>Engaged:</strong> 11-30 rankings AND 5+ activities (30 days)</li>
+                      <li><strong>Exploring:</strong> 1-10 rankings AND 1+ activities (30 days)</li>
+                    </ul>
+                    <p className="guide-note">
+                      <em>Journey stage requires BOTH criteria to be met. If a user has rankings but low recent activity, they may be classified as Dormant.</em>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="engagement-calculation-info">
+                <h5>Engagement Level Calculation</h5>
+                <div className="calculation-details">
+                  <div className="stat-item highlight">
+                    <label>Activities (Last 30 Days):</label>
+                    <span className="activity-count">{selectedUser.activities?.activities30d || 0}</span>
+                  </div>
+                  <div className="threshold-guide">
+                    <p className="guide-intro">Engagement level is based on total user activities in the last 30 days:</p>
+                    <ul className="threshold-list">
+                      <li><strong>Very High:</strong> 50+ activities</li>
+                      <li><strong>High:</strong> 20-49 activities</li>
+                      <li><strong>Medium:</strong> 5-19 activities</li>
+                      <li><strong>Low:</strong> 1-4 activities</li>
+                      <li><strong>None:</strong> 0 activities</li>
+                    </ul>
+                    <p className="guide-note">
+                      <em>Activities include: page views, rankings saved, searches, logins, product views, and profile views.</em>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {selectedUser.activities && (
                 <div className="activity-summary">
-                  <h5>Activity Summary</h5>
+                  <h5>Activity Breakdown</h5>
                   <div className="activity-stats">
                     <div className="stat-item">
                       <label>Total Searches:</label>
@@ -416,29 +472,6 @@ export default function UserGuidanceTab() {
                   </div>
                 </div>
               )}
-
-              <div className="engagement-calculation-info">
-                <h5>Engagement Calculation</h5>
-                <div className="calculation-details">
-                  <div className="stat-item highlight">
-                    <label>Activities (Last 30 Days):</label>
-                    <span className="activity-count">{selectedUser.activities?.activities30d || 0}</span>
-                  </div>
-                  <div className="threshold-guide">
-                    <p className="guide-intro">Engagement level is based on total user activities in the last 30 days:</p>
-                    <ul className="threshold-list">
-                      <li><strong>Very High:</strong> 50+ activities</li>
-                      <li><strong>High:</strong> 20-49 activities</li>
-                      <li><strong>Medium:</strong> 5-19 activities</li>
-                      <li><strong>Low:</strong> 1-4 activities</li>
-                      <li><strong>None:</strong> 0 activities</li>
-                    </ul>
-                    <p className="guide-note">
-                      <em>Activities include: page views, rankings saved, searches, logins, product views, and profile views.</em>
-                    </p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             <div className="modal-footer">
