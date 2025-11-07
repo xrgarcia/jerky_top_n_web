@@ -28,7 +28,15 @@ class ShopifyCustomersService {
    * @returns {boolean}
    */
   isAvailable() {
-    return !!this.accessToken;
+    const token = this.accessToken;
+    const available = !!token;
+    console.log(`🔍 ShopifyCustomersService.isAvailable() check:`, {
+      hasToken: !!token,
+      tokenLength: token ? token.length : 0,
+      envVar: !!process.env.SHOPIFY_ADMIN_ACCESS_TOKEN,
+      result: available
+    });
+    return available;
   }
 
   /**

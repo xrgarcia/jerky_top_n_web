@@ -1,0 +1,2913 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+5660e583e07e0be9.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+5660e583e07e0be9.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+5660e583e07e0be9.js:2 [LaunchDarkly] LaunchDarkly client initialized
+ed1e693c96a75807.js:2 [Violation] 'message' handler took 182ms
+ed1e693c96a75807.js:2 [Violation] 'message' handler took 294ms
+[Violation] Forced reflow while executing JavaScript took 43ms
+ed1e693c96a75807.js:2 [Violation] 'message' handler took 190ms
+jerkytopnweb:1 Banner not shown: beforeinstallpromptevent.preventDefault() called. The page must call beforeinstallpromptevent.prompt() to show the banner.
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 [Violation] 'message' handler took 232ms
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'ambient-light-sensor'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'battery'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-not-rendered'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'execution-while-out-of-viewport'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'layout-animations'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'legacy-image-formats'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'navigation-override'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'oversized-images'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'publickey-credentials'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'speaker-selection'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unoptimized-images'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Unrecognized feature: 'unsized-media'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowfullscreen'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+injected.js:27 🎯 Fetching guidance for page: general
+injected.js:27 📦 Guidance API Response: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 📊 Tracking page view: general {}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 📦 Subscribing to bulk import updates...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to bulk import updates
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+D_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+D_ @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+injected.js:27 [vite] connecting...
+injected.js:27 [vite] connected.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 🎯 Fetching guidance for page: general
+injected.js:27 📦 Guidance API Response: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 📊 Tracking page view: general {}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 📦 Subscribing to bulk import updates...
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to bulk import updates
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 📦 Subscribing to bulk import updates...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to bulk import updates
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+k_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ index-BYdwPu3g.js:86
+NO @ index-BYdwPu3g.js:61
+u @ index-BYdwPu3g.js:61
+batch @ index-BYdwPu3g.js:61
+#a @ index-BYdwPu3g.js:61
+setData @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+await in fetch
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+k_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:86
+NO @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+u @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+batch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#a @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+setData @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+await in fetch
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+k_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:86
+NO @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+u @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+batch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#a @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+setData @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+await in fetch
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/status 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+k_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ index-BYdwPu3g.js:86
+NO @ index-BYdwPu3g.js:61
+u @ index-BYdwPu3g.js:61
+batch @ index-BYdwPu3g.js:61
+#a @ index-BYdwPu3g.js:61
+setData @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+await in fetch
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+injected.js:204  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+k_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ index-BYdwPu3g.js:86
+NO @ index-BYdwPu3g.js:61
+u @ index-BYdwPu3g.js:61
+batch @ index-BYdwPu3g.js:61
+#a @ index-BYdwPu3g.js:61
+setData @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+await in fetch
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+k_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:86
+NO @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+u @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+batch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#a @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+setData @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+await in fetch
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ e4c74dfc-6d9f-4ca0-b…ols/injected.js:204
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:77
+queryFn @ e4c74dfc-6d9f-4ca0-b…dex-BYdwPu3g.js:346
+i @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+E @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+start @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ad @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+j_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+__ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+p_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+h_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+M_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Bl @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+k_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:86
+NO @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+u @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+batch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+#a @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+setData @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+fetch @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+await in fetch
+#d @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+onSubscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+subscribe @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:61
+HS @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Ml @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+Gs @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+a_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+T_ @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+(anonymous) @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:48
+ce @ e4c74dfc-6d9f-4ca0-b…ndex-BYdwPu3g.js:25
+  GET https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/admin/bulk-import/progress 502 (Bad Gateway)
+apply @ injected.js:204
+(anonymous) @ index-BYdwPu3g.js:77
+queryFn @ index-BYdwPu3g.js:346
+i @ index-BYdwPu3g.js:61
+E @ index-BYdwPu3g.js:61
+start @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+ad @ index-BYdwPu3g.js:48
+j_ @ index-BYdwPu3g.js:48
+__ @ index-BYdwPu3g.js:48
+p_ @ index-BYdwPu3g.js:48
+h_ @ index-BYdwPu3g.js:48
+M_ @ index-BYdwPu3g.js:48
+Bl @ index-BYdwPu3g.js:48
+k_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+setTimeout
+(anonymous) @ index-BYdwPu3g.js:86
+NO @ index-BYdwPu3g.js:61
+u @ index-BYdwPu3g.js:61
+batch @ index-BYdwPu3g.js:61
+#a @ index-BYdwPu3g.js:61
+setData @ index-BYdwPu3g.js:61
+fetch @ index-BYdwPu3g.js:61
+await in fetch
+#d @ index-BYdwPu3g.js:61
+onSubscribe @ index-BYdwPu3g.js:61
+subscribe @ index-BYdwPu3g.js:61
+(anonymous) @ index-BYdwPu3g.js:61
+HS @ index-BYdwPu3g.js:48
+Ml @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+Gs @ index-BYdwPu3g.js:48
+a_ @ index-BYdwPu3g.js:48
+T_ @ index-BYdwPu3g.js:48
+(anonymous) @ index-BYdwPu3g.js:48
+ce @ index-BYdwPu3g.js:25
+injected.js:27 [vite] connecting...
+injected.js:27 [vite] connected.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 🎯 Fetching guidance for page: general
+injected.js:27 📦 Guidance API Response: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 📊 Tracking page view: general {}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-07T12:43:37.507Z'}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ✅ WebSocket connected
+injected.js:27 📦 Subscribing to bulk import updates...
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to bulk import updates
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Customer'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 📦 Subscribing to bulk import updates...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to bulk import updates
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
