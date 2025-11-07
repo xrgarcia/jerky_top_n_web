@@ -72,16 +72,6 @@ const productRankings = pgTable('product_rankings', {
   uniqueUserProductList: unique().on(table.userId, table.shopifyProductId, table.rankingListId),
 }));
 
-// User product searches - tracks search queries for analytics
-const userProductSearches = pgTable('user_product_searches', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id), // Nullable for anonymous searches
-  searchTerm: text('search_term').notNull(),
-  resultCount: integer('result_count').notNull(),
-  pageName: text('page_name').notNull(), // 'product_rankings' or 'products'
-  searchedAt: timestamp('searched_at').defaultNow(),
-});
-
 // Achievement definitions - types of badges users can earn
 const achievements = pgTable('achievements', {
   id: serial('id').primaryKey(),
@@ -178,16 +168,6 @@ const productsMetadata = pgTable('products_metadata', {
   title: text('title').notNull(), // Product title for reference
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
-
-// Page views - tracks all page views for engagement metrics
-const pageViews = pgTable('page_views', {
-  id: serial('id').primaryKey(),
-  userId: integer('user_id').references(() => users.id), // Nullable for anonymous views
-  pageType: text('page_type').notNull(), // 'home', 'products', 'community', 'rank', 'profile', 'product_detail'
-  pageIdentifier: text('page_identifier'), // Optional: product ID, user ID, etc.
-  referrer: text('referrer'), // Where the user came from
-  viewedAt: timestamp('viewed_at').defaultNow(),
 });
 
 // Ranking operations - idempotency tracking for ranking saves
@@ -409,7 +389,6 @@ module.exports = {
   rankings,
   magicLinks,
   productRankings,
-  userProductSearches,
   achievements,
   coinTypeConfig,
   userAchievements,
@@ -417,7 +396,6 @@ module.exports = {
   activityLogs,
   productViews,
   productsMetadata,
-  pageViews,
   rankingOperations,
   customerOrderItems,
   systemConfig,
