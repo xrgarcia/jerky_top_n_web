@@ -553,6 +553,7 @@
   }
   
   .rank-column {
+    height: auto;
     min-height: auto;
     max-height: none;
   }
