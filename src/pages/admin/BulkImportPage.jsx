@@ -9,14 +9,10 @@ import './BulkImportPage.css';
 function BulkImportPage() {
   const queryClient = useQueryClient();
   const [wsConnected, setWsConnected] = useState(false);
-  const [reimportAll, setReimportAll] = useState(false);
-  const [targetUnprocessedUsers, setTargetUnprocessedUsers] = useState('');
-  const [fullImport, setFullImport] = useState(false);
+  const [mode, setMode] = useState('full'); // 'full' or 'reprocess'
   const [batchSize, setBatchSize] = useState('');
+  const [workerConcurrency, setWorkerConcurrency] = useState('3');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [workerProgressState, setWorkerProgressState] = useState('idle');
-  const [lastCompletedStats, setLastCompletedStats] = useState(null);
-  const completionTimerRef = React.useRef(null);
   const { socket } = useSocket();
 
   // Fetch import progress
@@ -56,7 +52,7 @@ function BulkImportPage() {
 
     console.log('📦 Subscribing to bulk import updates...');
 
-    // Subscribe to queue-monitor room (reuse existing room)
+    // Subscribe to queue-monitor room
     socket.emit('subscribe:queue-monitor');
 
     // Listen for subscription confirmation
@@ -67,46 +63,23 @@ function BulkImportPage() {
       }
     };
 
-    // Listen for real-time comprehensive progress updates (queue + user stats)
+    // Listen for real-time progress updates
     const handleBulkImportProgress = (data) => {
       console.log('📦 Bulk import progress update received:', data);
-      // Update progress query data with complete real-time data
       queryClient.setQueryData(['bulkImportProgress'], (oldData) => {
         return data;
       });
     };
 
-    // Listen for real-time Shopify stats updates (gap metric)
+    // Listen for real-time Shopify stats updates
     const handleShopifyStatsUpdate = (data) => {
       console.log('📊 Shopify stats update received:', data);
-      // Update shopify stats query data for real-time gap updates
       queryClient.setQueryData(['shopifyStats'], data);
-    };
-
-    // Legacy handler for old queue stats events
-    const handleBulkImportStats = (data) => {
-      console.log('📦 Bulk import stats update received (legacy):', data);
-      // Update progress query data with complete fallback for race condition
-      queryClient.setQueryData(['bulkImportProgress'], (oldData) => {
-        const defaults = {
-          importInProgress: false,
-          currentImportStats: null,
-          users: {
-            total: 0,
-            imported: 0,
-            pending: 0,
-            inProgress: 0,
-            failed: 0
-          }
-        };
-        return oldData ? { ...oldData, queue: data } : { ...defaults, queue: data };
-      });
     };
 
     socket.on('subscription:confirmed', handleSubscriptionConfirmed);
     socket.on('bulk-import:progress', handleBulkImportProgress);
     socket.on('shopify-stats:update', handleShopifyStatsUpdate);
-    socket.on('bulk-import:stats', handleBulkImportStats);
 
     // Cleanup on unmount
     return () => {
@@ -115,7 +88,6 @@ function BulkImportPage() {
       socket.off('subscription:confirmed', handleSubscriptionConfirmed);
       socket.off('bulk-import:progress', handleBulkImportProgress);
       socket.off('shopify-stats:update', handleShopifyStatsUpdate);
-      socket.off('bulk-import:stats', handleBulkImportStats);
       setWsConnected(false);
     };
   }, [socket, queryClient]);
@@ -128,9 +100,7 @@ function BulkImportPage() {
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          reimportAll,
-          targetUnprocessedUsers: targetUnprocessedUsers ? parseInt(targetUnprocessedUsers) : null,
-          fullImport,
+          mode,
           batchSize: batchSize ? parseInt(batchSize) : null
         })
       });
@@ -143,71 +113,83 @@ function BulkImportPage() {
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
       queryClient.invalidateQueries(['shopifyStats']);
-      toast.success(`Import started! Created ${data.usersCreated} users, enqueued ${data.jobsEnqueued} jobs.`);
+      
+      if (mode === 'full') {
+        toast.success(`Full Import started! Created ${data.usersCreated || 0} new users, enqueued ${data.jobsEnqueued || 0} jobs.`);
+      } else {
+        toast.success(`Re-processing started! Enqueued ${data.jobsEnqueued || 0} existing users for re-sync.`);
+      }
     },
     onError: (error) => {
       toast.error(`Failed to start import: ${error.message}`);
     }
   });
 
-  // Resume import mutation
-  const resumeImportMutation = useMutation({
+  // Queue management mutations
+  const obliterateQueueMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch('/api/admin/bulk-import/resume', {
+      const res = await fetch('/api/admin/bulk-import/queue/obliterate', {
         method: 'POST',
         credentials: 'include'
       });
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.error || 'Failed to resume import');
-      }
+      if (!res.ok) throw new Error('Failed to obliterate queue');
       return res.json();
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      queryClient.invalidateQueries(['shopifyStats']);
-      toast.success(`Resume successful! Enqueued ${data.jobsEnqueued} pending users.`);
+      toast.success(`Obliterated all ${data.removed || 0} jobs from queue`);
     },
     onError: (error) => {
-      toast.error(`Failed to resume import: ${error.message}`);
+      toast.error(`Failed to obliterate queue: ${error.message}`);
     }
   });
 
-  // Clean queue mutation
-  const cleanMutation = useMutation({
+  const clearCompletedMutation = useMutation({
     mutationFn: async () => {
-      const res = await fetch('/api/admin/bulk-import/queue/clean', {
+      const res = await fetch('/api/admin/bulk-import/queue/clear-completed', {
         method: 'POST',
         credentials: 'include'
       });
-      if (!res.ok) throw new Error('Failed to clean queue');
+      if (!res.ok) throw new Error('Failed to clear completed jobs');
       return res.json();
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      toast.success('Queue cleaned successfully');
+      toast.success(`Cleared ${data.removed || 0} completed jobs`);
     },
     onError: (error) => {
-      toast.error(`Failed to clean queue: ${error.message}`);
+      toast.error(`Failed to clear completed jobs: ${error.message}`);
+    }
+  });
+
+  const clearFailedMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/admin/bulk-import/queue/clear-failed', {
+        method: 'POST',
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Failed to clear failed jobs');
+      return res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['bulkImportProgress']);
+      toast.success(`Cleared ${data.removed || 0} failed jobs`);
+    },
+    onError: (error) => {
+      toast.error(`Failed to clear failed jobs: ${error.message}`);
     }
   });
 
   const handleStartImport = () => {
-    console.log('🚀 Start Import clicked', { fullImport, batchSize, reimportAll, targetUnprocessedUsers, importInProgress });
-    
     if (!config?.shopify?.accessTokenSet) {
-      console.error('❌ Shopify API not available');
       toast.error('Shopify API is not configured. Please set SHOPIFY_ADMIN_ACCESS_TOKEN.');
       return;
     }
 
-    // Show confirmation modal
-    console.log('✅ Opening confirmation modal');
     setShowConfirmModal(true);
   };
 
   const handleConfirmImport = () => {
-    console.log('✅ Import confirmed, triggering mutation', { fullImport, batchSize, reimportAll, targetUnprocessedUsers });
     setShowConfirmModal(false);
     startImportMutation.mutate();
   };
@@ -218,400 +200,305 @@ function BulkImportPage() {
 
   const progress = progressData || {};
   const queue = progress.queue || {};
-  const users = progress.users || {};
   const importInProgress = progress.importInProgress || false;
   const currentStats = progress.currentImportStats;
 
-  // Calculate progress percentage
-  const totalJobs = queue.total || 0;
-  const completedJobs = queue.completed || 0;
-  const progressPercent = totalJobs > 0 ? Math.round((completedJobs / totalJobs) * 100) : 0;
-
-  // Track worker progress state transitions
-  useEffect(() => {
-    const hasActiveJobs = (queue.active || 0) > 0 || (queue.waiting || 0) > 0;
-    
-    if (hasActiveJobs) {
-      // Jobs are running - clear completion timer and set to active
-      if (completionTimerRef.current) {
-        clearTimeout(completionTimerRef.current);
-        completionTimerRef.current = null;
-      }
-      setWorkerProgressState('active');
-      setLastCompletedStats(null); // Clear old completion stats
-    } else if (workerProgressState === 'active' && !hasActiveJobs) {
-      // Jobs just finished - capture stats and show "Recently Completed" for 10 seconds
-      setLastCompletedStats({
-        completed: queue.completed || 0,
-        failed: queue.failed || 0,
-        usersImported: users.imported || 0,
-        timestamp: new Date()
-      });
-      setWorkerProgressState('recentlyCompleted');
-      
-      // Auto-return to idle after 10 seconds (store in ref to prevent cleanup)
-      completionTimerRef.current = setTimeout(() => {
-        setWorkerProgressState('idle');
-        completionTimerRef.current = null;
-      }, 10000);
-    }
-    // If we're in recentlyCompleted or idle, let the timer run (don't clear it)
-  }, [queue.active, queue.waiting, queue.completed, queue.failed, users.imported, workerProgressState]);
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (completionTimerRef.current) {
-        clearTimeout(completionTimerRef.current);
-      }
-    };
-  }, []);
-
-  // Determine current pipeline step - always return a step, even when idle
-  const getCurrentStep = () => {
-    // If import is in progress, determine based on phase
-    if (importInProgress && currentStats) {
-      const phase = currentStats.phase;
-      if (phase === 'fetching_customers' || phase === 'processing_customers') return 1;
-      if (phase === 'enqueuing_jobs' || phase === 'completed') return 2;
-      return 2;
-    }
-    
-    // If jobs are still running (queue has active/waiting), we're in step 2
-    if (queue.active > 0 || queue.waiting > 0) return 2;
-    
-    // If recently completed and no jobs running, show step 3
-    if (currentStats && currentStats.phase === 'completed' && queue.active === 0 && queue.waiting === 0) return 3;
-    
-    // Default: ready to start (step 0 means idle/ready state)
-    return 0;
-  };
-
-  const currentStep = getCurrentStep();
-  const hasRecentImport = currentStats && currentStats.phase === 'completed';
-  const steps = [
-    { id: 1, label: 'Fetch Customers', icon: '📥', desc: 'Fetching from Shopify' },
-    { id: 2, label: 'Import Users', icon: '👥', desc: 'Creating records, importing orders & classifying' },
-    { id: 3, label: 'Complete', icon: '✅', desc: 'All users processed' }
-  ];
-  
-  const totalSteps = 3;
+  // Determine current phase and active mode (use backend-reported mode if available)
+  const phase = currentStats?.phase || 'idle';
+  const isActive = importInProgress || (queue.active > 0 || queue.waiting > 0);
+  const activeMode = currentStats?.mode || mode; // Use backend mode during active import, fallback to local selection
 
   return (
     <div className="bulk-import-page">
-      <div className="bulk-import-header">
-        <h2>📦 Customer Import</h2>
-        <p className="bulk-import-subtitle">
-          Import Shopify customers and their complete order history
-        </p>
+      <div className="page-header">
+        <Link to="/tools" className="back-link">← Back to Admin Tools</Link>
+        <h1>Bulk Customer Import</h1>
+        <p>Import Shopify customers with order history and personalized classifications</p>
       </div>
 
-      {/* SECTION 1: System Status - Health Check First */}
-      <div className="status-card-compact">
+      {/* System Status */}
+      <div className="status-card">
+        <h3>System Status</h3>
         <div className="status-grid">
           <div className="status-item">
-            <span className="status-icon">{config?.shopify?.accessTokenSet ? '🟢' : '🔴'}</span>
-            <span className="status-label">Shopify API</span>
+            <div className="status-label">Shopify API</div>
+            <div className={`status-value ${config?.shopify?.accessTokenSet ? 'success' : 'danger'}`}>
+              {config?.shopify?.accessTokenSet ? '✅ Connected' : '❌ Not Configured'}
+            </div>
           </div>
           <div className="status-item">
-            <span className="status-icon">{wsConnected ? '🟢' : '🔴'}</span>
-            <span className="status-label">WebSocket</span>
+            <div className="status-label">WebSocket</div>
+            <div className={`status-value ${wsConnected ? 'success' : 'warning'}`}>
+              {wsConnected ? '✅ Live Updates' : '⚠️ Polling Mode'}
+            </div>
           </div>
           <div className="status-item">
-            <span className="status-icon">{importInProgress ? '⏳' : '✅'}</span>
-            <span className="status-label">{importInProgress ? 'Importing' : 'Ready'}</span>
+            <div className="status-label">Workers</div>
+            <div className="status-value">
+              {queue.active || 0} active / {workerConcurrency} max
+            </div>
+          </div>
+          <div className="status-item">
+            <div className="status-label">Queue Status</div>
+            <div className="status-value">
+              {isActive ? '🔄 Processing' : '✓ Idle'}
+            </div>
           </div>
         </div>
+
+        {shopifyStats?.gap && (
+          <div className="shopify-gap-metric">
+            <div className="gap-label">Shopify Gap:</div>
+            <div className="gap-value">
+              {shopifyStats.gap.missingUsers?.toLocaleString() || 0} customers not yet imported
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* SECTION 2: Database Stats - Real-time Updates */}
-      {shopifyStats && !shopifyStats.error && (
-        <div className="shopify-gap-compact">
-          <div className="gap-metric">
-            <span className="gap-label">👥 {shopifyStats.database?.totalUsers?.toLocaleString() || 0} users in database</span>
-            <span className="gap-percent">({shopifyStats.gap?.percentageInDb || 0}% of Shopify total)</span>
-          </div>
-          {shopifyStats.gap?.missingUsers > 0 && (
-            <div className="gap-metric">
-              <span className="gap-label">📊 {shopifyStats.gap?.missingUsers?.toLocaleString() || 0} customers need importing</span>
-              <span className="gap-percent">({(100 - (shopifyStats.gap?.percentageInDb || 0)).toFixed(1)}% remaining)</span>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* SECTION 3: Import Pipeline Status */}
-      <div className="pipeline-status-card">
-        <h3>📊 Import Pipeline</h3>
-        <div className="pipeline-overview">
-          <div className="pipeline-header">
-            {currentStep === 0 ? (
-              <>
-                <span className="pipeline-title">Ready to Import</span>
-                <span className="pipeline-subtitle">Configure import settings below and click Start</span>
-              </>
-            ) : currentStep === 3 ? (
-              <>
-                <span className="pipeline-title">Import Complete</span>
-                <span className="pipeline-subtitle">
-                  {currentStats ? `Processed ${currentStats.customersFetched || 0} customers: created ${currentStats.usersCreated || 0} new users, updated ${currentStats.usersUpdated || 0} existing users` : 'Processing complete'}
-                </span>
-              </>
-            ) : (
-              <>
-                <span className="pipeline-title">
-                  {importInProgress ? `Step ${currentStep} of ${totalSteps}` : 'Processing'}
-                </span>
-                <span className="pipeline-subtitle">{steps[currentStep - 1].label}</span>
-              </>
-            )}
-          </div>
-          
-          <div className="pipeline-stepper">
-            {steps.map((step) => (
-              <div 
-                key={step.id}
-                className={`pipeline-step ${currentStep === step.id ? 'active' : ''} ${currentStep > step.id ? 'completed' : ''} ${currentStep < step.id ? 'pending' : ''} ${currentStep === 0 ? 'idle' : ''}`}
-              >
-                <div className="step-icon">{step.icon}</div>
-                <div className="step-content">
-                  <div className="step-label">{step.label}</div>
-                  <div className="step-desc">{step.desc}</div>
-                </div>
-                {step.id < 3 && <div className="step-connector"></div>}
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* SECTION 2: Current Step Details - Show when import is active or recently completed */}
-      {(importInProgress || hasRecentImport || (queue.active > 0 || queue.waiting > 0)) && currentStep > 0 && (
-        <div className="current-step-card">
-          <h3>🔍 Current Step: {steps[currentStep - 1].label}</h3>
-          
-          {currentStep === 1 && currentStats && (
-            <div className="step-details">
-              <div className="step-main-stat">
-                <div className="main-stat-value">{currentStats.customersFetched || 0}</div>
-                <div className="main-stat-label">Customers Fetched from Shopify</div>
-              </div>
-              {batchSize && (
-                <div className="step-progress-bar">
-                  <div className="progress-bar-wrapper">
-                    <div 
-                      className="progress-bar-fill"
-                      style={{ width: `${Math.min(100, ((currentStats.customersFetched || 0) / parseInt(batchSize)) * 100)}%` }}
-                    ></div>
-                  </div>
-                  <div className="progress-text">
-                    {currentStats.customersFetched || 0} of {parseInt(batchSize).toLocaleString()} customers
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {currentStep === 2 && (
-            <div className="step-details">
-              <div className="step-main-stat">
-                <div className="main-stat-value">{queue.active || 0}</div>
-                <div className="main-stat-label">Workers Active</div>
-              </div>
-              <div className="step-progress-bar">
-                <div className="progress-bar-wrapper">
-                  <div 
-                    className="progress-bar-fill"
-                    style={{ width: `${progressPercent}%` }}
-                  ></div>
-                </div>
-                <div className="progress-text">
-                  {completedJobs} of {totalJobs} jobs completed ({progressPercent}%)
-                </div>
-              </div>
-              <div className="step-stats-grid">
-                <div className="step-stat">
-                  <div className="step-stat-value">{queue.waiting || 0}</div>
-                  <div className="step-stat-label">Waiting</div>
-                </div>
-                <div className="step-stat success">
-                  <div className="step-stat-value">{queue.completed || 0}</div>
-                  <div className="step-stat-label">Completed</div>
-                </div>
-                <div className="step-stat danger">
-                  <div className="step-stat-value">{queue.failed || 0}</div>
-                  <div className="step-stat-label">Failed</div>
-                </div>
-              </div>
-              <div className="step-note">
-                <small>Each job creates user records, imports orders, and calculates classifications</small>
-              </div>
-            </div>
-          )}
-
-          {currentStep === 3 && currentStats && (
-            <div className="step-details">
-              <div className="step-complete-message">
-                <div className="complete-icon">✅</div>
-                <div className="complete-text">
-                  <h4>Import Complete!</h4>
-                  <p>Fetched {currentStats.customersFetched || 0} customers from Shopify, created {currentStats.usersCreated || 0} new users and updated {currentStats.usersUpdated || 0} existing users</p>
-                </div>
-              </div>
-              <div className="step-stats-grid">
-                <div className="step-stat success">
-                  <div className="step-stat-value">{currentStats.customersFetched || 0}</div>
-                  <div className="step-stat-label">Customers Fetched</div>
-                </div>
-                <div className="step-stat success">
-                  <div className="step-stat-value">{currentStats.usersCreated || 0}</div>
-                  <div className="step-stat-label">New Users Created</div>
-                </div>
-                <div className="step-stat">
-                  <div className="step-stat-value">{currentStats.usersUpdated || 0}</div>
-                  <div className="step-stat-label">Existing Users Updated</div>
-                </div>
-                <div className="step-stat">
-                  <div className="step-stat-value">{currentStats.jobsEnqueued || 0}</div>
-                  <div className="step-stat-label">Jobs Enqueued</div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* SECTION 4: Import Controls */}
+      {/* Import Controls */}
       <div className="controls-card">
-        <h3>Import Controls</h3>
+        <h3>Import Configuration</h3>
         
-        <div className="import-options">
-          <div className="option-group mode-selector">
-            <label className="checkbox-label full-import-toggle">
+        <div className="control-group">
+          <label className="control-label">Import Mode:</label>
+          <div className="mode-selector">
+            <label className={`mode-option ${mode === 'full' ? 'selected' : ''}`}>
               <input
-                type="checkbox"
-                checked={fullImport}
-                onChange={(e) => {
-                  setFullImport(e.target.checked);
-                  if (e.target.checked) {
-                    setTargetUnprocessedUsers(''); // Clear intelligent mode when switching to full import
-                  } else {
-                    setBatchSize(''); // Clear batch size when switching to incremental
-                  }
-                }}
-                disabled={importInProgress}
+                type="radio"
+                value="full"
+                checked={mode === 'full'}
+                onChange={(e) => setMode(e.target.value)}
+                disabled={isActive}
               />
-              <span><strong>Full Import Mode</strong> - Create ALL missing customers from Shopify</span>
+              <div className="mode-content">
+                <div className="mode-title">🆕 Full Import</div>
+                <div className="mode-desc">Create new users only (skip existing)</div>
+              </div>
             </label>
-          </div>
-
-          {fullImport ? (
-            <div className="option-group">
-              <label className="input-label">
-                Batch Size (customers to import per session):
-                <select
-                  value={batchSize}
-                  onChange={(e) => setBatchSize(e.target.value)}
-                  className="batch-size-select"
-                  disabled={importInProgress}
-                >
-                  <option value="">All Customers (⚠️ {shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'})</option>
-                  <option value="1000">1,000 customers</option>
-                  <option value="5000">5,000 customers</option>
-                  <option value="10000">10,000 customers</option>
-                  <option value="25000">25,000 customers</option>
-                  <option value="50000">50,000 customers</option>
-                  <option value="100000">100,000 customers</option>
-                </select>
-              </label>
-              <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
-                System will fetch and create users for up to {batchSize || 'ALL'} Shopify customers
-              </small>
-            </div>
-          ) : (
-            <div className="option-group">
-              <label className="input-label">
-                Number of Unprocessed Users to Import (intelligent mode):
-                <input
-                  type="number"
-                  value={targetUnprocessedUsers}
-                  onChange={(e) => setTargetUnprocessedUsers(e.target.value)}
-                  placeholder="Leave empty to import all unprocessed"
-                  className="number-input"
-                  disabled={importInProgress}
-                  min="1"
-                />
-              </label>
-              <small style={{ color: '#777', marginTop: '4px', display: 'block' }}>
-                System will automatically find and import this many users who haven't been imported yet
-              </small>
-            </div>
-          )}
-
-          <div className="option-group">
-            <label className="checkbox-label">
+            <label className={`mode-option ${mode === 'reprocess' ? 'selected' : ''}`}>
               <input
-                type="checkbox"
-                checked={reimportAll}
-                onChange={(e) => setReimportAll(e.target.checked)}
-                disabled={importInProgress}
+                type="radio"
+                value="reprocess"
+                checked={mode === 'reprocess'}
+                onChange={(e) => setMode(e.target.value)}
+                disabled={isActive}
               />
-              <span>Reimport All Users (including already imported)</span>
+              <div className="mode-content">
+                <div className="mode-title">🔄 Re-processing</div>
+                <div className="mode-desc">Update existing users (skip non-existent)</div>
+              </div>
             </label>
           </div>
         </div>
 
-        <div className="button-group">
+        {mode === 'full' && (
+          <div className="control-group">
+            <label className="control-label">Batch Size:</label>
+            <select
+              value={batchSize}
+              onChange={(e) => setBatchSize(e.target.value)}
+              className="control-select"
+              disabled={isActive}
+            >
+              <option value="">All Customers (⚠️ {shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'})</option>
+              <option value="1000">1,000 customers</option>
+              <option value="5000">5,000 customers</option>
+              <option value="10000">10,000 customers</option>
+              <option value="25000">25,000 customers</option>
+              <option value="50000">50,000 customers</option>
+              <option value="100000">100,000 customers</option>
+            </select>
+          </div>
+        )}
+
+        <div className="control-group">
+          <label className="control-label">Worker Concurrency:</label>
+          <select
+            value={workerConcurrency}
+            onChange={(e) => setWorkerConcurrency(e.target.value)}
+            className="control-select"
+            disabled={isActive}
+          >
+            <option value="1">1 worker (slowest, safest)</option>
+            <option value="3">3 workers (recommended)</option>
+            <option value="5">5 workers</option>
+            <option value="10">10 workers (fastest, high load)</option>
+          </select>
+          <div className="control-note">
+            Higher concurrency = faster processing but more database load
+          </div>
+        </div>
+
+        <div className="button-row">
           <button
             onClick={handleStartImport}
-            disabled={importInProgress || startImportMutation.isPending || !config?.shopify?.accessTokenSet}
-            className="btn-primary"
+            disabled={isActive || startImportMutation.isPending || !config?.shopify?.accessTokenSet}
+            className="btn-primary btn-large"
           >
-            {startImportMutation.isPending ? 'Starting...' : '🚀 Start Customer Import'}
+            {startImportMutation.isPending ? 'Starting...' : `🚀 Start ${mode === 'full' ? 'Full Import' : 'Re-processing'}`}
           </button>
+        </div>
+      </div>
 
-          <button
-            onClick={() => resumeImportMutation.mutate()}
-            disabled={importInProgress || resumeImportMutation.isPending || users.pending === 0}
-            className="btn-primary"
-            title={users.pending === 0 ? 'No pending users to enqueue' : `Enqueue ${users.pending?.toLocaleString()} pending users`}
-          >
-            {resumeImportMutation.isPending ? 'Resuming...' : `▶️ Resume Import (${users.pending?.toLocaleString() || 0} pending)`}
-          </button>
+      {/* Real-time Metrics Dashboard */}
+      {currentStats && (
+        <div className="metrics-card">
+          <h3>📊 Real-Time Metrics</h3>
+          
+          <div className="phase-indicator">
+            <div className="phase-label">Current Phase:</div>
+            <div className={`phase-value phase-${phase}`}>
+              {phase === 'fetching_customers' && '📥 Fetching Customers from Shopify'}
+              {phase === 'enqueuing_jobs' && '📋 Enqueuing Import Jobs'}
+              {phase === 'completed' && '✅ Import Complete'}
+              {phase === 'idle' && '⏸️ Idle'}
+            </div>
+          </div>
 
-          <button
-            onClick={() => cleanMutation.mutate()}
-            disabled={cleanMutation.isPending || importInProgress}
-            className="btn-secondary"
-          >
-            {cleanMutation.isPending ? 'Cleaning...' : '🗑️ Clean Completed Jobs'}
-          </button>
+          <div className="metrics-grid">
+            <div className="metric-card">
+              <div className="metric-value">{currentStats.customersFetched || 0}</div>
+              <div className="metric-label">Customers Fetched</div>
+            </div>
+            
+            {activeMode === 'full' && currentStats.alreadyInDB !== undefined && (
+              <div className="metric-card warning">
+                <div className="metric-value">{currentStats.alreadyInDB || 0}</div>
+                <div className="metric-label">Already in DB (Skipped)</div>
+              </div>
+            )}
+            
+            {activeMode === 'reprocess' && currentStats.notInDB !== undefined && (
+              <div className="metric-card warning">
+                <div className="metric-value">{currentStats.notInDB || 0}</div>
+                <div className="metric-label">Not in DB (Skipped)</div>
+              </div>
+            )}
+            
+            {activeMode === 'full' && (
+              <div className="metric-card success">
+                <div className="metric-value">{currentStats.usersCreated || 0}</div>
+                <div className="metric-label">New Users Created</div>
+              </div>
+            )}
 
-          <button
-            onClick={() => queryClient.invalidateQueries(['bulkImportProgress'])}
-            className="btn-secondary"
-          >
-            🔄 Refresh Stats
-          </button>
+            {activeMode === 'reprocess' && currentStats.jobsPendingEnqueue !== undefined && phase === 'fetching_customers' && (
+              <div className="metric-card">
+                <div className="metric-value">{currentStats.jobsPendingEnqueue || 0}</div>
+                <div className="metric-label">Jobs Pending Enqueue</div>
+              </div>
+            )}
+            
+            <div className="metric-card">
+              <div className="metric-value">{currentStats.jobsEnqueued || 0}</div>
+              <div className="metric-label">Jobs Enqueued</div>
+            </div>
+            
+            {currentStats.errors > 0 && (
+              <div className="metric-card danger">
+                <div className="metric-value">{currentStats.errors}</div>
+                <div className="metric-label">Errors</div>
+              </div>
+            )}
+          </div>
+
+          {currentStats.startedAt && (
+            <div className="metrics-footer">
+              <div className="metric-time">
+                Started: {new Date(currentStats.startedAt).toLocaleTimeString()}
+                {currentStats.completedAt && (
+                  <span> • Completed: {new Date(currentStats.completedAt).toLocaleTimeString()}</span>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Queue Stats */}
+      <div className="queue-card">
+        <h3>Queue Statistics</h3>
+        
+        <div className="queue-stats-grid">
+          <div className="queue-stat">
+            <div className="queue-stat-value">{queue.waiting || 0}</div>
+            <div className="queue-stat-label">Waiting</div>
+          </div>
+          <div className="queue-stat active">
+            <div className="queue-stat-value">{queue.active || 0}</div>
+            <div className="queue-stat-label">Active</div>
+          </div>
+          <div className="queue-stat success">
+            <div className="queue-stat-value">{queue.completed || 0}</div>
+            <div className="queue-stat-label">Completed</div>
+          </div>
+          <div className="queue-stat danger">
+            <div className="queue-stat-value">{queue.failed || 0}</div>
+            <div className="queue-stat-label">Failed</div>
+          </div>
+          <div className="queue-stat">
+            <div className="queue-stat-value">{queue.total || 0}</div>
+            <div className="queue-stat-label">Total</div>
+          </div>
+        </div>
+
+        <div className="queue-management">
+          <h4>Queue Management</h4>
+          <div className="button-row">
+            <button
+              onClick={() => obliterateQueueMutation.mutate()}
+              disabled={obliterateQueueMutation.isPending || (queue.total || 0) === 0}
+              className="btn-danger"
+              title="Remove ALL jobs (waiting, active, completed, failed)"
+            >
+              {obliterateQueueMutation.isPending ? 'Clearing...' : '🗑️ Obliterate All Jobs'}
+            </button>
+            
+            <button
+              onClick={() => clearCompletedMutation.mutate()}
+              disabled={clearCompletedMutation.isPending || (queue.completed || 0) === 0}
+              className="btn-secondary"
+              title="Remove only completed jobs"
+            >
+              {clearCompletedMutation.isPending ? 'Clearing...' : '✓ Clear Completed'}
+            </button>
+            
+            <button
+              onClick={() => clearFailedMutation.mutate()}
+              disabled={clearFailedMutation.isPending || (queue.failed || 0) === 0}
+              className="btn-secondary"
+              title="Remove only failed jobs"
+            >
+              {clearFailedMutation.isPending ? 'Clearing...' : '❌ Clear Failed'}
+            </button>
+
+            <button
+              onClick={() => queryClient.invalidateQueries(['bulkImportProgress'])}
+              className="btn-secondary"
+            >
+              🔄 Refresh Stats
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Info Box */}
       <div className="info-card">
-        <h4>ℹ️ How It Works</h4>
-        <ol>
-          <li><strong>Fetch Customers:</strong> Retrieves all customers from Shopify API</li>
-          <li><strong>Create User Records:</strong> Creates/updates user entries in database</li>
-          <li><strong>Enqueue Jobs:</strong> Creates background jobs for each user</li>
-          <li><strong>Worker Processing:</strong> Workers fetch order history and trigger classification</li>
-          <li><strong>Classification:</strong> Each user's flavor profiles are calculated for personalized guidance</li>
-        </ol>
+        <h4>ℹ️ Import Modes Explained</h4>
+        <div className="mode-explanation">
+          <div className="mode-explain">
+            <strong>🆕 Full Import Mode:</strong>
+            <p>Fetches customers from Shopify and creates new user records only. If a customer already exists in the database, they are skipped (counted in "Already in DB"). Use this to onboard new customers without affecting existing data.</p>
+          </div>
+          <div className="mode-explain">
+            <strong>🔄 Re-processing Mode:</strong>
+            <p>Fetches customers from Shopify and enqueues jobs to re-sync orders and reclassify existing users only. If a customer doesn't exist in the database, they are skipped (counted in "Not in DB"). Use this to refresh data for existing customers.</p>
+          </div>
+        </div>
         <p className="info-note">
           <strong>Note:</strong> Jobs process in the background. You can safely close this page during import.
-        </p>
-        <p className="info-note" style={{ marginTop: '12px', borderTop: '1px solid rgba(139, 69, 19, 0.2)', paddingTop: '12px' }}>
-          <strong>📊 Monitor Classification Progress:</strong> After import jobs complete, each user gets queued for classification. 
-          Track classification queue status in real-time on the <Link to="/tools/queue-monitor" style={{ color: '#8B4513', textDecoration: 'underline' }}>Queue Monitor page</Link>.
+          Track classification queue status on the <Link to="/tools/queue-monitor" style={{ color: '#8B4513', textDecoration: 'underline' }}>Queue Monitor page</Link>.
         </p>
       </div>
 
@@ -620,37 +507,29 @@ function BulkImportPage() {
         <div className="modal-overlay" onClick={handleCancelImport}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h3>⚠️ Confirm {fullImport ? 'Full' : 'Incremental'} Import</h3>
+              <h3>⚠️ Confirm {mode === 'full' ? 'Full Import' : 'Re-processing'}</h3>
             </div>
             <div className="modal-body">
-              {fullImport ? (
+              {mode === 'full' ? (
                 <>
                   <p className="modal-main">
-                    <strong>Full Import Mode:</strong> This will create user records for {batchSize ? `up to ${parseInt(batchSize).toLocaleString()}` : `ALL ${shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'}`} Shopify customers and import their complete order history.
+                    <strong>Full Import Mode:</strong> This will create user records for {batchSize ? `up to ${parseInt(batchSize).toLocaleString()}` : `ALL ${shopifyStats?.gap?.missingUsers?.toLocaleString() || '?'}`} NEW Shopify customers and import their complete order history.
                   </p>
                   <p className="modal-detail">
-                    <strong>Estimated time:</strong> {batchSize ? 
-                      `~${Math.ceil(parseInt(batchSize) / 1000)} - ${Math.ceil(parseInt(batchSize) / 500)} minutes` : 
-                      shopifyStats?.gap?.missingUsers ? 
-                        `~${Math.ceil(shopifyStats.gap.missingUsers / 1000)} - ${Math.ceil(shopifyStats.gap.missingUsers / 100)} hours` : 
-                        'Unknown'}
+                    Existing customers will be skipped automatically.
                   </p>
                   <p className="modal-warning">
-                    This is a large operation that will run in the background. You can safely close this page during import.
+                    This operation will run in the background. You can safely close this page during import.
                   </p>
                 </>
               ) : (
                 <>
-                  <p>
-                    {reimportAll 
-                      ? 'This will REIMPORT ALL users, even those already imported. This may take a significant amount of time and will trigger classification jobs for all users.' 
-                      : 'This will find and import unprocessed users along with their complete order history.'}
+                  <p className="modal-main">
+                    <strong>Re-processing Mode:</strong> This will re-sync orders and reclassify EXISTING users found in Shopify. Non-existent customers will be skipped.
                   </p>
-                  {targetUnprocessedUsers && (
-                    <p className="modal-detail">
-                      <strong>Target:</strong> {targetUnprocessedUsers} unprocessed user{parseInt(targetUnprocessedUsers) !== 1 ? 's' : ''}
-                    </p>
-                  )}
+                  <p className="modal-detail">
+                    {batchSize ? `Up to ${parseInt(batchSize).toLocaleString()} customers will be processed.` : 'All existing customers will be processed.'}
+                  </p>
                   <p className="modal-warning">
                     Do you want to continue?
                   </p>
@@ -668,7 +547,7 @@ function BulkImportPage() {
                 onClick={handleConfirmImport}
                 className="btn-modal-confirm"
               >
-                {reimportAll ? 'Reimport All' : 'Start Import'}
+                {mode === 'full' ? 'Start Full Import' : 'Start Re-processing'}
               </button>
             </div>
           </div>
