@@ -26,28 +26,30 @@ class ClassificationWorker {
    */
   async initialize() {
     try {
-      const redis = await redisClient.connect();
+      // Get the correct Redis URL based on environment
+      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+      const redisUrl = isProduction 
+        ? process.env.UPSTASH_REDIS_URL_PROD 
+        : process.env.UPSTASH_REDIS_URL;
       
-      if (!redis) {
-        console.warn('⚠️ Redis not available, classification worker disabled');
+      if (!redisUrl) {
+        console.warn('⚠️ Redis URL not available, classification worker disabled');
         return false;
       }
 
-      // BullMQ requires a Redis connection config
-      const redisConfig = {
-        host: redis.options.host,
-        port: redis.options.port,
-        password: redis.options.password,
-        tls: redis.options.tls,
-        maxRetriesPerRequest: null, // Required for BullMQ
-        enableReadyCheck: false,
-      };
+      // Ensure Redis client is connected (for other operations)
+      await redisClient.connect();
 
+      // BullMQ Worker accepts Redis URL directly
       this.worker = new Worker(
         'user-classification',
         async (job) => this.processJob(job),
         {
-          connection: redisConfig,
+          connection: {
+            url: redisUrl,
+            maxRetriesPerRequest: null,
+            enableReadyCheck: false,
+          },
           concurrency: 5, // Process up to 5 jobs concurrently
           limiter: {
             max: 10, // Max 10 jobs

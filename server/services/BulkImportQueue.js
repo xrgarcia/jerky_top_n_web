@@ -21,25 +21,27 @@ class BulkImportQueue {
    */
   async initialize() {
     try {
-      const redis = await redisClient.connect();
+      // Get the correct Redis URL based on environment
+      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+      const redisUrl = isProduction 
+        ? process.env.UPSTASH_REDIS_URL_PROD 
+        : process.env.UPSTASH_REDIS_URL;
       
-      if (!redis) {
-        console.warn('⚠️ Redis not available, bulk import queue disabled');
+      if (!redisUrl) {
+        console.warn('⚠️ Redis URL not available, bulk import queue disabled');
         return false;
       }
 
-      // BullMQ requires a Redis connection config
-      const redisConfig = {
-        host: redis.options.host,
-        port: redis.options.port,
-        password: redis.options.password,
-        tls: redis.options.tls,
-        maxRetriesPerRequest: null,
-        enableReadyCheck: false,
-      };
+      // Ensure Redis client is connected (for other operations)
+      await redisClient.connect();
 
+      // BullMQ Queue accepts Redis URL directly
       this.queue = new Queue('bulk-import', {
-        connection: redisConfig,
+        connection: {
+          url: redisUrl,
+          maxRetriesPerRequest: null,
+          enableReadyCheck: false,
+        },
         defaultJobOptions: {
           attempts: 3, // Retry failed jobs up to 3 times
           backoff: {

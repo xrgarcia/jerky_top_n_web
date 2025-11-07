@@ -33,28 +33,30 @@ class BulkImportWorker {
   async initialize(services = {}) {
     this.services = services;
     try {
-      const redis = await redisClient.connect();
+      // Get the correct Redis URL based on environment
+      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
+      const redisUrl = isProduction 
+        ? process.env.UPSTASH_REDIS_URL_PROD 
+        : process.env.UPSTASH_REDIS_URL;
       
-      if (!redis) {
-        console.warn('⚠️ Redis not available, bulk import worker disabled');
+      if (!redisUrl) {
+        console.warn('⚠️ Redis URL not available, bulk import worker disabled');
         return false;
       }
 
-      // BullMQ requires a Redis connection config
-      const redisConfig = {
-        host: redis.options.host,
-        port: redis.options.port,
-        password: redis.options.password,
-        tls: redis.options.tls,
-        maxRetriesPerRequest: null,
-        enableReadyCheck: false,
-      };
+      // Ensure Redis client is connected (for other operations)
+      await redisClient.connect();
 
+      // BullMQ Worker accepts Redis URL directly
       this.worker = new Worker(
         'bulk-import',
         async (job) => this.processJob(job),
         {
-          connection: redisConfig,
+          connection: {
+            url: redisUrl,
+            maxRetriesPerRequest: null,
+            enableReadyCheck: false,
+          },
           concurrency: 15, // Process up to 15 imports concurrently for faster throughput
           limiter: {
             max: 50, // Max 50 jobs per minute (Shopify allows 120 req/min, fast-path uses 1-2 req/job)
