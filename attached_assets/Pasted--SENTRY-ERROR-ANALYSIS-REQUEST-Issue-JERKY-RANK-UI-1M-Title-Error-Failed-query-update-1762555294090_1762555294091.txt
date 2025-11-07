@@ -1,0 +1,319 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-1M
+Title: Error: Failed query: update "products_metadata" set "animal_type" = $1, "animal_display" = $2, "animal_icon" = $3, "vendor" = $4, "primary_flavor" = $5, "secondary_flavors" = $6, "flavor_display" = $7, "flavor_icon" = $8, "title" = $9, "updated_at" = $10 where...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-03T05:46:40.151000Z
+Last Seen: 2025-11-07T04:23:39Z
+Event Count: 2
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: update "products_metadata" set "animal_type" = $1, "animal_display" = $2, "animal_icon" = $3, "vendor" = $4, "primary_flavor" = $5, "secondary_flavors" = $6, "flavor_display" = $7, "flavor_icon" = $8, "title" = $9, "updated_at" = $10 where...
+
+--- CULPRIT ---
+POST /api/webhooks/shopify/products
+
+--- STACK TRACE ---
+Error: Connection terminated unexpectedly
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at ProductsMetadataRepository.upsertProductMetadata (/home/runner/workspace/server/repositories/ProductsMetadataRepository.js:?:?) [in app]
+  at WebhookProductService.handleProductUpdate (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at WebhookProductService.processProductWebhook (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+Error: Failed query: update "products_metadata" set "animal_type" = $1, "animal_display" = $2, "animal_icon" = $3, "vendor" = $4, "primary_flavor" = $5, "secondary_flavors" = $6, "flavor_display" = $7, "flavor_icon" = $8, "title" = $9, "updated_at" = $10 where "products_metadata"."shopify_product_id" = $11 returning "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at"
+params: ,,,Jerky.com,exotic,[],Exotic,🌏,26 pc. Extra Mile Jerky Gift Bag (Buy with Prime),2025-11-07T04:23:39.868Z,10051192881466
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at ProductsMetadataRepository.upsertProductMetadata (/home/runner/workspace/server/repositories/ProductsMetadataRepository.js:?:?) [in app]
+  at WebhookProductService.handleProductUpdate (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at WebhookProductService.processProductWebhook (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T02:43:14.515000Z] console (info): 👋 WebSocket client disconnected: cR4ljuJHP0j64lO-ACkV
+[2025-11-07T02:43:14.515000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:46:23.246000Z] console (info): 👋 WebSocket client disconnected: C1JWkzWyqclzpoj3ACkX
+[2025-11-07T02:46:23.246000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:48:17.523000Z] console (info): 👋 WebSocket client disconnected: XfwvH84BNLn3A2s5ACkZ
+[2025-11-07T02:48:17.523000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:51:26.489000Z] console (info): 👋 WebSocket client disconnected: kEeiX9GyaQF2MzQCACkb
+[2025-11-07T02:51:26.489000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:52:52.281000Z] console (info): 👋 WebSocket client disconnected: skR1NzGg2XKnUOjhACkh
+[2025-11-07T02:52:52.281000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T02:53:19.485000Z] console (info): 👋 WebSocket client disconnected: aG27RCMAO32688tQACkd
+[2025-11-07T02:53:19.486000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:56:28.576000Z] console (info): 👋 WebSocket client disconnected: LTr5rRSS3UBMephWACkf
+[2025-11-07T02:56:28.576000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T02:58:22.498000Z] console (info): 👋 WebSocket client disconnected: mUIRqNaVNMeP80j5ACkl
+[2025-11-07T02:58:22.498000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:01:30.596000Z] console (info): 👋 WebSocket client disconnected: gW4POZ3eOreCMY_IACkn
+[2025-11-07T03:01:30.596000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:03:24.626000Z] console (info): 👋 WebSocket client disconnected: WLno1_4udTrnmoLgACkp
+[2025-11-07T03:03:24.626000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:04:01.746000Z] console (info): 👋 WebSocket client disconnected: ajoziCp1urpWitoyACkt
+[2025-11-07T03:04:01.746000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:06:33.547000Z] console (info): 👋 WebSocket client disconnected: qviop4P8itxZ7v8tACkr
+[2025-11-07T03:06:33.547000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:09:04.516000Z] console (info): 👋 WebSocket client disconnected: VmU29GebYUzKW4L3ACkv
+[2025-11-07T03:09:04.516000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:10:21.481000Z] console (info): 👋 WebSocket client disconnected: PHlg2Ej0ShOfPQWEACk1
+[2025-11-07T03:10:21.481000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T03:11:35.515000Z] console (info): 👋 WebSocket client disconnected: XBS9rDPz5WA5r5PCACkx
+[2025-11-07T03:11:35.515000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:12:13.160000Z] console (info): 👋 WebSocket client disconnected: NCyAvBcqoMnd1xorACk3
+[2025-11-07T03:12:13.160000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T03:14:07.542000Z] console (info): 👋 WebSocket client disconnected: B19iMmwz41TexYpEACkz
+[2025-11-07T03:14:07.542000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:16:38.519000Z] console (info): 👋 WebSocket client disconnected: xLBQUnZGMVejyNg5ACk5
+[2025-11-07T03:16:38.519000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:19:09.616000Z] console (info): 👋 WebSocket client disconnected: ShBy5CEUSLJyXtg9ACk7
+[2025-11-07T03:19:09.616000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:19:58.850000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T03:19:58.853000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T03:20:28.903000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T03:21:41.570000Z] console (info): 👋 WebSocket client disconnected: gbdrbGe3g5zHfb4UACk9
+[2025-11-07T03:21:41.570000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:22:13.862000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T03:24:12.575000Z] console (info): 👋 WebSocket client disconnected: X9XjAK8BbHjbZHwpACk_
+[2025-11-07T03:24:12.575000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:26:44.593000Z] console (info): 👋 WebSocket client disconnected: nvBexrr3lbV3U3uhAClB
+[2025-11-07T03:26:44.593000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:29:15.537000Z] console (info): 👋 WebSocket client disconnected: gAvyDf55ak4wOu1KAClD
+[2025-11-07T03:29:15.537000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:31:47.598000Z] console (info): 👋 WebSocket client disconnected: d-KNqWby42nJAeMKAClF
+[2025-11-07T03:31:47.598000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:34:18.560000Z] console (info): 👋 WebSocket client disconnected: ve2QSXs78jnp0RkYAClH
+[2025-11-07T03:34:18.560000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:36:50.567000Z] console (info): 👋 WebSocket client disconnected: HcVVgiYloVWnbkN_AClJ
+[2025-11-07T03:36:50.567000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:39:21.545000Z] console (info): 👋 WebSocket client disconnected: KWO5-5uumtnOCSNQAClL
+[2025-11-07T03:39:21.545000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:41:53.588000Z] console (info): 👋 WebSocket client disconnected: crpy8i1e2mMd3TgaAClN
+[2025-11-07T03:41:53.588000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:44:24.546000Z] console (info): 👋 WebSocket client disconnected: 7ZBHBsaZb9__3WfqAClP
+[2025-11-07T03:44:24.546000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:46:56.606000Z] console (info): 👋 WebSocket client disconnected: Ag_qpJM3V4UMNY2uAClR
+[2025-11-07T03:46:56.606000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:49:27.642000Z] console (info): 👋 WebSocket client disconnected: z5yl-DrLwFSkaQ0DAClT
+[2025-11-07T03:49:27.642000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:51:59.604000Z] console (info): 👋 WebSocket client disconnected: _lua5fDEGsB5Z8GKAClV
+[2025-11-07T03:51:59.605000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:54:29.604000Z] console (info): 👋 WebSocket client disconnected: Iz5qPJMijAvdj3UqAClX
+[2025-11-07T03:54:29.604000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:57:01.684000Z] console (info): 👋 WebSocket client disconnected: j3C3NZcdn_z4phMKAClZ
+[2025-11-07T03:57:01.684000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T03:59:32.175000Z] console (info): 👋 WebSocket client disconnected: XEvcQ7CzSEih34sqACld
+[2025-11-07T03:59:32.175000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:02:04.618000Z] console (info): 👋 WebSocket client disconnected: 0w4yN6iIPYutMW6NAClf
+[2025-11-07T04:02:04.618000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:04:34.855000Z] console (info): 👋 WebSocket client disconnected: ORIKkjIV7jhUkfQOAClh
+[2025-11-07T04:04:34.855000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:07:07.680000Z] console (info): 👋 WebSocket client disconnected: 49Kej2zsI9jT5C4KACll
+[2025-11-07T04:07:07.680000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:09:36.591000Z] console (info): 👋 WebSocket client disconnected: HQeCeKc-331hUiYaACln
+[2025-11-07T04:09:36.591000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:12:10.628000Z] console (info): 👋 WebSocket client disconnected: LZZCrpdUF9nOp9tJAClp
+[2025-11-07T04:12:10.629000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:14:39.638000Z] console (info): 👋 WebSocket client disconnected: rY0R7IQW2fT8wQwrAClr
+[2025-11-07T04:14:39.638000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:17:13.617000Z] console (info): 👋 WebSocket client disconnected: Xr5C6c_MO0y3DFlXAClt
+[2025-11-07T04:17:13.617000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:19:42.740000Z] console (info): 👋 WebSocket client disconnected: BZVU9RHcU2fuzCkeAClv
+[2025-11-07T04:19:42.740000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:22:16.674000Z] console (info): 👋 WebSocket client disconnected: GRqMNXq6kIGxRzIVAClx
+[2025-11-07T04:22:16.674000Z] console (info): 👤 User 2 still has 2 active socket(s)
+[2025-11-07T04:23:39.647000Z] console (info): 📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+[2025-11-07T04:23:39.648000Z] console (info): ✅ Webhook signature verified
+[2025-11-07T04:23:39.648000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-07T04:23:39.815000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T04:23:39.880000Z] console (error): ❌ Database client error: [object Object]
+[2025-11-07T04:23:39.881000Z] console (error): Full client error details: {
+  "stack": "Error: Connection terminated unexpectedly\n    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)\n    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)\n    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)\n    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)\n    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)\n    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)\n    at WebSocket.emit (node:events:524:28)\n    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)",
+  "message": "Connection terminated unexpectedly"
+}
+[2025-11-07T04:23:39.881000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T04:23:39.881000Z] console (error): ❌ Error processing product webhook: Error: Failed query: update "products_metadata" set "animal_type" = $1, "animal_display" = $2, "animal_icon" = $3, "vendor" = $4, "primary_flavor" = $5, "secondary_flavors" = $6, "flavor_display" = $7, "flavor_icon" = $8, "title" = $9, "updated_at" = $10 where "products_metadata"."shopify_product_id" = $11 returning "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at"
+params: ,,,Jerky.com,exotic,[],Exotic,🌏,26 pc. Extra Mile Jerky Gift Bag (Buy with Prime),2025-11-07T04:23:39.868Z,10051192881466
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  topic: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://jerkyrankings.replit.app/api/webhooks/shopify/products",
+  "query": [],
+  "fragment": null,
+  "data": "[Filtered]",
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"
+    ],
+    [
+      "Content-Length",
+      "10625"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "jerkyrankings.replit.app"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762489419638, pid1req;dur=1762489419645"
+    ],
+    [
+      "Traceparent",
+      "00-0adf449302dd3cd95928ceeab7b92043-12e196c94c6797b3-00"
+    ],
+    [
+      "User-Agent",
+      "Shopify-Captain-Hook"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "0adf449302dd3cd95928ceeab7b92043/1360534353757050803"
+    ],
+    [
+      "X-Forwarded-For",
+      "136.119.163.27, 34.117.33.233, 35.191.123.161,34.45.249.146"
+    ],
+    [
+      "X-Forwarded-Host",
+      "jerkyrankings.replit.app"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ],
+    [
+      "X-Shopify-Api-Version",
+      "2025-07"
+    ],
+    [
+      "X-Shopify-Event-Id",
+      "9c69b6af-4bec-4997-bdb3-5953d0b516de"
+    ],
+    [
+      "X-Shopify-Hmac-Sha256",
+      "PwaIALbiCkvVF0LtxQsf9sUJdQJvvbwogEOKUWp47cM="
+    ],
+    [
+      "X-Shopify-Product-Id",
+      "10051192881466"
+    ],
+    [
+      "X-Shopify-Shop-Domain",
+      "jerky-com.myshopify.com"
+    ],
+    [
+      "X-Shopify-Topic",
+      "products/update"
+    ],
+    [
+      "X-Shopify-Triggered-At",
+      "2025-11-07T04:23:36.219582260Z"
+    ],
+    [
+      "X-Shopify-Webhook-Id",
+      "ea034069-54e2-4e3e-adf6-073949150ac9"
+    ]
+  ],
+  "cookies": [],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

@@ -1,0 +1,455 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-1Z
+Title: Error: Failed query: select "id", "user_id", "streak_type", "current_streak", "longest_streak", "last_activity_date", "created_at", "updated_at" from "streaks" where ("streaks"."user_id" = $1 and "streaks"."streak_type" = $2) limit $3
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-07T19:28:47.637000Z
+Last Seen: 2025-11-07T19:28:47Z
+Event Count: 1
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "user_id", "streak_type", "current_streak", "longest_streak", "last_activity_date", "created_at", "updated_at" from "streaks" where ("streaks"."user_id" = $1 and "streaks"."streak_type" = $2) limit $3
+
+--- CULPRIT ---
+POST /api/rankings/products
+
+--- STACK TRACE ---
+Error: timeout exceeded when trying to connect
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at runNextTicks (node:internal/process/task_queues:?:?)
+  at process.processTimers (node:internal/timers:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at EngagementManager.calculateLoginEngagement (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+  at Promise.all (index 3:?:?)
+  at EngagementManager.checkAndUpdateEngagementAchievements (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+
+Error: Failed query: select "id", "user_id", "streak_type", "current_streak", "longest_streak", "last_activity_date", "created_at", "updated_at" from "streaks" where ("streaks"."user_id" = $1 and "streaks"."streak_type" = $2) limit $3
+params: 966,login,1
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at runNextTicks (node:internal/process/task_queues:?:?)
+  at process.processTimers (node:internal/timers:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at EngagementManager.calculateLoginEngagement (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+  at Promise.all (index 3:?:?)
+  at EngagementManager.checkAndUpdateEngagementAchievements (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T19:28:24.351000Z] console (info): 🔒 Preserving manual edits for 11821175887: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:24.398000Z] console (info): 🔒 Preserving manual edits for 8032166838586: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:24.444000Z] console (info): 🔒 Preserving manual edits for 1339896660056: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:24.491000Z] console (info): 🔒 Preserving manual edits for 11821177487: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:24.540000Z] console (info): 🔒 Preserving manual edits for 11821182223: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:24.835000Z] console (info): 🔒 Preserving manual edits for 11821179087: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-07T19:28:29.606000Z] console (info): 🗑️ RankingStats cache invalidated
+[2025-11-07T19:28:29.606000Z] console (info): 🗑️ LeaderboardPositionCache INVALIDATE ALL: Clearing all positions
+[2025-11-07T19:28:29.606000Z] console (info): 🗑️ HomeStatsCache INVALIDATE: Clearing cache
+[2025-11-07T19:28:29.606000Z] console (info): 🗑️ LeaderboardCache INVALIDATE: All entries
+[2025-11-07T19:28:29.607000Z] console (info): ✅ Bulk saved 98 product rankings for user 966
+[2025-11-07T19:28:29.607000Z] console (info): 🎮 Starting async gamification for user 966
+[2025-11-07T19:28:29.607000Z] console (info): 🔥 Updating streak for user 966...
+[2025-11-07T19:28:29.635000Z] console (info): 📋 Enqueued classification job for user 966 (reason: ranking)
+[2025-11-07T19:28:29.635000Z] console (info): 📋 Enqueued classification job for user 966 (reason: ranking)
+[2025-11-07T19:28:29.661000Z] console (info): 🔥 Streak update result: [object Object]
+[2025-11-07T19:28:29.682000Z] console (info): 📋 Enqueued classification job for user 966 (reason: ranking_saved)
+[2025-11-07T19:28:29.753000Z] console (info): 🚫 LeaderboardPositionCache MISS: User 966 (all_time)
+[2025-11-07T19:28:29.800000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 47ms (total: 47ms)
+[2025-11-07T19:28:29.800000Z] console (info): ✅ LeaderboardPositionCache SET: User 966 (all_time) rank 3
+[2025-11-07T19:28:29.845000Z] console (info): 🔍 getAllUserStreaks: Found 1 valid streak(s) for user 966
+[2025-11-07T19:28:29.845000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 0 minutes)
+[2025-11-07T19:28:29.845000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 0 minutes)
+[2025-11-07T19:28:29.846000Z] console (info): 🚫 Metadata Cache MISS: Data expired or not found
+[2025-11-07T19:28:29.944000Z] console (info): ✅ Metadata Cache UPDATED: Stored 392 products (webhook-invalidated only)
+[2025-11-07T19:28:30.207000Z] console (info): 🔍 CollectionManager.getAllRankableProducts() START
+[2025-11-07T19:28:30.207000Z] console (info): ✅ Using ProductsService to get rankable products
+[2025-11-07T19:28:30.207000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 0 minutes)
+[2025-11-07T19:28:30.208000Z] console (info): ✅ ProductsService returned 162 rankable products
+[2025-11-07T19:28:30.208000Z] console (info): 📋 Sample product IDs: 11971533199,11821170639,9902431404346,11821170447,11971532943
+[2025-11-07T19:28:30.208000Z] console (info): 📊 Collection rank_them_all: Found 162 products for all products
+[2025-11-07T19:28:30.436000Z] console (info): 📊 Collection rank_them_all: User 966 ranked 98/162 products (60%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:30.437000Z] console (info): 🔄 [rank_them_all] UPDATE START - User 966: New calc shows null (60%)
+[2025-11-07T19:28:30.735000Z] console (info): ⚠️ [rank_them_all] No tier calculated, skipping update
+[2025-11-07T19:28:31.336000Z] console (info): 🔍 [flavor_master_hot] CALC START - User 966, Required products: 13 11821180943,11821165071,11821167247,11821166159,11821195855,11821193167,9814176006458,11821181263,8922662535482,9445783142714,11821181775,11821182223,1291529420868
+[2025-11-07T19:28:31.636000Z] console (info): ✅ [flavor_master_hot] CALC RESULT - User 966: 8/13 (62%) → TIER: silver (hasTiers: 1)
+[2025-11-07T19:28:31.636000Z] console (info): 📋 [flavor_master_hot] Ranked product IDs: 11821166159,11821180943,11821181263,11821181775,11821182223,8922662535482,9445783142714,9814176006458
+[2025-11-07T19:28:31.637000Z] console (info): 🔄 [flavor_master_hot] UPDATE START - User 966: New calc shows silver (62%)
+[2025-11-07T19:28:32.035000Z] console (info): 📊 [flavor_master_hot] DB STATE - User 966: Current tier in DB: bronze
+[2025-11-07T19:28:32.336000Z] console (info): ⬆️ Tier upgrade: Flavor Master - Hot (bronze → silver) - +80 points (total: 620)
+[2025-11-07T19:28:32.336000Z] console (info): 🔍 [elk_hot] CALC START - User 966, Required products: 1 11821167247
+[2025-11-07T19:28:32.936000Z] console (info): ✅ [elk_hot] CALC RESULT - User 966: 0/1 (0%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:32.936000Z] console (info): 📋 [elk_hot] Ranked product IDs: 
+[2025-11-07T19:28:32.936000Z] console (info): 🔄 [elk_hot] UPDATE START - User 966: New calc shows null (0%)
+[2025-11-07T19:28:32.936000Z] console (info): ⚠️ [elk_hot] No tier calculated, skipping update
+[2025-11-07T19:28:32.937000Z] console (info): 🔍 [original_master] CALC START - User 966, Required products: 19 11971533199,11821170447,11971532943,7101112844376,11821175439,11821164431,11821166863,9902471315770,11971532879,11971525455,11890706191,11821168399,11821165775,11821167695,9902440087866,9862732382522,9656912085306,11971533135,11821191311
+[2025-11-07T19:28:33.836000Z] console (info): ✅ [original_master] CALC RESULT - User 966: 15/19 (79%) → TIER: gold (hasTiers: 1)
+[2025-11-07T19:28:33.836000Z] console (info): 📋 [original_master] Ranked product IDs: 11821165775,11821167695,11821168399,11821170447,11890706191,11971525455,11971532879,11971532943,11971533135,11971533199,7101112844376,9656912085306,9862732382522,9902440087866,9902471315770
+[2025-11-07T19:28:34.135000Z] console (info): 🔄 [original_master] UPDATE START - User 966: New calc shows gold (79%)
+[2025-11-07T19:28:34.435000Z] console (info): 📊 [original_master] DB STATE - User 966: Current tier in DB: gold
+[2025-11-07T19:28:34.436000Z] console (info): 🔍 [bbq_boss] CALC START - User 966, Required products: 7 8386384429370,11821192271,9902446739770,9401502105914,9401498140986,9861040931130,7226515947608
+[2025-11-07T19:28:35.035000Z] console (info): ✅ [bbq_boss] CALC RESULT - User 966: 3/7 (43%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:35.035000Z] console (info): 📋 [bbq_boss] Ranked product IDs: 9401498140986,9401502105914,9902446739770
+[2025-11-07T19:28:35.036000Z] console (info): 🔄 [bbq_boss] UPDATE START - User 966: New calc shows null (43%)
+[2025-11-07T19:28:35.036000Z] console (info): ⚠️ [bbq_boss] No tier calculated, skipping update
+[2025-11-07T19:28:35.036000Z] console (info): 🔍 [og_beef_coin] CALC START - User 966, Required products: 1 11821175439
+[2025-11-07T19:28:35.335000Z] console (info): ✅ [og_beef_coin] CALC RESULT - User 966: 0/1 (0%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:35.335000Z] console (info): 📋 [og_beef_coin] Ranked product IDs: 
+[2025-11-07T19:28:35.335000Z] console (info): 🔄 [og_beef_coin] UPDATE START - User 966: New calc shows null (0%)
+[2025-11-07T19:28:35.335000Z] console (info): ⚠️ [og_beef_coin] No tier calculated, skipping update
+[2025-11-07T19:28:35.336000Z] console (info): 🔍 [exotic_hunter] CALC START - User 966, Required products: 19 11821167247,11821166863,11821167119,11821165071,11821164431,11821164559,11821187791,8934088966458,11971532943,11821170639,9902431404346,11821170447,11821166159,11821165775,11821165903,11971525455,9902471315770,11971532879,7101112844376
+[2025-11-07T19:28:35.636000Z] console (info): ✅ [exotic_hunter] CALC RESULT - User 966: 12/19 (63%) → TIER: silver (hasTiers: 1)
+[2025-11-07T19:28:35.636000Z] console (info): 📋 [exotic_hunter] Ranked product IDs: 11821165775,11821165903,11821166159,11821170447,11821170639,11821187791,11971525455,11971532879,11971532943,7101112844376,9902431404346,9902471315770
+[2025-11-07T19:28:35.636000Z] console (info): 🔄 [exotic_hunter] UPDATE START - User 966: New calc shows silver (63%)
+[2025-11-07T19:28:36.035000Z] console (info): 📊 [exotic_hunter] DB STATE - User 966: Current tier in DB: silver
+[2025-11-07T19:28:36.036000Z] console (info): 📚 User 966 updated 1 custom product collection(s)
+[2025-11-07T19:28:36.536000Z] console (info): 🔍 [flavor_master_hot] CALC START - User 966, Required products: 13 11821180943,11821165071,11821167247,11821166159,11821195855,11821193167,9814176006458,11821181263,8922662535482,9445783142714,11821181775,11821182223,1291529420868
+[2025-11-07T19:28:36.935000Z] console (info): ✅ [flavor_master_hot] CALC RESULT - User 966: 8/13 (62%) → TIER: silver (hasTiers: 1)
+[2025-11-07T19:28:36.935000Z] console (info): 📋 [flavor_master_hot] Ranked product IDs: 11821166159,11821180943,11821181263,11821181775,11821182223,8922662535482,9445783142714,9814176006458
+[2025-11-07T19:28:36.936000Z] console (info): 🔄 [flavor_master_hot] UPDATE START - User 966: New calc shows silver (62%)
+[2025-11-07T19:28:37.235000Z] console (info): 📊 [flavor_master_hot] DB STATE - User 966: Current tier in DB: silver
+[2025-11-07T19:28:37.236000Z] console (info): 🔍 [elk_hot] CALC START - User 966, Required products: 1 11821167247
+[2025-11-07T19:28:37.635000Z] console (info): ✅ [elk_hot] CALC RESULT - User 966: 0/1 (0%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:37.636000Z] console (info): 📋 [elk_hot] Ranked product IDs: 
+[2025-11-07T19:28:37.636000Z] console (info): 🔄 [elk_hot] UPDATE START - User 966: New calc shows null (0%)
+[2025-11-07T19:28:37.636000Z] console (info): ⚠️ [elk_hot] No tier calculated, skipping update
+[2025-11-07T19:28:37.636000Z] console (info): 🔍 [original_master] CALC START - User 966, Required products: 19 11971533199,11821170447,11971532943,7101112844376,11821175439,11821164431,11821166863,9902471315770,11971532879,11971525455,11890706191,11821168399,11821165775,11821167695,9902440087866,9862732382522,9656912085306,11971533135,11821191311
+[2025-11-07T19:28:37.939000Z] console (info): ✅ [original_master] CALC RESULT - User 966: 15/19 (79%) → TIER: gold (hasTiers: 1)
+[2025-11-07T19:28:37.939000Z] console (info): 📋 [original_master] Ranked product IDs: 11821165775,11821167695,11821168399,11821170447,11890706191,11971525455,11971532879,11971532943,11971533135,11971533199,7101112844376,9656912085306,9862732382522,9902440087866,9902471315770
+[2025-11-07T19:28:37.939000Z] console (info): 🔄 [original_master] UPDATE START - User 966: New calc shows gold (79%)
+[2025-11-07T19:28:38.235000Z] console (info): 📊 [original_master] DB STATE - User 966: Current tier in DB: gold
+[2025-11-07T19:28:38.236000Z] console (info): 🔍 [bbq_boss] CALC START - User 966, Required products: 7 8386384429370,11821192271,9902446739770,9401502105914,9401498140986,9861040931130,7226515947608
+[2025-11-07T19:28:38.536000Z] console (info): ✅ [bbq_boss] CALC RESULT - User 966: 3/7 (43%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:38.536000Z] console (info): 📋 [bbq_boss] Ranked product IDs: 9401498140986,9401502105914,9902446739770
+[2025-11-07T19:28:38.536000Z] console (info): 🔄 [bbq_boss] UPDATE START - User 966: New calc shows null (43%)
+[2025-11-07T19:28:38.536000Z] console (info): ⚠️ [bbq_boss] No tier calculated, skipping update
+[2025-11-07T19:28:38.537000Z] console (info): 🔍 [og_beef_coin] CALC START - User 966, Required products: 1 11821175439
+[2025-11-07T19:28:39.079000Z] console (info): ✅ [og_beef_coin] CALC RESULT - User 966: 0/1 (0%) → TIER: null (hasTiers: 0)
+[2025-11-07T19:28:39.079000Z] console (info): 📋 [og_beef_coin] Ranked product IDs: 
+[2025-11-07T19:28:39.080000Z] console (info): 🔄 [og_beef_coin] UPDATE START - User 966: New calc shows null (0%)
+[2025-11-07T19:28:39.080000Z] console (info): ⚠️ [og_beef_coin] No tier calculated, skipping update
+[2025-11-07T19:28:39.080000Z] console (info): 🔍 [exotic_hunter] CALC START - User 966, Required products: 19 11821167247,11821166863,11821167119,11821165071,11821164431,11821164559,11821187791,8934088966458,11971532943,11821170639,9902431404346,11821170447,11821166159,11821165775,11821165903,11971525455,9902471315770,11971532879,7101112844376
+[2025-11-07T19:28:39.435000Z] console (info): ✅ [exotic_hunter] CALC RESULT - User 966: 12/19 (63%) → TIER: silver (hasTiers: 1)
+[2025-11-07T19:28:39.435000Z] console (info): 📋 [exotic_hunter] Ranked product IDs: 11821165775,11821165903,11821166159,11821170447,11821170639,11821187791,11971525455,11971532879,11971532943,7101112844376,9902431404346,9902471315770
+[2025-11-07T19:28:39.436000Z] console (info): 🔄 [exotic_hunter] UPDATE START - User 966: New calc shows silver (63%)
+[2025-11-07T19:28:39.835000Z] console (info): 📊 [exotic_hunter] DB STATE - User 966: Current tier in DB: silver
+[2025-11-07T19:28:40.135000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 966: Checking 2 engagement achievements
+[2025-11-07T19:28:42.036000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 966: 0 total searches
+[2025-11-07T19:28:44.836000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 966: 0 total page views
+[2025-11-07T19:28:46.737000Z] console (error): Error processing gamification: Error: Failed query: select "id", "user_id", "streak_type", "current_streak", "longest_streak", "last_activity_date", "created_at", "updated_at" from "streaks" where ("streaks"."user_id" = $1 and "streaks"."streak_type" = $2) limit $3
+params: 966,login,1
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://rank.jerky.com/api/rankings/products",
+  "query": [],
+  "fragment": null,
+  "data": "{\"sessionId\":\"bae917968d3309c75a7a8811a97e1af6800c655a921c8d9f1300202f3b3c9f6b\",\"rankingListId\":\"default\",\"rankings\":[{\"ranking\":1,\"productData\":{\"id\":\"9902441595194\",\"tags\":\"bacon, easier to chew, high, high protein, jerky, maple, pork, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/maplebaconjerky.png?v=1713213634\",\"price\":\"10.99\",\"title\":\"Bacon Jerky - Maple\",\"handle\":\"maple-bacon-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":105,\"bestRank\":105,\"bodyHtml\":null,\"worstRank\":105,\"animalIcon\":\"🐷\",\"animalType\":\"pork\",\"flavorIcon\":\"🍁\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:35:29.683509\",\"rankingCount\":1,\"animalDisplay\":\"Pork\",\"flavorDisplay\":\"Sweet & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"12.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":2,\"productData\":{\"id\":\"9902446739770\",\"tags\":\"beef, child, easier to chew, gluten free, high protein, in stock, low fat, rankable, sweet bbq, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/bricktownsweetbbqbeefjerky.png?v=1713477513\",\"price\":\"8.99\",\"title\":\"Soft and Tender Style Beef Jerky - Sweet BBQ\",\"handle\":\"easier-to-chew-barbecue-beef-jerky\",\"vendor\":\"Bricktown Jerky\",\"avgRank\":52,\"bestRank\":52,\"bodyHtml\":null,\"worstRank\":52,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍬\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:34:04.556328\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Smoky & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"smoky\\\",\\\"exotic\\\"]\"}},{\"ranking\":3,\"productData\":{\"id\":\"9902468792634\",\"tags\":\"all-natural, easier to chew, high protein, honey teriyaki, in stock, low fat, no added msg, no nitrates, no nitrites, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/honeyteriyakibeefjerky.png?v=1711747957\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Honey Teriyaki\",\"handle\":\"honey-teriyaki-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":19,\"bestRank\":19,\"bodyHtml\":null,\"worstRank\":19,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍯\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:33:24.087843\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":4,\"productData\":{\"id\":\"11821179087\",\"tags\":\"5, all-natural, beef, child, chipotle bourbon, easier to chew, high protein, in stock, jerky, low fat, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/chipotlebourbonbeefjerky.png?v=1711745434\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Chipotle Bourbon\",\"handle\":\"chipotle-bourbon-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":7,\"bestRank\":5,\"bodyHtml\":null,\"worstRank\":11,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌶️\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:17.425986\",\"rankingCount\":3,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Spicy & Exotic\",\"primaryFlavor\":\"spicy\",\"uniqueRankers\":3,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"exotic\\\"]\"}},{\"ranking\":5,\"productData\":{\"id\":\"11821187791\",\"tags\":\"all-natural, buffalo wing, chicken, child, gluten free, keto, low carb, low fat, low sodium, low sugar, no added msg, no nitrates, poultry, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/buffalowingchickenjerky.png?v=1713196596\",\"price\":\"8.99\",\"title\":\"All-Natural Chicken Jerky - Buffalo Wing\",\"handle\":\"buffalo-wing-chicken-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":12,\"bestRank\":12,\"bodyHtml\":null,\"worstRank\":12,\"animalIcon\":\"🐔\",\"animalType\":\"poultry\",\"flavorIcon\":\"🌏\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:53:10.595726\",\"rankingCount\":1,\"animalDisplay\":\"Chicken\",\"flavorDisplay\":\"Exotic\",\"primaryFlavor\":\"exotic\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[]}},{\"ranking\":6,\"productData\":{\"id\":\"9902437957946\",\"tags\":\"5, all-natural, beef, easier to chew, high protein, in stock, jerky, low fat, no added msg, rankable, sweet & spicy, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/sweetandspicybeefjerky.png?v=1713193952\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Sweet & Spicy\",\"handle\":\"sweet-and-spicy-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":1,\"bestRank\":1,\"bodyHtml\":null,\"worstRank\":1,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍬\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:51:01.425878\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Spicy & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"spicy\",\"exotic\"]}},{\"ranking\":7,\"productData\":{\"id\":\"11821175887\",\"tags\":\"all-natural, beef, black pepper, child, high protein, low fat, low sugar, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/blackpepperbeefjerky.png?v=1711662755\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Black Pepper\",\"handle\":\"black-pepper-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":12.5,\"bestRank\":6,\"bodyHtml\":null,\"worstRank\":19,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌿\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:05.858444\",\"rankingCount\":2,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Peppery & Exotic\",\"primaryFlavor\":\"peppery\",\"uniqueRankers\":2,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"exotic\\\"]\"}},{\"ranking\":8,\"productData\":{\"id\":\"8032166838586\",\"tags\":\"all-natural, beef, black truffle and sea salt, child, jerky, low fat, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/blacktruffleandseasaltbeefjerky.png?v=1711663359\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Black Truffle and Sea Salt\",\"handle\":\"black-truffle-and-sea-salt-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":5,\"bestRank\":3,\"bodyHtml\":null,\"worstRank\":7,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🧂\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:11.838078\",\"rankingCount\":2,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Savory & Exotic\",\"primaryFlavor\":\"savory\",\"uniqueRankers\":2,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":9,\"productData\":{\"id\":\"7174020890712\",\"tags\":\"all-natural, beef, child, easier to chew, high protein, jerky, lemon pepper, low fat, low sodium, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/lemonpepperbeefjerky.png?v=1711748793\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Lemon Pepper\",\"handle\":\"lemon-pepper-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":13,\"bestRank\":13,\"bodyHtml\":null,\"worstRank\":13,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌿\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:52:19.63838\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Peppery & Tangy & Exotic\",\"primaryFlavor\":\"peppery\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"tangy\",\"exotic\"]}},{\"ranking\":10,\"productData\":{\"id\":\"9902471315770\",\"tags\":\"all-natural, block-exotic, exotic, kangaroo, low fat, no added msg, original, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/kangaroojerky.png?v=1713205472\",\"price\":\"14.99\",\"title\":\"All-Natural Kangaroo Jerky - Original\",\"handle\":\"original-kangaroo-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":24,\"bestRank\":24,\"bodyHtml\":null,\"worstRank\":24,\"animalIcon\":\"🦘\",\"animalType\":\"exotic\",\"flavorIcon\":\"🥩\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:33.430983\",\"rankingCount\":1,\"animalDisplay\":\"Kangaroo\",\"flavorDisplay\":\"Savory & Exotic\",\"primaryFlavor\":\"savory\",\"uniqueRankers\":1,\"compareAtPrice\":\"15.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":11,\"productData\":{\"id\":\"1299529105476\",\"tags\":\"bacon, easier to chew, honey pepper, jerky, pork, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/hon...",
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip, deflate, br, zstd"
+    ],
+    [
+      "Accept-Language",
+      "en-US,en;q=0.9"
+    ],
+    [
+      "Baggage",
+      "sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=ebe9757755f74daab3ee15b9b5e88201"
+    ],
+    [
+      "Content-Length",
+      "74435"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "rank.jerky.com"
+    ],
+    [
+      "Origin",
+      "https://rank.jerky.com"
+    ],
+    [
+      "Priority",
+      "u=1, i"
+    ],
+    [
+      "Referer",
+      "https://rank.jerky.com/"
+    ],
+    [
+      "Sec-Ch-Ua",
+      "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\""
+    ],
+    [
+      "Sec-Ch-Ua-Mobile",
+      "?0"
+    ],
+    [
+      "Sec-Ch-Ua-Platform",
+      "\"macOS\""
+    ],
+    [
+      "Sec-Fetch-Dest",
+      "empty"
+    ],
+    [
+      "Sec-Fetch-Mode",
+      "cors"
+    ],
+    [
+      "Sec-Fetch-Site",
+      "same-origin"
+    ],
+    [
+      "Sentry-Trace",
+      "ebe9757755f74daab3ee15b9b5e88201-9dbaf3ff11a6ef6e"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762543704899, pid1req;dur=1762543704941"
+    ],
+    [
+      "Traceparent",
+      "00-3dcc952d6620da755fb00ad1eb66e183-6fbca15b53229e83-00"
+    ],
+    [
+      "User-Agent",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "3dcc952d6620da755fb00ad1eb66e183/8051487647440477827"
+    ],
+    [
+      "X-Forwarded-For",
+      "70.182.230.179, 34.111.179.208, 35.191.121.126,104.154.182.220"
+    ],
+    [
+      "X-Forwarded-Host",
+      "rank.jerky.com"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ]
+  ],
+  "cookies": [
+    [
+      "__attentive_id",
+      "b4176950be574774a7b6b48559ad1df3"
+    ],
+    [
+      "_attn_",
+      "eyJ1Ijoie1wiY29cIjoxNzU0NTIwMTY4MTkyLFwidW9cIjoxNzU0NTIwMTY4MTkyLFwibWFcIjoyMTkwMCxcImluXCI6ZmFsc2UsXCJ2YWxcIjpcImI0MTc2OTUwYmU1NzQ3NzRhN2I2YjQ4NTU5YWQxZGYzXCJ9In0="
+    ],
+    [
+      "_fbc",
+      "fb.1.1762278338911.IwY2xjawN3GxBleHRuA2FlbQIxMQABHlf_ctiVvJ-pKrFdtLZYeI_fABuZGdh7p4Pf4DOHam-bNaBIpK-cfou6D5WZ_aem_fsXI5dcpv2_r64oKOPHl-g"
+    ],
+    [
+      "_fbp",
+      "fb.1.1754520166488.773682500210608387"
+    ],
+    [
+      "_ga",
+      "GA1.1.805277386.1754520166"
+    ],
+    [
+      "_ga_9QT5Y3C99N",
+      "GS2.1.s1762530659$o150$g0$t1762530659$j60$l0$h0"
+    ],
+    [
+      "_ga_P6FVBRLQCL",
+      "GS2.1.s1762530658$o150$g0$t1762530658$j60$l0$h0"
+    ],
+    [
+      "_gcl_au",
+      "1.1.1910793325.1762296971"
+    ],
+    [
+      "_gecntaos",
+      "264"
+    ],
+    [
+      "_geffresponse",
+      "5"
+    ],
+    [
+      "_gekf",
+      "a2F0ZWx5bitnbmVybnJAamVya3kuY29t"
+    ],
+    [
+      "_gekx",
+      "Mm5zUWtJN095RC1pNUQ2dXVibkFMZy5QWVl5QmI="
+    ],
+    [
+      "_geli",
+      "M2Y4Njg0OWI5NmYzY2I5NDQyZDE5ZDVhMzZlZGQ0YTA="
+    ],
+    [
+      "_gelisha",
+      "YTA4N2U3NmRlOWFiZGQ5MWNjYWVjNWFmOGQzYjI2OTQ4YWRkM2FkYmI2NjBmYWRiYTM4M2I1OTIyNWY3MzBhYQ=="
+    ],
+    [
+      "_geps",
+      "true"
+    ],
+    [
+      "_gert",
+      "cmlja3JlZWRtdXNpY0Bob3RtYWlsLmNvbQ=="
+    ],
+    [
+      "_gess",
+      "true"
+    ],
+    [
+      "_getd",
+      "M2Y4Njg0OWI5NmYzY2I5NDQyZDE5ZDVhMzZlZGQ0YTA="
+    ],
+    [
+      "_geuid",
+      "fc55df7b-0cae-4549-8fd8-e7f240a8e79c-1754520168357"
+    ],
+    [
+      "_gexp",
+      "eFNlaFkzY2NKOWEtTHFFNC1qb0ZwQTZBUUFvdHB6T3Q4S0NNOVlyLUlyQ0tzbXpoMk9iMTdwS3Y4OXdPNUtnSy5QWVl5QmI="
+    ],
+    [
+      "_lc2_fpi",
+      "cb30ed6ebd06--01k20rta10f3am3hwz5k25ycnw"
+    ],
+    [
+      "_reidsn",
+      "i_1.06"
+    ],
+    [
+      "_shopify_y",
+      "709a9056-52a2-460c-afe9-1262f5e4437f"
+    ],
+    [
+      "_tracking_consent",
+      "3.AMPS_USOK_f_f_4sPGUQ-0SyGXkxrhSF7KnA"
+    ],
+    [
+      "_uetsid",
+      "8f8ec660b8cd11f0ad851b69dcd74f81"
+    ],
+    [
+      "_uetvid",
+      "ac5214f0731611f0af64d5a6f41b2bfb"
+    ],
+    [
+      "attntv_mstore_email",
+      "katelyn+gnernr@jerky.com:0"
+    ],
+    [
+      "datadome",
+      "dZUk40nuT3LVRtW_eJ~_SBSETmlz8d6OoafKBMu~OhxHY02hQ6v7lQnDBsKlBfelggMji~Y9F0m2XlpLMk78oj1NnJxsuZ~l94MUFRl4E_eOjBW3LsB_G2bhCXzOwhAK"
+    ],
+    [
+      "session_id",
+      "bae917968d3309c75a7a8811a97e1af6800c655a921c8d9f1300202f3b3c9f6b"
+    ]
+  ],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

@@ -1,5 +1,5 @@
 const { desc, sql, eq } = require('drizzle-orm');
-const { users, productRankings, userAchievements, achievements, pageViews, userProductSearches } = require('../../shared/schema');
+const { users, productRankings, userAchievements, achievements } = require('../../shared/schema');
 const LeaderboardPositionCache = require('../cache/LeaderboardPositionCache');
 const LeaderboardCache = require('../cache/LeaderboardCache');
 

@@ -1,0 +1,578 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-1Y
+Title: Error: Failed query: 
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-07T19:27:54.091000Z
+Last Seen: 2025-11-07T19:28:23Z
+Event Count: 6
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: 
+
+--- CULPRIT ---
+POST /api/rankings/products
+
+--- STACK TRACE ---
+error: relation "page_views" does not exist
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at LeaderboardManager.getUserPosition (/home/runner/workspace/server/services/LeaderboardManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+
+Error: Failed query: 
+      WITH 
+      -- Pre-aggregate achievements per user
+      user_achievements_agg AS (
+        SELECT user_id, COUNT(*)::int as achievement_count
+        FROM user_achievements
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate page views per user
+      user_pageviews_agg AS (
+        SELECT user_id, COUNT(*)::int as pageview_count
+        FROM page_views
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate rankings per user
+      user_rankings_agg AS (
+        SELECT 
+          user_id, 
+          COUNT(*)::int as ranking_count,
+          COUNT(DISTINCT shopify_product_id)::int as unique_products
+        FROM product_rankings
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate searches per user
+      user_searches_agg AS (
+        SELECT user_id, COUNT(*)::int as search_count
+        FROM user_product_searches
+        
+        GROUP BY user_id
+      ),
+      -- Join pre-aggregated results (small tables)
+      all_scores AS (
+        SELECT 
+          u.id as user_id,
+          COALESCE(ra.unique_products, 0) as unique_products,
+          (COALESCE(ach.achievement_count, 0) 
+           + COALESCE(pv.pageview_count, 0) 
+           + COALESCE(ra.ranking_count, 0) 
+           + COALESCE(s.search_count, 0))::int as engagement_score
+        FROM users u
+        LEFT JOIN user_achievements_agg ach ON ach.user_id = u.id
+        LEFT JOIN user_pageviews_agg pv ON pv.user_id = u.id
+        LEFT JOIN user_rankings_agg ra ON ra.user_id = u.id
+        LEFT JOIN user_searches_agg s ON s.user_id = u.id
+        WHERE u.active = true
+        AND (COALESCE(ach.achievement_count, 0) 
+               + COALESCE(pv.pageview_count, 0) 
+               + COALESCE(ra.ranking_count, 0) 
+               + COALESCE(s.search_count, 0)) > 0
+      ),
+      user_score AS (
+        SELECT * FROM all_scores WHERE user_id = 966
+      ),
+      higher_scores AS (
+        SELECT COUNT(*)::int as users_above
+        FROM all_scores
+        WHERE engagement_score > (SELECT engagement_score FROM user_score)
+      ),
+      total_active AS (
+        SELECT COUNT(*)::int as total_users FROM all_scores
+      )
+      SELECT 
+        us.user_id,
+        us.unique_products,
+        us.engagement_score,
+        COALESCE((SELECT users_above FROM higher_scores), 0) + 1 as rank,
+        COALESCE((SELECT total_users FROM total_active), 0) as total_users
+      FROM user_score us
+    
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at LeaderboardManager.getUserPosition (/home/runner/workspace/server/services/LeaderboardManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T17:52:49.266000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T17:57:52.015000Z] console (info): 👋 WebSocket client disconnected: rlSruj63iaarmwzEACxX
+[2025-11-07T17:57:52.016000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:02:55.016000Z] console (info): 👋 WebSocket client disconnected: b3QL8CnMrWS-RlowACxZ
+[2025-11-07T18:02:55.016000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:07:58.081000Z] console (info): 👋 WebSocket client disconnected: JmOlq6O7yvNVdZKfACxb
+[2025-11-07T18:07:58.081000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:13:01.014000Z] console (info): 👋 WebSocket client disconnected: 6JNnKgJuf6GGNL6xACxd
+[2025-11-07T18:13:01.014000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:18:04.061000Z] console (info): 👋 WebSocket client disconnected: vT7VlSlTlhFjSN9NACxf
+[2025-11-07T18:18:04.061000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:19:58.874000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T18:20:38.838000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T18:23:07.037000Z] console (info): 👋 WebSocket client disconnected: yc1QnCec26kCImhQACxh
+[2025-11-07T18:23:07.037000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:28:10.088000Z] console (info): 👋 WebSocket client disconnected: sg_obZ5aRc5S7TZyACxj
+[2025-11-07T18:28:10.088000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:33:13.197000Z] console (info): 👋 WebSocket client disconnected: 5ubelioj7N4QTCi3ACxl
+[2025-11-07T18:33:13.197000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:38:16.113000Z] console (info): 👋 WebSocket client disconnected: rFDYKcmWgOm1mqECACxn
+[2025-11-07T18:38:16.113000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:43:19.172000Z] console (info): 👋 WebSocket client disconnected: gcwag_SECmLdujyjACxp
+[2025-11-07T18:43:19.172000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:48:22.368000Z] console (info): 👋 WebSocket client disconnected: gcnUYKiLHN2TZk_MACxr
+[2025-11-07T18:48:22.368000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:53:24.959000Z] console (info): 👋 WebSocket client disconnected: CY4UU2hLJfCVRQOTACxt
+[2025-11-07T18:53:24.959000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T18:57:47.545000Z] console (info): 👋 WebSocket client disconnected: KDIty2M7A34FfylnACxv
+[2025-11-07T18:57:47.545000Z] console (info): 👤 User 961 still has 2 active socket(s)
+[2025-11-07T19:00:03.428000Z] console (info): 👋 WebSocket client disconnected: LtSKH5uWpkPLBccgACx1
+[2025-11-07T19:00:44.833000Z] console (info): 👋 WebSocket client disconnected: kKBfHcLFBsEnK4YxACxx
+[2025-11-07T19:00:44.833000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:01:42.569000Z] console (info): 👋 WebSocket client disconnected: rscRKAgsfgsvFYaWACx7
+[2025-11-07T19:02:59.283000Z] console (info): [Filtered]
+[2025-11-07T19:02:59.283000Z] console (info): 📡 TEST: Sent test:ping to socket 5HSQaGFeQ4-YebJ_ACx_
+[2025-11-07T19:03:01.127000Z] console (info): 👋 WebSocket client disconnected: 5HSQaGFeQ4-YebJ_ACx_
+[2025-11-07T19:03:01.127000Z] console (info): 👤 User 962 fully disconnected (no active sockets)
+[2025-11-07T19:03:03.412000Z] console (info): [Filtered]
+[2025-11-07T19:03:03.413000Z] console (info): 📡 TEST: Sent test:ping to socket pX1HSgOiq3qmnULyACyB
+[2025-11-07T19:03:04.003000Z] console (info): 👋 WebSocket client disconnected: z0wT-bjV1acCJQK0ACxz
+[2025-11-07T19:04:14.048000Z] console (info): 👋 WebSocket client disconnected: PYxdaBPSGJOakO1PACx3
+[2025-11-07T19:04:14.048000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:05:16.447000Z] console (info): 👋 WebSocket client disconnected: 9EFTR-SF13VGql5mACx9
+[2025-11-07T19:05:29.507000Z] console (info): 👋 WebSocket client disconnected: 2lwTFBak2a0-Hdk1ACyF
+[2025-11-07T19:05:30.608000Z] console (info): 👋 WebSocket client disconnected: oh2MfuZA4GtuV3xzACyL
+[2025-11-07T19:05:48.231000Z] console (info): 👋 WebSocket client disconnected: u2sGmhCI0K9V87Q0ACx5
+[2025-11-07T19:05:48.232000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:06:44.610000Z] console (info): 👋 WebSocket client disconnected: ALouo5qdE5yBtjLRACyJ
+[2025-11-07T19:08:03.426000Z] console (info): 👋 WebSocket client disconnected: Yv_6zZ7dBLoNC48yACyN
+[2025-11-07T19:08:03.426000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:08:04.125000Z] console (info): 👋 WebSocket client disconnected: pX1HSgOiq3qmnULyACyB
+[2025-11-07T19:08:04.125000Z] console (info): 👤 User 3 fully disconnected (no active sockets)
+[2025-11-07T19:08:06.756000Z] console (info): 👋 WebSocket client disconnected: 6APjoZWF1AzVwIJ1ACyD
+[2025-11-07T19:08:06.756000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:09:16.370000Z] console (info): 👋 WebSocket client disconnected: f5PdENQGiXtdN9r9ACyH
+[2025-11-07T19:09:16.370000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:13:05.423000Z] console (info): 👋 WebSocket client disconnected: 3cbPl6d6eA_ENSZ4ACyP
+[2025-11-07T19:13:05.423000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:13:06.466000Z] console (info): 👋 WebSocket client disconnected: 5dpXM42TXuyD_gjLACyR
+[2025-11-07T19:13:06.466000Z] console (info): 👤 User 3 fully disconnected (no active sockets)
+[2025-11-07T19:13:09.886000Z] console (info): 👋 WebSocket client disconnected: _3w-g2NIc8UKBwg-ACyT
+[2025-11-07T19:13:09.886000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:13:55.907000Z] console (info): 👋 WebSocket client disconnected: oJGfWPQa6r4xlwoBACyb
+[2025-11-07T19:13:55.907000Z] console (info): 👤 User 3 fully disconnected (no active sockets)
+[2025-11-07T19:14:19.177000Z] console (info): 👋 WebSocket client disconnected: NvjkhA9sY_5_pFKJACyV
+[2025-11-07T19:14:19.177000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:15:59.402000Z] console (info): 👋 WebSocket client disconnected: 3K6A9AaNZytqd5HFACyX
+[2025-11-07T19:15:59.402000Z] console (info): 👤 User 962 fully disconnected (no active sockets)
+[2025-11-07T19:18:08.020000Z] console (info): 👋 WebSocket client disconnected: nR8dy7YylsyJDuOPACyZ
+[2025-11-07T19:18:08.020000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:18:12.738000Z] console (info): 👋 WebSocket client disconnected: pXhfvr7E_OAGTm4pACyd
+[2025-11-07T19:18:12.738000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:19:21.597000Z] console (info): 👋 WebSocket client disconnected: 7emUelBUxRY5i6IoACyh
+[2025-11-07T19:19:21.598000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:19:53.122000Z] console (info): 👋 WebSocket client disconnected: apHVUdkZo3FDKnNWACyn
+[2025-11-07T19:19:53.122000Z] console (info): 👤 User 966 still has 1 active socket(s)
+[2025-11-07T19:19:58.857000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T19:21:01.634000Z] console (info): 👋 WebSocket client disconnected: Sxqs7C1YCZ95O25rACyj
+[2025-11-07T19:21:01.634000Z] console (info): 👤 User 962 fully disconnected (no active sockets)
+[2025-11-07T19:21:33.326000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T19:23:01.725000Z] console (info): 👋 WebSocket client disconnected: aGezg_DCK-O9otFyACyr
+[2025-11-07T19:23:01.725000Z] console (info): 👤 User 962 fully disconnected (no active sockets)
+[2025-11-07T19:23:11.163000Z] console (info): 👋 WebSocket client disconnected: jgdBhx_iN17RlYF3ACyl
+[2025-11-07T19:23:11.163000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:24:23.770000Z] console (info): 👋 WebSocket client disconnected: 0gX4bXOseCtSCk8jACyp
+[2025-11-07T19:24:23.770000Z] console (info): 👤 User 966 fully disconnected (no active sockets)
+[2025-11-07T19:28:03.615000Z] console (info): 👋 WebSocket client disconnected: hdtD_qozbuZDzxCXACyt
+[2025-11-07T19:28:03.615000Z] console (info): 👤 User 962 fully disconnected (no active sockets)
+[2025-11-07T19:28:14.121000Z] console (info): 👋 WebSocket client disconnected: 2bI6xLuiO_USSax8ACyv
+[2025-11-07T19:28:14.121000Z] console (info): 👤 User 961 still has 1 active socket(s)
+[2025-11-07T19:28:23.121000Z] console (info): 🗑️ RankingStats cache invalidated
+[2025-11-07T19:28:23.121000Z] console (info): 🗑️ LeaderboardPositionCache INVALIDATE ALL: Clearing all positions
+[2025-11-07T19:28:23.121000Z] console (info): 🗑️ HomeStatsCache INVALIDATE: Clearing cache
+[2025-11-07T19:28:23.121000Z] console (info): 🗑️ LeaderboardCache INVALIDATE: All entries
+[2025-11-07T19:28:23.121000Z] console (info): ✅ Bulk saved 97 product rankings for user 966
+[2025-11-07T19:28:23.121000Z] console (info): 🎮 Starting async gamification for user 966
+[2025-11-07T19:28:23.128000Z] console (info): 🔥 Updating streak for user 966...
+[2025-11-07T19:28:23.175000Z] console (info): 🔥 Streak update result: [object Object]
+[2025-11-07T19:28:23.310000Z] console (info): 🚫 LeaderboardPositionCache MISS: User 966 (all_time)
+[2025-11-07T19:28:23.355000Z] console (error): Error processing gamification: Error: Failed query: 
+      WITH 
+      -- Pre-aggregate achievements per user
+      user_achievements_agg AS (
+        SELECT user_id, COUNT(*)::int as achievement_count
+        FROM user_achievements
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate page views per user
+      user_pageviews_agg AS (
+        SELECT user_id, COUNT(*)::int as pageview_count
+        FROM page_views
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate rankings per user
+      user_rankings_agg AS (
+        SELECT 
+          user_id, 
+          COUNT(*)::int as ranking_count,
+          COUNT(DISTINCT shopify_product_id)::int as unique_products
+        FROM product_rankings
+        
+        GROUP BY user_id
+      ),
+      -- Pre-aggregate searches per user
+      user_searches_agg AS (
+        SELECT user_id, COUNT(*)::int as search_count
+        FROM user_product_searches
+        
+        GROUP BY user_id
+      ),
+      -- Join pre-aggregated results (small tables)
+      all_scores AS (
+        SELECT 
+          u.id as user_id,
+          COALESCE(ra.unique_products, 0) as unique_products,
+          (COALESCE(ach.achievement_count, 0) 
+           + COALESCE(pv.pageview_count, 0) 
+           + COALESCE(ra.ranking_count, 0) 
+           + COALESCE(s.search_count, 0))::int as engagement_score
+        FROM users u
+        LEFT JOIN user_achievements_agg ach ON ach.user_id = u.id
+        LEFT JOIN user_pageviews_agg pv ON pv.user_id = u.id
+        LEFT JOIN user_rankings_agg ra ON ra.user_id = u.id
+        LEFT JOIN user_searches_agg s ON s.user_id = u.id
+        WHERE u.active = true
+        AND (COALESCE(ach.achievement_count, 0) 
+               + COALESCE(pv.pageview_count, 0) 
+               + COALESCE(ra.ranking_count, 0) 
+               + COALESCE(s.search_count, 0)) > 0
+      ),
+      user_score AS (
+        SELECT * FROM all_scores WHERE user_id = 966
+      ),
+      higher_scores AS (
+        SELECT COUNT(*)::int as users_above
+        FROM all_scores
+        WHERE engagement...
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://rank.jerky.com/api/rankings/products",
+  "query": [],
+  "fragment": null,
+  "data": "{\"sessionId\":\"bae917968d3309c75a7a8811a97e1af6800c655a921c8d9f1300202f3b3c9f6b\",\"rankingListId\":\"default\",\"rankings\":[{\"ranking\":1,\"productData\":{\"id\":\"9902441595194\",\"tags\":\"bacon, easier to chew, high, high protein, jerky, maple, pork, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/maplebaconjerky.png?v=1713213634\",\"price\":\"10.99\",\"title\":\"Bacon Jerky - Maple\",\"handle\":\"maple-bacon-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":105,\"bestRank\":105,\"bodyHtml\":null,\"worstRank\":105,\"animalIcon\":\"🐷\",\"animalType\":\"pork\",\"flavorIcon\":\"🍁\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:35:29.683509\",\"rankingCount\":1,\"animalDisplay\":\"Pork\",\"flavorDisplay\":\"Sweet & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"12.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":2,\"productData\":{\"id\":\"9902446739770\",\"tags\":\"beef, child, easier to chew, gluten free, high protein, in stock, low fat, rankable, sweet bbq, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/bricktownsweetbbqbeefjerky.png?v=1713477513\",\"price\":\"8.99\",\"title\":\"Soft and Tender Style Beef Jerky - Sweet BBQ\",\"handle\":\"easier-to-chew-barbecue-beef-jerky\",\"vendor\":\"Bricktown Jerky\",\"avgRank\":52,\"bestRank\":52,\"bodyHtml\":null,\"worstRank\":52,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍬\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:34:04.556328\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Smoky & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"smoky\\\",\\\"exotic\\\"]\"}},{\"ranking\":3,\"productData\":{\"id\":\"9902468792634\",\"tags\":\"all-natural, easier to chew, high protein, honey teriyaki, in stock, low fat, no added msg, no nitrates, no nitrites, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/honeyteriyakibeefjerky.png?v=1711747957\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Honey Teriyaki\",\"handle\":\"honey-teriyaki-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":19,\"bestRank\":19,\"bodyHtml\":null,\"worstRank\":19,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍯\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-30 21:33:24.087843\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":4,\"productData\":{\"id\":\"11821179087\",\"tags\":\"5, all-natural, beef, child, chipotle bourbon, easier to chew, high protein, in stock, jerky, low fat, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/chipotlebourbonbeefjerky.png?v=1711745434\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Chipotle Bourbon\",\"handle\":\"chipotle-bourbon-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":7,\"bestRank\":5,\"bodyHtml\":null,\"worstRank\":11,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌶️\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:17.425986\",\"rankingCount\":3,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Spicy & Exotic\",\"primaryFlavor\":\"spicy\",\"uniqueRankers\":3,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"exotic\\\"]\"}},{\"ranking\":5,\"productData\":{\"id\":\"11821187791\",\"tags\":\"all-natural, buffalo wing, chicken, child, gluten free, keto, low carb, low fat, low sodium, low sugar, no added msg, no nitrates, poultry, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/buffalowingchickenjerky.png?v=1713196596\",\"price\":\"8.99\",\"title\":\"All-Natural Chicken Jerky - Buffalo Wing\",\"handle\":\"buffalo-wing-chicken-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":12,\"bestRank\":12,\"bodyHtml\":null,\"worstRank\":12,\"animalIcon\":\"🐔\",\"animalType\":\"poultry\",\"flavorIcon\":\"🌏\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:53:10.595726\",\"rankingCount\":1,\"animalDisplay\":\"Chicken\",\"flavorDisplay\":\"Exotic\",\"primaryFlavor\":\"exotic\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[]}},{\"ranking\":6,\"productData\":{\"id\":\"9902437957946\",\"tags\":\"5, all-natural, beef, easier to chew, high protein, in stock, jerky, low fat, no added msg, rankable, sweet & spicy, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/sweetandspicybeefjerky.png?v=1713193952\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Sweet & Spicy\",\"handle\":\"sweet-and-spicy-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":1,\"bestRank\":1,\"bodyHtml\":null,\"worstRank\":1,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🍬\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:51:01.425878\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Sweet & Spicy & Exotic\",\"primaryFlavor\":\"sweet\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"spicy\",\"exotic\"]}},{\"ranking\":7,\"productData\":{\"id\":\"11821175887\",\"tags\":\"all-natural, beef, black pepper, child, high protein, low fat, low sugar, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/blackpepperbeefjerky.png?v=1711662755\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Black Pepper\",\"handle\":\"black-pepper-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":12.5,\"bestRank\":6,\"bodyHtml\":null,\"worstRank\":19,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌿\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:05.858444\",\"rankingCount\":2,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Peppery & Exotic\",\"primaryFlavor\":\"peppery\",\"uniqueRankers\":2,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":\"[\\\"exotic\\\"]\"}},{\"ranking\":8,\"productData\":{\"id\":\"8032166838586\",\"tags\":\"all-natural, beef, black truffle and sea salt, child, jerky, low fat, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/blacktruffleandseasaltbeefjerky.png?v=1711663359\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Black Truffle and Sea Salt\",\"handle\":\"black-truffle-and-sea-salt-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":5,\"bestRank\":3,\"bodyHtml\":null,\"worstRank\":7,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🧂\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:11.838078\",\"rankingCount\":2,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Savory & Exotic\",\"primaryFlavor\":\"savory\",\"uniqueRankers\":2,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":9,\"productData\":{\"id\":\"7174020890712\",\"tags\":\"all-natural, beef, child, easier to chew, high protein, jerky, lemon pepper, low fat, low sodium, no added msg, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/lemonpepperbeefjerky.png?v=1711748793\",\"price\":\"8.99\",\"title\":\"All-Natural Beef Jerky - Lemon Pepper\",\"handle\":\"lemon-pepper-beef-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":13,\"bestRank\":13,\"bodyHtml\":null,\"worstRank\":13,\"animalIcon\":\"🐄\",\"animalType\":\"cattle\",\"flavorIcon\":\"🌿\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 18:52:19.63838\",\"rankingCount\":1,\"animalDisplay\":\"Beef\",\"flavorDisplay\":\"Peppery & Tangy & Exotic\",\"primaryFlavor\":\"peppery\",\"uniqueRankers\":1,\"compareAtPrice\":\"10.99\",\"secondaryFlavors\":[\"tangy\",\"exotic\"]}},{\"ranking\":10,\"productData\":{\"id\":\"9902471315770\",\"tags\":\"all-natural, block-exotic, exotic, kangaroo, low fat, no added msg, original, rankable, somewhere in the middle, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/kangaroojerky.png?v=1713205472\",\"price\":\"14.99\",\"title\":\"All-Natural Kangaroo Jerky - Original\",\"handle\":\"original-kangaroo-jerky\",\"vendor\":\"Jerky.com\",\"avgRank\":24,\"bestRank\":24,\"bodyHtml\":null,\"worstRank\":24,\"animalIcon\":\"🦘\",\"animalType\":\"exotic\",\"flavorIcon\":\"🥩\",\"productType\":\"Jerky\",\"lastRankedAt\":\"2025-10-31 19:05:33.430983\",\"rankingCount\":1,\"animalDisplay\":\"Kangaroo\",\"flavorDisplay\":\"Savory & Exotic\",\"primaryFlavor\":\"savory\",\"uniqueRankers\":1,\"compareAtPrice\":\"15.99\",\"secondaryFlavors\":[\"exotic\"]}},{\"ranking\":11,\"productData\":{\"id\":\"1299529105476\",\"tags\":\"bacon, easier to chew, honey pepper, jerky, pork, rankable, Tool Tip Auto Delivery\",\"image\":\"https://cdn.shopify.com/s/files/1/1866/5947/files/hon...",
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip, deflate, br, zstd"
+    ],
+    [
+      "Accept-Language",
+      "en-US,en;q=0.9"
+    ],
+    [
+      "Baggage",
+      "sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=ebe9757755f74daab3ee15b9b5e88201"
+    ],
+    [
+      "Content-Length",
+      "73713"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "rank.jerky.com"
+    ],
+    [
+      "Origin",
+      "https://rank.jerky.com"
+    ],
+    [
+      "Priority",
+      "u=1, i"
+    ],
+    [
+      "Referer",
+      "https://rank.jerky.com/"
+    ],
+    [
+      "Sec-Ch-Ua",
+      "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\""
+    ],
+    [
+      "Sec-Ch-Ua-Mobile",
+      "?0"
+    ],
+    [
+      "Sec-Ch-Ua-Platform",
+      "\"macOS\""
+    ],
+    [
+      "Sec-Fetch-Dest",
+      "empty"
+    ],
+    [
+      "Sec-Fetch-Mode",
+      "cors"
+    ],
+    [
+      "Sec-Fetch-Site",
+      "same-origin"
+    ],
+    [
+      "Sentry-Trace",
+      "ebe9757755f74daab3ee15b9b5e88201-9dbaf3ff11a6ef6e"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762543698346, pid1req;dur=1762543698368"
+    ],
+    [
+      "Traceparent",
+      "00-c6b7cb3e49855d3ad09dbb962d561859-f981d2260d65a1fd-00"
+    ],
+    [
+      "User-Agent",
+      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "c6b7cb3e49855d3ad09dbb962d561859/17978882248315085309"
+    ],
+    [
+      "X-Forwarded-For",
+      "70.182.230.179, 34.111.179.208, 35.191.121.124,136.112.194.250"
+    ],
+    [
+      "X-Forwarded-Host",
+      "rank.jerky.com"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ]
+  ],
+  "cookies": [
+    [
+      "__attentive_id",
+      "b4176950be574774a7b6b48559ad1df3"
+    ],
+    [
+      "_attn_",
+      "eyJ1Ijoie1wiY29cIjoxNzU0NTIwMTY4MTkyLFwidW9cIjoxNzU0NTIwMTY4MTkyLFwibWFcIjoyMTkwMCxcImluXCI6ZmFsc2UsXCJ2YWxcIjpcImI0MTc2OTUwYmU1NzQ3NzRhN2I2YjQ4NTU5YWQxZGYzXCJ9In0="
+    ],
+    [
+      "_fbc",
+      "fb.1.1762278338911.IwY2xjawN3GxBleHRuA2FlbQIxMQABHlf_ctiVvJ-pKrFdtLZYeI_fABuZGdh7p4Pf4DOHam-bNaBIpK-cfou6D5WZ_aem_fsXI5dcpv2_r64oKOPHl-g"
+    ],
+    [
+      "_fbp",
+      "fb.1.1754520166488.773682500210608387"
+    ],
+    [
+      "_ga",
+      "GA1.1.805277386.1754520166"
+    ],
+    [
+      "_ga_9QT5Y3C99N",
+      "GS2.1.s1762530659$o150$g0$t1762530659$j60$l0$h0"
+    ],
+    [
+      "_ga_P6FVBRLQCL",
+      "GS2.1.s1762530658$o150$g0$t1762530658$j60$l0$h0"
+    ],
+    [
+      "_gcl_au",
+      "1.1.1910793325.1762296971"
+    ],
+    [
+      "_gecntaos",
+      "264"
+    ],
+    [
+      "_geffresponse",
+      "5"
+    ],
+    [
+      "_gekf",
+      "a2F0ZWx5bitnbmVybnJAamVya3kuY29t"
+    ],
+    [
+      "_gekx",
+      "Mm5zUWtJN095RC1pNUQ2dXVibkFMZy5QWVl5QmI="
+    ],
+    [
+      "_geli",
+      "M2Y4Njg0OWI5NmYzY2I5NDQyZDE5ZDVhMzZlZGQ0YTA="
+    ],
+    [
+      "_gelisha",
+      "YTA4N2U3NmRlOWFiZGQ5MWNjYWVjNWFmOGQzYjI2OTQ4YWRkM2FkYmI2NjBmYWRiYTM4M2I1OTIyNWY3MzBhYQ=="
+    ],
+    [
+      "_geps",
+      "true"
+    ],
+    [
+      "_gert",
+      "cmlja3JlZWRtdXNpY0Bob3RtYWlsLmNvbQ=="
+    ],
+    [
+      "_gess",
+      "true"
+    ],
+    [
+      "_getd",
+      "M2Y4Njg0OWI5NmYzY2I5NDQyZDE5ZDVhMzZlZGQ0YTA="
+    ],
+    [
+      "_geuid",
+      "fc55df7b-0cae-4549-8fd8-e7f240a8e79c-1754520168357"
+    ],
+    [
+      "_gexp",
+      "eFNlaFkzY2NKOWEtTHFFNC1qb0ZwQTZBUUFvdHB6T3Q4S0NNOVlyLUlyQ0tzbXpoMk9iMTdwS3Y4OXdPNUtnSy5QWVl5QmI="
+    ],
+    [
+      "_lc2_fpi",
+      "cb30ed6ebd06--01k20rta10f3am3hwz5k25ycnw"
+    ],
+    [
+      "_reidsn",
+      "i_1.06"
+    ],
+    [
+      "_shopify_y",
+      "709a9056-52a2-460c-afe9-1262f5e4437f"
+    ],
+    [
+      "_tracking_consent",
+      "3.AMPS_USOK_f_f_4sPGUQ-0SyGXkxrhSF7KnA"
+    ],
+    [
+      "_uetsid",
+      "8f8ec660b8cd11f0ad851b69dcd74f81"
+    ],
+    [
+      "_uetvid",
+      "ac5214f0731611f0af64d5a6f41b2bfb"
+    ],
+    [
+      "attntv_mstore_email",
+      "katelyn+gnernr@jerky.com:0"
+    ],
+    [
+      "datadome",
+      "dZUk40nuT3LVRtW_eJ~_SBSETmlz8d6OoafKBMu~OhxHY02hQ6v7lQnDBsKlBfelggMji~Y9F0m2XlpLMk78oj1NnJxsuZ~l94MUFRl4E_eOjBW3LsB_G2bhCXzOwhAK"
+    ],
+    [
+      "session_id",
+      "bae917968d3309c75a7a8811a97e1af6800c655a921c8d9f1300202f3b3c9f6b"
+    ]
+  ],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

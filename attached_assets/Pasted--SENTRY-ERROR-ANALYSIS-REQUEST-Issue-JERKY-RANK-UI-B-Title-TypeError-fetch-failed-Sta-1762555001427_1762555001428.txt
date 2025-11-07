@@ -1,0 +1,188 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-B
+Title: TypeError: fetch failed
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-10-25T15:31:10.503000Z
+Last Seen: 2025-11-07T19:36:34Z
+Event Count: 21
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+TypeError: fetch failed
+
+--- CULPRIT ---
+?(undici)
+
+--- STACK TRACE ---
+TypeError: fetch failed
+  at anonymous (node:internal/deps/undici/undici:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at getDefaultBucketId (/home/runner/workspace/node_modules/@replit/object-storage/dist/index.js:?:?)
+  at Client.init (/home/runner/workspace/node_modules/@replit/object-storage/dist/index.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T19:36:21.290000Z] console (info): ✅ Sentry error monitoring initialized (PRODUCTION @ ee30204d-70b2-4d6c-982d-39b9a79d59bc-00-1se2lk54tlocz.spock.replit.dev)
+[2025-11-07T19:36:21.290000Z] console (info): 🚀 Starting Jerky Top N Web Application...
+[2025-11-07T19:36:21.290000Z] console (info): 🔍 Checking environment configuration...
+[2025-11-07T19:36:21.290000Z] console (info): [Filtered]
+[2025-11-07T19:36:21.290000Z] console (info): ✅ Database URL found
+[2025-11-07T19:36:21.573000Z] console (info): 📂 Database storage connected
+[2025-11-07T19:36:21.573000Z] console (info): [Filtered]
+[2025-11-07T19:36:21.573000Z] console (info): 🏪  Shop Domain: jerky-com.myshopify.com
+[2025-11-07T19:36:21.573000Z] console (info): 🌐  App Domain: ee30204d-70b2-4d6c-982d-39b9a79d59bc-00-1se2lk54tlocz.spock.replit.dev
+[2025-11-07T19:36:21.574000Z] console (info): 🔑  Using Customer Account API for jerky.com accounts
+[2025-11-07T19:36:22.947000Z] console (info): ✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+[2025-11-07T19:36:25.939000Z] console (info): ✅ Rate limiters configured using memory (single-instance)
+[2025-11-07T19:36:30.403000Z] console (info): 💾 Primary database connection configured (no pooler - read from primary)
+[2025-11-07T19:36:31.659000Z] console (info): ✅ Server successfully started!
+[2025-11-07T19:36:31.660000Z] console (info): 🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+[2025-11-07T19:36:31.660000Z] console (info): Visit the app at: http://localhost:5000
+[2025-11-07T19:36:31.660000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-07T19:36:31.660000Z] console (info): 📊 Service Status:
+[2025-11-07T19:36:31.660000Z] console (info):    Shopify Integration: ✅ Available
+[2025-11-07T19:36:31.660000Z] console (info):    Database: ✅ Connected
+[2025-11-07T19:36:31.660000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-07T19:36:31.679000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-07T19:36:31.679000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-07T19:36:31.679000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-07T19:36:31.679000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-07T19:36:31.680000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-07T19:36:31.694000Z] console (info): [Filtered]
+[2025-11-07T19:36:31.707000Z] console (info): 🎮 Initializing gamification system...
+[2025-11-07T19:36:31.708000Z] console (info): ⚠️ recentAchievements: Using in-memory cache (single-instance only)
+[2025-11-07T19:36:31.708000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-07T19:36:31.708000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-07T19:36:31.708000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-07T19:36:31.825000Z] console (info): ✅ Redis connection pool established
+[2025-11-07T19:36:31.875000Z] console (info): ✅ Redis connection pool established
+[2025-11-07T19:36:31.966000Z] console (info): ✅ Redis ready for commands
+[2025-11-07T19:36:32.003000Z] console (info): 🏓 Redis PING successful - connection pool active
+[2025-11-07T19:36:32.005000Z] console (info): ✅ Classification queue initialized
+[2025-11-07T19:36:32.008000Z] console (info): ✅ Gamification routes registered at /api/gamification
+[2025-11-07T19:36:32.008000Z] console (info): ✅ Community routes registered at /api/community
+[2025-11-07T19:36:32.008000Z] console (info): ✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+[2025-11-07T19:36:32.008000Z] console (info): 🏷️  WebSocket environment prefix: dev
+[2025-11-07T19:36:32.009000Z] console (info): ✅ WebSocket gateway initialized
+[2025-11-07T19:36:32.009000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T19:36:32.011000Z] console (info): ✅ Classification worker initialized (concurrency: 5)
+[2025-11-07T19:36:32.011000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T19:36:32.011000Z] console (info): ✅ Bulk import queue initialized
+[2025-11-07T19:36:32.012000Z] console (info): ✅ BulkImportService initialized with WebSocket gateway and classification queue
+[2025-11-07T19:36:32.012000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T19:36:32.012000Z] console (info): ✅ Bulk import worker initialized (concurrency: 15, rate limit: 50 jobs/min)
+[2025-11-07T19:36:32.014000Z] console (info): 🎮 Gamification system initialized successfully
+[2025-11-07T19:36:32.021000Z] console (info): ✅ Gamification services available for achievements
+[2025-11-07T19:36:32.120000Z] console (info): 📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*
+[2025-11-07T19:36:32.125000Z] console (info): ✅ Tools routes registered at /api/tools
+[2025-11-07T19:36:33.482000Z] console (info): ✅ Object storage route registered at /objects/*
+[2025-11-07T19:36:34.171000Z] console (info): ✅ Admin routes registered at /api/admin
+[2025-11-07T19:36:34.171000Z] console (info): ✅ Catch-all route registered (serves React SPA)
+[2025-11-07T19:36:34.173000Z] console (info): 🔥 CacheWarmer: Starting to warm 3 cache(s)...
+[2025-11-07T19:36:34.173000Z] console (info): 🚫 HomeStatsCache MISS: Data expired or not found
+[2025-11-07T19:36:34.174000Z] console (info): 🚫 LeaderboardCache MISS: all_time:5
+[2025-11-07T19:36:34.176000Z] console (info): 🚫 LeaderboardCache MISS: all_time:5
+[2025-11-07T19:36:34.176000Z] console (info): 🚫 Cache MISS: No cached data
+[2025-11-07T19:36:34.177000Z] console (info): 🔄 Fetching fresh products from Shopify API...
+[2025-11-07T19:36:34.196000Z] console (info): 📨 Registering Shopify webhooks...
+[2025-11-07T19:36:34.198000Z] console (info): ✅ Redis ready for commands
+[2025-11-07T19:36:34.198000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-07T19:36:34.200000Z] console (error): ❌ Failed to seed achievement first_rank: Failed query: 
+          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+          VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8::jsonb,
+            $9,
+            $10
+          )
+          ON CONFLICT (code) DO UPDATE SET
+            name = EXCLUDED.name,
+            description = EXCLUDED.description,
+            icon = EXCLUDED.icon,
+            tier = EXCLUDED.tier,
+            category = EXCLUDED.category,
+            collection_type = EXCLUDED.collection_type,
+            requirement = EXCLUDED.requirement,
+            has_tiers = EXCLUDED.has_tiers,
+            points = EXCLUDED.points
+        
+params: first_rank,First Steps,Rank your first product,🎯,bronze,ranking,legacy,{"type":"rank_count","value":1},0,10 Error: Failed query: 
+          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+          VALUES (
+            $1,
+            $2,
+            $3,
+            $4,
+            $5,
+            $6,
+            $7,
+            $8::jsonb,
+            $9,
+            $10
+          )
+          ON CONFLICT (code) DO UPDATE SET
+            name = EXCLUDED.name,
+            description = EXCLUDED.description,
+            icon = EXCLUDED.icon,
+            tier = EXCLUDED.tier,
+            category = EXCLUDED.category,
+            collection_type = EXCLUDED.collection_type,
+            requirement = EXCLUDED.requirement,
+            has_tiers = EXCLUDED.has_tiers,
+            points = EXCLUDED.points
+        
+params: first_rank,First Steps,Rank your first product,🎯,bronze,ranking,legacy,{"type":"rank_count","value":1},0,10
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
