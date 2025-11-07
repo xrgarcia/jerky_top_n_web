@@ -8,12 +8,19 @@ class ShopifyCustomersService {
   constructor() {
     this.shopDomain = 'jerky-com.myshopify.com';
     this.apiVersion = '2023-10';
-    this.accessToken = process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
     
     // Cache customer count to avoid excessive API calls
     this.customerCountCache = null;
     this.customerCountCacheTime = null;
     this.CACHE_TTL = 60000; // 1 minute cache
+  }
+
+  /**
+   * Get access token from environment (not cached to support runtime token injection)
+   * @returns {string|undefined}
+   */
+  get accessToken() {
+    return process.env.SHOPIFY_ADMIN_ACCESS_TOKEN;
   }
 
   /**
