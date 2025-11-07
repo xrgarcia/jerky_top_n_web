@@ -38,10 +38,19 @@ const createCommunityRoutes = require('../routes/community');
 const createFlavorProfileCommunitiesRoutes = require('../routes/flavorProfileCommunities');
 const WebSocketGateway = require('../websocket/gateway');
 
-const { primaryDb } = require('../db-primary');
+const { primaryDb, ensureDatabaseReady } = require('../db-primary');
 
 async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null, purchaseHistoryService = null) {
   console.log('🎮 Initializing gamification system...');
+
+  // Ensure both database instances are query-ready before proceeding
+  // This prevents cold-start errors on Neon Serverless
+  // Warm both the primary DB and the injected pooled DB
+  await Promise.all([
+    ensureDatabaseReady(primaryDb),
+    ensureDatabaseReady(db)
+  ]);
+  console.log('✅ Database instances warmed and ready for queries');
 
   const achievementRepo = new AchievementRepository(db);
   const streakRepo = new StreakRepository(db);
@@ -161,11 +170,26 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   services.bulkImportService = bulkImportService;
   services.bulkImportWorker = bulkImportWorker;
 
-  // Seed achievements (this also warms AchievementCache)
+  // Seed achievements with retry logic (this also warms AchievementCache)
+  // Using fire-and-forget pattern with proper error handling
   engagementManager.seedAchievements().then(() => {
     console.log('✅ Achievements seeded');
   }).catch(err => {
-    console.error('❌ Failed to seed achievements:', err);
+    console.error('❌ Failed to seed achievements:', err.message);
+    
+    // Send to Sentry for monitoring
+    const Sentry = require('@sentry/node');
+    Sentry.captureException(err, {
+      level: 'error',
+      tags: {
+        service: 'gamification',
+        operation: 'achievement_seeding'
+      },
+      extra: {
+        errorMessage: err.message,
+        stackTrace: err.stack
+      }
+    });
   });
 
   // Initialize cache warmer and register global caches

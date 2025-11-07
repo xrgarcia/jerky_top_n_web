@@ -2,6 +2,7 @@ const { Pool, neonConfig } = require('@neondatabase/serverless');
 const { drizzle } = require('drizzle-orm/neon-serverless');
 const ws = require("ws");
 const schema = require("../shared/schema.js");
+const { waitForDatabaseReady } = require('./utils/databaseWarmup');
 
 neonConfig.webSocketConstructor = ws;
 
@@ -24,4 +25,19 @@ const primaryDb = drizzle({ client: primaryPool, schema });
 
 console.log('💾 Primary database connection configured (no pooler - read from primary)');
 
-module.exports = { primaryPool, primaryDb };
+/**
+ * Ensure database is ready for queries
+ * Call this before any database operations during startup
+ * @param {object} dbInstance - Drizzle database instance to warm (defaults to primaryDb)
+ * @returns {Promise<boolean>} - True if database is ready
+ */
+async function ensureDatabaseReady(dbInstance = null) {
+  const targetDb = dbInstance || primaryDb;
+  return waitForDatabaseReady(targetDb, {
+    maxRetries: 10,
+    retryDelayMs: 1000,
+    timeoutMs: 30000
+  });
+}
+
+module.exports = { primaryPool, primaryDb, ensureDatabaseReady };

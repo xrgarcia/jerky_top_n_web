@@ -243,6 +243,7 @@ class EngagementManager {
   async seedAchievements() {
     const db = this.achievementRepo.db;
     const { sql } = require('drizzle-orm');
+    const { retryDatabaseOperation } = require('../utils/databaseWarmup');
     
     let seededCount = 0;
     const errors = [];
@@ -254,32 +255,41 @@ class EngagementManager {
           ? definition.requirement 
           : JSON.stringify(definition.requirement);
         
-        // Upsert: insert or update if code already exists
-        await db.execute(sql`
-          INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
-          VALUES (
-            ${definition.code},
-            ${definition.name},
-            ${definition.description},
-            ${definition.icon},
-            ${definition.tier},
-            ${definition.category},
-            ${definition.collectionType || 'legacy'},
-            ${requirementJson}::jsonb,
-            ${definition.hasTiers ? 1 : 0},
-            ${definition.points}
-          )
-          ON CONFLICT (code) DO UPDATE SET
-            name = EXCLUDED.name,
-            description = EXCLUDED.description,
-            icon = EXCLUDED.icon,
-            tier = EXCLUDED.tier,
-            category = EXCLUDED.category,
-            collection_type = EXCLUDED.collection_type,
-            requirement = EXCLUDED.requirement,
-            has_tiers = EXCLUDED.has_tiers,
-            points = EXCLUDED.points
-        `);
+        // Upsert with retry logic to handle cold start issues
+        await retryDatabaseOperation(
+          async () => {
+            await db.execute(sql`
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                ${definition.code},
+                ${definition.name},
+                ${definition.description},
+                ${definition.icon},
+                ${definition.tier},
+                ${definition.category},
+                ${definition.collectionType || 'legacy'},
+                ${requirementJson}::jsonb,
+                ${definition.hasTiers ? 1 : 0},
+                ${definition.points}
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            `);
+          },
+          {
+            maxRetries: 3,
+            initialDelayMs: 500,
+            operationName: `seeding achievement ${definition.code}`
+          }
+        );
         seededCount++;
       } catch (error) {
         const errorMsg = `Failed to seed achievement ${definition.code}: ${error.message}`;
