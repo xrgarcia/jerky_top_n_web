@@ -500,13 +500,32 @@ function createGamificationRoutes(services) {
         }
       }
 
-      // Track asynchronously (fire and forget)
-      services.pageViewService.trackPageViewAsync({
-        userId,
-        pageType,
-        pageIdentifier,
-        referrer,
-      });
+      // Only track for authenticated users
+      if (userId) {
+        // Map pageType to activity type and track appropriately
+        if (pageType === 'product_detail' && pageIdentifier) {
+          // Track product view
+          services.activityTrackingService.trackProductView(
+            userId,
+            pageIdentifier,
+            req.body.productTitle || pageIdentifier
+          );
+        } else if (pageType === 'profile' && pageIdentifier) {
+          // Track profile view
+          services.activityTrackingService.trackProfileView(
+            userId,
+            pageIdentifier,
+            req.body.profileName || pageIdentifier
+          );
+        } else {
+          // Track generic page view
+          services.activityTrackingService.track(userId, 'page_view', {
+            pageType,
+            pageIdentifier,
+            referrer
+          });
+        }
+      }
 
       // Respond immediately without waiting
       res.status(202).json({ success: true, message: 'View tracked' });
