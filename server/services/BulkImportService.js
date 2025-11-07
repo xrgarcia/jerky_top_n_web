@@ -566,6 +566,18 @@ class BulkImportService {
           })
           .returning();
 
+        // Enqueue classification job for new user (async, non-blocking)
+        if (this.classificationQueue && newUser.id) {
+          setImmediate(async () => {
+            try {
+              await this.classificationQueue.enqueue(newUser.id, 'bulk_import');
+              console.log(`📋 Enqueued classification job for new user ${newUser.id} (reason: bulk_import)`);
+            } catch (err) {
+              console.error(`⚠️ Failed to enqueue classification for user ${newUser.id}:`, err);
+            }
+          });
+        }
+
         return {
           userId: newUser.id,
           created: true,
