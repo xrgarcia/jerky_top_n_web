@@ -214,18 +214,27 @@ module.exports = function createBulkImportRoutes(storage, db) {
    * POST /api/admin/bulk-import/queue/obliterate
    * Obliterate ALL jobs in the queue (waiting, active, completed, failed)
    * Use this to completely reset the queue
+   * NOTE: Returns immediately, processes in background due to large job counts
    */
   router.post('/bulk-import/queue/obliterate', requireEmployeeAdmin, async (req, res) => {
-    try {
-      console.log(`🗑️ Admin ${req.user.email} obliterating ALL jobs in bulk import queue`);
-      
-      const result = await bulkImportQueue.obliterate();
-      
-      res.json(result);
-    } catch (error) {
-      console.error('Error obliterating queue:', error);
-      res.status(500).json({ error: 'Failed to obliterate queue' });
-    }
+    console.log(`🗑️ [API] Admin ${req.user.email} requested obliteration of ALL jobs`);
+    
+    // Return immediately to avoid timeout
+    res.json({ 
+      status: 'started',
+      message: 'Started queue obliteration in background. Monitor queue stats to see progress.'
+    });
+    
+    // Process in background
+    setImmediate(async () => {
+      try {
+        console.log('📊 [API] Starting background obliteration...');
+        const result = await bulkImportQueue.obliterate();
+        console.log(`✅ [API] Background obliteration completed:`, result);
+      } catch (error) {
+        console.error('❌ [API] Background obliteration failed:', error);
+      }
+    });
   });
 
   /**

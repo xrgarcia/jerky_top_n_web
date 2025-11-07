@@ -137,7 +137,16 @@ function BulkImportPage() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
-      toast.success(`Obliterated all ${data.removed || 0} jobs from queue`);
+      
+      // Handle background processing response
+      if (data.status === 'started') {
+        toast.success(`🗑️ Queue deletion started in background. Monitor the queue stats below to see progress.`, {
+          duration: 5000
+        });
+      } else {
+        // Legacy response format
+        toast.success(`Obliterated all ${data.removed || 0} jobs from queue`);
+      }
     },
     onError: (error) => {
       toast.error(`Failed to obliterate queue: ${error.message}`);

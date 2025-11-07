@@ -555,19 +555,29 @@ class BulkImportQueue {
     }
 
     try {
-      console.log('🗑️ Obliterating ALL jobs in bulk import queue...');
+      console.log('🗑️ [obliterate] Starting obliteration of ALL jobs...');
       
-      // Get counts before deletion
-      const stats = await this.getStats();
-      const totalBefore = stats.total || 0;
+      // Get counts before deletion using Redis (faster than BullMQ stats)
+      console.log('🔍 [obliterate] Getting job counts from Redis...');
+      const redisStats = await this.getRedisStats();
+      const totalBefore = redisStats.total || 0;
+      console.log(`📊 [obliterate] Found ${totalBefore} total jobs to delete:`, redisStats);
 
       // Obliterate removes all jobs regardless of state
-      await this.queue.obliterate({ force: true });
+      // This can take a long time with 80K+ jobs, so we add a generous timeout
+      console.log('⚠️ [obliterate] Starting queue.obliterate() - this may take several minutes for large queues...');
       
-      console.log(`✅ Obliterated ${totalBefore} jobs from bulk import queue`);
+      const obliteratePromise = this.queue.obliterate({ force: true });
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Obliterate timeout (5 minutes)')), 300000) // 5 min timeout
+      );
+      
+      await Promise.race([obliteratePromise, timeoutPromise]);
+      
+      console.log(`✅ [obliterate] Successfully obliterated ${totalBefore} jobs from bulk import queue`);
       return { removed: totalBefore };
     } catch (error) {
-      console.error('❌ Failed to obliterate queue:', error);
+      console.error('❌ [obliterate] Failed to obliterate queue:', error.message);
       return { removed: 0, error: error.message };
     }
   }
