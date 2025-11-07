@@ -56,6 +56,8 @@ module.exports = function createBulkImportRoutes(storage, db) {
       const isAvailable = bulkImportService.isAvailable();
       const queueStats = await bulkImportQueue.getStats();
 
+      console.log(`📊 Bulk Import Status Check: shopifyApiAvailable=${isAvailable}, token=${!!process.env.SHOPIFY_ADMIN_ACCESS_TOKEN}`);
+
       res.json({
         shopifyApiAvailable: isAvailable,
         queue: queueStats
