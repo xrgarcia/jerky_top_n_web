@@ -213,6 +213,28 @@ class WebSocketGateway {
                     { socketId: socket.id }
                   );
                 }
+
+                // Check for engagement-based achievements after tracking
+                if (this.services.engagementManager) {
+                  // Flush batched activities to ensure achievement check sees latest data
+                  await this.services.activityTrackingService.flush();
+                  
+                  const engagementUpdates = await this.services.engagementManager.checkAndUpdateEngagementAchievements(socket.userId);
+                  
+                  if (engagementUpdates.length > 0) {
+                    console.log(`🎯 [WEBSOCKET ${data.page?.toUpperCase()}] User ${socket.userId} updated ${engagementUpdates.length} engagement achievement(s)`);
+                    
+                    // Emit newly earned achievements to the user via WebSocket
+                    for (const update of engagementUpdates) {
+                      if (update.isNew) {
+                        socket.emit('achievement:earned', {
+                          achievement: update.achievement,
+                          message: `You earned "${update.achievement.name}"!`
+                        });
+                      }
+                    }
+                  }
+                }
               } catch (err) {
                 console.error('Failed to track page view activity:', err);
               }

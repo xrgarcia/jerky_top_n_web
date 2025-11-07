@@ -101,6 +101,18 @@ class EngagementManager {
         // Check if user has viewed enough unique profiles
         return userStats.uniqueProfileViews >= requirement.value;
       },
+      page_view_count: (userStats, requirement) => {
+        // Check if user has viewed enough pages (total page views)
+        return userStats.totalPageViews >= requirement.value;
+      },
+      daily_login_streak: (userStats, requirement) => {
+        // Check if user has maintained a daily login streak
+        return userStats.currentLoginStreak >= requirement.value;
+      },
+      daily_rank_streak: (userStats, requirement) => {
+        // Check if user has maintained a daily ranking streak
+        return userStats.currentStreak >= requirement.value;
+      },
     };
   }
 
