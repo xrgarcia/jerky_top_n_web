@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { setUserContext, clearUserContext } from '../utils/sentry';
+import { broadcastAuthChange } from '../context/AuthContext';
 
 export const useAuthStore = create((set) => ({
   user: null,
@@ -40,8 +41,6 @@ export const useAuthStore = create((set) => ({
       set({ user: null, isAuthenticated: false, isEmployee: false, userRole: 'user' });
       
       clearUserContext();
-      
-      const { broadcastAuthChange } = await import('../context/AuthContext');
       broadcastAuthChange();
       
       window.location.href = '/login';

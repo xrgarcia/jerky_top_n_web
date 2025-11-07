@@ -1,4 +1,5 @@
 import * as Sentry from '@sentry/react';
+import { useAuthStore } from '../store/authStore';
 
 let sentryInitialized = false;
 let errorQueue = [];
@@ -37,8 +38,6 @@ export async function initializeSentry() {
     
     // Set user context if user is already logged in
     try {
-      // Dynamically import to avoid circular dependency
-      const { useAuthStore } = await import('../store/authStore');
       const { user, userRole } = useAuthStore.getState();
       if (user) {
         setUserContext({ ...user, role: userRole });
