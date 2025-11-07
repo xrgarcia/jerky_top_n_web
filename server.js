@@ -873,6 +873,18 @@ app.get('/dev/login/:token', async (req, res) => {
     
     console.log(`🔓 DEV LOGIN: ${mockCustomer.displayName} (${mockCustomer.email}) - secure: ${isSecure}`);
     
+    // Track login activity
+    if (gamificationServices?.activityTrackingService) {
+      setImmediate(async () => {
+        try {
+          await gamificationServices.activityTrackingService.trackLogin(dbUser.id, 'dev_login');
+          await gamificationServices.activityTrackingService.flush();
+        } catch (err) {
+          console.error('Failed to track dev login:', err);
+        }
+      });
+    }
+    
     // Redirect to app with session
     const appDomain = getAppDomainFromRequest(req);
     const protocol = req.secure ? 'https' : 'http';
@@ -2264,6 +2276,27 @@ app.post('/api/rankings/products', async (req, res) => {
       gamificationServices.homeStatsService.invalidateCache();
     }
     
+    // Track ranking activity in user_activities table
+    if (activityTrackingService && rankings.length > 0) {
+      setImmediate(async () => {
+        try {
+          await activityTrackingService.track(
+            userId,
+            'ranking_saved',
+            { 
+              rankingListId,
+              productCount: rankings.length,
+              productIds: rankings.map(r => r.productData.id)
+            },
+            {},
+            true // Immediate write for critical activity
+          );
+        } catch (err) {
+          console.error('Failed to track ranking activity:', err);
+        }
+      });
+    }
+    
     // Trigger classification update via queue (event-driven architecture)
     if (gamificationServices?.classificationQueue) {
       setImmediate(async () => {
@@ -2837,6 +2870,18 @@ app.get('/api/customer/auth/callback', async (req, res) => {
       });
       
       console.log(`✅ Real Shopify customer logged in with 90-day session: ${customer.displayName || customer.firstName} (${customer.email}) - secure: ${isSecure}`);
+      
+      // Track login activity
+      if (gamificationServices?.activityTrackingService) {
+        setImmediate(async () => {
+          try {
+            await gamificationServices.activityTrackingService.trackLogin(dbUser.id, 'shopify_oauth');
+            await gamificationServices.activityTrackingService.flush();
+          } catch (err) {
+            console.error('Failed to track Shopify OAuth login:', err);
+          }
+        });
+      }
       
     } catch (dbError) {
       console.error('Database error during login:', dbError);

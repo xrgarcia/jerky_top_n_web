@@ -167,7 +167,7 @@ class WebSocketGateway {
         }
       });
 
-      socket.on('page:view', (data) => {
+      socket.on('page:view', async (data) => {
         if (socket.userId && this.activeConnections.has(socket.id)) {
           // Update socket connection
           const connection = this.activeConnections.get(socket.id);
@@ -184,6 +184,23 @@ class WebSocketGateway {
           }
           
           this.broadcastActiveUsersUpdate();
+          
+          // Persist page view to user_activities table
+          if (this.services.activityTrackingService) {
+            setImmediate(async () => {
+              try {
+                // Track general page view (not product-specific)
+                await this.services.activityTrackingService.track(
+                  socket.userId,
+                  'page_view',
+                  { page: data.page || 'unknown' },
+                  { socketId: socket.id }
+                );
+              } catch (err) {
+                console.error('Failed to track page view activity:', err);
+              }
+            });
+          }
           
           // Trigger classification queue for page views
           if (this.services.classificationQueue) {
