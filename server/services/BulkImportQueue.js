@@ -172,7 +172,15 @@ class BulkImportQueue {
             console.log(`  ⏳ [Chunk ${chunkNumber}/${totalChunks}] Calling queue.addBulk() with ${jobs.length} jobs...`);
             const startTime = Date.now();
             
-            await this.queue.addBulk(jobs);
+            // Add timeout to prevent indefinite hanging (30s timeout for bulk operations)
+            const timeout = new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('addBulk() timeout after 30s')), 30000)
+            );
+            
+            await Promise.race([
+              this.queue.addBulk(jobs),
+              timeout
+            ]);
             
             const duration = Date.now() - startTime;
             console.log(`  ✅ [Chunk ${chunkNumber}/${totalChunks}] addBulk() succeeded in ${duration}ms`);
