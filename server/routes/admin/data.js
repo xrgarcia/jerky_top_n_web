@@ -385,10 +385,10 @@ module.exports = function createDataManagementRoutes(storage, db) {
           maskedUrl: maskPassword(process.env.DATABASE_URL)
         },
         shopify: {
-          shop: process.env.SHOPIFY_SHOP_NAME || 'undefined',
+          shop: process.env.SHOPIFY_SHOP_DOMAIN || 'jerky-com.myshopify.com',
           apiKeySet: !!process.env.SHOPIFY_API_KEY,
           apiSecretSet: !!process.env.SHOPIFY_API_SECRET,
-          accessTokenSet: !!process.env.SHOPIFY_ACCESS_TOKEN
+          accessTokenSet: !!process.env.SHOPIFY_ADMIN_ACCESS_TOKEN
         },
         sentry: {
           dsnSet: !!process.env.SENTRY_DSN,
