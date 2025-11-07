@@ -42,7 +42,10 @@ function BulkImportPage() {
       if (!res.ok) throw new Error('Failed to fetch status');
       return res.json();
     },
-    staleTime: 60000, // 1 minute
+    staleTime: 10000, // 10 seconds (faster updates)
+    refetchInterval: 30000, // Refetch every 30 seconds
+    refetchOnMount: 'always', // Always fetch fresh data on mount (even if cached)
+    refetchOnWindowFocus: 'always', // Always revalidate when returning to tab
   });
 
   // Fetch Shopify stats
