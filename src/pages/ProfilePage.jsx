@@ -1,12 +1,16 @@
 import React from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useProgress, useStreaks } from '../hooks/useGamification';
+import { usePageView } from '../hooks/usePageView';
 import './ProfilePage.css';
 
 function ProfilePage() {
   const { user } = useAuthStore();
   const { data: progress, isLoading: progressLoading } = useProgress();
   const { data: streaks, isLoading: streaksLoading } = useStreaks();
+  
+  // Track profile view (viewing own profile)
+  usePageView('profile', { profileId: user?.id, profileName: `${user?.first_name} ${user?.last_name}` });
 
   const isLoading = progressLoading || streaksLoading;
 

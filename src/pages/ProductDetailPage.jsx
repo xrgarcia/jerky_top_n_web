@@ -1,11 +1,15 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useProductDetail } from '../hooks/useProducts';
+import { usePageView } from '../hooks/usePageView';
 import './ProductDetailPage.css';
 
 function ProductDetailPage() {
   const { productId } = useParams();
   const { data: product, isLoading, error } = useProductDetail(productId);
+  
+  // Track product view
+  usePageView('product_detail', { productId, productTitle: product?.title });
 
   if (isLoading) {
     return (

@@ -185,17 +185,34 @@ class WebSocketGateway {
           
           this.broadcastActiveUsersUpdate();
           
-          // Persist page view to user_activities table
+          // Persist page view to user_activities table with correct activity type
           if (this.services.activityTrackingService) {
             setImmediate(async () => {
               try {
-                // Track general page view (not product-specific)
-                await this.services.activityTrackingService.track(
-                  socket.userId,
-                  'page_view',
-                  { page: data.page || 'unknown' },
-                  { socketId: socket.id }
-                );
+                // Determine activity type based on page and metadata
+                if (data.page === 'product_detail' && data.productId) {
+                  // Track product view
+                  await this.services.activityTrackingService.trackProductView(
+                    socket.userId,
+                    data.productId,
+                    data.productTitle || data.productId
+                  );
+                } else if (data.page === 'profile' && data.profileId) {
+                  // Track profile view
+                  await this.services.activityTrackingService.trackProfileView(
+                    socket.userId,
+                    data.profileId,
+                    data.profileName || data.profileId
+                  );
+                } else {
+                  // Track general page view
+                  await this.services.activityTrackingService.track(
+                    socket.userId,
+                    'page_view',
+                    { page: data.page || 'unknown' },
+                    { socketId: socket.id }
+                  );
+                }
               } catch (err) {
                 console.error('Failed to track page view activity:', err);
               }

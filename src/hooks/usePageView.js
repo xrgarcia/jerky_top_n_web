@@ -6,8 +6,9 @@ import { useSocket } from './useSocket';
  * Emits page:view events for user activity tracking and classification triggers
  * 
  * @param {string} page - Page identifier (e.g., 'rank', 'products', 'community', 'coinbook', 'general')
+ * @param {object} metadata - Additional metadata for specific page types (productId, userId, etc.)
  */
-export function usePageView(page) {
+export function usePageView(page, metadata = {}) {
   const { socket, isConnected, isSocketAuthenticated } = useSocket();
 
   useEffect(() => {
@@ -17,9 +18,9 @@ export function usePageView(page) {
     }
 
     // Emit page:view event for backend tracking
-    console.log(`📊 Tracking page view: ${page}`);
-    socket.emit('page:view', { page });
+    console.log(`📊 Tracking page view: ${page}`, metadata);
+    socket.emit('page:view', { page, ...metadata });
 
     // No cleanup needed - we only track on mount
-  }, [socket, isConnected, isSocketAuthenticated, page]);
+  }, [socket, isConnected, isSocketAuthenticated, page, JSON.stringify(metadata)]);
 }
