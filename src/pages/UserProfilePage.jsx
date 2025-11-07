@@ -1,11 +1,15 @@
 import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useUserProfile } from '../hooks/useCommunity';
+import { usePageView } from '../hooks/usePageView';
 import './UserProfilePage.css';
 
 function UserProfilePage() {
   const { userId } = useParams();
   const { data, isLoading, error } = useUserProfile(userId);
+  
+  // Track profile view
+  usePageView('profile', { profileId: userId, profileName: data?.user?.displayName });
   
   // Filter and search state
   const [animalFilter, setAnimalFilter] = useState('all');
