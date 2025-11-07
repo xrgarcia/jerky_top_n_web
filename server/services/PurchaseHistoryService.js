@@ -32,8 +32,21 @@ class PurchaseHistoryService {
       return { success: false, itemsImported: 0, reason: 'shopify_unavailable' };
     }
 
+    // STRATEGIC OPTIMIZATION: Skip if user's full history already imported
+    // Webhooks maintain orders going forward, no need to re-sync
+    if (user.fullHistoryImported) {
+      console.log(`✅ User ${user.id} already has full history imported (${user.historyImportedAt}), skipping sync (webhooks maintain orders)`);
+      return { 
+        success: true, 
+        itemsImported: 0, 
+        skipped: true,
+        reason: 'already_imported',
+        importedAt: user.historyImportedAt
+      };
+    }
+
     try {
-      console.log(`🔄 Starting order sync for user ${user.id} (${user.email})`);
+      console.log(`🔄 Starting FIRST-TIME order sync for user ${user.id} (${user.email})`);
       const startTime = Date.now();
 
       // OPTIMIZATION: Check if customer has any orders before fetching them all

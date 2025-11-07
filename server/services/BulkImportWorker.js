@@ -158,7 +158,7 @@ class BulkImportWorker {
       // Step 2: Mark import as in progress
       await this.markImportInProgress(userId);
 
-      // Step 3: Sync complete order history from Shopify
+      // Step 3: Sync complete order history from Shopify (if not already imported)
       console.log(`  ⏳ Syncing order history for user ${userId}...`);
       const syncResult = await this.purchaseHistoryService.syncUserOrders(user);
 
@@ -166,8 +166,10 @@ class BulkImportWorker {
         throw new Error(syncResult.error || syncResult.reason || 'Order sync failed');
       }
 
-      // Log sync results with fast-path indicator
-      if (syncResult.fastPath) {
+      // Log sync results with optimization indicators
+      if (syncResult.skipped) {
+        console.log(`  ⚡ SKIPPED: User already has full history imported (${syncResult.importedAt}), webhooks maintain orders`);
+      } else if (syncResult.fastPath) {
         console.log(`  ⚡ Fast-path: 0 orders (saved Shopify API calls)`);
       } else {
         console.log(`  ✓ Synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
@@ -217,7 +219,7 @@ class BulkImportWorker {
         throw new Error(`User ${userId} not found in database`);
       }
 
-      // Step 2: Re-sync order history from Shopify
+      // Step 2: Re-sync order history from Shopify (if not already imported)
       console.log(`  ⏳ Re-syncing order history for user ${userId}...`);
       const syncResult = await this.purchaseHistoryService.syncUserOrders(user);
 
@@ -225,7 +227,12 @@ class BulkImportWorker {
         throw new Error(syncResult.error || syncResult.reason || 'Order re-sync failed');
       }
 
-      console.log(`  ✓ Re-synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
+      // Log sync results with optimization indicators
+      if (syncResult.skipped) {
+        console.log(`  ⚡ SKIPPED: User already has full history imported (${syncResult.importedAt}), webhooks maintain orders`);
+      } else {
+        console.log(`  ✓ Re-synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
+      }
 
       // Step 3: Update last sync timestamp
       await primaryDb
