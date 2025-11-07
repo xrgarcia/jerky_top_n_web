@@ -276,6 +276,7 @@ class ActivityTrackingService {
     });
 
     return {
+      activities30d: activities.length, // Total activity count used for engagement calculation
       totalSearches,
       totalProductViews,
       totalProfileViews,

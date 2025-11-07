@@ -237,6 +237,18 @@ class UserClassificationService {
 
   /**
    * Determine journey stage based on activity patterns
+   * 
+   * JOURNEY STAGE THRESHOLDS:
+   * - Dormant: 30+ days since last activity
+   * - New User: No rankings, registered within 7 days
+   * - Power User: 31+ rankings AND 20+ activities (30 days)
+   * - Engaged: 11-30 rankings AND 5+ activities (30 days)
+   * - Exploring: 1-10 rankings AND 1+ activities (30 days) - any recent activity
+   * 
+   * NOTE: Thresholds align with engagement levels (1-4=low, 5-19=medium, 20-49=high, 50+=very high)
+   * to ensure journey stage and engagement level classifications are consistent.
+   * 
+   * TODO: Make configurable via database for easier adjustments
    */
   _determineJourneyStage(userData, config) {
     const rules = config.journey_stage_thresholds || {};
@@ -251,28 +263,29 @@ class UserClassificationService {
       return 'new_user';
     }
 
-    // Power user: 31+ rankings, 10+ engagement coins, 3+ day streak
+    // Power user: 31+ rankings AND high recent activity (20+ activities in 30 days)
     if (
       userData.totalRankings >= (rules.power_user?.min_rankings || 31) &&
-      userData.totalEngagementCoins >= (rules.power_user?.min_engagement_coins || 10)
+      userData.activities30d >= (rules.power_user?.min_activities_30d || 20)
     ) {
       return 'power_user';
     }
 
-    // Engaged: 11-30 rankings, 3+ engagement coins
+    // Engaged: 11-30 rankings AND moderate activity (5+ activities in 30 days)
     if (
       userData.totalRankings >= (rules.engaged?.min_rankings || 11) &&
       userData.totalRankings <= (rules.engaged?.max_rankings || 30) &&
-      userData.totalEngagementCoins >= (rules.engaged?.min_engagement_coins || 3)
+      userData.activities30d >= (rules.engaged?.min_activities_30d || 5)
     ) {
       return 'engaged';
     }
 
-    // Exploring: 1-10 rankings, some activity
+    // Exploring: 1-10 rankings AND any recent activity (1+ activities in 30 days)
+    // Lowered from 5 to 1 to align with engagement level "low" tier (1-4 activities)
     if (
       userData.totalRankings >= (rules.exploring?.min_rankings || 1) &&
       userData.totalRankings <= (rules.exploring?.max_rankings || 10) &&
-      userData.activities30d >= (rules.exploring?.min_activities || 5)
+      userData.activities30d >= (rules.exploring?.min_activities || 1)
     ) {
       return 'exploring';
     }
@@ -282,37 +295,41 @@ class UserClassificationService {
   }
 
   /**
-   * Determine engagement level based on coins and activities
+   * Determine engagement level based on recent user activity
+   * 
+   * ENGAGEMENT LEVEL THRESHOLDS (based on activities in last 30 days):
+   * - Very High: 50+ activities
+   * - High: 20-49 activities
+   * - Medium: 5-19 activities
+   * - Low: 1-4 activities
+   * - None: 0 activities
+   * 
+   * Activities include: page views, rankings saved, searches, logins, product views, profile views
+   * 
+   * TODO: Make these thresholds configurable via database (feature flags or admin settings)
+   * so jerky.com employees can adjust ranges without code changes.
    */
   _determineEngagementLevel(userData, config) {
     const rules = config.engagement_level_rules || {};
+    const activityCount = userData.activities30d;
 
-    // Very high: 20+ engagement coins
-    if (userData.totalEngagementCoins >= (rules.very_high?.min_engagement_coins || 20)) {
+    // Very high: 50+ activities in last 30 days
+    if (activityCount >= (rules.very_high?.min_activities_30d || 50)) {
       return 'very_high';
     }
 
-    // High: 10-19 engagement coins
-    if (
-      userData.totalEngagementCoins >= (rules.high?.min_engagement_coins || 10) &&
-      userData.totalEngagementCoins <= (rules.high?.max_engagement_coins || 19)
-    ) {
+    // High: 20-49 activities
+    if (activityCount >= (rules.high?.min_activities_30d || 20)) {
       return 'high';
     }
 
-    // Medium: 3-9 engagement coins
-    if (
-      userData.totalEngagementCoins >= (rules.medium?.min_engagement_coins || 3) &&
-      userData.totalEngagementCoins <= (rules.medium?.max_engagement_coins || 9)
-    ) {
+    // Medium: 5-19 activities
+    if (activityCount >= (rules.medium?.min_activities_30d || 5)) {
       return 'medium';
     }
 
-    // Low: 1-2 engagement coins or recent activities
-    if (
-      userData.totalEngagementCoins > 0 ||
-      userData.activities30d >= (rules.low?.min_activities_30d || 1)
-    ) {
+    // Low: 1-4 activities
+    if (activityCount >= (rules.low?.min_activities_30d || 1)) {
       return 'low';
     }
 

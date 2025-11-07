@@ -416,6 +416,29 @@ export default function UserGuidanceTab() {
                   </div>
                 </div>
               )}
+
+              <div className="engagement-calculation-info">
+                <h5>Engagement Calculation</h5>
+                <div className="calculation-details">
+                  <div className="stat-item highlight">
+                    <label>Activities (Last 30 Days):</label>
+                    <span className="activity-count">{selectedUser.activities?.activities30d || 0}</span>
+                  </div>
+                  <div className="threshold-guide">
+                    <p className="guide-intro">Engagement level is based on total user activities in the last 30 days:</p>
+                    <ul className="threshold-list">
+                      <li><strong>Very High:</strong> 50+ activities</li>
+                      <li><strong>High:</strong> 20-49 activities</li>
+                      <li><strong>Medium:</strong> 5-19 activities</li>
+                      <li><strong>Low:</strong> 1-4 activities</li>
+                      <li><strong>None:</strong> 0 activities</li>
+                    </ul>
+                    <p className="guide-note">
+                      <em>Activities include: page views, rankings saved, searches, logins, product views, and profile views.</em>
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="modal-footer">
