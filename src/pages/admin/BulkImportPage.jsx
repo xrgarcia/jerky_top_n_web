@@ -361,6 +361,26 @@ function BulkImportPage() {
           </div>
         )}
 
+        {mode === 'reprocess' && (
+          <div className="control-group">
+            <label className="control-label">Batch Size:</label>
+            <select
+              value={batchSize}
+              onChange={(e) => setBatchSize(e.target.value)}
+              className="control-select"
+              disabled={isActive}
+            >
+              <option value="">All Existing Users (⚠️ {shopifyStats?.usersInDb?.toLocaleString() || '?'})</option>
+              <option value="1000">1,000 users</option>
+              <option value="5000">5,000 users</option>
+              <option value="10000">10,000 users</option>
+              <option value="25000">25,000 users</option>
+              <option value="50000">50,000 users</option>
+              <option value="100000">100,000 users</option>
+            </select>
+          </div>
+        )}
+
         <div className="control-group">
           <label className="control-label">Worker Concurrency:</label>
           <select

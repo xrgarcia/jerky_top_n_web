@@ -152,6 +152,7 @@ class BulkImportQueue {
         const totalChunks = Math.ceil(users.length / chunkSize);
 
         try {
+          console.log(`  🔧 [Chunk ${chunkNumber}/${totalChunks}] Creating ${chunk.length} job objects...`);
           const jobs = chunk.map(user => ({
             name: user.isReprocess ? 'reprocess-user' : 'import-user',
             data: {
@@ -165,13 +166,27 @@ class BulkImportQueue {
               jobId: user.isReprocess ? `reprocess-user-${user.userId}` : `import-user-${user.userId}`,
             }
           }));
+          console.log(`  ✓ [Chunk ${chunkNumber}/${totalChunks}] Job objects created, preparing to call addBulk()...`);
 
           try {
+            console.log(`  ⏳ [Chunk ${chunkNumber}/${totalChunks}] Calling queue.addBulk() with ${jobs.length} jobs...`);
+            const startTime = Date.now();
+            
             await this.queue.addBulk(jobs);
+            
+            const duration = Date.now() - startTime;
+            console.log(`  ✅ [Chunk ${chunkNumber}/${totalChunks}] addBulk() succeeded in ${duration}ms`);
+            
             totalEnqueued += chunk.length;
             // Mark all users in chunk as processed
             chunk.forEach(user => processedUserIds.add(user.userId));
           } catch (bulkError) {
+            console.error(`  ❌ [Chunk ${chunkNumber}/${totalChunks}] addBulk() failed:`, bulkError.message);
+            console.error(`  📋 Error details:`, {
+              name: bulkError.name,
+              code: bulkError.code,
+              stack: bulkError.stack?.split('\n').slice(0, 3)
+            });
             const isLuaTimeout = bulkError.message && 
               (bulkError.message.includes('Lua script execution limit') || 
                bulkError.message.includes('BUSY'));
@@ -318,6 +333,7 @@ class BulkImportQueue {
 
     try {
       console.log(`📋 Bulk enqueueing ${users.length} import jobs with progress tracking (batch: ${progressBatchSize})...`);
+      console.log(`🔍 [enqueueBulkWithProgress] Total batches to process: ${Math.ceil(users.length / progressBatchSize)}`);
 
       // Process in batches to emit progress updates
       for (let i = 0; i < users.length; i += progressBatchSize) {
@@ -326,9 +342,15 @@ class BulkImportQueue {
         const totalBatches = Math.ceil(users.length / progressBatchSize);
 
         console.log(`  📦 Processing batch ${batchNumber}/${totalBatches} (${batch.length} users)...`);
+        console.log(`  ⏰ [Batch ${batchNumber}] Starting enqueueBulk() at ${new Date().toISOString()}`);
 
         // Use the robust enqueueBulk method with all its retry/fallback logic
+        const startTime = Date.now();
         const batchResult = await this.enqueueBulk(batch);
+        const duration = Date.now() - startTime;
+        
+        console.log(`  ⏱️ [Batch ${batchNumber}] enqueueBulk() completed in ${duration}ms`);
+        console.log(`  📊 [Batch ${batchNumber}] Result:`, batchResult);
         
         totalEnqueued += batchResult.enqueued;
         totalFailed += batchResult.failed;
