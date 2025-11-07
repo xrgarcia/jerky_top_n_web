@@ -220,10 +220,11 @@
 /* Rankings column */
 .slots-container {
   flex: 1 1 0%;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   padding-right: 0.5rem;
   min-height: 0;
+  touch-action: pan-y;
 }
 
 .slots-container::-webkit-scrollbar {
