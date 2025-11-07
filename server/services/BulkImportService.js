@@ -196,12 +196,11 @@ class BulkImportService {
       try {
         console.log(`🔄 Background enqueue started: ${usersToImport.length} jobs`);
         
-        // Enqueue with progress tracking
+        // Enqueue with progress tracking (using robust enqueueBulk logic)
         const enqueueResult = await bulkImportQueue.enqueueBulkWithProgress(
           usersToImport,
           {
-            chunkSize: 50,
-            delayBetweenChunks: 50, // Faster chunking
+            progressBatchSize: 500, // Report progress every 500 users
             onProgress: async (enqueued, total) => {
               // Update stats
               this.currentImportStats.jobsEnqueued = enqueued;
@@ -211,10 +210,8 @@ class BulkImportService {
                 this.currentImportStats.jobsPendingEnqueue = Math.max(0, total - enqueued);
               }
               
-              // Broadcast progress every 500 jobs
-              if (enqueued % 500 === 0 || enqueued === total) {
-                await this.broadcastProgress();
-              }
+              // Broadcast progress
+              await this.broadcastProgress();
             }
           }
         );
@@ -228,37 +225,59 @@ class BulkImportService {
           this.currentImportStats.jobsPendingEnqueue = 0;
         }
 
-        console.log(`✅ Background enqueue completed: ${enqueueResult.enqueued} jobs enqueued, ${enqueueResult.failed} failed`);
+        // Check if enqueue was successful
+        const failureRate = enqueueResult.failed / usersToImport.length;
+        const isSuccess = failureRate < 0.1; // Allow up to 10% failure rate
 
-        // Mark as complete
-        this.currentImportStats.phase = 'completed';
-        this.currentImportStats.completedAt = new Date().toISOString();
-
-        // Broadcast final stats
-        await this.broadcastProgress();
-
-        // Broadcast final Shopify stats
-        try {
-          const bulkImportWorker = require('./BulkImportWorker');
-          await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
-          console.log('📊 Broadcasted final Shopify stats (bypassed cache)');
-        } catch (error) {
-          console.error('⚠️ Failed to broadcast final stats:', error.message);
-        }
-
-        // Send completion email
-        try {
-          const emailService = require('./EmailService');
-          if (emailService.isInitialized()) {
-            await emailService.sendBulkImportCompletionEmail({
-              stats: this.currentImportStats,
-              mode: mode || (fullImport ? 'full' : 'incremental'),
-              batchSize
-            });
-            console.log('📧 Completion email sent');
+        if (!isSuccess) {
+          console.error(`❌ Background enqueue failed: ${enqueueResult.failed}/${usersToImport.length} jobs failed (${Math.round(failureRate*100)}% failure rate)`);
+          
+          this.currentImportStats.phase = 'failed';
+          this.currentImportStats.error = `Enqueue failed: ${enqueueResult.failed}/${usersToImport.length} jobs failed`;
+          if (enqueueResult.error) {
+            this.currentImportStats.error += ` - ${enqueueResult.error}`;
           }
-        } catch (error) {
-          console.error('⚠️ Failed to send completion email:', error.message);
+          
+          // Broadcast failure
+          await this.broadcastProgress();
+          
+          Sentry.captureException(new Error(this.currentImportStats.error), {
+            tags: { service: 'bulk-import', phase: 'background_enqueue' },
+            extra: { enqueueResult, usersCount: usersToImport.length }
+          });
+        } else {
+          console.log(`✅ Background enqueue completed: ${enqueueResult.enqueued} jobs enqueued, ${enqueueResult.failed} failed`);
+
+          // Mark as complete
+          this.currentImportStats.phase = 'completed';
+          this.currentImportStats.completedAt = new Date().toISOString();
+
+          // Broadcast final stats
+          await this.broadcastProgress();
+
+          // Broadcast final Shopify stats
+          try {
+            const bulkImportWorker = require('./BulkImportWorker');
+            await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
+            console.log('📊 Broadcasted final Shopify stats (bypassed cache)');
+          } catch (error) {
+            console.error('⚠️ Failed to broadcast final stats:', error.message);
+          }
+
+          // Send completion email only on success
+          try {
+            const emailService = require('./EmailService');
+            if (emailService.isInitialized()) {
+              await emailService.sendBulkImportCompletionEmail({
+                stats: this.currentImportStats,
+                mode: mode || (fullImport ? 'full' : 'incremental'),
+                batchSize
+              });
+              console.log('📧 Completion email sent');
+            }
+          } catch (error) {
+            console.error('⚠️ Failed to send completion email:', error.message);
+          }
         }
 
         // Mark import as no longer in progress

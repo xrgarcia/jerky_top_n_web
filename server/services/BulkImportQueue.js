@@ -293,16 +293,16 @@ class BulkImportQueue {
 
   /**
    * Enqueue multiple user import jobs in bulk with progress callbacks
-   * Same as enqueueBulk but calls onProgress callback after each chunk
+   * Wraps enqueueBulk with progress tracking by processing in smaller batches
+   * Maintains all retry logic and failure persistence from enqueueBulk
    * @param {Array} users - Array of user objects
    * @param {Object} options - Enqueue options
-   * @param {number} options.chunkSize - Jobs per batch (default: 50)
-   * @param {number} options.delayBetweenChunks - Delay in ms (default: 50)
+   * @param {number} options.progressBatchSize - Report progress after this many users (default: 500)
    * @param {Function} options.onProgress - Callback(enqueued, total)
    * @returns {Promise<Object>} - { enqueued, failed }
    */
   async enqueueBulkWithProgress(users, options = {}) {
-    const { chunkSize = 50, delayBetweenChunks = 50, onProgress = null } = options;
+    const { progressBatchSize = 500, onProgress = null } = options;
 
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
@@ -317,49 +317,29 @@ class BulkImportQueue {
     let totalFailed = 0;
 
     try {
-      console.log(`📋 Bulk enqueueing ${users.length} import jobs with progress tracking (chunk size: ${chunkSize})...`);
+      console.log(`📋 Bulk enqueueing ${users.length} import jobs with progress tracking (batch: ${progressBatchSize})...`);
 
-      for (let i = 0; i < users.length; i += chunkSize) {
-        const chunk = users.slice(i, i + chunkSize);
-        const chunkNumber = Math.floor(i / chunkSize) + 1;
-        const totalChunks = Math.ceil(users.length / chunkSize);
+      // Process in batches to emit progress updates
+      for (let i = 0; i < users.length; i += progressBatchSize) {
+        const batch = users.slice(i, i + progressBatchSize);
+        const batchNumber = Math.floor(i / progressBatchSize) + 1;
+        const totalBatches = Math.ceil(users.length / progressBatchSize);
 
-        try {
-          const jobs = chunk.map(user => ({
-            name: user.isReprocess ? 'reprocess-user' : 'import-user',
-            data: {
-              userId: user.userId,
-              shopifyCustomerId: user.shopifyCustomerId,
-              email: user.email,
-              isReprocess: user.isReprocess || false,
-              enqueuedAt: new Date().toISOString()
-            },
-            opts: {
-              jobId: user.isReprocess ? `reprocess-user-${user.userId}` : `import-user-${user.userId}`,
-            }
-          }));
+        console.log(`  📦 Processing batch ${batchNumber}/${totalBatches} (${batch.length} users)...`);
 
-          await this.queue.addBulk(jobs);
-          totalEnqueued += chunk.length;
+        // Use the robust enqueueBulk method with all its retry/fallback logic
+        const batchResult = await this.enqueueBulk(batch);
+        
+        totalEnqueued += batchResult.enqueued;
+        totalFailed += batchResult.failed;
 
-          // Call progress callback
-          if (onProgress && typeof onProgress === 'function') {
-            await onProgress(totalEnqueued, users.length);
-          }
-
-          // Log progress every 10 chunks or on last chunk
-          if (chunkNumber % 10 === 0 || chunkNumber === totalChunks) {
-            console.log(`  📊 Progress: ${totalEnqueued}/${users.length} jobs enqueued (${Math.round(totalEnqueued/users.length*100)}%)`);
-          }
-
-          // Small delay between chunks to avoid overwhelming Redis
-          if (delayBetweenChunks > 0 && i + chunkSize < users.length) {
-            await new Promise(resolve => setTimeout(resolve, delayBetweenChunks));
-          }
-        } catch (error) {
-          console.error(`  ❌ Chunk ${chunkNumber}/${totalChunks} failed:`, error);
-          totalFailed += chunk.length;
+        // Call progress callback after each batch
+        if (onProgress && typeof onProgress === 'function') {
+          await onProgress(totalEnqueued, users.length);
         }
+
+        console.log(`  ✅ Batch ${batchNumber}/${totalBatches} complete: ${batchResult.enqueued} enqueued, ${batchResult.failed} failed`);
+        console.log(`     📊 Total progress: ${totalEnqueued}/${users.length} enqueued (${Math.round(totalEnqueued/users.length*100)}%)`);
       }
 
       console.log(`✅ Bulk enqueue with progress complete: ${totalEnqueued}/${users.length} enqueued, ${totalFailed} failed`);
@@ -372,7 +352,8 @@ class BulkImportQueue {
       console.error('❌ enqueueBulkWithProgress failed:', error);
       return {
         enqueued: totalEnqueued,
-        failed: users.length - totalEnqueued
+        failed: totalFailed,
+        error: error.message
       };
     }
   }
