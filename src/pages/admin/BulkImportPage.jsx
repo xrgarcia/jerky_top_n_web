@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import { useSocket } from '../../hooks/useSocket';
+import { useEnvironmentConfig } from '../../hooks/useAdminTools';
 import toast from 'react-hot-toast';
 import './BulkImportPage.css';
 
@@ -32,21 +33,8 @@ function BulkImportPage() {
     staleTime: 2000,
   });
 
-  // Fetch API status
-  const { data: statusData } = useQuery({
-    queryKey: ['bulkImportStatus/v2'], // v2: force fresh cache after token was added
-    queryFn: async () => {
-      const res = await fetch('/api/admin/bulk-import/status', {
-        credentials: 'include'
-      });
-      if (!res.ok) throw new Error('Failed to fetch status');
-      return res.json();
-    },
-    staleTime: 10000, // 10 seconds (faster updates)
-    refetchInterval: 30000, // Refetch every 30 seconds
-    refetchOnMount: 'always', // Always fetch fresh data on mount (even if cached)
-    refetchOnWindowFocus: 'always', // Always revalidate when returning to tab
-  });
+  // Fetch environment config (includes Shopify status)
+  const { data: config } = useEnvironmentConfig();
 
   // Fetch Shopify stats
   const { data: shopifyStats, isLoading: shopifyStatsLoading } = useQuery({
@@ -207,7 +195,7 @@ function BulkImportPage() {
   const handleStartImport = () => {
     console.log('🚀 Start Import clicked', { fullImport, batchSize, reimportAll, targetUnprocessedUsers, importInProgress });
     
-    if (!statusData?.shopifyApiAvailable) {
+    if (!config?.shopify?.accessTokenSet) {
       console.error('❌ Shopify API not available');
       toast.error('Shopify API is not configured. Please set SHOPIFY_ADMIN_ACCESS_TOKEN.');
       return;
@@ -322,7 +310,7 @@ function BulkImportPage() {
       <div className="status-card-compact">
         <div className="status-grid">
           <div className="status-item">
-            <span className="status-icon">{statusData?.shopifyApiAvailable ? '🟢' : '🔴'}</span>
+            <span className="status-icon">{config?.shopify?.accessTokenSet ? '🟢' : '🔴'}</span>
             <span className="status-label">Shopify API</span>
           </div>
           <div className="status-item">
@@ -576,7 +564,7 @@ function BulkImportPage() {
         <div className="button-group">
           <button
             onClick={handleStartImport}
-            disabled={importInProgress || startImportMutation.isPending || !statusData?.shopifyApiAvailable}
+            disabled={importInProgress || startImportMutation.isPending || !config?.shopify?.accessTokenSet}
             className="btn-primary"
           >
             {startImportMutation.isPending ? 'Starting...' : '🚀 Start Customer Import'}
