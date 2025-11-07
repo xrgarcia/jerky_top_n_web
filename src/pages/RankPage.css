@@ -21,10 +21,10 @@
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-height: 700px;
-  max-height: calc(100vh - 150px);
+  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
+  overflow: hidden;
 }
 
 .header-with-status {
@@ -350,9 +350,10 @@
 /* Products display */
 .products-display {
   flex: 1;
-  overflow-y: auto;
+  overflow-y: scroll;
   overflow-x: hidden;
   min-height: 0;
+  touch-action: pan-y;
 }
 
 .loading-state,
