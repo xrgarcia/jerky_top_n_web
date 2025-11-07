@@ -20,15 +20,18 @@ class BulkImportService {
     this.importInProgress = false;
     this.currentImportStats = null;
     this.wsGateway = null;
+    this.classificationQueue = null;
   }
 
   /**
-   * Initialize with WebSocket gateway for real-time broadcasting
+   * Initialize with WebSocket gateway and classification queue
    * @param {Object} wsGateway - WebSocket gateway instance
+   * @param {Object} classificationQueue - Classification queue instance for enqueueing user classification jobs
    */
-  initialize(wsGateway) {
+  initialize(wsGateway, classificationQueue) {
     this.wsGateway = wsGateway;
-    console.log('✅ BulkImportService initialized with WebSocket gateway');
+    this.classificationQueue = classificationQueue;
+    console.log('✅ BulkImportService initialized with WebSocket gateway and classification queue');
   }
 
   /**
@@ -424,6 +427,18 @@ class BulkImportService {
           updatedAt: new Date()
         })
         .returning({ id: users.id });
+
+      // Enqueue classification job for new user (async, non-blocking)
+      if (this.classificationQueue && newUser.id) {
+        setImmediate(async () => {
+          try {
+            await this.classificationQueue.enqueue(newUser.id, 'bulk_import');
+            console.log(`📋 Enqueued classification job for new user ${newUser.id} (reason: bulk_import)`);
+          } catch (err) {
+            console.error(`⚠️ Failed to enqueue classification for user ${newUser.id}:`, err);
+          }
+        });
+      }
 
       return {
         userId: newUser.id,

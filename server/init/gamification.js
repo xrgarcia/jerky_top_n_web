@@ -149,9 +149,9 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const bulkImportQueue = BulkImportQueue; // Singleton instance
   await bulkImportQueue.initialize();
   
-  // Initialize BulkImportService with WebSocket gateway for real-time progress broadcasting
+  // Initialize BulkImportService with WebSocket gateway and classification queue
   const bulkImportService = BulkImportService; // Singleton instance
-  bulkImportService.initialize(wsGateway);
+  bulkImportService.initialize(wsGateway, classificationQueue);
   
   // Initialize BulkImportWorker (BullMQ background processor)
   const bulkImportWorker = BulkImportWorker; // Singleton instance
