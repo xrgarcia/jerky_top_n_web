@@ -34,7 +34,7 @@ function BulkImportPage() {
 
   // Fetch API status
   const { data: statusData } = useQuery({
-    queryKey: ['bulkImportStatus'],
+    queryKey: ['bulkImportStatus/v2'], // v2: force fresh cache after token was added
     queryFn: async () => {
       const res = await fetch('/api/admin/bulk-import/status', {
         credentials: 'include'
