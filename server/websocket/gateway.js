@@ -224,14 +224,13 @@ class WebSocketGateway {
                   if (engagementUpdates.length > 0) {
                     console.log(`🎯 [WEBSOCKET ${data.page?.toUpperCase()}] User ${socket.userId} updated ${engagementUpdates.length} engagement achievement(s)`);
                     
-                    // Emit newly earned achievements to the user via WebSocket
-                    for (const update of engagementUpdates) {
-                      if (update.isNew) {
-                        socket.emit('achievement:earned', {
-                          achievement: update.achievement,
-                          message: `You earned "${update.achievement.name}"!`
-                        });
-                      }
+                    // Emit newly earned achievements to the user via WebSocket (triggers toast notifications)
+                    const newAchievements = engagementUpdates
+                      .filter(update => update.isNew)
+                      .map(update => update.achievement);
+                    
+                    if (newAchievements.length > 0) {
+                      this.emitAchievements(socket.userId, newAchievements);
                     }
                   }
                 }
