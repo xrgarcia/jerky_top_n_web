@@ -358,7 +358,7 @@ export default function UserGuidanceTab() {
               <div className="key-metrics-summary">
                 <div className="metric-card">
                   <div className="metric-label">Total Rankings</div>
-                  <div className="metric-value">{selectedUser.stats?.totalRankings || 0}</div>
+                  <div className="metric-value">{selectedUser.user?.rankedCount || 0}</div>
                   <div className="metric-sublabel">All Time</div>
                 </div>
                 <div className="metric-card">
@@ -413,7 +413,7 @@ export default function UserGuidanceTab() {
                   <div className="dual-inputs">
                     <div className="stat-item highlight">
                       <label>Total Rankings (Lifetime):</label>
-                      <span className="activity-count">{selectedUser.stats?.totalRankings || 0}</span>
+                      <span className="activity-count">{selectedUser.user?.rankedCount || 0}</span>
                     </div>
                     <div className="stat-item highlight">
                       <label>Activities (Last 30 Days):</label>
