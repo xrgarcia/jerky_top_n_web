@@ -219,7 +219,7 @@
 
 /* Rankings column */
 .slots-container {
-  flex: 1;
+  flex: 1 1 0%;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.5rem;
@@ -499,16 +499,14 @@
 
 /* Collapsible Rankings Content */
 .rankings-content {
-  flex: 1;
+  flex: 1 1 0%;
   display: flex;
   flex-direction: column;
   min-height: 0;
-  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
-  opacity: 1;
 }
 
 .rankings-content.collapsed {
-  flex: 0;
+  flex: 0 0 0%;
   max-height: 0;
   opacity: 0;
   overflow: hidden;
