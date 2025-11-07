@@ -18,6 +18,10 @@ author = "agent"
 task = "workflow.run"
 args = "Server"
 
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Vite Dev"
+
 [[workflows.workflow]]
 name = "Server"
 author = "agent"
@@ -30,6 +34,18 @@ waitForPort = 5000
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "Vite Dev"
+author = "agent"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev:react"
+waitForPort = 5173
+
+[workflows.workflow.metadata]
+outputType = "console"
+
 [[ports]]
 localPort = 5000
 externalPort = 80
@@ -37,10 +53,6 @@ externalPort = 80
 [[ports]]
 localPort = 5173
 externalPort = 5173
-
-[[ports]]
-localPort = 40655
-externalPort = 3001
 
 [[ports]]
 localPort = 42305

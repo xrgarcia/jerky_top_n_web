@@ -8,6 +8,43 @@ A web application for ranking jerky flavors, designed to be a comprehensive and 
 - Focus on user interaction and ranking functionality
 - Responsive design for all devices
 
+## Development Workflow
+
+**CRITICAL: Frontend Build Process**
+
+The application uses **two separate workflows** for different development modes:
+
+### 1. Development Mode (Hot Reloading)
+- **Workflow**: `Vite Dev` (port 5173)
+- **Command**: `npm run dev:react`
+- **Use When**: Actively developing frontend (CSS, JSX, component changes)
+- **Benefits**: Instant hot-reload of CSS/JS changes - no manual rebuild needed
+- **Access**: http://localhost:5173 (or via Replit webview)
+
+### 2. Production Mode
+- **Workflow**: `Server` (port 5000)
+- **Command**: `npm start`
+- **Use When**: Testing production builds, backend work, or final verification
+- **How It Works**: 
+  1. Vite builds `src/` → `public/dist/` with timestamp hashes
+  2. Express serves pre-built files from `public/dist/`
+  3. **Any CSS/JS changes require rebuilding**: `npm run build:react`
+- **Access**: http://localhost:5000 (default Replit URL)
+
+### Build Commands
+- `npm run build:react` - Build React app for production (required after CSS/JS changes in production mode)
+- `npm run dev:react` - Start Vite dev server with hot reload
+- `npm start` - Start Express server (serves pre-built files)
+
+### Quick Reference
+| Change Type | Dev Mode | Production Mode |
+|-------------|----------|-----------------|
+| CSS changes | Auto-reload ✅ | Rebuild + restart ⚠️ |
+| JSX changes | Auto-reload ✅ | Rebuild + restart ⚠️ |
+| Backend changes | Restart `Server` | Restart `Server` |
+
+**Best Practice**: Use **Dev Mode** (`Vite Dev`) for frontend development, then build and verify in **Production Mode** (`Server`) before deployment.
+
 ## Terminology
 **CRITICAL DISTINCTION:**
 - **Flavor Profile** = Taste category (e.g., Teriyaki, BBQ, Sweet, Spicy, Savory) - macro-level grouping
