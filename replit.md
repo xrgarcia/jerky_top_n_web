@@ -75,7 +75,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
 - **Product Management**: Combines external data with metadata and ranking statistics, including advanced filtering.
 - **Shopify Synchronization**: Automatic sync of products and metadata via webhooks, with caching and orphan cleanup.
-- **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications.
+- **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications. Automatic real-time achievement checking via WebSocket after all activity tracking (page views, product views, profile views), ensuring immediate award of engagement achievements when thresholds are met.
 - **Page View Tracking**: Asynchronous tracking for analytics.
 - **Timestamp Handling**: All database timestamps are ISO 8601 UTC; client-side relative time calculation.
 - **Performance**: OOP design patterns, caching, query optimization.
