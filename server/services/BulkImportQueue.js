@@ -298,32 +298,56 @@ class BulkImportQueue {
    */
   async getRedisStats() {
     if (!this.queue) {
-      return { error: 'Queue not initialized' };
+      console.log('⚠️ [getRedisStats] Queue not initialized');
+      return { waiting: 0, active: 0, completed: 0, failed: 0, total: 0 };
     }
 
     try {
-      const redisConnection = await this.queue.client;
+      console.log('🔍 [getRedisStats] Getting Redis connection from shared client...');
+      
+      // Use the shared redisClient instead of this.queue.client
+      // BullMQ's Queue.client is a lazy getter that only resolves after first operation
+      // Using the shared client avoids hanging when no jobs have been processed yet
+      const redis = redisClient.getClient();
+      
+      if (!redis) {
+        console.warn('⚠️ [getRedisStats] Redis client not available');
+        return { waiting: 0, active: 0, completed: 0, failed: 0, total: 0 };
+      }
+      
+      console.log('🔍 [getRedisStats] Redis connection obtained, querying stats...');
+      
+      // First, check what keys exist
+      const allKeys = await redis.keys('bull:bulk-import:*').catch(err => { 
+        console.log('⚠️ keys() error:', err.message); 
+        return []; 
+      });
+      console.log(`🔍 [getRedisStats] Found ${allKeys.length} bull:bulk-import:* keys in Redis`);
       
       // BullMQ stores different states in different Redis data structures:
       // - waiting, active: Redis Lists (use LLEN)
       // - completed, failed, delayed: Redis Sorted Sets (use ZCARD)
       const [waiting, active, completed, failed] = await Promise.all([
-        redisConnection.llen('bull:bulk-import:wait').catch(() => 0),      // List
-        redisConnection.llen('bull:bulk-import:active').catch(() => 0),    // List
-        redisConnection.zcard('bull:bulk-import:completed').catch(() => 0), // Sorted Set
-        redisConnection.zcard('bull:bulk-import:failed').catch(() => 0),    // Sorted Set
+        redis.llen('bull:bulk-import:wait').catch(err => { console.log('  ⚠️ llen wait error:', err.message); return 0; }),
+        redis.llen('bull:bulk-import:active').catch(err => { console.log('  ⚠️ llen active error:', err.message); return 0; }),
+        redis.zcard('bull:bulk-import:completed').catch(err => { console.log('  ⚠️ zcard completed error:', err.message); return 0; }),
+        redis.zcard('bull:bulk-import:failed').catch(err => { console.log('  ⚠️ zcard failed error:', err.message); return 0; }),
       ]);
 
-      return {
+      const result = {
         waiting,
         active,
         completed,
         failed,
         total: waiting + active + completed + failed,
       };
+      
+      console.log('📊 [getRedisStats] Redis stats result:', result);
+      return result;
     } catch (error) {
-      console.error('❌ Failed to get Redis stats:', error);
-      return { error: error.message };
+      console.error('❌ Failed to get Redis stats:', error.message);
+      // Return zeros instead of error object so UI doesn't break
+      return { waiting: 0, active: 0, completed: 0, failed: 0, total: 0 };
     }
   }
 
@@ -338,6 +362,8 @@ class BulkImportQueue {
     }
 
     try {
+      console.log('📊 [getStats] Fetching bulk-import queue statistics...');
+      
       // Get both BullMQ stats (retention-aware) and direct Redis counts
       const [bullmqStats, redisStats] = await Promise.all([
         (async () => {
@@ -361,10 +387,16 @@ class BulkImportQueue {
         this.getRedisStats(),
       ]);
 
-      return {
+      console.log('📊 [getStats] BullMQ stats:', bullmqStats);
+      console.log('📊 [getStats] Redis stats:', redisStats);
+
+      const result = {
         ...bullmqStats,
         redis: redisStats, // Include direct Redis counts for comparison
       };
+      
+      console.log('📊 [getStats] Final combined result:', JSON.stringify(result, null, 2));
+      return result;
     } catch (error) {
       console.error('❌ Failed to get bulk import queue stats:', error);
       return { error: error.message };
