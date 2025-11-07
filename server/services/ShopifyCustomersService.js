@@ -1,8 +1,10 @@
 const Sentry = require('@sentry/node');
+const { retryWithBackoff, isTransientHttpError } = require('../utils/retryWithBackoff');
 
 /**
  * ShopifyCustomersService
  * Fetches ALL customers from Shopify Admin API for bulk import
+ * Uses retry logic with exponential backoff for transient network errors
  */
 class ShopifyCustomersService {
   constructor() {
@@ -194,61 +196,104 @@ class ShopifyCustomersService {
   /**
    * Fetch a single batch of customers (for progressive loading)
    * Uses proper cursor-based pagination via Link headers
+   * Uses retry logic with exponential backoff for transient network errors
+   * 
    * @param {Object} options - Pagination options
    * @param {string} options.pageUrl - Full URL for next page (from Link header)
    * @param {number} options.limit - Results per page (max 250)
    * @returns {Promise<Object>} { customers: Array, hasMore: boolean, nextPageUrl: string }
+   * @throws {Error} Propagates errors after retry attempts exhausted
    */
   async fetchCustomerBatch(options = {}) {
     const { pageUrl, limit = 250 } = options;
 
     if (!this.accessToken) {
-      console.warn('⚠️ Shopify Admin Access Token not configured');
-      return { customers: [], hasMore: false, nextPageUrl: null };
+      const error = new Error('Shopify Admin Access Token not configured');
+      console.warn('⚠️', error.message);
+      throw error;
     }
 
-    try {
-      // Use provided page URL or build initial URL
-      const url = pageUrl || `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers.json?limit=${limit}`;
+    // Use provided page URL or build initial URL
+    const url = pageUrl || `https://${this.shopDomain}/admin/api/${this.apiVersion}/customers.json?limit=${limit}`;
 
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'X-Shopify-Access-Token': this.accessToken,
-          'Content-Type': 'application/json'
+    // Wrap fetch in retry logic
+    return await retryWithBackoff(
+      async () => {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'X-Shopify-Access-Token': this.accessToken,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        // Check for HTTP errors
+        if (!response.ok) {
+          const errorText = await response.text();
+          const error = new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+          error.status = response.status;
+          error.statusText = response.statusText;
+          error.responseBody = errorText;
+          
+          // Log non-retryable errors immediately
+          if (!isTransientHttpError(response)) {
+            console.error(`❌ Shopify API error (${response.status}):`, errorText);
+            Sentry.captureMessage(`Shopify API error: ${response.status}`, {
+              level: 'error',
+              tags: { 
+                service: 'shopify-customers', 
+                shopify_status: response.status,
+                retryable: 'false'
+              },
+              extra: { errorText, url }
+            });
+          }
+          
+          throw error;
         }
-      });
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error(`❌ Shopify API error (${response.status}):`, errorText);
-        return { customers: [], hasMore: false, nextPageUrl: null };
+        const data = await response.json();
+        const customers = data.customers || [];
+
+        // Parse Link header for next page URL (proper cursor pagination)
+        const linkHeader = response.headers.get('Link');
+        const nextPageUrl = this._parseNextPageUrl(linkHeader);
+        const hasMore = !!nextPageUrl;
+
+        console.log(`📦 Fetched batch: ${customers.length} customers (hasMore: ${hasMore})`);
+
+        return {
+          customers,
+          hasMore,
+          nextPageUrl
+        };
+      },
+      {
+        maxRetries: 3,
+        initialDelay: 1000,
+        maxDelay: 10000,
+        operationName: 'Shopify fetchCustomerBatch',
+        shouldRetry: (error) => {
+          // Retry on network errors (ECONNRESET, etc.)
+          if (error.code) {
+            return true; // Let retryWithBackoff determine if it's transient
+          }
+          
+          // Retry on 5xx server errors and 429 rate limit
+          if (error.status && (error.status >= 500 || error.status === 429)) {
+            return true;
+          }
+          
+          // Don't retry on 4xx client errors (except 429)
+          if (error.status && error.status >= 400 && error.status < 500) {
+            return false;
+          }
+          
+          // Default: let retryWithBackoff decide based on error type
+          return true;
+        }
       }
-
-      const data = await response.json();
-      const customers = data.customers || [];
-
-      // Parse Link header for next page URL (proper cursor pagination)
-      const linkHeader = response.headers.get('Link');
-      const nextPageUrl = this._parseNextPageUrl(linkHeader);
-      const hasMore = !!nextPageUrl;
-
-      console.log(`📦 Fetched batch: ${customers.length} customers (hasMore: ${hasMore})`);
-
-      return {
-        customers,
-        hasMore,
-        nextPageUrl
-      };
-
-    } catch (error) {
-      console.error('❌ Error fetching customer batch:', error);
-      Sentry.captureException(error, {
-        tags: { service: 'shopify-customers' }
-      });
-      
-      return { customers: [], hasMore: false, nextPageUrl: null };
-    }
+    );
   }
 
   /**

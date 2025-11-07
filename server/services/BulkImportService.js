@@ -393,18 +393,19 @@ class BulkImportService {
     while (hasMore && currentPage < maxPages) {
       currentPage++;
       
-      // Fetch one batch of customers using proper cursor pagination
-      const batchResult = await this.shopifyCustomersService.fetchCustomerBatch({
-        pageUrl: nextPageUrl,
-        limit: pageSize
-      });
-      
-      if (!batchResult.customers || batchResult.customers.length === 0) {
-        console.log(`📭 No more customers to fetch (reached end at page ${currentPage})`);
-        break;
-      }
-      
-      const customers = batchResult.customers;
+      try {
+        // Fetch one batch of customers using proper cursor pagination with retry logic
+        const batchResult = await this.shopifyCustomersService.fetchCustomerBatch({
+          pageUrl: nextPageUrl,
+          limit: pageSize
+        });
+        
+        if (!batchResult.customers || batchResult.customers.length === 0) {
+          console.log(`📭 No more customers to fetch (reached end at page ${currentPage})`);
+          break;
+        }
+        
+        const customers = batchResult.customers;
       
       console.log(`📄 Fetched page ${currentPage}: ${customers.length} customers`);
       
@@ -526,6 +527,28 @@ class BulkImportService {
         } else {
           console.log(`📊 Progress: ${totalCustomersFetched} customers processed, ${usersToImport.length} to import`);
         }
+      }
+      } catch (error) {
+        // Error fetching batch from Shopify (after retries exhausted)
+        console.error(`❌ Fatal error fetching customer batch from Shopify (page ${currentPage}):`, error);
+        this.currentImportStats.errors++;
+        this.currentImportStats.phase = 'failed';
+        
+        Sentry.captureException(error, {
+          tags: { 
+            service: 'bulk-import', 
+            phase: 'fetch_customers',
+            page: currentPage
+          },
+          extra: { 
+            totalCustomersFetched, 
+            usersCreated: this.currentImportStats.usersCreated,
+            mode
+          }
+        });
+        
+        // Propagate the error to stop the import and notify the UI
+        throw new Error(`Failed to fetch customers from Shopify after retries: ${error.message}`);
       }
     }
     
