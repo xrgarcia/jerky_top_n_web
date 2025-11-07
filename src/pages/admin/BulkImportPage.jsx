@@ -123,20 +123,30 @@ function BulkImportPage() {
   // Start bulk import mutation
   const startImportMutation = useMutation({
     mutationFn: async () => {
+      const payload = {
+        mode,
+        batchSize: batchSize ? parseInt(batchSize) : null
+      };
+      console.log('🚀 Starting import with payload:', payload);
+      
       const res = await fetch('/api/admin/bulk-import/start', {
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          mode,
-          batchSize: batchSize ? parseInt(batchSize) : null
-        })
+        body: JSON.stringify(payload)
       });
+      
+      console.log('📡 Response status:', res.status, res.statusText);
+      
       if (!res.ok) {
-        const error = await res.json();
+        const error = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        console.error('❌ Import start failed:', error);
         throw new Error(error.error || 'Failed to start import');
       }
-      return res.json();
+      
+      const data = await res.json();
+      console.log('✅ Import started successfully:', data);
+      return data;
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(['bulkImportProgress']);
@@ -149,6 +159,7 @@ function BulkImportPage() {
       }
     },
     onError: (error) => {
+      console.error('❌ Import mutation error:', error);
       toast.error(`Failed to start import: ${error.message}`);
     }
   });
@@ -387,7 +398,7 @@ function BulkImportPage() {
           <div className="phase-indicator">
             <div className="phase-label">Current Phase:</div>
             <div className={`phase-value phase-${phase}`}>
-              {phase === 'fetching_customers' && '📥 Fetching Customers from Shopify'}
+              {phase === 'fetching_customers' && (activeMode === 'reprocess' ? '🗄️ Fetching Users from Database' : '📥 Fetching Customers from Shopify')}
               {phase === 'processing_customers' && '⚙️ Processing Customers'}
               {phase === 'enqueuing_jobs' && '📋 Enqueuing Import Jobs'}
               {phase === 'completed' && '✅ Import Complete'}
@@ -408,10 +419,10 @@ function BulkImportPage() {
               </div>
             )}
             
-            {activeMode === 'reprocess' && currentStats.notInDB !== undefined && (
-              <div className="metric-card warning">
-                <div className="metric-value">{currentStats.notInDB || 0}</div>
-                <div className="metric-label">Not in DB (Skipped)</div>
+            {activeMode === 'reprocess' && currentStats.jobsPendingEnqueue !== undefined && (
+              <div className="metric-card info">
+                <div className="metric-value">{currentStats.jobsPendingEnqueue || 0}</div>
+                <div className="metric-label">Pending Enqueue</div>
               </div>
             )}
             

@@ -109,6 +109,9 @@ module.exports = function createBulkImportRoutes(storage, db) {
    *   - batchSize: number - Limit to this many customers (1000, 5000, etc)
    */
   router.post('/bulk-import/start', requireEmployeeAdmin, async (req, res) => {
+    console.log(`📨 [API] Received bulk import start request from ${req.user?.email || 'unknown'}`);
+    console.log(`📦 [API] Request body:`, JSON.stringify(req.body, null, 2));
+    
     try {
       const { mode = null, reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = req.body;
 
@@ -119,7 +122,7 @@ module.exports = function createBulkImportRoutes(storage, db) {
         : (fullImport 
           ? `full import (batch: ${batchSize || 'unlimited'})` 
           : (targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'incremental')));
-      console.log(`🚀 Admin ${req.user.email} starting bulk import (mode: ${modeDesc}, reimportAll: ${reimportAll})`);
+      console.log(`🚀 [API] Admin ${req.user.email} starting bulk import (mode: ${modeDesc}, reimportAll: ${reimportAll})`);
 
       const result = await bulkImportService.startBulkImport({
         mode,
@@ -130,14 +133,18 @@ module.exports = function createBulkImportRoutes(storage, db) {
         batchSize
       });
 
+      console.log(`✅ [API] Bulk import started successfully:`, { jobsEnqueued: result.jobsEnqueued, usersCreated: result.usersCreated });
+
       if (result.success) {
         res.json(result);
       } else {
+        console.error(`⚠️ [API] Bulk import returned failure:`, result);
         res.status(400).json(result);
       }
     } catch (error) {
-      console.error('Error starting bulk import:', error);
-      res.status(500).json({ error: 'Failed to start import' });
+      console.error('❌ [API] Error starting bulk import:', error);
+      console.error('❌ [API] Stack trace:', error.stack);
+      res.status(500).json({ error: 'Failed to start import', details: error.message });
     }
   });
 
