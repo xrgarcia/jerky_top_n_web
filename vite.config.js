@@ -11,7 +11,14 @@ export default defineConfig({
       output: {
         entryFileNames: `assets/[name]-[hash].js`,
         chunkFileNames: `assets/[name]-[hash].js`,
-        assetFileNames: `assets/[name]-[hash].[ext]`
+        assetFileNames: `assets/[name]-[hash].[ext]`,
+        manualChunks: {
+          'vendor-socket': ['socket.io-client'],
+          'vendor-dnd': ['@dnd-kit/core', '@dnd-kit/sortable', '@dnd-kit/utilities'],
+          'vendor-react-query': ['@tanstack/react-query'],
+          'vendor-sentry': ['@sentry/react'],
+          'vendor-router': ['react-router-dom'],
+        }
       }
     }
   },
