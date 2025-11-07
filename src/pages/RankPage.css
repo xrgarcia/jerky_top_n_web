@@ -40,6 +40,8 @@
   font-size: 1.5rem;
   color: #2c3e50;
   font-weight: 600;
+  padding: 0 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .save-status-inline {
