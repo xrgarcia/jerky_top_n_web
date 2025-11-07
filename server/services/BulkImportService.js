@@ -19,6 +19,16 @@ class BulkImportService {
     this.shopifyCustomersService = new ShopifyCustomersService();
     this.importInProgress = false;
     this.currentImportStats = null;
+    this.wsGateway = null;
+  }
+
+  /**
+   * Initialize with WebSocket gateway for real-time broadcasting
+   * @param {Object} wsGateway - WebSocket gateway instance
+   */
+  initialize(wsGateway) {
+    this.wsGateway = wsGateway;
+    console.log('✅ BulkImportService initialized with WebSocket gateway');
   }
 
   /**
@@ -32,15 +42,16 @@ class BulkImportService {
   /**
    * Start bulk import of all Shopify customers
    * @param {Object} options - Import options
+   * @param {'full' | 'reprocess'} options.mode - Import mode: 'full' (create new users only) or 'reprocess' (update existing users)
    * @param {boolean} options.reimportAll - Force reimport of all users (default: false)
    * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to import (intelligent mode)
    * @param {number} options.maxCustomers - Limit total customers to fetch (deprecated, use targetUnprocessedUsers or batchSize)
-   * @param {boolean} options.fullImport - Full import mode: create ALL missing customers from Shopify
-   * @param {number} options.batchSize - In full import mode, limit to this many customers (1000, 5000, 10000, etc)
+   * @param {boolean} options.fullImport - Full import mode: create ALL missing customers from Shopify (DEPRECATED: use mode='full')
+   * @param {number} options.batchSize - Limit to this many customers (1000, 5000, 10000, etc)
    * @returns {Promise<Object>} Import result
    */
   async startBulkImport(options = {}) {
-    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
+    const { mode = null, reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
 
     if (this.importInProgress) {
       return {
@@ -59,8 +70,11 @@ class BulkImportService {
 
     try {
       this.importInProgress = true;
+      
+      // Initialize stats based on mode
       this.currentImportStats = {
         startedAt: new Date().toISOString(),
+        mode: mode || (fullImport ? 'full' : 'incremental'),
         phase: 'fetching_customers',
         customersFetched: 0,
         usersCreated: 0,
@@ -69,13 +83,25 @@ class BulkImportService {
         errors: 0
       };
 
-      const mode = fullImport 
-        ? `full import (batch: ${batchSize || 'unlimited'})` 
-        : (targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'incremental'));
-      console.log(`🚀 Starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
+      // Add mode-specific counters
+      if (mode === 'full') {
+        this.currentImportStats.alreadyInDB = 0;
+      } else if (mode === 'reprocess') {
+        this.currentImportStats.notInDB = 0;
+      }
+
+      const modeDesc = mode === 'full' 
+        ? `full import (create new users only, batch: ${batchSize || 'unlimited'})`
+        : mode === 'reprocess'
+        ? `re-processing (update existing users, batch: ${batchSize || 'unlimited'})`
+        : (fullImport 
+          ? `full import (batch: ${batchSize || 'unlimited'})` 
+          : (targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'incremental')));
+      console.log(`🚀 Starting bulk import (mode: ${modeDesc}, reimportAll: ${reimportAll})`);
 
       // Step 1 & 2: Intelligently fetch customers and identify unprocessed users
       const usersToImport = await this.fetchUnprocessedUsers({
+        mode,
         reimportAll,
         targetUnprocessedUsers,
         maxCustomers,
@@ -134,17 +160,42 @@ class BulkImportService {
   }
 
   /**
+   * Broadcast real-time progress to WebSocket clients
+   */
+  async broadcastProgress() {
+    if (!this.wsGateway || !this.wsGateway.io) {
+      return;
+    }
+
+    try {
+      const BulkImportQueue = require('./BulkImportQueue');
+      const queueStats = await BulkImportQueue.getStats();
+
+      const progressData = {
+        ...this.currentImportStats,
+        queue: queueStats
+      };
+
+      const roomName = this.wsGateway.room('admin', 'queue-monitor');
+      this.wsGateway.io.to(roomName).emit('bulk-import:progress', progressData);
+    } catch (error) {
+      console.error('❌ Failed to broadcast progress:', error);
+    }
+  }
+
+  /**
    * Intelligently fetch unprocessed users by paginating through Shopify customers
    * @param {Object} options - Fetch options
+   * @param {'full' | 'reprocess'} options.mode - Import mode: 'full' (create new) or 'reprocess' (update existing)
    * @param {boolean} options.reimportAll - Force reimport even if already imported
    * @param {number} options.targetUnprocessedUsers - Target number of unprocessed users to find
    * @param {number} options.maxCustomers - Maximum total customers to fetch (legacy)
-   * @param {boolean} options.fullImport - Full import mode: create ALL customers and enqueue ALL jobs
-   * @param {number} options.batchSize - In full import mode, limit to this many customers
+   * @param {boolean} options.fullImport - Full import mode: create ALL customers and enqueue ALL jobs (DEPRECATED)
+   * @param {number} options.batchSize - Limit to this many customers
    * @returns {Promise<Array>} Array of users to import
    */
   async fetchUnprocessedUsers(options = {}) {
-    const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
+    const { mode = null, reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = options;
     
     console.log(`🔧 Import mode: fullImport=${fullImport}, reimportAll=${reimportAll}, batchSize=${batchSize || 'unlimited'}`);
     
@@ -214,40 +265,76 @@ class BulkImportService {
         this.currentImportStats.customersFetched = totalCustomersFetched;
         
         try {
-          const result = await this.createOrUpdateUser(customer, reimportAll, fullImport);
-          
-          if (result.created) {
-            this.currentImportStats.usersCreated++;
-            
-            // Progress update for Full Import Mode
-            if (useFullImportMode && this.currentImportStats.usersCreated % 100 === 0) {
-              console.log(`📊 Full Import Progress: Created ${this.currentImportStats.usersCreated}/${batchSize || 'unlimited'} new users (checked ${totalCustomersFetched} customers)`);
+          // Mode-specific processing
+          if (mode === 'full') {
+            // Mode 1: Full Import - Create new users only
+            const result = await this.processFullImportCustomer(customer);
+            if (result.created) {
+              this.currentImportStats.usersCreated++;
+              usersToImport.push({
+                userId: result.userId,
+                shopifyCustomerId: customer.id.toString(),
+                email: customer.email
+              });
+            } else if (result.alreadyExists) {
+              this.currentImportStats.alreadyInDB++;
             }
-          } else if (result.updated) {
-            this.currentImportStats.usersUpdated++;
-          }
-          
-          if (result.shouldImport) {
-            usersToImport.push({
-              userId: result.userId,
-              shopifyCustomerId: customer.id.toString(),
-              email: customer.email
-            });
+          } else if (mode === 'reprocess') {
+            // Mode 2: Re-processing - Update existing users only
+            const result = await this.processReprocessCustomer(customer);
+            if (result.exists) {
+              usersToImport.push({
+                userId: result.userId,
+                shopifyCustomerId: customer.id.toString(),
+                email: customer.email,
+                isReprocess: true
+              });
+              this.currentImportStats.jobsEnqueued++;
+            } else {
+              this.currentImportStats.notInDB++;
+            }
+          } else {
+            // Legacy mode: use existing createOrUpdateUser logic
+            const result = await this.createOrUpdateUser(customer, reimportAll, fullImport);
             
-            // In intelligent mode (not full import), stop when we've found enough unprocessed users
-            if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
-              console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers}) after checking ${totalCustomersFetched} customers across ${currentPage} pages`);
-              return usersToImport;
+            if (result.created) {
+              this.currentImportStats.usersCreated++;
+              
+              // Progress update for Full Import Mode
+              if (useFullImportMode && this.currentImportStats.usersCreated % 100 === 0) {
+                console.log(`📊 Full Import Progress: Created ${this.currentImportStats.usersCreated}/${batchSize || 'unlimited'} new users (checked ${totalCustomersFetched} customers)`);
+              }
+            } else if (result.updated) {
+              this.currentImportStats.usersUpdated++;
+            }
+            
+            if (result.shouldImport) {
+              usersToImport.push({
+                userId: result.userId,
+                shopifyCustomerId: customer.id.toString(),
+                email: customer.email
+              });
+              
+              // In intelligent mode (not full import), stop when we've found enough unprocessed users
+              if (useIntelligentMode && usersToImport.length >= targetUnprocessedUsers) {
+                console.log(`✅ Found ${usersToImport.length} unprocessed users (target: ${targetUnprocessedUsers}) after checking ${totalCustomersFetched} customers across ${currentPage} pages`);
+                return usersToImport;
+              }
             }
           }
         } catch (error) {
-          console.error(`❌ Error creating/updating user for customer ${customer.id}:`, error);
+          console.error(`❌ Error processing customer ${customer.id}:`, error);
           this.currentImportStats.errors++;
           
           Sentry.captureException(error, {
-            tags: { service: 'bulk-import', phase: 'create_user' },
-            extra: { customerId: customer.id, email: customer.email }
+            tags: { service: 'bulk-import', phase: 'process_customer' },
+            extra: { customerId: customer.id, email: customer.email, mode }
           });
+        }
+        
+        // Broadcast progress every 50 customers
+        if (totalCustomersFetched % 50 === 0) {
+          await this.broadcastProgress();
         }
       }
       
@@ -282,6 +369,98 @@ class BulkImportService {
       console.log(`✅ Fetched ${totalCustomersFetched} total customers across ${currentPage} pages, identified ${usersToImport.length} users to import (created: ${this.currentImportStats.usersCreated}, updated: ${this.currentImportStats.usersUpdated})`);
     }
     return usersToImport;
+  }
+
+  /**
+   * Process customer in Full Import mode - Create new users only
+   * Lightweight existence check before creating user
+   * @param {Object} customer - Shopify customer object
+   * @returns {Promise<Object>} { userId, created, alreadyExists }
+   */
+  async processFullImportCustomer(customer) {
+    const shopifyCustomerId = customer.id.toString();
+    const email = customer.email || `${shopifyCustomerId}@placeholder.jerky.com`;
+
+    try {
+      // Lightweight existence check: only query ID
+      const [existingUser] = await primaryDb
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+        .limit(1);
+
+      if (existingUser) {
+        // User already exists - skip
+        return {
+          userId: existingUser.id,
+          created: false,
+          alreadyExists: true
+        };
+      }
+
+      // User doesn't exist - create new
+      const [newUser] = await primaryDb
+        .insert(users)
+        .values({
+          shopifyCustomerId,
+          email,
+          firstName: customer.first_name,
+          lastName: customer.last_name,
+          displayName: customer.first_name || email.split('@')[0],
+          role: 'user',
+          active: false,
+          importStatus: 'pending',
+          fullHistoryImported: false,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        })
+        .returning({ id: users.id });
+
+      return {
+        userId: newUser.id,
+        created: true,
+        alreadyExists: false
+      };
+    } catch (error) {
+      console.error(`❌ Error in processFullImportCustomer for ${shopifyCustomerId}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Process customer in Re-processing mode - Update existing users only
+   * Lightweight existence check to find user ID
+   * @param {Object} customer - Shopify customer object
+   * @returns {Promise<Object>} { userId, exists }
+   */
+  async processReprocessCustomer(customer) {
+    const shopifyCustomerId = customer.id.toString();
+
+    try {
+      // Lightweight existence check: only query ID
+      const [existingUser] = await primaryDb
+        .select({ id: users.id })
+        .from(users)
+        .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+        .limit(1);
+
+      if (existingUser) {
+        // User exists - return for reprocessing job
+        return {
+          userId: existingUser.id,
+          exists: true
+        };
+      }
+
+      // User doesn't exist - skip
+      return {
+        userId: null,
+        exists: false
+      };
+    } catch (error) {
+      console.error(`❌ Error in processReprocessCustomer for ${shopifyCustomerId}:`, error);
+      throw error;
+    }
   }
 
   /**

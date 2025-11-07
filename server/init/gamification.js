@@ -29,6 +29,7 @@ const ClassificationQueue = require('../services/ClassificationQueue');
 const ClassificationWorker = require('../services/ClassificationWorker');
 const BulkImportQueue = require('../services/BulkImportQueue');
 const BulkImportWorker = require('../services/BulkImportWorker');
+const BulkImportService = require('../services/BulkImportService');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -148,11 +149,16 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const bulkImportQueue = BulkImportQueue; // Singleton instance
   await bulkImportQueue.initialize();
   
+  // Initialize BulkImportService with WebSocket gateway for real-time progress broadcasting
+  const bulkImportService = BulkImportService; // Singleton instance
+  bulkImportService.initialize(wsGateway);
+  
   // Initialize BulkImportWorker (BullMQ background processor)
   const bulkImportWorker = BulkImportWorker; // Singleton instance
   await bulkImportWorker.initialize(services);
   
   services.bulkImportQueue = bulkImportQueue;
+  services.bulkImportService = bulkImportService;
   services.bulkImportWorker = bulkImportWorker;
 
   // Seed achievements (this also warms AchievementCache)

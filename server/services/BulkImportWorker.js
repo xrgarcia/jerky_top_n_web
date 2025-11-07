@@ -105,10 +105,16 @@ class BulkImportWorker {
    * @param {Object} job - BullMQ job object
    */
   async processJob(job) {
-    const { userId, shopifyCustomerId, email } = job.data;
+    const { userId, shopifyCustomerId, email, isReprocess = false } = job.data;
     const startTime = Date.now();
 
     try {
+      // Route to appropriate handler based on job type
+      if (isReprocess) {
+        console.log(`🔄 Processing REPROCESS for user ${userId} (${email})...`);
+        return await this.processReprocessJob(job);
+      }
+
       console.log(`🔄 Processing import for user ${userId} (${email})...`);
 
       // Step 1: Fetch user record
@@ -160,6 +166,67 @@ class BulkImportWorker {
       };
     } catch (error) {
       console.error(`❌ Error processing import for user ${userId}:`, error);
+      throw error; // Re-throw to mark job as failed
+    }
+  }
+
+  /**
+   * Process a reprocess job - re-sync orders and reclassify existing user
+   * @param {Object} job - BullMQ job object
+   */
+  async processReprocessJob(job) {
+    const { userId, shopifyCustomerId, email } = job.data;
+    const startTime = Date.now();
+
+    try {
+      // Step 1: Fetch user record
+      const [user] = await primaryDb
+        .select()
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+
+      if (!user) {
+        throw new Error(`User ${userId} not found in database`);
+      }
+
+      // Step 2: Re-sync order history from Shopify
+      console.log(`  ⏳ Re-syncing order history for user ${userId}...`);
+      const syncResult = await this.purchaseHistoryService.syncUserOrders(user);
+
+      if (!syncResult.success) {
+        throw new Error(syncResult.error || syncResult.reason || 'Order re-sync failed');
+      }
+
+      console.log(`  ✓ Re-synced ${syncResult.itemsImported} order items from ${syncResult.ordersProcessed || 0} orders`);
+
+      // Step 3: Update last sync timestamp
+      await primaryDb
+        .update(users)
+        .set({
+          lastOrderSyncedAt: new Date(),
+          updatedAt: new Date()
+        })
+        .where(eq(users.id, userId));
+
+      // Step 4: Trigger classification job for reclassification
+      await classificationQueue.enqueue(userId, 'reprocess');
+      console.log(`  ✓ Reclassification job enqueued`);
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ Reprocess complete for user ${userId} (${duration}ms)`);
+
+      return {
+        success: true,
+        userId,
+        email,
+        itemsImported: syncResult.itemsImported,
+        ordersProcessed: syncResult.ordersProcessed,
+        duration,
+        isReprocess: true
+      };
+    } catch (error) {
+      console.error(`❌ Error reprocessing user ${userId}:`, error);
       throw error; // Re-throw to mark job as failed
     }
   }

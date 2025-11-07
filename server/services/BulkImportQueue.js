@@ -72,32 +72,37 @@ class BulkImportQueue {
    * @param {number} userId - User ID to import
    * @param {string} shopifyCustomerId - Shopify customer ID
    * @param {string} email - User email
+   * @param {boolean} isReprocess - Whether this is a reprocess job (default: false)
    * @returns {Promise<boolean>} - True if enqueued successfully
    */
-  async enqueueUserImport(userId, shopifyCustomerId, email) {
+  async enqueueUserImport(userId, shopifyCustomerId, email, isReprocess = false) {
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
       return false;
     }
 
     try {
+      const jobName = isReprocess ? 'reprocess-user' : 'import-user';
+      const jobId = isReprocess ? `reprocess-user-${userId}` : `import-user-${userId}`;
+      
       await this.queue.add(
-        'import-user',
+        jobName,
         { 
           userId, 
           shopifyCustomerId, 
           email,
+          isReprocess,
           enqueuedAt: new Date().toISOString() 
         },
         {
-          jobId: `import-user-${userId}`, // Deduplication: only one import job per user
+          jobId, // Deduplication: only one import/reprocess job per user
         }
       );
 
-      console.log(`📋 Enqueued import job for user ${userId} (${email})`);
+      console.log(`📋 Enqueued ${isReprocess ? 'reprocess' : 'import'} job for user ${userId} (${email})`);
       return true;
     } catch (error) {
-      console.error(`❌ Failed to enqueue import job for user ${userId}:`, error);
+      console.error(`❌ Failed to enqueue ${isReprocess ? 'reprocess' : 'import'} job for user ${userId}:`, error);
       return false;
     }
   }
@@ -148,15 +153,16 @@ class BulkImportQueue {
 
         try {
           const jobs = chunk.map(user => ({
-            name: 'import-user',
+            name: user.isReprocess ? 'reprocess-user' : 'import-user',
             data: {
               userId: user.userId,
               shopifyCustomerId: user.shopifyCustomerId,
               email: user.email,
+              isReprocess: user.isReprocess || false,
               enqueuedAt: new Date().toISOString()
             },
             opts: {
-              jobId: `import-user-${user.userId}`,
+              jobId: user.isReprocess ? `reprocess-user-${user.userId}` : `import-user-${user.userId}`,
             }
           }));
 
@@ -434,6 +440,84 @@ class BulkImportQueue {
       console.log('🗑️ Bulk import queue cleaned');
     } catch (error) {
       console.error('❌ Failed to clean bulk import queue:', error);
+    }
+  }
+
+  /**
+   * Obliterate ALL jobs in the queue (waiting, active, delayed, completed, failed)
+   * Use this to completely reset the queue
+   * @returns {Promise<Object>} - { removed: number, error?: string }
+   */
+  async obliterate() {
+    if (!this.queue) {
+      return { removed: 0, error: 'Queue not initialized' };
+    }
+
+    try {
+      console.log('🗑️ Obliterating ALL jobs in bulk import queue...');
+      
+      // Get counts before deletion
+      const stats = await this.getStats();
+      const totalBefore = stats.total || 0;
+
+      // Obliterate removes all jobs regardless of state
+      await this.queue.obliterate({ force: true });
+      
+      console.log(`✅ Obliterated ${totalBefore} jobs from bulk import queue`);
+      return { removed: totalBefore };
+    } catch (error) {
+      console.error('❌ Failed to obliterate queue:', error);
+      return { removed: 0, error: error.message };
+    }
+  }
+
+  /**
+   * Clear only completed jobs
+   * @returns {Promise<Object>} - { removed: number, error?: string }
+   */
+  async clearCompleted() {
+    if (!this.queue) {
+      return { removed: 0, error: 'Queue not initialized' };
+    }
+
+    try {
+      console.log('🗑️ Clearing completed jobs...');
+      
+      const completedCount = await this.queue.getCompletedCount();
+      
+      // Clean all completed jobs (age: 0 = all, limit: large number)
+      await this.queue.clean(0, 100000, 'completed');
+      
+      console.log(`✅ Cleared ${completedCount} completed jobs`);
+      return { removed: completedCount };
+    } catch (error) {
+      console.error('❌ Failed to clear completed jobs:', error);
+      return { removed: 0, error: error.message };
+    }
+  }
+
+  /**
+   * Clear only failed jobs
+   * @returns {Promise<Object>} - { removed: number, error?: string }
+   */
+  async clearFailed() {
+    if (!this.queue) {
+      return { removed: 0, error: 'Queue not initialized' };
+    }
+
+    try {
+      console.log('🗑️ Clearing failed jobs...');
+      
+      const failedCount = await this.queue.getFailedCount();
+      
+      // Clean all failed jobs
+      await this.queue.clean(0, 100000, 'failed');
+      
+      console.log(`✅ Cleared ${failedCount} failed jobs`);
+      return { removed: failedCount };
+    } catch (error) {
+      console.error('❌ Failed to clear failed jobs:', error);
+      return { removed: 0, error: error.message };
     }
   }
 

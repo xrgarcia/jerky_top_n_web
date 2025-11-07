@@ -101,22 +101,28 @@ module.exports = function createBulkImportRoutes(storage, db) {
    * POST /api/admin/bulk-import/start
    * Start bulk import of all Shopify customers
    * Body params:
+   *   - mode: 'full' | 'reprocess' - Import mode (full: create new users only, reprocess: update existing users)
    *   - reimportAll: boolean - Force reimport even if already imported
    *   - targetUnprocessedUsers: number - Intelligent mode: find and import X unprocessed users
    *   - maxCustomers: number - Legacy mode: fetch up to X customers total
-   *   - fullImport: boolean - Full import mode: create ALL missing customers
-   *   - batchSize: number - In full import mode, limit to this many customers (1000, 5000, etc)
+   *   - fullImport: boolean - Full import mode: create ALL missing customers (DEPRECATED: use mode='full')
+   *   - batchSize: number - Limit to this many customers (1000, 5000, etc)
    */
   router.post('/bulk-import/start', requireEmployeeAdmin, async (req, res) => {
     try {
-      const { reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = req.body;
+      const { mode = null, reimportAll = false, targetUnprocessedUsers = null, maxCustomers = null, fullImport = false, batchSize = null } = req.body;
 
-      const mode = fullImport 
-        ? `full import (batch: ${batchSize || 'unlimited'})` 
-        : (targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'incremental'));
-      console.log(`🚀 Admin ${req.user.email} starting bulk import (reimportAll: ${reimportAll}, mode: ${mode})`);
+      const modeDesc = mode === 'full' 
+        ? `full import (create new users only, batch: ${batchSize || 'unlimited'})`
+        : mode === 'reprocess'
+        ? `re-processing (update existing users, batch: ${batchSize || 'unlimited'})`
+        : (fullImport 
+          ? `full import (batch: ${batchSize || 'unlimited'})` 
+          : (targetUnprocessedUsers ? `target ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch ${maxCustomers} customers` : 'incremental')));
+      console.log(`🚀 Admin ${req.user.email} starting bulk import (mode: ${modeDesc}, reimportAll: ${reimportAll})`);
 
       const result = await bulkImportService.startBulkImport({
+        mode,
         reimportAll,
         targetUnprocessedUsers,
         maxCustomers,
