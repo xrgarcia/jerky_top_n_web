@@ -103,15 +103,22 @@ class BulkImportService {
           : (targetUnprocessedUsers ? `target: ${targetUnprocessedUsers} unprocessed` : (maxCustomers ? `fetch: ${maxCustomers} customers` : 'incremental')));
       console.log(`🚀 Starting bulk import (mode: ${modeDesc}, reimportAll: ${reimportAll})`);
 
-      // Step 1 & 2: Intelligently fetch customers and identify unprocessed users
-      const usersToImport = await this.fetchUnprocessedUsers({
-        mode,
-        reimportAll,
-        targetUnprocessedUsers,
-        maxCustomers,
-        fullImport,
-        batchSize
-      });
+      // Step 1 & 2: Fetch users based on mode
+      let usersToImport;
+      if (mode === 'reprocess') {
+        // Re-processing: Query database directly for existing users
+        usersToImport = await this.fetchExistingUsersForReprocessing({ batchSize });
+      } else {
+        // Full/Legacy: Fetch from Shopify and identify unprocessed users
+        usersToImport = await this.fetchUnprocessedUsers({
+          mode,
+          reimportAll,
+          targetUnprocessedUsers,
+          maxCustomers,
+          fullImport,
+          batchSize
+        });
+      }
 
       console.log(`✅ Created ${this.currentImportStats.usersCreated} users, updated ${this.currentImportStats.usersUpdated} users`);
 
@@ -210,6 +217,58 @@ class BulkImportService {
       this.wsGateway.io.to(roomName).emit('bulk-import:progress', progressData);
     } catch (error) {
       console.error('❌ Failed to broadcast progress:', error);
+    }
+  }
+
+  /**
+   * Fetch existing users from database for reprocessing (NO Shopify API calls)
+   * @param {Object} options - Fetch options
+   * @param {number} options.batchSize - Limit to this many users
+   * @returns {Promise<Array>} Array of users to reprocess
+   */
+  async fetchExistingUsersForReprocessing(options = {}) {
+    const { batchSize = null } = options;
+    
+    console.log(`🗄️  Fetching existing users from database for reprocessing (batch: ${batchSize || 'all'})...`);
+    
+    this.currentImportStats.phase = 'fetching_customers';
+    
+    try {
+      // Query database for existing users
+      let query = primaryDb
+        .select({
+          id: users.id,
+          shopifyCustomerId: users.shopifyCustomerId,
+          email: users.email
+        })
+        .from(users)
+        .where(eq(users.role, 'user'));
+      
+      // Apply batch size limit if specified
+      if (batchSize) {
+        query = query.limit(batchSize);
+      }
+      
+      const existingUsers = await query;
+      
+      console.log(`✅ Found ${existingUsers.length} existing users in database for reprocessing`);
+      
+      // Update stats
+      this.currentImportStats.customersFetched = existingUsers.length;
+      this.currentImportStats.jobsPendingEnqueue = existingUsers.length;
+      
+      // Convert to import format
+      const usersToImport = existingUsers.map(user => ({
+        userId: user.id,
+        shopifyCustomerId: user.shopifyCustomerId,
+        email: user.email,
+        isReprocess: true
+      }));
+      
+      return usersToImport;
+    } catch (error) {
+      console.error('❌ Error fetching existing users:', error);
+      throw error;
     }
   }
 
