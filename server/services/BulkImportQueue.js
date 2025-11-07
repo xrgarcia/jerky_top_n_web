@@ -1,5 +1,7 @@
 const { Queue } = require('bullmq');
 const redisClient = require('./RedisClient');
+const { primaryDb } = require('../db-primary');
+const { sql } = require('drizzle-orm');
 
 /**
  * BulkImportQueue - Manages async bulk user import jobs
@@ -112,6 +114,17 @@ class BulkImportQueue {
 
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
+      
+      // Persist all users as failed since queue is unavailable
+      for (const user of users) {
+        await this.persistFailedEnqueue(
+          user.userId,
+          user.shopifyCustomerId,
+          user.email,
+          'Queue not initialized - Redis unavailable'
+        );
+      }
+      
       return { enqueued: 0, failed: users.length };
     }
 
@@ -121,6 +134,7 @@ class BulkImportQueue {
 
     let totalEnqueued = 0;
     let totalFailed = 0;
+    let processedUserIds = new Set(); // Track which users we've attempted
 
     try {
       console.log(`📋 Bulk enqueueing ${users.length} import jobs (chunk size: ${chunkSize})...`);
@@ -147,22 +161,73 @@ class BulkImportQueue {
           try {
             await this.queue.addBulk(jobs);
             totalEnqueued += chunk.length;
+            // Mark all users in chunk as processed
+            chunk.forEach(user => processedUserIds.add(user.userId));
           } catch (bulkError) {
-            if (bulkError.message && bulkError.message.includes('Lua script execution limit')) {
-              console.log(`  ⚠️ Chunk ${chunkNumber}: Lua timeout, falling back to individual adds...`);
+            const isLuaTimeout = bulkError.message && 
+              (bulkError.message.includes('Lua script execution limit') || 
+               bulkError.message.includes('BUSY'));
+            
+            if (isLuaTimeout) {
+              console.log(`  ⚠️ Chunk ${chunkNumber}: Lua timeout, falling back to individual adds with exponential backoff...`);
               
               let chunkEnqueued = 0;
+              let chunkFailed = 0;
+              const maxRetries = 5;
+              
               for (const job of jobs) {
-                try {
-                  await this.queue.add(job.name, job.data, job.opts);
-                  chunkEnqueued++;
-                  totalEnqueued++;
-                } catch (singleError) {
-                  totalFailed++;
+                let jobEnqueued = false;
+                
+                for (let attempt = 1; attempt <= maxRetries; attempt++) {
+                  try {
+                    await this.queue.add(job.name, job.data, job.opts);
+                    chunkEnqueued++;
+                    totalEnqueued++;
+                    jobEnqueued = true;
+                    break;
+                  } catch (singleError) {
+                    const isDuplicate = 
+                      (singleError.message && singleError.message.toLowerCase().includes('already exists')) ||
+                      (singleError.name === 'JobExistsError') ||
+                      (singleError.code === 'JOB_EXISTS');
+                    
+                    if (isDuplicate) {
+                      chunkEnqueued++;
+                      totalEnqueued++;
+                      jobEnqueued = true;
+                      break;
+                    }
+                    
+                    if (attempt < maxRetries) {
+                      const backoffMs = Math.min(Math.pow(2, attempt) * 500, 8000);
+                      await new Promise(resolve => setTimeout(resolve, backoffMs));
+                    }
+                  }
                 }
+                
+                if (!jobEnqueued) {
+                  chunkFailed++;
+                  totalFailed++;
+                  
+                  await this.persistFailedEnqueue(
+                    job.data.userId,
+                    job.data.shopifyCustomerId,
+                    job.data.email,
+                    'Exceeded max retries during Redis Lua timeout'
+                  );
+                }
+                
+                // Mark user as processed (success or fail)
+                processedUserIds.add(job.data.userId);
               }
               
-              console.log(`  ✓ Chunk ${chunkNumber}: Individual adds completed (${chunkEnqueued}/${chunk.length} succeeded)`);
+              console.log(`  ✓ Chunk ${chunkNumber}: Individual adds completed (${chunkEnqueued}/${chunk.length} succeeded, ${chunkFailed} failed)`);
+              
+              if (chunkFailed > chunk.length * 0.3) {
+                const cooldownSec = chunkFailed > chunk.length * 0.7 ? 10 : 5;
+                console.log(`  ⚠️ High failure rate (${chunkFailed}/${chunk.length}), adding ${cooldownSec}s cooldown...`);
+                await new Promise(resolve => setTimeout(resolve, cooldownSec * 1000));
+              }
             } else {
               throw bulkError;
             }
@@ -178,7 +243,18 @@ class BulkImportQueue {
 
         } catch (chunkError) {
           console.error(`❌ Failed to enqueue chunk ${chunkNumber}/${totalChunks}:`, chunkError.message);
-          totalFailed += chunk.length;
+          
+          // Persist all failed jobs in this chunk
+          for (const user of chunk) {
+            await this.persistFailedEnqueue(
+              user.userId,
+              user.shopifyCustomerId,
+              user.email,
+              chunkError.message
+            );
+            totalFailed++;
+            processedUserIds.add(user.userId);
+          }
         }
       }
 
@@ -187,7 +263,23 @@ class BulkImportQueue {
 
     } catch (error) {
       console.error('❌ Fatal error in bulk enqueue:', error);
-      return { enqueued: totalEnqueued, failed: users.length - totalEnqueued };
+      
+      // Persist any unprocessed users to avoid data loss
+      const unprocessedUsers = users.filter(u => !processedUserIds.has(u.userId));
+      if (unprocessedUsers.length > 0) {
+        console.warn(`⚠️ Persisting ${unprocessedUsers.length} unprocessed users due to fatal error...`);
+        for (const user of unprocessedUsers) {
+          await this.persistFailedEnqueue(
+            user.userId,
+            user.shopifyCustomerId,
+            user.email,
+            `Fatal error: ${error.message}`
+          );
+        }
+        totalFailed += unprocessedUsers.length;
+      }
+      
+      return { enqueued: totalEnqueued, failed: totalFailed, error: error.message };
     }
   }
 
@@ -340,6 +432,127 @@ class BulkImportQueue {
       console.log('🗑️ Bulk import queue cleaned');
     } catch (error) {
       console.error('❌ Failed to clean bulk import queue:', error);
+    }
+  }
+
+  /**
+   * Persist a failed enqueue attempt to the database for later retry
+   * @param {number} userId - User ID
+   * @param {string} shopifyCustomerId - Shopify customer ID
+   * @param {string} email - User email
+   * @param {string} errorMessage - Error message
+   */
+  async persistFailedEnqueue(userId, shopifyCustomerId, email, errorMessage) {
+    try {
+      await primaryDb.execute(sql`
+        INSERT INTO failed_enqueue_jobs (user_id, shopify_customer_id, email, error_message, retry_count)
+        VALUES (${userId}, ${shopifyCustomerId}, ${email}, ${errorMessage}, 0)
+        ON CONFLICT (user_id) DO UPDATE SET
+          error_message = ${errorMessage},
+          last_retry_at = CURRENT_TIMESTAMP
+      `);
+    } catch (error) {
+      console.error(`Failed to persist failed enqueue for user ${userId}:`, error.message);
+    }
+  }
+
+  /**
+   * Retry all unresolved failed enqueues
+   * @param {number} limit - Max number of failed jobs to retry (default: 100)
+   * @returns {Promise<Object>} - { retried: number, succeeded: number, failed: number }
+   */
+  async retryFailedEnqueues(limit = 100) {
+    if (!this.queue) {
+      console.warn('⚠️ Bulk import queue not initialized');
+      return { retried: 0, succeeded: 0, failed: 0 };
+    }
+
+    try {
+      const failedJobs = await primaryDb.execute(sql`
+        SELECT user_id, shopify_customer_id, email, retry_count
+        FROM failed_enqueue_jobs
+        WHERE resolved_at IS NULL
+        ORDER BY created_at ASC
+        LIMIT ${limit}
+      `);
+
+      if (failedJobs.rows.length === 0) {
+        console.log('✅ No failed enqueues to retry');
+        return { retried: 0, succeeded: 0, failed: 0 };
+      }
+
+      console.log(`🔄 Retrying ${failedJobs.rows.length} failed enqueues...`);
+
+      const usersToRetry = failedJobs.rows.map(row => ({
+        userId: row.user_id,
+        shopifyCustomerId: row.shopify_customer_id,
+        email: row.email
+      }));
+
+      // Track which users successfully enqueued
+      const successMap = new Map();
+      const failedUserIds = [];
+      
+      // Process each user individually to track success
+      for (const user of usersToRetry) {
+        try {
+          const job = await this.queue.add('import-user', {
+            userId: user.userId,
+            shopifyCustomerId: user.shopifyCustomerId,
+            email: user.email,
+            enqueuedAt: new Date().toISOString()
+          }, {
+            jobId: `import-user-${user.userId}`,
+          });
+          
+          successMap.set(user.userId, true);
+        } catch (error) {
+          const isDuplicate = 
+            (error.message && error.message.toLowerCase().includes('already exists')) ||
+            (error.name === 'JobExistsError') ||
+            (error.code === 'JOB_EXISTS');
+          
+          if (isDuplicate) {
+            successMap.set(user.userId, true);
+          } else {
+            failedUserIds.push(user.userId);
+          }
+        }
+        
+        // Small delay between retries
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+
+      // Mark successfully enqueued jobs as resolved
+      for (const [userId, success] of successMap) {
+        if (success) {
+          await primaryDb.execute(sql`
+            UPDATE failed_enqueue_jobs
+            SET resolved_at = CURRENT_TIMESTAMP,
+                retry_count = retry_count + 1
+            WHERE user_id = ${userId}
+          `);
+        }
+      }
+      
+      // Update retry count for failed jobs
+      for (const userId of failedUserIds) {
+        await primaryDb.execute(sql`
+          UPDATE failed_enqueue_jobs
+          SET retry_count = retry_count + 1,
+              last_retry_at = CURRENT_TIMESTAMP
+          WHERE user_id = ${userId}
+        `);
+      }
+
+      return {
+        retried: failedJobs.rows.length,
+        succeeded: successMap.size,
+        failed: failedUserIds.length
+      };
+    } catch (error) {
+      console.error('Failed to retry failed enqueues:', error);
+      return { retried: 0, succeeded: 0, failed: 0, error: error.message };
     }
   }
 
