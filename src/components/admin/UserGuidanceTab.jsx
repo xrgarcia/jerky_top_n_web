@@ -355,6 +355,19 @@ export default function UserGuidanceTab() {
                 <p className="user-email">{selectedUser.user.email}</p>
               </div>
 
+              <div className="key-metrics-summary">
+                <div className="metric-card">
+                  <div className="metric-label">Total Rankings</div>
+                  <div className="metric-value">{selectedUser.stats?.totalRankings || 0}</div>
+                  <div className="metric-sublabel">All Time</div>
+                </div>
+                <div className="metric-card">
+                  <div className="metric-label">Recent Activity</div>
+                  <div className="metric-value">{selectedUser.activities?.activities30d || 0}</div>
+                  <div className="metric-sublabel">Last 30 Days</div>
+                </div>
+              </div>
+
               <div className="classification-details">
                 <h5>Current Classification</h5>
                 {selectedUser.classification ? (

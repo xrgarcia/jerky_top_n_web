@@ -393,6 +393,49 @@
   font-size: 14px;
 }
 
+/* Key Metrics Summary */
+.key-metrics-summary {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f5f7f0 0%, #e8ebe1 100%);
+  border-radius: 8px;
+  border: 2px solid #c4a962;
+}
+
+.metric-card {
+  background: white;
+  padding: 16px;
+  border-radius: 6px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.metric-label {
+  font-size: 13px;
+  color: #666;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.metric-value {
+  font-size: 36px;
+  font-weight: 700;
+  color: #7b8b52;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.metric-sublabel {
+  font-size: 12px;
+  color: #999;
+  font-style: italic;
+}
+
 .classification-details,
 .activity-summary {
   margin-bottom: 24px;
@@ -648,6 +691,10 @@
   }
   
   .dual-inputs {
+    grid-template-columns: 1fr;
+  }
+  
+  .key-metrics-summary {
     grid-template-columns: 1fr;
   }
 }
