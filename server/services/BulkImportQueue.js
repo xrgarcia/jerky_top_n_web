@@ -100,36 +100,73 @@ class BulkImportQueue {
 
   /**
    * Enqueue multiple user import jobs in bulk
+   * Handles large-scale imports (100K+ users) by chunking to avoid Redis Lua script timeouts
    * @param {Array} users - Array of user objects { userId, shopifyCustomerId, email }
+   * @param {Object} options - Enqueue options
+   * @param {number} options.chunkSize - Number of jobs to enqueue per batch (default: 100)
+   * @param {number} options.delayBetweenChunks - Delay in ms between chunks (default: 100ms)
    * @returns {Promise<Object>} - { enqueued: number, failed: number }
    */
-  async enqueueBulk(users) {
+  async enqueueBulk(users, options = {}) {
+    const { chunkSize = 100, delayBetweenChunks = 100 } = options;
+
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
       return { enqueued: 0, failed: users.length };
     }
 
-    try {
-      const jobs = users.map(user => ({
-        name: 'import-user',
-        data: {
-          userId: user.userId,
-          shopifyCustomerId: user.shopifyCustomerId,
-          email: user.email,
-          enqueuedAt: new Date().toISOString()
-        },
-        opts: {
-          jobId: `import-user-${user.userId}`,
-        }
-      }));
+    if (users.length === 0) {
+      return { enqueued: 0, failed: 0 };
+    }
 
-      await this.queue.addBulk(jobs);
-      
-      console.log(`📋 Bulk enqueued ${users.length} import jobs`);
-      return { enqueued: users.length, failed: 0 };
+    let totalEnqueued = 0;
+    let totalFailed = 0;
+
+    try {
+      console.log(`📋 Bulk enqueueing ${users.length} import jobs (chunk size: ${chunkSize})...`);
+
+      for (let i = 0; i < users.length; i += chunkSize) {
+        const chunk = users.slice(i, i + chunkSize);
+        const chunkNumber = Math.floor(i / chunkSize) + 1;
+        const totalChunks = Math.ceil(users.length / chunkSize);
+
+        try {
+          const jobs = chunk.map(user => ({
+            name: 'import-user',
+            data: {
+              userId: user.userId,
+              shopifyCustomerId: user.shopifyCustomerId,
+              email: user.email,
+              enqueuedAt: new Date().toISOString()
+            },
+            opts: {
+              jobId: `import-user-${user.userId}`,
+            }
+          }));
+
+          await this.queue.addBulk(jobs);
+          totalEnqueued += chunk.length;
+
+          if (chunkNumber % 10 === 0 || chunkNumber === totalChunks) {
+            console.log(`  Progress: ${totalEnqueued}/${users.length} jobs enqueued (chunk ${chunkNumber}/${totalChunks})`);
+          }
+
+          if (i + chunkSize < users.length && delayBetweenChunks > 0) {
+            await new Promise(resolve => setTimeout(resolve, delayBetweenChunks));
+          }
+
+        } catch (chunkError) {
+          console.error(`❌ Failed to enqueue chunk ${chunkNumber}/${totalChunks}:`, chunkError.message);
+          totalFailed += chunk.length;
+        }
+      }
+
+      console.log(`✅ Bulk enqueue complete: ${totalEnqueued} succeeded, ${totalFailed} failed`);
+      return { enqueued: totalEnqueued, failed: totalFailed };
+
     } catch (error) {
-      console.error('❌ Failed to bulk enqueue import jobs:', error);
-      return { enqueued: 0, failed: users.length };
+      console.error('❌ Fatal error in bulk enqueue:', error);
+      return { enqueued: totalEnqueued, failed: users.length - totalEnqueued };
     }
   }
 
@@ -197,6 +234,76 @@ class BulkImportQueue {
     } catch (error) {
       console.error('❌ Failed to get recent jobs:', error);
       return [];
+    }
+  }
+
+  /**
+   * Enqueue all pending users from the database
+   * Use this to recover from incomplete imports
+   * @param {Object} options - Enqueue options
+   * @param {number} options.batchSize - Number of users to fetch from DB at a time (default: 5000)
+   * @param {number} options.chunkSize - Number of jobs to enqueue per Redis operation (default: 100)
+   * @returns {Promise<Object>} - { totalEnqueued: number, totalFailed: number }
+   */
+  async enqueueAllPendingUsers(options = {}) {
+    const { batchSize = 5000, chunkSize = 100 } = options;
+
+    if (!this.queue) {
+      console.warn('⚠️ Bulk import queue not initialized');
+      return { totalEnqueued: 0, totalFailed: 0, error: 'Queue not initialized' };
+    }
+
+    try {
+      const { primaryDb } = require('../db-primary');
+      const { users } = require('../../shared/schema');
+      const { eq } = require('drizzle-orm');
+
+      let totalEnqueued = 0;
+      let totalFailed = 0;
+      let offset = 0;
+
+      console.log('🚀 Starting to enqueue all pending users...');
+
+      while (true) {
+        const pendingUsers = await primaryDb
+          .select({
+            id: users.id,
+            shopifyCustomerId: users.shopifyCustomerId,
+            email: users.email
+          })
+          .from(users)
+          .where(eq(users.importStatus, 'pending'))
+          .limit(batchSize)
+          .offset(offset);
+
+        if (pendingUsers.length === 0) {
+          console.log('✅ No more pending users to enqueue');
+          break;
+        }
+
+        console.log(`📋 Processing batch of ${pendingUsers.length} pending users (offset: ${offset})...`);
+
+        const usersToEnqueue = pendingUsers.map(u => ({
+          userId: u.id,
+          shopifyCustomerId: u.shopifyCustomerId,
+          email: u.email
+        }));
+
+        const result = await this.enqueueBulk(usersToEnqueue, { chunkSize, delayBetweenChunks: 100 });
+        totalEnqueued += result.enqueued;
+        totalFailed += result.failed;
+
+        console.log(`  ✓ Batch complete (total enqueued: ${totalEnqueued}, total failed: ${totalFailed})`);
+
+        offset += batchSize;
+      }
+
+      console.log(`🎉 Finished enqueuing pending users: ${totalEnqueued} succeeded, ${totalFailed} failed`);
+      return { totalEnqueued, totalFailed };
+
+    } catch (error) {
+      console.error('❌ Error enqueuing pending users:', error);
+      return { totalEnqueued: 0, totalFailed: 0, error: error.message };
     }
   }
 
