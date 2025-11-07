@@ -108,7 +108,7 @@ class BulkImportQueue {
    * @returns {Promise<Object>} - { enqueued: number, failed: number }
    */
   async enqueueBulk(users, options = {}) {
-    const { chunkSize = 100, delayBetweenChunks = 100 } = options;
+    const { chunkSize = 50, delayBetweenChunks = 100 } = options;
 
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
@@ -144,8 +144,29 @@ class BulkImportQueue {
             }
           }));
 
-          await this.queue.addBulk(jobs);
-          totalEnqueued += chunk.length;
+          try {
+            await this.queue.addBulk(jobs);
+            totalEnqueued += chunk.length;
+          } catch (bulkError) {
+            if (bulkError.message && bulkError.message.includes('Lua script execution limit')) {
+              console.log(`  ⚠️ Chunk ${chunkNumber}: Lua timeout, falling back to individual adds...`);
+              
+              let chunkEnqueued = 0;
+              for (const job of jobs) {
+                try {
+                  await this.queue.add(job.name, job.data, job.opts);
+                  chunkEnqueued++;
+                  totalEnqueued++;
+                } catch (singleError) {
+                  totalFailed++;
+                }
+              }
+              
+              console.log(`  ✓ Chunk ${chunkNumber}: Individual adds completed (${chunkEnqueued}/${chunk.length} succeeded)`);
+            } else {
+              throw bulkError;
+            }
+          }
 
           if (chunkNumber % 10 === 0 || chunkNumber === totalChunks) {
             console.log(`  Progress: ${totalEnqueued}/${users.length} jobs enqueued (chunk ${chunkNumber}/${totalChunks})`);
@@ -246,7 +267,7 @@ class BulkImportQueue {
    * @returns {Promise<Object>} - { totalEnqueued: number, totalFailed: number }
    */
   async enqueueAllPendingUsers(options = {}) {
-    const { batchSize = 5000, chunkSize = 100 } = options;
+    const { batchSize = 5000, chunkSize = 50 } = options;
 
     if (!this.queue) {
       console.warn('⚠️ Bulk import queue not initialized');
