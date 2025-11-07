@@ -292,6 +292,92 @@ class BulkImportQueue {
   }
 
   /**
+   * Enqueue multiple user import jobs in bulk with progress callbacks
+   * Same as enqueueBulk but calls onProgress callback after each chunk
+   * @param {Array} users - Array of user objects
+   * @param {Object} options - Enqueue options
+   * @param {number} options.chunkSize - Jobs per batch (default: 50)
+   * @param {number} options.delayBetweenChunks - Delay in ms (default: 50)
+   * @param {Function} options.onProgress - Callback(enqueued, total)
+   * @returns {Promise<Object>} - { enqueued, failed }
+   */
+  async enqueueBulkWithProgress(users, options = {}) {
+    const { chunkSize = 50, delayBetweenChunks = 50, onProgress = null } = options;
+
+    if (!this.queue) {
+      console.warn('⚠️ Bulk import queue not initialized');
+      return { enqueued: 0, failed: users.length };
+    }
+
+    if (users.length === 0) {
+      return { enqueued: 0, failed: 0 };
+    }
+
+    let totalEnqueued = 0;
+    let totalFailed = 0;
+
+    try {
+      console.log(`📋 Bulk enqueueing ${users.length} import jobs with progress tracking (chunk size: ${chunkSize})...`);
+
+      for (let i = 0; i < users.length; i += chunkSize) {
+        const chunk = users.slice(i, i + chunkSize);
+        const chunkNumber = Math.floor(i / chunkSize) + 1;
+        const totalChunks = Math.ceil(users.length / chunkSize);
+
+        try {
+          const jobs = chunk.map(user => ({
+            name: user.isReprocess ? 'reprocess-user' : 'import-user',
+            data: {
+              userId: user.userId,
+              shopifyCustomerId: user.shopifyCustomerId,
+              email: user.email,
+              isReprocess: user.isReprocess || false,
+              enqueuedAt: new Date().toISOString()
+            },
+            opts: {
+              jobId: user.isReprocess ? `reprocess-user-${user.userId}` : `import-user-${user.userId}`,
+            }
+          }));
+
+          await this.queue.addBulk(jobs);
+          totalEnqueued += chunk.length;
+
+          // Call progress callback
+          if (onProgress && typeof onProgress === 'function') {
+            await onProgress(totalEnqueued, users.length);
+          }
+
+          // Log progress every 10 chunks or on last chunk
+          if (chunkNumber % 10 === 0 || chunkNumber === totalChunks) {
+            console.log(`  📊 Progress: ${totalEnqueued}/${users.length} jobs enqueued (${Math.round(totalEnqueued/users.length*100)}%)`);
+          }
+
+          // Small delay between chunks to avoid overwhelming Redis
+          if (delayBetweenChunks > 0 && i + chunkSize < users.length) {
+            await new Promise(resolve => setTimeout(resolve, delayBetweenChunks));
+          }
+        } catch (error) {
+          console.error(`  ❌ Chunk ${chunkNumber}/${totalChunks} failed:`, error);
+          totalFailed += chunk.length;
+        }
+      }
+
+      console.log(`✅ Bulk enqueue with progress complete: ${totalEnqueued}/${users.length} enqueued, ${totalFailed} failed`);
+
+      return {
+        enqueued: totalEnqueued,
+        failed: totalFailed
+      };
+    } catch (error) {
+      console.error('❌ enqueueBulkWithProgress failed:', error);
+      return {
+        enqueued: totalEnqueued,
+        failed: users.length - totalEnqueued
+      };
+    }
+  }
+
+  /**
    * Get direct Redis counts for queue keys (bypasses BullMQ retention limits)
    * Shows total jobs in Redis storage, including those aged out by retention policy
    * @returns {Promise<Object>} - Direct Redis counts

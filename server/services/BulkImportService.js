@@ -122,62 +122,24 @@ class BulkImportService {
 
       console.log(`✅ Created ${this.currentImportStats.usersCreated} users, updated ${this.currentImportStats.usersUpdated} users`);
 
-      // Step 3: Enqueue import jobs
+      // Step 3: Start enqueuing import jobs in the background (non-blocking)
       this.currentImportStats.phase = 'enqueuing_jobs';
-      console.log(`📋 Enqueuing ${usersToImport.length} import jobs...`);
+      console.log(`📋 Starting background enqueue of ${usersToImport.length} import jobs...`);
 
-      const enqueueResult = await bulkImportQueue.enqueueBulk(usersToImport);
-      this.currentImportStats.jobsEnqueued = enqueueResult.enqueued;
-      this.currentImportStats.errors += enqueueResult.failed;
-      
-      // Clear pending counter after actual enqueue (reprocess mode only)
-      if (this.currentImportStats.jobsPendingEnqueue !== undefined) {
-        this.currentImportStats.jobsPendingEnqueue = 0;
-      }
-
-      console.log(`✅ Enqueued ${enqueueResult.enqueued} import jobs`);
-
-      // Step 4: Mark as complete
-      this.currentImportStats.phase = 'completed';
-      this.currentImportStats.completedAt = new Date().toISOString();
-
-      // Broadcast final accurate stats with completed phase
+      // Broadcast initial "enqueuing" state
       await this.broadcastProgress();
 
-      // Broadcast final Shopify stats with cache bypass for accurate gap metric
-      try {
-        const bulkImportWorker = require('./BulkImportWorker');
-        await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
-        console.log('📊 Broadcasted final Shopify stats (bypassed cache)');
-      } catch (error) {
-        console.error('⚠️ Failed to broadcast final stats:', error.message);
-      }
+      // Start async enqueue process in background
+      this.startBackgroundEnqueue(usersToImport, mode, fullImport, batchSize);
 
-      // Send completion email notification (async, non-blocking)
-      setImmediate(async () => {
-        try {
-          const emailService = require('./EmailService');
-          if (emailService.isInitialized()) {
-            await emailService.sendBulkImportCompletionEmail({
-              stats: this.currentImportStats,
-              mode: mode || (fullImport ? 'full' : 'incremental'),
-              batchSize
-            });
-          } else {
-            console.warn('⚠️ Email service not initialized - skipping completion notification');
-          }
-        } catch (error) {
-          console.error('⚠️ Failed to send completion email:', error.message);
-        }
-      });
-
-      const finalStats = {
+      // Return immediately to frontend
+      const initialStats = {
         success: true,
-        ...this.currentImportStats
+        ...this.currentImportStats,
+        message: `Started enqueuing ${usersToImport.length} jobs in the background. Watch real-time progress in the UI.`
       };
 
-      this.importInProgress = false;
-      return finalStats;
+      return initialStats;
 
     } catch (error) {
       console.error('❌ Bulk import failed:', error);
@@ -218,6 +180,102 @@ class BulkImportService {
     } catch (error) {
       console.error('❌ Failed to broadcast progress:', error);
     }
+  }
+
+  /**
+   * Start background enqueue process (non-blocking)
+   * Enqueues jobs in chunks with real-time progress updates
+   * @param {Array} usersToImport - Users to enqueue
+   * @param {string} mode - Import mode
+   * @param {boolean} fullImport - Full import flag
+   * @param {number} batchSize - Batch size
+   */
+  async startBackgroundEnqueue(usersToImport, mode, fullImport, batchSize) {
+    // Run in background (non-blocking)
+    setImmediate(async () => {
+      try {
+        console.log(`🔄 Background enqueue started: ${usersToImport.length} jobs`);
+        
+        // Enqueue with progress tracking
+        const enqueueResult = await bulkImportQueue.enqueueBulkWithProgress(
+          usersToImport,
+          {
+            chunkSize: 50,
+            delayBetweenChunks: 50, // Faster chunking
+            onProgress: async (enqueued, total) => {
+              // Update stats
+              this.currentImportStats.jobsEnqueued = enqueued;
+              
+              // Clear pending counter as jobs are enqueued (reprocess mode)
+              if (this.currentImportStats.jobsPendingEnqueue !== undefined) {
+                this.currentImportStats.jobsPendingEnqueue = Math.max(0, total - enqueued);
+              }
+              
+              // Broadcast progress every 500 jobs
+              if (enqueued % 500 === 0 || enqueued === total) {
+                await this.broadcastProgress();
+              }
+            }
+          }
+        );
+
+        // Update final stats
+        this.currentImportStats.jobsEnqueued = enqueueResult.enqueued;
+        this.currentImportStats.errors += enqueueResult.failed;
+        
+        // Clear pending counter after completion
+        if (this.currentImportStats.jobsPendingEnqueue !== undefined) {
+          this.currentImportStats.jobsPendingEnqueue = 0;
+        }
+
+        console.log(`✅ Background enqueue completed: ${enqueueResult.enqueued} jobs enqueued, ${enqueueResult.failed} failed`);
+
+        // Mark as complete
+        this.currentImportStats.phase = 'completed';
+        this.currentImportStats.completedAt = new Date().toISOString();
+
+        // Broadcast final stats
+        await this.broadcastProgress();
+
+        // Broadcast final Shopify stats
+        try {
+          const bulkImportWorker = require('./BulkImportWorker');
+          await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
+          console.log('📊 Broadcasted final Shopify stats (bypassed cache)');
+        } catch (error) {
+          console.error('⚠️ Failed to broadcast final stats:', error.message);
+        }
+
+        // Send completion email
+        try {
+          const emailService = require('./EmailService');
+          if (emailService.isInitialized()) {
+            await emailService.sendBulkImportCompletionEmail({
+              stats: this.currentImportStats,
+              mode: mode || (fullImport ? 'full' : 'incremental'),
+              batchSize
+            });
+            console.log('📧 Completion email sent');
+          }
+        } catch (error) {
+          console.error('⚠️ Failed to send completion email:', error.message);
+        }
+
+        // Mark import as no longer in progress
+        this.importInProgress = false;
+
+      } catch (error) {
+        console.error('❌ Background enqueue failed:', error);
+        this.currentImportStats.phase = 'failed';
+        this.currentImportStats.error = error.message;
+        await this.broadcastProgress();
+        this.importInProgress = false;
+        
+        Sentry.captureException(error, {
+          tags: { service: 'bulk-import', phase: 'background_enqueue' }
+        });
+      }
+    });
   }
 
   /**
