@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { useSocket } from '../../hooks/useSocket';
 import toast from 'react-hot-toast';
 import './BulkImportPage.css';
@@ -616,6 +617,10 @@ function BulkImportPage() {
         </ol>
         <p className="info-note">
           <strong>Note:</strong> Jobs process in the background. You can safely close this page during import.
+        </p>
+        <p className="info-note" style={{ marginTop: '12px', borderTop: '1px solid rgba(139, 69, 19, 0.2)', paddingTop: '12px' }}>
+          <strong>📊 Monitor Classification Progress:</strong> After import jobs complete, each user gets queued for classification. 
+          Track classification queue status in real-time on the <Link to="/tools/queue-monitor" style={{ color: '#8B4513', textDecoration: 'underline' }}>Queue Monitor page</Link>.
         </p>
       </div>
 
