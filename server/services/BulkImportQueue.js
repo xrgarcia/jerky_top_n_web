@@ -21,27 +21,54 @@ class BulkImportQueue {
    */
   async initialize() {
     try {
-      // Get the correct Redis URL based on environment
-      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
-      const redisUrl = isProduction 
-        ? process.env.UPSTASH_REDIS_URL_PROD 
-        : process.env.UPSTASH_REDIS_URL;
+      // Ensure Redis client is connected
+      const baseClient = await redisClient.connect();
       
-      if (!redisUrl) {
-        console.warn('⚠️ Redis URL not available, bulk import queue disabled');
+      if (!baseClient) {
+        console.warn('⚠️ Redis not available, bulk import queue disabled');
         return false;
       }
 
-      // Ensure Redis client is connected (for other operations)
-      await redisClient.connect();
+      console.log('🔌 Creating dedicated Redis connection for BullMQ queue...');
+      
+      // Duplicate the hardened RedisClient connection for BullMQ
+      // This ensures proper TLS, keepalive, and auth configuration
+      const queueConnection = baseClient.duplicate({
+        lazyConnect: false, // Connect immediately
+        keepAlive: 30000, // 30s keepalive
+        enableReadyCheck: true, // Wait for READY before accepting commands
+        maxRetriesPerRequest: 3, // Retry failed commands
+      });
 
-      // BullMQ Queue accepts Redis URL directly
+      // Add error listener before connecting
+      queueConnection.on('error', (err) => {
+        console.error('❌ BulkImport queue Redis connection error:', err.message);
+      });
+
+      queueConnection.on('ready', () => {
+        console.log('✅ BullMQ queue Redis connection READY');
+      });
+
+      // Wait for connection to be ready
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Queue connection timeout after 10s'));
+        }, 10000);
+
+        queueConnection.once('ready', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        queueConnection.once('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
+
+      // BullMQ Queue with pre-configured connection
       this.queue = new Queue('bulk-import', {
-        connection: {
-          url: redisUrl,
-          maxRetriesPerRequest: null,
-          enableReadyCheck: false,
-        },
+        connection: queueConnection,
         defaultJobOptions: {
           attempts: 3, // Retry failed jobs up to 3 times
           backoff: {
@@ -59,7 +86,12 @@ class BulkImportQueue {
         },
       });
 
-      console.log('✅ Bulk import queue initialized');
+      // Add queue error listener
+      this.queue.on('error', (err) => {
+        console.error('❌ BullMQ queue error:', err.message);
+      });
+
+      console.log('✅ Bulk import queue initialized with hardened Redis connection');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize bulk import queue:', error);

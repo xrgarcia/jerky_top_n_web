@@ -33,30 +33,57 @@ class BulkImportWorker {
   async initialize(services = {}) {
     this.services = services;
     try {
-      // Get the correct Redis URL based on environment
-      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
-      const redisUrl = isProduction 
-        ? process.env.UPSTASH_REDIS_URL_PROD 
-        : process.env.UPSTASH_REDIS_URL;
+      // Ensure Redis client is connected
+      const baseClient = await redisClient.connect();
       
-      if (!redisUrl) {
-        console.warn('⚠️ Redis URL not available, bulk import worker disabled');
+      if (!baseClient) {
+        console.warn('⚠️ Redis not available, bulk import worker disabled');
         return false;
       }
 
-      // Ensure Redis client is connected (for other operations)
-      await redisClient.connect();
+      console.log('🔌 Creating dedicated Redis connection for BullMQ worker...');
+      
+      // Duplicate the hardened RedisClient connection for BullMQ
+      // This ensures proper TLS, keepalive, and auth configuration
+      const workerConnection = baseClient.duplicate({
+        lazyConnect: false, // Connect immediately
+        keepAlive: 30000, // 30s keepalive
+        enableReadyCheck: true, // Wait for READY before accepting commands
+        maxRetriesPerRequest: null, // Required by BullMQ Worker (blocks until success or connection lost)
+      });
 
-      // BullMQ Worker accepts Redis URL directly
+      // Add error listener before connecting
+      workerConnection.on('error', (err) => {
+        console.error('❌ BulkImport worker Redis connection error:', err.message);
+      });
+
+      workerConnection.on('ready', () => {
+        console.log('✅ BullMQ worker Redis connection READY');
+      });
+
+      // Wait for connection to be ready
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Worker connection timeout after 10s'));
+        }, 10000);
+
+        workerConnection.once('ready', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        workerConnection.once('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
+
+      // BullMQ Worker with pre-configured connection
       this.worker = new Worker(
         'bulk-import',
         async (job) => this.processJob(job),
         {
-          connection: {
-            url: redisUrl,
-            maxRetriesPerRequest: null,
-            enableReadyCheck: false,
-          },
+          connection: workerConnection,
           concurrency: 15, // Process up to 15 imports concurrently for faster throughput
           limiter: {
             max: 50, // Max 50 jobs per minute (Shopify allows 120 req/min, fast-path uses 1-2 req/job)
@@ -92,7 +119,7 @@ class BulkImportWorker {
         console.error('❌ Bulk import worker error:', err);
       });
 
-      console.log('✅ Bulk import worker initialized (concurrency: 15, rate limit: 50 jobs/min)');
+      console.log('✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 50 jobs/min)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize bulk import worker:', error);
