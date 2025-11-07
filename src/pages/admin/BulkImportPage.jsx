@@ -200,6 +200,7 @@ function BulkImportPage() {
 
   const progress = progressData || {};
   const queue = progress.queue || {};
+  const queueRedis = queue.redis || {}; // Direct Redis counts (total in storage)
   const importInProgress = progress.importInProgress || false;
   const currentStats = progress.currentImportStats;
 
@@ -420,26 +421,61 @@ function BulkImportPage() {
       <div className="queue-card">
         <h3>Queue Statistics</h3>
         
-        <div className="queue-stats-grid">
-          <div className="queue-stat">
-            <div className="queue-stat-value">{queue.waiting || 0}</div>
-            <div className="queue-stat-label">Waiting</div>
+        <div className="queue-section">
+          <div className="queue-section-header">
+            <h4>Active Queue (Within Retention)</h4>
+            <div className="queue-section-desc">Jobs BullMQ is managing (2h for completed, 24h for failed)</div>
           </div>
-          <div className="queue-stat active">
-            <div className="queue-stat-value">{queue.active || 0}</div>
-            <div className="queue-stat-label">Active</div>
+          <div className="queue-stats-grid">
+            <div className="queue-stat">
+              <div className="queue-stat-value">{queue.waiting || 0}</div>
+              <div className="queue-stat-label">Waiting</div>
+            </div>
+            <div className="queue-stat active">
+              <div className="queue-stat-value">{queue.active || 0}</div>
+              <div className="queue-stat-label">Active</div>
+            </div>
+            <div className="queue-stat success">
+              <div className="queue-stat-value">{queue.completed || 0}</div>
+              <div className="queue-stat-label">Completed</div>
+            </div>
+            <div className="queue-stat danger">
+              <div className="queue-stat-value">{queue.failed || 0}</div>
+              <div className="queue-stat-label">Failed</div>
+            </div>
+            <div className="queue-stat">
+              <div className="queue-stat-value">{queue.total || 0}</div>
+              <div className="queue-stat-label">Total</div>
+            </div>
           </div>
-          <div className="queue-stat success">
-            <div className="queue-stat-value">{queue.completed || 0}</div>
-            <div className="queue-stat-label">Completed</div>
+        </div>
+
+        <div className="queue-section">
+          <div className="queue-section-header">
+            <h4>Redis Storage (Total in Database)</h4>
+            <div className="queue-section-desc">All jobs in Redis, including those aged out by retention policy</div>
           </div>
-          <div className="queue-stat danger">
-            <div className="queue-stat-value">{queue.failed || 0}</div>
-            <div className="queue-stat-label">Failed</div>
-          </div>
-          <div className="queue-stat">
-            <div className="queue-stat-value">{queue.total || 0}</div>
-            <div className="queue-stat-label">Total</div>
+          <div className="queue-stats-grid">
+            <div className="queue-stat">
+              <div className="queue-stat-value">{queueRedis.waiting?.toLocaleString() || 0}</div>
+              <div className="queue-stat-label">Waiting</div>
+            </div>
+            <div className="queue-stat active">
+              <div className="queue-stat-value">{queueRedis.active?.toLocaleString() || 0}</div>
+              <div className="queue-stat-label">Active</div>
+            </div>
+            <div className="queue-stat success">
+              <div className="queue-stat-value">{queueRedis.completed?.toLocaleString() || 0}</div>
+              <div className="queue-stat-label">Completed</div>
+            </div>
+            <div className="queue-stat danger">
+              <div className="queue-stat-value">{queueRedis.failed?.toLocaleString() || 0}</div>
+              <div className="queue-stat-label">Failed</div>
+            </div>
+            <div className="queue-stat">
+              <div className="queue-stat-value">{queueRedis.total?.toLocaleString() || 0}</div>
+              <div className="queue-stat-label">Total</div>
+            </div>
           </div>
         </div>
 
@@ -448,29 +484,29 @@ function BulkImportPage() {
           <div className="button-row">
             <button
               onClick={() => obliterateQueueMutation.mutate()}
-              disabled={obliterateQueueMutation.isPending || (queue.total || 0) === 0}
+              disabled={obliterateQueueMutation.isPending || (queueRedis.total || 0) === 0}
               className="btn-danger"
               title="Remove ALL jobs (waiting, active, completed, failed)"
             >
-              {obliterateQueueMutation.isPending ? 'Clearing...' : '🗑️ Obliterate All Jobs'}
+              {obliterateQueueMutation.isPending ? 'Clearing...' : `🗑️ Obliterate All Jobs${queueRedis.total ? ` (${queueRedis.total.toLocaleString()})` : ''}`}
             </button>
             
             <button
               onClick={() => clearCompletedMutation.mutate()}
-              disabled={clearCompletedMutation.isPending || (queue.completed || 0) === 0}
+              disabled={clearCompletedMutation.isPending || (queueRedis.completed || 0) === 0}
               className="btn-secondary"
               title="Remove only completed jobs"
             >
-              {clearCompletedMutation.isPending ? 'Clearing...' : '✓ Clear Completed'}
+              {clearCompletedMutation.isPending ? 'Clearing...' : `✓ Clear Completed${queueRedis.completed ? ` (${queueRedis.completed.toLocaleString()})` : ''}`}
             </button>
             
             <button
               onClick={() => clearFailedMutation.mutate()}
-              disabled={clearFailedMutation.isPending || (queue.failed || 0) === 0}
+              disabled={clearFailedMutation.isPending || (queueRedis.failed || 0) === 0}
               className="btn-secondary"
               title="Remove only failed jobs"
             >
-              {clearFailedMutation.isPending ? 'Clearing...' : '❌ Clear Failed'}
+              {clearFailedMutation.isPending ? 'Clearing...' : `❌ Clear Failed${queueRedis.failed ? ` (${queueRedis.failed.toLocaleString()})` : ''}`}
             </button>
 
             <button

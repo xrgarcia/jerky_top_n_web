@@ -292,7 +292,44 @@ class BulkImportQueue {
   }
 
   /**
-   * Get queue statistics
+   * Get direct Redis counts for queue keys (bypasses BullMQ retention limits)
+   * Shows total jobs in Redis storage, including those aged out by retention policy
+   * @returns {Promise<Object>} - Direct Redis counts
+   */
+  async getRedisStats() {
+    if (!this.queue) {
+      return { error: 'Queue not initialized' };
+    }
+
+    try {
+      const redisConnection = await this.queue.client;
+      
+      // BullMQ stores different states in different Redis data structures:
+      // - waiting, active: Redis Lists (use LLEN)
+      // - completed, failed, delayed: Redis Sorted Sets (use ZCARD)
+      const [waiting, active, completed, failed] = await Promise.all([
+        redisConnection.llen('bull:bulk-import:wait').catch(() => 0),      // List
+        redisConnection.llen('bull:bulk-import:active').catch(() => 0),    // List
+        redisConnection.zcard('bull:bulk-import:completed').catch(() => 0), // Sorted Set
+        redisConnection.zcard('bull:bulk-import:failed').catch(() => 0),    // Sorted Set
+      ]);
+
+      return {
+        waiting,
+        active,
+        completed,
+        failed,
+        total: waiting + active + completed + failed,
+      };
+    } catch (error) {
+      console.error('❌ Failed to get Redis stats:', error);
+      return { error: error.message };
+    }
+  }
+
+  /**
+   * Get queue statistics (BullMQ-managed, retention-aware)
+   * Shows jobs within retention limits (2h for completed, 24h for failed)
    * @returns {Promise<Object>} - Queue stats
    */
   async getStats() {
@@ -301,21 +338,32 @@ class BulkImportQueue {
     }
 
     try {
-      const [waiting, active, completed, failed, delayed] = await Promise.all([
-        this.queue.getWaitingCount(),
-        this.queue.getActiveCount(),
-        this.queue.getCompletedCount(),
-        this.queue.getFailedCount(),
-        this.queue.getDelayedCount(),
+      // Get both BullMQ stats (retention-aware) and direct Redis counts
+      const [bullmqStats, redisStats] = await Promise.all([
+        (async () => {
+          const [waiting, active, completed, failed, delayed] = await Promise.all([
+            this.queue.getWaitingCount(),
+            this.queue.getActiveCount(),
+            this.queue.getCompletedCount(),
+            this.queue.getFailedCount(),
+            this.queue.getDelayedCount(),
+          ]);
+
+          return {
+            waiting,
+            active,
+            completed,
+            failed,
+            delayed,
+            total: waiting + active + completed + failed + delayed,
+          };
+        })(),
+        this.getRedisStats(),
       ]);
 
       return {
-        waiting,
-        active,
-        completed,
-        failed,
-        delayed,
-        total: waiting + active + completed + failed + delayed,
+        ...bullmqStats,
+        redis: redisStats, // Include direct Redis counts for comparison
       };
     } catch (error) {
       console.error('❌ Failed to get bulk import queue stats:', error);
