@@ -26,10 +26,11 @@ The application uses **two separate workflows** for different development modes:
 - **Command**: `npm start`
 - **Use When**: Testing production builds, backend work, or final verification
 - **How It Works**: 
-  1. Vite builds `src/` → `public/dist/` with timestamp hashes
-  2. Express serves pre-built files from `public/dist/`
+  1. Vite builds `src/` → `public/dist/` with content-based hashes for automatic cache busting
+  2. Express serves pre-built files from `public/dist/` with `Cache-Control: no-cache` headers on HTML
   3. **Any CSS/JS changes require rebuilding**: `npm run build:react`
 - **Access**: http://localhost:5000 (default Replit URL)
+- **Cache Busting**: Vite's `[hash]` generates unique filenames based on file content (e.g., `index-B0q4rGbc.js`). When code changes, hash changes automatically, forcing browsers to fetch new files. **Do not add `Date.now()` to Vite config** - it gets evaluated once at server startup and breaks cache busting on subsequent builds.
 
 ### Build Commands
 - `npm run build:react` - Build React app for production (required after CSS/JS changes in production mode)
