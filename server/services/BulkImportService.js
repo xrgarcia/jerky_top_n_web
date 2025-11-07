@@ -478,6 +478,82 @@ class BulkImportService {
   }
 
   /**
+   * Resume import by enqueuing all pending users
+   * This is used when jobs were not enqueued initially or the worker stopped
+   * @returns {Promise<Object>} Resume result with stats
+   */
+  async resumeImport() {
+    if (this.importInProgress) {
+      return {
+        success: false,
+        error: 'Import already in progress'
+      };
+    }
+
+    try {
+      this.importInProgress = true;
+      console.log('🔄 Resuming import for pending users...');
+
+      // Query all pending users
+      const pendingUsers = await primaryDb
+        .select({
+          id: users.id,
+          email: users.email,
+          shopifyCustomerId: users.shopifyCustomerId
+        })
+        .from(users)
+        .where(eq(users.importStatus, 'pending'));
+
+      console.log(`📋 Found ${pendingUsers.length} pending users to enqueue`);
+
+      if (pendingUsers.length === 0) {
+        this.importInProgress = false;
+        return {
+          success: true,
+          message: 'No pending users to enqueue',
+          jobsEnqueued: 0
+        };
+      }
+
+      // Enqueue them in bulk
+      const enqueueResult = await bulkImportQueue.enqueueBulk(pendingUsers);
+
+      console.log(`✅ Resume complete: enqueued ${enqueueResult.enqueued} jobs, ${enqueueResult.failed} failed`);
+
+      // Broadcast updated stats
+      try {
+        const bulkImportWorker = require('./BulkImportWorker');
+        await bulkImportWorker.broadcastShopifyStats({ force: true, bypassCache: true });
+      } catch (error) {
+        console.error('⚠️ Failed to broadcast stats after resume:', error.message);
+      }
+
+      this.importInProgress = false;
+
+      return {
+        success: true,
+        pendingUsersFound: pendingUsers.length,
+        jobsEnqueued: enqueueResult.enqueued,
+        jobsFailed: enqueueResult.failed
+      };
+
+    } catch (error) {
+      console.error('❌ Resume import failed:', error);
+      
+      Sentry.captureException(error, {
+        tags: { service: 'bulk-import', operation: 'resume' }
+      });
+
+      this.importInProgress = false;
+
+      return {
+        success: false,
+        error: error.message
+      };
+    }
+  }
+
+  /**
    * Get users who haven't had their history imported
    * @param {number} limit - Max number of users to return
    * @returns {Promise<Array>} Users without full history

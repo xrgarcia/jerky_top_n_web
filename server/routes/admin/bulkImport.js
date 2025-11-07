@@ -155,6 +155,28 @@ module.exports = function createBulkImportRoutes(storage, db) {
   });
 
   /**
+   * POST /api/admin/bulk-import/resume
+   * Resume import by enqueuing all pending users
+   * This is used when jobs were not enqueued or the worker stopped
+   */
+  router.post('/bulk-import/resume', requireEmployeeAdmin, async (req, res) => {
+    try {
+      console.log(`🔄 Admin ${req.user.email} resuming bulk import for pending users`);
+
+      const result = await bulkImportService.resumeImport();
+
+      if (result.success) {
+        res.json(result);
+      } else {
+        res.status(400).json(result);
+      }
+    } catch (error) {
+      console.error('Error resuming import:', error);
+      res.status(500).json({ error: 'Failed to resume import' });
+    }
+  });
+
+  /**
    * GET /api/admin/bulk-import/queue/stats
    * Get real-time queue statistics
    */
