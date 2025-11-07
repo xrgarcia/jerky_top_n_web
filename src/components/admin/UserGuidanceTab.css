@@ -517,6 +517,21 @@
   font-size: 16px;
 }
 
+/* Flavor Community Calculation Info Section */
+.flavor-community-calculation-info {
+  margin-bottom: 24px;
+  padding: 16px;
+  background: #f9faf6;
+  border-radius: 8px;
+  border: 1px solid #e8ebe1;
+}
+
+.flavor-community-calculation-info h5 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+}
+
 .calculation-details {
   display: flex;
   flex-direction: column;

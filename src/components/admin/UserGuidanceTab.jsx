@@ -446,6 +446,29 @@ export default function UserGuidanceTab() {
                 </div>
               </div>
 
+              <div className="flavor-community-calculation-info">
+                <h5>Flavor Profile Community Assignment</h5>
+                <div className="calculation-details">
+                  <div className="stat-item highlight">
+                    <label>Dominant Community:</label>
+                    <span className="activity-count">{selectedUser.classification?.flavorProfileCommunity || 'None'}</span>
+                  </div>
+                  <div className="threshold-guide">
+                    <p className="guide-intro">Users are assigned to flavor profile communities based on their interaction level with each flavor (Teriyaki, BBQ, Sweet, Spicy, Savory). The dominant community is the flavor where they're most engaged:</p>
+                    <ul className="threshold-list">
+                      <li><strong>Curious:</strong> Searched or viewed products with this flavor but hasn't purchased</li>
+                      <li><strong>Seeker:</strong> Purchased products with this flavor (delivery pending)</li>
+                      <li><strong>Taster:</strong> Received and tried products with this flavor (not yet ranked)</li>
+                      <li><strong>Enthusiast:</strong> Ranked products with this flavor highly (top 40% of their rankings)</li>
+                      <li><strong>Explorer:</strong> Ranked products with this flavor (bottom 40% of their rankings)</li>
+                    </ul>
+                    <p className="guide-note">
+                      <em>Users progress through states (Curious → Seeker → Taster → Enthusiast/Explorer) as they interact more deeply with each flavor profile. A user can be in different states for different flavors simultaneously.</em>
+                    </p>
+                  </div>
+                </div>
+              </div>
+
               {selectedUser.activities && (
                 <div className="activity-summary">
                   <h5>Activity Breakdown</h5>
