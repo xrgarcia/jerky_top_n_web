@@ -48,27 +48,6 @@ module.exports = function createBulkImportRoutes(storage, db) {
   }
 
   /**
-   * GET /api/admin/bulk-import/status
-   * Get Shopify API availability and queue status
-   */
-  router.get('/bulk-import/status', requireEmployeeAdmin, async (req, res) => {
-    try {
-      const isAvailable = bulkImportService.isAvailable();
-      const queueStats = await bulkImportQueue.getStats();
-
-      console.log(`📊 Bulk Import Status Check: shopifyApiAvailable=${isAvailable}, token=${!!process.env.SHOPIFY_ADMIN_ACCESS_TOKEN}`);
-
-      res.json({
-        shopifyApiAvailable: isAvailable,
-        queue: queueStats
-      });
-    } catch (error) {
-      console.error('Error getting bulk import status:', error);
-      res.status(500).json({ error: 'Failed to get status' });
-    }
-  });
-
-  /**
    * GET /api/admin/bulk-import/shopify-stats
    * Get Shopify customer count vs database user stats
    * Query params:
