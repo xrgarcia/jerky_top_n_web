@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useHeroStats, useHomeStats } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
+import { usePageView } from '../hooks/usePageView';
+import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './HomePage.css';
 
 function HomePage() {
@@ -10,6 +12,9 @@ function HomePage() {
   const { data: heroStats, isLoading: heroLoading } = useHeroStats();
   const { data: homeStats, isLoading: homeLoading } = useHomeStats();
   const [currentAchievement, setCurrentAchievement] = useState(0);
+  
+  // Track page view for user guidance and classification
+  usePageView('general');
 
   // Rotate achievements slider
   useEffect(() => {
@@ -110,6 +115,13 @@ function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Personalized Guidance for authenticated users */}
+      {isAuthenticated && (
+        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+          <PersonalizedGuidance page="general" />
+        </div>
+      )}
 
       {/* Welcome Section with Community Stats */}
       <section className="welcome-section">

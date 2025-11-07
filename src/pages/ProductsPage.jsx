@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
+import { usePageView } from '../hooks/usePageView';
+import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './ProductsPage.css';
 
 function ProductsPage() {
@@ -9,6 +11,9 @@ function ProductsPage() {
   const [animal, setAnimal] = useState('');
 
   const { data, isLoading, error } = useProducts({ search, sort, animal });
+  
+  // Track page view for user guidance and classification
+  usePageView('products');
 
   const products = data?.products || [];
   const animals = ['Beef', 'Turkey', 'Pork', 'Chicken', 'Elk', 'Bison', 'Venison', 'Alligator', 'Kangaroo', 'Ostrich', 'Salmon'];
@@ -20,6 +25,8 @@ function ProductsPage() {
           <h1>Flavors</h1>
           <p>Browse and explore our jerky flavors</p>
         </div>
+
+        <PersonalizedGuidance page="products" />
 
         <div className="products-filters">
           <input
