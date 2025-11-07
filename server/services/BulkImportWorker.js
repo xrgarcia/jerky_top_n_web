@@ -86,7 +86,7 @@ class BulkImportWorker {
           connection: workerConnection,
           concurrency: 15, // Process up to 15 imports concurrently for faster throughput
           limiter: {
-            max: 50, // Max 50 jobs per minute (Shopify allows 120 req/min, fast-path uses 1-2 req/job)
+            max: 300, // Max 300 jobs per minute (re-processing mostly uses cached data, minimal Shopify API load)
             duration: 60000, // Per minute
           },
         }
@@ -119,7 +119,7 @@ class BulkImportWorker {
         console.error('❌ Bulk import worker error:', err);
       });
 
-      console.log('✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 50 jobs/min)');
+      console.log('✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 300 jobs/min)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize bulk import worker:', error);
