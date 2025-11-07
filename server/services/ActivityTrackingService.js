@@ -249,23 +249,38 @@ class ActivityTrackingService {
           eq(userActivities.userId, userId),
           gte(userActivities.createdAt, cutoffDate)
         )
-      );
+      )
+      .orderBy(userActivities.createdAt);
 
-    // Aggregate by type
-    const summary = {
-      total: activities.length,
-      byType: {},
-      lastActivity: activities.length > 0 ? activities[activities.length - 1].createdAt : null
-    };
+    // Count by type
+    let totalSearches = 0;
+    let totalProductViews = 0;
+    let totalProfileViews = 0;
+    let lastLogin = null;
 
     activities.forEach(activity => {
-      if (!summary.byType[activity.activityType]) {
-        summary.byType[activity.activityType] = 0;
+      switch (activity.activityType) {
+        case 'search':
+          totalSearches++;
+          break;
+        case 'product_view':
+          totalProductViews++;
+          break;
+        case 'profile_view':
+          totalProfileViews++;
+          break;
+        case 'login':
+          lastLogin = activity.createdAt;
+          break;
       }
-      summary.byType[activity.activityType]++;
     });
 
-    return summary;
+    return {
+      totalSearches,
+      totalProductViews,
+      totalProfileViews,
+      lastLogin
+    };
   }
 }
 
