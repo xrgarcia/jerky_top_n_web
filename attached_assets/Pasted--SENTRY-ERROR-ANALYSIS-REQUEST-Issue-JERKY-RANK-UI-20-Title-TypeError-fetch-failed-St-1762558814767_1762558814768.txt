@@ -1,0 +1,426 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-20
+Title: TypeError: fetch failed
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-07T23:03:50.882000Z
+Last Seen: 2025-11-07T23:03:50Z
+Event Count: 1
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+TypeError: fetch failed
+
+--- CULPRIT ---
+POST /api/admin/bulk-import/start
+
+--- STACK TRACE ---
+Error: read ECONNRESET
+  at TLSWrap.onStreamRead (node:internal/stream_base_commons:?:?)
+  at TLSWrap.callbackTrampoline (node:internal/async_hooks:?:?)
+
+TypeError: fetch failed
+  at anonymous (node:internal/deps/undici/undici:?:?)
+  at ShopifyCustomersService.fetchCustomerBatch (/home/runner/workspace/server/services/ShopifyCustomersService.js:?:?) [in app]
+  at BulkImportService.fetchUnprocessedUsers (/home/runner/workspace/server/services/BulkImportService.js:?:?) [in app]
+  at BulkImportService.startBulkImport (/home/runner/workspace/server/services/BulkImportService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/admin/bulkImport.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T23:03:45.014000Z] console (info): 📋 Enqueued classification job for user 7094 (reason: bulk_import)
+[2025-11-07T23:03:45.014000Z] console (info): 📋 Enqueued classification job for new user 7094 (reason: bulk_import)
+[2025-11-07T23:03:45.090000Z] console (info): 📋 Enqueued classification job for user 7095 (reason: bulk_import)
+[2025-11-07T23:03:45.090000Z] console (info): 📋 Enqueued classification job for new user 7095 (reason: bulk_import)
+[2025-11-07T23:03:45.175000Z] console (info): 📋 Enqueued classification job for user 7096 (reason: bulk_import)
+[2025-11-07T23:03:45.175000Z] console (info): 📋 Enqueued classification job for new user 7096 (reason: bulk_import)
+[2025-11-07T23:03:45.254000Z] console (info): 📋 Enqueued classification job for user 7097 (reason: bulk_import)
+[2025-11-07T23:03:45.254000Z] console (info): 📋 Enqueued classification job for new user 7097 (reason: bulk_import)
+[2025-11-07T23:03:45.335000Z] console (info): 📋 Enqueued classification job for user 7098 (reason: bulk_import)
+[2025-11-07T23:03:45.335000Z] console (info): 📋 Enqueued classification job for new user 7098 (reason: bulk_import)
+[2025-11-07T23:03:45.418000Z] console (info): 📋 Enqueued classification job for user 7099 (reason: bulk_import)
+[2025-11-07T23:03:45.418000Z] console (info): 📋 Enqueued classification job for new user 7099 (reason: bulk_import)
+[2025-11-07T23:03:45.500000Z] console (info): 📋 Enqueued classification job for user 7100 (reason: bulk_import)
+[2025-11-07T23:03:45.500000Z] console (info): 📋 Enqueued classification job for new user 7100 (reason: bulk_import)
+[2025-11-07T23:03:45.581000Z] console (info): 📋 Enqueued classification job for user 7101 (reason: bulk_import)
+[2025-11-07T23:03:45.581000Z] console (info): 📋 Enqueued classification job for new user 7101 (reason: bulk_import)
+[2025-11-07T23:03:45.665000Z] console (info): 📋 Enqueued classification job for user 7102 (reason: bulk_import)
+[2025-11-07T23:03:45.665000Z] console (info): 📋 Enqueued classification job for new user 7102 (reason: bulk_import)
+[2025-11-07T23:03:45.744000Z] console (info): 📋 Enqueued classification job for user 7103 (reason: bulk_import)
+[2025-11-07T23:03:45.745000Z] console (info): 📋 Enqueued classification job for new user 7103 (reason: bulk_import)
+[2025-11-07T23:03:45.826000Z] console (info): 📋 Enqueued classification job for user 7104 (reason: bulk_import)
+[2025-11-07T23:03:45.826000Z] console (info): 📋 Enqueued classification job for new user 7104 (reason: bulk_import)
+[2025-11-07T23:03:45.942000Z] console (info): 📋 Enqueued classification job for user 7105 (reason: bulk_import)
+[2025-11-07T23:03:45.942000Z] console (info): 📋 Enqueued classification job for new user 7105 (reason: bulk_import)
+[2025-11-07T23:03:45.991000Z] console (info): 📋 Enqueued classification job for user 7106 (reason: bulk_import)
+[2025-11-07T23:03:45.991000Z] console (info): 📋 Enqueued classification job for new user 7106 (reason: bulk_import)
+[2025-11-07T23:03:46.073000Z] console (info): 📋 Enqueued classification job for user 7107 (reason: bulk_import)
+[2025-11-07T23:03:46.073000Z] console (info): 📋 Enqueued classification job for new user 7107 (reason: bulk_import)
+[2025-11-07T23:03:46.154000Z] console (info): 📋 Enqueued classification job for user 7108 (reason: bulk_import)
+[2025-11-07T23:03:46.155000Z] console (info): 📋 Enqueued classification job for new user 7108 (reason: bulk_import)
+[2025-11-07T23:03:46.235000Z] console (info): 📋 Enqueued classification job for user 7109 (reason: bulk_import)
+[2025-11-07T23:03:46.235000Z] console (info): 📋 Enqueued classification job for new user 7109 (reason: bulk_import)
+[2025-11-07T23:03:46.317000Z] console (info): 📋 Enqueued classification job for user 7110 (reason: bulk_import)
+[2025-11-07T23:03:46.317000Z] console (info): 📋 Enqueued classification job for new user 7110 (reason: bulk_import)
+[2025-11-07T23:03:46.400000Z] console (info): 📋 Enqueued classification job for user 7111 (reason: bulk_import)
+[2025-11-07T23:03:46.400000Z] console (info): 📋 Enqueued classification job for new user 7111 (reason: bulk_import)
+[2025-11-07T23:03:46.493000Z] console (info): 📋 Enqueued classification job for user 7112 (reason: bulk_import)
+[2025-11-07T23:03:46.493000Z] console (info): 📋 Enqueued classification job for new user 7112 (reason: bulk_import)
+[2025-11-07T23:03:46.568000Z] console (info): 📋 Enqueued classification job for user 7113 (reason: bulk_import)
+[2025-11-07T23:03:46.568000Z] console (info): 📋 Enqueued classification job for new user 7113 (reason: bulk_import)
+[2025-11-07T23:03:46.649000Z] console (info): 📋 Enqueued classification job for user 7114 (reason: bulk_import)
+[2025-11-07T23:03:46.649000Z] console (info): 📋 Enqueued classification job for new user 7114 (reason: bulk_import)
+[2025-11-07T23:03:46.732000Z] console (info): 📋 Enqueued classification job for user 7115 (reason: bulk_import)
+[2025-11-07T23:03:46.732000Z] console (info): 📋 Enqueued classification job for new user 7115 (reason: bulk_import)
+[2025-11-07T23:03:46.813000Z] console (info): 📋 Enqueued classification job for user 7116 (reason: bulk_import)
+[2025-11-07T23:03:46.813000Z] console (info): 📋 Enqueued classification job for new user 7116 (reason: bulk_import)
+[2025-11-07T23:03:46.900000Z] console (info): 📋 Enqueued classification job for user 7117 (reason: bulk_import)
+[2025-11-07T23:03:46.900000Z] console (info): 📋 Enqueued classification job for new user 7117 (reason: bulk_import)
+[2025-11-07T23:03:46.977000Z] console (info): 📋 Enqueued classification job for user 7118 (reason: bulk_import)
+[2025-11-07T23:03:46.977000Z] console (info): 📋 Enqueued classification job for new user 7118 (reason: bulk_import)
+[2025-11-07T23:03:47.058000Z] console (info): 📋 Enqueued classification job for user 7119 (reason: bulk_import)
+[2025-11-07T23:03:47.058000Z] console (info): 📋 Enqueued classification job for new user 7119 (reason: bulk_import)
+[2025-11-07T23:03:47.139000Z] console (info): 📋 Enqueued classification job for user 7120 (reason: bulk_import)
+[2025-11-07T23:03:47.139000Z] console (info): 📋 Enqueued classification job for new user 7120 (reason: bulk_import)
+[2025-11-07T23:03:47.222000Z] console (info): 📋 Enqueued classification job for user 7121 (reason: bulk_import)
+[2025-11-07T23:03:47.222000Z] console (info): 📋 Enqueued classification job for new user 7121 (reason: bulk_import)
+[2025-11-07T23:03:47.304000Z] console (info): 📋 Enqueued classification job for user 7122 (reason: bulk_import)
+[2025-11-07T23:03:47.304000Z] console (info): 📋 Enqueued classification job for new user 7122 (reason: bulk_import)
+[2025-11-07T23:03:47.427000Z] console (info): 📋 Enqueued classification job for user 7123 (reason: bulk_import)
+[2025-11-07T23:03:47.427000Z] console (info): 📋 Enqueued classification job for new user 7123 (reason: bulk_import)
+[2025-11-07T23:03:47.509000Z] console (info): 📋 Enqueued classification job for user 7124 (reason: bulk_import)
+[2025-11-07T23:03:47.509000Z] console (info): 📋 Enqueued classification job for new user 7124 (reason: bulk_import)
+[2025-11-07T23:03:47.591000Z] console (info): 📋 Enqueued classification job for user 7125 (reason: bulk_import)
+[2025-11-07T23:03:47.591000Z] console (info): 📋 Enqueued classification job for new user 7125 (reason: bulk_import)
+[2025-11-07T23:03:47.672000Z] console (info): 📋 Enqueued classification job for user 7126 (reason: bulk_import)
+[2025-11-07T23:03:47.672000Z] console (info): 📋 Enqueued classification job for new user 7126 (reason: bulk_import)
+[2025-11-07T23:03:47.753000Z] console (info): 📋 Enqueued classification job for user 7127 (reason: bulk_import)
+[2025-11-07T23:03:47.753000Z] console (info): 📋 Enqueued classification job for new user 7127 (reason: bulk_import)
+[2025-11-07T23:03:47.840000Z] console (info): 📋 Enqueued classification job for user 7128 (reason: bulk_import)
+[2025-11-07T23:03:47.840000Z] console (info): 📋 Enqueued classification job for new user 7128 (reason: bulk_import)
+[2025-11-07T23:03:47.926000Z] console (info): 📋 Enqueued classification job for user 7129 (reason: bulk_import)
+[2025-11-07T23:03:47.927000Z] console (info): 📋 Enqueued classification job for new user 7129 (reason: bulk_import)
+[2025-11-07T23:03:48.011000Z] console (info): 📋 Enqueued classification job for user 7130 (reason: bulk_import)
+[2025-11-07T23:03:48.011000Z] console (info): 📋 Enqueued classification job for new user 7130 (reason: bulk_import)
+[2025-11-07T23:03:48.093000Z] console (info): 📋 Enqueued classification job for user 7131 (reason: bulk_import)
+[2025-11-07T23:03:48.093000Z] console (info): 📋 Enqueued classification job for new user 7131 (reason: bulk_import)
+[2025-11-07T23:03:48.176000Z] console (info): 📋 Enqueued classification job for user 7132 (reason: bulk_import)
+[2025-11-07T23:03:48.176000Z] console (info): 📋 Enqueued classification job for new user 7132 (reason: bulk_import)
+[2025-11-07T23:03:48.257000Z] console (info): 📋 Enqueued classification job for user 7133 (reason: bulk_import)
+[2025-11-07T23:03:48.257000Z] console (info): 📋 Enqueued classification job for new user 7133 (reason: bulk_import)
+[2025-11-07T23:03:48.338000Z] console (info): 📋 Enqueued classification job for user 7134 (reason: bulk_import)
+[2025-11-07T23:03:48.338000Z] console (info): 📋 Enqueued classification job for new user 7134 (reason: bulk_import)
+[2025-11-07T23:03:48.419000Z] console (info): 📋 Enqueued classification job for user 7135 (reason: bulk_import)
+[2025-11-07T23:03:48.419000Z] console (info): 📋 Enqueued classification job for new user 7135 (reason: bulk_import)
+[2025-11-07T23:03:48.508000Z] console (info): 📋 Enqueued classification job for user 7136 (reason: bulk_import)
+[2025-11-07T23:03:48.508000Z] console (info): 📋 Enqueued classification job for new user 7136 (reason: bulk_import)
+[2025-11-07T23:03:48.583000Z] console (info): 📋 Enqueued classification job for user 7137 (reason: bulk_import)
+[2025-11-07T23:03:48.583000Z] console (info): 📋 Enqueued classification job for new user 7137 (reason: bulk_import)
+[2025-11-07T23:03:48.663000Z] console (info): 📋 Enqueued classification job for user 7138 (reason: bulk_import)
+[2025-11-07T23:03:48.664000Z] console (info): 📋 Enqueued classification job for new user 7138 (reason: bulk_import)
+[2025-11-07T23:03:48.743000Z] console (info): 📊 [getStats] Fetching bulk-import queue statistics...
+[2025-11-07T23:03:48.743000Z] console (info): 🔍 [getRedisStats] Getting Redis connection from shared client...
+[2025-11-07T23:03:48.743000Z] console (info): 🔍 [getRedisStats] Redis connection obtained, querying stats...
+[2025-11-07T23:03:48.744000Z] console (info): 📊 [getRedisStats] Redis stats result: [object Object]
+[2025-11-07T23:03:48.746000Z] console (info): 📊 [getStats] BullMQ stats: [object Object]
+[2025-11-07T23:03:48.746000Z] console (info): 📊 [getStats] Redis stats: [object Object]
+[2025-11-07T23:03:48.746000Z] console (info): 📊 [getStats] Final combined result: {
+  "waiting": 0,
+  "active": 0,
+  "completed": 0,
+  "failed": 0,
+  "delayed": 0,
+  "total": 0,
+  "redis": {
+    "waiting": 0,
+    "active": 0,
+    "completed": 0,
+    "failed": 0,
+    "total": 0
+  }
+}
+[2025-11-07T23:03:48.748000Z] console (info): 📋 Enqueued classification job for user 7139 (reason: bulk_import)
+[2025-11-07T23:03:48.748000Z] console (info): 📋 Enqueued classification job for new user 7139 (reason: bulk_import)
+[2025-11-07T23:03:50.881000Z] console (error): ❌ Error fetching customer batch: TypeError: fetch failed
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://rank.jerky.com/api/admin/bulk-import/start",
+  "query": [],
+  "fragment": null,
+  "data": {
+    "batchSize": 1000,
+    "mode": "full"
+  },
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip, deflate, br, zstd"
+    ],
+    [
+      "Accept-Language",
+      "en-US,en;q=0.9"
+    ],
+    [
+      "Baggage",
+      "sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=c00716450f1f4ab3a4b31a312360fb68,sentry-org_id=[Filtered],sentry-sampled=true,sentry-sample_rand=0.7675933419553884,sentry-sample_rate=1"
+    ],
+    [
+      "Content-Length",
+      "32"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "rank.jerky.com"
+    ],
+    [
+      "Origin",
+      "https://rank.jerky.com"
+    ],
+    [
+      "Priority",
+      "u=1, i"
+    ],
+    [
+      "Referer",
+      "https://rank.jerky.com/admin/tools/bulk-import"
+    ],
+    [
+      "Sec-Ch-Ua",
+      "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\""
+    ],
+    [
+      "Sec-Ch-Ua-Mobile",
+      "?0"
+    ],
+    [
+      "Sec-Ch-Ua-Platform",
+      "\"Windows\""
+    ],
+    [
+      "Sec-Fetch-Dest",
+      "empty"
+    ],
+    [
+      "Sec-Fetch-Mode",
+      "cors"
+    ],
+    [
+      "Sec-Fetch-Site",
+      "same-origin"
+    ],
+    [
+      "Sentry-Trace",
+      "c00716450f1f4ab3a4b31a312360fb68-a626060fd2eb7132-1"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762556068798, pid1req;dur=1762556068829"
+    ],
+    [
+      "Traceparent",
+      "00-3b2eff4a7b099b1006f8335aefd19e0d-ee9e6cc80441fd8e-00"
+    ],
+    [
+      "User-Agent",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "3b2eff4a7b099b1006f8335aefd19e0d/17194300033667825038"
+    ],
+    [
+      "X-Forwarded-For",
+      "75.104.94.66, 34.111.179.208, 35.191.81.65,35.196.143.163"
+    ],
+    [
+      "X-Forwarded-Host",
+      "rank.jerky.com"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ]
+  ],
+  "cookies": [
+    [
+      "__attentive_id",
+      "0478d2805a744dbc91a8b3eb02ba1177"
+    ],
+    [
+      "_attn_",
+      "eyJ1Ijoie1wiY29cIjoxNzUyOTM0NDE1OTExLFwidW9cIjoxNzUyOTM0NDE1OTExLFwibWFcIjoyMTkwMCxcImluXCI6ZmFsc2UsXCJ2YWxcIjpcIjA0NzhkMjgwNWE3NDRkYmM5MWE4YjNlYjAyYmExMTc3XCJ9In0="
+    ],
+    [
+      "_fbp",
+      "fb.1.1752934413975.884611879650088457"
+    ],
+    [
+      "_ga",
+      "GA1.2.555068964.1752934414"
+    ],
+    [
+      "_ga_9QT5Y3C99N",
+      "GS2.1.s1762133227$o12$g1$t1762133234$j53$l0$h0"
+    ],
+    [
+      "_ga_P6FVBRLQCL",
+      "GS2.1.s1762133227$o10$g1$t1762133234$j53$l0$h0"
+    ],
+    [
+      "_gcl_au",
+      "1.1.1064633879.1760118959"
+    ],
+    [
+      "_gecntaos",
+      "16"
+    ],
+    [
+      "_geffresponse",
+      "2"
+    ],
+    [
+      "_geli",
+      "MWIwMjliNTk4NzQxYWM5NjcxNjM0OGIwZGI3MGNlMzg="
+    ],
+    [
+      "_gelisha",
+      "MzUwM2ZjMDkwMDU0ZTczMThiNWY2MGI3MTYwNzZiYTdkZTAxNmRmZDRiM2IyMTNmMzExYjQyOWE3ODY2OTE3OA=="
+    ],
+    [
+      "_geps",
+      "true"
+    ],
+    [
+      "_getd",
+      "NTY3YTRiOTRmNTFlZTVkZTc1NDc3YzFmZmE2YTc4OGU="
+    ],
+    [
+      "_geuid",
+      "69c8520c-3736-4d25-99a2-e33953529d69-1744993103947"
+    ],
+    [
+      "_lc2_fpi",
+      "cb30ed6ebd06--01k0hggzx7y1y13km3cpxheqz6"
+    ],
+    [
+      "_lc2_fpi_js",
+      "cb30ed6ebd06--01k0hggzx7y1y13km3cpxheqz6"
+    ],
+    [
+      "_li_dcdm_c",
+      ".jerky.com"
+    ],
+    [
+      "_sctr",
+      "1|1752901200000"
+    ],
+    [
+      "_shopify_y",
+      "1699fc0a-44c3-4d6c-94c8-9f5a7268b8ed"
+    ],
+    [
+      "_uetvid",
+      "607a00b0a60211f08b40c98205afe8b3"
+    ],
+    [
+      "session_id",
+      "f9993fe9d710e14a95fb5a09c5975bd98e8b277f14b1a156bf7f95b5be3d6262"
+    ]
+  ],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
