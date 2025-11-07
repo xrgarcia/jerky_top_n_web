@@ -500,7 +500,6 @@
 /* Collapsible Rankings Content */
 .rankings-content {
   max-height: 10000px;
-  overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
   opacity: 1;
 }
@@ -508,6 +507,7 @@
 .rankings-content.collapsed {
   max-height: 0;
   opacity: 0;
+  overflow: hidden;
   transition: max-height 0.3s ease-in-out, opacity 0.2s ease-in-out;
 }
 
