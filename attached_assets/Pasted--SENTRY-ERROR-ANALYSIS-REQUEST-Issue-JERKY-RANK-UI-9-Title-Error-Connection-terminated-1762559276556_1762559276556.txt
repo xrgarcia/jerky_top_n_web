@@ -1,0 +1,434 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-9
+Title: Error: Connection terminated unexpectedly
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-10-16T16:36:50.187000Z
+Last Seen: 2025-11-07T23:03:50Z
+Event Count: 65
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Connection terminated unexpectedly
+
+--- CULPRIT ---
+GET /api/gamification/achievements
+
+--- STACK TRACE ---
+Error: Connection terminated unexpectedly
+  at An.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at S.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at WebSocket.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:?:?)
+  at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:?:?)
+  at WebSocket.emit (node:events:?:?)
+  at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T22:56:23.556000Z] console (info): ✅ WebSocket client connected: sIMUHK7lTAyADMyqAAAP
+[2025-11-07T22:56:23.599000Z] console (info): [Filtered]
+[2025-11-07T22:56:24.800000Z] console (info): ✅ WebSocket client connected: 4qotPbnjQS6XwsLmAAAR
+[2025-11-07T22:56:24.847000Z] console (info): [Filtered]
+[2025-11-07T22:56:43.534000Z] console (info): ✅ WebSocket client connected: pBf5-59N5QsieyssAAAT
+[2025-11-07T22:56:43.577000Z] console (info): [Filtered]
+[2025-11-07T22:56:45.797000Z] console (info): ✅ WebSocket client connected: D0wgYWMzqFNQrS8qAAAV
+[2025-11-07T22:56:45.841000Z] console (info): [Filtered]
+[2025-11-07T22:57:02.661000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T22:57:02.695000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T22:57:17.970000Z] console (info): ✅ WebSocket client connected: sakN1Oa3JFcHNw8OAAAX
+[2025-11-07T22:57:18.017000Z] console (info): [Filtered]
+[2025-11-07T22:57:22.681000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T22:57:42.707000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T22:59:12.399000Z] console (info): 👋 WebSocket client disconnected: 12xLulReqCuN7gdwAAAC
+[2025-11-07T22:59:12.400000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-07T22:59:16.214000Z] console (info): ✅ WebSocket client connected: a7y-8a6K6MMoMJVhAAAb
+[2025-11-07T22:59:16.259000Z] console (info): [Filtered]
+[2025-11-07T22:59:20.344000Z] console (info): 👋 WebSocket client disconnected: ZqAHqZ5DJIJfS17WAAAE
+[2025-11-07T22:59:20.344000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-07T22:59:24.134000Z] console (info): ✅ WebSocket client connected: OteZ08P1kMQDeVzQAAAd
+[2025-11-07T22:59:24.177000Z] console (info): [Filtered]
+[2025-11-07T22:59:43.626000Z] console (info): 👋 WebSocket client disconnected: TVWDkVahKLGo2AcBAAAL
+[2025-11-07T22:59:43.626000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-07T22:59:48.164000Z] console (info): ✅ WebSocket client connected: LOHQgEkBKNh7AIecAAAf
+[2025-11-07T22:59:48.209000Z] console (info): [Filtered]
+[2025-11-07T23:00:42.895000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T23:01:23.522000Z] console (info): 👋 WebSocket client disconnected: gFgSQqWXCe2xI5RcAAAN
+[2025-11-07T23:01:23.522000Z] console (info): 👤 User 966 still has 3 active socket(s)
+[2025-11-07T23:01:24.523000Z] console (info): 👋 WebSocket client disconnected: sIMUHK7lTAyADMyqAAAP
+[2025-11-07T23:01:24.523000Z] console (info): 👤 User 966 still has 2 active socket(s)
+[2025-11-07T23:01:25.566000Z] console (info): ✅ WebSocket client connected: Om_Cu_GUqq-8iglZAAAh
+[2025-11-07T23:01:25.712000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T23:01:25.763000Z] console (info): [Filtered]
+[2025-11-07T23:01:25.765000Z] console (info): 👋 WebSocket client disconnected: 4qotPbnjQS6XwsLmAAAR
+[2025-11-07T23:01:25.765000Z] console (info): 👤 User 966 still has 2 active socket(s)
+[2025-11-07T23:01:26.555000Z] console (info): ✅ WebSocket client connected: gWg1qGCKdMG8zqLAAAAj
+[2025-11-07T23:01:26.598000Z] console (info): [Filtered]
+[2025-11-07T23:01:27.529000Z] console (info): ✅ WebSocket client connected: DWVaP9bOYnhAiawfAAAl
+[2025-11-07T23:01:27.572000Z] console (info): [Filtered]
+[2025-11-07T23:01:42.957000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T23:01:43.779000Z] console (info): 👋 WebSocket client disconnected: pBf5-59N5QsieyssAAAT
+[2025-11-07T23:01:43.779000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-07T23:01:46.029000Z] console (info): 👋 WebSocket client disconnected: D0wgYWMzqFNQrS8qAAAV
+[2025-11-07T23:01:46.029000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-07T23:01:49.144000Z] console (info): ✅ WebSocket client connected: RxTTEUQ1DHU4NtsDAAAn
+[2025-11-07T23:01:49.188000Z] console (info): [Filtered]
+[2025-11-07T23:01:50.656000Z] console (info): ✅ WebSocket client connected: WCtZ3EDV8Z3dmroZAAAp
+[2025-11-07T23:01:50.700000Z] console (info): [Filtered]
+[2025-11-07T23:02:02.973000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-07T23:02:18.926000Z] console (info): 👋 WebSocket client disconnected: sakN1Oa3JFcHNw8OAAAX
+[2025-11-07T23:02:18.926000Z] console (info): 👤 User 966 still has 3 active socket(s)
+[2025-11-07T23:02:20.618000Z] console (info): ✅ WebSocket client connected: LOgya8WwtfeORCF8AAAr
+[2025-11-07T23:02:20.661000Z] console (info): [Filtered]
+[2025-11-07T23:02:53.426000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T23:03:08.937000Z] console (info): 👋 WebSocket client disconnected: RxTTEUQ1DHU4NtsDAAAn
+[2025-11-07T23:03:08.937000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-07T23:03:08.938000Z] console (info): 👋 WebSocket client disconnected: WCtZ3EDV8Z3dmroZAAAp
+[2025-11-07T23:03:08.938000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-07T23:03:08.973000Z] console (info): 🔍 Achievements endpoint called
+[2025-11-07T23:03:08.973000Z] console (info): 🔑 Session ID present: f9993fe9...
+[2025-11-07T23:03:09.099000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T23:03:09.144000Z] console (info): ✅ Session validated for user 2
+[2025-11-07T23:03:09.144000Z] console (info): 📊 Fetching achievements for user 2
+[2025-11-07T23:03:09.144000Z] console (info): ✅ Product count retrieved: 162 rankable products
+[2025-11-07T23:03:09.144000Z] console (info): 🔄 Batching user stats and engagement metrics queries...
+[2025-11-07T23:03:09.144000Z] console (info): 🚫 LeaderboardPositionCache MISS: User 2 (all_time)
+[2025-11-07T23:03:09.193000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 49ms (total: 49ms)
+[2025-11-07T23:03:09.193000Z] console (info): ✅ LeaderboardPositionCache SET: User 2 (all_time) rank 4
+[2025-11-07T23:03:09.289000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T23:03:09.340000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 2: 0 total searches
+[2025-11-07T23:03:09.353000Z] console (info): 🔍 getAllUserStreaks: Found 1 valid streak(s) for user 2
+[2025-11-07T23:03:09.353000Z] console (info): ⏱️ Batch 1 completed in 209ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-07T23:03:09.354000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 9 minutes)
+[2025-11-07T23:03:09.354000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 3 minutes)
+[2025-11-07T23:03:09.371000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 2: 0 total page views
+[2025-11-07T23:03:09.373000Z] console (info): 👤 [PROFILE VIEW ENGAGEMENT] User 2: 0 total profile views
+[2025-11-07T23:03:09.376000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 2: 0 total product views
+[2025-11-07T23:03:09.482000Z] console (info): ⏱️ Batch 2 completed in 128ms (getCompletedAnimalCategories)
+[2025-11-07T23:03:09.482000Z] console (info): ⏱️ Total aggregation time: 338ms
+[2025-11-07T23:03:09.482000Z] console (info): ✅ User stats aggregated: position 4, streak 11
+[2025-11-07T23:03:09.482000Z] console (info): ✅ Engagement metrics: 0 searches, 0 page views
+[2025-11-07T23:03:09.482000Z] console (info): 🔄 Fetching unique engagement metrics...
+[2025-11-07T23:03:09.526000Z] console (info): 👤 [PROFILE VIEW ENGAGEMENT] User 2: 0 unique profile views
+[2025-11-07T23:03:09.526000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 2: 0 unique product views
+[2025-11-07T23:03:09.526000Z] console (info): ✅ Unique engagement metrics: 0 unique products, 0 unique profiles
+[2025-11-07T23:03:09.526000Z] console (info): 🔄 Getting achievements with progress (complete stats)...
+[2025-11-07T23:03:09.526000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions (age: 9 minutes)
+[2025-11-07T23:03:09.568000Z] console (info): ✅ Achievements fetched successfully for user 2: 26 achievement(s)
+[2025-11-07T23:03:39.280000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T23:03:50.873000Z] console (error): ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+[2025-11-07T23:03:50.874000Z] console (error): Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+[2025-11-07T23:03:50.874000Z] console (error): ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+[2025-11-07T23:03:50.875000Z] console (error): Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+[2025-11-07T23:03:50.878000Z] console (error): ❌ Database client error: [object Object]
+[2025-11-07T23:03:50.878000Z] console (error): Full client error details: {
+  "stack": "Error: Connection terminated unexpectedly\n    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)\n    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)\n    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)\n    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)\n    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)\n    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)\n    at WebSocket.emit (node:events:524:28)\n    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)",
+  "message": "Connection terminated unexpectedly"
+}
+[2025-11-07T23:03:50.879000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T23:03:50.879000Z] console (error): ❌ Unexpected database pool error: [object Object]
+[2025-11-07T23:03:50.887000Z] console (error): ❌ Uncaught Exception: Error: Connection terminated unexpectedly
+[2025-11-07T23:03:50.887000Z] console (error): Stack: Error: Connection terminated unexpectedly
+    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)
+    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)
+    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)
+    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)
+    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)
+    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)
+    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)
+    at WebSocket.emit (node:events:524:28)
+    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "GET",
+  "url": "https://rank.jerky.com/api/gamification/achievements",
+  "query": [],
+  "fragment": null,
+  "data": null,
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip, deflate, br, zstd"
+    ],
+    [
+      "Accept-Language",
+      "en-US,en;q=0.9"
+    ],
+    [
+      "Baggage",
+      "sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=b5c6046f7efd45f9afef2c72e1a985fc,sentry-org_id=[Filtered],sentry-sampled=true,sentry-sample_rand=0.8556517589678089,sentry-sample_rate=1"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "rank.jerky.com"
+    ],
+    [
+      "Priority",
+      "u=1, i"
+    ],
+    [
+      "Referer",
+      "https://rank.jerky.com/rank"
+    ],
+    [
+      "Sec-Ch-Ua",
+      "\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\""
+    ],
+    [
+      "Sec-Ch-Ua-Mobile",
+      "?0"
+    ],
+    [
+      "Sec-Ch-Ua-Platform",
+      "\"Windows\""
+    ],
+    [
+      "Sec-Fetch-Dest",
+      "empty"
+    ],
+    [
+      "Sec-Fetch-Mode",
+      "cors"
+    ],
+    [
+      "Sec-Fetch-Site",
+      "same-origin"
+    ],
+    [
+      "Sentry-Trace",
+      "b5c6046f7efd45f9afef2c72e1a985fc-b9282f3f455616bf-1"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762556588923, pid1req;dur=1762556588969"
+    ],
+    [
+      "Traceparent",
+      "00-4aefef28ba7e57ee17e2dafaf261ad30-cd3798e2e130e175-00"
+    ],
+    [
+      "User-Agent",
+      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "4aefef28ba7e57ee17e2dafaf261ad30/14787456001702420853"
+    ],
+    [
+      "X-Forwarded-For",
+      "75.104.94.66, 34.111.179.208, 35.191.113.124,34.138.26.166"
+    ],
+    [
+      "X-Forwarded-Host",
+      "rank.jerky.com"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ]
+  ],
+  "cookies": [
+    [
+      "__attentive_id",
+      "0478d2805a744dbc91a8b3eb02ba1177"
+    ],
+    [
+      "_attn_",
+      "eyJ1Ijoie1wiY29cIjoxNzUyOTM0NDE1OTExLFwidW9cIjoxNzUyOTM0NDE1OTExLFwibWFcIjoyMTkwMCxcImluXCI6ZmFsc2UsXCJ2YWxcIjpcIjA0NzhkMjgwNWE3NDRkYmM5MWE4YjNlYjAyYmExMTc3XCJ9In0="
+    ],
+    [
+      "_fbp",
+      "fb.1.1752934413975.884611879650088457"
+    ],
+    [
+      "_ga",
+      "GA1.2.555068964.1752934414"
+    ],
+    [
+      "_ga_9QT5Y3C99N",
+      "GS2.1.s1762133227$o12$g1$t1762133234$j53$l0$h0"
+    ],
+    [
+      "_ga_P6FVBRLQCL",
+      "GS2.1.s1762133227$o10$g1$t1762133234$j53$l0$h0"
+    ],
+    [
+      "_gcl_au",
+      "1.1.1064633879.1760118959"
+    ],
+    [
+      "_gecntaos",
+      "16"
+    ],
+    [
+      "_geffresponse",
+      "2"
+    ],
+    [
+      "_geli",
+      "MWIwMjliNTk4NzQxYWM5NjcxNjM0OGIwZGI3MGNlMzg="
+    ],
+    [
+      "_gelisha",
+      "MzUwM2ZjMDkwMDU0ZTczMThiNWY2MGI3MTYwNzZiYTdkZTAxNmRmZDRiM2IyMTNmMzExYjQyOWE3ODY2OTE3OA=="
+    ],
+    [
+      "_geps",
+      "true"
+    ],
+    [
+      "_getd",
+      "NTY3YTRiOTRmNTFlZTVkZTc1NDc3YzFmZmE2YTc4OGU="
+    ],
+    [
+      "_geuid",
+      "69c8520c-3736-4d25-99a2-e33953529d69-1744993103947"
+    ],
+    [
+      "_lc2_fpi",
+      "cb30ed6ebd06--01k0hggzx7y1y13km3cpxheqz6"
+    ],
+    [
+      "_lc2_fpi_js",
+      "cb30ed6ebd06--01k0hggzx7y1y13km3cpxheqz6"
+    ],
+    [
+      "_li_dcdm_c",
+      ".jerky.com"
+    ],
+    [
+      "_sctr",
+      "1|1752901200000"
+    ],
+    [
+      "_shopify_y",
+      "1699fc0a-44c3-4d6c-94c8-9f5a7268b8ed"
+    ],
+    [
+      "_uetvid",
+      "607a00b0a60211f08b40c98205afe8b3"
+    ],
+    [
+      "session_id",
+      "f9993fe9d710e14a95fb5a09c5975bd98e8b277f14b1a156bf7f95b5be3d6262"
+    ]
+  ],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
