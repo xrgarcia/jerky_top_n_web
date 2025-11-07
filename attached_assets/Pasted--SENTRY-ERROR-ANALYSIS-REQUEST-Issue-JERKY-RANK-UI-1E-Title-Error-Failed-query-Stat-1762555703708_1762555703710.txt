@@ -1,0 +1,201 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-1E
+Title: Error: Failed query: 
+Status: unresolved
+Level: warning
+Environment: development
+
+First Seen: 2025-10-31T22:22:41.139000Z
+Last Seen: 2025-11-07T02:21:34Z
+Event Count: 2
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: 
+
+--- CULPRIT ---
+HomeStatsService.getCommunityStats(server.services:HomeStatsService)
+
+--- STACK TRACE ---
+error: relation "page_views" does not exist
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at Promise.all (index 3:?:?)
+  at HomeStatsService.getCommunityStats (/home/runner/workspace/server/services/HomeStatsService.js:?:?) [in app]
+  at Promise.all (index 6:?:?)
+  at HomeStatsService.getAllHomeStats (/home/runner/workspace/server/services/HomeStatsService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+
+Error: Failed query: 
+        SELECT COUNT(DISTINCT user_id) as count 
+        FROM page_views 
+        WHERE user_id IS NOT NULL 
+        AND viewed_at >= $1
+      
+params: Thu Nov 06 2025 06:00:00 GMT+0000 (Coordinated Universal Time)
+  at anonymous (>= $1:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at Promise.all (index 3:?:?)
+  at HomeStatsService.getCommunityStats (/home/runner/workspace/server/services/HomeStatsService.js:?:?) [in app]
+  at Promise.all (index 6:?:?)
+  at HomeStatsService.getAllHomeStats (/home/runner/workspace/server/services/HomeStatsService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/services/CacheWarmer.js:?:?) [in app]
+  at Promise.allSettled (index 0:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-07T02:21:33.264000Z] console (info): ✅ Sentry error monitoring initialized (development @ e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev)
+[2025-11-07T02:21:33.264000Z] console (info): 🚀 Starting Jerky Top N Web Application...
+[2025-11-07T02:21:33.264000Z] console (info): 🔍 Checking environment configuration...
+[2025-11-07T02:21:33.264000Z] console (info): [Filtered]
+[2025-11-07T02:21:33.264000Z] console (info): ✅ Database URL found
+[2025-11-07T02:21:33.268000Z] console (info): 📂 Database storage connected
+[2025-11-07T02:21:33.268000Z] console (info): [Filtered]
+[2025-11-07T02:21:33.268000Z] console (info): 🏪  Shop Domain: jerky-com.myshopify.com
+[2025-11-07T02:21:33.269000Z] console (info): 🌐  App Domain: e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev
+[2025-11-07T02:21:33.269000Z] console (info): 🔑  Using Customer Account API for jerky.com accounts
+[2025-11-07T02:21:33.306000Z] console (info): ✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+[2025-11-07T02:21:33.359000Z] console (info): ✅ Rate limiters configured using memory (single-instance)
+[2025-11-07T02:21:33.449000Z] console (info): 💾 Primary database connection configured (no pooler - read from primary)
+[2025-11-07T02:21:33.459000Z] console (info): ✅ Server successfully started!
+[2025-11-07T02:21:33.459000Z] console (info): 🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+[2025-11-07T02:21:33.460000Z] console (info): Visit the app at: http://localhost:5000
+[2025-11-07T02:21:33.460000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-07T02:21:33.460000Z] console (info): 📊 Service Status:
+[2025-11-07T02:21:33.460000Z] console (info):    Shopify Integration: ✅ Available
+[2025-11-07T02:21:33.460000Z] console (info):    Database: ✅ Connected
+[2025-11-07T02:21:33.460000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-07T02:21:33.469000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-07T02:21:33.469000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-07T02:21:33.470000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-07T02:21:33.470000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-07T02:21:33.470000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-07T02:21:33.489000Z] console (info): [Filtered]
+[2025-11-07T02:21:33.507000Z] console (info): 🎮 Initializing gamification system...
+[2025-11-07T02:21:33.508000Z] console (info): ⚠️ recentAchievements: Using in-memory cache (single-instance only)
+[2025-11-07T02:21:33.508000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-07T02:21:33.508000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-07T02:21:33.508000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-07T02:21:33.592000Z] console (info): ✅ Redis connection pool established
+[2025-11-07T02:21:33.619000Z] console (info): ✅ Redis connection pool established
+[2025-11-07T02:21:33.661000Z] console (info): ✅ Redis ready for commands
+[2025-11-07T02:21:33.697000Z] console (info): ✅ Redis ready for commands
+[2025-11-07T02:21:33.733000Z] console (info): 🏓 Redis PING successful - connection pool active
+[2025-11-07T02:21:33.734000Z] console (info): ✅ homeStats: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ leaderboard: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ leaderboardPosition: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ achievement: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ metadata: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ rankingStats: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ products: Using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): ✅ All caches using Redis for distributed caching
+[2025-11-07T02:21:33.734000Z] console (info): 🔌 Setting up Socket.IO Redis adapter with shared connection...
+[2025-11-07T02:21:33.737000Z] console (info): 🏓 Redis PING successful - connection pool active
+[2025-11-07T02:21:33.739000Z] console (info): ✅ Classification queue initialized
+[2025-11-07T02:21:33.742000Z] console (info): ✅ Gamification routes registered at /api/gamification
+[2025-11-07T02:21:33.742000Z] console (info): ✅ Community routes registered at /api/community
+[2025-11-07T02:21:33.742000Z] console (info): ✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+[2025-11-07T02:21:33.742000Z] console (info): 🏷️  WebSocket environment prefix: dev
+[2025-11-07T02:21:33.742000Z] console (info): ✅ WebSocket gateway initialized
+[2025-11-07T02:21:33.742000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T02:21:33.744000Z] console (info): ✅ Classification worker initialized (concurrency: 5)
+[2025-11-07T02:21:33.744000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T02:21:33.744000Z] console (info): ✅ Bulk import queue initialized
+[2025-11-07T02:21:33.744000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-07T02:21:33.745000Z] console (info): ✅ Bulk import worker initialized (concurrency: 3)
+[2025-11-07T02:21:33.747000Z] console (info): 🎮 Gamification system initialized successfully
+[2025-11-07T02:21:33.753000Z] console (info): ✅ Gamification services available for achievements
+[2025-11-07T02:21:33.756000Z] console (info): 📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*
+[2025-11-07T02:21:33.758000Z] console (info): ✅ Tools routes registered at /api/tools
+[2025-11-07T02:21:33.891000Z] console (info): ✅ Object storage route registered at /objects/*
+[2025-11-07T02:21:33.912000Z] console (info): ✅ Admin routes registered at /api/admin
+[2025-11-07T02:21:33.912000Z] console (info): ✅ Catch-all route registered (serves React SPA)
+[2025-11-07T02:21:33.917000Z] console (info): 🔥 CacheWarmer: Starting to warm 3 cache(s)...
+[2025-11-07T02:21:33.918000Z] console (info): 🚫 HomeStatsCache MISS: Data expired or not found
+[2025-11-07T02:21:33.918000Z] console (info): 🚫 LeaderboardCache MISS: all_time:5
+[2025-11-07T02:21:33.921000Z] console (info): 🚫 LeaderboardCache MISS: all_time:5
+[2025-11-07T02:21:33.921000Z] console (info): 🚫 Cache MISS: No cached data
+[2025-11-07T02:21:33.921000Z] console (info): 🔄 Fetching fresh products from Shopify API...
+[2025-11-07T02:21:33.947000Z] console (info): 📨 Registering Shopify webhooks...
+[2025-11-07T02:21:34.089000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.092000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.093000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.094000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.095000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.175000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.177000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.180000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.184000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.187000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.241000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.243000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-07T02:21:34.249000Z] http (info): {"http.method":"GET","status_code":200,"url":"http://127.0.0.1:1106/object-storage/default-bucket"}
+[2025-11-07T02:21:34.273000Z] console (info): ✅ LeaderboardCache SET: all_time:5 cached 1 entries
+[2025-11-07T02:21:34.274000Z] console (info): ⏱️ Leaderboard fetched in 356ms (cache MISS, period: all_time, limit: 5)
+[2025-11-07T02:21:34.275000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-07T02:21:34.307000Z] console (info): ✅ Socket.IO using Redis adapter for cross-instance communication
+[2025-11-07T02:21:34.309000Z] console (info): ✅ Scalability initialization complete
+[2025-11-07T02:21:34.309000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-07T02:21:34.335000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-07T02:21:34.341000Z] console (warning): ⚠️ CacheWarmer: HomeStatsCache failed to warm (423ms): Failed query: 
+        SELECT COUNT(DISTINCT user_id) as count 
+        FROM page_views 
+        WHERE user_id IS NOT NULL 
+        AND viewed_at >= $1
+      
+params: Thu Nov 06 2025 06:00:00 GMT+0000 (Coordinated Universal Time)
+
+--- TAGS ---
+  app_url: undefined
+  cache_name: undefined
+  duration_ms: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
