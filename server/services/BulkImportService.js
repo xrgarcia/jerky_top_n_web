@@ -146,6 +146,24 @@ class BulkImportService {
         console.error('⚠️ Failed to broadcast final stats:', error.message);
       }
 
+      // Send completion email notification (async, non-blocking)
+      setImmediate(async () => {
+        try {
+          const emailService = require('./EmailService');
+          if (emailService.isInitialized()) {
+            await emailService.sendBulkImportCompletionEmail({
+              stats: this.currentImportStats,
+              mode: mode || (fullImport ? 'full' : 'incremental'),
+              batchSize
+            });
+          } else {
+            console.warn('⚠️ Email service not initialized - skipping completion notification');
+          }
+        } catch (error) {
+          console.error('⚠️ Failed to send completion email:', error.message);
+        }
+      });
+
       const finalStats = {
         success: true,
         ...this.currentImportStats

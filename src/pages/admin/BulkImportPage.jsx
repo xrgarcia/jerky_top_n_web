@@ -388,6 +388,7 @@ function BulkImportPage() {
             <div className="phase-label">Current Phase:</div>
             <div className={`phase-value phase-${phase}`}>
               {phase === 'fetching_customers' && '📥 Fetching Customers from Shopify'}
+              {phase === 'processing_customers' && '⚙️ Processing Customers'}
               {phase === 'enqueuing_jobs' && '📋 Enqueuing Import Jobs'}
               {phase === 'completed' && '✅ Import Complete'}
               {phase === 'idle' && '⏸️ Idle'}
