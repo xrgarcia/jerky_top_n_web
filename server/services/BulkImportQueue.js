@@ -583,6 +583,108 @@ class BulkImportQueue {
   }
 
   /**
+   * Obliterate ALL jobs using direct Redis deletion with progress tracking
+   * Much faster than BullMQ's obliterate() for large queues (80K+ jobs)
+   * @param {Function} progressCallback - Called with (deleted, total, percentage)
+   * @returns {Promise<Object>} - { removed: number, duration: number, error?: string }
+   */
+  async obliterateWithProgress(progressCallback) {
+    if (!this.queue) {
+      return { removed: 0, error: 'Queue not initialized' };
+    }
+
+    const startTime = Date.now();
+    let totalDeleted = 0;
+
+    try {
+      console.log('🗑️ [obliterateWithProgress] Starting fast Redis deletion...');
+      
+      // Get initial counts
+      const redisStats = await this.getRedisStats();
+      const estimatedTotal = redisStats.total || 0;
+      console.log(`📊 [obliterateWithProgress] Target: ~${estimatedTotal.toLocaleString()} jobs`);
+
+      // Get Redis client from shared connection
+      const redis = redisClient.getClient();
+      const queuePrefix = `bull:bulk-import:`;
+      
+      // Find all queue keys using SCAN (non-blocking)
+      console.log('🔍 [obliterateWithProgress] Scanning for queue keys...');
+      const keysToDelete = [];
+      let cursor = '0';
+      
+      do {
+        const [nextCursor, keys] = await redis.scan(
+          cursor,
+          'MATCH',
+          `${queuePrefix}*`,
+          'COUNT',
+          1000
+        );
+        cursor = nextCursor;
+        keysToDelete.push(...keys);
+        
+        if (progressCallback && keysToDelete.length > 0) {
+          progressCallback({
+            phase: 'scanning',
+            keysFound: keysToDelete.length,
+            estimatedTotal
+          });
+        }
+      } while (cursor !== '0');
+
+      console.log(`📋 [obliterateWithProgress] Found ${keysToDelete.length} keys to delete`);
+
+      // Delete keys in batches
+      const batchSize = 1000;
+      const totalBatches = Math.ceil(keysToDelete.length / batchSize);
+      
+      for (let i = 0; i < keysToDelete.length; i += batchSize) {
+        const batch = keysToDelete.slice(i, i + batchSize);
+        const batchNum = Math.floor(i / batchSize) + 1;
+        
+        // Delete batch using pipeline for efficiency
+        const pipeline = redis.pipeline();
+        batch.forEach(key => pipeline.del(key));
+        await pipeline.exec();
+        
+        totalDeleted += batch.length;
+        const percentage = Math.round((totalDeleted / keysToDelete.length) * 100);
+        
+        console.log(`🗑️ [obliterateWithProgress] Batch ${batchNum}/${totalBatches}: Deleted ${totalDeleted}/${keysToDelete.length} keys (${percentage}%)`);
+        
+        if (progressCallback) {
+          progressCallback({
+            phase: 'deleting',
+            deleted: totalDeleted,
+            total: keysToDelete.length,
+            percentage,
+            batchNum,
+            totalBatches
+          });
+        }
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ [obliterateWithProgress] Completed in ${duration}ms - deleted ${totalDeleted} keys`);
+      
+      return { 
+        removed: totalDeleted,
+        duration,
+        jobsEstimate: estimatedTotal
+      };
+    } catch (error) {
+      const duration = Date.now() - startTime;
+      console.error('❌ [obliterateWithProgress] Failed:', error.message);
+      return { 
+        removed: totalDeleted,
+        duration,
+        error: error.message 
+      };
+    }
+  }
+
+  /**
    * Clear only completed jobs
    * @returns {Promise<Object>} - { removed: number, error?: string }
    */

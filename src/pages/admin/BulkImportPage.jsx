@@ -13,6 +13,7 @@ function BulkImportPage() {
   const [batchSize, setBatchSize] = useState('');
   const [workerConcurrency, setWorkerConcurrency] = useState('3');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [obliterateProgress, setObliterateProgress] = useState(null);
   const { socket } = useSocket();
 
   // Fetch import progress
@@ -77,9 +78,33 @@ function BulkImportPage() {
       queryClient.setQueryData(['shopifyStats'], data);
     };
 
+    // Listen for obliterate progress updates
+    const handleObliterateProgress = (progress) => {
+      console.log('🗑️ Obliterate progress:', progress);
+      setObliterateProgress(progress);
+    };
+
+    // Listen for obliterate completion
+    const handleObliterateComplete = (result) => {
+      console.log('✅ Obliterate complete:', result);
+      setObliterateProgress(null);
+      queryClient.invalidateQueries(['bulkImportProgress']);
+      toast.success(`Queue obliterated! Deleted ${result.removed?.toLocaleString()} keys in ${(result.duration / 1000).toFixed(1)}s`);
+    };
+
+    // Listen for obliterate errors
+    const handleObliterateError = (data) => {
+      console.error('❌ Obliterate error:', data);
+      setObliterateProgress(null);
+      toast.error(`Queue deletion failed: ${data.error}`);
+    };
+
     socket.on('subscription:confirmed', handleSubscriptionConfirmed);
     socket.on('bulk-import:progress', handleBulkImportProgress);
     socket.on('shopify-stats:update', handleShopifyStatsUpdate);
+    socket.on('queue:obliterate-progress', handleObliterateProgress);
+    socket.on('queue:obliterate-complete', handleObliterateComplete);
+    socket.on('queue:obliterate-error', handleObliterateError);
 
     // Cleanup on unmount
     return () => {
@@ -88,6 +113,9 @@ function BulkImportPage() {
       socket.off('subscription:confirmed', handleSubscriptionConfirmed);
       socket.off('bulk-import:progress', handleBulkImportProgress);
       socket.off('shopify-stats:update', handleShopifyStatsUpdate);
+      socket.off('queue:obliterate-progress', handleObliterateProgress);
+      socket.off('queue:obliterate-complete', handleObliterateComplete);
+      socket.off('queue:obliterate-error', handleObliterateError);
       setWsConnected(false);
     };
   }, [socket, queryClient]);
@@ -525,6 +553,32 @@ function BulkImportPage() {
               🔄 Refresh Stats
             </button>
           </div>
+          
+          {/* Obliterate Progress Indicator */}
+          {obliterateProgress && (
+            <div className="obliterate-progress">
+              {obliterateProgress.phase === 'scanning' && (
+                <div className="progress-info">
+                  <div className="progress-label">🔍 Scanning for queue keys...</div>
+                  <div className="progress-stats">Found {obliterateProgress.keysFound?.toLocaleString()} keys (est. {obliterateProgress.estimatedTotal?.toLocaleString()} jobs)</div>
+                </div>
+              )}
+              {obliterateProgress.phase === 'deleting' && (
+                <div className="progress-info">
+                  <div className="progress-label">🗑️ Deleting queue keys... Batch {obliterateProgress.batchNum}/{obliterateProgress.totalBatches}</div>
+                  <div className="progress-bar-container">
+                    <div 
+                      className="progress-bar-fill" 
+                      style={{ width: `${obliterateProgress.percentage}%` }}
+                    >
+                      <span className="progress-percentage">{obliterateProgress.percentage}%</span>
+                    </div>
+                  </div>
+                  <div className="progress-stats">{obliterateProgress.deleted?.toLocaleString()} / {obliterateProgress.total?.toLocaleString()} keys deleted</div>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 

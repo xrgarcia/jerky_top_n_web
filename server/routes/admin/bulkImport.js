@@ -222,17 +222,40 @@ module.exports = function createBulkImportRoutes(storage, db) {
     // Return immediately to avoid timeout
     res.json({ 
       status: 'started',
-      message: 'Started queue obliteration in background. Monitor queue stats to see progress.'
+      message: 'Started queue obliteration. Monitor progress below.'
     });
     
-    // Process in background
+    // Process in background with progress tracking
     setImmediate(async () => {
       try {
-        console.log('📊 [API] Starting background obliteration...');
-        const result = await bulkImportQueue.obliterate();
+        console.log('📊 [API] Starting background obliteration with progress tracking...');
+        
+        // Progress callback to broadcast via WebSocket
+        const progressCallback = (progress) => {
+          if (bulkImportService.wsGateway && bulkImportService.wsGateway.io) {
+            const roomName = bulkImportService.wsGateway.room('admin', 'queue-monitor');
+            bulkImportService.wsGateway.io.to(roomName).emit('queue:obliterate-progress', progress);
+          }
+        };
+        
+        const result = await bulkImportQueue.obliterateWithProgress(progressCallback);
         console.log(`✅ [API] Background obliteration completed:`, result);
+        
+        // Broadcast completion
+        if (bulkImportService.wsGateway && bulkImportService.wsGateway.io) {
+          const roomName = bulkImportService.wsGateway.room('admin', 'queue-monitor');
+          bulkImportService.wsGateway.io.to(roomName).emit('queue:obliterate-complete', result);
+        }
       } catch (error) {
         console.error('❌ [API] Background obliteration failed:', error);
+        
+        // Broadcast error
+        if (bulkImportService.wsGateway && bulkImportService.wsGateway.io) {
+          const roomName = bulkImportService.wsGateway.room('admin', 'queue-monitor');
+          bulkImportService.wsGateway.io.to(roomName).emit('queue:obliterate-error', { 
+            error: error.message 
+          });
+        }
       }
     });
   });
