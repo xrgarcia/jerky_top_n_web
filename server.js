@@ -2277,10 +2277,10 @@ app.post('/api/rankings/products', async (req, res) => {
     }
     
     // Track ranking activity in user_activities table
-    if (activityTrackingService && rankings.length > 0) {
+    if (gamificationServices?.activityTrackingService && rankings.length > 0) {
       setImmediate(async () => {
         try {
-          await activityTrackingService.track(
+          await gamificationServices.activityTrackingService.track(
             userId,
             'ranking_saved',
             { 
