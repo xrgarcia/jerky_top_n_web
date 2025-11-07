@@ -88,6 +88,7 @@ class BulkImportService {
         this.currentImportStats.alreadyInDB = 0;
       } else if (mode === 'reprocess') {
         this.currentImportStats.notInDB = 0;
+        this.currentImportStats.jobsPendingEnqueue = 0; // Track jobs before actual enqueue
       }
 
       const modeDesc = mode === 'full' 
@@ -118,12 +119,20 @@ class BulkImportService {
       const enqueueResult = await bulkImportQueue.enqueueBulk(usersToImport);
       this.currentImportStats.jobsEnqueued = enqueueResult.enqueued;
       this.currentImportStats.errors += enqueueResult.failed;
+      
+      // Clear pending counter after actual enqueue (reprocess mode only)
+      if (this.currentImportStats.jobsPendingEnqueue !== undefined) {
+        this.currentImportStats.jobsPendingEnqueue = 0;
+      }
 
       console.log(`✅ Enqueued ${enqueueResult.enqueued} import jobs`);
 
       // Step 4: Mark as complete
       this.currentImportStats.phase = 'completed';
       this.currentImportStats.completedAt = new Date().toISOString();
+
+      // Broadcast final accurate stats with completed phase
+      await this.broadcastProgress();
 
       // Broadcast final Shopify stats with cache bypass for accurate gap metric
       try {
@@ -289,7 +298,7 @@ class BulkImportService {
                 email: customer.email,
                 isReprocess: true
               });
-              this.currentImportStats.jobsEnqueued++;
+              this.currentImportStats.jobsPendingEnqueue++; // Track pending, not yet enqueued
             } else {
               this.currentImportStats.notInDB++;
             }

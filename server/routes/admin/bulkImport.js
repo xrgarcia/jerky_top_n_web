@@ -210,5 +210,57 @@ module.exports = function createBulkImportRoutes(storage, db) {
     }
   });
 
+  /**
+   * POST /api/admin/bulk-import/queue/obliterate
+   * Obliterate ALL jobs in the queue (waiting, active, completed, failed)
+   * Use this to completely reset the queue
+   */
+  router.post('/bulk-import/queue/obliterate', requireEmployeeAdmin, async (req, res) => {
+    try {
+      console.log(`🗑️ Admin ${req.user.email} obliterating ALL jobs in bulk import queue`);
+      
+      const result = await bulkImportQueue.obliterate();
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Error obliterating queue:', error);
+      res.status(500).json({ error: 'Failed to obliterate queue' });
+    }
+  });
+
+  /**
+   * POST /api/admin/bulk-import/queue/clear-completed
+   * Clear only completed jobs from the queue
+   */
+  router.post('/bulk-import/queue/clear-completed', requireEmployeeAdmin, async (req, res) => {
+    try {
+      console.log(`🗑️ Admin ${req.user.email} clearing completed jobs from bulk import queue`);
+      
+      const result = await bulkImportQueue.clearCompleted();
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Error clearing completed jobs:', error);
+      res.status(500).json({ error: 'Failed to clear completed jobs' });
+    }
+  });
+
+  /**
+   * POST /api/admin/bulk-import/queue/clear-failed
+   * Clear only failed jobs from the queue
+   */
+  router.post('/bulk-import/queue/clear-failed', requireEmployeeAdmin, async (req, res) => {
+    try {
+      console.log(`🗑️ Admin ${req.user.email} clearing failed jobs from bulk import queue`);
+      
+      const result = await bulkImportQueue.clearFailed();
+      
+      res.json(result);
+    } catch (error) {
+      console.error('Error clearing failed jobs:', error);
+      res.status(500).json({ error: 'Failed to clear failed jobs' });
+    }
+  });
+
   return router;
 };
