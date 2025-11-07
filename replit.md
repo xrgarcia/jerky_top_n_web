@@ -91,8 +91,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Queue Integration Points**: EngagementManager (after coin awards), ActivityTrackingService (all activity methods), WebSocketGateway (page:view events), Shopify webhooks (order events).
 - **Flavor Profile Communities**: Micro-community system tracking user journey states (Curious → Seeker → Taster → Enthusiast/Explorer/Moderate) for each flavor profile (Teriyaki, BBQ, Sweet, Spicy, Savory) with admin-configurable thresholds. Integrated with User Guidance admin interface to display users' dominant flavor profile engagement.
 - **User Classification System**: `UserClassificationService` tracks journey stages, engagement levels, and exploration breadth. Works alongside `FlavorProfileCommunityService` to provide comprehensive user behavior analysis for personalized guidance.
-- **Dual Activity Tracking**: `trackUserSearch()` helper writes to both `user_product_searches` (legacy analytics) and `user_activities` (gamification) tables for all search operations.
-- **Engagement Tracking**: `EngagementManager` reads from a unified `user_activities` table for tracking searches, product views, and profile views for engagement coin awards.
+- **Unified Activity Tracking**: All user activities (page views, rankings, searches, logins, product views, profile views, purchases) are tracked in the centralized `user_activities` table. Activity types include: `page_view`, `ranking_saved`, `search`, `login`, `product_view`, `profile_view`, `purchase`, and `coin_earned`.
+- **Engagement Tracking**: `EngagementManager` and `LeaderboardManager` read from the unified `user_activities` table for tracking all user engagement metrics.
 - **Ranking Race Condition Fix**: Implemented sequence-based staleness detection to prevent data loss during rapid ranking operations.
 
 **Feature Specifications:**
