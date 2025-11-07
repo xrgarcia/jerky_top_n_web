@@ -48,16 +48,16 @@ class LeaderboardManager {
       : `COUNT(DISTINCT ua.id)`;
     
     const pageViewsCount = dateFilter
-      ? `COUNT(DISTINCT pv.id) FILTER (WHERE pv.viewed_at ${dateFilter})`
-      : `COUNT(DISTINCT pv.id)`;
+      ? `COUNT(DISTINCT act_pv.id) FILTER (WHERE act_pv.activity_time ${dateFilter})`
+      : `COUNT(DISTINCT act_pv.id)`;
     
     const rankingsCount = dateFilter
       ? `COUNT(DISTINCT pr.id) FILTER (WHERE pr.created_at ${dateFilter})`
       : `COUNT(DISTINCT pr.id)`;
     
     const searchesCount = dateFilter
-      ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
-      : `COUNT(DISTINCT ups.id)`;
+      ? `COUNT(DISTINCT act_s.id) FILTER (WHERE act_s.activity_time ${dateFilter})`
+      : `COUNT(DISTINCT act_s.id)`;
 
     const query = `
       SELECT 
@@ -73,9 +73,9 @@ class LeaderboardManager {
          + COALESCE(${searchesCount}, 0))::int as engagement_score
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
-      LEFT JOIN page_views pv ON pv.user_id = u.id
+      LEFT JOIN user_activities act_pv ON act_pv.user_id = u.id AND act_pv.activity_type = 'page_view'
       LEFT JOIN user_achievements ua ON ua.user_id = u.id
-      LEFT JOIN user_product_searches ups ON ups.user_id = u.id
+      LEFT JOIN user_activities act_s ON act_s.user_id = u.id AND act_s.activity_type = 'search'
       WHERE u.active = true
       GROUP BY u.id
       HAVING (COALESCE(${achievementsCount}, 0) 
@@ -155,29 +155,12 @@ class LeaderboardManager {
       dateFilter = `>= '${monthAgo.toISOString()}'`;
     }
 
-    // Build engagement score calculation
-    const achievementsCount = dateFilter 
-      ? `COUNT(DISTINCT ua.id) FILTER (WHERE ua.earned_at ${dateFilter})`
-      : `COUNT(DISTINCT ua.id)`;
-    
-    const pageViewsCount = dateFilter
-      ? `COUNT(DISTINCT pv.id) FILTER (WHERE pv.viewed_at ${dateFilter})`
-      : `COUNT(DISTINCT pv.id)`;
-    
-    const rankingsCount = dateFilter
-      ? `COUNT(DISTINCT pr.id) FILTER (WHERE pr.created_at ${dateFilter})`
-      : `COUNT(DISTINCT pr.id)`;
-    
-    const searchesCount = dateFilter
-      ? `COUNT(DISTINCT ups.id) FILTER (WHERE ups.searched_at ${dateFilter})`
-      : `COUNT(DISTINCT ups.id)`;
-
     // OPTIMIZED: Pre-aggregate each table separately to avoid Cartesian product
     // Then join the small aggregated results instead of joining raw tables
     const achievementsFilter = dateFilter ? `WHERE earned_at ${dateFilter}` : '';
-    const pageViewsFilter = dateFilter ? `WHERE viewed_at ${dateFilter}` : '';
+    const pageViewsFilter = dateFilter ? `WHERE activity_time ${dateFilter} AND activity_type = 'page_view'` : `WHERE activity_type = 'page_view'`;
     const rankingsFilter = dateFilter ? `WHERE created_at ${dateFilter}` : '';
-    const searchesFilter = dateFilter ? `WHERE searched_at ${dateFilter}` : '';
+    const searchesFilter = dateFilter ? `WHERE activity_time ${dateFilter} AND activity_type = 'search'` : `WHERE activity_type = 'search'`;
     
     const positionQuery = `
       WITH 
@@ -188,10 +171,10 @@ class LeaderboardManager {
         ${achievementsFilter}
         GROUP BY user_id
       ),
-      -- Pre-aggregate page views per user
+      -- Pre-aggregate page views per user (from user_activities)
       user_pageviews_agg AS (
         SELECT user_id, COUNT(*)::int as pageview_count
-        FROM page_views
+        FROM user_activities
         ${pageViewsFilter}
         GROUP BY user_id
       ),
@@ -205,10 +188,10 @@ class LeaderboardManager {
         ${rankingsFilter}
         GROUP BY user_id
       ),
-      -- Pre-aggregate searches per user
+      -- Pre-aggregate searches per user (from user_activities)
       user_searches_agg AS (
         SELECT user_id, COUNT(*)::int as search_count
-        FROM user_product_searches
+        FROM user_activities
         ${searchesFilter}
         GROUP BY user_id
       ),
