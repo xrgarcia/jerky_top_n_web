@@ -295,11 +295,27 @@ function BulkImportPage() {
           </div>
         </div>
 
-        {shopifyStats?.gap && (
+        {shopifyStats && (
           <div className="shopify-gap-metric">
-            <div className="gap-label">Shopify Gap:</div>
-            <div className="gap-value">
-              {shopifyStats.gap.missingUsers?.toLocaleString() || 0} customers not yet imported
+            <div className="gap-metrics-grid">
+              <div className="gap-metric-item">
+                <div className="gap-metric-label">Total Users in DB</div>
+                <div className="gap-metric-value">
+                  {shopifyStats.database?.totalUsers?.toLocaleString() || 0}
+                </div>
+              </div>
+              <div className="gap-metric-item">
+                <div className="gap-metric-label">Shopify Users Not Imported</div>
+                <div className="gap-metric-value highlight">
+                  {shopifyStats.gap?.missingUsers?.toLocaleString() || 0}
+                </div>
+              </div>
+              <div className="gap-metric-item">
+                <div className="gap-metric-label">Users Missing Purchase History</div>
+                <div className="gap-metric-value">
+                  {shopifyStats.database?.pending?.toLocaleString() || 0}
+                </div>
+              </div>
             </div>
           </div>
         )}
