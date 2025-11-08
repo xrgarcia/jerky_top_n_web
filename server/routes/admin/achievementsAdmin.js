@@ -233,12 +233,12 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
     cache.invalidate();
     console.log('🗑️ AchievementCache invalidated after creating achievement:', achievement.code);
     
-    // Trigger background recalculation for product-based achievements
-    // This awards the achievement to users who have already ranked the required products
+    // Trigger background recalculation to award achievement to users who already meet requirements
     if (achievement.collectionType === 'flavor_coin' || 
         achievement.collectionType === 'static_collection' || 
         achievement.collectionType === 'custom_product_list' ||
-        achievement.collectionType === 'dynamic_collection') {
+        achievement.collectionType === 'dynamic_collection' ||
+        achievement.collectionType === 'user_club') {
       console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
       
       // Run recalculation asynchronously (don't await - runs in background)
@@ -292,6 +292,41 @@ router.put('/achievements/:id', requireEmployeeAuth, async (req, res) => {
   } catch (error) {
     console.error('Error updating achievement:', error);
     res.status(500).json({ error: 'Failed to update achievement', details: error.message });
+  }
+});
+
+/**
+ * POST /api/admin/achievements/:id/recalculate
+ * Trigger recalculation for a specific achievement
+ * Awards the achievement to users who already meet the requirements
+ */
+router.post('/achievements/:id/recalculate', requireEmployeeAuth, async (req, res) => {
+  try {
+    const achievementId = parseInt(req.params.id);
+    
+    if (isNaN(achievementId)) {
+      return res.status(400).json({ error: 'Invalid achievement ID' });
+    }
+    
+    console.log(`🔄 Manual recalculation triggered for achievement ${achievementId}`);
+    
+    // Trigger background recalculation (runs asynchronously)
+    triggerAchievementRecalculation(achievementId, req.db, productsService).catch(err => {
+      console.error(`❌ Recalculation failed for achievement ${achievementId}:`, err);
+    });
+    
+    res.json({ 
+      success: true, 
+      message: 'Recalculation started in background',
+      stats: {
+        processed: 'calculating...',
+        newAwards: 'calculating...',
+        tierUpgrades: 'calculating...'
+      }
+    });
+  } catch (error) {
+    console.error('Error triggering recalculation:', error);
+    res.status(500).json({ error: 'Failed to trigger recalculation', details: error.message });
   }
 });
 
