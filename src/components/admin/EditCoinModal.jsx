@@ -63,15 +63,22 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   // Fetch all users only when user_club collection type is selected
   useEffect(() => {
     if (isOpen && collectionType === 'user_club' && allUsers.length === 0) {
+      console.log('🔍 Fetching users for user_club...');
       fetch('/api/admin/achievements/users')
-        .then(res => res.json())
+        .then(res => {
+          console.log('📥 Users API response status:', res.status);
+          return res.json();
+        })
         .then(data => {
+          console.log('📋 Users data received:', data);
           setAllUsers(data.users || []);
         })
         .catch(err => {
-          console.error('Failed to fetch users:', err);
+          console.error('❌ Failed to fetch users:', err);
           toast.error('Failed to load users');
         });
+    } else {
+      console.log('⏭️ Skipping user fetch:', { isOpen, collectionType, usersCount: allUsers.length });
     }
   }, [isOpen, collectionType]);
   
