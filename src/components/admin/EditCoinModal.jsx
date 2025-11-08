@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import './EditCoinModal.css';
 
-function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProducts = [] }) {
+function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProducts = [], allUsers = [] }) {
   const isEditMode = !!coin;
   
   // Form state - Basic Information
@@ -53,34 +53,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   // User club state
   const [selectedUserIds, setSelectedUserIds] = useState([]);
   const [userSearchQuery, setUserSearchQuery] = useState('');
-  const [allUsers, setAllUsers] = useState([]);
   
   // Requirement state
   const [requirement, setRequirement] = useState('');
   
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
-  // Fetch all users only when user_club collection type is selected
-  useEffect(() => {
-    if (isOpen && collectionType === 'user_club' && allUsers.length === 0) {
-      console.log('🔍 Fetching users for user_club...');
-      fetch('/api/admin/users')
-        .then(res => {
-          console.log('📥 Users API response status:', res.status);
-          return res.json();
-        })
-        .then(data => {
-          console.log('📋 Users data received:', data);
-          setAllUsers(data.users || []);
-        })
-        .catch(err => {
-          console.error('❌ Failed to fetch users:', err);
-          toast.error('Failed to load users');
-        });
-    } else {
-      console.log('⏭️ Skipping user fetch:', { isOpen, collectionType, usersCount: allUsers.length });
-    }
-  }, [isOpen, collectionType]);
   
   // Initialize form when coin changes
   useEffect(() => {

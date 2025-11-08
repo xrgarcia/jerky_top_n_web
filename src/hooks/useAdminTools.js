@@ -119,6 +119,20 @@ export function useAdminProducts() {
   });
 }
 
+export function useAdminUsers() {
+  return useQuery({
+    queryKey: ['adminUsers'],
+    queryFn: async () => {
+      const data = await api.get('/admin/users');
+      return {
+        users: data.users || [],
+        total: data.total || 0,
+      };
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes - users don't change frequently
+  });
+}
+
 export function useAnimalCategories() {
   return useQuery({
     queryKey: ['animalCategories'],

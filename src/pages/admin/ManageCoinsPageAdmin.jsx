@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import toast from 'react-hot-toast';
-import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useRecalculateCoin, useAdminProducts } from '../../hooks/useAdminTools';
+import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useRecalculateCoin, useAdminProducts, useAdminUsers } from '../../hooks/useAdminTools';
 import EditCoinModal from '../../components/admin/EditCoinModal';
 import ConfirmationModal from '../../components/admin/ConfirmationModal';
 import './AdminPages.css';
@@ -8,6 +8,7 @@ import './AdminPages.css';
 function ManageCoinsPageAdmin() {
   const { data: coinsData, isLoading, error } = useFetchCoins();
   const { data: productsData } = useAdminProducts();
+  const { data: usersData } = useAdminUsers();
   const toggleCoinMutation = useToggleCoin();
   const deleteCoinMutation = useDeleteCoin();
   const createCoinMutation = useCreateCoin();
@@ -29,6 +30,7 @@ function ManageCoinsPageAdmin() {
 
   const coins = coinsData?.achievements || [];
   const products = productsData?.products || [];
+  const users = usersData?.users || [];
 
   // Apply filters
   const filteredCoins = useMemo(() => {
@@ -375,6 +377,7 @@ function ManageCoinsPageAdmin() {
         onSave={handleSaveCoin}
         allCoins={coins}
         allProducts={products}
+        allUsers={users}
       />
 
       {/* Confirmation Modal */}
