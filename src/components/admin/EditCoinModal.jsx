@@ -187,7 +187,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // Helper to check if this is any collection type
   const isCollectionType = (type) => {
-    return ['engagement_collection', 'static_collection', 'dynamic_collection', 'legacy', 'flavor_coin', 'user_club'].includes(type);
+    return ['engagement_collection', 'static_collection', 'dynamic_collection', 'legacy', 'flavor_coin', 'user_club', 'user_coin'].includes(type);
   };
   
   // Handle icon file upload
