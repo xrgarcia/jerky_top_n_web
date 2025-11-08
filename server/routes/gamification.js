@@ -720,6 +720,64 @@ function createGamificationRoutes(services) {
         });
       }
 
+      // User Club achievements: Return club members instead of products
+      if (achievement.collectionType === COLLECTION_TYPES.USER_CLUB) {
+        const { users } = require('../../shared/schema');
+        const userIds = achievement.requirement?.userIds || [];
+        
+        // Fetch user details for club members
+        const clubMembers = await services.db.select({
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          email: users.email,
+          displayName: users.displayName
+        })
+        .from(users)
+        .where(require('drizzle-orm').inArray(users.id, userIds));
+        
+        // Check if current user is a member
+        const isMember = userIds.includes(userId);
+        
+        // Get user's achievement record
+        const { userAchievements } = require('../../shared/schema');
+        const { eq, and } = require('drizzle-orm');
+        const userAchievementResult = await services.db.select()
+          .from(userAchievements)
+          .where(and(
+            eq(userAchievements.userId, userId),
+            eq(userAchievements.achievementId, achievement.id)
+          ))
+          .limit(1);
+        const userAchievement = userAchievementResult[0] || null;
+        
+        return res.json({
+          achievement: {
+            id: achievement.id,
+            name: achievement.name,
+            description: achievement.description,
+            icon: achievement.icon,
+            iconType: achievement.iconType,
+            collectionType: achievement.collectionType,
+            points: achievement.points,
+            category: achievement.category
+          },
+          type: 'user_club',
+          members: clubMembers,
+          stats: {
+            total: clubMembers.length,
+            isMember: isMember,
+            percentage: isMember ? 100 : 0,
+            earned: userAchievement !== null,
+            pointsEarned: userAchievement?.pointsAwarded || 0
+          },
+          metadata: {
+            isExclusive: true,
+            memberCount: clubMembers.length
+          }
+        });
+      }
+
       // Product-based achievements: Return products
       const allEnrichedProducts = await services.productsService.getAllProducts();
       

@@ -1904,3 +1904,218 @@
     font-size: 10px;
   }
 }
+
+/* User Club Styles */
+.user-club-layout {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.user-club-hero {
+  background: white;
+  border-radius: 16px;
+  padding: 40px;
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.user-club-badge {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.user-club-icon {
+  font-size: 80px;
+  line-height: 1;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.member-badge {
+  background: #7b8b52;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.non-member-badge {
+  background: #666;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+.user-club-info {
+  flex: 1;
+}
+
+.user-club-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 12px 0;
+}
+
+.user-club-description {
+  font-size: 16px;
+  color: #666;
+  margin: 0 0 20px 0;
+  line-height: 1.6;
+}
+
+.user-club-stats {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.user-club-stat {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-club-stat .stat-icon {
+  font-size: 24px;
+}
+
+.user-club-stat .stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c2c2c;
+}
+
+.user-club-members {
+  background: white;
+  border-radius: 16px;
+  padding: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.members-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c2c2c;
+  margin: 0 0 20px 0;
+}
+
+.members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.member-card {
+  background: #f9f9f9;
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.member-card:hover {
+  border-color: #7b8b52;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.member-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7b8b52, #5a6b3c);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.member-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.member-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2c2c2c;
+  margin-bottom: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.member-email {
+  font-size: 13px;
+  color: #666;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-club-cta {
+  background: #f0f4e8;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  border: 2px dashed #7b8b52;
+}
+
+.user-club-cta p {
+  margin: 0;
+  font-size: 15px;
+  color: #666;
+  line-height: 1.6;
+}
+
+.user-club-success {
+  background: linear-gradient(135deg, #7b8b52, #5a6b3c);
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: white;
+}
+
+.user-club-success .success-icon {
+  font-size: 48px;
+  margin-bottom: 12px;
+}
+
+.user-club-success p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .user-club-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 30px 20px;
+  }
+  
+  .user-club-stats {
+    justify-content: center;
+  }
+  
+  .members-grid {
+    grid-template-columns: 1fr;
+  }
+}

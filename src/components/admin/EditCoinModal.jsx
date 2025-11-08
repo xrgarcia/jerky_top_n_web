@@ -50,10 +50,30 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   const [engagementType, setEngagementType] = useState('');
   const [engagementValue, setEngagementValue] = useState('');
   
+  // User club state
+  const [selectedUserIds, setSelectedUserIds] = useState([]);
+  const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [allUsers, setAllUsers] = useState([]);
+  
   // Requirement state
   const [requirement, setRequirement] = useState('');
   
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Fetch all users when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      fetch('/api/admin/achievements/users')
+        .then(res => res.json())
+        .then(data => {
+          setAllUsers(data.users || []);
+        })
+        .catch(err => {
+          console.error('Failed to fetch users:', err);
+          toast.error('Failed to load users');
+        });
+    }
+  }, [isOpen]);
   
   // Initialize form when coin changes
   useEffect(() => {
@@ -121,6 +141,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
               setEngagementValue(req.value || '');
             }
           }
+          
+          // Handle user club
+          if (coin.collectionType === 'user_club') {
+            if (req.userIds && Array.isArray(req.userIds)) {
+              const userIds = req.userIds.map(id => typeof id === 'string' ? parseInt(id, 10) : id);
+              setSelectedUserIds(userIds);
+            }
+          }
         } catch (e) {
           console.error('Error parsing coin requirement:', e);
         }
@@ -152,6 +180,8 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setSelectedAnimals([]);
     setEngagementType('');
     setEngagementValue('');
+    setSelectedUserIds([]);
+    setUserSearchQuery('');
     setHasTiers(0);
     setTierThresholds({ bronze: 40, silver: 60, gold: 75, platinum: 90, diamond: 100 });
     setProteinCategories([]);
@@ -165,7 +195,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // Helper to check if this is any collection type
   const isCollectionType = (type) => {
-    return ['engagement_collection', 'static_collection', 'dynamic_collection', 'legacy', 'flavor_coin'].includes(type);
+    return ['engagement_collection', 'static_collection', 'dynamic_collection', 'legacy', 'flavor_coin', 'user_club'].includes(type);
   };
   
   // Handle icon file upload
@@ -295,6 +325,36 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     );
   };
   
+  // User selection handlers
+  const handleAddUser = (userId) => {
+    const numericId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
+    setSelectedUserIds([...selectedUserIds, numericId]);
+  };
+  
+  const handleRemoveUser = (userId) => {
+    const numericId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
+    setSelectedUserIds(selectedUserIds.filter(id => id !== numericId));
+  };
+  
+  // Filtered users for search
+  const filteredUsers = useMemo(() => {
+    if (!userSearchQuery) {
+      return allUsers.filter(u => !selectedUserIds.includes(u.id));
+    }
+    
+    const query = userSearchQuery.toLowerCase();
+    return allUsers.filter(u =>
+      !selectedUserIds.includes(u.id) &&
+      (u.firstName?.toLowerCase().includes(query) ||
+       u.lastName?.toLowerCase().includes(query) ||
+       u.email?.toLowerCase().includes(query))
+    );
+  }, [allUsers, selectedUserIds, userSearchQuery]);
+  
+  const selectedUsers = useMemo(() => {
+    return allUsers.filter(u => selectedUserIds.includes(u.id));
+  }, [allUsers, selectedUserIds]);
+  
   // Validate form
   const validateForm = () => {
     if (!code.trim()) {
@@ -398,6 +458,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
         type: collectionType === 'flavor_coin' ? 'flavor_coin' : 'static_collection',
         productIds: selectedProductIds,
         requiredCount: selectedProductIds.length
+      };
+    }
+    
+    // User club
+    if (collectionType === 'user_club') {
+      return {
+        type: 'user_club',
+        userIds: selectedUserIds
       };
     }
     
@@ -579,6 +647,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 <option value="static_collection">Static Collection Coin</option>
                 <option value="dynamic_collection">Dynamic Collection Coin</option>
                 <option value="flavor_coin">Flavor Coin</option>
+                <option value="user_club">User Club</option>
                 <option value="legacy">Pre-Defined List of Products (Legacy)</option>
               </select>
               <p className="form-hint">
@@ -586,6 +655,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 {collectionType === 'static_collection' && 'Users earn tiers by ranking products from a custom-selected list'}
                 {collectionType === 'dynamic_collection' && 'Auto-updates based on criteria like brand, animal, or all products'}
                 {collectionType === 'flavor_coin' && 'Single product achievement for tasting a specific flavor'}
+                {collectionType === 'user_club' && 'Manually assign users to exclusive clubs (e.g., 100 Timer Club, VIP members)'}
                 {collectionType === 'legacy' && 'Legacy coin type with pre-defined product list'}
               </p>
             </div>
@@ -729,6 +799,80 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                             onClick={() => handleAddProduct(product.id)}
                             type="button"
                             disabled={!canAddMoreProducts}
+                          >
+                            +
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+          
+          {/* USER CLUB SELECTOR */}
+          {collectionType === 'user_club' && (
+            <section className="form-section">
+              <h3 className="section-title">4. USER SELECTION</h3>
+              <p className="section-description">
+                Search and select users to include in this exclusive club. Selected users will automatically earn this achievement.
+              </p>
+              
+              <div className="product-selector">
+                <div className="product-panel">
+                  <h4>Selected Club Members ({selectedUsers.length})</h4>
+                  <div className="product-list">
+                    {selectedUsers.length === 0 ? (
+                      <div className="empty-state-small">No users selected</div>
+                    ) : (
+                      selectedUsers.map(user => (
+                        <div key={user.id} className="product-card">
+                          <div className="product-info">
+                            <div className="product-title">{user.firstName} {user.lastName}</div>
+                            <div className="product-vendor">{user.email}</div>
+                          </div>
+                          <button
+                            className="product-action-btn remove-btn"
+                            onClick={() => handleRemoveUser(user.id)}
+                            type="button"
+                          >
+                            −
+                          </button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+                
+                <div className="product-panel">
+                  <h4>Available Users</h4>
+                  <input
+                    type="text"
+                    value={userSearchQuery}
+                    onChange={(e) => setUserSearchQuery(e.target.value)}
+                    placeholder="Search by name or email..."
+                    className="form-input product-search"
+                  />
+                  <p className="product-stats">
+                    {allUsers.length} users available
+                  </p>
+                  <div className="product-list">
+                    {filteredUsers.length === 0 ? (
+                      <div className="empty-state-small">
+                        {userSearchQuery ? 'No users match your search' : 'All users selected'}
+                      </div>
+                    ) : (
+                      filteredUsers.map(user => (
+                        <div key={user.id} className="product-card">
+                          <div className="product-info">
+                            <div className="product-title">{user.firstName} {user.lastName}</div>
+                            <div className="product-vendor">{user.email}</div>
+                          </div>
+                          <button
+                            className="product-action-btn add-btn"
+                            onClick={() => handleAddUser(user.id)}
+                            type="button"
                           >
                             +
                           </button>

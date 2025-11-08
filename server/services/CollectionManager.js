@@ -69,6 +69,60 @@ class CollectionManager {
     return updates;
   }
 
+  async checkAndUpdateUserClubs(userId) {
+    const userClubs = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'user_club'),
+        eq(achievements.isActive, 1)
+      ));
+
+    const updates = [];
+
+    for (const club of userClubs) {
+      const progress = await this.calculateUserClubProgress(userId, club);
+      const update = await this.updateCollectionProgress(userId, club, progress);
+      if (update) {
+        updates.push(update);
+      }
+    }
+
+    return updates;
+  }
+
+  async calculateUserClubProgress(userId, club) {
+    const { requirement } = club;
+    
+    if (!requirement || !requirement.userIds || !Array.isArray(requirement.userIds)) {
+      console.warn(`User Club ${club.code} has no user IDs`);
+      return { percentage: 0, totalAvailable: 0, totalInClub: 0 };
+    }
+
+    const userIds = requirement.userIds;
+    const totalAvailable = userIds.length;
+    
+    if (totalAvailable === 0) {
+      console.warn(`User Club ${club.code} has empty user list`);
+      return { percentage: 0, totalAvailable: 0, totalInClub: 0 };
+    }
+
+    console.log(`👥 [${club.code}] CALC START - Checking if User ${userId} is in club (${totalAvailable} members)`);
+
+    const isInClub = userIds.includes(userId);
+    const percentage = isInClub ? 100 : 0;
+    const tier = isInClub ? 'complete' : null;
+    
+    console.log(`✅ [${club.code}] CALC RESULT - User ${userId}: ${isInClub ? 'IN CLUB' : 'NOT IN CLUB'} → TIER: ${tier}`);
+
+    return {
+      percentage,
+      totalAvailable,
+      totalInClub: isInClub ? 1 : 0,
+      tier,
+      userIds
+    };
+  }
+
   async calculateCustomProductProgress(userId, collection) {
     const { requirement } = collection;
     

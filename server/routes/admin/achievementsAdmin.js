@@ -75,6 +75,11 @@ async function triggerAchievementRecalculation(achievementId, database, products
           if (progress.tier) {
             result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
           }
+        } else if (ach.collectionType === 'user_club') {
+          const progress = await collectionManager.calculateUserClubProgress(user.id, ach);
+          if (progress.tier) {
+            result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
+          }
         }
         
         if (result && result.type === 'new') {
@@ -147,6 +152,30 @@ module.exports = function createAdminRoutes(storage, db, productsService = null)
       return res.status(500).json({ error: 'Internal server error' });
     }
   }
+
+/**
+ * GET /api/admin/users
+ * Get all users for admin user selection
+ */
+router.get('/users', requireEmployeeAuth, async (req, res) => {
+  try {
+    const { users } = require('../../shared/schema');
+    
+    const allUsers = await req.db.select({
+      id: users.id,
+      firstName: users.firstName,
+      lastName: users.lastName,
+      email: users.email,
+      displayName: users.displayName,
+      active: users.active
+    }).from(users);
+    
+    res.json({ success: true, users: allUsers });
+  } catch (error) {
+    console.error('Error fetching users for admin:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
 
 /**
  * GET /api/admin/achievements

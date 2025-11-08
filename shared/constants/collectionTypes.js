@@ -22,6 +22,10 @@ const COLLECTION_TYPES = {
   // (can be all-or-nothing or have tier progression)
   FLAVOR_COIN: 'flavor_coin',
   
+  // User Clubs: Manually assigned user memberships
+  // (e.g., 100 Timer Club, VIP members - admin controlled)
+  USER_CLUB: 'user_club',
+  
   // Hidden Collections: Secret achievements unlocked through discovery
   HIDDEN: 'hidden_collection',
   
@@ -37,6 +41,7 @@ const COLLECTION_TYPE_LABELS = {
   [COLLECTION_TYPES.DYNAMIC]: 'Dynamic Collection Coin',
   [COLLECTION_TYPES.STATIC]: 'Static Collection Coin',
   [COLLECTION_TYPES.FLAVOR_COIN]: 'Flavor Coin',
+  [COLLECTION_TYPES.USER_CLUB]: 'User Club',
   [COLLECTION_TYPES.HIDDEN]: 'Hidden Collection Coin',
   [COLLECTION_TYPES.LEGACY]: 'Legacy'
 };
@@ -48,6 +53,7 @@ const API_ROUTE_FILTERS = {
   engagement: COLLECTION_TYPES.ENGAGEMENT,
   dynamic: COLLECTION_TYPES.DYNAMIC,
   static: COLLECTION_TYPES.STATIC,
+  user_club: COLLECTION_TYPES.USER_CLUB,
   hidden: COLLECTION_TYPES.HIDDEN,
   // Legacy support for old naming
   custom: COLLECTION_TYPES.STATIC  // custom_product_list → static_collection

@@ -69,7 +69,7 @@ async function loadCoinDetail(achievementCode) {
     }
     
     coinData = data.achievement;
-    coinType = data.type; // 'collection' or 'engagement'
+    coinType = data.type; // 'collection', 'engagement', or 'user_club'
     coinStats = data.stats;
     coinMetadata = data.metadata || {};
     
@@ -77,10 +77,17 @@ async function loadCoinDetail(achievementCode) {
       // Engagement achievement - no products
       coinProgress = data.progress;
       coinProducts = [];
+      coinMembers = [];
+    } else if (coinType === 'user_club') {
+      // User Club - has members
+      coinMembers = data.members || [];
+      coinProducts = [];
+      coinProgress = null;
     } else {
       // Collection achievement - has products
       coinProducts = data.products || [];
       coinProgress = null;
+      coinMembers = [];
     }
     
     updatePageHeader();
@@ -146,6 +153,14 @@ function renderContent() {
     if (engagementContainer) {
       engagementContainer.style.display = 'block';
       renderEngagementProgress();
+    }
+  } else if (coinType === 'user_club') {
+    // User Club: Show club members
+    if (statsContainer) statsContainer.style.display = 'none';
+    if (engagementContainer) engagementContainer.style.display = 'none';
+    if (productsContainer) {
+      productsContainer.style.display = 'block';
+      renderUserClub();
     }
   } else {
     // Collection-based achievement: Route to specific renderer
@@ -579,6 +594,75 @@ function renderLegacyAchievement() {
           `).join('')}
         </div>
       ` : ''}
+    </div>
+  `;
+}
+
+/**
+ * Render User Club (Exclusive Members)
+ */
+function renderUserClub() {
+  resetGridContainerClasses('default');
+  const grid = document.getElementById('coinProductsGrid');
+  
+  const isMember = coinStats.isMember || false;
+  const memberCount = coinMembers.length;
+  
+  grid.innerHTML = `
+    <div class="user-club-layout">
+      <div class="user-club-hero">
+        <div class="user-club-badge">
+          <div class="user-club-icon">${coinData.icon}</div>
+          ${isMember ? '<div class="member-badge">✓ Member</div>' : '<div class="non-member-badge">Exclusive</div>'}
+        </div>
+        <div class="user-club-info">
+          <h3 class="user-club-title">${coinData.name}</h3>
+          <p class="user-club-description">${coinData.description}</p>
+          <div class="user-club-stats">
+            <div class="user-club-stat">
+              <span class="stat-icon">👥</span>
+              <span class="stat-value">${memberCount} ${memberCount === 1 ? 'Member' : 'Members'}</span>
+            </div>
+            ${isMember ? `
+              <div class="user-club-stat">
+                <span class="stat-icon">⭐</span>
+                <span class="stat-value">${coinData.points} Flavor Coins Earned</span>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>
+      
+      <div class="user-club-members">
+        <h4 class="members-title">${isMember ? 'Club Members' : 'Exclusive Members'}</h4>
+        <div class="members-grid">
+          ${coinMembers.map(member => {
+            const displayName = member.displayName || `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Member';
+            const initials = displayName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+            
+            return `
+              <div class="member-card">
+                <div class="member-avatar">${initials}</div>
+                <div class="member-info">
+                  <div class="member-name">${displayName}</div>
+                  ${isMember ? `<div class="member-email">${member.email}</div>` : ''}
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+      
+      ${!isMember ? `
+        <div class="user-club-cta">
+          <p>This is an exclusive club. Membership is awarded by the team for special achievements and milestones.</p>
+        </div>
+      ` : `
+        <div class="user-club-success">
+          <div class="success-icon">🎉</div>
+          <p>Congratulations! You're a member of this exclusive club.</p>
+        </div>
+      `}
     </div>
   `;
 }
