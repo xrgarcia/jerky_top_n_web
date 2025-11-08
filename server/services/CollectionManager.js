@@ -123,6 +123,52 @@ class CollectionManager {
     };
   }
 
+  async checkAndUpdateUserCoins(userId) {
+    const userCoins = await this.db.select()
+      .from(achievements)
+      .where(and(
+        eq(achievements.collectionType, 'user_coin'),
+        eq(achievements.isActive, 1)
+      ));
+
+    const updates = [];
+
+    for (const coin of userCoins) {
+      const progress = await this.calculateUserCoinProgress(userId, coin);
+      const update = await this.updateCollectionProgress(userId, coin, progress);
+      if (update) {
+        updates.push(update);
+      }
+    }
+
+    return updates;
+  }
+
+  async calculateUserCoinProgress(userId, coin) {
+    const { requirement } = coin;
+    
+    if (!requirement || !requirement.userId) {
+      console.warn(`User Coin ${coin.code} has no user ID assigned`);
+      return { percentage: 0, assignedUserId: null };
+    }
+
+    const assignedUserId = requirement.userId;
+    
+    console.log(`🎖️ [${coin.code}] CALC START - Checking if User ${userId} matches assigned user ${assignedUserId}`);
+
+    const isMatch = userId === assignedUserId;
+    const percentage = isMatch ? 100 : 0;
+    const tier = isMatch ? 'complete' : null;
+    
+    console.log(`✅ [${coin.code}] CALC RESULT - User ${userId}: ${isMatch ? 'MATCH' : 'NO MATCH'} → TIER: ${tier}`);
+
+    return {
+      percentage,
+      assignedUserId,
+      tier
+    };
+  }
+
   async calculateCustomProductProgress(userId, collection) {
     const { requirement } = collection;
     
