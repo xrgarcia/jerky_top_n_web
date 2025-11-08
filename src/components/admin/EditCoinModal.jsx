@@ -133,6 +133,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
               setSelectedUserIds(userIds);
             }
           }
+          
+          // Handle user coin (single user)
+          if (coin.collectionType === 'user_coin') {
+            if (req.userId) {
+              const userId = typeof req.userId === 'string' ? parseInt(req.userId, 10) : req.userId;
+              setSelectedUserIds([userId]);
+            }
+          }
         } catch (e) {
           console.error('Error parsing coin requirement:', e);
         }
@@ -311,6 +319,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   // User selection handlers
   const handleAddUser = (userId) => {
+    // For user coins, limit to 1 user
+    if (collectionType === 'user_coin' && selectedUserIds.length >= 1) {
+      toast.error('User coins can only be assigned to one user');
+      return;
+    }
     const numericId = typeof userId === 'string' ? parseInt(userId, 10) : userId;
     setSelectedUserIds([...selectedUserIds, numericId]);
   };
@@ -450,6 +463,14 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
       return {
         type: 'user_club',
         userIds: selectedUserIds
+      };
+    }
+    
+    // User coin (single user)
+    if (collectionType === 'user_coin') {
+      return {
+        type: 'user_coin',
+        userId: selectedUserIds[0] || null
       };
     }
     
@@ -632,6 +653,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 <option value="dynamic_collection">Dynamic Collection Coin</option>
                 <option value="flavor_coin">Flavor Coin</option>
                 <option value="user_club">User Club</option>
+                <option value="user_coin">User Coin</option>
                 <option value="legacy">Pre-Defined List of Products (Legacy)</option>
               </select>
               <p className="form-hint">
@@ -640,6 +662,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                 {collectionType === 'dynamic_collection' && 'Auto-updates based on criteria like brand, animal, or all products'}
                 {collectionType === 'flavor_coin' && 'Single product achievement for tasting a specific flavor'}
                 {collectionType === 'user_club' && 'Manually assign users to exclusive clubs (e.g., 100 Timer Club, VIP members)'}
+                {collectionType === 'user_coin' && 'Single user achievement awarded to one specific person (e.g., Employee of Month, contest winners)'}
                 {collectionType === 'legacy' && 'Legacy coin type with pre-defined product list'}
               </p>
             </div>
@@ -795,20 +818,22 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
             </section>
           )}
           
-          {/* USER CLUB SELECTOR */}
-          {collectionType === 'user_club' && (
+          {/* USER CLUB/COIN SELECTOR */}
+          {(collectionType === 'user_club' || collectionType === 'user_coin') && (
             <section className="form-section">
               <h3 className="section-title">4. USER SELECTION</h3>
               <p className="section-description">
-                Search and select users to include in this exclusive club. Selected users will automatically earn this achievement.
+                {collectionType === 'user_club' 
+                  ? 'Search and select users to include in this exclusive club. Selected users will automatically earn this achievement.'
+                  : 'Search and select ONE user who will receive this personalized achievement (e.g., Employee of Month, contest winner).'}
               </p>
               
               <div className="product-selector">
                 <div className="product-panel">
-                  <h4>Selected Club Members ({selectedUsers.length})</h4>
+                  <h4>{collectionType === 'user_coin' ? 'Selected User' : `Selected Club Members (${selectedUsers.length})`}</h4>
                   <div className="product-list">
                     {selectedUsers.length === 0 ? (
-                      <div className="empty-state-small">No users selected</div>
+                      <div className="empty-state-small">{collectionType === 'user_coin' ? 'No user selected' : 'No users selected'}</div>
                     ) : (
                       selectedUsers.map(user => (
                         <div key={user.id} className="product-card">
