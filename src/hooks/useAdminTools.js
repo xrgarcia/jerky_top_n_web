@@ -124,14 +124,20 @@ export function useAdminUsers() {
     queryKey: ['adminUsers'],
     queryFn: async () => {
       console.log('🔍 useAdminUsers: Fetching users...');
-      const data = await api.get('/admin/users?limit=20');
-      console.log('📋 useAdminUsers: Received data:', data);
-      return {
-        users: data.users || [],
-        total: data.total || 0,
-      };
+      try {
+        const data = await api.get('/admin/users?limit=20');
+        console.log('📋 useAdminUsers: Received data:', data);
+        return {
+          users: data.users || [],
+          total: data.total || 0,
+        };
+      } catch (error) {
+        console.error('❌ useAdminUsers: Error fetching users:', error);
+        throw error;
+      }
     },
     staleTime: 2 * 60 * 1000, // 2 minutes - users don't change frequently
+    retry: false, // Don't retry on failure
   });
 }
 

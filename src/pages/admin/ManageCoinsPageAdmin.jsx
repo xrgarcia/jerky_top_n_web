@@ -8,7 +8,7 @@ import './AdminPages.css';
 function ManageCoinsPageAdmin() {
   const { data: coinsData, isLoading, error } = useFetchCoins();
   const { data: productsData } = useAdminProducts();
-  const { data: usersData } = useAdminUsers();
+  const { data: usersData, isLoading: isLoadingUsers, error: usersError } = useAdminUsers();
   const toggleCoinMutation = useToggleCoin();
   const deleteCoinMutation = useDeleteCoin();
   const createCoinMutation = useCreateCoin();
@@ -31,6 +31,9 @@ function ManageCoinsPageAdmin() {
   const coins = coinsData?.achievements || [];
   const products = productsData?.products || [];
   const users = usersData?.users || [];
+  
+  // Log user data for debugging
+  console.log('👥 Users data:', { usersData, isLoadingUsers, usersError, userCount: users.length });
 
   // Apply filters
   const filteredCoins = useMemo(() => {
