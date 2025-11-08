@@ -123,7 +123,9 @@ export function useAdminUsers() {
   return useQuery({
     queryKey: ['adminUsers'],
     queryFn: async () => {
-      const data = await api.get('/admin/users');
+      console.log('🔍 useAdminUsers: Fetching users...');
+      const data = await api.get('/admin/users?limit=20');
+      console.log('📋 useAdminUsers: Received data:', data);
       return {
         users: data.users || [],
         total: data.total || 0,
