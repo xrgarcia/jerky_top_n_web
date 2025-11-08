@@ -25,6 +25,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query for server state, Zustand for global state, Vite for tooling, and Socket.IO Client for real-time updates.
+- **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking (Socket.IO, DnD Kit, React Query, Sentry, Router). Main bundle reduced from 979 kB to 222 kB (77% reduction, gzipped: 294 kB → 70 kB). Individual route chunks load on-demand (1-30 kB each).
 - **Backend**: Node.js and Express.js, employing a repository pattern.
 - **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration for real-time query invalidation.
 - **Real-time Communication**: Socket.IO for achievement notifications with pending queue and multi-device support.
