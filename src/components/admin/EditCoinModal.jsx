@@ -64,7 +64,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   useEffect(() => {
     if (isOpen && collectionType === 'user_club' && allUsers.length === 0) {
       console.log('🔍 Fetching users for user_club...');
-      fetch('/api/admin/achievements/users')
+      fetch('/api/admin/users')
         .then(res => {
           console.log('📥 Users API response status:', res.status);
           return res.json();
