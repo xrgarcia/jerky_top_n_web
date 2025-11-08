@@ -26,6 +26,10 @@ const COLLECTION_TYPES = {
   // (e.g., 100 Timer Club, VIP members - admin controlled)
   USER_CLUB: 'user_club',
   
+  // User Coins: Single user achievements
+  // (personalized awards for specific individuals - admin controlled)
+  USER_COIN: 'user_coin',
+  
   // Hidden Collections: Secret achievements unlocked through discovery
   HIDDEN: 'hidden_collection',
   
@@ -42,6 +46,7 @@ const COLLECTION_TYPE_LABELS = {
   [COLLECTION_TYPES.STATIC]: 'Static Collection Coin',
   [COLLECTION_TYPES.FLAVOR_COIN]: 'Flavor Coin',
   [COLLECTION_TYPES.USER_CLUB]: 'User Club',
+  [COLLECTION_TYPES.USER_COIN]: 'User Coin',
   [COLLECTION_TYPES.HIDDEN]: 'Hidden Collection Coin',
   [COLLECTION_TYPES.LEGACY]: 'Legacy'
 };
