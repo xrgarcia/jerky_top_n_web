@@ -27,7 +27,7 @@ const upload = multer({
  */
 async function triggerAchievementRecalculation(achievementId, database, productsService = null) {
   const { users, achievements } = require('../../../shared/schema');
-  const { eq } = require('drizzle-orm');
+  const { eq, asc } = require('drizzle-orm');
   const { primaryDb } = require('../../db-primary');
   
   // Get the achievement
@@ -43,8 +43,8 @@ async function triggerAchievementRecalculation(achievementId, database, products
   const ach = achievement[0];
   console.log(`🔄 Background recalculation started: ${ach.name} (${ach.code})`);
   
-  // Get all users
-  const allUsers = await database.select({ id: users.id }).from(users);
+  // Get all users ordered by ID to ensure consistent processing
+  const allUsers = await database.select({ id: users.id }).from(users).orderBy(asc(users.id));
   console.log(`👥 Processing ${allUsers.length} users in background...`);
   
   // Get the CollectionManager
