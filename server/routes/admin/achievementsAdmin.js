@@ -155,22 +155,28 @@ module.exports = function createAdminRoutes(storage, db, productsService = null)
 
 /**
  * GET /api/admin/users
- * Get all users for admin user selection
+ * Get all users for admin user selection with pagination
+ * Query params: limit (default 1000), offset (default 0), search (optional)
  */
 router.get('/users', requireEmployeeAuth, async (req, res) => {
   try {
-    const { users } = require('../../shared/schema');
+    const CommunityService = require('../../services/CommunityService');
+    const communityService = new CommunityService(req.db);
     
-    const allUsers = await req.db.select({
-      id: users.id,
-      firstName: users.firstName,
-      lastName: users.lastName,
-      email: users.email,
-      displayName: users.displayName,
-      active: users.active
-    }).from(users);
+    const limit = parseInt(req.query.limit) || 1000;
+    const offset = parseInt(req.query.offset) || 0;
+    const search = req.query.search || '';
     
-    res.json({ success: true, users: allUsers });
+    const result = await communityService.getAllUsersForAdmin({ limit, offset, search });
+    
+    res.json({ 
+      success: true, 
+      users: result.users,
+      total: result.total,
+      hasMore: result.hasMore,
+      offset: result.offset,
+      limit: result.limit
+    });
   } catch (error) {
     console.error('Error fetching users for admin:', error);
     res.status(500).json({ error: 'Failed to fetch users' });

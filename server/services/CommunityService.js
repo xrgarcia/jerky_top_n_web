@@ -149,6 +149,83 @@ class CommunityService {
       displayName: this.formatDisplayName(user)
     };
   }
+
+  /**
+   * Get ALL users (including inactive) for admin purposes with pagination
+   * @param {Object} options - Query options
+   * @param {number} options.limit - Maximum number of users to return (default 100)
+   * @param {number} options.offset - Number of users to skip (default 0)
+   * @param {string} options.search - Optional search query for name or email
+   * @returns {Object} { users: Array, total: number, hasMore: boolean }
+   */
+  async getAllUsersForAdmin({ limit = 100, offset = 0, search = '' } = {}) {
+    const searchPattern = search ? `%${search.toLowerCase()}%` : null;
+    
+    // Get total count
+    const countQuery = searchPattern
+      ? sql`
+          SELECT COUNT(*) as total
+          FROM users u
+          WHERE 
+            LOWER(u.first_name) LIKE ${searchPattern}
+            OR LOWER(u.last_name) LIKE ${searchPattern}
+            OR LOWER(u.email) LIKE ${searchPattern}
+        `
+      : sql`SELECT COUNT(*) as total FROM users`;
+    
+    const countResult = await this.db.execute(countQuery);
+    const total = parseInt(countResult.rows[0]?.total || 0);
+    
+    // Get paginated users
+    const usersQuery = searchPattern
+      ? sql`
+          SELECT 
+            u.id,
+            u.first_name,
+            u.last_name,
+            u.display_name,
+            u.email,
+            u.active
+          FROM users u
+          WHERE 
+            LOWER(u.first_name) LIKE ${searchPattern}
+            OR LOWER(u.last_name) LIKE ${searchPattern}
+            OR LOWER(u.email) LIKE ${searchPattern}
+          ORDER BY u.id ASC
+          LIMIT ${limit} OFFSET ${offset}
+        `
+      : sql`
+          SELECT 
+            u.id,
+            u.first_name,
+            u.last_name,
+            u.display_name,
+            u.email,
+            u.active
+          FROM users u
+          ORDER BY u.id ASC
+          LIMIT ${limit} OFFSET ${offset}
+        `;
+    
+    const results = await this.db.execute(usersQuery);
+    
+    const users = results.rows.map(user => ({
+      id: user.id,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      displayName: user.display_name,
+      email: user.email,
+      active: user.active
+    }));
+    
+    return {
+      users,
+      total,
+      hasMore: (offset + limit) < total,
+      offset,
+      limit
+    };
+  }
 }
 
 module.exports = CommunityService;

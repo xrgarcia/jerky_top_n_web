@@ -60,9 +60,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   
-  // Fetch all users when modal opens
+  // Fetch all users only when user_club collection type is selected
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && collectionType === 'user_club' && allUsers.length === 0) {
       fetch('/api/admin/achievements/users')
         .then(res => res.json())
         .then(data => {
@@ -73,7 +73,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
           toast.error('Failed to load users');
         });
     }
-  }, [isOpen]);
+  }, [isOpen, collectionType]);
   
   // Initialize form when coin changes
   useEffect(() => {
