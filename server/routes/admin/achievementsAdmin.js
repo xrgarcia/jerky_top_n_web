@@ -82,6 +82,11 @@ async function triggerAchievementRecalculation(achievementId, database, products
           if (progress.tier) {
             result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
           }
+        } else if (ach.collectionType === 'user_coin') {
+          const progress = await collectionManager.calculateUserCoinProgress(user.id, ach);
+          if (progress.tier) {
+            result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
+          }
         }
         
         if (result) {
@@ -253,7 +258,8 @@ router.post('/achievements', requireEmployeeAuth, async (req, res) => {
         achievement.collectionType === 'static_collection' || 
         achievement.collectionType === 'custom_product_list' ||
         achievement.collectionType === 'dynamic_collection' ||
-        achievement.collectionType === 'user_club') {
+        achievement.collectionType === 'user_club' ||
+        achievement.collectionType === 'user_coin') {
       console.log(`🔄 Triggering background recalculation for ${achievement.collectionType}: ${achievement.code}`);
       
       // Run recalculation asynchronously (don't await - runs in background)
