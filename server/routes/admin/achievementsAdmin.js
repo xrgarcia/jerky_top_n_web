@@ -44,7 +44,8 @@ async function triggerAchievementRecalculation(achievementId, database, products
   console.log(`🔄 Background recalculation started: ${ach.name} (${ach.code})`);
   
   // Get all users ordered by ID to ensure consistent processing
-  const allUsers = await database.select({ id: users.id }).from(users).orderBy(asc(users.id));
+  // Use primaryDb instead of pooled database to ensure ORDER BY works correctly
+  const allUsers = await primaryDb.select({ id: users.id }).from(users).orderBy(asc(users.id));
   console.log(`👥 Processing ${allUsers.length} users in background...`);
   
   // Get the CollectionManager
