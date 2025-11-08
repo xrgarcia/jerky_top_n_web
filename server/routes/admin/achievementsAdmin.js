@@ -26,7 +26,7 @@ const upload = multer({
  * Awards achievements to users who already meet the requirements
  */
 async function triggerAchievementRecalculation(achievementId, database, productsService = null) {
-  const { users, achievements } = require('../../shared/schema');
+  const { users, achievements } = require('../../../shared/schema');
   const { eq } = require('drizzle-orm');
   const { primaryDb } = require('../../db-primary');
   
@@ -59,6 +59,8 @@ async function triggerAchievementRecalculation(achievementId, database, products
   // Process users in batches
   const BATCH_SIZE = 5;
   let awardedCount = 0;
+  let tierUpgradeCount = 0;
+  let errorCount = 0;
   
   for (let i = 0; i < allUsers.length; i += BATCH_SIZE) {
     const batch = allUsers.slice(i, i + BATCH_SIZE);
@@ -82,11 +84,17 @@ async function triggerAchievementRecalculation(achievementId, database, products
           }
         }
         
-        if (result && result.type === 'new') {
-          awardedCount++;
-          console.log(`   ✨ User ${user.id}: ${ach.name} awarded (${result.tier})`);
+        if (result) {
+          if (result.type === 'new') {
+            awardedCount++;
+            console.log(`   ✨ User ${user.id}: ${ach.name} awarded (${result.tier})`);
+          } else if (result.type === 'tier_upgrade') {
+            tierUpgradeCount++;
+            console.log(`   ⬆️ User ${user.id}: ${ach.name} tier upgrade (${result.tier})`);
+          }
         }
       } catch (error) {
+        errorCount++;
         console.error(`❌ Error processing user ${user.id}:`, error);
       }
     });
@@ -94,7 +102,7 @@ async function triggerAchievementRecalculation(achievementId, database, products
     await Promise.all(batchPromises);
   }
   
-  console.log(`✅ Background recalculation complete: ${awardedCount} newly awarded`);
+  console.log(`✅ Background recalculation complete: ${awardedCount} newly awarded, ${tierUpgradeCount} tier upgrades`);
   
   // Invalidate caches
   AchievementCache.getInstance().invalidate();
@@ -104,6 +112,13 @@ async function triggerAchievementRecalculation(achievementId, database, products
   const leaderboardCache = LeaderboardCache.getInstance();
   homeStatsCache.invalidate();
   leaderboardCache.invalidate(); // invalidate() with no params clears all
+  
+  return {
+    processed: allUsers.length,
+    newAwards: awardedCount,
+    tierUpgrades: tierUpgradeCount,
+    errors: errorCount
+  };
 }
 
 /**
@@ -310,19 +325,13 @@ router.post('/achievements/:id/recalculate', requireEmployeeAuth, async (req, re
     
     console.log(`🔄 Manual recalculation triggered for achievement ${achievementId}`);
     
-    // Trigger background recalculation (runs asynchronously)
-    triggerAchievementRecalculation(achievementId, req.db, productsService).catch(err => {
-      console.error(`❌ Recalculation failed for achievement ${achievementId}:`, err);
-    });
+    // Await recalculation to get actual stats
+    const stats = await triggerAchievementRecalculation(achievementId, req.db, productsService);
     
     res.json({ 
       success: true, 
-      message: 'Recalculation started in background',
-      stats: {
-        processed: 'calculating...',
-        newAwards: 'calculating...',
-        tierUpgrades: 'calculating...'
-      }
+      message: 'Recalculation completed',
+      stats
     });
   } catch (error) {
     console.error('Error triggering recalculation:', error);
