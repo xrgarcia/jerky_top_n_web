@@ -69,7 +69,7 @@ async function loadCoinDetail(achievementCode) {
     }
     
     coinData = data.achievement;
-    coinType = data.type; // 'collection', 'engagement', or 'user_club'
+    coinType = data.type; // 'collection', 'engagement', 'user_club', or 'user_coin'
     coinStats = data.stats;
     coinMetadata = data.metadata || {};
     
@@ -78,8 +78,8 @@ async function loadCoinDetail(achievementCode) {
       coinProgress = data.progress;
       coinProducts = [];
       coinMembers = [];
-    } else if (coinType === 'user_club') {
-      // User Club - has members
+    } else if (coinType === 'user_club' || coinType === 'user_coin') {
+      // User Club/Coin - has members (single or multiple)
       coinMembers = data.members || [];
       coinProducts = [];
       coinProgress = null;
@@ -154,8 +154,8 @@ function renderContent() {
       engagementContainer.style.display = 'block';
       renderEngagementProgress();
     }
-  } else if (coinType === 'user_club') {
-    // User Club: Show club members
+  } else if (coinType === 'user_club' || coinType === 'user_coin') {
+    // User Club/Coin: Show club members or single user
     if (statsContainer) statsContainer.style.display = 'none';
     if (engagementContainer) engagementContainer.style.display = 'none';
     if (productsContainer) {
@@ -607,21 +607,22 @@ function renderUserClub() {
   
   const isMember = coinStats.isMember || false;
   const memberCount = coinMembers.length;
+  const isUserCoin = coinType === 'user_coin';
   
   grid.innerHTML = `
     <div class="user-club-layout">
       <div class="user-club-hero">
         <div class="user-club-badge">
           <div class="user-club-icon">${coinData.icon}</div>
-          ${isMember ? '<div class="member-badge">✓ Member</div>' : '<div class="non-member-badge">Exclusive</div>'}
+          ${isMember ? '<div class="member-badge">✓ Awarded</div>' : '<div class="non-member-badge">Exclusive</div>'}
         </div>
         <div class="user-club-info">
           <h3 class="user-club-title">${coinData.name}</h3>
           <p class="user-club-description">${coinData.description}</p>
           <div class="user-club-stats">
             <div class="user-club-stat">
-              <span class="stat-icon">👥</span>
-              <span class="stat-value">${memberCount} ${memberCount === 1 ? 'Member' : 'Members'}</span>
+              <span class="stat-icon">${isUserCoin ? '🎖️' : '👥'}</span>
+              <span class="stat-value">${isUserCoin ? 'Personalized Award' : `${memberCount} ${memberCount === 1 ? 'Member' : 'Members'}`}</span>
             </div>
             ${isMember ? `
               <div class="user-club-stat">
@@ -634,7 +635,7 @@ function renderUserClub() {
       </div>
       
       <div class="user-club-members">
-        <h4 class="members-title">${isMember ? 'Club Members' : 'Exclusive Members'}</h4>
+        <h4 class="members-title">${isUserCoin ? (isMember ? 'Award Recipient' : 'Exclusive Award') : (isMember ? 'Club Members' : 'Exclusive Members')}</h4>
         <div class="members-grid">
           ${coinMembers.map(member => {
             const displayName = member.displayName || `${member.firstName || ''} ${member.lastName || ''}`.trim() || 'Member';
@@ -655,12 +656,12 @@ function renderUserClub() {
       
       ${!isMember ? `
         <div class="user-club-cta">
-          <p>This is an exclusive club. Membership is awarded by the team for special achievements and milestones.</p>
+          <p>${isUserCoin ? 'This is a personalized award given to one individual for exceptional achievements.' : 'This is an exclusive club. Membership is awarded by the team for special achievements and milestones.'}</p>
         </div>
       ` : `
         <div class="user-club-success">
           <div class="success-icon">🎉</div>
-          <p>Congratulations! You're a member of this exclusive club.</p>
+          <p>${isUserCoin ? 'Congratulations! You received this personalized award!' : "Congratulations! You're a member of this exclusive club."}</p>
         </div>
       `}
     </div>
