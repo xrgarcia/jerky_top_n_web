@@ -59,7 +59,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Product Detail Page**: Comprehensive product information including image, brand, animal type, primary/secondary flavors, pricing, ranking statistics, and product tags.
 - **Flavor Profile Pages**: Dynamic pages for each flavor type displaying all products with that flavor.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
-- **Community**: User discovery, search, profiles with ranking stats, top rankers widget.
+- **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage.
 - **Leaderboard**: Top 50 rankers with engagement scores and badges.
 - **User Profile**: "Flavors Ranked" section, public profiles with clickable flavor links, and clickable achievement coins.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
