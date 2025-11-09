@@ -156,7 +156,8 @@ class CollectionManager {
     
     console.log(`🎖️ [${coin.code}] CALC START - Checking if User ${userId} matches assigned user ${assignedUserId}`);
 
-    const isMatch = userId === assignedUserId;
+    // Normalize both IDs to strings for comparison (DB returns numbers, admin UI saves strings)
+    const isMatch = String(userId) === String(assignedUserId);
     const percentage = isMatch ? 100 : 0;
     const tier = isMatch ? 'complete' : null;
     
