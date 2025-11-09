@@ -99,6 +99,7 @@ function ProfilePage() {
 
       const response = await fetch('/api/profile/upload-image', {
         method: 'POST',
+        credentials: 'include',
         body: formData,
       });
 
@@ -150,7 +151,9 @@ function ProfilePage() {
       setHandleValidation({ checking: true, available: null, error: null });
       
       try {
-        const response = await fetch(`/api/profile/handle-availability?handle=${encodeURIComponent(value)}`);
+        const response = await fetch(`/api/profile/handle-availability?handle=${encodeURIComponent(value)}`, {
+          credentials: 'include',
+        });
         const data = await response.json();
         
         if (data.error) {
@@ -172,6 +175,7 @@ function ProfilePage() {
     try {
       const response = await fetch('/api/profile/generate-handle', {
         method: 'POST',
+        credentials: 'include',
       });
       
       if (!response.ok) {
@@ -214,6 +218,7 @@ function ProfilePage() {
 
       const response = await fetch('/api/profile', {
         method: 'PATCH',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -337,9 +342,9 @@ function ProfilePage() {
                     type="button"
                     className="generate-handle-btn"
                     onClick={handleGenerateHandle}
-                    title="Generate funny handle"
+                    title="Generate funny jerky.com-inspired handle"
                   >
-                    🎲
+                    Pick one for me
                   </button>
                 </div>
                 {handleValidation.checking && (
