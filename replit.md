@@ -62,7 +62,9 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
 - **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage.
 - **Leaderboard**: Top 50 rankers with engagement scores and badges. LeaderboardManager uses CommunityService for privacy-aware formatting (displayName, initials, avatarUrl) with null-safe fallbacks. Avatar display integrated across home page top rankers widget (40px) and full leaderboard page (50px) with consistent styling.
-- **User Profile**: "Flavors Ranked" section, public profiles with clickable flavor links, and clickable achievement coins.
+- **User Profile**: 
+  - **Private Profile Page** (`/profile`): Always displays "FirstName L." format regardless of privacy settings. Includes profile photo upload, handle management, and privacy controls. Privacy checkbox currently hidden for future rollout but infrastructure remains functional.
+  - **Public Profile Pages** (`/community/:userId`): Privacy-aware display using CommunityService with avatar support, ranking stats, clickable flavor links, and clickable achievement coins.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
 - **Coin Book Widget**: Collapsible achievement tracker on the Rank page.
 - **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates.

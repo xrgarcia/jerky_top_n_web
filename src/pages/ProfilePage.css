@@ -147,6 +147,11 @@
   margin-bottom: 20px;
 }
 
+/* Hide privacy checkbox for future rollout */
+.privacy-checkbox-hidden {
+  display: none !important;
+}
+
 .form-group label {
   display: block;
   margin-bottom: 6px;

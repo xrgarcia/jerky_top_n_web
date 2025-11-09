@@ -47,15 +47,31 @@ function ProfilePage() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  // Get display name based on privacy settings
+  // Get display name - always show "FirstName L." format on private profile
   const getDisplayName = () => {
     if (!user) return '';
     
-    if (user.hide_name_privacy && user.handle) {
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
+    
+    // If we have both first and last name, show "FirstName L."
+    if (firstName && lastName) {
+      const lastInitial = lastName.charAt(0);
+      return `${firstName} ${lastInitial}.`;
+    }
+    
+    // If only first name, show just first name
+    if (firstName) {
+      return firstName;
+    }
+    
+    // If we have a handle, show that
+    if (user.handle) {
       return `@${user.handle}`;
     }
     
-    return `${user.first_name || ''} ${user.last_name || ''}`.trim();
+    // Fallback to email prefix or "Profile"
+    return user.email?.split('@')[0] || 'Profile';
   };
 
   // Handle edit mode toggle
@@ -372,7 +388,7 @@ function ProfilePage() {
                 )}
               </div>
 
-              <div className="form-group">
+              <div className="form-group privacy-checkbox-hidden">
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
