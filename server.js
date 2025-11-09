@@ -938,15 +938,29 @@ app.get('/api/customer/status', async (req, res) => {
     const session = await storage.getSession(sessionId);
     
     if (session && session.customerData) {
-      // Get user from database to include role
+      // Get fresh user data from database to include profile updates
       const user = await storage.getUserById(session.userId);
+      
+      if (!user) {
+        // User was deleted from database - invalidate session
+        res.clearCookie('session_id', { path: '/' });
+        return res.json({ authenticated: false });
+      }
+      
+      // Merge stale session data with fresh profile fields from database
+      const customerData = {
+        ...session.customerData,
+        handle: user.handle,
+        hideNamePrivacy: user.hideNamePrivacy,
+        profileImageUrl: user.profileImageUrl,
+      };
       
       console.log(`✅ 90-day session validated for: ${session.customerData.displayName}`);
       return res.json({ 
         authenticated: true, 
-        customer: session.customerData,
+        customer: customerData,
         sessionId: session.id,
-        role: user?.role || 'user'
+        role: user.role || 'user'
       });
     } else {
       // Clear invalid cookie if it exists
