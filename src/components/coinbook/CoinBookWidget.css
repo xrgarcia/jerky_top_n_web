@@ -1,19 +1,19 @@
-/* CoinBookWidget - Wood-inspired, earth-tone coin book design */
+/* CoinBookWidget - US Quarter Coin Book Design */
 
 .coinbook-widget {
-  background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);
-  border: 3px solid #8B7355;
-  border-radius: 16px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
   box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    0 4px 12px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
   margin-bottom: 24px;
   overflow: visible;
   position: relative;
   width: 100%;
 }
 
-/* Enhanced Wood grain texture effect with horizontal grain lines */
+/* Subtle texture for depth */
 .coinbook-widget::before {
   content: '';
   position: absolute;
@@ -21,42 +21,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 115, 85, 0.03) 2px,
-      rgba(139, 115, 85, 0.03) 4px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent 0px,
-      rgba(139, 115, 85, 0.02) 20px,
-      transparent 40px,
-      rgba(139, 115, 85, 0.04) 60px,
-      transparent 80px
-    );
+  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
   pointer-events: none;
-  opacity: 0.6;
+  opacity: 0.3;
   border-radius: inherit;
 }
 
-/* Subtle wood knots and variation */
+/* Remove wood knots - not needed */
 .coinbook-widget::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    radial-gradient(ellipse 60px 40px at 20% 30%, rgba(139, 115, 85, 0.08), transparent),
-    radial-gradient(ellipse 50px 35px at 80% 70%, rgba(139, 115, 85, 0.06), transparent),
-    radial-gradient(ellipse 40px 30px at 50% 50%, rgba(139, 115, 85, 0.05), transparent);
-  pointer-events: none;
-  opacity: 0.4;
-  border-radius: inherit;
+  display: none;
 }
 
 /* Header */
@@ -65,8 +38,9 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background: linear-gradient(135deg, #8B7355 0%, #6D5A47 100%);
+  background: #0d0d0d;
   border: none;
+  border-bottom: 1px solid #333;
   padding: 16px 20px;
   cursor: pointer;
   transition: background 0.3s ease;
@@ -75,11 +49,11 @@
 }
 
 .coinbook-header:hover {
-  background: linear-gradient(135deg, #9A8265 0%, #7A6A57 100%);
+  background: #1a1a1a;
 }
 
 .coinbook-header:focus {
-  outline: 2px solid #D4A574;
+  outline: 2px solid #555;
   outline-offset: -2px;
 }
 
@@ -98,7 +72,7 @@
 }
 
 .chevron {
-  color: #D4A574;
+  color: #999;
   transition: transform 0.3s ease;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
 }
@@ -156,16 +130,16 @@
 /* Collapsed Milestone Preview */
 .collapsed-milestone-preview {
   padding: 20px;
-  background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  background: #1a1a1a;
+  border-top: 1px solid #333;
 }
 
 .collapsed-milestone-content {
-  background: #fff;
-  border: 2px solid #D4A574;
+  background: #2a2a2a;
+  border: 2px solid #444;
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .milestone-preview-label {
@@ -174,7 +148,7 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: #4a3a1a;
+  color: #ddd;
   margin-bottom: 10px;
 }
 
@@ -196,7 +170,7 @@
 
 .milestone-preview-status {
   font-size: 12px;
-  color: #4a3a1a;
+  color: #bbb;
   margin-top: 8px;
   font-weight: 600;
 }
@@ -204,7 +178,7 @@
 /* Content */
 .coinbook-content {
   padding: 20px;
-  background: linear-gradient(to bottom, #f5efe4 0%, #ebe4d8 100%);
+  background: #1a1a1a;
   animation: expandContent 0.3s ease;
   overflow: visible;
 }
@@ -222,12 +196,12 @@
 
 /* Milestone Section */
 .milestone-section {
-  background: #fff;
-  border: 2px solid #D4A574;
+  background: #2a2a2a;
+  border: 2px solid #444;
   border-radius: 12px;
   padding: 16px;
   margin-bottom: 20px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .milestone-label {
@@ -236,7 +210,7 @@
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
-  color: #4a3a1a;
+  color: #ddd;
   margin-bottom: 10px;
 }
 
@@ -259,23 +233,23 @@
 .progress-bar {
   width: 100%;
   height: 14px;
-  background: #e9e6d9;
+  background: #111;
   border-radius: 7px;
   overflow: hidden;
-  border: 1px solid #d4cfba;
+  border: 1px solid #333;
 }
 
 .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #8B7355 0%, #D4A574 100%);
+  background: linear-gradient(90deg, #555 0%, #777 100%);
   border-radius: 7px;
   transition: width 0.5s ease;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .milestone-status {
   font-size: 13px;
-  color: #4a3a1a;
+  color: #bbb;
   margin-top: 8px;
   font-weight: 600;
 }
@@ -289,7 +263,7 @@
 .achievements-label {
   font-size: 14px;
   font-weight: 700;
-  color: #4a3a1a;
+  color: #ddd;
   margin-bottom: 14px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -297,33 +271,36 @@
 
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 16px;
   overflow: visible;
 }
 
-/* Achievement Coins */
+/* Achievement Coins - Perfect Circles */
 .achievement-coin {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 14px 10px;
+  padding: 0;
   background: #fff;
-  border: 3px solid #d4cfba;
-  border-radius: 12px;
+  border: 3px solid #666;
+  border-radius: 50%;
   cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-  min-height: 120px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  min-height: 0;
 }
 
-/* Tier badge overlay in corner */
+/* Tier badge overlay at top center for circular coins */
 .tier-badge-overlay {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  font-size: 20px;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 18px;
   line-height: 1;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   z-index: 2;
@@ -331,13 +308,13 @@
 }
 
 .achievement-coin:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transform: scale(1.08);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .achievement-coin:focus {
-  outline: 2px solid #D4A574;
-  outline-offset: 2px;
+  outline: 2px solid #777;
+  outline-offset: 3px;
 }
 
 /* Earned coins - tier-based border colors */
@@ -373,45 +350,47 @@
   box-shadow: 0 2px 8px rgba(185, 242, 255, 0.4);
 }
 
-/* Locked coins */
+/* Locked coins - White circular inserts */
 .achievement-coin.locked {
-  background: #f5f5f5;
-  border-color: #ddd;
-  opacity: 0.7;
+  background: #fff;
+  border-color: #555;
+  opacity: 1;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .achievement-coin.locked:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), inset 0 2px 4px rgba(0, 0, 0, 0.15);
 }
 
 .coin-icon {
-  font-size: 48px;
-  margin-bottom: 8px;
+  font-size: 42px;
+  margin-bottom: 4px;
   filter: grayscale(0);
   line-height: 1;
 }
 
 .achievement-coin.locked .coin-icon {
-  filter: grayscale(1);
-  opacity: 0.5;
+  filter: grayscale(1) brightness(0.8);
+  opacity: 0.3;
 }
 
 .achievement-coin-name {
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 600;
   color: #333;
   text-align: center;
-  line-height: 1.4;
-  max-width: 100%;
+  line-height: 1.2;
+  max-width: 85%;
   overflow-wrap: break-word;
   word-break: normal;
   hyphens: auto;
+  padding: 0 4px;
 }
 
 .achievement-coin.locked .achievement-coin-name {
-  color: #999;
+  color: #4d4d4d;
 }
 
 .tier-emoji {
@@ -428,8 +407,8 @@
   transform: translateX(-50%);
   margin-bottom: 10px;
   padding: 12px 14px;
-  background: #4a3728;
-  color: #F5E6D3;
+  background: #2a2a2a;
+  color: #eee;
   border-radius: 8px;
   font-size: 12px;
   line-height: 1.5;
@@ -437,9 +416,9 @@
   width: 220px;
   text-align: center;
   z-index: 10000;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
   pointer-events: none;
-  border: 1px solid #5a4434;
+  border: 1px solid #444;
 }
 
 .achievement-tooltip::after {
@@ -449,7 +428,7 @@
   left: 50%;
   transform: translateX(-50%);
   border: 7px solid transparent;
-  border-top-color: #4a3728;
+  border-top-color: #2a2a2a;
 }
 
 .achievement-coin:hover .achievement-tooltip,
@@ -473,13 +452,13 @@
   display: block;
   margin-bottom: 6px;
   font-size: 13px;
-  color: #F5DEB3;
+  color: #FFD700;
 }
 
 .tooltip-description {
   display: block;
   font-size: 11px;
-  color: #E8D4A0;
+  color: #ccc;
   font-style: normal;
   margin-top: 4px;
 }
@@ -488,14 +467,14 @@
   display: block;
   margin-top: 6px;
   font-size: 12px;
-  color: #FFE4B3;
+  color: #FFD700;
   font-weight: 600;
 }
 
 .tooltip-tier-progress {
   display: block;
   font-size: 10px;
-  color: #D4C5A0;
+  color: #aaa;
   font-weight: normal;
   margin-top: 2px;
 }
@@ -504,7 +483,7 @@
   display: block;
   margin-top: 6px;
   font-size: 11px;
-  color: #C8A882;
+  color: #999;
   font-style: italic;
 }
 
@@ -512,9 +491,9 @@
   display: block;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid rgba(245, 230, 211, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   font-size: 11px;
-  color: #d4cfba;
+  color: #ddd;
   font-weight: 600;
 }
 
@@ -522,14 +501,14 @@
   display: block;
   margin-top: 4px;
   font-size: 10px;
-  color: #c4a962;
+  color: #bbb;
   font-weight: normal;
   font-style: italic;
 }
 
 /* Loading State */
 .coinbook-widget.loading {
-  background: linear-gradient(135deg, #f5efe4 0%, #ebe4d8 100%);
+  background: #1a1a1a;
   padding: 40px 20px;
   min-height: 200px;
   display: flex;
@@ -539,14 +518,14 @@
 
 .coinbook-loading {
   text-align: center;
-  color: #4a3a1a;
+  color: #ddd;
 }
 
 .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 4px solid #e9e6d9;
-  border-top-color: #8B7355;
+  border: 4px solid #333;
+  border-top-color: #999;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 16px;
@@ -598,41 +577,39 @@
   }
 
   .achievements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(95px, 1fr));
     gap: 12px;
   }
 
-  .achievement-coin {
-    padding: 12px 8px;
-    min-height: 110px;
-  }
-
   .coin-icon {
-    font-size: 42px;
+    font-size: 36px;
   }
 
   .achievement-coin-name {
-    font-size: 11px;
+    font-size: 9px;
+  }
+
+  .tier-badge-overlay {
+    font-size: 16px;
   }
 }
 
 @media (max-width: 480px) {
   .achievements-grid {
-    grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
     gap: 10px;
   }
 
-  .achievement-coin {
-    padding: 10px 6px;
-    min-height: 100px;
-  }
-
   .coin-icon {
-    font-size: 38px;
+    font-size: 32px;
   }
 
   .achievement-coin-name {
-    font-size: 10px;
+    font-size: 8px;
+  }
+
+  .tier-badge-overlay {
+    font-size: 14px;
   }
 }
 
