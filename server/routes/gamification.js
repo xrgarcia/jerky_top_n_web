@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const ProductRankingRepository = require('../repositories/ProductRankingRepository');
+const { formatAchievementPayload } = require('../utils/achievementIconFormatter');
 
 /**
  * Gamification API Routes
@@ -101,7 +102,10 @@ function createGamificationRoutes(services) {
       const achievements = await engagementManager.getAchievementsWithProgress(userId, completeStats);
       console.log(`✅ Achievements fetched successfully for user ${userId}: ${achievements.length} achievement(s)`);
 
-      res.json({ achievements, stats: completeStats });
+      // Format achievement icons for proper rendering
+      const formattedAchievements = achievements.map(a => formatAchievementPayload(a));
+
+      res.json({ achievements: formattedAchievements, stats: completeStats });
     } catch (error) {
       console.error('❌ Error fetching achievements:', error);
       console.error('Error message:', error.message);
@@ -452,7 +456,10 @@ function createGamificationRoutes(services) {
 
       console.log(`✅ Public achievements fetched for user ${targetUserId}: ${earnedAchievements.length} earned`);
 
-      res.json({ achievements: earnedAchievements });
+      // Format achievement icons for proper rendering
+      const formattedAchievements = earnedAchievements.map(a => formatAchievementPayload(a));
+
+      res.json({ achievements: formattedAchievements });
     } catch (error) {
       console.error('Error fetching user achievements:', error);
       res.status(500).json({ error: 'Failed to fetch user achievements' });

@@ -1,4 +1,5 @@
 const { sql } = require('drizzle-orm');
+const { formatAchievementPayload } = require('../utils/achievementIconFormatter');
 
 /**
  * HomeStatsService - Aggregates statistics for home page dashboard
@@ -171,14 +172,23 @@ class HomeStatsService {
       LIMIT ${limit}
     `);
 
-    return results.rows.map(row => ({
-      userId: row.user_id,
-      userName: this.communityService.formatDisplayName(row),
-      achievementName: row.achievement_name,
-      achievementIcon: row.achievement_icon,
-      achievementTier: row.achievement_tier,
-      earnedAt: new Date(row.earned_at).toISOString(),
-    }));
+    return results.rows.map(row => {
+      const achievement = formatAchievementPayload({
+        icon: row.achievement_icon,
+        name: row.achievement_name,
+        tier: row.achievement_tier
+      });
+      
+      return {
+        userId: row.user_id,
+        userName: this.communityService.formatDisplayName(row),
+        achievementName: achievement.name,
+        achievementIcon: achievement.icon,
+        iconType: achievement.iconType,
+        achievementTier: achievement.tier,
+        earnedAt: new Date(row.earned_at).toISOString(),
+      };
+    });
   }
 
   /**
