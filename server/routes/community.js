@@ -84,12 +84,11 @@ function createCommunityRoutes(services) {
         return res.status(404).json({ error: 'User not found' });
       }
 
-      // Format display name
-      const displayName = communityService.formatDisplayName({
-        firstName: user.firstName,
-        lastName: user.lastName,
-        displayName: user.displayName
-      });
+      // Format display name with privacy awareness
+      const displayName = communityService.formatDisplayName(user);
+      const avatarUrl = communityService.getAvatarUrl(user);
+      const initials = communityService.getUserInitials(user);
+      const hideNamePrivacy = user.hideNamePrivacy;
 
       // Get user stats
       const position = await leaderboardManager.getUserPosition(userId, 'all_time');
@@ -151,6 +150,9 @@ function createCommunityRoutes(services) {
         user: {
           id: userId,
           displayName,
+          avatarUrl,
+          initials,
+          handle: hideNamePrivacy ? null : user.handle, // Only show handle if privacy is off
           memberSince
         },
         stats: {

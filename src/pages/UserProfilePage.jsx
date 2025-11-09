@@ -74,7 +74,17 @@ function UserProfilePage() {
       <div className="user-profile-container">
         <div className="user-profile-header">
           <div className="user-profile-avatar">
-            {user.displayName?.charAt(0)}
+            {user.avatarUrl ? (
+              <img 
+                src={user.avatarUrl} 
+                alt={`${user.displayName}'s profile`} 
+                className="user-profile-avatar-image"
+              />
+            ) : (
+              <span className="user-profile-avatar-initials" aria-hidden="true">
+                {user.initials || user.displayName?.charAt(0)}
+              </span>
+            )}
           </div>
           <h1 className="user-profile-name">{user.displayName}</h1>
           <p className="user-profile-member-since">

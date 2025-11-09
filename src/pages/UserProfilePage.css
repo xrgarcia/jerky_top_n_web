@@ -30,6 +30,23 @@
   font-size: 3em;
   font-weight: 700;
   margin: 0 auto 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.user-profile-avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.user-profile-avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
 }
 
 .user-profile-name {
