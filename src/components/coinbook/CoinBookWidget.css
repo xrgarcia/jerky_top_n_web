@@ -12,6 +12,8 @@
   justify-content: center;
   cursor: pointer;
   transition: transform 0.2s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .achievements-grid {
@@ -21,4 +23,25 @@
   padding: 16px;
 }
 
+/* Hide text inside coins */
+.achievement-coin-name,
+.achievement-coin-description {
+  display: none;
+}
+
 /* END FEATURE 1 */
+
+/* FEATURE 2: EARNED DASHED BORDERS (CRITICAL TEST) */
+/* This is the test - can we get dashed borders without tier interference? */
+
+.achievement-coin.earned {
+  background: #ffffff;
+  border: 2px dashed #000000 !important;
+}
+
+.achievement-coin.locked {
+  background: #cccccc;
+  border: 2px solid #666666;
+}
+
+/* END FEATURE 2 */
