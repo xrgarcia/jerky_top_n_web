@@ -105,7 +105,6 @@ function createCommunityRoutes(services) {
 
       // Get earned achievements
       const achievements = await achievementRepo.getUserAchievements(userId);
-      console.log(`📊 [COMMUNITY PROFILE] User ${userId}: Found ${achievements.length} achievements`, achievements.map(a => ({ id: a.id, name: a.name, code: a.code, collectionType: a.collectionType })));
 
       // Get user's ALL ranked products with metadata for filtering
       const allRankingsResult = await db.execute(sql`

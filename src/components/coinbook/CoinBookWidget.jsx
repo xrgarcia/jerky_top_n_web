@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAchievements, useGamificationProgress } from '../../hooks/useCoinBook';
 import { useCoinBookWebSocket } from '../../hooks/useCoinBookWebSocket';
 import { TIER_EMOJIS } from '../../../shared/constants/tierEmojis.mjs';
+import { renderAchievementIcon } from '../../utils/iconUtils';
 import './CoinBookWidget.css';
 
 export default function CoinBookWidget({ defaultCollapsed = false }) {
@@ -54,19 +55,6 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
     return displayTier ? TIER_EMOJIS[displayTier] || '' : '';
   };
 
-  // Render achievement icon (emoji or image)
-  const renderIcon = (achievement, size = 48) => {
-    if (achievement.iconType === 'image') {
-      return (
-        <img 
-          src={achievement.icon} 
-          alt={achievement.name} 
-          style={{ width: `${size}px`, height: `${size}px`, objectFit: 'contain' }}
-        />
-      );
-    }
-    return achievement.icon;
-  };
 
   // Format progress text for ALL achievement types (universal)
   const getProgressText = (achievement) => {
@@ -161,7 +149,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
         <div className="header-stats">
           {lastAchievement && (
             <span className="stat-badge stat-achievement" title={lastAchievement.name}>
-              {renderIcon(lastAchievement, 20)}
+              {renderAchievementIcon(lastAchievement, 20)}
             </span>
           )}
           <span className="stat-badge">
@@ -182,15 +170,11 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
         <div className="collapsed-milestone-preview">
           <div className="collapsed-milestone-content">
             <div className="milestone-preview-label">
-              {nextMilestone.achievementIconType === 'image' ? (
-                <img 
-                  src={nextMilestone.achievementIcon} 
-                  alt={nextMilestone.achievementName}
-                  className="milestone-preview-icon-img"
-                />
-              ) : (
-                <span className="milestone-preview-icon">{nextMilestone.achievementIcon || '🎯'}</span>
-              )}
+              {renderAchievementIcon({
+                icon: nextMilestone.achievementIcon,
+                iconType: nextMilestone.achievementIconType,
+                name: nextMilestone.achievementName
+              }, 20)}
               <span className="milestone-preview-name">
                 {nextMilestone.achievementName || 'Next Milestone'}: {nextMilestone.label || nextMilestone.target + ' rankings'}
               </span>
@@ -283,7 +267,7 @@ export default function CoinBookWidget({ defaultCollapsed = false }) {
                       )}
                       
                       <span className="coin-icon">
-                        {renderIcon(achievement, 48)}
+                        {renderAchievementIcon(achievement, 48)}
                       </span>
                       <span className="achievement-coin-name">
                         {achievement.earned ? achievement.name : achievement.name || '???'}

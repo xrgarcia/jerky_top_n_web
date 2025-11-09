@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useUserProfile } from '../hooks/useCommunity';
 import { usePageView } from '../hooks/usePageView';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import './UserProfilePage.css';
 
 function UserProfilePage() {
@@ -191,15 +192,7 @@ function UserProfilePage() {
                   className="user-achievement-card"
                 >
                   <div className="user-achievement-icon">
-                    {achievement.iconType === 'image' ? (
-                      <img 
-                        src={achievement.icon} 
-                        alt={achievement.name}
-                        className="user-achievement-icon-img"
-                      />
-                    ) : (
-                      <span className="user-achievement-icon-emoji">{achievement.icon}</span>
-                    )}
+                    {renderAchievementIcon(achievement, 48)}
                   </div>
                   <div className="user-achievement-name">{achievement.name}</div>
                   {achievement.currentTier && (

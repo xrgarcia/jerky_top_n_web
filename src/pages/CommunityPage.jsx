@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import './CommunityPage.css';
 
 function CommunityPage() {
@@ -83,11 +84,7 @@ function CommunityPage() {
                   <div className="user-badges">
                     {user.badges.slice(0, 3).map((badge, i) => (
                       <span key={i} className="badge" title={badge.name}>
-                        {badge.iconType === 'image' ? (
-                          <img src={badge.icon} alt={badge.name} className="badge-img" />
-                        ) : (
-                          badge.icon
-                        )}
+                        {renderAchievementIcon(badge, 24)}
                       </span>
                     ))}
                   </div>

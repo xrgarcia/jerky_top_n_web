@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../utils/api';
 import { TIER_EMOJIS } from '../../shared/constants/tierEmojis.mjs';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import './CoinProfilePage.css';
 
 function CoinProfilePage() {
@@ -59,14 +60,6 @@ function CoinProfilePage() {
   const howToEarn = coinType.howToEarn || coinType.how_to_earn;
   const color = coinType.color;
 
-  // Render achievement icon (emoji or image)
-  const renderIcon = () => {
-    if (achievement.iconType === 'image') {
-      return <img src={achievement.icon} alt={achievement.name} className="coin-icon-image" />;
-    }
-    return <span className="coin-icon-emoji">{achievement.icon}</span>;
-  };
-
   return (
     <div className="coin-profile-page">
       <div className="coin-profile-container">
@@ -85,7 +78,7 @@ function CoinProfilePage() {
           </div>
           
           <div className="coin-icon-container">
-            {renderIcon()}
+            {renderAchievementIcon(achievement, 96)}
             {tierEmoji && <span className="tier-badge">{tierEmoji}</span>}
             {!isEarned && <div className="locked-badge">🔒</div>}
           </div>

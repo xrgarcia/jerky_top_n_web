@@ -4,6 +4,7 @@ import { useHeroStats, useHomeStats } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import './HomePage.css';
 
 function HomePage() {
@@ -79,11 +80,11 @@ function HomePage() {
                 ) : heroStats?.recentAchievements && heroStats.recentAchievements.length > 0 ? (
                   <div className="slider-item" key={currentAchievement}>
                     <span className="achievement-badge">
-                      {heroStats.recentAchievements[currentAchievement].achievementIcon?.startsWith('/') ? (
-                        <img src={heroStats.recentAchievements[currentAchievement].achievementIcon} alt="" style={{width: '28px', height: '28px'}} />
-                      ) : (
-                        heroStats.recentAchievements[currentAchievement].achievementIcon || '🎖️'
-                      )}
+                      {renderAchievementIcon({
+                        icon: heroStats.recentAchievements[currentAchievement].achievementIcon,
+                        iconType: heroStats.recentAchievements[currentAchievement].achievementIconType,
+                        name: heroStats.recentAchievements[currentAchievement].achievementName
+                      }, 28)}
                     </span>
                     <span className="achievement-text">
                       <span className="achievement-user">{heroStats.recentAchievements[currentAchievement].userName}</span>
