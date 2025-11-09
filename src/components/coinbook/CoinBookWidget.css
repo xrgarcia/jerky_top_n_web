@@ -408,6 +408,11 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
+/* Non-tiered earned achievements */
+.achievement-coin.earned.tier-none {
+  border-color: rgba(192, 192, 192, 0.8);
+}
+
 .achievement-coin.earned.tier-bronze {
   border-color: rgba(205, 127, 50, 0.8);
   box-shadow: 
