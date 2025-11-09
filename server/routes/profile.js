@@ -37,7 +37,7 @@ function createProfileRoutes(services) {
    */
   router.get('/', async (req, res) => {
     try {
-      const sessionId = req.cookies?.sid;
+      const sessionId = req.cookies.session_id;
       if (!sessionId) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
@@ -82,7 +82,7 @@ function createProfileRoutes(services) {
    */
   router.patch('/', async (req, res) => {
     try {
-      const sessionId = req.cookies?.sid;
+      const sessionId = req.cookies.session_id;
       if (!sessionId) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
@@ -221,7 +221,7 @@ function createProfileRoutes(services) {
    */
   router.post('/generate-handle', async (req, res) => {
     try {
-      const sessionId = req.cookies?.sid;
+      const sessionId = req.cookies.session_id;
       if (!sessionId) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
@@ -250,7 +250,7 @@ function createProfileRoutes(services) {
    */
   router.post('/upload-image', profileImageUpload.single('profileImage'), async (req, res) => {
     try {
-      const sessionId = req.cookies?.sid;
+      const sessionId = req.cookies.session_id;
       if (!sessionId) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
@@ -294,7 +294,7 @@ function createProfileRoutes(services) {
    */
   router.delete('/image', async (req, res) => {
     try {
-      const sessionId = req.cookies?.sid;
+      const sessionId = req.cookies.session_id;
       if (!sessionId) {
         return res.status(401).json({ error: 'Not authenticated' });
       }
