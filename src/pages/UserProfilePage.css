@@ -55,6 +55,13 @@
   margin-bottom: 10px;
 }
 
+.user-profile-real-name {
+  color: #555;
+  font-size: 1.3em;
+  font-weight: 500;
+  margin: 8px 0 15px 0;
+}
+
 .user-profile-member-since {
   font-size: 1em;
   color: #666;

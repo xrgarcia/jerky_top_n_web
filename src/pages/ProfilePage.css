@@ -113,6 +113,13 @@
   margin: 5px 0;
 }
 
+.profile-real-name {
+  color: #555;
+  font-size: 1.15em;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
 .profile-email {
   color: #666;
   font-size: 1.1em;

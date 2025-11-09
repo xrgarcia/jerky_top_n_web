@@ -87,6 +87,9 @@ function UserProfilePage() {
             )}
           </div>
           <h1 className="user-profile-name">{user.displayName}</h1>
+          {user.realName && (
+            <p className="user-profile-real-name">{user.realName}</p>
+          )}
           <p className="user-profile-member-since">
             Member since {formatDate(user.memberSince)}
           </p>

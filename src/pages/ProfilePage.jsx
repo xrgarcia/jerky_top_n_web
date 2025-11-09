@@ -47,8 +47,35 @@ function ProfilePage() {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
-  // Get display name - always show "FirstName L." format on private profile
+  // Get display name - show handle if available, otherwise "FirstName L."
   const getDisplayName = () => {
+    if (!user) return '';
+    
+    // Prefer handle for main display
+    if (user.handle) {
+      return `@${user.handle}`;
+    }
+    
+    const firstName = user.first_name || '';
+    const lastName = user.last_name || '';
+    
+    // If we have both first and last name, show "FirstName L."
+    if (firstName && lastName) {
+      const lastInitial = lastName.charAt(0);
+      return `${firstName} ${lastInitial}.`;
+    }
+    
+    // If only first name, show just first name
+    if (firstName) {
+      return firstName;
+    }
+    
+    // Fallback to email prefix or "Profile"
+    return user.email?.split('@')[0] || 'Profile';
+  };
+
+  // Get "FirstName L." format for subheading
+  const getNameWithInitial = () => {
     if (!user) return '';
     
     const firstName = user.first_name || '';
@@ -65,13 +92,7 @@ function ProfilePage() {
       return firstName;
     }
     
-    // If we have a handle, show that
-    if (user.handle) {
-      return `@${user.handle}`;
-    }
-    
-    // Fallback to email prefix or "Profile"
-    return user.email?.split('@')[0] || 'Profile';
+    return '';
   };
 
   // Handle edit mode toggle
@@ -342,8 +363,8 @@ function ProfilePage() {
           {!isEditing && (
             <>
               <h1>{getDisplayName()}</h1>
-              {user?.handle && !user?.hide_name_privacy && (
-                <p className="profile-handle">@{user.handle}</p>
+              {getNameWithInitial() && (
+                <p className="profile-real-name">{getNameWithInitial()}</p>
               )}
               <p className="profile-email">{user?.email}</p>
             </>

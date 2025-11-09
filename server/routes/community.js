@@ -89,6 +89,24 @@ function createCommunityRoutes(services) {
       const avatarUrl = communityService.getAvatarUrl(user);
       const initials = communityService.getUserInitials(user);
       const hideNamePrivacy = user.hideNamePrivacy;
+      
+      // Get "FirstName L." format (always shown, regardless of privacy)
+      const getNameWithInitial = (user) => {
+        const firstName = user.firstName || '';
+        const lastName = user.lastName || '';
+        
+        if (firstName && lastName) {
+          const lastInitial = lastName.charAt(0);
+          return `${firstName} ${lastInitial}.`;
+        }
+        
+        if (firstName) {
+          return firstName;
+        }
+        
+        return '';
+      };
+      const realName = getNameWithInitial(user);
 
       // Get user stats
       const position = await leaderboardManager.getUserPosition(userId, 'all_time');
@@ -150,6 +168,7 @@ function createCommunityRoutes(services) {
         user: {
           id: userId,
           displayName,
+          realName, // Always show "FirstName L." format
           avatarUrl,
           initials,
           handle: hideNamePrivacy ? null : user.handle, // Only show handle if privacy is off
