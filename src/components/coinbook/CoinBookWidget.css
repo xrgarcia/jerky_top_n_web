@@ -2,15 +2,21 @@
 
 .coinbook-widget {
   background: #1a1a1a;
-  border: 2px solid #333;
+  border: 3px solid #2a2a2a;
+  border-left: 8px solid #1a1a1a;
   border-radius: 12px;
   box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.4),
+    -4px 0 8px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    inset -2px 0 6px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
   margin-bottom: 24px;
   overflow: visible;
   position: relative;
   width: 100%;
+  transform: perspective(1200px) rotateY(-1deg);
+  transform-style: preserve-3d;
 }
 
 /* Subtle texture for depth */
@@ -21,15 +27,32 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.2) 100%);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.3) 0%, transparent 8%, transparent 100%);
   pointer-events: none;
-  opacity: 0.3;
   border-radius: inherit;
+  z-index: 0;
 }
 
-/* Remove wood knots - not needed */
+/* Book spine/page edge effect */
 .coinbook-widget::after {
-  display: none;
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: -6px;
+  bottom: 4px;
+  width: 6px;
+  background: linear-gradient(180deg, 
+    #0a0a0a 0%, 
+    #1a1a1a 20%, 
+    #151515 40%, 
+    #1a1a1a 60%, 
+    #151515 80%, 
+    #0a0a0a 100%);
+  border-radius: 4px 0 0 4px;
+  box-shadow: 
+    inset 1px 0 1px rgba(255, 255, 255, 0.1),
+    -2px 0 4px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
 }
 
 /* Header */
