@@ -42,11 +42,21 @@ async function triggerAchievementRecalculation(achievementId, database, products
   
   const ach = achievement[0];
   console.log(`🔄 Background recalculation started: ${ach.name} (${ach.code})`);
+  console.log(`📋 Achievement requirement:`, JSON.stringify(ach.requirement));
   
   // Get all users ordered by ID to ensure consistent processing
   // Use primaryDb instead of pooled database to ensure ORDER BY works correctly
   const allUsers = await primaryDb.select({ id: users.id }).from(users).orderBy(asc(users.id));
-  console.log(`👥 Processing ${allUsers.length} users in background...`);
+  
+  // Log summary to confirm query results
+  if (allUsers.length > 0) {
+    const firstId = allUsers[0].id;
+    const lastId = allUsers[allUsers.length - 1].id;
+    console.log(`👥 Query returned ${allUsers.length} users (IDs: ${firstId} to ${lastId})`);
+    console.log(`🔍 First 10 user IDs:`, allUsers.slice(0, 10).map(u => u.id));
+  } else {
+    console.log(`⚠️ No users found in database!`);
+  }
   
   // Get the CollectionManager
   const CollectionManager = require('../../services/CollectionManager');

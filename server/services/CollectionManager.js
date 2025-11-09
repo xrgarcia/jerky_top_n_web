@@ -154,14 +154,26 @@ class CollectionManager {
 
     const assignedUserId = requirement.userId;
     
-    console.log(`🎖️ [${coin.code}] CALC START - Checking if User ${userId} matches assigned user ${assignedUserId}`);
+    // Special diagnostic logging for user 3 to debug the issue
+    if (userId === 3 || String(userId) === '3') {
+      console.log(`🔬 [${coin.code}] DIAGNOSTIC - User 3 detected!`);
+      console.log(`   userId type: ${typeof userId}, value: ${userId}`);
+      console.log(`   assignedUserId type: ${typeof assignedUserId}, value: ${assignedUserId}`);
+      console.log(`   String(userId): "${String(userId)}"`);
+      console.log(`   String(assignedUserId): "${String(assignedUserId)}"`);
+      console.log(`   userId === assignedUserId: ${userId === assignedUserId}`);
+      console.log(`   String(userId) === String(assignedUserId): ${String(userId) === String(assignedUserId)}`);
+    }
 
     // Normalize both IDs to strings for comparison (DB returns numbers, admin UI saves strings)
     const isMatch = String(userId) === String(assignedUserId);
     const percentage = isMatch ? 100 : 0;
     const tier = isMatch ? 'complete' : null;
     
-    console.log(`✅ [${coin.code}] CALC RESULT - User ${userId}: ${isMatch ? 'MATCH' : 'NO MATCH'} → TIER: ${tier}`);
+    // Only log for user 3 or matches to reduce spam
+    if (userId === 3 || String(userId) === '3' || isMatch) {
+      console.log(`✅ [${coin.code}] RESULT - User ${userId}: ${isMatch ? '🎉 MATCH!' : 'NO MATCH'} → TIER: ${tier}`);
+    }
 
     return {
       percentage,
