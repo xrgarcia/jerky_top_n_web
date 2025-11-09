@@ -37,6 +37,10 @@ export default defineConfig({
         ws: true,
         changeOrigin: true,
       },
+      '/objects': {
+        target: 'http://localhost:5000',
+        changeOrigin: true,
+      },
     },
   },
 });

@@ -28,21 +28,20 @@ export const normalizeBase64 = (icon) => {
 
 /**
  * Converts relative asset paths to absolute URLs for proper loading in both dev and prod.
- * In development, prepends VITE_API_ORIGIN or falls back to window.location.origin.
- * In production, uses window.location.origin (same-origin serving).
- * Supports window.__API_ORIGIN override for legacy deployments.
+ * In production, paths are same-origin so we return them as-is.
+ * In development, Vite proxy handles /objects paths, so we also return as-is.
+ * Only prepends origin if explicitly needed for cross-origin scenarios.
  */
 export const getAssetUrl = (path) => {
   if (!path || typeof path !== 'string') return path;
   
+  // Already absolute URLs - return as-is
   if (path.startsWith('http') || path.startsWith('data:')) return path;
   
+  // Relative paths starting with / are same-origin in production
+  // and proxied in development, so return as-is
   if (path.startsWith('/')) {
-    const apiOrigin = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_API_ORIGIN) || 
-                      (typeof window !== 'undefined' && window.__API_ORIGIN) ||
-                      (typeof window !== 'undefined' && window.location.origin) ||
-                      '';
-    return `${apiOrigin}${path}`;
+    return path;
   }
   
   return path;

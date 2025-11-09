@@ -1,6 +1,5 @@
 (() => {
   // src/utils/iconUtilsCore.js
-  var import_meta = {};
   var isBareBase64 = (str) => {
     if (!str || typeof str !== "string") return false;
     if (str.startsWith("data:") || str.startsWith("http") || str.startsWith("/")) return false;
@@ -18,8 +17,7 @@
     if (!path || typeof path !== "string") return path;
     if (path.startsWith("http") || path.startsWith("data:")) return path;
     if (path.startsWith("/")) {
-      const apiOrigin = typeof import_meta !== "undefined" && void 0 || typeof window !== "undefined" && window.__API_ORIGIN || typeof window !== "undefined" && window.location.origin || "";
-      return `${apiOrigin}${path}`;
+      return path;
     }
     return path;
   };
