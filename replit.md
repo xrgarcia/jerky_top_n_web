@@ -25,6 +25,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query for server state, Zustand for global state, Vite for tooling, and Socket.IO Client for real-time updates.
+- **Auth Status Endpoint**: `/api/customer/status` fetches fresh user data from database on every request to ensure profile updates (handle, privacy settings, avatar) are immediately reflected in the frontend without requiring re-login.
 - **Icon Rendering**: Unified icon utility (`src/utils/iconUtils.jsx`) handles all achievement icon types (emoji, URL, base64) consistently across all components. The `getAssetUrl()` helper returns relative paths (starting with `/`) as-is for same-origin serving. Vite dev server proxies `/objects` requests to backend on port 5000. All achievement icons are stored in Replit Object Storage with leading-slash paths (e.g., `/objects/achievement-icons/xxx.png`).
 - **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking (Socket.IO, DnD Kit, React Query, Sentry, Router). Main bundle reduced from 979 kB to 222 kB (77% reduction, gzipped: 294 kB → 70 kB). Individual route chunks load on-demand (1-30 kB each).
 - **Backend**: Node.js and Express.js, employing a repository pattern.

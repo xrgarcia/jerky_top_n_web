@@ -951,8 +951,8 @@ app.get('/api/customer/status', async (req, res) => {
       const customerData = {
         ...session.customerData,
         handle: user.handle,
-        hideNamePrivacy: user.hideNamePrivacy,
-        profileImageUrl: user.profileImageUrl,
+        hide_name_privacy: user.hideNamePrivacy,
+        profile_image_url: user.profileImageUrl,
       };
       
       console.log(`✅ 90-day session validated for: ${session.customerData.displayName}`);
