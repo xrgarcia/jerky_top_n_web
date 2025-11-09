@@ -283,10 +283,15 @@ function renderAchievementsTable() {
       ? '<span class="status-badge active">Active</span>' 
       : '<span class="status-badge inactive">Inactive</span>';
     
-    // Display icon based on type
-    let iconDisplay = achievement.icon;
-    if (achievement.iconType === 'image') {
-      iconDisplay = `<img src="${achievement.icon}" alt="Icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+    // Display icon using standardized utility (handles emojis, base64, URLs)
+    let iconDisplay = achievement.icon || '🎖️';
+    if (window.LegacyIconUtils) {
+      iconDisplay = window.LegacyIconUtils.renderIconString(achievement.icon, achievement.iconType, 32);
+    } else {
+      console.error('[toolsAdmin] LegacyIconUtils not loaded - falling back to raw icon display');
+      if (achievement.iconType === 'image') {
+        iconDisplay = `<img src="${achievement.icon}" alt="Icon" style="width: 32px; height: 32px; object-fit: contain;">`;
+      }
     }
     
     return `
@@ -542,10 +547,14 @@ function populateAchievementForm(achievement) {
     document.getElementById('achievementIcon').required = false;
     document.getElementById('customIconPath').value = achievement.icon;
     
-    // Show preview of existing image
+    // Show preview of existing image using standardized utility
     const preview = document.getElementById('iconPreview');
     const previewImg = document.getElementById('iconPreviewImg');
-    previewImg.src = achievement.icon;
+    if (window.LegacyIconUtils) {
+      previewImg.src = window.LegacyIconUtils.getAssetUrl(achievement.icon);
+    } else {
+      previewImg.src = achievement.icon;
+    }
     preview.style.display = 'block';
   }
   

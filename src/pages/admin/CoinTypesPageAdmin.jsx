@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 import toast from 'react-hot-toast';
+import { renderAchievementIcon } from '../../utils/iconUtils';
 import './CoinTypesPageAdmin.css';
 
 function CoinTypesPageAdmin() {
@@ -91,7 +92,7 @@ function CoinTypesPageAdmin() {
                   <td>{displayName}</td>
                   <td className="tagline-cell">{config.tagline}</td>
                   <td className="icon-cell">
-                    <span style={{ fontSize: '24px' }}>{config.icon}</span>
+                    {renderAchievementIcon({ icon: config.icon }, 32)}
                   </td>
                   <td>
                     <div className="color-preview">
