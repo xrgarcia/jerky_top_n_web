@@ -36,6 +36,7 @@ const HomeStatsCache = require('../cache/HomeStatsCache');
 const createGamificationRoutes = require('../routes/gamification');
 const createCommunityRoutes = require('../routes/community');
 const createFlavorProfileCommunitiesRoutes = require('../routes/flavorProfileCommunities');
+const createProfileRoutes = require('../routes/profile');
 const WebSocketGateway = require('../websocket/gateway');
 
 const { primaryDb, ensureDatabaseReady } = require('../db-primary');
@@ -123,20 +124,24 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const gamificationRouter = createGamificationRoutes(services);
   const communityRouter = createCommunityRoutes(services);
   const flavorProfileCommunitiesRouter = createFlavorProfileCommunitiesRoutes(services);
+  const profileRouter = createProfileRoutes(services);
   
   // Apply rate limiting middleware if provided
   if (rateLimiters) {
     app.use('/api/gamification', rateLimiters.apiLimiter, gamificationRouter);
     app.use('/api/community', rateLimiters.apiLimiter, communityRouter);
     app.use('/api/flavor-profile-communities', rateLimiters.apiLimiter, flavorProfileCommunitiesRouter);
+    app.use('/api/profile', rateLimiters.apiLimiter, profileRouter);
   } else {
     app.use('/api/gamification', gamificationRouter);
     app.use('/api/community', communityRouter);
     app.use('/api/flavor-profile-communities', flavorProfileCommunitiesRouter);
+    app.use('/api/profile', profileRouter);
   }
   console.log('✅ Gamification routes registered at /api/gamification');
   console.log('✅ Community routes registered at /api/community');
   console.log('✅ Flavor profile communities routes registered at /api/flavor-profile-communities');
+  console.log('✅ Profile routes registered at /api/profile');
 
   const wsGateway = new WebSocketGateway(io, services);
   console.log('✅ WebSocket gateway initialized');

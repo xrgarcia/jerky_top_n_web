@@ -66,6 +66,23 @@ class ObjectStorageService {
     return `/objects/${objectPath}`;
   }
 
+  async uploadProfileImageFromBuffer(buffer, filename) {
+    // Generate unique filename with extension preserved
+    const objectId = crypto.randomUUID();
+    const ext = filename.split('.').pop();
+    const objectPath = `profile-images/${objectId}.${ext}`;
+
+    // Upload using official Replit client
+    const { ok, error } = await replitStorageClient.uploadFromBytes(objectPath, buffer);
+
+    if (!ok) {
+      throw new Error(`Failed to upload profile image: ${error}`);
+    }
+
+    // Return normalized path for database storage
+    return `/objects/${objectPath}`;
+  }
+
   async getObjectEntityFile(objectPath) {
     if (!objectPath.startsWith('/objects/')) {
       throw new ObjectNotFoundError();

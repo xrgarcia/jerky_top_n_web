@@ -18,9 +18,14 @@ const users = pgTable('users', {
   historyImportedAt: timestamp('history_imported_at'), // When bulk import completed
   lastOrderSyncedAt: timestamp('last_order_synced_at'), // Last time orders were synced
   importStatus: text('import_status').default('pending').notNull(), // 'pending', 'in_progress', 'completed', 'failed'
+  profileImageUrl: text('profile_image_url'), // URL to profile image in object storage
+  handle: text('handle'), // Unique username like "@smokybeef247" (stored without @)
+  hideNamePrivacy: boolean('hide_name_privacy').default(false).notNull(), // Hide real name and show handle instead
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
-});
+}, (table) => ({
+  handleUnique: unique().on(table.handle),
+}));
 
 // Customer sessions for persistent login state
 const sessions = pgTable('sessions', {
