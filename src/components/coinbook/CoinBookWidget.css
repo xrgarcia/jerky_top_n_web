@@ -1,8 +1,9 @@
 /* CoinBookWidget - Minimal CSS for Testing */
 /* Starting fresh to isolate dashed border issue */
+/* SCOPED under .coinbook-widget to override legacy global tier CSS */
 
 /* FEATURE 1: BASE STRUCTURE - Circle shape and grid layout */
-.achievement-coin {
+.coinbook-widget .achievement-coin {
   width: 90px;
   height: 90px;
   border-radius: 50%;
@@ -16,7 +17,7 @@
   overflow: hidden;
 }
 
-.achievements-grid {
+.coinbook-widget .achievements-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 16px;
@@ -24,24 +25,24 @@
 }
 
 /* Hide text inside coins */
-.achievement-coin-name,
-.achievement-coin-description {
+.coinbook-widget .achievement-coin-name,
+.coinbook-widget .achievement-coin-description {
   display: none;
 }
 
 /* END FEATURE 1 */
 
 /* FEATURE 2: EARNED DASHED BORDERS (CRITICAL TEST) */
-/* This is the test - can we get dashed borders without tier interference? */
+/* Scoped AND !important to override legacy .tier-* global CSS */
 
-.achievement-coin.earned {
-  background: #ffffff;
+.coinbook-widget .achievement-coin.earned {
+  background: #ffffff !important;
   border: 2px dashed #000000 !important;
 }
 
-.achievement-coin.locked {
-  background: #cccccc;
-  border: 2px solid #666666;
+.coinbook-widget .achievement-coin.locked {
+  background: #cccccc !important;
+  border: 2px solid #666666 !important;
 }
 
 /* END FEATURE 2 */
