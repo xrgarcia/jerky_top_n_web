@@ -23,11 +23,39 @@ export const getAssetUrl = (path) => {
   return path;
 };
 
+/**
+ * Detects if a string is a bare base64 string (without data URI prefix)
+ */
+const isBareBase64 = (str) => {
+  if (!str || typeof str !== 'string') return false;
+  if (str.startsWith('data:') || str.startsWith('http') || str.startsWith('/')) return false;
+  
+  // Base64 pattern: alphanumeric + / and + characters, with optional = padding
+  const base64Pattern = /^[A-Za-z0-9+/]+={0,2}$/;
+  const cleanStr = str.replace(/\s/g, '');
+  
+  // Only treat as base64 if it's reasonably long (> 20 chars) to avoid false positives with emojis
+  return cleanStr.length > 20 && base64Pattern.test(cleanStr);
+};
+
+/**
+ * Normalizes bare base64 strings to proper data URIs
+ */
+const normalizeBase64 = (icon) => {
+  if (isBareBase64(icon)) {
+    return `data:image/png;base64,${icon}`;
+  }
+  return icon;
+};
+
 export const renderAchievementIcon = (achievement, size = 48) => {
   if (!achievement) return null;
 
-  const icon = achievement.icon;
+  let icon = achievement.icon;
   const iconType = achievement.iconType;
+
+  // Defensive: Auto-detect and wrap bare base64 strings (fallback for legacy data)
+  icon = normalizeBase64(icon);
 
   if (iconType === 'image' && icon) {
     return (
