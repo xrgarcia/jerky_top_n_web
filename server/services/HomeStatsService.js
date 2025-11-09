@@ -184,7 +184,8 @@ class HomeStatsService {
         userName: this.communityService.formatDisplayName(row),
         achievementName: achievement.name,
         achievementIcon: achievement.icon,
-        iconType: achievement.iconType,
+        achievementIconType: achievement.iconType, // Frontend expects this field name
+        iconType: achievement.iconType, // Also keep this for consistency
         achievementTier: achievement.tier,
         earnedAt: new Date(row.earned_at).toISOString(),
       };
