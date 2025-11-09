@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useProgress, useStreaks } from '../hooks/useGamification';
 import { usePageView } from '../hooks/usePageView';
@@ -26,6 +26,16 @@ function ProfilePage() {
   
   // Track profile view (viewing own profile)
   usePageView('profile', { profileId: user?.id, profileName: `${user?.first_name} ${user?.last_name}` });
+
+  // Sync form state with user data when it loads or changes
+  useEffect(() => {
+    if (user) {
+      setProfileImageUrl(user.profile_image_url || null);
+      setProfileImagePreview(user.profile_image_url || null);
+      setHandle(user.handle || '');
+      setHideNamePrivacy(user.hide_name_privacy || false);
+    }
+  }, [user]);
 
   const isLoading = progressLoading || streaksLoading;
 
