@@ -10,6 +10,7 @@ import { useSocket } from '../hooks/useSocket';
 import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
 import { addBreadcrumb, captureError } from '../utils/sentry';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { RankingModal } from '../components/rank/RankingModal';
@@ -659,23 +660,9 @@ Continue?`;
                       <span className="commentary-message">{commentary.message}</span>
                       {commentary.nextMilestone && (
                         <div className="milestone-hint">
-                          {commentary.nextMilestone.iconType === 'image' ? (
-                            <img 
-                              src={commentary.nextMilestone.icon} 
-                              alt={commentary.nextMilestone.name}
-                              title={commentary.nextMilestone.name}
-                              className="milestone-icon-image"
-                              style={{ width: '20px', height: '20px', marginRight: '4px', verticalAlign: 'middle', cursor: 'help' }}
-                            />
-                          ) : (
-                            <span 
-                              className="milestone-icon-emoji" 
-                              title={commentary.nextMilestone.name}
-                              style={{ cursor: 'help' }}
-                            >
-                              {commentary.nextMilestone.icon}
-                            </span>
-                          )}{' '}
+                          <span style={{ marginRight: '4px', cursor: 'help' }} title={commentary.nextMilestone.name}>
+                            {renderAchievementIcon(commentary.nextMilestone, 20)}
+                          </span>
                           {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
                           {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
                         </div>

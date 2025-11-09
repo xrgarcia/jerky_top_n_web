@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useCallback, useRef, useEffect } from 'react';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import '../styles/toast.css';
 
 const ToastContext = createContext();
@@ -85,11 +86,7 @@ export function ToastProvider({ children }) {
             onClick={removeToast}
           >
             <div className="toast-icon">
-              {currentToast.iconType === 'image' ? (
-                <img src={currentToast.icon} alt="achievement" className="toast-icon-img" />
-              ) : (
-                <span className="toast-icon-emoji">{currentToast.icon}</span>
-              )}
+              {renderAchievementIcon({ icon: currentToast.icon, iconType: currentToast.iconType, name: currentToast.title || currentToast.message }, 36)}
             </div>
             <div className="toast-content">
               {currentToast.title && <div className="toast-title">{currentToast.title}</div>}

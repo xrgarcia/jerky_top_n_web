@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import { useFetchCoins, useToggleCoin, useDeleteCoin, useCreateCoin, useUpdateCoin, useRecalculateCoin, useAdminProducts, useAdminUsers } from '../../hooks/useAdminTools';
 import EditCoinModal from '../../components/admin/EditCoinModal';
 import ConfirmationModal from '../../components/admin/ConfirmationModal';
+import { renderAchievementIcon } from '../../utils/iconUtils';
 import './AdminPages.css';
 
 function ManageCoinsPageAdmin() {
@@ -309,11 +310,7 @@ function ManageCoinsPageAdmin() {
               {filteredCoins.map((coin) => (
                 <tr key={coin.id}>
                   <td className="coin-icon-cell">
-                    {coin.iconType === 'image' ? (
-                      <img src={coin.icon} alt={coin.name} className="coin-icon-img" />
-                    ) : (
-                      <span className="coin-icon-emoji">{coin.icon}</span>
-                    )}
+                    {renderAchievementIcon({ icon: coin.icon, iconType: coin.iconType, name: coin.name }, 40)}
                   </td>
                   <td>
                     <div className="coin-name">{coin.name}</div>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
+import { renderAchievementIcon } from '../../utils/iconUtils';
 import './EditCoinModal.css';
 
 function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProducts = [], allUsers = [] }) {
@@ -616,7 +617,9 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
                   
                   {iconPreview && (
                     <div className="image-preview-container">
-                      <img src={iconPreview} alt="Icon preview" className="icon-preview" />
+                      <div className="icon-preview">
+                        {renderAchievementIcon({ icon: iconType === 'image' ? (iconPreview || icon) : icon, iconType, name }, 64)}
+                      </div>
                       <button
                         className="remove-icon-btn"
                         onClick={handleRemoveIcon}

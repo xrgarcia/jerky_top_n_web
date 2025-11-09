@@ -1,5 +1,6 @@
 import React from 'react';
 import { useLeaderboard } from '../hooks/useCommunity';
+import { renderAchievementIcon } from '../utils/iconUtils';
 import './LeaderboardPage.css';
 
 function LeaderboardPage() {
@@ -53,11 +54,7 @@ function LeaderboardPage() {
                   <div className="badges">
                     {ranker.badges.slice(0, 5).map((badge, i) => (
                       <span key={i} className="badge" title={badge.name}>
-                        {badge.icon?.startsWith('/') ? (
-                          <img src={badge.icon} alt={badge.name} className="badge-icon" />
-                        ) : (
-                          badge.icon
-                        )}
+                        {renderAchievementIcon(badge, 24)}
                       </span>
                     ))}
                   </div>
