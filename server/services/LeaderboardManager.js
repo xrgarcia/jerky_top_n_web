@@ -102,12 +102,16 @@ class LeaderboardManager {
         ? this.communityService.getUserInitials(row)
         : row.first_name?.charAt(0) || '?';
       
+      const avatarUrl = this.communityService
+        ? this.communityService.getAvatarUrl(row)
+        : row.profile_image_url;
+      
       const hideNamePrivacy = row.hide_name_privacy;
       
       return {
         userId: row.user_id,
         displayName,
-        avatarUrl: row.profile_image_url,
+        avatarUrl,
         initials,
         uniqueProducts: row.unique_products,
         engagementScore: row.engagement_score,

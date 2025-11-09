@@ -60,7 +60,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Flavor Profile Pages**: Dynamic pages for each flavor type displaying all products with that flavor.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
 - **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage.
-- **Leaderboard**: Top 50 rankers with engagement scores and badges.
+- **Leaderboard**: Top 50 rankers with engagement scores and badges. LeaderboardManager uses CommunityService for privacy-aware formatting (displayName, initials, avatarUrl) with null-safe fallbacks. Avatar display integrated across home page top rankers widget (40px) and full leaderboard page (50px) with consistent styling.
 - **User Profile**: "Flavors Ranked" section, public profiles with clickable flavor links, and clickable achievement coins.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
 - **Coin Book Widget**: Collapsible achievement tracker on the Rank page.
