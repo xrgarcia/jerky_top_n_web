@@ -194,17 +194,23 @@
 .generate-handle-btn {
   position: absolute;
   right: 8px;
-  background: none;
+  background: linear-gradient(135deg, #8FBC8F, #6B8E23);
   border: none;
-  font-size: 1.5em;
+  font-size: 0.75em;
+  font-weight: 600;
+  color: white;
   cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  transition: background 0.2s ease;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(107, 142, 35, 0.2);
+  white-space: nowrap;
 }
 
 .generate-handle-btn:hover {
-  background: #f0f0f0;
+  background: linear-gradient(135deg, #6B8E23, #5a7a1d);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(107, 142, 35, 0.3);
 }
 
 .handle-feedback {

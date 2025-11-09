@@ -179,7 +179,8 @@ function ProfilePage() {
       });
       
       if (!response.ok) {
-        throw new Error('Failed to generate handle');
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `Server error: ${response.status}`);
       }
       
       const data = await response.json();
@@ -188,7 +189,7 @@ function ProfilePage() {
       toast.success(`New handle generated: @${data.handle}`);
     } catch (error) {
       console.error('Error generating handle:', error);
-      toast.error('Failed to generate handle');
+      toast.error(error.message || 'Failed to generate handle');
     }
   };
 
@@ -342,9 +343,9 @@ function ProfilePage() {
                     type="button"
                     className="generate-handle-btn"
                     onClick={handleGenerateHandle}
-                    title="Generate funny jerky.com-inspired handle"
+                    title="Generate a fun jerky.com-inspired handle"
                   >
-                    Pick one for me
+                    🎲 Pick one for me
                   </button>
                 </div>
                 {handleValidation.checking && (
