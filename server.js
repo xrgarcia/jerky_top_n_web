@@ -948,8 +948,12 @@ app.get('/api/customer/status', async (req, res) => {
       }
       
       // Merge stale session data with fresh profile fields from database
+      // Fresh DB values come LAST to ensure they override any stale session data
       const customerData = {
         ...session.customerData,
+        // Explicitly overwrite with fresh values from DB
+        firstName: user.firstName,
+        lastName: user.lastName,
         handle: user.handle,
         hide_name_privacy: user.hideNamePrivacy,
         profile_image_url: user.profileImageUrl,
