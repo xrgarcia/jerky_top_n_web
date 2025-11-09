@@ -492,7 +492,7 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
         code: isEditMode ? undefined : code, // Code only for create
         name,
         description,
-        icon: iconType === 'emoji' ? icon : iconPreview,
+        icon: iconType === 'emoji' ? icon : (iconFile ? null : iconPreview),
         iconType,
         points: parseInt(points),
         isActive,

@@ -322,13 +322,13 @@ export function useCreateCoin() {
         
         const uploadResult = await api.upload('/admin/achievements/upload-icon', formData);
         
-        if (uploadResult.tempUrl) {
+        if (uploadResult.objectPath) {
           // Confirm the upload
           const confirmResult = await api.post('/admin/achievements/confirm-icon-upload', {
-            tempUrl: uploadResult.tempUrl
+            uploadURL: uploadResult.objectPath
           });
           
-          finalCoinData.icon = confirmResult.iconUrl;
+          finalCoinData.icon = confirmResult.iconPath;
           finalCoinData.iconType = 'image';
         }
       }
@@ -372,13 +372,13 @@ export function useUpdateCoin() {
         
         const uploadResult = await api.upload('/admin/achievements/upload-icon', formData);
         
-        if (uploadResult.tempUrl) {
+        if (uploadResult.objectPath) {
           // Confirm the upload
           const confirmResult = await api.post('/admin/achievements/confirm-icon-upload', {
-            tempUrl: uploadResult.tempUrl
+            uploadURL: uploadResult.objectPath
           });
           
-          finalCoinData.icon = confirmResult.iconUrl;
+          finalCoinData.icon = confirmResult.iconPath;
           finalCoinData.iconType = 'image';
         }
       }
