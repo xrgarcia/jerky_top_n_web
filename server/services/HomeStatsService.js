@@ -321,13 +321,10 @@ class HomeStatsService {
       this.getCommunityStats(),
     ]);
 
-    const formattedTopRankers = topRankers.map(ranker => ({
-      ...ranker,
-      displayName: this.communityService.formatDisplayName(ranker)
-    }));
-
+    // LeaderboardManager now handles privacy-aware formatting (displayName, avatarUrl, initials)
+    // No need to re-format here
     const stats = {
-      topRankers: formattedTopRankers,
+      topRankers: topRankers,
       topProducts,
       recentlyRanked,
       trending,

@@ -213,6 +213,13 @@ function HomePage() {
                 homeStats.topRankers.slice(0, 5).map((ranker, index) => (
                   <div key={ranker.userId} className="dashboard-item ranker-item">
                     <div className={`rank-badge rank-${index + 1}`}>#{index + 1}</div>
+                    <div className="ranker-avatar-small">
+                      {ranker.avatarUrl ? (
+                        <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
+                      ) : (
+                        ranker.initials
+                      )}
+                    </div>
                     <div className="ranker-info">
                       <div className="ranker-name">{ranker.displayName}</div>
                       <div className="ranker-stats">{ranker.engagementScore} engagement{ranker.engagementScore !== 1 ? 's' : ''}</div>

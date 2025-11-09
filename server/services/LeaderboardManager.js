@@ -7,8 +7,9 @@ const LeaderboardCache = require('../cache/LeaderboardCache');
  * LeaderboardManager - Domain service for leaderboard calculations
  */
 class LeaderboardManager {
-  constructor(db) {
+  constructor(db, communityService = null) {
     this.db = db;
+    this.communityService = communityService;
     this.positionCache = LeaderboardPositionCache.getInstance();
     this.leaderboardCache = LeaderboardCache.getInstance();
   }
@@ -66,6 +67,9 @@ class LeaderboardManager {
         u.last_name,
         u.display_name,
         u.email,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
         COALESCE(COUNT(DISTINCT pr.shopify_product_id), 0)::int as unique_products,
         (COALESCE(${achievementsCount}, 0) 
          + COALESCE(${pageViewsCount}, 0) 
@@ -77,7 +81,7 @@ class LeaderboardManager {
       LEFT JOIN user_achievements ua ON ua.user_id = u.id
       LEFT JOIN user_activities act_s ON act_s.user_id = u.id AND act_s.activity_type = 'search'
       WHERE u.active = true
-      GROUP BY u.id
+      GROUP BY u.id, u.profile_image_url, u.handle, u.hide_name_privacy
       HAVING (COALESCE(${achievementsCount}, 0) 
               + COALESCE(${pageViewsCount}, 0) 
               + COALESCE(${rankingsCount}, 0) 
@@ -88,15 +92,33 @@ class LeaderboardManager {
 
     const results = await this.db.execute(sql.raw(query));
 
-    const leaderboard = results.rows.map(row => ({
-      userId: row.user_id,
-      firstName: row.first_name,
-      lastName: row.last_name,
-      displayName: row.display_name,
-      email: row.email,
-      uniqueProducts: row.unique_products,
-      engagementScore: row.engagement_score,
-    }));
+    const leaderboard = results.rows.map(row => {
+      // Use CommunityService for privacy-aware formatting if available
+      const displayName = this.communityService 
+        ? this.communityService.formatDisplayName(row)
+        : row.display_name;
+      
+      const initials = this.communityService
+        ? this.communityService.getUserInitials(row)
+        : row.first_name?.charAt(0) || '?';
+      
+      const hideNamePrivacy = row.hide_name_privacy;
+      
+      return {
+        userId: row.user_id,
+        displayName,
+        avatarUrl: row.profile_image_url,
+        initials,
+        uniqueProducts: row.unique_products,
+        engagementScore: row.engagement_score,
+        // Only include handle if privacy allows
+        handle: hideNamePrivacy ? null : row.handle,
+        // Keep raw fields for internal use
+        firstName: row.first_name,
+        lastName: row.last_name,
+        email: row.email,
+      };
+    });
 
     const leaderboardWithBadges = await Promise.all(
       leaderboard.map(async (entry, index) => {

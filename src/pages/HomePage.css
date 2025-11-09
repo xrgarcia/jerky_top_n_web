@@ -598,6 +598,32 @@
   color: #666;
 }
 
+/* Ranker Avatar */
+.ranker-avatar-small {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #6B8E23, #8FBC8F);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1em;
+  font-weight: 700;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ranker-avatar-small .avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
 /* Achievement Items */
 .achievement-item {
   background: linear-gradient(135deg, #fffaf0, #ffffff);

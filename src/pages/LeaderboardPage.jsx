@@ -29,8 +29,16 @@ function LeaderboardPage() {
                   )}
                 </div>
 
+                <div className="leaderboard-avatar">
+                  {ranker.avatarUrl ? (
+                    <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
+                  ) : (
+                    ranker.initials
+                  )}
+                </div>
+
                 <div className="ranker-info">
-                  <div className="ranker-name">{ranker.displayName || ranker.firstName}</div>
+                  <div className="ranker-name">{ranker.displayName}</div>
                   <div className="ranker-stats">
                     <span className="stat">
                       <span className="stat-icon">🥩</span>

@@ -65,7 +65,7 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   const communityService = new CommunityService(db);
   const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
   const streakManager = new StreakManager(streakRepo, activityLogRepo);
-  const leaderboardManager = new LeaderboardManager(db);
+  const leaderboardManager = new LeaderboardManager(db, communityService);
   const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
   const progressTracker = new ProgressTracker(achievementRepo, streakRepo, db, collectionManager, engagementManager);
   const pageViewService = new PageViewService(db, productViewRepo);
