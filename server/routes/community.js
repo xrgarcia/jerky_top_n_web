@@ -48,11 +48,12 @@ function createCommunityRoutes(services) {
 
           return {
             user_id: user.id,
-            display_name: user.displayName,
-            first_name: user.firstName || null,
-            last_name: user.lastName || null,
+            display_name: user.displayName, // Already privacy-filtered
+            avatar_url: user.avatarUrl, // Profile image or null
+            initials: user.initials, // Privacy-aware initials
             unique_products: user.rankedCount || 0,
             engagement_score: position?.engagementScore || 0,
+            handle: user.handle, // Only present if privacy allows
             badges
           };
         })

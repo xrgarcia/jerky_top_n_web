@@ -67,7 +67,11 @@ function CommunityPage() {
                 className="user-card"
               >
                 <div className="user-avatar">
-                  {user.display_name?.charAt(0)}
+                  {user.avatar_url ? (
+                    <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
+                  ) : (
+                    user.initials
+                  )}
                 </div>
                 <h3 className="user-name">{user.display_name}</h3>
                 <div className="user-stats">

@@ -11,14 +11,28 @@ class CommunityService {
   }
 
   /**
-   * Format user display name with last name truncated to first letter
-   * @param {Object} user - User object with firstName and lastName
-   * @returns {string} Formatted display name (e.g., "John D.")
+   * Format user display name respecting privacy settings
+   * @param {Object} user - User object with firstName, lastName, handle, hideNamePrivacy
+   * @returns {string} Formatted display name (e.g., "John D." or "@smokybeef247")
    */
   formatDisplayName(user) {
     if (!user) return 'User';
     
-    // If we have firstName and lastName, format as "FirstName L."
+    // Check if privacy is enabled
+    const hideNamePrivacy = user.hideNamePrivacy || user.hide_name_privacy;
+    const handle = user.handle;
+    
+    // If privacy enabled and handle exists, show handle
+    if (hideNamePrivacy && handle) {
+      return `@${handle}`;
+    }
+    
+    // If privacy enabled but no handle, anonymize
+    if (hideNamePrivacy) {
+      return 'Anonymous User';
+    }
+    
+    // Privacy disabled: show name as "FirstName L."
     if (user.firstName || user.first_name) {
       const firstName = user.firstName || user.first_name;
       const lastName = user.lastName || user.last_name;
@@ -28,6 +42,50 @@ class CommunityService {
     
     // Fallback to displayName or 'User'
     return user.displayName || user.display_name || 'User';
+  }
+
+  /**
+   * Get avatar URL for user
+   * @param {Object} user - User object with profile_image_url or profileImageUrl
+   * @returns {string|null} Avatar URL or null
+   */
+  getAvatarUrl(user) {
+    if (!user) return null;
+    return user.profile_image_url || user.profileImageUrl || null;
+  }
+
+  /**
+   * Get user initials for avatar fallback
+   * @param {Object} user - User object with firstName, lastName, hideNamePrivacy
+   * @returns {string} User initials (e.g., "JD") or "?" for anonymous
+   */
+  getUserInitials(user) {
+    if (!user) return '?';
+    
+    // If privacy enabled, don't show initials from real name
+    const hideNamePrivacy = user.hideNamePrivacy || user.hide_name_privacy;
+    if (hideNamePrivacy) {
+      const handle = user.handle;
+      // Use first 2 chars of handle if available
+      if (handle) {
+        return handle.substring(0, 2).toUpperCase();
+      }
+      return '?';
+    }
+    
+    // Privacy disabled: use real initials
+    const firstName = user.firstName || user.first_name || '';
+    const lastName = user.lastName || user.last_name || '';
+    
+    if (firstName && lastName) {
+      return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+    }
+    
+    if (firstName) {
+      return firstName.substring(0, 2).toUpperCase();
+    }
+    
+    return '?';
   }
 
   /**
@@ -43,24 +101,33 @@ class CommunityService {
         u.first_name,
         u.last_name,
         u.display_name,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
         COUNT(DISTINCT pr.shopify_product_id) AS ranked_count,
         COUNT(DISTINCT pr.ranking_list_id) AS ranking_lists_count
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
       WHERE u.active = true
-      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name, u.profile_image_url, u.handle, u.hide_name_privacy
       ORDER BY ranked_count DESC, u.id ASC
       LIMIT ${limit} OFFSET ${offset}
     `);
 
-    return results.rows.map(user => ({
-      id: user.id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      displayName: this.formatDisplayName(user),
-      rankedCount: parseInt(user.ranked_count) || 0,
-      rankingListsCount: parseInt(user.ranking_lists_count) || 0
-    }));
+    return results.rows.map(user => {
+      const hideNamePrivacy = user.hide_name_privacy;
+      
+      return {
+        id: user.id,
+        displayName: this.formatDisplayName(user),
+        avatarUrl: user.profile_image_url,
+        initials: this.getUserInitials(user),
+        rankedCount: parseInt(user.ranked_count) || 0,
+        rankingListsCount: parseInt(user.ranking_lists_count) || 0,
+        // Only include handle if user wants to show it (privacy off or privacy on with handle)
+        handle: hideNamePrivacy ? null : user.handle
+      };
+    });
   }
 
   /**
@@ -78,6 +145,9 @@ class CommunityService {
         u.first_name,
         u.last_name,
         u.display_name,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
         COUNT(DISTINCT pr.shopify_product_id) as ranked_count
       FROM users u
       LEFT JOIN product_rankings pr ON pr.user_id = u.id
@@ -87,25 +157,32 @@ class CommunityService {
           LOWER(u.first_name) LIKE ${searchPattern}
           OR LOWER(u.last_name) LIKE ${searchPattern}
           OR LOWER(u.display_name) LIKE ${searchPattern}
+          OR LOWER(u.handle) LIKE ${searchPattern}
           OR EXISTS (
             SELECT 1 FROM product_rankings pr2
             WHERE pr2.user_id = u.id
             AND LOWER(pr2.product_data->>'title') LIKE ${searchPattern}
           )
         )
-      GROUP BY u.id, u.first_name, u.last_name, u.display_name
+      GROUP BY u.id, u.first_name, u.last_name, u.display_name, u.profile_image_url, u.handle, u.hide_name_privacy
       ORDER BY ranked_count DESC
       LIMIT ${limit}
     `);
 
-    return results.rows.map(user => ({
-      id: user.id,
-      firstName: user.first_name,
-      lastName: user.last_name,
-      displayName: this.formatDisplayName(user),
-      rankedCount: parseInt(user.ranked_count) || 0,
-      type: 'user'
-    }));
+    return results.rows.map(user => {
+      const hideNamePrivacy = user.hide_name_privacy;
+      
+      return {
+        id: user.id,
+        displayName: this.formatDisplayName(user),
+        avatarUrl: user.profile_image_url,
+        initials: this.getUserInitials(user),
+        rankedCount: parseInt(user.ranked_count) || 0,
+        type: 'user',
+        // Only include handle if user wants to show it
+        handle: hideNamePrivacy ? null : user.handle
+      };
+    });
   }
 
   /**
@@ -136,7 +213,10 @@ class CommunityService {
         firstName: users.firstName,
         lastName: users.lastName,
         displayName: users.displayName,
-        email: users.email
+        email: users.email,
+        profileImageUrl: users.profileImageUrl,
+        handle: users.handle,
+        hideNamePrivacy: users.hideNamePrivacy
       })
       .from(users)
       .where(eq(users.id, userId))
@@ -144,9 +224,16 @@ class CommunityService {
 
     if (!user) return null;
 
+    const hideNamePrivacy = user.hideNamePrivacy;
+
     return {
-      ...user,
-      displayName: this.formatDisplayName(user)
+      id: user.id,
+      displayName: this.formatDisplayName(user),
+      avatarUrl: user.profileImageUrl,
+      initials: this.getUserInitials(user),
+      email: user.email,
+      // Only include handle if user wants to show it
+      handle: hideNamePrivacy ? null : user.handle
     };
   }
 
