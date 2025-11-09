@@ -25,7 +25,7 @@ function ProfilePage() {
   const fileInputRef = useRef(null);
   
   // Track profile view (viewing own profile)
-  usePageView('profile', { profileId: user?.id, profileName: `${user?.first_name} ${user?.last_name}` });
+  usePageView('profile', { profileId: user?.id, profileName: `${user?.firstName} ${user?.lastName}` });
 
   // Sync form state with user data when it loads or changes
   useEffect(() => {
@@ -42,8 +42,8 @@ function ProfilePage() {
   // Generate initials for avatar
   const getInitials = () => {
     if (!user) return '';
-    const firstName = user.first_name || '';
-    const lastName = user.last_name || '';
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
@@ -56,8 +56,8 @@ function ProfilePage() {
       return `@${user.handle}`;
     }
     
-    const firstName = user.first_name || '';
-    const lastName = user.last_name || '';
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
     
     // If we have both first and last name, show "FirstName L."
     if (firstName && lastName) {
@@ -78,8 +78,8 @@ function ProfilePage() {
   const getNameWithInitial = () => {
     if (!user) return '';
     
-    const firstName = user.first_name || '';
-    const lastName = user.last_name || '';
+    const firstName = user.firstName || '';
+    const lastName = user.lastName || '';
     
     // If we have both first and last name, show "FirstName L."
     if (firstName && lastName) {
