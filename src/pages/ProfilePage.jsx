@@ -373,6 +373,11 @@ function ProfilePage() {
           {/* Edit Form */}
           {isEditing && (
             <div className="profile-edit-form">
+              {/* Show name in edit mode */}
+              {getNameWithInitial() && (
+                <p className="profile-edit-name">{getNameWithInitial()}</p>
+              )}
+              
               <div className="form-group">
                 <label htmlFor="handle">Handle</label>
                 <div className="handle-input-wrapper">

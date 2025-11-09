@@ -150,6 +150,14 @@
   text-align: left;
 }
 
+.profile-edit-name {
+  text-align: center;
+  font-size: 1.3em;
+  font-weight: 500;
+  color: #555;
+  margin: 0 0 20px 0;
+}
+
 .form-group {
   margin-bottom: 20px;
 }
