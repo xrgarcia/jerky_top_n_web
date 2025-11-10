@@ -175,26 +175,6 @@ class EngagementManager {
    * @param {number} userId - User ID
    * @returns {Array} Achievements with progress (excludes hidden achievements not yet earned)
    */
-  /**
-   * Resolve icon URL - convert object storage paths to full public URLs
-   * @param {string} icon - Icon value (emoji, base64, or /objects/... path)
-   * @returns {string} Resolved icon URL
-   */
-  resolveIconUrl(icon) {
-    if (!icon) return icon;
-    
-    // If it starts with /objects/, it's an object storage path that needs the full URL
-    if (icon.startsWith('/objects/')) {
-      // Get the public domain from environment
-      const publicDomain = process.env.REPLIT_DEV_DOMAIN || process.env.REPL_SLUG;
-      if (publicDomain) {
-        return `https://${publicDomain}${icon}`;
-      }
-    }
-    
-    // For emojis and base64, return as-is
-    return icon;
-  }
 
   async getAchievementsWithProgress(userId, userStats) {
     const allAchievements = await this.achievementRepo.getAllAchievements();
@@ -208,7 +188,7 @@ class EngagementManager {
 
         return {
           ...achievement,
-          icon: this.resolveIconUrl(achievement.icon), // Resolve object storage paths to full URLs
+          icon: achievement.icon, // Use relative paths as-is - frontend handles them correctly
           earned: !!earned,
           earnedAt: earned?.earnedAt || null,
           progress,
