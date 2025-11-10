@@ -290,6 +290,328 @@ class HomeStatsService {
   }
 
   /**
+   * Get community activity stats (8 metrics showing live community pulse)
+   * Each metric includes count + specific recent example
+   */
+  async getCommunityActivityStats() {
+    const startOfTodayCentral = this.getStartOfTodayCentral();
+    const startOfWeek = new Date(startOfTodayCentral);
+    startOfWeek.setDate(startOfWeek.getDate() - 7);
+
+    const [
+      achievementsToday,
+      productsRankedCount,
+      productsRankedLatest,
+      flavorsRankedWeekCount,
+      flavorsRankedWeekLatest,
+      collectionMilestones,
+      flavorCommunities,
+      newRankers,
+      usersEarningPointsCount,
+      usersEarningPointsLatest,
+      hotProductsCount,
+      hotProductsLatest,
+    ] = await Promise.all([
+      // 1. Achievements unlocked today
+      this.db.execute(sql`
+        SELECT 
+          ua.user_id,
+          ua.earned_at,
+          a.name as achievement_name,
+          a.icon as achievement_icon,
+          a.tier as achievement_tier,
+          u.first_name,
+          u.last_name,
+          u.display_name
+        FROM user_achievements ua
+        JOIN achievements a ON ua.achievement_id = a.id
+        JOIN users u ON ua.user_id = u.id
+        WHERE ua.earned_at >= ${startOfTodayCentral}
+        ORDER BY ua.earned_at DESC
+      `),
+
+      // 2a. Products ranked this week (total count)
+      this.db.execute(sql`
+        SELECT COUNT(*) as count
+        FROM product_rankings
+        WHERE created_at >= ${startOfWeek}
+      `),
+
+      // 2b. Latest product ranked this week
+      this.db.execute(sql`
+        SELECT 
+          pr.shopify_product_id,
+          pr.product_data,
+          pr.ranking,
+          pr.created_at,
+          u.first_name,
+          u.last_name
+        FROM product_rankings pr
+        JOIN users u ON pr.user_id = u.id
+        WHERE pr.created_at >= ${startOfWeek}
+          AND pr.product_data IS NOT NULL
+        ORDER BY pr.created_at DESC
+        LIMIT 1
+      `),
+
+      // 3a. Unique flavors ranked this week (distinct count)
+      this.db.execute(sql`
+        SELECT COUNT(DISTINCT (product_data->>'primaryFlavor')) as count
+        FROM product_rankings
+        WHERE created_at >= ${startOfWeek}
+          AND product_data IS NOT NULL
+          AND (product_data->>'primaryFlavor') IS NOT NULL
+      `),
+
+      // 3b. Latest flavor ranked this week (exemplar)
+      this.db.execute(sql`
+        SELECT 
+          pr.product_data->>'primaryFlavor' as flavor,
+          pr.product_data,
+          pr.ranking,
+          pr.created_at as latest_at,
+          u.first_name,
+          u.last_name
+        FROM product_rankings pr
+        JOIN users u ON pr.user_id = u.id
+        WHERE pr.created_at >= ${startOfWeek}
+          AND pr.product_data IS NOT NULL
+          AND (pr.product_data->>'primaryFlavor') IS NOT NULL
+        ORDER BY pr.created_at DESC
+        LIMIT 1
+      `),
+
+      // 4. Collection milestones hit today
+      this.db.execute(sql`
+        SELECT 
+          ua.user_id,
+          ua.earned_at,
+          a.name as achievement_name,
+          a.icon as achievement_icon,
+          a.tier as achievement_tier,
+          u.first_name,
+          u.last_name,
+          u.display_name
+        FROM user_achievements ua
+        JOIN achievements a ON ua.achievement_id = a.id
+        JOIN users u ON ua.user_id = u.id
+        WHERE ua.earned_at >= ${startOfTodayCentral}
+          AND a.collection_type IN ('static_collection', 'dynamic_collection', 'flavor_coin')
+        ORDER BY ua.earned_at DESC
+      `),
+
+      // 5. Active flavor communities today
+      this.db.execute(sql`
+        SELECT 
+          fpc.flavor_profile,
+          COUNT(DISTINCT fpc.user_id) as active_users,
+          COUNT(*) as rankings_today
+        FROM flavor_profile_communities fpc
+        WHERE fpc.updated_at >= ${startOfTodayCentral}
+        GROUP BY fpc.flavor_profile
+        ORDER BY COUNT(*) DESC
+      `),
+
+      // 6. New rankers joined (users whose first ranking was today)
+      this.db.execute(sql`
+        WITH first_rankings AS (
+          SELECT 
+            user_id,
+            MIN(created_at) as first_ranking_at
+          FROM product_rankings
+          GROUP BY user_id
+        )
+        SELECT 
+          u.id as user_id,
+          u.first_name,
+          u.last_name,
+          u.display_name,
+          fr.first_ranking_at,
+          pr.shopify_product_id,
+          pr.product_data,
+          pr.ranking
+        FROM first_rankings fr
+        JOIN users u ON fr.user_id = u.id
+        JOIN product_rankings pr ON pr.user_id = fr.user_id AND pr.created_at = fr.first_ranking_at
+        WHERE fr.first_ranking_at >= ${startOfTodayCentral}
+        ORDER BY fr.first_ranking_at DESC
+      `),
+
+      // 7a. Users earning points today (count)
+      this.db.execute(sql`
+        SELECT COUNT(DISTINCT user_id) as count
+        FROM user_activities
+        WHERE created_at >= ${startOfTodayCentral}
+          AND user_id IS NOT NULL
+      `),
+
+      // 7b. Latest user earning points today (exemplar)
+      this.db.execute(sql`
+        SELECT 
+          ua.user_id,
+          ua.created_at,
+          u.first_name,
+          u.last_name,
+          u.display_name,
+          ua.activity_type
+        FROM user_activities ua
+        JOIN users u ON ua.user_id = u.id
+        WHERE ua.created_at >= ${startOfTodayCentral}
+          AND ua.user_id IS NOT NULL
+        ORDER BY ua.created_at DESC
+        LIMIT 1
+      `),
+
+      // 8a. Hot products count (products ranked 3+ times today)
+      this.db.execute(sql`
+        SELECT COUNT(*) as count
+        FROM (
+          SELECT shopify_product_id
+          FROM product_rankings
+          WHERE created_at >= ${startOfTodayCentral}
+            AND product_data IS NOT NULL
+          GROUP BY shopify_product_id
+          HAVING COUNT(*) >= 3
+        ) hot_products
+      `),
+
+      // 8b. Hottest product (exemplar with actual latest ranking event)
+      this.db.execute(sql`
+        WITH hot_products AS (
+          SELECT 
+            shopify_product_id,
+            COUNT(*) as ranking_count
+          FROM product_rankings
+          WHERE created_at >= ${startOfTodayCentral}
+            AND product_data IS NOT NULL
+          GROUP BY shopify_product_id
+          HAVING COUNT(*) >= 3
+          ORDER BY COUNT(*) DESC
+          LIMIT 1
+        ),
+        latest_ranking AS (
+          SELECT 
+            pr.shopify_product_id,
+            pr.product_data,
+            pr.ranking,
+            pr.created_at AS latest_at,
+            pr.user_id,
+            u.first_name,
+            u.last_name,
+            hp.ranking_count
+          FROM product_rankings pr
+          JOIN hot_products hp ON pr.shopify_product_id = hp.shopify_product_id
+          JOIN users u ON pr.user_id = u.id
+          WHERE pr.created_at >= ${startOfTodayCentral}
+          ORDER BY pr.created_at DESC
+          LIMIT 1
+        )
+        SELECT * FROM latest_ranking
+      `),
+    ]);
+
+    // Format achievements today
+    const achievementsTodayData = achievementsToday.rows.map(row => {
+      const achievement = formatAchievementPayload({
+        icon: row.achievement_icon,
+        name: row.achievement_name,
+        tier: row.achievement_tier
+      });
+      return {
+        userId: row.user_id,
+        userName: this.communityService.formatDisplayName(row),
+        achievementName: achievement.name,
+        achievementIcon: achievement.icon,
+        achievementIconType: achievement.iconType,
+        earnedAt: new Date(row.earned_at).toISOString(),
+      };
+    });
+
+    // Format collection milestones
+    const collectionMilestonesData = collectionMilestones.rows.map(row => {
+      const achievement = formatAchievementPayload({
+        icon: row.achievement_icon,
+        name: row.achievement_name,
+        tier: row.achievement_tier
+      });
+      return {
+        userId: row.user_id,
+        userName: this.communityService.formatDisplayName(row),
+        achievementName: achievement.name,
+        achievementIcon: achievement.icon,
+        achievementIconType: achievement.iconType,
+        earnedAt: new Date(row.earned_at).toISOString(),
+      };
+    });
+
+    return {
+      achievementsToday: {
+        count: achievementsTodayData.length,
+        latest: achievementsTodayData[0] || null,
+      },
+      productsRanked: {
+        count: parseInt(productsRankedCount.rows[0]?.count || 0),
+        latest: productsRankedLatest.rows[0] ? {
+          productData: productsRankedLatest.rows[0].product_data,
+          ranking: parseInt(productsRankedLatest.rows[0].ranking),
+          rankedBy: `${productsRankedLatest.rows[0].first_name} ${productsRankedLatest.rows[0].last_name?.charAt(0)}.`,
+          rankedAt: new Date(productsRankedLatest.rows[0].created_at).toISOString(),
+        } : null,
+      },
+      flavorsRankedWeek: {
+        count: parseInt(flavorsRankedWeekCount.rows[0]?.count || 0),
+        latest: flavorsRankedWeekLatest.rows[0] ? {
+          flavor: flavorsRankedWeekLatest.rows[0].flavor,
+          productData: flavorsRankedWeekLatest.rows[0].product_data,
+          ranking: parseInt(flavorsRankedWeekLatest.rows[0].ranking),
+          rankedBy: `${flavorsRankedWeekLatest.rows[0].first_name} ${flavorsRankedWeekLatest.rows[0].last_name?.charAt(0)}.`,
+          rankedAt: new Date(flavorsRankedWeekLatest.rows[0].latest_at).toISOString(),
+        } : null,
+      },
+      collectionMilestones: {
+        count: collectionMilestonesData.length,
+        latest: collectionMilestonesData[0] || null,
+      },
+      flavorCommunities: {
+        count: flavorCommunities.rows.length,
+        mostActive: flavorCommunities.rows[0] ? {
+          flavorProfile: flavorCommunities.rows[0].flavor_profile,
+          activeUsers: parseInt(flavorCommunities.rows[0].active_users),
+          rankingsToday: parseInt(flavorCommunities.rows[0].rankings_today),
+        } : null,
+      },
+      newRankers: {
+        count: newRankers.rows.length,
+        latest: newRankers.rows[0] ? {
+          userId: newRankers.rows[0].user_id,
+          userName: this.communityService.formatDisplayName(newRankers.rows[0]),
+          productData: newRankers.rows[0].product_data,
+          ranking: parseInt(newRankers.rows[0].ranking),
+          joinedAt: new Date(newRankers.rows[0].first_ranking_at).toISOString(),
+        } : null,
+      },
+      usersEarningPoints: {
+        count: parseInt(usersEarningPointsCount.rows[0]?.count || 0),
+        latest: usersEarningPointsLatest.rows[0] ? {
+          userId: usersEarningPointsLatest.rows[0].user_id,
+          userName: this.communityService.formatDisplayName(usersEarningPointsLatest.rows[0]),
+          activityType: usersEarningPointsLatest.rows[0].activity_type,
+          activityAt: new Date(usersEarningPointsLatest.rows[0].created_at).toISOString(),
+        } : null,
+      },
+      hotProducts: {
+        count: parseInt(hotProductsCount.rows[0]?.count || 0),
+        latest: hotProductsLatest.rows[0] ? {
+          productData: hotProductsLatest.rows[0].product_data,
+          rankingCount: parseInt(hotProductsLatest.rows[0].ranking_count),
+          rankedBy: `${hotProductsLatest.rows[0].first_name} ${hotProductsLatest.rows[0].last_name?.charAt(0)}.`,
+          rankedAt: new Date(hotProductsLatest.rows[0].latest_at).toISOString(),
+        } : null,
+      },
+    };
+  }
+
+  /**
    * Get all home page stats in one call
    * Uses cache to avoid expensive repeated queries
    */
@@ -311,6 +633,7 @@ class HomeStatsService {
       debated,
       recentAchievements,
       communityStats,
+      activityStats,
     ] = await Promise.all([
       this.getTopRankers(5),
       this.getTopProductsByAvgRank(5),
@@ -319,6 +642,7 @@ class HomeStatsService {
       this.getMostDebatedProducts(5),
       this.getRecentAchievements(5),
       this.getCommunityStats(),
+      this.getCommunityActivityStats(),
     ]);
 
     // LeaderboardManager now handles privacy-aware formatting (displayName, avatarUrl, initials)
@@ -331,6 +655,7 @@ class HomeStatsService {
       debated,
       recentAchievements,
       communityStats,
+      activityStats,
     };
 
     // Store in cache
