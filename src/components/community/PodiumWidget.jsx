@@ -33,7 +33,7 @@ function PodiumWidget({ rankers, isLoading }) {
 
   return (
     <div className="podium-widget">
-      <h2 className="podium-title">🏆 Top {displayedRankers.length} Rankers</h2>
+      <h2 className="podium-title">Top {displayedRankers.length} Rankers</h2>
       <div className="podium-stage">
         {displayedRankers.map((ranker, index) => (
           <Link

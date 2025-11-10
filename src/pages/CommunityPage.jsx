@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
-import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import PodiumWidget from '../components/community/PodiumWidget';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './CommunityPage.css';
@@ -18,11 +17,22 @@ function CommunityPage() {
     <div className="community-page">
       <div className="community-container">
         <div className="community-header">
-          <h1>👥 Community</h1>
-          <PersonalizedGuidance pageContext="community" />
+          <h1>Community</h1>
         </div>
 
         <PodiumWidget rankers={top5} isLoading={loadingTop} />
+
+        <div className="community-description">
+          <p className="community-intro">
+            Welcome to the heart of jerky.com—where flavor fanatics unite to discover, rank, and celebrate the best jerky in the game! 
+            Every product you rank fuels your journey from <strong>Curious Newbie</strong> to <strong>Flavor Legend</strong>, unlocking achievements, 
+            climbing the leaderboard, and earning your place among the elite.
+          </p>
+          <p className="community-mission">
+            This isn't just about snacking—it's about building your collection, finding your flavor soulmates, 
+            and proving you've got what it takes to be a top ranker. So dive in, start ranking, and let's see if you can make it to the podium! 🥩
+          </p>
+        </div>
 
         <div className="search-bar">
           <input
