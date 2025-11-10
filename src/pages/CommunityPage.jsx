@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
+import PodiumWidget from '../components/community/PodiumWidget';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './CommunityPage.css';
 
@@ -21,33 +22,7 @@ function CommunityPage() {
           <PersonalizedGuidance pageContext="community" />
         </div>
 
-        {!loadingTop && top5.length > 0 && (
-          <div className="top-rankers-widget">
-            <h2>🏆 Top 5 Rankers</h2>
-            <div className="top-rankers-list">
-              {top5.map((ranker, index) => (
-                <Link 
-                  key={ranker.userId} 
-                  to={`/community/${ranker.userId}`}
-                  className="top-ranker-item"
-                >
-                  <div className="top-ranker-position">#{index + 1}</div>
-                  <div className="avatar avatar-medium">
-                    {ranker.avatarUrl ? (
-                      <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
-                    ) : (
-                      <div className="avatar-initials">{ranker.initials || ranker.displayName?.charAt(0)}</div>
-                    )}
-                  </div>
-                  <div className="top-ranker-info">
-                    <div className="top-ranker-name">{ranker.displayName}</div>
-                    <div className="top-ranker-score">{ranker.engagementScore} pts</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
-        )}
+        <PodiumWidget rankers={top5} isLoading={loadingTop} />
 
         <div className="search-bar">
           <input
