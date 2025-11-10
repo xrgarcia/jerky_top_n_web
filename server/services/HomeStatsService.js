@@ -403,12 +403,12 @@ class HomeStatsService {
       // 5. Active flavor communities today
       this.db.execute(sql`
         SELECT 
-          fpc.flavor_profile,
-          COUNT(DISTINCT fpc.user_id) as active_users,
+          ufpc.flavor_profile,
+          COUNT(DISTINCT ufpc.user_id) as active_users,
           COUNT(*) as rankings_today
-        FROM flavor_profile_communities fpc
-        WHERE fpc.updated_at >= ${startOfTodayCentral}
-        GROUP BY fpc.flavor_profile
+        FROM user_flavor_profile_communities ufpc
+        WHERE ufpc.updated_at >= ${startOfTodayCentral}
+        GROUP BY ufpc.flavor_profile
         ORDER BY COUNT(*) DESC
       `),
 
@@ -477,16 +477,23 @@ class HomeStatsService {
 
       // 8b. Hottest product (exemplar with actual latest ranking event)
       this.db.execute(sql`
-        WITH hot_products AS (
+        WITH product_ranking_stats AS (
           SELECT 
             shopify_product_id,
-            COUNT(*) as ranking_count
+            COUNT(*) as ranking_count,
+            MAX(created_at) as latest_ranking_at
           FROM product_rankings
           WHERE created_at >= ${startOfTodayCentral}
             AND product_data IS NOT NULL
           GROUP BY shopify_product_id
           HAVING COUNT(*) >= 3
-          ORDER BY COUNT(*) DESC
+        ),
+        hottest_product AS (
+          SELECT 
+            shopify_product_id,
+            ranking_count
+          FROM product_ranking_stats
+          ORDER BY ranking_count DESC, latest_ranking_at DESC
           LIMIT 1
         ),
         latest_ranking AS (
@@ -500,7 +507,7 @@ class HomeStatsService {
             u.last_name,
             hp.ranking_count
           FROM product_rankings pr
-          JOIN hot_products hp ON pr.shopify_product_id = hp.shopify_product_id
+          JOIN hottest_product hp ON pr.shopify_product_id = hp.shopify_product_id
           JOIN users u ON pr.user_id = u.id
           WHERE pr.created_at >= ${startOfTodayCentral}
           ORDER BY pr.created_at DESC
