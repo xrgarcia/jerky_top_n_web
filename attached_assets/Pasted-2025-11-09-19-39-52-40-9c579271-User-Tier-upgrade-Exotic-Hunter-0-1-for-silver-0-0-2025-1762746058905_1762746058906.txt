@@ -1,0 +1,147 @@
+2025-11-09 19:39:52.40
+9c579271
+User
+🎯 Tier upgrade: Exotic Hunter - 0/1 for silver (0.0%)
+2025-11-09 19:39:52.40
+9c579271
+User
+📊 ProgressTracker: 9 achievements have progress data (including tier upgrades)
+2025-11-09 19:39:52.40
+9c579271
+User
+🎯 Closest milestone: Monthly Master (36.7% complete - 11/30)
+2025-11-09 19:39:52.42
+9c579271
+User
+📊 ProgressTracker: Found 26 total achievements for user 2
+2025-11-09 19:39:52.42
+9c579271
+User
+✅ Earned: 19 | 🔒 Unearned: 7
+2025-11-09 19:39:52.42
+9c579271
+User
+🔼 Tier upgrade available: Flavor Master - Hot (bronze → next tier)
+2025-11-09 19:39:52.42
+9c579271
+User
+🔼 Tier upgrade available: Exotic Hunter (bronze → next tier)
+2025-11-09 19:39:52.42
+9c579271
+User
+🎯 Tier upgrade: Flavor Master - Hot - 0/1 for silver (0.0%)
+2025-11-09 19:39:52.42
+9c579271
+User
+🎯 Tier upgrade: Exotic Hunter - 0/1 for silver (0.0%)
+2025-11-09 19:39:52.42
+9c579271
+User
+📊 ProgressTracker: 9 achievements have progress data (including tier upgrades)
+2025-11-09 19:39:52.42
+9c579271
+User
+🎯 Closest milestone: Monthly Master (36.7% complete - 11/30)
+2025-11-09 19:39:52.43
+9c579271
+User
+⏱️ Batch 2 completed in 121ms (getCompletedAnimalCategories)
+2025-11-09 19:39:52.43
+9c579271
+User
+⏱️ Total aggregation time: 297ms
+2025-11-09 19:39:52.43
+9c579271
+User
+✅ User stats aggregated: position 4, streak 11
+2025-11-09 19:39:52.43
+9c579271
+User
+✅ Engagement metrics: 0 searches, 6 page views
+2025-11-09 19:39:52.43
+9c579271
+User
+🔄 Fetching unique engagement metrics...
+2025-11-09 19:39:52.47
+9c579271
+User
+👤 [PROFILE VIEW ENGAGEMENT] User 2: 0 unique profile views
+2025-11-09 19:39:52.47
+9c579271
+User
+📦 [PRODUCT VIEW ENGAGEMENT] User 2: 0 unique product views
+2025-11-09 19:39:52.47
+9c579271
+User
+✅ Unique engagement metrics: 0 unique products, 0 unique profiles
+2025-11-09 19:39:52.47
+9c579271
+User
+🔄 Getting achievements with progress (complete stats)...
+2025-11-09 19:39:52.47
+9c579271
+User
+💾 AchievementCache HIT: Returning 26 definitions (age: 8 minutes)
+2025-11-09 19:39:52.51
+9c579271
+User
+✅ Achievements fetched successfully for user 2: 26 achievement(s)
+2025-11-09 19:39:52.82
+9c579271
+User
+✅ WebSocket client connected: LGE4ZbyNvIM9403XAAAw
+2025-11-09 19:39:52.87
+9c579271
+User
+🔐 User 2 authenticated on socket LGE4ZbyNvIM9403XAAAw (room: prod:user:2)
+2025-11-09 19:39:54.31
+9c579271
+User
+✅ WebSocket client connected: tckAPklq1wCqzG0jAAAy
+2025-11-09 19:39:54.35
+9c579271
+User
+🔐 User 2 authenticated on socket tckAPklq1wCqzG0jAAAy (room: prod:user:2)
+2025-11-09 19:39:54.52
+9c579271
+User
+🔐 User 2 authenticated on socket KKU8eyf_bT6D9VC9AAAp (room: prod:user:2)
+2025-11-09 19:39:55.87
+9c579271
+User
+✅ WebSocket client connected: 5Xn_8-zdw53TsXMaAAA0
+2025-11-09 19:39:55.91
+9c579271
+User
+🔐 User 2 authenticated on socket 5Xn_8-zdw53TsXMaAAA0 (room: prod:user:2)
+2025-11-09 19:40:22.25
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-11-09 19:40:22.26
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-11-09 19:40:22.42
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-11-09 19:40:22.48
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-11-09 19:40:24.39
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-11-09 19:40:25.95
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors
+

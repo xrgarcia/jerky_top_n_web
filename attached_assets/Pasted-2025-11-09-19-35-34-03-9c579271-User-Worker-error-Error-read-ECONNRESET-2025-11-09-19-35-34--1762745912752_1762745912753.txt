@@ -1,0 +1,144 @@
+2025-11-09 19:35:34.03
+9c579271
+User
+❌ Worker error: Error: read ECONNRESET
+2025-11-09 19:35:34.03
+9c579271
+User
+at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2025-11-09 19:35:34.03
+9c579271
+User
+at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-11-09 19:35:34.03
+9c579271
+User
+errno: -104,
+2025-11-09 19:35:34.03
+9c579271
+User
+code: 'ECONNRESET',
+2025-11-09 19:35:34.03
+9c579271
+User
+syscall: 'read'
+2025-11-09 19:35:34.03
+9c579271
+User
+}
+2025-11-09 19:35:34.51
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-11-09 19:35:58.87
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-11-09 19:36:11.29
+9c579271
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-09 19:36:11.38
+9c579271
+User
+✅ 90-day session validated for: Customer
+2025-11-09 19:36:41.38
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-11-09 19:36:58.90
+9c579271
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-09 19:36:58.99
+9c579271
+User
+✅ 90-day session validated for: Customer
+2025-11-09 19:37:12.42
+9c579271
+User
+❌ Worker error: Error: read ECONNRESET
+2025-11-09 19:37:12.42
+9c579271
+User
+at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2025-11-09 19:37:12.42
+9c579271
+User
+at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-11-09 19:37:12.42
+9c579271
+User
+errno: -104,
+2025-11-09 19:37:12.42
+9c579271
+User
+code: 'ECONNRESET',
+2025-11-09 19:37:12.42
+9c579271
+User
+syscall: 'read'
+2025-11-09 19:37:12.42
+9c579271
+User
+}
+2025-11-09 19:37:28.99
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-11-09 19:37:32.44
+9c579271
+User
+❌ Worker error: Error: read ECONNRESET
+2025-11-09 19:37:32.44
+9c579271
+User
+at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2025-11-09 19:37:32.44
+9c579271
+User
+at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-11-09 19:37:32.44
+9c579271
+User
+errno: -104,
+2025-11-09 19:37:32.44
+9c579271
+User
+code: 'ECONNRESET',
+2025-11-09 19:37:32.44
+9c579271
+User
+syscall: 'read'
+2025-11-09 19:37:32.44
+9c579271
+User
+}
+2025-11-09 19:37:32.62
+9c579271
+User
+📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+2025-11-09 19:37:32.62
+9c579271
+User
+✅ Webhook signature verified
+2025-11-09 19:37:32.62
+9c579271
+User
+🏷️ Processing products/update webhook for product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime))
+2025-11-09 19:37:32.76
+9c579271
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-09 19:37:32.84
+9c579271
+User
+✅ Updated metadata for product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime))
+2025-11-09 19:37:32.84
+9c579271
+User
+✅ MetadataCache: Updated product 10040751587642 (Meat Stick Variety Packs - 12 Pack (Buy with Prime)) - timestamp reset
+2025-11-09 19:38:02.84
+9c579271
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
