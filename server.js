@@ -580,7 +580,8 @@ app.post('/api/customer/email-login', async (req, res, next) => {
       email: shopifyCustomer.email,
       firstName: shopifyCustomer.first_name || 'Customer',
       lastName: shopifyCustomer.last_name || '',
-      displayName: `${shopifyCustomer.first_name || 'Customer'} ${shopifyCustomer.last_name || ''}`.trim()
+      displayName: `${shopifyCustomer.first_name || 'Customer'} ${shopifyCustomer.last_name || ''}`.trim(),
+      createdAt: shopifyCustomer.created_at || null
     };
     
     console.log(`✅ Found jerky.com customer: ${customer.displayName} (ID: ${customer.id})`);

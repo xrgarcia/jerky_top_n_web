@@ -124,6 +124,8 @@ class WebhookOrderService {
       let lastName = 'Customer';
       let email = null;
 
+      let shopifyCreatedAt = null;
+      
       if (shopifyCustomerId) {
         console.log(`👤 User not found, fetching from Shopify: ${shopifyCustomerId}`);
         const shopifyCustomer = await this.ordersService.fetchCustomer(shopifyCustomerId);
@@ -132,6 +134,7 @@ class WebhookOrderService {
           firstName = shopifyCustomer.first_name || firstName;
           lastName = shopifyCustomer.last_name || lastName;
           email = shopifyCustomer.email || customerEmail;
+          shopifyCreatedAt = shopifyCustomer.created_at ? new Date(shopifyCustomer.created_at) : null;
         } else {
           console.warn(`⚠️ Could not fetch customer ${shopifyCustomerId} from Shopify`);
         }
@@ -158,6 +161,7 @@ class WebhookOrderService {
             lastName,
             shopifyCustomerId: shopifyCustomerId || null,
             role: 'customer',
+            shopifyCreatedAt,
             createdAt: new Date(),
           })
           .returning();

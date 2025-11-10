@@ -74,26 +74,35 @@ class DatabaseStorage {
     
     if (existingUser) {
       // Update existing user
+      const updateData = {
+        email: userData.email,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        displayName: userData.displayName,
+        role: role, // Update role on login to handle promotions
+        active: true, // Mark user as active on login
+        accessToken: userData.accessToken,
+        refreshToken: userData.refreshToken,
+        tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
+        updatedAt: new Date(),
+      };
+      
+      // Only update shopifyCreatedAt if we have a value and it's not already set
+      if (userData.createdAt && !existingUser.shopifyCreatedAt) {
+        updateData.shopifyCreatedAt = new Date(userData.createdAt);
+      }
+      
       const [updatedUser] = await db
         .update(users)
-        .set({
-          email: userData.email,
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          displayName: userData.displayName,
-          role: role, // Update role on login to handle promotions
-          active: true, // Mark user as active on login
-          accessToken: userData.accessToken,
-          refreshToken: userData.refreshToken,
-          tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
-          updatedAt: new Date(),
-        })
+        .set(updateData)
         .where(eq(users.shopifyCustomerId, userData.shopifyCustomerId))
         .returning();
       
       return updatedUser;
     } else {
       // Create new user
+      const shopifyCreatedAt = userData.createdAt ? new Date(userData.createdAt) : null;
+      
       const [newUser] = await db
         .insert(users)
         .values({
@@ -107,6 +116,7 @@ class DatabaseStorage {
           accessToken: userData.accessToken,
           refreshToken: userData.refreshToken,
           tokenExpiry: userData.accessToken ? new Date(Date.now() + 24 * 60 * 60 * 1000) : null, // 24 hours
+          shopifyCreatedAt,
         })
         .returning();
       
