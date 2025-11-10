@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const sizeOf = require('image-size');
+const imageSize = require('image-size');
 const { users } = require('../../shared/schema');
 const { eq, sql } = require('drizzle-orm');
 const { 
@@ -278,7 +278,7 @@ function createProfileRoutes(services) {
       // Validate image dimensions
       let dimensions;
       try {
-        dimensions = sizeOf(imageBuffer);
+        dimensions = imageSize(imageBuffer);
       } catch (dimensionError) {
         console.error('Error reading image dimensions:', dimensionError);
         return res.status(400).json({ error: 'Invalid or corrupted image file' });
