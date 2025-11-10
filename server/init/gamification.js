@@ -30,6 +30,8 @@ const ClassificationWorker = require('../services/ClassificationWorker');
 const BulkImportQueue = require('../services/BulkImportQueue');
 const BulkImportWorker = require('../services/BulkImportWorker');
 const BulkImportService = require('../services/BulkImportService');
+const EngagementBackfillQueue = require('../services/EngagementBackfillQueue');
+const EngagementBackfillWorker = require('../services/EngagementBackfillWorker');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -174,6 +176,17 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   services.bulkImportQueue = bulkImportQueue;
   services.bulkImportService = bulkImportService;
   services.bulkImportWorker = bulkImportWorker;
+  
+  // Initialize EngagementBackfillQueue (BullMQ with Redis)
+  const engagementBackfillQueue = EngagementBackfillQueue; // Singleton instance
+  await engagementBackfillQueue.initialize();
+  
+  // Initialize EngagementBackfillWorker (BullMQ background processor)
+  const engagementBackfillWorker = EngagementBackfillWorker; // Singleton instance
+  await engagementBackfillWorker.initialize(services);
+  
+  services.engagementBackfillQueue = engagementBackfillQueue;
+  services.engagementBackfillWorker = engagementBackfillWorker;
 
   // Seed achievements with retry logic (this also warms AchievementCache)
   // Using fire-and-forget pattern with proper error handling

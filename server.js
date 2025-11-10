@@ -3814,6 +3814,11 @@ if (databaseAvailable && storage) {
       const bulkImportRouter = createBulkImportRoutes(storage, db);
       adminRouter.use(bulkImportRouter);
       
+      // Add Engagement Backfill admin routes
+      const createEngagementBackfillRoutes = require('./server/routes/admin/engagementBackfill');
+      const engagementBackfillRouter = createEngagementBackfillRoutes(storage, db);
+      adminRouter.use(engagementBackfillRouter);
+      
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
