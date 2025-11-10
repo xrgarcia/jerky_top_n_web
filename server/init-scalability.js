@@ -1,12 +1,17 @@
 const cacheService = require('./services/CacheService');
 const redisClient = require('./services/RedisClient');
 const { createAdapter } = require('@socket.io/redis-adapter');
+const LeaderboardCache = require('./cache/LeaderboardCache');
 
 async function initializeScalability(io) {
   console.log('🚀 Initializing scalability features...');
   
   // Initialize Redis cache service (establishes shared connection pool)
   await cacheService.initialize();
+  
+  // Initialize LeaderboardCache (Redis-backed distributed cache)
+  const leaderboardCache = LeaderboardCache.getInstance();
+  await leaderboardCache.initialize();
   
   // Setup Socket.IO Redis adapter for cross-instance communication
   const client = redisClient.getClient();

@@ -1,45 +1,47 @@
 const { sql, eq } = require('drizzle-orm');
 const { userEngagementScores } = require('../../shared/schema');
+const LeaderboardCache = require('../cache/LeaderboardCache');
 
 class EngagementScoreService {
   constructor(db) {
     this.db = db;
+    this.leaderboardCache = LeaderboardCache.getInstance();
   }
 
-  async incrementAchievement(userId, increment = 1) {
+  async incrementAchievement(userId, increment = 1, timestamp = new Date()) {
     await this._incrementMetric(userId, {
       achievements_count: increment,
       achievements_count_week: increment,
       achievements_count_month: increment,
-    });
+    }, timestamp);
   }
 
-  async incrementPageView(userId, increment = 1) {
+  async incrementPageView(userId, increment = 1, timestamp = new Date()) {
     await this._incrementMetric(userId, {
       page_views_count: increment,
       page_views_count_week: increment,
       page_views_count_month: increment,
-    });
+    }, timestamp);
   }
 
-  async incrementRanking(userId, increment = 1, uniqueProductsIncrement = 0) {
+  async incrementRanking(userId, increment = 1, uniqueProductsIncrement = 0, timestamp = new Date()) {
     await this._incrementMetric(userId, {
       rankings_count: increment,
       rankings_count_week: increment,
       rankings_count_month: increment,
       unique_products_count: uniqueProductsIncrement,
-    });
+    }, timestamp);
   }
 
-  async incrementSearch(userId, increment = 1) {
+  async incrementSearch(userId, increment = 1, timestamp = new Date()) {
     await this._incrementMetric(userId, {
       searches_count: increment,
       searches_count_week: increment,
       searches_count_month: increment,
-    });
+    }, timestamp);
   }
 
-  async _incrementMetric(userId, metrics) {
+  async _incrementMetric(userId, metrics, timestamp = new Date()) {
     const updates = Object.entries(metrics)
       .map(([key, value]) => `${key} = ${key} + ${value}`)
       .join(', ');
@@ -83,6 +85,12 @@ class EngagementScoreService {
     `;
     
     await this.db.execute(sql.raw(query));
+    
+    // Invalidate affected cache entries (granular, timestamp-aware)
+    await this.leaderboardCache.invalidateUser({
+      userId,
+      activityTimestamp: timestamp
+    });
   }
 
   async recalculateUserScore(userId) {
