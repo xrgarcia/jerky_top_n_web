@@ -18,7 +18,6 @@ function CommunityPage() {
   const users = data?.users || [];
   const top5 = topRankers || [];
 
-  const statsRef = useRef(null);
   const journeyRef = useRef(null);
   const pulseRef = useRef(null);
   const discoverRef = useRef(null);
@@ -39,7 +38,7 @@ function CommunityPage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    [statsRef, journeyRef, pulseRef, discoverRef].forEach(ref => {
+    [journeyRef, pulseRef, discoverRef].forEach(ref => {
       if (ref.current) {
         observer.observe(ref.current);
       }
@@ -60,14 +59,14 @@ function CommunityPage() {
           </div>
           <PodiumWidget rankers={top5} isLoading={loadingTop} />
         </div>
-      </section>
-
-      <section className="section-stats" ref={statsRef}>
-        <div className="community-container">
-          <CommunityStatsBar 
-            stats={homeStats?.communityStats} 
-            isLoading={statsLoading} 
-          />
+        
+        <div className="stats-bridge">
+          <div className="community-container">
+            <CommunityStatsBar 
+              stats={homeStats?.communityStats} 
+              isLoading={statsLoading} 
+            />
+          </div>
         </div>
       </section>
 
@@ -88,25 +87,56 @@ function CommunityPage() {
 
       <section className="section-discover" ref={discoverRef}>
         <div className="community-container">
-          <div className="search-section">
-            <h2 className="search-title">Discover Flavor Fanatics</h2>
-            <div className="search-bar">
-              <input
-                type="text"
-                placeholder={`Search ${homeStats?.communityStats?.totalRankers || ''} rankers...`.trim()}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="page-search-input"
-              />
+          <div className="discover-split">
+            <div className="discover-left">
+              <h2 className="search-title">Discover Flavor Fanatics</h2>
+              <p className="search-subtitle">
+                Connect with fellow jerky enthusiasts, explore their collections, and find your flavor soulmates.
+              </p>
+              <div className="search-bar">
+                <input
+                  type="text"
+                  placeholder={`Search ${homeStats?.communityStats?.totalRankers || ''} rankers...`.trim()}
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="page-search-input"
+                />
+              </div>
+            </div>
+            
+            <div className="discover-right">
+              {isLoading && <div className="loading">Loading community...</div>}
+              {error && <div className="error">Failed to load community members</div>}
+
+              {!isLoading && !error && users.length > 0 && (
+                <div className="users-preview">
+                  {users.slice(0, 4).map(user => (
+                    <Link 
+                      key={user.user_id} 
+                      to={`/community/${user.user_id}`}
+                      className="user-card-mini"
+                    >
+                      <div className="avatar avatar-medium">
+                        {user.avatar_url ? (
+                          <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
+                        ) : (
+                          <div className="avatar-initials">{user.initials}</div>
+                        )}
+                      </div>
+                      <div className="user-card-mini-info">
+                        <h4 className="user-name-mini">{user.display_name}</h4>
+                        <span className="user-score-mini">🏆 {user.engagement_score || 0} pts</span>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
 
-          {isLoading && <div className="loading">Loading community...</div>}
-          {error && <div className="error">Failed to load community members</div>}
-
-          {!isLoading && !error && (
+          {!isLoading && !error && users.length > 4 && (
             <div className="users-grid">
-              {users.map(user => (
+              {users.slice(4).map(user => (
                 <Link 
                   key={user.user_id} 
                   to={`/community/${user.user_id}`}

@@ -2,57 +2,85 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  padding: 24px;
-  background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(160, 82, 45, 0.05) 100%);
-  border-radius: 12px;
-  border: 1px solid rgba(139, 69, 19, 0.1);
+  gap: 48px;
+  padding: 32px 48px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(250, 248, 245, 0.98) 100%);
+  border-radius: 20px;
+  border: 1px solid rgba(218, 165, 32, 0.2);
   flex-wrap: wrap;
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 -4px 20px rgba(218, 165, 32, 0.15);
+  position: relative;
+}
+
+.community-stats-bar::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 10%;
+  right: 10%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(218, 165, 32, 0.6), transparent);
+  border-radius: 3px;
+}
+
+.community-stats-bar::after {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(218, 165, 32, 0.15), transparent 70%);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .stat-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
 }
 
 .stat-icon {
-  font-size: 24px;
+  font-size: 32px;
   line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
 .stat-value {
-  font-size: 24px;
-  font-weight: 700;
+  font-size: 32px;
+  font-weight: 800;
   color: #8b4513;
   line-height: 1;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .stat-label {
   font-size: 14px;
   color: #666;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-divider {
   color: rgba(139, 69, 19, 0.2);
-  font-size: 24px;
-  font-weight: 300;
+  font-size: 32px;
+  font-weight: 200;
 }
 
-/* Loading state */
 .community-stats-bar.loading {
   gap: 48px;
 }
 
 .stat-skeleton {
-  width: 120px;
-  height: 32px;
+  width: 150px;
+  height: 40px;
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: skeleton-loading 1.5s ease-in-out infinite;
-  border-radius: 4px;
+  border-radius: 8px;
 }
 
 @keyframes skeleton-loading {
@@ -64,11 +92,16 @@
   }
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .community-stats-bar {
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
+    padding: 28px 32px;
+  }
+
+  .community-stats-bar::before {
+    left: 20%;
+    right: 20%;
   }
 
   .stat-divider {
@@ -78,5 +111,13 @@
   .stat-item {
     width: 100%;
     justify-content: center;
+  }
+
+  .stat-value {
+    font-size: 28px;
+  }
+
+  .stat-icon {
+    font-size: 28px;
   }
 }
