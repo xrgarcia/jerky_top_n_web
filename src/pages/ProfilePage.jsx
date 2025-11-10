@@ -10,7 +10,6 @@ function ProfilePage() {
   const { user, setUser } = useAuthStore();
   const queryClient = useQueryClient();
   
-  const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   
   // Edit state
@@ -98,23 +97,13 @@ function ProfilePage() {
     return '';
   };
 
-  // Handle edit mode toggle
-  const handleEditClick = () => {
-    setIsEditing(true);
-    // Initialize edit state with current user data
-    setProfileImageUrl(user?.profile_image_url || null);
-    setProfileImagePreview(user?.profile_image_url || null);
-    setHandle(user?.handle || '');
-    setHideNamePrivacy(user?.hide_name_privacy || false);
-  };
-
-  // Handle cancel
+  // Handle cancel - reset to saved values
   const handleCancel = () => {
-    setIsEditing(false);
     setProfileImagePreview(user?.profile_image_url || null);
     setHandle(user?.handle || '');
     setHideNamePrivacy(user?.hide_name_privacy || false);
     setHandleValidation({ checking: false, available: null, error: null });
+    toast('Changes discarded');
   };
 
   // Handle image file selection
@@ -344,7 +333,6 @@ function ProfilePage() {
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
 
       toast.success('Profile updated successfully');
-      setIsEditing(false);
     } catch (error) {
       console.error('Error saving profile:', error);
       toast.error(error.message || 'Failed to save profile');
@@ -359,150 +347,121 @@ function ProfilePage() {
         <div className="profile-header">
           {/* Profile Avatar/Image */}
           <div className="profile-avatar-wrapper">
-            {isEditing ? (
-              <div className="profile-avatar-edit">
-                <div className="avatar avatar-large">
-                  {profileImagePreview ? (
-                    <img src={profileImagePreview} alt="Profile" className="avatar-image" />
-                  ) : (
-                    <div className="avatar-initials">{getInitials()}</div>
-                  )}
-                </div>
-                <div className="profile-avatar-controls">
-                  <input
-                    ref={fileInputRef}
-                    type="file"
-                    accept="image/png,image/jpeg,image/webp"
-                    onChange={handleImageSelect}
-                    style={{ display: 'none' }}
-                  />
-                  <button 
-                    className="avatar-btn avatar-btn-upload"
-                    onClick={() => fileInputRef.current?.click()}
-                    disabled={isUploadingImage}
-                  >
-                    {isUploadingImage ? 'Uploading...' : profileImagePreview ? 'Change Photo' : 'Upload Photo'}
-                  </button>
-                  {profileImagePreview && (
-                    <button 
-                      className="avatar-btn avatar-btn-remove"
-                      onClick={handleRemoveImage}
-                      disabled={isUploadingImage}
-                    >
-                      Remove
-                    </button>
-                  )}
-                </div>
-                <p className="avatar-hint">Recommended: 512x512px, max 3MB</p>
-              </div>
-            ) : (
+            <div className="profile-avatar-edit">
               <div className="avatar avatar-large">
-                {user?.profile_image_url ? (
-                  <img src={user.profile_image_url} alt="Profile" className="avatar-image" />
+                {profileImagePreview ? (
+                  <img src={profileImagePreview} alt="Profile" className="avatar-image" />
                 ) : (
                   <div className="avatar-initials">{getInitials()}</div>
                 )}
               </div>
-            )}
+              <div className="profile-avatar-controls">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept="image/png,image/jpeg,image/webp"
+                  onChange={handleImageSelect}
+                  style={{ display: 'none' }}
+                />
+                <button 
+                  className="avatar-btn avatar-btn-upload"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploadingImage}
+                >
+                  {isUploadingImage ? 'Uploading...' : profileImagePreview ? 'Change Photo' : 'Upload Photo'}
+                </button>
+                {profileImagePreview && (
+                  <button 
+                    className="avatar-btn avatar-btn-remove"
+                    onClick={handleRemoveImage}
+                    disabled={isUploadingImage}
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+              <p className="avatar-hint">Recommended: 512x512px, max 3MB</p>
+            </div>
           </div>
 
-          {/* Display Name */}
-          {!isEditing && (
-            <>
-              <h1>{getDisplayName()}</h1>
-              {getNameWithInitial() && (
-                <p className="profile-real-name">{getNameWithInitial()}</p>
-              )}
-              <p className="profile-email">{user?.email}</p>
-            </>
-          )}
-
           {/* Edit Form */}
-          {isEditing && (
-            <div className="profile-edit-form">
-              {/* Show name in edit mode */}
-              {getNameWithInitial() && (
-                <>
-                  <p className="profile-edit-name">{getNameWithInitial()}</p>
-                  <p className="profile-edit-disclaimer">
-                    To edit your name, visit{' '}
-                    <a 
-                      href="https://www.jerky.com/account" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="jerky-link"
-                    >
-                      jerky.com/account
-                    </a>
-                  </p>
-                </>
-              )}
-              
-              <div className="form-group">
-                <label htmlFor="handle">Handle</label>
-                <div className="handle-input-wrapper">
-                  <span className="handle-prefix">@</span>
-                  <input
-                    id="handle"
-                    type="text"
-                    className="profile-input"
-                    value={handle}
-                    onChange={handleHandleChange}
-                    placeholder="smokybeef247"
-                    maxLength={20}
-                  />
-                  <button 
-                    type="button"
-                    className="generate-handle-btn"
-                    onClick={handleGenerateHandle}
-                    title="Generate a fun jerky.com-inspired handle"
+          <div className="profile-edit-form">
+            {/* Show name */}
+            {getNameWithInitial() && (
+              <>
+                <p className="profile-edit-name">{getNameWithInitial()}</p>
+                <p className="profile-edit-disclaimer">
+                  To edit your name, visit{' '}
+                  <a 
+                    href="https://www.jerky.com/account" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="jerky-link"
                   >
-                    🎲 Pick one for me
-                  </button>
-                </div>
-                {handleValidation.checking && (
-                  <p className="handle-feedback checking">Checking availability...</p>
-                )}
-                {!handleValidation.checking && handleValidation.available === true && handle && (
-                  <p className="handle-feedback available">✓ Handle is available</p>
-                )}
-                {!handleValidation.checking && handleValidation.available === false && (
-                  <p className="handle-feedback unavailable">✗ Handle is taken</p>
-                )}
-                {handleValidation.error && (
-                  <p className="handle-feedback error">{handleValidation.error}</p>
-                )}
-              </div>
-
-              <div className="form-group privacy-checkbox-hidden">
-                <label className="checkbox-label">
-                  <input
-                    type="checkbox"
-                    checked={hideNamePrivacy}
-                    onChange={(e) => setHideNamePrivacy(e.target.checked)}
-                  />
-                  <span>Hide my first name and last initial</span>
-                </label>
-                <p className="form-hint">When checked, your handle will be shown instead of your real name</p>
-              </div>
-
-              <div className="profile-edit-actions">
-                <button className="btn btn-secondary" onClick={handleCancel} disabled={isSaving}>
-                  Cancel
-                </button>
-                <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
-                  {isSaving ? 'Saving...' : 'Save Changes'}
+                    jerky.com/account
+                  </a>
+                </p>
+              </>
+            )}
+            
+            <div className="form-group">
+              <label htmlFor="handle">Handle</label>
+              <div className="handle-input-wrapper">
+                <span className="handle-prefix">@</span>
+                <input
+                  id="handle"
+                  type="text"
+                  className="profile-input"
+                  value={handle}
+                  onChange={handleHandleChange}
+                  placeholder="smokybeef247"
+                  maxLength={20}
+                />
+                <button 
+                  type="button"
+                  className="generate-handle-btn"
+                  onClick={handleGenerateHandle}
+                  title="Generate a fun jerky.com-inspired handle"
+                >
+                  🎲 Pick one for me
                 </button>
               </div>
+              {handleValidation.checking && (
+                <p className="handle-feedback checking">Checking availability...</p>
+              )}
+              {!handleValidation.checking && handleValidation.available === true && handle && (
+                <p className="handle-feedback available">✓ Handle is available</p>
+              )}
+              {!handleValidation.checking && handleValidation.available === false && (
+                <p className="handle-feedback unavailable">✗ Handle is taken</p>
+              )}
+              {handleValidation.error && (
+                <p className="handle-feedback error">{handleValidation.error}</p>
+              )}
             </div>
-          )}
 
-          {/* Edit Buttons */}
-          {!isEditing && (
-            <div className="profile-action-buttons">
-              <button className="btn btn-edit-profile" onClick={handleEditClick}>
-                Edit Profile
+            <div className="form-group privacy-checkbox-hidden">
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={hideNamePrivacy}
+                  onChange={(e) => setHideNamePrivacy(e.target.checked)}
+                />
+                <span>Hide my first name and last initial</span>
+              </label>
+              <p className="form-hint">When checked, your handle will be shown instead of your real name</p>
+            </div>
+
+            <div className="profile-edit-actions">
+              <button className="btn btn-secondary" onClick={handleCancel} disabled={isSaving}>
+                Reset
               </button>
+              <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </button>
+            </div>
+
+            <div className="profile-edit-jerky-link">
               <a 
                 href="https://www.jerky.com/account" 
                 target="_blank" 
@@ -512,7 +471,7 @@ function ProfilePage() {
                 Edit Jerky.com Profile
               </a>
             </div>
-          )}
+          </div>
         </div>
       </div>
 
