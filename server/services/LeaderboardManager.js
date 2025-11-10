@@ -49,7 +49,7 @@ class LeaderboardManager {
       : `COUNT(DISTINCT ua.id)`;
     
     const pageViewsCount = dateFilter
-      ? `COUNT(DISTINCT act_pv.id) FILTER (WHERE act_pv.activity_time ${dateFilter})`
+      ? `COUNT(DISTINCT act_pv.id) FILTER (WHERE act_pv.created_at ${dateFilter})`
       : `COUNT(DISTINCT act_pv.id)`;
     
     const rankingsCount = dateFilter
@@ -57,7 +57,7 @@ class LeaderboardManager {
       : `COUNT(DISTINCT pr.id)`;
     
     const searchesCount = dateFilter
-      ? `COUNT(DISTINCT act_s.id) FILTER (WHERE act_s.activity_time ${dateFilter})`
+      ? `COUNT(DISTINCT act_s.id) FILTER (WHERE act_s.created_at ${dateFilter})`
       : `COUNT(DISTINCT act_s.id)`;
 
     const query = `
@@ -184,9 +184,9 @@ class LeaderboardManager {
     // OPTIMIZED: Pre-aggregate each table separately to avoid Cartesian product
     // Then join the small aggregated results instead of joining raw tables
     const achievementsFilter = dateFilter ? `WHERE earned_at ${dateFilter}` : '';
-    const pageViewsFilter = dateFilter ? `WHERE activity_time ${dateFilter} AND activity_type = 'page_view'` : `WHERE activity_type = 'page_view'`;
+    const pageViewsFilter = dateFilter ? `WHERE created_at ${dateFilter} AND activity_type = 'page_view'` : `WHERE activity_type = 'page_view'`;
     const rankingsFilter = dateFilter ? `WHERE created_at ${dateFilter}` : '';
-    const searchesFilter = dateFilter ? `WHERE activity_time ${dateFilter} AND activity_type = 'search'` : `WHERE activity_type = 'search'`;
+    const searchesFilter = dateFilter ? `WHERE created_at ${dateFilter} AND activity_type = 'search'` : `WHERE activity_type = 'search'`;
     
     const positionQuery = `
       WITH 
