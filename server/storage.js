@@ -228,26 +228,47 @@ class DatabaseStorage {
   async saveProductRanking({ userId, shopifyProductId, productData, ranking, rankingListId }) {
     try {
       const { sql } = require('drizzle-orm');
+      const activityTrackingService = require('./services/ActivityTrackingService'); // Singleton instance
       
-      // Use UPSERT (ON CONFLICT DO UPDATE) to handle duplicate rankings
-      // This prevents unique constraint errors when ranking the same product multiple times
-      const [productRanking] = await db.insert(productRankings)
-        .values({
-          userId,
-          shopifyProductId,
-          productData,
-          ranking,
-          rankingListId,
-        })
-        .onConflictDoUpdate({
-          target: [productRankings.userId, productRankings.shopifyProductId, productRankings.rankingListId],
-          set: {
-            ranking: sql`EXCLUDED.ranking`,
-            productData: sql`EXCLUDED.product_data`,
-            updatedAt: new Date()
-          }
-        })
-        .returning();
+      // Try INSERT first (for new products)
+      const insertResult = await db.execute(sql`
+        INSERT INTO product_rankings (user_id, shopify_product_id, product_data, ranking, ranking_list_id, created_at, updated_at)
+        VALUES (${userId}, ${shopifyProductId}, ${productData}::jsonb, ${ranking}, ${rankingListId}, NOW(), NOW())
+        ON CONFLICT (user_id, shopify_product_id, ranking_list_id) DO NOTHING
+        RETURNING *
+      `);
+      
+      let productRanking;
+      let isNewProduct = false;
+      
+      if (insertResult.rows.length > 0) {
+        // INSERT succeeded - this is a new product
+        productRanking = insertResult.rows[0];
+        isNewProduct = true;
+      } else {
+        // INSERT conflicted - update the existing row
+        const updateResult = await db.execute(sql`
+          UPDATE product_rankings 
+          SET ranking = ${ranking},
+              product_data = ${productData}::jsonb,
+              updated_at = NOW()
+          WHERE user_id = ${userId}
+            AND shopify_product_id = ${shopifyProductId}
+            AND ranking_list_id = ${rankingListId}
+          RETURNING *
+        `);
+        productRanking = updateResult.rows[0];
+        isNewProduct = false;
+      }
+      
+      // Track the ranking activity with new product flag
+      await activityTrackingService.trackRankingSaved(
+        userId,
+        shopifyProductId,
+        ranking,
+        null, // totalRankings - can be computed if needed
+        isNewProduct
+      );
 
       return productRanking;
     } catch (error) {

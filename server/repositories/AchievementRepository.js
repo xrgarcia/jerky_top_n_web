@@ -1,6 +1,7 @@
 const { eq, and, desc, sql, sum } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
 const AchievementCache = require('../cache/AchievementCache');
+const EngagementScoreService = require('../services/EngagementScoreService');
 
 /**
  * AchievementRepository - Data access layer for achievements
@@ -10,6 +11,7 @@ class AchievementRepository {
   constructor(db) {
     this.db = db;
     this.achievementCache = AchievementCache.getInstance();
+    this.engagementScoreService = new EngagementScoreService(db);
   }
 
   async getAllAchievements() {
@@ -80,6 +82,10 @@ class AchievementRepository {
         pointsAwarded: points,
       })
       .returning();
+    
+    // Update engagement score
+    await this.engagementScoreService.incrementAchievement(userId, 1);
+    
     return result[0];
   }
 

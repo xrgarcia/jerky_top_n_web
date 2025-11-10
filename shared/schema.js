@@ -292,6 +292,39 @@ const userActivities = pgTable('user_activities', {
   createdAtIdx: index('idx_user_activities_created_at').on(table.createdAt),
 }));
 
+// User engagement scores - pre-aggregated rollup table for leaderboard performance
+const userEngagementScores = pgTable('user_engagement_scores', {
+  id: serial('id').primaryKey(),
+  userId: integer('user_id').references(() => users.id).unique().notNull(),
+  achievementsCount: integer('achievements_count').default(0).notNull(),
+  pageViewsCount: integer('page_views_count').default(0).notNull(),
+  rankingsCount: integer('rankings_count').default(0).notNull(),
+  searchesCount: integer('searches_count').default(0).notNull(),
+  uniqueProductsCount: integer('unique_products_count').default(0).notNull(),
+  engagementScore: integer('engagement_score').default(0).notNull(),
+  achievementsCountWeek: integer('achievements_count_week').default(0).notNull(),
+  pageViewsCountWeek: integer('page_views_count_week').default(0).notNull(),
+  rankingsCountWeek: integer('rankings_count_week').default(0).notNull(),
+  searchesCountWeek: integer('searches_count_week').default(0).notNull(),
+  engagementScoreWeek: integer('engagement_score_week').default(0).notNull(),
+  achievementsCountMonth: integer('achievements_count_month').default(0).notNull(),
+  pageViewsCountMonth: integer('page_views_count_month').default(0).notNull(),
+  rankingsCountMonth: integer('rankings_count_month').default(0).notNull(),
+  searchesCountMonth: integer('searches_count_month').default(0).notNull(),
+  engagementScoreMonth: integer('engagement_score_month').default(0).notNull(),
+  lastUpdatedAt: timestamp('last_updated_at').defaultNow(),
+  createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+  // Primary index on userId for fast lookups
+  userIdIdx: index('idx_user_engagement_scores_user_id').on(table.userId),
+  // Index on engagement_score for leaderboard sorting (all_time)
+  engagementScoreIdx: index('idx_user_engagement_scores_engagement').on(table.engagementScore),
+  // Index on weekly score for weekly leaderboard
+  engagementScoreWeekIdx: index('idx_user_engagement_scores_week').on(table.engagementScoreWeek),
+  // Index on monthly score for monthly leaderboard
+  engagementScoreMonthIdx: index('idx_user_engagement_scores_month').on(table.engagementScoreMonth),
+}));
+
 // User classifications - analyzed user journey state for personalized guidance
 const userClassifications = pgTable('user_classifications', {
   id: serial('id').primaryKey(),
@@ -368,6 +401,13 @@ const userActivitiesRelations = relations(userActivities, ({ one }) => ({
   }),
 }));
 
+const userEngagementScoresRelations = relations(userEngagementScores, ({ one }) => ({
+  user: one(users, {
+    fields: [userEngagementScores.userId],
+    references: [users.id],
+  }),
+}));
+
 const userClassificationsRelations = relations(userClassifications, ({ one }) => ({
   user: one(users, {
     fields: [userClassifications.userId],
@@ -406,6 +446,7 @@ module.exports = {
   customerOrderItems,
   systemConfig,
   userActivities,
+  userEngagementScores,
   userClassifications,
   classificationConfig,
   userFlavorProfileCommunities,
@@ -418,6 +459,7 @@ module.exports = {
   streaksRelations,
   activityLogsRelations,
   userActivitiesRelations,
+  userEngagementScoresRelations,
   userClassificationsRelations,
   userFlavorProfileCommunitiesRelations,
   userGuidanceCacheRelations,

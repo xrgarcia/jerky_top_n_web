@@ -1,6 +1,7 @@
 const { db } = require('../db');
 const { userActivities } = require('../../shared/schema');
 const { eq, and, gte, count, sql } = require('drizzle-orm');
+const EngagementScoreService = require('./EngagementScoreService');
 
 /**
  * ActivityTrackingService - Logs comprehensive user activities for engagement analysis
@@ -24,6 +25,7 @@ class ActivityTrackingService {
     this.batchTimeout = 5000; // Flush every 5 seconds
     this.batchTimer = null;
     this.classificationQueue = null; // Injected after initialization
+    this.engagementScoreService = new EngagementScoreService(db);
   }
   
   /**
@@ -106,11 +108,12 @@ class ActivityTrackingService {
   /**
    * Track ranking saved (immediate - triggers classification update)
    */
-  async trackRankingSaved(userId, shopifyProductId, ranking, totalRankings) {
+  async trackRankingSaved(userId, shopifyProductId, ranking, totalRankings, isNewProduct = false) {
     await this.track(userId, 'ranking_saved', {
       shopifyProductId,
       ranking,
-      totalRankings
+      totalRankings,
+      isNewProduct
     }, {}, true); // Immediate write
   }
 
@@ -160,13 +163,19 @@ class ActivityTrackingService {
       await db.insert(userActivities).values(activities);
       console.log(`[ActivityTrackingService] Flushed ${activities.length} activities`);
       
+      // Update engagement scores for affected users
+      const uniqueUsers = new Set(activities.map(a => a.userId));
+      for (const uid of uniqueUsers) {
+        const userActivities = activities.filter(a => a.userId === uid);
+        await this._updateEngagementScores(uid, userActivities);
+      }
+      
       // Trigger classification for affected users
       if (userId) {
         // Specific user flush (e.g., before classification)
         this._enqueueClassification(userId, 'batch_flush');
       } else {
         // General flush - enqueue for all unique users in batch
-        const uniqueUsers = new Set(activities.map(a => a.userId));
         for (const uid of uniqueUsers) {
           const userActivities = activities.filter(a => a.userId === uid);
           const activityType = userActivities[0]?.activityType || 'batch_flush';
@@ -187,10 +196,39 @@ class ActivityTrackingService {
     try {
       await db.insert(userActivities).values(activity);
       
+      // Update engagement scores
+      await this._updateEngagementScores(activity.userId, [activity]);
+      
       // Trigger classification queue for event-driven architecture
       this._enqueueClassification(activity.userId, activity.activityType);
     } catch (error) {
       console.error('[ActivityTrackingService] Error writing activity:', error);
+    }
+  }
+  
+  /**
+   * Update engagement scores based on activity type
+   */
+  async _updateEngagementScores(userId, activities) {
+    try {
+      for (const activity of activities) {
+        switch (activity.activityType) {
+          case 'page_view':
+          case 'product_view':
+          case 'profile_view':
+            await this.engagementScoreService.incrementPageView(userId, 1);
+            break;
+          case 'search':
+            await this.engagementScoreService.incrementSearch(userId, 1);
+            break;
+          case 'ranking_saved':
+            const isNewProduct = activity.activityData?.isNewProduct || false;
+            await this.engagementScoreService.incrementRanking(userId, 1, isNewProduct ? 1 : 0);
+            break;
+        }
+      }
+    } catch (error) {
+      console.error('[ActivityTrackingService] Error updating engagement scores:', error);
     }
   }
   
