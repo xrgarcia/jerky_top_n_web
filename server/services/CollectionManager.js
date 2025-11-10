@@ -1,5 +1,6 @@
 const { eq, and } = require('drizzle-orm');
 const { achievements, userAchievements } = require('../../shared/schema');
+const EngagementScoreService = require('./EngagementScoreService');
 
 class CollectionManager {
   constructor(achievementRepo, productsMetadataRepo, db, productsService = null) {
@@ -7,6 +8,7 @@ class CollectionManager {
     this.productsMetadataRepo = productsMetadataRepo;
     this.db = db;
     this.productsService = productsService; // Injected to get rankable products
+    this.engagementScoreService = new EngagementScoreService(db);
     
     this.DEFAULT_TIER_THRESHOLDS = {
       bronze: 40,
@@ -526,6 +528,9 @@ class CollectionManager {
           currentRecord = result[0];
           console.log(`🎉 New collection earned: ${collection.name} (${currentTier}) - ${tierPoints} points`);
           
+          // Update engagement score rollup table
+          await this.engagementScoreService.incrementAchievement(userId, 1);
+          
           notifications.push({
             type: 'new',
             achievement: collection,
@@ -552,6 +557,9 @@ class CollectionManager {
             .where(eq(userAchievements.id, currentRecord.id));
           
           console.log(`⬆️ Tier upgrade: ${collection.name} (${previousTier} → ${currentTier}) - +${pointsGained} points (total: ${tierPoints})`);
+          
+          // Update engagement score rollup table
+          await this.engagementScoreService.incrementAchievement(userId, 1);
           
           notifications.push({
             type: 'tier_upgrade',
@@ -594,6 +602,9 @@ class CollectionManager {
         // Only trigger notification if tier actually changed
         if (tierChanged) {
           console.log(`⬆️ Tier upgrade: ${collection.name} (${current.currentTier} → ${tier}) - +${pointsGained} points (total: ${pointsAwarded})`);
+
+          // Update engagement score rollup table (only on tier change, not percentage-only updates)
+          await this.engagementScoreService.incrementAchievement(userId, 1);
 
           return {
             type: 'tier_upgrade',
