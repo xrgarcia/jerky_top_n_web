@@ -13,85 +13,54 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **UI/UX Decisions:**
 - **Design Inspiration**: Clean, professional aesthetic inspired by jerky.com, using an earth-tone color palette.
-- **Responsiveness**: Optimized for desktop, tablet, and mobile with comprehensive mobile optimizations.
-- **Navigation**: Single Page Application (SPA) with smooth transitions, responsive navigation, and mobile-specific hamburger menu.
-- **Unified Product Cards**: Consistent styling across all product displays.
-- **Loading States**: Skeleton screens and loading indicators for async operations.
-- **Error Handling**: User-friendly error messages with actionable feedback.
+- **Responsiveness**: Optimized for desktop, tablet, and mobile.
+- **Navigation**: Single Page Application (SPA) with smooth transitions.
+- **Unified Product Cards**: Consistent styling.
+- **Loading States**: Skeleton screens and loading indicators.
+- **Error Handling**: User-friendly error messages.
 - **Admin Tools Styling**: Earth-tone styling with horizontal tab navigation.
-- **Collection Progress Bar**: Tier-based colors, animated gradient, percentage display, and contextual encouragement.
-- **Toast Notifications**: Sequential queue-based display system for real-time events.
-- **Tier Emoji System**: Centralized JSON-based emoji constants for various tiers.
+- **Collection Progress Bar**: Tier-based colors, animated gradient, percentage display.
+- **Toast Notifications**: Sequential queue-based display.
+- **Tier Emoji System**: Centralized JSON-based emoji constants.
 
 **Technical Implementations:**
-- **Frontend**: React 19, React Router v7, TanStack Query for server state, Zustand for global state, Vite for tooling, and Socket.IO Client for real-time updates.
-- **Auth Status Endpoint**: `/api/customer/status` fetches fresh user data from database on every request to ensure profile updates (handle, privacy settings, avatar) are immediately reflected in the frontend without requiring re-login.
-- **Icon Rendering**: Unified icon utility (`src/utils/iconUtils.jsx`) handles all achievement icon types (emoji, URL, base64) consistently across all components. The `getAssetUrl()` helper returns relative paths (starting with `/`) as-is for same-origin serving. Vite dev server proxies `/objects` requests to backend on port 5000. All achievement icons are stored in Replit Object Storage with leading-slash paths (e.g., `/objects/achievement-icons/xxx.png`).
-- **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking (Socket.IO, DnD Kit, React Query, Sentry, Router). Main bundle reduced from 979 kB to 222 kB (77% reduction, gzipped: 294 kB → 70 kB). Individual route chunks load on-demand (1-30 kB each).
+- **Frontend**: React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client.
 - **Backend**: Node.js and Express.js, employing a repository pattern.
-- **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration for real-time query invalidation.
-- **Real-time Communication**: Socket.IO for achievement notifications with pending queue and multi-device support.
-- **Session Security**: Production-grade authentication using httpOnly cookies, 90-day server-side sessions, and single-domain enforcement.
+- **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration.
+- **Real-time Communication**: Socket.IO for achievement notifications with multi-device support.
+- **Session Security**: Production-grade authentication using httpOnly cookies, 90-day server-side sessions.
 - **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
-- **Product Management**: Combines external data with metadata and ranking statistics, including advanced filtering.
-- **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks, with caching and orphan cleanup. Real-time customer profile updates (name, email, membership date) via `customers/update` webhook with targeted cache invalidation.
-- **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications. Automatic real-time achievement checking via WebSocket.
-- **Page View Tracking**: Asynchronous tracking for analytics.
-- **Timestamp Handling**: All database timestamps are ISO 8601 UTC; client-side relative time calculation.
-- **Performance**: OOP design patterns, caching, query optimization.
-- **Search**: Global unified search for products and community members.
-- **Styling**: Custom CSS with an earth-tone palette and component-scoped class names.
+- **Icon Rendering**: Unified utility (`src/utils/iconUtils.jsx`) for various icon types (emoji, URL, base64).
+- **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking.
+- **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks with caching and orphan cleanup.
+- **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications.
+- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine (BullMQ-based) that analyzes user behavior to provide targeted messages with CTAs.
+- **Flavor Profile Communities**: Micro-community system tracking user journey states and admin-configurable thresholds.
+- **User Classification System**: Tracks journey stages, engagement levels, and exploration breadth.
+- **Unified Activity Tracking**: All user activities tracked in `user_activities` table.
+- **Leaderboard Performance Optimization**: Achieved 345,000x speedup through pre-aggregated `user_engagement_scores` rollup table, incremental score updates with race-condition-safe UPSERT, Redis-backed distributed cache, granular cache invalidation, and optimized queries with composite database indexes.
+- **Ranking Race Condition Fix**: Implemented sequence-based staleness detection.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
-- **Feature Flags**: JSON-based configuration system for cross-environment compatibility.
-- **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine that analyzes user behavior to provide targeted messages with CTAs. Enhanced with achievement hooks and flavor profile community integration.
-  - **Event-Driven Classification Architecture**: BullMQ-based background processing system where user activities trigger asynchronous classification jobs that pre-calculate and cache guidance messages.
-  - **ClassificationQueue Service**: Smart hybrid debouncing using Redis tracking to prevent queue flooding.
-  - **ClassificationWorker Background Service**: Processes queue jobs with a pipeline to classify users, update flavor communities, calculate guidance, and write to `user_guidance_cache`.
-  - **Cache-First API Strategy**: `/api/gamification/user-guidance` endpoint reads from `user_guidance_cache` first.
-- **Flavor Profile Communities**: Micro-community system tracking user journey states (Curious → Seeker → Taster → Enthusiast/Explorer/Moderate) for each flavor profile with admin-configurable thresholds.
-- **User Classification System**: `UserClassificationService` tracks journey stages, engagement levels, and exploration breadth.
-- **Unified Activity Tracking**: All user activities are tracked in the centralized `user_activities` table.
-- **Engagement Tracking**: `EngagementManager` and `LeaderboardManager` read from the unified `user_activities` table.
-- **Ranking Race Condition Fix**: Implemented sequence-based staleness detection to prevent data loss during rapid ranking operations.
+- **Feature Flags**: JSON-based configuration system.
 
 **Feature Specifications:**
-- **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI, and a hybrid reliability system. Non-employee users can only rank purchased products.
+- **Ranking**: Persistent rankings with visual modal, duplicate prevention, optimistic UI.
 - **Flavors Page**: Advanced sorting, filtering, client-side instant search, and server-side pagination.
-- **Product Detail Page**: Comprehensive product information including image, brand, animal type, primary/secondary flavors, pricing, ranking statistics, and product tags.
-- **Flavor Profile Pages**: Dynamic pages for each flavor type displaying all products with that flavor.
-- **Purchase History**: Automatic background synchronization of Shopify orders on login.
-- **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage. Member Since dates display true jerky.com community membership date from Shopify (falls back to ranking site account creation date).
-- **Leaderboard**: Top 50 rankers with engagement scores and badges. LeaderboardManager uses CommunityService for privacy-aware formatting (displayName, initials, avatarUrl) with null-safe fallbacks. Avatar display integrated across home page top rankers widget (40px) and full leaderboard page (50px) with consistent styling.
-- **User Profile**: 
-  - **Private Profile Page** (`/profile`): Clean personal dashboard displaying "FirstName L." format regardless of privacy settings. Includes profile photo upload with professional crop/compress flow, handle management, and privacy controls. Privacy checkbox currently hidden for future rollout but infrastructure remains functional. Features "Edit Jerky.com Profile" button and disclaimers explaining that user's name comes from their jerky.com profile with links to edit at jerky.com/account.
-  - **Profile Picture Upload**: Professional image upload system with react-easy-crop for drag-to-crop functionality, circular preview overlay, and client-side compression. All profile images are automatically cropped to 512x512 pixels, compressed to JPEG format targeting <200KB file size. Multi-layer validation ensures security: client-side type/size checks in crop modal and upload handler, server-side JPEG magic byte verification (0xFFD8FF), dimension enforcement, and actual file type verification using image-size library. Images stored in Replit Object Storage.
-  - **Public Profile Pages** (`/community/:userId`): Privacy-aware display using CommunityService with avatar support, ranking stats, clickable flavor links, and clickable achievement coins.
+- **Product Detail Page**: Comprehensive product information including images, brand, flavors, pricing, ranking statistics, and tags.
+- **Flavor Profile Pages**: Dynamic pages for each flavor type.
+- **Purchase History**: Automatic background synchronization of Shopify orders.
+- **Community**: User discovery, search, profiles with ranking stats, top rankers widget, privacy-aware display, avatar support.
+- **Leaderboard**: Top 50 rankers with engagement scores and badges.
+- **User Profile**: Private dashboard with handle management, privacy controls, and professional profile picture upload system (cropping, compression, multi-layer validation, Replit Object Storage). Public profile pages with privacy-aware display.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
-- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling. Museum black background (#1a1a1a), perfectly circular coin slots (110px with 1:1 aspect ratio) with comprehensive tier-aware styling:
-  - **Locked Coins**: White circular inserts with inset 3D appearance using box-shadow, 3px solid borders, greyed-out icons (grayscale + 30% opacity)
-  - **Earned Coins**: Raised 3D appearance with tier differentiation through backgrounds and glows only
-  - **Border Strategy**: CSS black dashed borders (2px) for emoji achievements; image-based badges have borders baked into the image design (`:has(img)` selector removes CSS border)
-  - **Tier-Specific Styling**: Bronze (copper glow), Silver (silver glow), Gold (golden shimmer), Platinum (platinum sheen), Diamond (cyan glow) with radial gradient backgrounds and metallic inner highlights
-  - **Coin Images**: Fill entire circular slot using `transform: scale(2.4)` with `object-fit: cover` and `border-radius: 50%` for perfect circular clipping
-  - **Tier Badges**: Positioned at top center inside coins (top: 5%, centered)
-  - **Hover Effects**: Enhanced 3D lift with stronger shadows and tier-specific glows for earned coins, subtle lift for locked coins
-  - **Tooltips**: Dark themed popovers (z-index: 10000) showing achievement name, description, tier progress, and requirement hints. Always appear on top of all coins
-  - **CSS Architecture**: All rules scoped under `.coinbook-widget` with full `border` shorthand property and `!important` to prevent specificity collisions with global `.tier-*` classes. Feature-based organization (7 features) for maintainability
-- **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates.
-- **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, user guidance analytics, and bulk import.
-- **Bulk Import System**: Comprehensive system for importing all Shopify customers and their complete purchase history with real-time monitoring.
-  - **Architecture**: Event-driven BullMQ-based background processing with `ShopifyCustomersService`, `BulkImportService`, `BulkImportQueue`, and `BulkImportWorker`.
-  - **Network Reliability**: Exponential backoff retry utility (`retryWithBackoff.js`) handles transient network errors.
-  - **Database Tracking**: Users table includes fields for tracking import completion.
-  - **Worker Integration**: `BulkImportWorker` reuses existing `PurchaseHistoryService` for order synchronization and triggers `ClassificationQueue` jobs.
-  - **Admin Interface**: `BulkImportPage.jsx` provides real-time progress monitoring via WebSocket.
-  - **WebSocket Updates**: Real-time queue stats and Shopify gap stats broadcast for live progress tracking.
-  - **API Routes**: Super admin protected endpoints for starting imports, checking status, and monitoring progress.
-  - **UI Organization**: Logical 3-step pipeline (Fetch Customers → Import Users → Complete) with System Status, Shopify gap metric, Import Pipeline visualization, Current Step Details, and Import Controls.
+- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling, tier-aware styling, hover effects, and tooltips.
+- **Coin Type Configuration**: Database-driven system for managing five coin types via an Admin UI.
+- **Admin Tools**: React-based dashboard with EmployeeRoute protection for managing coins, users, products, orders, Sentry errors, data, flavor profile communities, user guidance analytics, and bulk import.
+- **Bulk Import System**: Comprehensive event-driven (BullMQ-based) system for importing Shopify customers and purchase history with real-time monitoring via WebSockets.
 
 ## External Dependencies
 - **Database**: PostgreSQL with Drizzle ORM.
-- **Error Tracking**: Sentry.io with comprehensive integration for backend and frontend.
+- **Error Tracking**: Sentry.io.
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
 - **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icons.

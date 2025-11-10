@@ -43,7 +43,7 @@ class EngagementScoreService {
 
   async _incrementMetric(userId, metrics, timestamp = new Date()) {
     const updates = Object.entries(metrics)
-      .map(([key, value]) => `${key} = ${key} + ${value}`)
+      .map(([key, value]) => `${key} = user_engagement_scores.${key} + ${value}`)
       .join(', ');
 
     const allTimeFields = ['achievements_count', 'page_views_count', 'rankings_count', 'searches_count'];
