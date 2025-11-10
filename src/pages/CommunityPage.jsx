@@ -5,7 +5,7 @@ import { useHomeStats } from '../hooks/useGamification';
 import PodiumWidget from '../components/community/PodiumWidget';
 import CommunityStatsBar from '../components/community/CommunityStatsBar';
 import JourneySection from '../components/community/JourneySection';
-import ActivityFeed from '../components/community/ActivityFeed';
+import CommunityPulse from '../components/community/CommunityPulse';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './CommunityPage.css';
 
@@ -34,9 +34,8 @@ function CommunityPage() {
 
         <JourneySection />
 
-        <ActivityFeed 
-          recentAchievements={homeStats?.recentAchievements}
-          recentlyRanked={homeStats?.recentlyRanked}
+        <CommunityPulse 
+          activityStats={homeStats?.activityStats}
           isLoading={statsLoading}
         />
 
