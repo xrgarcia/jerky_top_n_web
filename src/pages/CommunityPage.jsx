@@ -109,74 +109,50 @@ function CommunityPage() {
               {error && <div className="error">Failed to load community members</div>}
 
               {!isLoading && !error && users.length > 0 && (
-                <div className="users-preview">
-                  {users.slice(0, 4).map(user => (
+                <div className="users-grid">
+                  {users.map(user => (
                     <Link 
                       key={user.user_id} 
                       to={`/community/${user.user_id}`}
-                      className="user-card-mini"
+                      className="user-card"
                     >
-                      <div className="avatar avatar-medium">
+                      <div className="avatar avatar-large">
                         {user.avatar_url ? (
                           <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
                         ) : (
                           <div className="avatar-initials">{user.initials}</div>
                         )}
                       </div>
-                      <div className="user-card-mini-info">
-                        <h4 className="user-name-mini">{user.display_name}</h4>
-                        <span className="user-score-mini">🏆 {user.engagement_score || 0} pts</span>
+                      <h3 className="user-name">{user.display_name}</h3>
+                      <div className="user-stats">
+                        <div className="user-stat">
+                          <span className="stat-icon">🥩</span>
+                          <span>{user.unique_products || 0} products</span>
+                        </div>
+                        <div className="user-stat">
+                          <span className="stat-icon">🏆</span>
+                          <span>{user.engagement_score || 0} pts</span>
+                        </div>
                       </div>
+                      {user.badges && user.badges.length > 0 && (
+                        <div className="user-badges">
+                          {user.badges.slice(0, 3).map((badge, i) => (
+                            <span key={i} className="badge" title={badge.name}>
+                              {renderAchievementIcon(badge, 24)}
+                            </span>
+                          ))}
+                        </div>
+                      )}
                     </Link>
                   ))}
                 </div>
               )}
+
+              {!isLoading && !error && users.length === 0 && (
+                <div className="no-results">No community members found</div>
+              )}
             </div>
           </div>
-
-          {!isLoading && !error && users.length > 4 && (
-            <div className="users-grid">
-              {users.slice(4).map(user => (
-                <Link 
-                  key={user.user_id} 
-                  to={`/community/${user.user_id}`}
-                  className="user-card"
-                >
-                  <div className="avatar avatar-large">
-                    {user.avatar_url ? (
-                      <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
-                    ) : (
-                      <div className="avatar-initials">{user.initials}</div>
-                    )}
-                  </div>
-                  <h3 className="user-name">{user.display_name}</h3>
-                  <div className="user-stats">
-                    <div className="user-stat">
-                      <span className="stat-icon">🥩</span>
-                      <span>{user.unique_products || 0} products</span>
-                    </div>
-                    <div className="user-stat">
-                      <span className="stat-icon">🏆</span>
-                      <span>{user.engagement_score || 0} pts</span>
-                    </div>
-                  </div>
-                  {user.badges && user.badges.length > 0 && (
-                    <div className="user-badges">
-                      {user.badges.slice(0, 3).map((badge, i) => (
-                        <span key={i} className="badge" title={badge.name}>
-                          {renderAchievementIcon(badge, 24)}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {!isLoading && !error && users.length === 0 && (
-            <div className="no-results">No community members found</div>
-          )}
         </div>
       </section>
     </div>

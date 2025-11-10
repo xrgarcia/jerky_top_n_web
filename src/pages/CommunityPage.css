@@ -131,10 +131,9 @@
 
 .discover-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.9fr 1.6fr;
   gap: 60px;
   align-items: start;
-  margin-bottom: 60px;
 }
 
 .discover-left {
@@ -144,48 +143,6 @@
 
 .discover-right {
   min-height: 400px;
-}
-
-.users-preview {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 16px;
-}
-
-.user-card-mini {
-  background: white;
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  text-decoration: none;
-  border: 1px solid rgba(139, 69, 19, 0.1);
-  transition: all 0.3s ease;
-}
-
-.user-card-mini:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.15);
-  border-color: rgba(139, 69, 19, 0.3);
-}
-
-.user-card-mini-info {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.user-name-mini {
-  font-size: 16px;
-  font-weight: 700;
-  color: #2c2c2c;
-  margin: 0;
-}
-
-.user-score-mini {
-  font-size: 13px;
-  color: #666;
 }
 
 .search-title {
