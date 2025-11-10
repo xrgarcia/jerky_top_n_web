@@ -178,6 +178,61 @@ class PurchaseHistoryRepository {
       return [];
     }
   }
+
+  /**
+   * Count distinct products purchased by user
+   * @param {number} userId - The user's ID
+   * @returns {Promise<number>} Count of unique products purchased
+   */
+  async countDistinctProductsByUser(userId) {
+    try {
+      const result = await db
+        .select({
+          count: sql`COUNT(DISTINCT ${customerOrderItems.shopifyProductId})`
+        })
+        .from(customerOrderItems)
+        .where(eq(customerOrderItems.userId, userId));
+      
+      return Number(result[0]?.count || 0);
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { userId }
+      });
+      console.error('Error counting distinct products:', error);
+      return 0;
+    }
+  }
+
+  /**
+   * Get user's favorite product (product with highest total quantity ordered)
+   * @param {number} userId - The user's ID
+   * @returns {Promise<Object|null>} Favorite product with shopifyProductId and totalQuantity, or null
+   */
+  async getFavoriteProductByUser(userId) {
+    try {
+      const result = await db
+        .select({
+          shopifyProductId: customerOrderItems.shopifyProductId,
+          totalQuantity: sql`SUM(${customerOrderItems.quantity})::int`,
+          lastOrderDate: sql`MAX(${customerOrderItems.orderDate})`
+        })
+        .from(customerOrderItems)
+        .where(eq(customerOrderItems.userId, userId))
+        .groupBy(customerOrderItems.shopifyProductId)
+        .orderBy(sql`SUM(${customerOrderItems.quantity}) DESC, MAX(${customerOrderItems.orderDate}) DESC`)
+        .limit(1);
+      
+      return result[0] || null;
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'purchase-history-repository' },
+        extra: { userId }
+      });
+      console.error('Error fetching favorite product:', error);
+      return null;
+    }
+  }
 }
 
 module.exports = new PurchaseHistoryRepository();
