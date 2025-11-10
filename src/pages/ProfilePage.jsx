@@ -479,6 +479,7 @@ function ProfilePage() {
           )}
         </div>
 
+        {/* Stats Overview */}
         <div className="stats-grid">
           <div className="stat-card">
             <div className="stat-icon">🥩</div>
@@ -502,9 +503,80 @@ function ProfilePage() {
           </div>
         </div>
 
-        <div className="recent-rankings">
-          <h2>Recent Rankings</h2>
-          <p className="no-rankings">Rankings feature coming soon!</p>
+        {/* Jerky Journey Progress */}
+        <div className="journey-section">
+          <h2 className="section-title">🗺️ Your Jerky Journey</h2>
+          <div className="journey-grid">
+            <div className="journey-card">
+              <div className="journey-icon">🎯</div>
+              <div className="journey-content">
+                <div className="journey-stat">{progress?.achievementsEarned || 0} / {progress?.totalAchievements || 30}</div>
+                <div className="journey-label">Achievements Unlocked</div>
+                {progress?.nextAchievement && (
+                  <div className="journey-hint">Next: {progress.nextAchievement}</div>
+                )}
+              </div>
+            </div>
+            
+            <div className="journey-card">
+              <div className="journey-icon">🔥</div>
+              <div className="journey-content">
+                <div className="journey-stat">{progress?.currentStreak || 0} days</div>
+                <div className="journey-label">Current Ranking Streak</div>
+                {progress?.longestStreak > 0 && (
+                  <div className="journey-hint">Best: {progress.longestStreak} days</div>
+                )}
+              </div>
+            </div>
+
+            <div className="journey-card">
+              <div className="journey-icon">🌶️</div>
+              <div className="journey-content">
+                <div className="journey-stat">{progress?.uniqueFlavors || 0}</div>
+                <div className="journey-label">Unique Flavors Ranked</div>
+                <div className="journey-hint">Keep exploring!</div>
+              </div>
+            </div>
+
+            <div className="journey-card">
+              <div className="journey-icon">🦌</div>
+              <div className="journey-content">
+                <div className="journey-stat">{progress?.uniqueAnimals || 0}</div>
+                <div className="journey-label">Animal Types Tried</div>
+                <div className="journey-hint">Expand your palate</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="quick-actions-section">
+          <h2 className="section-title">⚡ Quick Actions</h2>
+          <div className="quick-actions-grid">
+            <a href="/rank" className="action-card">
+              <div className="action-icon">🥩</div>
+              <div className="action-label">Rank Jerky</div>
+              <div className="action-hint">Build your rankings</div>
+            </a>
+            
+            <a href="/flavors" className="action-card">
+              <div className="action-icon">🌶️</div>
+              <div className="action-label">Explore Flavors</div>
+              <div className="action-hint">Discover new tastes</div>
+            </a>
+            
+            <a href="/coin-book" className="action-card">
+              <div className="action-icon">🏆</div>
+              <div className="action-label">Coin Book</div>
+              <div className="action-hint">Track achievements</div>
+            </a>
+            
+            <a href="/community" className="action-card">
+              <div className="action-icon">👥</div>
+              <div className="action-label">Community</div>
+              <div className="action-hint">Connect with others</div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
