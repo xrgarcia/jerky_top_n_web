@@ -339,3 +339,115 @@
 }
 
 /* END FEATURE 6 */
+
+/* FEATURE 7: TIER BADGES, TOOLTIPS, ICON SIZING */
+
+/* Coin icon sizing */
+.coinbook-widget .coin-icon {
+  font-size: 48px;
+  line-height: 1;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.coinbook-widget .coin-icon img {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* Tier badge overlay - positioned in top-right */
+.coinbook-widget .tier-badge-overlay {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  font-size: 18px;
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Tooltip styling */
+.coinbook-widget .achievement-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-8px);
+  background-color: rgba(0, 0, 0, 0.95);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  min-width: 200px;
+  white-space: normal;
+  max-width: 300px;
+}
+
+.coinbook-widget .achievement-coin:hover .achievement-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-12px);
+}
+
+.coinbook-widget .achievement-tooltip strong {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+.coinbook-widget .tooltip-description {
+  display: block;
+  color: #cccccc;
+  margin-bottom: 6px;
+  font-size: 12px;
+}
+
+.coinbook-widget .tooltip-tier {
+  display: block;
+  color: #4a9eff;
+  font-weight: 500;
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.coinbook-widget .tooltip-tier-progress {
+  color: #aaaaaa;
+  font-weight: normal;
+  font-size: 12px;
+}
+
+.coinbook-widget .requirement-hint {
+  display: block;
+  color: #ffaa44;
+  font-style: italic;
+  margin-top: 6px;
+  font-size: 12px;
+}
+
+/* Tooltip arrow */
+.coinbook-widget .achievement-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: rgba(0, 0, 0, 0.95);
+}
+
+/* END FEATURE 7 */
