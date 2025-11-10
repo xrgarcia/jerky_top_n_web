@@ -224,6 +224,18 @@ app.use(express.static('public/dist', {
   }
 }));
 
+// Serve React SPA index.html for all non-API routes (EARLY REGISTRATION)
+// This ensures the app is available even during slow initialization
+const path = require('path');
+app.get('*', (req, res, next) => {
+  // Skip API routes - let them go through to their handlers
+  if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path.startsWith('/objects')) {
+    return next();
+  }
+  // Serve React app for all other routes
+  res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
+});
+
 // Note: Shopify webhook routes are mounted after gamification initialization
 // to ensure WebSocket gateway is available for real-time order updates
 
@@ -3798,20 +3810,11 @@ if (databaseAvailable && storage) {
       app.use('/api/admin', limiters.adminLimiter, adminRouter);
       console.log('✅ Admin routes registered at /api/admin');
       
-      // Main route - serves React SPA for all routes (MUST BE LAST)
-      app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
-      });
-      console.log('✅ Catch-all route registered (serves React SPA)');
+      console.log('✅ All routes initialized (catch-all already registered early)');
     })
     .catch(error => {
       console.error('❌ Failed to initialize gamification:', error);
     });
-} else {
-  // If gamification not available, still need catch-all route
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
-  });
 }
 
 // Sentry error handling middleware (must be before other error handlers)
