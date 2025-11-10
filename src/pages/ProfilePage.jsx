@@ -294,16 +294,6 @@ function ProfilePage() {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="profile-page">
-        <div className="profile-container">
-          <div className="loading">Loading profile...</div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="profile-page">
       <div className="profile-container">

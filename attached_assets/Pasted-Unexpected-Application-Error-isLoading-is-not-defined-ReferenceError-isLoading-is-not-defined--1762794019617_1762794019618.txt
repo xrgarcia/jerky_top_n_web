@@ -1,0 +1,18 @@
+Unexpected Application Error!
+isLoading is not defined
+ReferenceError: isLoading is not defined
+    at ProfilePage (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/pages/ProfilePage.jsx:221:3)
+    at Object.react_stack_bottom_frame (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:18509:20)
+    at renderWithHooks (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:5654:24)
+    at updateFunctionComponent (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:7475:21)
+    at beginWork (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:8484:199)
+    at runWithFiberInDEV (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:997:72)
+    at performUnitOfWork (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:12561:98)
+    at workLoopSync (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:12424:43)
+    at renderRootSync (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:12408:13)
+    at performWorkOnRoot (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:11827:37)
+    at performWorkOnRootViaSchedulerTask (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:13505:9)
+    at MessagePort.performWorkUntilDeadline (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=4798977f:36:50)
+💿 Hey developer 👋
+
+You can provide a way better UX than this when your app throws errors by providing your own ErrorBoundary or errorElement prop on your route.
