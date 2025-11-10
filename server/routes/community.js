@@ -162,7 +162,8 @@ function createCommunityRoutes(services) {
       const currentStreak = streakResult.rows[0]?.current_streak || 0;
 
       // Get member since date
-      const memberSince = user.createdAt;
+      // Use Shopify created_at (true jerky.com member date) if available, otherwise fall back to local account creation
+      const memberSince = user.shopifyCreatedAt || user.createdAt;
 
       res.json({
         user: {
