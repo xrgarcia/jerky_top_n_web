@@ -30,6 +30,13 @@ class WebhookCustomerService {
     try {
       const shopifyCustomerId = String(customerData.id);
       
+      console.log(`📥 Shopify customer data received:`, {
+        id: customerData.id,
+        first_name: customerData.first_name,
+        last_name: customerData.last_name,
+        email: customerData.email
+      });
+      
       // Find user by Shopify customer ID
       const [user] = await this.db
         .select()
