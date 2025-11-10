@@ -54,9 +54,11 @@ function PodiumWidget({ rankers, isLoading }) {
                 <div className="position-badge">{getPositionLabel(index)}</div>
               </div>
             </div>
-            <div className="ranker-info">
-              <div className="ranker-name">{ranker.displayName}</div>
-              <div className="ranker-score">{ranker.engagementScore} pts</div>
+            <div className="podium-platform">
+              <div className="ranker-info">
+                <div className="ranker-name">{ranker.displayName}</div>
+                <div className="ranker-score">{ranker.engagementScore} pts</div>
+              </div>
             </div>
           </Link>
         ))}

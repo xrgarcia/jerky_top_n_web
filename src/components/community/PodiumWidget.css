@@ -1,9 +1,9 @@
 .podium-widget {
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   border-radius: 16px;
-  padding: 40px 30px;
+  padding: 40px 30px 50px;
   margin: 0 auto 40px;
-  max-width: 1000px;
+  max-width: 1100px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
@@ -22,7 +22,7 @@
 .podium-title {
   font-size: 1.8em;
   color: #f5f3ed;
-  margin-bottom: 35px;
+  margin-bottom: 40px;
   text-align: center;
   text-shadow: 0 2px 8px rgba(196, 169, 98, 0.3);
 }
@@ -31,9 +31,10 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 20px;
+  gap: 25px;
   flex-wrap: wrap;
-  min-height: 200px;
+  min-height: 280px;
+  padding-bottom: 20px;
 }
 
 .podium-ranker {
@@ -43,18 +44,15 @@
   text-decoration: none;
   transition: transform 0.3s ease;
   position: relative;
-  padding: 20px;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
 }
 
 .podium-ranker:hover {
-  transform: translateY(-8px);
+  transform: translateY(-10px);
 }
 
 .podium-glow-container {
   position: relative;
-  margin-bottom: 15px;
+  margin-bottom: 0;
 }
 
 .lunar-eclipse {
@@ -62,8 +60,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 120px;
-  height: 120px;
+  width: 140px;
+  height: 140px;
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
@@ -75,8 +73,6 @@
 }
 
 .avatar-podium {
-  width: 80px;
-  height: 80px;
   border-radius: 50%;
   overflow: hidden;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
@@ -84,16 +80,39 @@
 
 .position-badge {
   position: absolute;
-  bottom: -5px;
-  right: -5px;
-  background: linear-gradient(135deg, #c4a962, #d4b972);
+  bottom: -8px;
+  right: -8px;
   color: #1a1a1a;
   font-weight: 700;
-  font-size: 0.85em;
-  padding: 4px 10px;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(196, 169, 98, 0.4);
+  font-size: 0.9em;
+  padding: 5px 12px;
+  border-radius: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   border: 2px solid #1a1a1a;
+  z-index: 2;
+}
+
+.podium-platform {
+  margin-top: 15px;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 25px;
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
+}
+
+.podium-platform::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
 }
 
 .ranker-info {
@@ -103,15 +122,15 @@
 .ranker-name {
   font-size: 1.1em;
   font-weight: 600;
-  color: #f5f3ed;
+  color: #1a1a1a;
   margin-bottom: 5px;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
 }
 
 .ranker-score {
-  font-size: 0.95em;
-  color: #c4a962;
-  font-weight: 500;
+  font-size: 0.9em;
+  color: rgba(0, 0, 0, 0.7);
+  font-weight: 600;
 }
 
 .position-1 {
@@ -121,144 +140,194 @@
 .position-1 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(255, 223, 186, 0.4) 0%,
-    rgba(255, 223, 186, 0.3) 20%,
-    rgba(255, 223, 186, 0.15) 40%,
-    rgba(255, 223, 186, 0.08) 60%,
+    rgba(185, 242, 255, 0.5) 0%,
+    rgba(185, 242, 255, 0.35) 20%,
+    rgba(185, 242, 255, 0.2) 40%,
+    rgba(185, 242, 255, 0.1) 60%,
     transparent 80%
   );
   box-shadow: 
-    0 0 40px rgba(255, 223, 186, 0.5),
-    0 0 80px rgba(255, 223, 186, 0.3),
-    0 0 120px rgba(255, 223, 186, 0.2),
-    inset 0 0 40px rgba(255, 223, 186, 0.1);
+    0 0 50px rgba(185, 242, 255, 0.6),
+    0 0 100px rgba(185, 242, 255, 0.4),
+    0 0 150px rgba(185, 242, 255, 0.3),
+    inset 0 0 50px rgba(185, 242, 255, 0.15);
   animation: lunar-pulse 3s ease-in-out infinite;
-  width: 180px;
-  height: 180px;
+  width: 220px;
+  height: 220px;
 }
 
 .position-1 .avatar-podium {
-  width: 100px;
-  height: 100px;
-  border: 3px solid rgba(255, 223, 186, 0.6);
+  width: 130px;
+  height: 130px;
+  border: 4px solid rgba(185, 242, 255, 0.7);
   box-shadow: 
-    0 0 20px rgba(255, 223, 186, 0.4),
-    0 4px 16px rgba(0, 0, 0, 0.5);
+    0 0 30px rgba(185, 242, 255, 0.5),
+    0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
 .position-1 .position-badge {
-  background: linear-gradient(135deg, #FFD700, #FFA500);
-  font-size: 1em;
-  padding: 5px 12px;
-  animation: badge-glow 2s ease-in-out infinite;
+  background: linear-gradient(135deg, #b9f2ff, #7dd3fc);
+  font-size: 1.05em;
+  padding: 6px 14px;
+  animation: badge-glow-diamond 2s ease-in-out infinite;
+}
+
+.position-1 .podium-platform {
+  background: linear-gradient(135deg, #d0e8f0 0%, #e6f7ff 100%);
+  height: 140px;
+  width: 180px;
 }
 
 .position-2 {
   order: 1;
-  margin-bottom: 20px;
 }
 
 .position-2 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(192, 192, 192, 0.25) 0%,
-    rgba(192, 192, 192, 0.15) 30%,
-    rgba(192, 192, 192, 0.08) 50%,
+    rgba(230, 230, 230, 0.35) 0%,
+    rgba(230, 230, 230, 0.25) 30%,
+    rgba(230, 230, 230, 0.12) 50%,
     transparent 70%
   );
   box-shadow: 
-    0 0 30px rgba(192, 192, 192, 0.3),
-    0 0 60px rgba(192, 192, 192, 0.2);
-  width: 140px;
-  height: 140px;
+    0 0 40px rgba(230, 230, 230, 0.4),
+    0 0 80px rgba(230, 230, 230, 0.25);
+  width: 170px;
+  height: 170px;
 }
 
 .position-2 .avatar-podium {
-  width: 90px;
-  height: 90px;
-  border: 2px solid rgba(192, 192, 192, 0.4);
+  width: 100px;
+  height: 100px;
+  border: 3px solid rgba(230, 230, 230, 0.5);
   box-shadow: 
-    0 0 15px rgba(192, 192, 192, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.5);
+    0 0 20px rgba(230, 230, 230, 0.4),
+    0 5px 18px rgba(0, 0, 0, 0.6);
 }
 
 .position-2 .position-badge {
-  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+}
+
+.position-2 .podium-platform {
+  background: linear-gradient(135deg, #d8d8d8 0%, #f0f0f0 100%);
+  height: 110px;
+  width: 160px;
 }
 
 .position-3 {
   order: 3;
-  margin-bottom: 20px;
 }
 
 .position-3 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(205, 127, 50, 0.2) 0%,
-    rgba(205, 127, 50, 0.1) 30%,
-    rgba(205, 127, 50, 0.05) 50%,
+    rgba(255, 215, 0, 0.3) 0%,
+    rgba(255, 215, 0, 0.2) 30%,
+    rgba(255, 215, 0, 0.1) 50%,
     transparent 70%
   );
   box-shadow: 
-    0 0 25px rgba(205, 127, 50, 0.2),
-    0 0 50px rgba(205, 127, 50, 0.15);
-  width: 130px;
-  height: 130px;
+    0 0 35px rgba(255, 215, 0, 0.35),
+    0 0 70px rgba(255, 215, 0, 0.2);
+  width: 160px;
+  height: 160px;
 }
 
 .position-3 .avatar-podium {
-  width: 85px;
-  height: 85px;
-  border: 2px solid rgba(205, 127, 50, 0.3);
+  width: 90px;
+  height: 90px;
+  border: 3px solid rgba(255, 215, 0, 0.4);
   box-shadow: 
-    0 0 12px rgba(205, 127, 50, 0.25),
-    0 4px 16px rgba(0, 0, 0, 0.5);
+    0 0 18px rgba(255, 215, 0, 0.35),
+    0 5px 18px rgba(0, 0, 0, 0.6);
 }
 
 .position-3 .position-badge {
-  background: linear-gradient(135deg, #CD7F32, #B8732C);
+  background: linear-gradient(135deg, #FFD700, #FFC107);
+}
+
+.position-3 .podium-platform {
+  background: linear-gradient(135deg, #f4e4b8 0%, #fff9e6 100%);
+  height: 100px;
+  width: 155px;
 }
 
 .position-4 {
   order: 4;
-  margin-bottom: 30px;
 }
 
 .position-4 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(196, 169, 98, 0.15) 0%,
-    rgba(196, 169, 98, 0.08) 30%,
-    transparent 60%
+    rgba(205, 127, 50, 0.25) 0%,
+    rgba(205, 127, 50, 0.15) 30%,
+    rgba(205, 127, 50, 0.08) 50%,
+    transparent 70%
   );
-  box-shadow: 0 0 20px rgba(196, 169, 98, 0.15);
+  box-shadow: 
+    0 0 25px rgba(205, 127, 50, 0.25),
+    0 0 50px rgba(205, 127, 50, 0.15);
+  width: 140px;
+  height: 140px;
 }
 
 .position-4 .avatar-podium {
   width: 75px;
   height: 75px;
-  border: 1px solid rgba(196, 169, 98, 0.2);
+  border: 2px solid rgba(205, 127, 50, 0.35);
+  box-shadow: 
+    0 0 15px rgba(205, 127, 50, 0.3),
+    0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.position-4 .position-badge {
+  background: linear-gradient(135deg, #CD7F32, #B8732C);
+}
+
+.position-4 .podium-platform {
+  background: linear-gradient(135deg, #d4c4a8 0%, #e8dcc8 100%);
+  height: 80px;
+  width: 140px;
 }
 
 .position-5 {
   order: 5;
-  margin-bottom: 30px;
 }
 
 .position-5 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(196, 169, 98, 0.1) 0%,
-    rgba(196, 169, 98, 0.05) 30%,
-    transparent 60%
+    rgba(192, 192, 192, 0.2) 0%,
+    rgba(192, 192, 192, 0.12) 30%,
+    rgba(192, 192, 192, 0.06) 50%,
+    transparent 70%
   );
-  box-shadow: 0 0 15px rgba(196, 169, 98, 0.1);
+  box-shadow: 
+    0 0 20px rgba(192, 192, 192, 0.2),
+    0 0 40px rgba(192, 192, 192, 0.12);
+  width: 130px;
+  height: 130px;
 }
 
 .position-5 .avatar-podium {
-  width: 70px;
+  width: 68px;
+  height: 68px;
+  border: 2px solid rgba(192, 192, 192, 0.3);
+  box-shadow: 
+    0 0 12px rgba(192, 192, 192, 0.25),
+    0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.position-5 .position-badge {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+}
+
+.position-5 .podium-platform {
+  background: linear-gradient(135deg, #c8c8c8 0%, #e0e0e0 100%);
   height: 70px;
-  border: 1px solid rgba(196, 169, 98, 0.15);
+  width: 130px;
 }
 
 @keyframes lunar-pulse {
@@ -267,70 +336,105 @@
     transform: translate(-50%, -50%) scale(1);
   }
   50% {
-    opacity: 0.85;
-    transform: translate(-50%, -50%) scale(1.05);
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.08);
   }
 }
 
-@keyframes badge-glow {
+@keyframes badge-glow-diamond {
   0%, 100% {
     box-shadow: 
-      0 2px 8px rgba(255, 215, 0, 0.4),
-      0 0 15px rgba(255, 215, 0, 0.3);
+      0 2px 10px rgba(185, 242, 255, 0.5),
+      0 0 20px rgba(185, 242, 255, 0.4);
   }
   50% {
     box-shadow: 
-      0 2px 12px rgba(255, 215, 0, 0.6),
-      0 0 25px rgba(255, 215, 0, 0.5);
+      0 2px 16px rgba(185, 242, 255, 0.7),
+      0 0 35px rgba(185, 242, 255, 0.6);
   }
 }
 
 @media (max-width: 768px) {
   .podium-widget {
-    padding: 30px 20px;
+    padding: 30px 15px 40px;
   }
 
   .podium-stage {
-    gap: 15px;
-  }
-
-  .podium-ranker {
-    padding: 15px;
+    gap: 12px;
   }
 
   .position-1 .lunar-eclipse {
-    width: 150px;
-    height: 150px;
+    width: 170px;
+    height: 170px;
   }
 
   .position-1 .avatar-podium {
-    width: 85px;
-    height: 85px;
+    width: 100px;
+    height: 100px;
+  }
+
+  .position-1 .podium-platform {
+    height: 120px;
+    width: 140px;
   }
 
   .position-2 .lunar-eclipse,
   .position-3 .lunar-eclipse {
-    width: 120px;
-    height: 120px;
+    width: 140px;
+    height: 140px;
   }
 
-  .position-2 .avatar-podium,
+  .position-2 .avatar-podium {
+    width: 85px;
+    height: 85px;
+  }
+
   .position-3 .avatar-podium {
-    width: 75px;
-    height: 75px;
+    width: 78px;
+    height: 78px;
   }
 
-  .position-4 .avatar-podium,
+  .position-2 .podium-platform {
+    height: 95px;
+    width: 130px;
+  }
+
+  .position-3 .podium-platform {
+    height: 85px;
+    width: 125px;
+  }
+
+  .position-4 .avatar-podium {
+    width: 68px;
+    height: 68px;
+  }
+
+  .position-4 .podium-platform {
+    height: 70px;
+    width: 115px;
+    padding: 12px 20px;
+  }
+
   .position-5 .avatar-podium {
-    width: 65px;
-    height: 65px;
+    width: 62px;
+    height: 62px;
+  }
+
+  .position-5 .podium-platform {
+    height: 60px;
+    width: 110px;
+    padding: 12px 18px;
   }
 
   .ranker-name {
-    font-size: 1em;
+    font-size: 0.95em;
   }
 
   .ranker-score {
-    font-size: 0.9em;
+    font-size: 0.85em;
+  }
+
+  .podium-platform {
+    padding: 12px 18px;
   }
 }
