@@ -47,10 +47,10 @@ module.exports = function createEngagementBackfillRoutes(storage, db) {
   }
 
   /**
-   * POST /api/admin/engagement/backfill/start
+   * POST /api/admin/engagement/backfill
    * Start backfilling engagement scores for all active users
    */
-  router.post('/engagement/backfill/start', requireSuperAdmin, async (req, res) => {
+  router.post('/engagement/backfill', requireSuperAdmin, async (req, res) => {
     try {
       console.log(`🚀 Super admin ${req.user.email} starting engagement score backfill`);
 
