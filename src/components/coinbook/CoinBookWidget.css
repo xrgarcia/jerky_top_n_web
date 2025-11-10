@@ -14,7 +14,7 @@
   cursor: pointer;
   transition: transform 0.2s ease;
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .coinbook-widget .achievements-grid {
@@ -22,6 +22,7 @@
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
   gap: 16px;
   padding: 16px;
+  overflow: visible;
 }
 
 /* Hide text inside coins */
