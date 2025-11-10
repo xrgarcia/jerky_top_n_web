@@ -38,7 +38,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Flavor Profile Communities**: Micro-community system tracking user journey states and admin-configurable thresholds.
 - **User Classification System**: Tracks journey stages, engagement levels, and exploration breadth.
 - **Unified Activity Tracking**: All user activities tracked in `user_activities` table.
-- **Leaderboard Performance Optimization**: Achieved 345,000x speedup through pre-aggregated `user_engagement_scores` rollup table, incremental score updates with race-condition-safe UPSERT, Redis-backed distributed cache, granular cache invalidation, and optimized queries with composite database indexes.
+- **Leaderboard Performance Optimization**: Achieved 345,000x speedup through pre-aggregated `user_engagement_scores` rollup table, incremental score updates with race-condition-safe UPSERT, Redis-backed distributed cache, granular cache invalidation, and optimized queries with composite database indexes. Full cross-service integration ensures `CollectionManager` (dynamic/static collections, flavor coins) and `AchievementRepository` both increment engagement scores via `EngagementScoreService` following the same internal instantiation pattern.
 - **Ranking Race Condition Fix**: Implemented sequence-based staleness detection.
 - **Database Connection**: Dual-connection architecture using Neon PostgreSQL.
 - **Feature Flags**: JSON-based configuration system.
