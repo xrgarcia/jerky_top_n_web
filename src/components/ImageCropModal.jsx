@@ -63,6 +63,7 @@ function ImageCropModal({ imageSrc, onComplete, onCancel }) {
             aspect={1}
             cropShape="round"
             showGrid={false}
+            restrictPosition={false}
             onCropChange={setCrop}
             onZoomChange={setZoom}
             onCropComplete={onCropComplete}
