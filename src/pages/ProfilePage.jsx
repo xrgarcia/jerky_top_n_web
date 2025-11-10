@@ -437,11 +437,21 @@ function ProfilePage() {
             </div>
           )}
 
-          {/* Edit Button */}
+          {/* Edit Buttons */}
           {!isEditing && (
-            <button className="btn btn-edit-profile" onClick={handleEditClick}>
-              Edit Profile
-            </button>
+            <div className="profile-action-buttons">
+              <button className="btn btn-edit-profile" onClick={handleEditClick}>
+                Edit Profile
+              </button>
+              <a 
+                href="https://www.jerky.com/account" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="btn btn-edit-jerky-profile"
+              >
+                Edit Jerky.com Profile
+              </a>
+            </div>
           )}
         </div>
 

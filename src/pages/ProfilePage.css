@@ -125,8 +125,15 @@
   font-size: 1.1em;
 }
 
-.btn-edit-profile {
+.profile-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   margin-top: 20px;
+  align-items: center;
+}
+
+.btn-edit-profile {
   padding: 12px 32px;
   background: #6B8E23;
   color: white;
@@ -142,6 +149,28 @@
   background: #5a7a1d;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(107, 142, 35, 0.3);
+}
+
+.btn-edit-jerky-profile {
+  padding: 12px 32px;
+  background: white;
+  color: #6B8E23;
+  border: 2px solid #6B8E23;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-edit-jerky-profile:hover {
+  background: #f5f3ed;
+  border-color: #5a7a1d;
+  color: #5a7a1d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(107, 142, 35, 0.2);
 }
 
 .profile-edit-form {
@@ -434,6 +463,16 @@
   }
 
   .btn {
+    width: 100%;
+  }
+
+  .profile-action-buttons {
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  .btn-edit-profile,
+  .btn-edit-jerky-profile {
     width: 100%;
   }
 }
