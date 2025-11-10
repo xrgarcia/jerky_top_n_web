@@ -3,6 +3,7 @@ const Sentry = require('@sentry/node');
 const ShopifyWebhookVerifier = require('../utils/shopifyWebhookVerifier');
 const WebhookOrderService = require('../services/WebhookOrderService');
 const WebhookProductService = require('../services/WebhookProductService');
+const WebhookCustomerService = require('../services/WebhookCustomerService');
 const { db } = require('../db');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 
@@ -12,6 +13,7 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
   const verifier = new ShopifyWebhookVerifier(process.env.SHOPIFY_API_SECRET);
   const orderService = new WebhookOrderService(webSocketGateway);
   const productService = new WebhookProductService(db);
+  const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
   
   // Use shared cache instances passed from server.js
   const { metadataCache, rankingStatsCache } = sharedCaches;
@@ -129,13 +131,52 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
     }
   });
 
+  router.post('/customers', async (req, res) => {
+    try {
+      const hmac = req.headers['x-shopify-hmac-sha256'];
+      const topic = req.headers['x-shopify-topic'];
+      const shopDomain = req.headers['x-shopify-shop-domain'];
+
+      console.log(`📨 Received Shopify webhook: ${topic} from ${shopDomain}`);
+
+      const isValid = verifier.verify(req.rawBody, hmac);
+      if (!isValid) {
+        console.error('❌ Webhook verification failed - rejecting request');
+        return res.status(401).json({ error: 'Webhook verification failed' });
+      }
+
+      console.log('✅ Webhook signature verified');
+
+      const customerData = req.body;
+      const result = await customerService.processCustomerWebhook(customerData, topic);
+
+      res.status(200).json({ 
+        success: true,
+        message: 'Webhook processed successfully',
+        result
+      });
+
+    } catch (error) {
+      console.error('❌ Error processing customer webhook:', error);
+      Sentry.captureException(error, {
+        tags: { service: 'webhook', webhook_type: 'customers' }
+      });
+      
+      res.status(500).json({ 
+        error: 'Failed to process webhook',
+        message: error.message
+      });
+    }
+  });
+
   router.get('/health', (req, res) => {
     res.status(200).json({ 
       status: 'ok',
       message: 'Shopify webhook endpoints are ready',
       endpoints: [
         '/api/webhooks/shopify/orders',
-        '/api/webhooks/shopify/products'
+        '/api/webhooks/shopify/products',
+        '/api/webhooks/shopify/customers'
       ]
     });
   });

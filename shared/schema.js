@@ -21,6 +21,7 @@ const users = pgTable('users', {
   profileImageUrl: text('profile_image_url'), // URL to profile image in object storage
   handle: text('handle'), // Unique username like "@smokybeef247" (stored without @)
   hideNamePrivacy: boolean('hide_name_privacy').default(false).notNull(), // Hide real name and show handle instead
+  shopifyCreatedAt: timestamp('shopify_created_at'), // When customer account was created on jerky.com (Shopify)
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 }, (table) => ({
