@@ -125,6 +125,27 @@
   font-size: 1.1em;
 }
 
+.profile-name-disclaimer {
+  margin-top: 12px;
+  font-size: 0.9em;
+  color: #777;
+  font-style: italic;
+}
+
+.jerky-link {
+  color: #6B8E23;
+  text-decoration: none;
+  font-weight: 600;
+  border-bottom: 1px dashed #6B8E23;
+  transition: all 0.2s ease;
+}
+
+.jerky-link:hover {
+  color: #5a7a1d;
+  border-bottom-color: #5a7a1d;
+  border-bottom-style: solid;
+}
+
 .profile-action-buttons {
   display: flex;
   flex-direction: column;
@@ -184,6 +205,14 @@
   font-size: 1.3em;
   font-weight: 500;
   color: #555;
+  margin: 0 0 8px 0;
+}
+
+.profile-edit-disclaimer {
+  text-align: center;
+  font-size: 0.85em;
+  color: #777;
+  font-style: italic;
   margin: 0 0 20px 0;
 }
 

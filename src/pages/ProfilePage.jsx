@@ -367,6 +367,17 @@ function ProfilePage() {
                 <p className="profile-real-name">{getNameWithInitial()}</p>
               )}
               <p className="profile-email">{user?.email}</p>
+              <p className="profile-name-disclaimer">
+                Your name comes from your jerky.com profile. To edit it, visit{' '}
+                <a 
+                  href="https://www.jerky.com/account" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="jerky-link"
+                >
+                  jerky.com/account
+                </a>
+              </p>
             </>
           )}
 
@@ -375,7 +386,20 @@ function ProfilePage() {
             <div className="profile-edit-form">
               {/* Show name in edit mode */}
               {getNameWithInitial() && (
-                <p className="profile-edit-name">{getNameWithInitial()}</p>
+                <>
+                  <p className="profile-edit-name">{getNameWithInitial()}</p>
+                  <p className="profile-edit-disclaimer">
+                    To edit your name, visit{' '}
+                    <a 
+                      href="https://www.jerky.com/account" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="jerky-link"
+                    >
+                      jerky.com/account
+                    </a>
+                  </p>
+                </>
               )}
               
               <div className="form-group">
