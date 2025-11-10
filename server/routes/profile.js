@@ -310,6 +310,17 @@ function createProfileRoutes(services) {
           req.file.originalname
         );
 
+        // Save to database immediately
+        await db
+          .update(users)
+          .set({ 
+            profileImageUrl: imagePath,
+            updatedAt: new Date()
+          })
+          .where(eq(users.id, session.userId));
+
+        console.log(`✅ Profile image saved for user ${session.userId}: ${imagePath}`);
+
         res.json({
           success: true,
           profile_image_url: imagePath

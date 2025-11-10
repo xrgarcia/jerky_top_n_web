@@ -208,12 +208,40 @@ function ProfilePage() {
     }
   };
 
-  // Handle image removal
-  const handleRemoveImage = () => {
-    setProfileImageUrl(null);
-    setProfileImagePreview(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+  // Handle image removal - delete immediately from server
+  const handleRemoveImage = async () => {
+    if (!window.confirm('Are you sure you want to remove your profile photo?')) {
+      return;
+    }
+
+    setIsUploadingImage(true);
+
+    try {
+      const response = await fetch('/api/profile/image', {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to delete image');
+      }
+
+      setProfileImageUrl(null);
+      setProfileImagePreview(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+
+      // Invalidate auth cache to refresh user data everywhere
+      queryClient.invalidateQueries({ queryKey: ['auth-status'] });
+
+      toast.success('Profile photo removed');
+    } catch (error) {
+      console.error('Error removing image:', error);
+      toast.error(error.message || 'Failed to remove image');
+    } finally {
+      setIsUploadingImage(false);
     }
   };
 
@@ -281,16 +309,12 @@ function ProfilePage() {
     }
   };
 
-  // Handle save
+  // Handle save (for handle and privacy settings only - profile image saves automatically)
   const handleSave = async () => {
     setIsSaving(true);
     
     try {
       const updates = {};
-      
-      if (profileImageUrl !== user?.profile_image_url) {
-        updates.profileImageUrl = profileImageUrl;
-      }
       
       if (handle !== user?.handle) {
         if (handle && !handleValidation.available) {
@@ -303,6 +327,13 @@ function ProfilePage() {
       
       if (hideNamePrivacy !== user?.hide_name_privacy) {
         updates.hideNamePrivacy = hideNamePrivacy;
+      }
+
+      // If no changes, show message
+      if (Object.keys(updates).length === 0) {
+        toast('No changes to save');
+        setIsSaving(false);
+        return;
       }
 
       const response = await fetch('/api/profile', {
@@ -324,7 +355,6 @@ function ProfilePage() {
       // Update user in store
       setUser({
         ...user,
-        profile_image_url: data.user.profile_image_url,
         handle: data.user.handle,
         hide_name_privacy: data.user.hide_name_privacy,
       });
