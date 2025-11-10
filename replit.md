@@ -66,7 +66,13 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Private Profile Page** (`/profile`): Always displays "FirstName L." format regardless of privacy settings. Includes profile photo upload, handle management, and privacy controls. Privacy checkbox currently hidden for future rollout but infrastructure remains functional.
   - **Public Profile Pages** (`/community/:userId`): Privacy-aware display using CommunityService with avatar support, ranking stats, clickable flavor links, and clickable achievement coins.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
-- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling. Museum black background (#1a1a1a), perfectly circular coin slots with white circular inserts for unawned coins and raised 3D appearance with dashed borders for earned coins. CSS uses full `border` shorthand property with `!important` to prevent specificity collisions with global `.tier-*` classes that exist elsewhere in the codebase.
+- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling. Museum black background (#1a1a1a), perfectly circular coin slots (90px diameter) with comprehensive tier-aware styling:
+  - **Locked Coins**: White circular inserts with inset 3D appearance using box-shadow, solid borders
+  - **Earned Coins**: Raised 3D appearance with tier-specific dashed borders and glowing effects
+  - **Tier Colors**: Bronze (copper), Silver, Gold, Platinum, Diamond (cyan) with radial gradient backgrounds and matching border colors
+  - **Hover Effects**: Enhanced 3D lift with stronger shadows and glows for earned coins, subtle lift for locked coins
+  - **Tooltips**: Dark themed popovers showing achievement name, description, tier progress, and requirement hints
+  - **CSS Architecture**: All rules scoped under `.coinbook-widget` with full `border` shorthand property and `!important` to prevent specificity collisions with global `.tier-*` classes. Uses systematic feature-by-feature CSS structure for maintainability.
 - **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates.
 - **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, user guidance analytics, and bulk import.
 - **Bulk Import System**: Comprehensive system for importing all Shopify customers and their complete purchase history with real-time monitoring.
