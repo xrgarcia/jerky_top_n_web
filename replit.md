@@ -72,7 +72,6 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Border Strategy**: CSS black dashed borders (2px) for emoji achievements; image-based badges have borders baked into the image design (`:has(img)` selector removes CSS border)
   - **Tier-Specific Styling**: Bronze (copper glow), Silver (silver glow), Gold (golden shimmer), Platinum (platinum sheen), Diamond (cyan glow) with radial gradient backgrounds and metallic inner highlights
   - **Coin Images**: Fill entire circular slot using `transform: scale(2.4)` with `object-fit: cover` and `border-radius: 50%` for perfect circular clipping
-  - **Coin Names**: Positioned below each coin using absolute positioning (bottom: -24px)
   - **Tier Badges**: Positioned at top center inside coins (top: 5%, centered)
   - **Hover Effects**: Enhanced 3D lift with stronger shadows and tier-specific glows for earned coins, subtle lift for locked coins
   - **Tooltips**: Dark themed popovers (z-index: 10000) showing achievement name, description, tier progress, and requirement hints. Always appear on top of all coins

@@ -26,27 +26,9 @@
   overflow: visible;
 }
 
-/* Coin name styling */
+/* Coin name styling - hidden, users see names in tooltip on hover */
 .coinbook-widget .achievement-coin-name {
-  position: absolute;
-  bottom: -24px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 10px;
-  font-weight: 600;
-  color: #333;
-  text-align: center;
-  line-height: 1.2;
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: normal;
-  hyphens: auto;
-  padding: 0 4px;
-  white-space: nowrap;
-}
-
-.coinbook-widget .achievement-coin.locked .achievement-coin-name {
-  color: #4d4d4d;
+  display: none;
 }
 
 /* END FEATURE 1 */
