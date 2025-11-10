@@ -9,7 +9,6 @@ const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
 const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
-const ProfileDashboardService = require('./server/services/ProfileDashboardService');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -3697,25 +3696,6 @@ if (databaseAvailable && storage) {
     gamificationServices = services;
     app.set('gamificationServices', services);
     console.log('✅ Gamification services available for achievements');
-    
-    // Initialize ProfileDashboardService with required dependencies
-    const PurchaseHistoryRepository = require('./server/repositories/PurchaseHistoryRepository');
-    const purchaseHistoryRepo = PurchaseHistoryRepository;
-    
-    const profileDashboardService = new ProfileDashboardService({
-      personalizedGuidanceService: services.personalizedGuidanceService,
-      purchaseHistoryRepo: purchaseHistoryRepo,
-      productsService: productsService,
-      userStatsAggregator: services.userStatsAggregator,
-      engagementManager: services.engagementManager,
-      progressTracker: services.progressTracker
-    });
-    
-    // Add dashboard service and repo to services bundle for downstream routes
-    services.purchaseHistoryRepo = purchaseHistoryRepo;
-    services.profileDashboardService = profileDashboardService;
-    services.getRankableProductCount = getRankableProductCount;
-    console.log('✅ ProfileDashboardService initialized');
     
     // Mount profile routes
     const createProfileRoutes = require('./server/routes/profile');
