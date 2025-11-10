@@ -401,6 +401,7 @@
   object-fit: cover;
   pointer-events: none;
   border-radius: 50%;
+  transform: scale(1.8);
 }
 
 /* Tier badge overlay - positioned at top center INSIDE the coin */
