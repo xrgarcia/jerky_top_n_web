@@ -353,17 +353,6 @@ function ProfilePage() {
                 <p className="profile-real-name">{getNameWithInitial()}</p>
               )}
               <p className="profile-email">{user?.email}</p>
-              <p className="profile-name-disclaimer">
-                Your name comes from your jerky.com profile. To edit it, visit{' '}
-                <a 
-                  href="https://www.jerky.com/account" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="jerky-link"
-                >
-                  jerky.com/account
-                </a>
-              </p>
             </>
           )}
 

@@ -115,7 +115,7 @@
 
 .profile-real-name {
   color: #555;
-  font-size: 1.15em;
+  font-size: 1.4em;
   font-weight: 500;
   margin: 8px 0;
 }
@@ -148,10 +148,11 @@
 
 .profile-action-buttons {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 12px;
   margin-top: 20px;
   align-items: center;
+  justify-content: center;
 }
 
 .btn-edit-profile {
@@ -611,6 +612,7 @@
   .profile-action-buttons {
     width: 100%;
     padding: 0 20px;
+    flex-direction: column;
   }
 
   .btn-edit-profile,
