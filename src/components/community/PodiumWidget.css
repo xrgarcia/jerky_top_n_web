@@ -92,8 +92,8 @@
 
 .position-badge {
   position: absolute;
-  bottom: -8px;
-  right: -8px;
+  bottom: -12px;
+  right: -12px;
   color: #1a1a1a;
   font-weight: 700;
   font-size: 0.9em;
