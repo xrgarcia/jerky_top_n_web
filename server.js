@@ -226,13 +226,13 @@ app.use(express.static('public/dist', {
 
 // Serve React SPA index.html for all non-API routes (EARLY REGISTRATION)
 // This ensures the app is available even during slow initialization
-const path = require('path');
 app.get('*', (req, res, next) => {
   // Skip API routes - let them go through to their handlers
   if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path.startsWith('/objects')) {
     return next();
   }
   // Serve React app for all other routes
+  const path = require('path');
   res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
 });
 
