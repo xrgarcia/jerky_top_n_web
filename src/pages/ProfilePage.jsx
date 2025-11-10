@@ -464,36 +464,6 @@ function ProfilePage() {
             </div>
           )}
         </div>
-
-        {/* Quick Actions */}
-        <div className="quick-actions-section">
-          <h2 className="section-title">⚡ Quick Actions</h2>
-          <div className="quick-actions-grid">
-            <a href="/rank" className="action-card">
-              <div className="action-icon">🥩</div>
-              <div className="action-label">Rank Jerky</div>
-              <div className="action-hint">Build your rankings</div>
-            </a>
-            
-            <a href="/flavors" className="action-card">
-              <div className="action-icon">🌶️</div>
-              <div className="action-label">Explore Flavors</div>
-              <div className="action-hint">Discover new tastes</div>
-            </a>
-            
-            <a href="/coin-book" className="action-card">
-              <div className="action-icon">🏆</div>
-              <div className="action-label">Coin Book</div>
-              <div className="action-hint">Track achievements</div>
-            </a>
-            
-            <a href="/community" className="action-card">
-              <div className="action-icon">👥</div>
-              <div className="action-label">Community</div>
-              <div className="action-hint">Connect with others</div>
-            </a>
-          </div>
-        </div>
       </div>
     </div>
   );
