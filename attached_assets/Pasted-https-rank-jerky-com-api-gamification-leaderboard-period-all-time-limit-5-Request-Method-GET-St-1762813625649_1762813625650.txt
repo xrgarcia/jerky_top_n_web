@@ -1,0 +1,83 @@
+https://rank.jerky.com/api/gamification/leaderboard?period=all_time&limit=5
+Request Method
+GET
+Status Code
+200 OK
+Remote Address
+34.111.179.208:443
+Referrer Policy
+strict-origin-when-cross-origin
+alt-svc
+h3=":443"; ma=2592000,h3-29=":443"; ma=2592000
+cache-control
+no-cache, no-store, must-revalidate
+content-length
+706
+content-type
+application/json; charset=utf-8
+date
+Mon, 10 Nov 2025 22:26:36 GMT
+etag
+W/"2c2-qhNeaasU0sOk6kvPB5gIxZdIbUI"
+expires
+0
+pragma
+no-cache
+ratelimit-limit
+120
+ratelimit-policy
+120;w=60
+ratelimit-remaining
+118
+ratelimit-reset
+57
+server
+Google Frontend
+strict-transport-security
+max-age=63072000; includeSubDomains
+via
+1.1 google
+x-cloud-trace-context
+f0ea1de289a8d1c8944d3a939cfcbed0
+x-powered-by
+Express
+:authority
+rank.jerky.com
+:method
+GET
+:path
+/api/gamification/leaderboard?period=all_time&limit=5
+:scheme
+https
+accept
+*/*
+accept-encoding
+gzip, deflate, br, zstd
+accept-language
+en-US,en;q=0.9
+baggage
+sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=4370973674f5452585b09907f1abcfb8,sentry-org_id=4509351660879872,sentry-sampled=true,sentry-sample_rand=0.6224647065969839,sentry-sample_rate=1
+content-type
+application/json
+cookie
+session_id=7ef3d0af762e0c526e13c76db73ae8c152e31751d6126f4decf05eee70f789e2; _shopify_y=60a45ba8-7d8f-4ee1-9da7-cf25014dff61; _gcl_au=1.1.1358560889.1762101534; _fbp=fb.1.1762101534733.131218790518791962; _li_dcdm_c=.jerky.com; _lc2_fpi=cb30ed6ebd06--01jz0jpdnee2g645py6432xtb7; _lc2_fpi_js=cb30ed6ebd06--01jz0jpdnee2g645py6432xtb7; __attentive_id=1fad946fac6149f685c5c7c6a523ce86; _attn_=eyJ1Ijoie1wiY29cIjoxNzYyMTAxNTM5OTY2LFwidW9cIjoxNzYyMTAyNjUxNDQ0LFwibWFcIjoyMTkwMCxcImluXCI6ZmFsc2UsXCJ2YWxcIjpcIjFmYWQ5NDZmYWM2MTQ5ZjY4NWM1YzdjNmE1MjNjZTg2XCJ9In0=; _gid=GA1.2.906181496.1762788705; _geran=1; _getd=NTY3YTRiOTRmNTFlZTVkZTc1NDc3YzFmZmE2YTc4OGU=; _getdran=1; _geli=NjRiZjc1ODMxN2JmOTA2NzFhY2M2MDM4MjM0NjYxMjA=; _gers=1; _gess=true; _geffran=3; attntv_mstore_email=ray@jerky.com:0; _gekf=cmF5QGplcmt5LmNvbQ==; _ga_9QT5Y3C99N=GS2.1.s1762802411$o29$g1$t1762802463$j8$l0$h0; _ga_P6FVBRLQCL=GS2.1.s1762802411$o5$g1$t1762802463$j8$l0$h0; _gecntaos=24; _uetsid=5cfba930be4a11f0bd32abd7d45d7c86; _uetvid=ba752e7055bb11f0bfa60bc5992c9e12; _ga=GA1.2.633910943.1762101534; _reidsn=i_1.06; _geffresponse=5
+priority
+u=1, i
+referer
+https://rank.jerky.com/community
+sec-ch-ua
+"Google Chrome";v="141", "Not?A_Brand";v="8", "Chromium";v="141"
+sec-ch-ua-mobile
+?0
+sec-ch-ua-platform
+"Windows"
+sec-fetch-dest
+empty
+sec-fetch-mode
+cors
+sec-fetch-site
+same-origin
+sentry-trace
+4370973674f5452585b09907f1abcfb8-a81676d0acebf2d3-1
+user-agent
+Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36

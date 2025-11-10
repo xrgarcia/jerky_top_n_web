@@ -1,0 +1,149 @@
+index-Z4XkbkJq.js:240 Download the React DevTools for a better development experience: https://react.dev/link/react-devtools
+index-Z4XkbkJq.js:244 🔍 React Query: Fetching auth status...
+index-Z4XkbkJq.js:244 📡 BroadcastChannel initialized for auth events
+vendor-socket-CA1CrNgP.js:1 WebSocket connection to 'wss://rank.jerky.com/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+_onClose @ vendor-socket-CA1CrNgP.js:1
+e @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+onclose @ vendor-socket-CA1CrNgP.js:1
+_close @ vendor-socket-CA1CrNgP.js:1
+_destroy @ vendor-socket-CA1CrNgP.js:1
+destroy @ vendor-socket-CA1CrNgP.js:1
+disconnect @ vendor-socket-CA1CrNgP.js:1
+(anonymous) @ index-Z4XkbkJq.js:420
+react_stack_bottom_frame @ index-Z4XkbkJq.js:233
+H @ index-Z4XkbkJq.js:47
+Uo @ index-Z4XkbkJq.js:167
+vd @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+cr @ index-Z4XkbkJq.js:167
+D0 @ index-Z4XkbkJq.js:167
+Q0 @ index-Z4XkbkJq.js:180
+H @ index-Z4XkbkJq.js:47
+jd @ index-Z4XkbkJq.js:180
+X0 @ index-Z4XkbkJq.js:180
+Y0 @ index-Z4XkbkJq.js:167
+(anonymous) @ index-Z4XkbkJq.js:167
+v @ index-Z4XkbkJq.js:23
+index-Z4XkbkJq.js:244 📡 BroadcastChannel initialized for auth events
+vendor-sentry-B9MY0m1g.js:17 ✅ Sentry error tracking initialized (PRODUCTION)
+vendor-sentry-B9MY0m1g.js:17 📋 React Query: Auth response: Object
+vendor-sentry-B9MY0m1g.js:17 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+vendor-socket-CA1CrNgP.js:1 WebSocket connection to 'wss://rank.jerky.com/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+_onClose @ vendor-socket-CA1CrNgP.js:1
+e @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+onclose @ vendor-socket-CA1CrNgP.js:1
+_close @ vendor-socket-CA1CrNgP.js:1
+_destroy @ vendor-socket-CA1CrNgP.js:1
+destroy @ vendor-socket-CA1CrNgP.js:1
+disconnect @ vendor-socket-CA1CrNgP.js:1
+(anonymous) @ index-Z4XkbkJq.js:420
+react_stack_bottom_frame @ index-Z4XkbkJq.js:233
+H @ index-Z4XkbkJq.js:47
+Uo @ index-Z4XkbkJq.js:167
+vd @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+ni @ index-Z4XkbkJq.js:167
+N0 @ index-Z4XkbkJq.js:167
+Y0 @ index-Z4XkbkJq.js:167
+ai @ index-Z4XkbkJq.js:167
+L0 @ index-Z4XkbkJq.js:167
+Td @ index-Z4XkbkJq.js:167
+j0 @ index-Z4XkbkJq.js:167
+R0 @ index-Z4XkbkJq.js:167
+K0 @ index-Z4XkbkJq.js:189
+oi @ index-Z4XkbkJq.js:189
+Od @ index-Z4XkbkJq.js:189
+(anonymous) @ index-Z4XkbkJq.js:189
+vendor-sentry-B9MY0m1g.js:17 ✅ WebSocket connected
+vendor-sentry-B9MY0m1g.js:17 🔐 Socket authenticated: Object
+vendor-sentry-B9MY0m1g.js:17 ❌ WebSocket disconnected
+vendor-sentry-B9MY0m1g.js:17 ✅ WebSocket connected
+vendor-sentry-B9MY0m1g.js:17 🔐 Socket authenticated: {userId: 2}

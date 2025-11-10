@@ -1,0 +1,210 @@
+2025-11-10 16:30:36.24
+7760d6ae
+User
+📦 Processing orders/updated webhook for order JK3825343185
+2025-11-10 16:30:36.24
+7760d6ae
+User
+📦 Processing order JK3825343185: 1 line items
+2025-11-10 16:30:36.26
+7760d6ae
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-10 16:30:36.26
+7760d6ae
+User
+✅ Webhook signature verified
+2025-11-10 16:30:36.26
+7760d6ae
+User
+📦 Processing orders/updated webhook for order JK3825342003
+2025-11-10 16:30:36.26
+7760d6ae
+User
+📦 Processing order JK3825342003: 1 line items
+2025-11-10 16:30:36.28
+7760d6ae
+User
+✅ Found existing user by Shopify ID: 7270 (jc68postal@yahoo.com)
+2025-11-10 16:30:36.37
+7760d6ae
+User
+✅ Processed 1 line items for order JK3825343185 (user: 7270)
+2025-11-10 16:30:36.37
+7760d6ae
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343185
+2025-11-10 16:30:36.37
+7760d6ae
+User
+🔄 Invalidating purchase history cache for user 7270
+2025-11-10 16:30:36.37
+7760d6ae
+User
+🗑️ Purchase cache invalidated for user 7270
+2025-11-10 16:30:36.37
+7760d6ae
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-11-10 16:30:36.41
+7760d6ae
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-10 16:30:36.41
+7760d6ae
+User
+✅ Caches updated
+2025-11-10 16:30:36.42
+7760d6ae
+User
+📋 Enqueued classification job for user 7270 (reason: purchase)
+2025-11-10 16:30:36.42
+7760d6ae
+User
+📋 Enqueued classification job for user 7270 (reason: purchase)
+2025-11-10 16:30:36.42
+7760d6ae
+User
+🔌 Database client connected to pool { totalConnections: 2, idleConnections: 1, waitingRequests: 0 }
+2025-11-10 16:30:36.47
+7760d6ae
+User
+✅ Found existing user by Shopify ID: 1151 (v4bdlxwge4yger5ag5peaci7uol24@scs.tiktokw.us)
+2025-11-10 16:30:36.56
+7760d6ae
+User
+✅ Processed 1 line items for order JK3825342003 (user: 1151)
+2025-11-10 16:30:36.56
+7760d6ae
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825342003
+2025-11-10 16:30:36.56
+7760d6ae
+User
+🔄 Invalidating purchase history cache for user 1151
+2025-11-10 16:30:36.56
+7760d6ae
+User
+🗑️ Purchase cache invalidated for user 1151
+2025-11-10 16:30:36.56
+7760d6ae
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-11-10 16:30:36.61
+7760d6ae
+User
+📊 Recalculated ranking stats for 1 product(s)
+2025-11-10 16:30:36.61
+7760d6ae
+User
+✅ RankingStatsCache: Updated 1 product(s): 9902441595194 - timestamp reset
+2025-11-10 16:30:36.61
+7760d6ae
+User
+✅ Caches updated
+2025-11-10 16:30:36.62
+7760d6ae
+User
+📋 Enqueued classification job for user 1151 (reason: purchase)
+2025-11-10 16:30:36.62
+7760d6ae
+User
+📋 Enqueued classification job for user 1151 (reason: purchase)
+2025-11-10 16:30:38.54
+7760d6ae
+User
+✅ WebSocket client connected: 9wbDsNC9h-5LpM1sAABM
+2025-11-10 16:30:38.58
+7760d6ae
+User
+🔐 User 962 authenticated on socket 9wbDsNC9h-5LpM1sAABM (room: prod:user:962)
+2025-11-10 16:30:38.68
+7760d6ae
+User
+📋 Enqueued classification job for user 962 (reason: page_view)
+2025-11-10 16:30:38.72
+7760d6ae
+User
+[ActivityTrackingService] Flushed 1 activities
+2025-11-10 16:30:38.77
+7760d6ae
+User
+🗑️ Deleted 1 keys matching: period:all_time:top:*
+2025-11-10 16:30:38.84
+7760d6ae
+User
+🗑️ LeaderboardCache INVALIDATE USER: 962 (granular, timestamp-aware, pattern-based)
+2025-11-10 16:30:38.84
+7760d6ae
+User
+📋 Enqueued classification job for user 962 (reason: profile_view)
+2025-11-10 16:30:39.05
+7760d6ae
+User
+🎯 [ENGAGEMENT CHECK] User 962: Checking 2 engagement achievements
+2025-11-10 16:30:39.09
+7760d6ae
+User
+🔍 [SEARCH ENGAGEMENT] User 962: 0 total searches
+2025-11-10 16:30:39.22
+7760d6ae
+User
+📄 [PAGE VIEW ENGAGEMENT] User 962: 33 total page views
+2025-11-10 16:30:39.22
+7760d6ae
+User
+🔥 [STREAK ENGAGEMENT] User 962: Current streak 0 days (longest: 0)
+2025-11-10 16:30:39.23
+7760d6ae
+User
+📦 [PRODUCT VIEW ENGAGEMENT] User 962: 0 unique product views
+2025-11-10 16:30:39.23
+7760d6ae
+User
+🔐 [LOGIN ENGAGEMENT] User 962: Current login streak 0 days (longest: 0)
+2025-11-10 16:30:39.23
+7760d6ae
+User
+🔄 [be_curious] User 962: 0/10 (0%) → TIER: null (hasTiers: 0)
+2025-11-10 16:30:39.23
+7760d6ae
+User
+🔄 [expand_your_horizons] User 962: 0/100 (0%) → TIER: null (hasTiers: 1)
+2025-11-10 16:30:39.23
+7760d6ae
+User
+✅ [ENGAGEMENT CHECK] User 962: 0 achievement update(s)
+2025-11-10 16:30:54.75
+7760d6ae
+User
+❌ Worker error: Error: read ECONNRESET
+2025-11-10 16:30:54.75
+7760d6ae
+User
+at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2025-11-10 16:30:54.75
+7760d6ae
+User
+at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-11-10 16:30:54.75
+7760d6ae
+User
+errno: -104,
+2025-11-10 16:30:54.75
+7760d6ae
+User
+code: 'ECONNRESET',
+2025-11-10 16:30:54.75
+7760d6ae
+User
+syscall: 'read'
+2025-11-10 16:30:54.75
+7760d6ae
+User
+}
+
+Collapse
+
+Wrap
+
+Colors

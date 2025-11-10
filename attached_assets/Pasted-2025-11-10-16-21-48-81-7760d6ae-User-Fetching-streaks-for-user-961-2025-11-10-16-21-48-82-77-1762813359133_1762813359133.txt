@@ -1,0 +1,206 @@
+2025-11-10 16:21:48.81
+7760d6ae
+User
+📊 Fetching streaks for user 961
+2025-11-10 16:21:48.82
+7760d6ae
+User
+💾 Cache HIT: Returning 162 products from cache (age: 6 minutes)
+2025-11-10 16:21:48.82
+7760d6ae
+User
+💾 AchievementCache HIT: Returning 26 definitions (age: 6 minutes)
+2025-11-10 16:21:48.83
+7760d6ae
+User
+🔌 Database client connected to pool { totalConnections: 6, idleConnections: 0, waitingRequests: 0 }
+2025-11-10 16:21:48.83
+7760d6ae
+User
+🔌 Database client connected to pool { totalConnections: 6, idleConnections: 0, waitingRequests: 0 }
+2025-11-10 16:21:48.85
+7760d6ae
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 961
+2025-11-10 16:21:48.85
+7760d6ae
+User
+✅ Database query completed: 1 streak(s) found
+2025-11-10 16:21:48.85
+7760d6ae
+User
+✅ Streaks fetched successfully for user 961: 1 streak(s)
+2025-11-10 16:21:48.87
+7760d6ae
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 961
+2025-11-10 16:21:48.87
+7760d6ae
+User
+📄 [PAGE VIEW ENGAGEMENT] User 961: 0 total page views
+2025-11-10 16:21:48.88
+7760d6ae
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 961
+2025-11-10 16:21:48.88
+7760d6ae
+User
+👤 [PROFILE VIEW ENGAGEMENT] User 961: 0 total profile views
+2025-11-10 16:21:48.88
+7760d6ae
+User
+⏱️ getUserPosition() optimized COUNT query: 201ms (total: 209ms)
+2025-11-10 16:21:48.88
+7760d6ae
+User
+⏱️ Batch 1 completed in 210ms (getUserStats + getUserPosition + getUserStreaks)
+2025-11-10 16:21:48.88
+7760d6ae
+User
+💾 Cache HIT: Returning 162 products from cache (age: 6 minutes)
+2025-11-10 16:21:48.88
+7760d6ae
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-11-10 16:21:48.88
+7760d6ae
+User
+📦 [PRODUCT VIEW ENGAGEMENT] User 961: 0 total product views
+2025-11-10 16:21:48.88
+7760d6ae
+User
+🔍 [SEARCH ENGAGEMENT] User 961: 0 total searches
+2025-11-10 16:21:48.93
+7760d6ae
+User
+🔍 Streaks endpoint called
+2025-11-10 16:21:48.93
+7760d6ae
+User
+🔑 Session ID present: 18b63800...
+2025-11-10 16:21:48.95
+7760d6ae
+User
+🔌 Database client connected to pool { totalConnections: 6, idleConnections: 3, waitingRequests: 0 }
+2025-11-10 16:21:48.97
+7760d6ae
+User
+✅ Session validated for user 961
+2025-11-10 16:21:48.97
+7760d6ae
+User
+📊 Fetching streaks for user 961
+2025-11-10 16:21:49.00
+7760d6ae
+User
+⏱️ Batch 2 completed in 124ms (getCompletedAnimalCategories)
+2025-11-10 16:21:49.00
+7760d6ae
+User
+⏱️ Total aggregation time: 334ms
+2025-11-10 16:21:49.00
+7760d6ae
+User
+✅ User stats aggregated: position 5, streak 1
+2025-11-10 16:21:49.00
+7760d6ae
+User
+✅ Engagement metrics: 0 searches, 0 page views
+2025-11-10 16:21:49.00
+7760d6ae
+User
+🔄 Fetching unique engagement metrics...
+2025-11-10 16:21:49.01
+7760d6ae
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 961
+2025-11-10 16:21:49.01
+7760d6ae
+User
+✅ Database query completed: 1 streak(s) found
+2025-11-10 16:21:49.01
+7760d6ae
+User
+✅ Streaks fetched successfully for user 961: 1 streak(s)
+2025-11-10 16:21:49.03
+7760d6ae
+User
+💾 AchievementCache HIT: Returning 26 definitions (age: 6 minutes)
+2025-11-10 16:21:49.05
+7760d6ae
+User
+📦 [PRODUCT VIEW ENGAGEMENT] User 961: 0 unique product views
+2025-11-10 16:21:49.05
+7760d6ae
+User
+👤 [PROFILE VIEW ENGAGEMENT] User 961: 0 unique profile views
+2025-11-10 16:21:49.05
+7760d6ae
+User
+✅ Unique engagement metrics: 0 unique products, 0 unique profiles
+2025-11-10 16:21:49.05
+7760d6ae
+User
+🔄 Getting achievements with progress (complete stats)...
+2025-11-10 16:21:49.05
+7760d6ae
+User
+💾 AchievementCache HIT: Returning 26 definitions (age: 6 minutes)
+2025-11-10 16:21:49.11
+7760d6ae
+User
+📊 ProgressTracker: Found 24 total achievements for user 961
+2025-11-10 16:21:49.11
+7760d6ae
+User
+🎯 Closest milestone: Getting Consistent (33.3% complete - 1/3)
+2025-11-10 16:21:49.26
+7760d6ae
+User
+📊 Fetching achievements for user 961
+2025-11-10 16:21:49.26
+7760d6ae
+User
+✅ Product count retrieved: 162 rankable products
+2025-11-10 16:21:49.30
+7760d6ae
+User
+🔍 getAllUserStreaks: Found 1 valid streak(s) for user 961
+2025-11-10 16:21:49.34
+7760d6ae
+User
+💾 Metadata Cache HIT: Returning data (age: 0 minutes)
+2025-11-10 16:21:49.42
+7760d6ae
+User
+✅ Earned: 11 | 🔒 Unearned: 13
+2025-11-10 16:22:18.86
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-11-10 16:22:19.30
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-11-10 16:22:19.33
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-11-10 16:22:19.33
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-11-10 16:22:19.46
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-11-10 16:22:19.50
+7760d6ae
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors
