@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
+import { useHomeStats } from '../hooks/useGamification';
 import PodiumWidget from '../components/community/PodiumWidget';
+import CommunityStatsBar from '../components/community/CommunityStatsBar';
+import JourneySection from '../components/community/JourneySection';
+import ActivityFeed from '../components/community/ActivityFeed';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './CommunityPage.css';
 
@@ -9,6 +13,7 @@ function CommunityPage() {
   const [search, setSearch] = useState('');
   const { data, isLoading, error } = useCommunityUsers({ search });
   const { data: topRankers, isLoading: loadingTop } = useLeaderboard({ limit: 5 });
+  const { data: homeStats, isLoading: statsLoading } = useHomeStats();
 
   const users = data?.users || [];
   const top5 = topRankers || [];
@@ -22,26 +27,30 @@ function CommunityPage() {
 
         <PodiumWidget rankers={top5} isLoading={loadingTop} />
 
-        <div className="community-description">
-          <p className="community-intro">
-            Welcome to the heart of jerky.com—where flavor fanatics unite to discover, rank, and celebrate the best jerky in the game! 
-            Every product you rank fuels your journey from <strong>Curious Newbie</strong> to <strong>Flavor Legend</strong>, unlocking achievements, 
-            climbing the leaderboard, and earning your place among the elite.
-          </p>
-          <p className="community-mission">
-            This isn't just about snacking—it's about building your collection, finding your flavor soulmates, 
-            and proving you've got what it takes to be a top ranker. So dive in, start ranking, and let's see if you can make it to the podium! 🥩
-          </p>
-        </div>
+        <CommunityStatsBar 
+          stats={homeStats?.communityStats} 
+          isLoading={statsLoading} 
+        />
 
-        <div className="search-bar">
-          <input
-            type="text"
-            placeholder="Search by name or flavor..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="page-search-input"
-          />
+        <JourneySection />
+
+        <ActivityFeed 
+          recentAchievements={homeStats?.recentAchievements}
+          recentlyRanked={homeStats?.recentlyRanked}
+          isLoading={statsLoading}
+        />
+
+        <div className="search-section">
+          <h2 className="search-title">Discover Flavor Fanatics</h2>
+          <div className="search-bar">
+            <input
+              type="text"
+              placeholder={`Search ${homeStats?.communityStats?.totalRankers || ''} rankers...`.trim()}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="page-search-input"
+            />
+          </div>
         </div>
 
         {isLoading && <div className="loading">Loading community...</div>}
