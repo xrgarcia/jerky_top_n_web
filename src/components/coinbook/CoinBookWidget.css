@@ -54,9 +54,15 @@
 /* FEATURE 2: EARNED DASHED BORDERS */
 /* Scoped AND !important to override legacy .tier-* global CSS */
 /* All earned coins have identical black dashed borders for consistency */
+/* Only apply to emoji-based achievements - image badges have borders baked in */
 
 .coinbook-widget .achievement-coin.earned {
   border: 2px dashed #000000 !important;
+}
+
+/* Remove CSS border from image-based badges (they have borders in the image) */
+.coinbook-widget .achievement-coin.earned:has(img) {
+  border: none !important;
 }
 
 .coinbook-widget .achievement-coin.locked {
