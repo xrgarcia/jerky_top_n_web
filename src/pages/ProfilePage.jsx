@@ -309,28 +309,20 @@ function ProfilePage() {
     }
   };
 
-  // Handle save (for handle and privacy settings only - profile image saves automatically)
+  // Handle save (for handle only - profile image saves automatically)
   const handleSave = async () => {
     setIsSaving(true);
     
     try {
-      const updates = {};
-      
+      // Validate handle if changed
       if (handle !== user?.handle) {
         if (handle && !handleValidation.available) {
           toast.error('Please choose an available handle');
           setIsSaving(false);
           return;
         }
-        updates.handle = handle || null;
-      }
-      
-      if (hideNamePrivacy !== user?.hide_name_privacy) {
-        updates.hideNamePrivacy = hideNamePrivacy;
-      }
-
-      // If no changes, show message
-      if (Object.keys(updates).length === 0) {
+      } else {
+        // No changes
         toast('No changes to save');
         setIsSaving(false);
         return;
@@ -342,7 +334,7 @@ function ProfilePage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updates),
+        body: JSON.stringify({ handle: handle || null }),
       });
 
       if (!response.ok) {
@@ -356,13 +348,12 @@ function ProfilePage() {
       setUser({
         ...user,
         handle: data.user.handle,
-        hide_name_privacy: data.user.hide_name_privacy,
       });
 
       // Invalidate auth cache to refresh user data everywhere
       queryClient.invalidateQueries({ queryKey: ['auth-status'] });
 
-      toast.success('Profile updated successfully');
+      toast.success('Handle updated successfully');
     } catch (error) {
       console.error('Error saving profile:', error);
       toast.error(error.message || 'Failed to save profile');
@@ -470,26 +461,16 @@ function ProfilePage() {
               )}
             </div>
 
-            <div className="form-group privacy-checkbox-hidden">
-              <label className="checkbox-label">
-                <input
-                  type="checkbox"
-                  checked={hideNamePrivacy}
-                  onChange={(e) => setHideNamePrivacy(e.target.checked)}
-                />
-                <span>Hide my first name and last initial</span>
-              </label>
-              <p className="form-hint">When checked, your handle will be shown instead of your real name</p>
-            </div>
-
-            <div className="profile-edit-actions">
-              <button className="btn btn-secondary" onClick={handleCancel} disabled={isSaving}>
-                Reset
-              </button>
-              <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
-                {isSaving ? 'Saving...' : 'Save Changes'}
-              </button>
-            </div>
+            {handle !== user?.handle && (
+              <div className="profile-edit-actions">
+                <button className="btn btn-secondary" onClick={handleCancel} disabled={isSaving}>
+                  Reset
+                </button>
+                <button className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
+                  {isSaving ? 'Saving...' : 'Save Handle'}
+                </button>
+              </div>
+            )}
 
             <div className="profile-edit-jerky-link">
               <a 

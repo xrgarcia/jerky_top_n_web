@@ -322,6 +322,12 @@
   margin-top: 30px;
 }
 
+.profile-edit-jerky-link {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
 .btn {
   padding: 12px 28px;
   border: none;
