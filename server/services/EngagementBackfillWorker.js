@@ -1,4 +1,5 @@
 const { Worker } = require('bullmq');
+const Sentry = require('@sentry/node');
 const redisClient = require('./RedisClient');
 const EngagementScoreService = require('./EngagementScoreService');
 const { primaryDb } = require('../db-primary');
@@ -49,6 +50,10 @@ class EngagementBackfillWorker {
       // Add error listener before connecting
       workerConnection.on('error', (err) => {
         console.error('❌ Engagement backfill worker Redis connection error:', err.message);
+        Sentry.captureException(err, {
+          tags: { component: 'engagement-backfill-worker', context: 'redis-connection' },
+          extra: { errorMessage: err.message }
+        });
       });
 
       workerConnection.on('ready', () => {
@@ -79,15 +84,17 @@ class EngagementBackfillWorker {
         {
           connection: workerConnection,
           concurrency: 10, // Process 10 users concurrently for faster throughput
+          lockDuration: 300000, // 5 minutes - Heavy INSERT...SELECT can take time for large users
         }
       );
 
       this.worker.on('active', async (job) => {
-        console.log(`⚡ Backfill job started for user ${job.data.userId}`);
+        console.log(`⚡ Backfill job started for user ${job.data.userId} (${job.data.displayName})`);
       });
 
-      this.worker.on('completed', async (job) => {
-        console.log(`✅ Backfill job completed for user ${job.data.userId}`);
+      this.worker.on('completed', async (job, result) => {
+        const duration = result?.duration || 0;
+        console.log(`✅ Backfill job completed for user ${job.data.userId} (${job.data.displayName}) in ${duration}ms`);
         
         // Increment completed count in Redis
         const EngagementBackfillQueue = require('./EngagementBackfillQueue');
@@ -97,7 +104,26 @@ class EngagementBackfillWorker {
       });
 
       this.worker.on('failed', async (job, err) => {
-        console.error(`❌ Backfill job failed for user ${job?.data?.userId}:`, err.message);
+        console.error(`❌ Backfill job failed for user ${job?.data?.userId} (${job?.data?.displayName}):`, err.message);
+        console.error(`   Error details:`, {
+          name: err.name,
+          stack: err.stack?.split('\n').slice(0, 3)
+        });
+        
+        // Capture in Sentry with context
+        Sentry.captureException(err, {
+          tags: { 
+            component: 'engagement-backfill-worker',
+            userId: job?.data?.userId
+          },
+          extra: {
+            userId: job?.data?.userId,
+            displayName: job?.data?.displayName,
+            email: job?.data?.email,
+            attemptsMade: job?.attemptsMade,
+            failedReason: err.message
+          }
+        });
         
         // Increment failed count in Redis
         const EngagementBackfillQueue = require('./EngagementBackfillQueue');
@@ -108,12 +134,18 @@ class EngagementBackfillWorker {
 
       this.worker.on('error', (err) => {
         console.error('❌ Engagement backfill worker error:', err);
+        Sentry.captureException(err, {
+          tags: { component: 'engagement-backfill-worker', context: 'worker-error' }
+        });
       });
 
       console.log('✅ Engagement backfill worker initialized (concurrency: 10)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize engagement backfill worker:', error);
+      Sentry.captureException(error, {
+        tags: { component: 'engagement-backfill-worker', context: 'initialization' }
+      });
       return false;
     }
   }
@@ -123,26 +155,54 @@ class EngagementBackfillWorker {
    * @param {Object} job - BullMQ job object
    */
   async processJob(job) {
-    const { userId, displayName } = job.data;
+    const { userId, displayName, email } = job.data;
     const startTime = Date.now();
 
     try {
-      console.log(`🔄 Recalculating engagement score for user ${userId} (${displayName})...`);
+      console.log(`🔄 [Job ${job.id}] Recalculating engagement score for user ${userId} (${displayName})...`);
 
       // Recalculate engagement score using service
-      await this.engagementScoreService.recalculateUserScore(userId);
+      const result = await this.engagementScoreService.recalculateUserScore(userId);
 
       const duration = Date.now() - startTime;
-      console.log(`✅ Engagement score recalculated for user ${userId} (${duration}ms)`);
+      console.log(`✅ [Job ${job.id}] Engagement score recalculated for user ${userId} - Score: ${result?.engagementScore || 0} pts (${duration}ms)`);
 
       return { 
         success: true, 
         userId, 
         displayName,
+        email,
+        engagementScore: result?.engagementScore || 0,
         duration 
       };
     } catch (error) {
-      console.error(`❌ Error recalculating engagement score for user ${userId}:`, error);
+      const duration = Date.now() - startTime;
+      console.error(`❌ [Job ${job.id}] Error recalculating engagement score for user ${userId}:`, error.message);
+      console.error(`   Failed after ${duration}ms:`, {
+        userId,
+        displayName,
+        email,
+        errorName: error.name,
+        errorMessage: error.message
+      });
+      
+      // Capture in Sentry
+      Sentry.captureException(error, {
+        tags: { 
+          component: 'engagement-backfill-worker',
+          context: 'processJob',
+          userId 
+        },
+        extra: {
+          userId,
+          displayName,
+          email,
+          jobId: job.id,
+          duration,
+          attemptsMade: job.attemptsMade
+        }
+      });
+      
       throw error; // Re-throw to mark job as failed
     }
   }
@@ -157,6 +217,14 @@ class EngagementBackfillWorker {
       // Get progress data
       const stats = await EngagementBackfillQueue.getStats();
       
+      // Log progress milestones
+      if (stats.total > 0) {
+        const percentComplete = Math.round((stats.completed / stats.total) * 100);
+        if (percentComplete % 25 === 0 && stats.completed > 0) {
+          console.log(`📊 Backfill progress: ${percentComplete}% complete (${stats.completed}/${stats.total} users, ${stats.failed} failed)`);
+        }
+      }
+      
       // Get WebSocket gateway from services
       const wsGateway = this.services?.wsGateway;
       if (wsGateway && wsGateway.io) {
@@ -165,7 +233,10 @@ class EngagementBackfillWorker {
         wsGateway.io.to(roomName).emit('engagement-backfill:progress', stats);
       }
     } catch (error) {
-      console.error('❌ Failed to broadcast engagement backfill progress:', error);
+      console.error('❌ Failed to broadcast engagement backfill progress:', error.message);
+      Sentry.captureException(error, {
+        tags: { component: 'engagement-backfill-worker', context: 'broadcast' }
+      });
     }
   }
 
