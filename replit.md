@@ -66,13 +66,16 @@ The application utilizes a modern web architecture for responsiveness, scalabili
   - **Private Profile Page** (`/profile`): Always displays "FirstName L." format regardless of privacy settings. Includes profile photo upload, handle management, and privacy controls. Privacy checkbox currently hidden for future rollout but infrastructure remains functional.
   - **Public Profile Pages** (`/community/:userId`): Privacy-aware display using CommunityService with avatar support, ranking stats, clickable flavor links, and clickable achievement coins.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
-- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling. Museum black background (#1a1a1a), perfectly circular coin slots (90px diameter) with comprehensive tier-aware styling:
-  - **Locked Coins**: White circular inserts with inset 3D appearance using box-shadow, solid borders
-  - **Earned Coins**: Raised 3D appearance with tier-specific dashed borders and glowing effects
-  - **Tier Colors**: Bronze (copper), Silver, Gold, Platinum, Diamond (cyan) with radial gradient backgrounds and matching border colors
-  - **Hover Effects**: Enhanced 3D lift with stronger shadows and glows for earned coins, subtle lift for locked coins
-  - **Tooltips**: Dark themed popovers showing achievement name, description, tier progress, and requirement hints
-  - **CSS Architecture**: All rules scoped under `.coinbook-widget` with full `border` shorthand property and `!important` to prevent specificity collisions with global `.tier-*` classes. Uses systematic feature-by-feature CSS structure for maintainability.
+- **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling. Museum black background (#1a1a1a), perfectly circular coin slots (110px with 1:1 aspect ratio) with comprehensive tier-aware styling:
+  - **Locked Coins**: White circular inserts with inset 3D appearance using box-shadow, 3px solid borders, greyed-out icons (grayscale + 30% opacity)
+  - **Earned Coins**: Raised 3D appearance with **uniform black dashed borders** (2px dashed #000000) across all tiers. Tier differentiation achieved through backgrounds and glows only
+  - **Tier-Specific Styling**: Bronze (copper glow), Silver (silver glow), Gold (golden shimmer), Platinum (platinum sheen), Diamond (cyan glow) with radial gradient backgrounds and metallic inner highlights
+  - **Coin Images**: Fill entire circular slot with `object-fit: cover` and `border-radius: 50%` for perfect circular clipping
+  - **Coin Names**: Positioned below each coin using absolute positioning (bottom: -24px)
+  - **Tier Badges**: Positioned at top center inside coins (top: 5%, centered)
+  - **Hover Effects**: Enhanced 3D lift with stronger shadows and tier-specific glows for earned coins, subtle lift for locked coins
+  - **Tooltips**: Dark themed popovers (z-index: 10000) showing achievement name, description, tier progress, and requirement hints. Always appear on top of all coins
+  - **CSS Architecture**: All rules scoped under `.coinbook-widget` with full `border` shorthand property and `!important` to prevent specificity collisions with global `.tier-*` classes. Feature-based organization (7 features) for maintainability. Uniform borders enforced across all tiers for visual consistency
 - **Coin Type Configuration**: Database-driven system for managing five coin types (engagement, static collection, dynamic collection, flavor, legacy) via an Admin UI, enabling dynamic updates.
 - **Admin Tools**: React-based dashboard with EmployeeRoute protection and `employee_admin` role, including sections for managing coins, coin types, live users, products, customer order items, Sentry errors, managing data, flavor profile communities, user guidance analytics, and bulk import.
 - **Bulk Import System**: Comprehensive system for importing all Shopify customers and their complete purchase history with real-time monitoring.
