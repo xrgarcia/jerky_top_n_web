@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { useProgress, useStreaks } from '../hooks/useGamification';
 import { usePageView } from '../hooks/usePageView';
+import { useProfileDashboard } from '../hooks/useProfileDashboard';
 import toast from 'react-hot-toast';
 import './ProfilePage.css';
 
@@ -9,6 +10,7 @@ function ProfilePage() {
   const { user, setUser } = useAuthStore();
   const { data: progress, isLoading: progressLoading } = useProgress();
   const { data: streaks, isLoading: streaksLoading } = useStreaks();
+  const { data: dashboard, isLoading: dashboardLoading } = useProfileDashboard();
   
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -37,7 +39,14 @@ function ProfilePage() {
     }
   }, [user]);
 
-  const isLoading = progressLoading || streaksLoading;
+  const isLoading = progressLoading || streaksLoading || dashboardLoading;
+  
+  // Debug: log dashboard data
+  useEffect(() => {
+    if (dashboard) {
+      console.log('📊 Dashboard data loaded:', dashboard);
+    }
+  }, [dashboard]);
 
   // Generate initials for avatar
   const getInitials = () => {
