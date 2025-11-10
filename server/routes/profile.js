@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const sizeOf = require('image-size');
 const { users } = require('../../shared/schema');
 const { eq, sql } = require('drizzle-orm');
 const { 
@@ -18,15 +19,15 @@ function createProfileRoutes(services) {
   const profileImageUpload = multer({
     storage: multer.memoryStorage(),
     limits: {
-      fileSize: 3 * 1024 * 1024, // 3MB max
+      fileSize: 500 * 1024, // 500KB max (client should compress to ~200KB)
     },
     fileFilter: (req, file, cb) => {
-      // Accept only PNG, JPG, JPEG, WebP
-      const allowedMimes = ['image/png', 'image/jpeg', 'image/webp'];
+      // Accept only JPEG (client compresses to JPEG)
+      const allowedMimes = ['image/jpeg', 'image/jpg'];
       if (allowedMimes.includes(file.mimetype)) {
         cb(null, true);
       } else {
-        cb(new Error('Invalid file type. Only PNG, JPG, and WebP are allowed.'));
+        cb(new Error('Invalid file type. Only JPEG images are allowed.'));
       }
     },
   });
@@ -264,8 +265,43 @@ function createProfileRoutes(services) {
         return res.status(400).json({ error: 'No file uploaded' });
       }
 
-      // Validate image dimensions (recommended 512x512, but allow flexibility)
       const imageBuffer = req.file.buffer;
+      
+      // Verify JPEG magic bytes (0xFFD8FF) to prevent MIME type spoofing
+      if (imageBuffer.length < 3 || 
+          imageBuffer[0] !== 0xFF || 
+          imageBuffer[1] !== 0xD8 || 
+          imageBuffer[2] !== 0xFF) {
+        return res.status(400).json({ error: 'Invalid image format. Only JPEG images are accepted.' });
+      }
+      
+      // Validate image dimensions
+      let dimensions;
+      try {
+        dimensions = sizeOf(imageBuffer);
+      } catch (dimensionError) {
+        console.error('Error reading image dimensions:', dimensionError);
+        return res.status(400).json({ error: 'Invalid or corrupted image file' });
+      }
+
+      // Verify the image type from actual file content
+      if (dimensions.type !== 'jpg') {
+        return res.status(400).json({ error: 'Image must be in JPEG format' });
+      }
+
+      // Enforce strict dimensions (512x512 only)
+      if (dimensions.width !== 512 || dimensions.height !== 512) {
+        return res.status(400).json({ 
+          error: `Image must be exactly 512x512 pixels (received ${dimensions.width}x${dimensions.height})` 
+        });
+      }
+
+      // Enforce file size (should be compressed to ~200KB)
+      if (req.file.size > 500 * 1024) {
+        return res.status(400).json({ 
+          error: `Image file size must be under 500KB (received ${Math.round(req.file.size / 1024)}KB)` 
+        });
+      }
       
       try {
         // Upload to object storage

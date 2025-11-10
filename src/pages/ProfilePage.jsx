@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import toast from 'react-hot-toast';
+import ImageCropModal from '../components/ImageCropModal';
 import './ProfilePage.css';
 
 function ProfilePage() {
@@ -18,6 +19,10 @@ function ProfilePage() {
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [handleValidation, setHandleValidation] = useState({ checking: false, available: null, error: null });
   const [handleCheckTimeout, setHandleCheckTimeout] = useState(null);
+  
+  // Crop modal state
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [imageToCrop, setImageToCrop] = useState(null);
   
   const fileInputRef = useRef(null);
   
@@ -116,29 +121,61 @@ function ProfilePage() {
     if (!file) return;
 
     // Validate file
-    const validTypes = ['image/png', 'image/jpeg', 'image/webp'];
+    const validTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/jpg'];
     if (!validTypes.includes(file.type)) {
       toast.error('Only PNG, JPG, and WebP formats are allowed');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       return;
     }
 
-    if (file.size > 3 * 1024 * 1024) {
-      toast.error('File size must be less than 3MB');
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('File size must be less than 10MB');
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
       return;
     }
 
-    // Show preview
+    // Read file and show crop modal
     const reader = new FileReader();
     reader.onload = (e) => {
-      setProfileImagePreview(e.target.result);
+      setImageToCrop(e.target.result);
+      setShowCropModal(true);
     };
     reader.readAsDataURL(file);
+  };
 
-    // Upload to server
+  // Handle crop completion
+  const handleCropComplete = async (croppedFile) => {
+    setShowCropModal(false);
     setIsUploadingImage(true);
+
+    // Validate the cropped file before uploading
+    if (!croppedFile || croppedFile.type !== 'image/jpeg') {
+      toast.error('Invalid image format. Please try again.');
+      setIsUploadingImage(false);
+      setImageToCrop(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+
+    if (croppedFile.size > 500 * 1024) {
+      toast.error('Image file is too large. Please try again.');
+      setIsUploadingImage(false);
+      setImageToCrop(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+      return;
+    }
+
     try {
       const formData = new FormData();
-      formData.append('profileImage', file);
+      formData.append('profileImage', croppedFile);
 
       const response = await fetch('/api/profile/upload-image', {
         method: 'POST',
@@ -153,13 +190,26 @@ function ProfilePage() {
 
       const data = await response.json();
       setProfileImageUrl(data.profile_image_url);
-      toast.success('Image uploaded successfully');
+      setProfileImagePreview(data.profile_image_url);
+      toast.success('Profile picture updated successfully');
     } catch (error) {
       console.error('Error uploading image:', error);
       toast.error(error.message || 'Failed to upload image');
-      setProfileImagePreview(user?.profile_image_url || null);
     } finally {
       setIsUploadingImage(false);
+      setImageToCrop(null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  // Handle crop cancel
+  const handleCropCancel = () => {
+    setShowCropModal(false);
+    setImageToCrop(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
     }
   };
 
@@ -454,6 +504,15 @@ function ProfilePage() {
           )}
         </div>
       </div>
+
+      {/* Image Crop Modal */}
+      {showCropModal && imageToCrop && (
+        <ImageCropModal
+          imageSrc={imageToCrop}
+          onComplete={handleCropComplete}
+          onCancel={handleCropCancel}
+        />
+      )}
     </div>
   );
 }
