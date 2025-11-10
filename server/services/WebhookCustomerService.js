@@ -165,25 +165,23 @@ class WebhookCustomerService {
    * @param {Object} updateData - Updated profile data
    */
   broadcastProfileUpdate(userId, updateData) {
-    if (!this.wsGateway) {
+    if (!this.wsGateway || !this.wsGateway.io) {
       return;
     }
 
     try {
-      const room = `dev:user:${userId}`;
+      const roomName = this.wsGateway.room(`user:${userId}`);
       const updatePayload = {
-        type: 'profile_updated',
-        data: {
-          firstName: updateData.firstName,
-          lastName: updateData.lastName,
-          displayName: updateData.displayName,
-          email: updateData.email,
-          shopifyCreatedAt: updateData.shopifyCreatedAt
-        }
+        firstName: updateData.firstName,
+        lastName: updateData.lastName,
+        displayName: updateData.displayName,
+        email: updateData.email,
+        shopifyCreatedAt: updateData.shopifyCreatedAt,
+        timestamp: new Date().toISOString()
       };
 
-      this.wsGateway.broadcastToRoom(room, 'profile:update', updatePayload);
-      console.log(`📢 Broadcasted profile update to room ${room}`);
+      this.wsGateway.io.to(roomName).emit('profile:updated', updatePayload);
+      console.log(`📢 Broadcasted profile update to room ${roomName}`);
 
     } catch (error) {
       console.error(`⚠️ Error broadcasting profile update for user ${userId}:`, error);
