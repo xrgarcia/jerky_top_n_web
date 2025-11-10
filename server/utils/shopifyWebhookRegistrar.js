@@ -39,6 +39,11 @@ class ShopifyWebhookRegistrar {
         topic: 'products/create',
         address: `https://${appDomain}/api/webhooks/shopify/products`,
         format: 'json'
+      },
+      {
+        topic: 'customers/update',
+        address: `https://${appDomain}/api/webhooks/shopify/customers`,
+        format: 'json'
       }
     ];
 
