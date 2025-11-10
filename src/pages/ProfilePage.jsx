@@ -1,16 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import { useProgress, useStreaks } from '../hooks/useGamification';
 import { usePageView } from '../hooks/usePageView';
-import { useProfileDashboard } from '../hooks/useProfileDashboard';
 import toast from 'react-hot-toast';
 import './ProfilePage.css';
 
 function ProfilePage() {
   const { user, setUser } = useAuthStore();
-  const { data: progress, isLoading: progressLoading } = useProgress();
-  const { data: streaks, isLoading: streaksLoading } = useStreaks();
-  const { data: dashboard, isLoading: dashboardLoading } = useProfileDashboard();
   
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -39,14 +34,6 @@ function ProfilePage() {
     }
   }, [user]);
 
-  const isLoading = progressLoading || streaksLoading || dashboardLoading;
-  
-  // Debug: log dashboard data
-  useEffect(() => {
-    if (dashboard) {
-      console.log('📊 Dashboard data loaded:', dashboard);
-    }
-  }, [dashboard]);
 
   // Generate initials for avatar
   const getInitials = () => {
@@ -486,82 +473,6 @@ function ProfilePage() {
               </a>
             </div>
           )}
-        </div>
-
-        {/* Stats Overview */}
-        <div className="stats-grid">
-          <div className="stat-card">
-            <div className="stat-icon">🥩</div>
-            <div className="stat-value">{progress?.totalRankings || 0}</div>
-            <div className="stat-label">Rankings</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">🪙</div>
-            <div className="stat-value">{progress?.achievementsEarned || 0}</div>
-            <div className="stat-label">Coins Earned</div>
-          </div>
-          <div className="stat-card">
-            <div className="stat-icon">⭐</div>
-            <div className="stat-value">{progress?.totalPoints || 0}</div>
-            <div className="stat-label">Total Points</div>
-          </div>
-        </div>
-
-        {/* Jerky Journey Progress */}
-        <div className="journey-section">
-          <h2 className="section-title">🗺️ Your Jerky Journey</h2>
-          <div className="journey-grid">
-            <div className="journey-card">
-              <div className="journey-icon">🪙</div>
-              <div className="journey-content">
-                <div className="journey-label">Coin Collection</div>
-                <div className="journey-stat-large">{progress?.achievementsEarned || 0}<span className="stat-total"> / {progress?.totalAchievements || 30}</span></div>
-                <div className="progress-bar">
-                  <div 
-                    className="progress-fill" 
-                    style={{ width: `${((progress?.achievementsEarned || 0) / (progress?.totalAchievements || 30)) * 100}%` }}
-                  ></div>
-                </div>
-                <div className="journey-hint">{progress?.achievementsEarned > 0 ? `${Math.round(((progress?.achievementsEarned || 0) / (progress?.totalAchievements || 30)) * 100)}% complete` : 'Start collecting coins!'}</div>
-              </div>
-            </div>
-            
-            <div className="journey-card">
-              <div className="journey-icon">🔥</div>
-              <div className="journey-content">
-                <div className="journey-label">Ranking Streaks</div>
-                <div className="journey-stats-row">
-                  <div className="mini-stat">
-                    <div className="mini-stat-value">{progress?.currentStreak || 0}</div>
-                    <div className="mini-stat-label">Current</div>
-                  </div>
-                  <div className="mini-stat">
-                    <div className="mini-stat-value">{progress?.longestStreak || 0}</div>
-                    <div className="mini-stat-label">Best Ever</div>
-                  </div>
-                </div>
-                <div className="journey-hint">{progress?.currentStreak > 0 ? `Keep the streak alive!` : 'Rank daily to build a streak'}</div>
-              </div>
-            </div>
-
-            <div className="journey-card">
-              <div className="journey-icon">🌶️</div>
-              <div className="journey-content">
-                <div className="journey-label">Flavor Explorer</div>
-                <div className="journey-stat-large">{progress?.uniqueFlavors || 0}<span className="stat-total"> flavors</span></div>
-                <div className="journey-hint">{progress?.uniqueFlavors > 5 ? 'Impressive variety!' : 'Try different flavor profiles'}</div>
-              </div>
-            </div>
-
-            <div className="journey-card">
-              <div className="journey-icon">🦌</div>
-              <div className="journey-content">
-                <div className="journey-label">Animal Adventure</div>
-                <div className="journey-stat-large">{progress?.uniqueAnimals || 0}<span className="stat-total"> types</span></div>
-                <div className="journey-hint">{progress?.uniqueAnimals > 3 ? 'Adventurous palate!' : 'Expand beyond the basics'}</div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Quick Actions */}
