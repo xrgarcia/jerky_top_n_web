@@ -69,3 +69,70 @@
 }
 
 /* END FEATURE 3 */
+
+/* FEATURE 4: TIER-SPECIFIC BORDER COLORS */
+/* CRITICAL: Using full border shorthand with !important to maintain dashed style */
+
+/* Bronze tier - copper color */
+.coinbook-widget .achievement-coin.earned.tier-bronze {
+  border: 2px dashed rgba(205, 127, 50, 0.8) !important;
+  box-shadow: 
+    0 3px 2px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(205, 127, 50, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Silver tier - silver color */
+.coinbook-widget .achievement-coin.earned.tier-silver {
+  border: 2px dashed rgba(192, 192, 192, 0.8) !important;
+  box-shadow: 
+    0 3px 2px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 12px rgba(192, 192, 192, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* Gold tier - gold color */
+.coinbook-widget .achievement-coin.earned.tier-gold {
+  border: 2px dashed rgba(255, 215, 0, 0.8) !important;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 251, 240, 0.8) 50%, rgba(230, 210, 150, 0.6) 100%),
+              linear-gradient(135deg, #fffbf0 0%, #ffffff 100%) !important;
+  box-shadow: 
+    0 3px 2px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 16px rgba(255, 215, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Platinum tier - platinum color */
+.coinbook-widget .achievement-coin.earned.tier-platinum {
+  border: 2px dashed rgba(229, 228, 226, 0.8) !important;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(240, 240, 240, 0.85) 50%, rgba(210, 210, 210, 0.65) 100%),
+              linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%) !important;
+  box-shadow: 
+    0 3px 2px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 14px rgba(229, 228, 226, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Diamond tier - diamond/cyan color */
+.coinbook-widget .achievement-coin.earned.tier-diamond {
+  border: 2px dashed rgba(185, 242, 255, 0.8) !important;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(230, 247, 255, 0.85) 50%, rgba(185, 230, 245, 0.65) 100%),
+              linear-gradient(135deg, #e6f7ff 0%, #ffffff 100%) !important;
+  box-shadow: 
+    0 3px 2px rgba(0, 0, 0, 0.45),
+    0 10px 18px rgba(0, 0, 0, 0.35),
+    0 0 18px rgba(185, 242, 255, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Non-tiered earned achievements - keep default black dashed */
+.coinbook-widget .achievement-coin.earned.tier-none,
+.coinbook-widget .achievement-coin.earned.tier-complete {
+  border: 2px dashed rgba(0, 0, 0, 0.8) !important;
+}
+
+/* END FEATURE 4 */
