@@ -1,6 +1,191 @@
-/* CoinBookWidget - Minimal CSS for Testing */
-/* Starting fresh to isolate dashed border issue */
+/* CoinBookWidget - US Quarter Coin Book Design */
 /* SCOPED under .coinbook-widget to override legacy global tier CSS */
+
+/* WIDGET CONTAINER */
+.coinbook-widget {
+  background: #1a1a1a;
+  border: 3px solid #4a4a4a;
+  border-left: 8px solid #2a2a2a;
+  border-radius: 12px;
+  box-shadow: 
+    -4px 0 8px rgba(0, 0, 0, 0.3),
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    0 15px 35px rgba(0, 0, 0, 0.4),
+    inset -2px 0 6px rgba(0, 0, 0, 0.4),
+    inset 1px 1px 0 rgba(192, 192, 192, 0.15),
+    inset 0 0 0 1px rgba(160, 160, 160, 0.1);
+  margin-bottom: 24px;
+  overflow: visible;
+  position: relative;
+  width: 100%;
+  transform: perspective(1200px) rotateY(-1deg);
+  transform-style: preserve-3d;
+}
+
+/* Header */
+.coinbook-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  background: #0d0d0d;
+  border: none;
+  border-bottom: 1px solid #333;
+  border-radius: 12px 12px 0 0;
+  padding: 16px 20px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+.coinbook-header:hover {
+  background: #1a1a1a;
+}
+
+.coinbook-header:focus {
+  outline: 2px solid #555;
+  outline-offset: -2px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.coinbook-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+}
+
+.chevron {
+  color: #999;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.coinbook-widget.collapsed .chevron {
+  transform: rotate(-90deg);
+}
+
+.coinbook-widget.expanded .chevron {
+  transform: rotate(0deg);
+}
+
+.header-stats {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.stat-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-achievement {
+  padding: 4px 8px;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.stat-achievement:hover {
+  transform: scale(1.15);
+}
+
+.stat-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.cb-badge-text {
+  font-size: 13px;
+  white-space: nowrap;
+  color: inherit;
+}
+
+/* Collapsed Milestone Preview */
+.collapsed-milestone-preview {
+  padding: 20px;
+  background: #1a1a1a;
+  border-top: 1px solid #333;
+  border-radius: 0 0 12px 12px;
+}
+
+.collapsed-milestone-content {
+  background: #2a2a2a;
+  border: 2px solid #444;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.milestone-preview-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ddd;
+  margin-bottom: 10px;
+}
+
+.milestone-preview-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.milestone-preview-icon-img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+.milestone-preview-name {
+  flex: 1;
+  color: inherit;
+}
+
+.milestone-preview-status {
+  font-size: 12px;
+  color: #bbb;
+  margin-top: 8px;
+  font-weight: 600;
+}
+
+/* Content */
+.coinbook-content {
+  padding: 20px;
+  background: #1a1a1a;
+  border-radius: 0 0 12px 12px;
+  animation: expandContent 0.3s ease;
+  overflow: visible;
+}
+
+@keyframes expandContent {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 2000px;
+  }
+}
 
 /* FEATURE 1: BASE STRUCTURE - Circle shape and grid layout */
 .coinbook-widget .achievement-coin {
