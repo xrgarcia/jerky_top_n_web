@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import toast from 'react-hot-toast';
@@ -7,6 +8,7 @@ import './ProfilePage.css';
 
 function ProfilePage() {
   const { user, setUser } = useAuthStore();
+  const queryClient = useQueryClient();
   
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -191,6 +193,10 @@ function ProfilePage() {
       const data = await response.json();
       setProfileImageUrl(data.profile_image_url);
       setProfileImagePreview(data.profile_image_url);
+      
+      // Invalidate auth cache to refresh user data everywhere
+      queryClient.invalidateQueries({ queryKey: ['auth-status'] });
+      
       toast.success('Profile picture updated successfully');
     } catch (error) {
       console.error('Error uploading image:', error);
@@ -333,6 +339,9 @@ function ProfilePage() {
         handle: data.user.handle,
         hide_name_privacy: data.user.hide_name_privacy,
       });
+
+      // Invalidate auth cache to refresh user data everywhere
+      queryClient.invalidateQueries({ queryKey: ['auth-status'] });
 
       toast.success('Profile updated successfully');
       setIsEditing(false);
