@@ -34,10 +34,11 @@
 
 /* FEATURE 2: EARNED DASHED BORDERS (CRITICAL TEST) */
 /* Scoped AND !important to override legacy .tier-* global CSS */
+/* TESTING: Using THICK SOLID BRIGHT borders to confirm CSS is working */
 
 .coinbook-widget .achievement-coin.earned {
   background: #ffffff !important;
-  border: 2px dashed #000000 !important;
+  border: 8px solid #FF0000 !important;
 }
 
 .coinbook-widget .achievement-coin.locked {
