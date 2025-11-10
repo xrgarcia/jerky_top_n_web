@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const imageSize = require('image-size');
+const { imageSize } = require('image-size');
 const { users } = require('../../shared/schema');
 const { eq, sql } = require('drizzle-orm');
 const { 
