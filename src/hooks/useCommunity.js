@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, keepPreviousData } from '@tanstack/react-query';
 import { api } from '../utils/api';
 
 export function useCommunityUsers({ search = '', page = 1, limit = 20 } = {}) {
@@ -37,5 +37,6 @@ export function useLeaderboard({ period = 'all_time', limit = 50 } = {}) {
       return data.leaderboard || [];
     },
     staleTime: 1 * 60 * 1000, // 1 minute
+    placeholderData: keepPreviousData,
   });
 }
