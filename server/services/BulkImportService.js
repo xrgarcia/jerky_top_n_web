@@ -588,6 +588,8 @@ class BulkImportService {
       }
 
       // User doesn't exist - create new
+      const shopifyCreatedAt = customer.created_at ? new Date(customer.created_at) : null;
+      
       const [newUser] = await primaryDb
         .insert(users)
         .values({
@@ -600,6 +602,7 @@ class BulkImportService {
           active: false,
           importStatus: 'pending',
           fullHistoryImported: false,
+          shopifyCreatedAt,
           createdAt: new Date(),
           updatedAt: new Date()
         })
@@ -684,20 +687,30 @@ class BulkImportService {
 
       if (existingUser) {
         // User exists - update if needed
+        const shopifyCreatedAt = customer.created_at ? new Date(customer.created_at) : null;
+        
         const needsUpdate = 
           email !== existingUser.email ||
           customer.first_name !== existingUser.firstName ||
-          customer.last_name !== existingUser.lastName;
+          customer.last_name !== existingUser.lastName ||
+          (shopifyCreatedAt && !existingUser.shopifyCreatedAt);
 
         if (needsUpdate) {
+          const updateData = {
+            email,
+            firstName: customer.first_name,
+            lastName: customer.last_name,
+            updatedAt: new Date()
+          };
+          
+          // Only update shopifyCreatedAt if we have a value and it's not already set
+          if (shopifyCreatedAt && !existingUser.shopifyCreatedAt) {
+            updateData.shopifyCreatedAt = shopifyCreatedAt;
+          }
+          
           await primaryDb
             .update(users)
-            .set({
-              email,
-              firstName: customer.first_name,
-              lastName: customer.last_name,
-              updatedAt: new Date()
-            })
+            .set(updateData)
             .where(eq(users.id, existingUser.id));
         }
 
@@ -726,6 +739,8 @@ class BulkImportService {
         };
       } else {
         // User doesn't exist - create new
+        const shopifyCreatedAt = customer.created_at ? new Date(customer.created_at) : null;
+        
         const [newUser] = await primaryDb
           .insert(users)
           .values({
@@ -738,6 +753,7 @@ class BulkImportService {
             active: false,
             importStatus: 'pending',
             fullHistoryImported: false,
+            shopifyCreatedAt,
             createdAt: new Date(),
             updatedAt: new Date()
           })
