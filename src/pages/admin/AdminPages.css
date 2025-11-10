@@ -1,5 +1,14 @@
 /* Shared Admin Page Styles */
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .admin-page {
   width: 100%;
 }

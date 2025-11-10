@@ -4,6 +4,8 @@ import { useSuperAdminAccess } from '../../hooks/useAdminAccess';
 import { useEnvironmentConfig, useCacheConfig } from '../../hooks/useAdminTools';
 import { useClearCache, useClearAllData, useSaveCacheConfig } from '../../hooks/useAdminMutations';
 import { useToast } from '../../context/ToastContext';
+import { useSocket } from '../../hooks/useSocket';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import ConfirmationModal from '../../components/ConfirmationModal';
 import './AdminPages.css';
 
@@ -15,6 +17,8 @@ function DataPage() {
   const clearCacheMutation = useClearCache();
   const clearAllDataMutation = useClearAllData();
   const saveCacheConfigMutation = useSaveCacheConfig();
+  const queryClient = useQueryClient();
+  const { socket } = useSocket();
   
   const [showClearCacheModal, setShowClearCacheModal] = useState(false);
   const [showClearDataModal, setShowClearDataModal] = useState(false);
@@ -30,6 +34,83 @@ function DataPage() {
       setRankingStatsHours(cacheConfig.rankingStatsCacheStaleHours?.toString() || '48');
     }
   }, [cacheConfig]);
+
+  // Fetch engagement backfill progress
+  const { data: backfillProgress, isLoading: backfillLoading } = useQuery({
+    queryKey: ['engagementBackfillProgress'],
+    queryFn: async () => {
+      const res = await fetch('/api/admin/engagement/backfill/progress', {
+        credentials: 'include'
+      });
+      if (!res.ok) throw new Error('Failed to fetch backfill progress');
+      return res.json();
+    },
+    refetchInterval: 3000, // Fallback polling every 3s
+    staleTime: 1000,
+  });
+
+  // Subscribe to WebSocket events for real-time backfill updates
+  useEffect(() => {
+    if (!socket) return;
+
+    console.log('📊 Subscribing to engagement backfill updates...');
+
+    // Subscribe to admin room (for backfill progress)
+    socket.emit('subscribe:admin');
+
+    // Listen for real-time progress updates
+    const handleBackfillProgress = (data) => {
+      console.log('📊 Engagement backfill progress update received:', data);
+      queryClient.setQueryData(['engagementBackfillProgress'], data);
+    };
+
+    socket.on('bulk-import:backfill-progress', handleBackfillProgress);
+
+    // Cleanup on unmount
+    return () => {
+      console.log('📊 Unsubscribing from engagement backfill updates...');
+      socket.emit('unsubscribe:admin');
+      socket.off('bulk-import:backfill-progress', handleBackfillProgress);
+    };
+  }, [socket, queryClient]);
+
+  // Start engagement backfill mutation
+  const startBackfillMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('/api/admin/engagement/backfill', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+      });
+      
+      if (!res.ok) {
+        const error = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
+        throw new Error(error.error || 'Failed to start backfill');
+      }
+      
+      return res.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(['engagementBackfillProgress']);
+      
+      showToast({
+        type: 'success',
+        icon: '🚀',
+        title: 'Backfill Started',
+        message: `Enqueued ${data.totalUsers || 0} users for engagement score calculation`,
+        duration: 5000
+      });
+    },
+    onError: (error) => {
+      showToast({
+        type: 'error',
+        icon: '❌',
+        title: 'Error',
+        message: `Failed to start backfill: ${error.message}`,
+        duration: 5000
+      });
+    }
+  });
 
   const handleClearCache = async () => {
     try {
@@ -476,6 +557,69 @@ function DataPage() {
               disabled={clearCacheMutation.isPending}
             >
               {clearCacheMutation.isPending ? '⏳ Clearing...' : '🗑️ Clear All Cache'}
+            </button>
+          </div>
+        </div>
+
+        <div className="data-card">
+          <div className="data-card-header">
+            <span className="data-icon">📊</span>
+            <div>
+              <h3>Backfill Engagement Scores</h3>
+              <p>Recalculate engagement scores for all users (populates leaderboard rollup table)</p>
+            </div>
+          </div>
+          <div className="data-card-content">
+            {backfillProgress && (
+              <div style={{ marginBottom: '16px' }}>
+                <div style={{ 
+                  display: 'flex', 
+                  justifyContent: 'space-between', 
+                  marginBottom: '8px',
+                  fontSize: '14px',
+                  color: '#666'
+                }}>
+                  <span>Progress: {backfillProgress.completed || 0} / {backfillProgress.total || 0}</span>
+                  <span>{backfillProgress.progress || 0}%</span>
+                </div>
+                <div style={{
+                  width: '100%',
+                  height: '24px',
+                  background: '#e8dfd0',
+                  borderRadius: '12px',
+                  overflow: 'hidden',
+                  position: 'relative'
+                }}>
+                  <div style={{
+                    width: `${backfillProgress.progress || 0}%`,
+                    height: '100%',
+                    background: backfillProgress.isRunning 
+                      ? 'linear-gradient(90deg, #8b7355 0%, #6b4423 50%, #8b7355 100%)'
+                      : '#6b4423',
+                    transition: 'width 0.3s ease',
+                    animation: backfillProgress.isRunning ? 'shimmer 2s infinite' : 'none',
+                    backgroundSize: '200% 100%'
+                  }} />
+                </div>
+                {backfillProgress.failed > 0 && (
+                  <div style={{ 
+                    marginTop: '8px', 
+                    fontSize: '13px', 
+                    color: '#dc3545' 
+                  }}>
+                    ⚠️ {backfillProgress.failed} failed
+                  </div>
+                )}
+              </div>
+            )}
+            <button 
+              className="btn-success" 
+              onClick={() => startBackfillMutation.mutate()}
+              disabled={startBackfillMutation.isPending || backfillProgress?.isRunning}
+            >
+              {startBackfillMutation.isPending ? '⏳ Starting...' : 
+               backfillProgress?.isRunning ? '🔄 Running...' : 
+               '🚀 Start Backfill'}
             </button>
           </div>
         </div>
