@@ -7,6 +7,7 @@
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   position: relative;
   overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 }
 
 .podium-widget::before {
@@ -20,7 +21,9 @@
 }
 
 .podium-title {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
   font-size: 1.8em;
+  font-weight: 600;
   color: #f5f3ed;
   margin-bottom: 40px;
   text-align: center;
