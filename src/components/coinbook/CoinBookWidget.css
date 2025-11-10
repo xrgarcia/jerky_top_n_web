@@ -392,19 +392,15 @@
   pointer-events: none;
 }
 
-/* Tier badge overlay - positioned in top-right */
+/* Tier badge overlay - positioned at top center INSIDE the coin */
 .coinbook-widget .tier-badge-overlay {
   position: absolute;
-  top: 4px;
-  right: 4px;
+  top: 5%;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 18px;
-  background-color: rgba(0, 0, 0, 0.6);
-  border-radius: 50%;
-  width: 26px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
   z-index: 2;
   pointer-events: none;
 }
