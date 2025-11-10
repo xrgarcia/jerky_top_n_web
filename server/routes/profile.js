@@ -10,7 +10,7 @@ const {
 const { ObjectStorageService } = require('../objectStorage');
 
 function createProfileRoutes(services) {
-  const { db, storage } = services;
+  const { db, storage, profileDashboardService, getRankableProductCount } = services;
   const router = express.Router();
   const objectStorage = new ObjectStorageService();
 
@@ -333,6 +333,44 @@ function createProfileRoutes(services) {
     } catch (error) {
       console.error('Error deleting profile image:', error);
       res.status(500).json({ error: 'Failed to delete profile image' });
+    }
+  });
+
+  /**
+   * GET /api/profile/dashboard
+   * Get comprehensive dashboard data for private profile page
+   * Includes: user guidance, purchase analytics, and progress stats
+   */
+  router.get('/dashboard', async (req, res) => {
+    try {
+      const sessionId = req.cookies.session_id;
+      if (!sessionId) {
+        return res.status(401).json({ error: 'Not authenticated' });
+      }
+
+      const session = await storage.getSession(sessionId);
+      if (!session) {
+        return res.status(401).json({ error: 'Invalid session' });
+      }
+
+      if (!profileDashboardService) {
+        console.error('ProfileDashboardService not available');
+        return res.status(500).json({ error: 'Dashboard service not available' });
+      }
+
+      const totalRankableProducts = typeof getRankableProductCount === 'function' 
+        ? await getRankableProductCount() 
+        : 162;
+
+      const dashboardData = await profileDashboardService.getDashboardData(
+        session.userId,
+        totalRankableProducts
+      );
+
+      res.json(dashboardData);
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+      res.status(500).json({ error: 'Failed to load dashboard data' });
     }
   });
 
