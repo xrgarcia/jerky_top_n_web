@@ -34,7 +34,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Session Security**: Production-grade authentication using httpOnly cookies, 90-day server-side sessions, and single-domain enforcement.
 - **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
 - **Product Management**: Combines external data with metadata and ranking statistics, including advanced filtering.
-- **Shopify Synchronization**: Automatic sync of products and metadata via webhooks, with caching and orphan cleanup.
+- **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks, with caching and orphan cleanup. Real-time customer profile updates (name, email, membership date) via `customers/update` webhook with targeted cache invalidation.
 - **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications. Automatic real-time achievement checking via WebSocket.
 - **Page View Tracking**: Asynchronous tracking for analytics.
 - **Timestamp Handling**: All database timestamps are ISO 8601 UTC; client-side relative time calculation.
@@ -60,7 +60,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Product Detail Page**: Comprehensive product information including image, brand, animal type, primary/secondary flavors, pricing, ranking statistics, and product tags.
 - **Flavor Profile Pages**: Dynamic pages for each flavor type displaying all products with that flavor.
 - **Purchase History**: Automatic background synchronization of Shopify orders on login.
-- **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage.
+- **Community**: User discovery, search, profiles with ranking stats, top rankers widget. Privacy-aware display with CommunityService as single source of truth for user formatting (respects hideNamePrivacy to show @handle or "FirstName L." format). Avatar support with profile images stored in Replit Object Storage. Member Since dates display true jerky.com community membership date from Shopify (falls back to ranking site account creation date).
 - **Leaderboard**: Top 50 rankers with engagement scores and badges. LeaderboardManager uses CommunityService for privacy-aware formatting (displayName, initials, avatarUrl) with null-safe fallbacks. Avatar display integrated across home page top rankers widget (40px) and full leaderboard page (50px) with consistent styling.
 - **User Profile**: 
   - **Private Profile Page** (`/profile`): Always displays "FirstName L." format regardless of privacy settings. Includes profile photo upload, handle management, and privacy controls. Privacy checkbox currently hidden for future rollout but infrastructure remains functional.
