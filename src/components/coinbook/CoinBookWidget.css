@@ -136,3 +136,73 @@
 }
 
 /* END FEATURE 4 */
+
+/* FEATURE 5: HOVER EFFECTS AND TRANSITIONS */
+
+/* Hover effect for earned coins - enhance raised 3D effect */
+.coinbook-widget .achievement-coin.earned:hover {
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 18px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Hover for tier-specific earned coins - maintain tier glow */
+.coinbook-widget .achievement-coin.earned.tier-bronze:hover {
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(205, 127, 50, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.coinbook-widget .achievement-coin.earned.tier-silver:hover {
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(192, 192, 192, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.coinbook-widget .achievement-coin.earned.tier-gold:hover {
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 24px rgba(255, 215, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.coinbook-widget .achievement-coin.earned.tier-platinum:hover {
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 22px rgba(229, 228, 226, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.coinbook-widget .achievement-coin.earned.tier-diamond:hover {
+  box-shadow: 
+    0 5px 4px rgba(0, 0, 0, 0.5),
+    0 14px 24px rgba(0, 0, 0, 0.4),
+    0 0 26px rgba(185, 242, 255, 0.7),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Hover effect for locked coins - subtle lift */
+.coinbook-widget .achievement-coin.locked:hover {
+  transform: translateY(-1px) scale(1.02);
+  box-shadow: 
+    0 3px 8px rgba(0, 0, 0, 0.45),
+    inset 0 2px 4px rgba(0, 0, 0, 0.35),
+    inset 0 -2px 6px rgba(255, 255, 255, 0.4),
+    inset 0 0 0 1px rgba(80, 80, 80, 0.3);
+}
+
+/* Active/pressed state */
+.coinbook-widget .achievement-coin:active {
+  transform: translateY(0px) scale(1);
+}
+
+/* END FEATURE 5 */
