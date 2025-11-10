@@ -11,7 +11,7 @@ const {
 const { ObjectStorageService } = require('../objectStorage');
 
 function createProfileRoutes(services) {
-  const { db, storage } = services;
+  const { db, storage, leaderboardManager } = services;
   const router = express.Router();
   const objectStorage = new ObjectStorageService();
 
@@ -168,6 +168,29 @@ function createProfileRoutes(services) {
           hide_name_privacy: users.hideNamePrivacy,
           updated_at: users.updatedAt,
         });
+
+      // Invalidate caches if handle or privacy settings changed
+      // This ensures updated display names appear everywhere
+      if (updates.handle !== undefined || updates.hideNamePrivacy !== undefined) {
+        try {
+          // Check if user is in leaderboard top 50
+          if (leaderboardManager && leaderboardManager.cache) {
+            const leaderboardData = leaderboardManager.cache.get('all_time', 50);
+            
+            if (leaderboardData) {
+              const userInLeaderboard = leaderboardData.users?.some(u => u.userId === session.userId);
+              
+              if (userInLeaderboard) {
+                leaderboardManager.cache.invalidate();
+                console.log(`🗑️ Invalidated leaderboard cache (user ${session.userId} handle/privacy updated)`);
+              }
+            }
+          }
+        } catch (cacheError) {
+          console.error(`⚠️ Error invalidating caches for user ${session.userId}:`, cacheError);
+          // Don't throw - cache invalidation failure shouldn't fail the update
+        }
+      }
 
       res.json({ 
         success: true,
