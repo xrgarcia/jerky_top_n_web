@@ -213,11 +213,11 @@ function HomePage() {
                 homeStats.topRankers.slice(0, 5).map((ranker, index) => (
                   <div key={ranker.userId} className="dashboard-item ranker-item">
                     <div className={`rank-badge rank-${index + 1}`}>#{index + 1}</div>
-                    <div className="ranker-avatar-small">
+                    <div className="avatar avatar-medium">
                       {ranker.avatarUrl ? (
                         <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
                       ) : (
-                        ranker.initials
+                        <div className="avatar-initials">{ranker.initials}</div>
                       )}
                     </div>
                     <div className="ranker-info">

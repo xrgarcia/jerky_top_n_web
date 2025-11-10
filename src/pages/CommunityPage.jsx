@@ -32,8 +32,12 @@ function CommunityPage() {
                   className="top-ranker-item"
                 >
                   <div className="top-ranker-position">#{index + 1}</div>
-                  <div className="top-ranker-avatar">
-                    {ranker.displayName?.charAt(0)}
+                  <div className="avatar avatar-medium">
+                    {ranker.avatarUrl ? (
+                      <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
+                    ) : (
+                      <div className="avatar-initials">{ranker.initials || ranker.displayName?.charAt(0)}</div>
+                    )}
                   </div>
                   <div className="top-ranker-info">
                     <div className="top-ranker-name">{ranker.displayName}</div>
@@ -66,11 +70,11 @@ function CommunityPage() {
                 to={`/community/${user.user_id}`}
                 className="user-card"
               >
-                <div className="user-avatar">
+                <div className="avatar avatar-large">
                   {user.avatar_url ? (
                     <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
                   ) : (
-                    user.initials
+                    <div className="avatar-initials">{user.initials}</div>
                   )}
                 </div>
                 <h3 className="user-name">{user.display_name}</h3>

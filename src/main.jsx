@@ -7,6 +7,7 @@ import { ToastProvider } from './context/ToastContext';
 import AppLayout from './components/layout/AppLayout';
 import { initializeSentry, Sentry } from './utils/sentry';
 import './styles/global.css';
+import './styles/avatar.css';
 
 initializeSentry();
 

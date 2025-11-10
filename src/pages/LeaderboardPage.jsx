@@ -29,11 +29,11 @@ function LeaderboardPage() {
                   )}
                 </div>
 
-                <div className="leaderboard-avatar">
+                <div className="avatar avatar-medium">
                   {ranker.avatarUrl ? (
                     <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
                   ) : (
-                    ranker.initials
+                    <div className="avatar-initials">{ranker.initials}</div>
                   )}
                 </div>
 

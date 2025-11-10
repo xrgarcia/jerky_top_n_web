@@ -192,8 +192,16 @@ function Nav() {
           {isAuthenticated ? (
             <div className="user-actions">
               <div className="user-profile">
-                <Link to="/profile" className="user-avatar" title={`${user?.firstName || 'User'} ${user?.lastName || ''}`}>
-                  {getUserInitial()}
+                <Link to="/profile" className="avatar avatar-small avatar-interactive" title={`${user?.firstName || 'User'} ${user?.lastName || ''}`}>
+                  {user?.profile_image_url ? (
+                    <img 
+                      src={user.profile_image_url} 
+                      alt={`${user?.firstName || 'User'} ${user?.lastName || ''}`} 
+                      className="avatar-image"
+                    />
+                  ) : (
+                    <div className="avatar-initials">{getUserInitial()}</div>
+                  )}
                 </Link>
                 <button onClick={logout} className="logout-btn" aria-label="Log out of your account">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

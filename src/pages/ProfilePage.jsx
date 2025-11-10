@@ -361,11 +361,13 @@ function ProfilePage() {
           <div className="profile-avatar-wrapper">
             {isEditing ? (
               <div className="profile-avatar-edit">
-                {profileImagePreview ? (
-                  <img src={profileImagePreview} alt="Profile" className="profile-avatar-image" />
-                ) : (
-                  <div className="profile-avatar">{getInitials()}</div>
-                )}
+                <div className="avatar avatar-large">
+                  {profileImagePreview ? (
+                    <img src={profileImagePreview} alt="Profile" className="avatar-image" />
+                  ) : (
+                    <div className="avatar-initials">{getInitials()}</div>
+                  )}
+                </div>
                 <div className="profile-avatar-controls">
                   <input
                     ref={fileInputRef}
@@ -394,13 +396,13 @@ function ProfilePage() {
                 <p className="avatar-hint">Recommended: 512x512px, max 3MB</p>
               </div>
             ) : (
-              <>
+              <div className="avatar avatar-large">
                 {user?.profile_image_url ? (
-                  <img src={user.profile_image_url} alt="Profile" className="profile-avatar-image" />
+                  <img src={user.profile_image_url} alt="Profile" className="avatar-image" />
                 ) : (
-                  <div className="profile-avatar">{getInitials()}</div>
+                  <div className="avatar-initials">{getInitials()}</div>
                 )}
-              </>
+              </div>
             )}
           </div>
 

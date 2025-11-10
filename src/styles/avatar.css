@@ -1,0 +1,67 @@
+/* Unified Avatar System
+ * Three standardized sizes for consistent avatar display across the application
+ */
+
+/* Base avatar styles - shared across all sizes */
+.avatar {
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg, #7b8b52, #c4a962);
+  color: white;
+}
+
+/* Small avatars - Navigation bar */
+.avatar-small {
+  width: 40px;
+  height: 40px;
+  font-size: 16px;
+}
+
+/* Medium avatars - Leaderboards, top rankers, lists, search results */
+.avatar-medium {
+  width: 64px;
+  height: 64px;
+  font-size: 1.4em;
+}
+
+/* Large avatars - Profile pages, community user cards */
+.avatar-large {
+  width: 120px;
+  height: 120px;
+  font-size: 3em;
+}
+
+/* Avatar image - fills the container */
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Avatar initials - for users without profile pictures */
+.avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+/* Interactive avatars (clickable) */
+.avatar-interactive {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.avatar-interactive:hover {
+  transform: scale(1.1);
+}
