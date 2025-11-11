@@ -1,15 +1,43 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useProductWebhooks } from '../../hooks/useProductWebhooks';
 import { useProductWebhooksWebSocket } from '../../hooks/useProductWebhooksWebSocket';
+import { useToast } from '../../context/ToastContext';
 import './AdminPages.css';
 
 function ProductWebhooksPage() {
+  const { showToast } = useToast();
   const [selectedWebhook, setSelectedWebhook] = useState(null);
   const [activeTab, setActiveTab] = useState('summary');
   
   const { data: webhooks = [], isLoading, isError, error, refetch } = useProductWebhooks(50);
 
-  useProductWebhooksWebSocket();
+  const handleWebhookUpdate = useCallback((updateData) => {
+    console.log('📦 Webhook update received:', updateData);
+    
+    const topic = updateData.data?.topic || updateData.topic;
+    const productData = updateData.data?.data || updateData.data || {};
+    
+    const action = updateData.action === 'upserted' ? 'Product Updated' :
+                   updateData.action === 'deleted' ? 'Product Deleted' :
+                   'Product Event';
+    
+    const productTitle = productData.title || 'Unknown Product';
+    const vendor = productData.vendor ? ` (${productData.vendor})` : '';
+    
+    showToast({
+      type: 'info',
+      icon: '📦',
+      title: action,
+      message: `${productTitle}${vendor} - ${topic}`,
+      duration: 4000
+    });
+    
+    refetch();
+  }, [showToast, refetch]);
+
+  useProductWebhooksWebSocket({
+    onWebhookUpdate: handleWebhookUpdate
+  });
 
   const formatTimestamp = (timestamp) => {
     try {

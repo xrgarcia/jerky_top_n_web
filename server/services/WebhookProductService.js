@@ -121,16 +121,16 @@ class WebhookProductService {
    * @param {Object} updateData - Update data to broadcast
    */
   broadcastAdminUpdate(updateData) {
-    if (!this.wsGateway) {
-      console.log('⚠️ WebSocket gateway not available, skipping broadcast');
+    if (!this.wsGateway || !this.wsGateway.broadcastProductWebhookUpdate) {
       return;
     }
 
-    const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-    const roomName = `admin:${environment}`;
-
-    this.wsGateway.io.to(roomName).emit('product_webhook_update', updateData);
-    console.log(`📡 Broadcasted product webhook update to ${roomName}`);
+    try {
+      this.wsGateway.broadcastProductWebhookUpdate(updateData);
+    } catch (error) {
+      console.error(`⚠️ Error broadcasting admin update:`, error);
+      // Don't throw - broadcast failure shouldn't fail the webhook
+    }
   }
 }
 

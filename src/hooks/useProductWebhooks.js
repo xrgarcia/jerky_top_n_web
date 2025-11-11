@@ -1,14 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import apiClient from '../services/apiClient';
+import { api } from '../utils/api';
 
 export function useProductWebhooks(limit = 50) {
   return useQuery({
     queryKey: ['admin', 'product-webhooks', limit],
     queryFn: async () => {
-      const response = await apiClient.get(`/api/admin/product-webhooks/recent?limit=${limit}`);
-      return response.data.webhooks || [];
+      const response = await api.get(`/admin/product-webhooks/recent?limit=${limit}`);
+      return response.webhooks || [];
     },
-    refetchInterval: 30000,
-    staleTime: 20000,
+    staleTime: 30000,
+    refetchInterval: false,
   });
 }

@@ -1,46 +1,49 @@
-import { useEffect, useCallback } from 'react';
-import { useQueryClient } from '@tanstack/react-query';
-import toast from 'react-hot-toast';
-import { useSocket } from '../contexts/SocketContext';
+import { useEffect, useRef } from 'react';
+import { useSocket } from './useSocket';
 
-export function useProductWebhooksWebSocket() {
-  const queryClient = useQueryClient();
-  const socket = useSocket();
+export function useProductWebhooksWebSocket({ onWebhookUpdate }) {
+  const { socket } = useSocket();
+  const onWebhookUpdateRef = useRef(onWebhookUpdate);
 
-  const handleProductWebhookUpdate = useCallback((data) => {
-    console.log('📡 Received product webhook update:', data);
-
-    const action = data.action;
-    const productTitle = data.data?.data?.title || 'Product';
-    const vendor = data.data?.data?.vendor || '';
-
-    const actionEmoji = {
-      'upserted': '✅',
-      'deleted': '🗑️',
-      'noted': '📝'
-    };
-
-    const emoji = actionEmoji[action] || '📦';
-    const displayVendor = vendor ? ` (${vendor})` : '';
-    
-    toast.success(`${emoji} ${productTitle}${displayVendor}`, {
-      duration: 4000,
-      position: 'bottom-right',
-      id: `product-webhook-${data.data?.data?.id}-${Date.now()}`,
-    });
-
-    queryClient.invalidateQueries({ queryKey: ['admin', 'product-webhooks'] });
-  }, [queryClient]);
+  useEffect(() => {
+    onWebhookUpdateRef.current = onWebhookUpdate;
+  }, [onWebhookUpdate]);
 
   useEffect(() => {
     if (!socket) return;
 
-    console.log('🔌 Setting up product webhook WebSocket listener');
-    socket.on('product_webhook_update', handleProductWebhookUpdate);
+    socket.emit('subscribe:product-webhooks');
+    console.log('📡 Subscribed to product webhooks updates');
+
+    const handleWebhookUpdate = (data) => {
+      console.log('📦 Product webhook update received:', data);
+      if (onWebhookUpdateRef.current) {
+        onWebhookUpdateRef.current(data);
+      }
+    };
+
+    const handleSubscriptionConfirmed = (data) => {
+      if (data.room === 'product-webhooks') {
+        console.log('✅ Product webhooks subscription confirmed');
+      }
+    };
+
+    const handleSubscriptionFailed = (data) => {
+      if (data.room === 'product-webhooks') {
+        console.error('❌ Product webhooks subscription failed:', data.reason);
+      }
+    };
+
+    socket.on('product-webhook:update', handleWebhookUpdate);
+    socket.on('subscription:confirmed', handleSubscriptionConfirmed);
+    socket.on('subscription:failed', handleSubscriptionFailed);
 
     return () => {
-      console.log('🔌 Cleaning up product webhook WebSocket listener');
-      socket.off('product_webhook_update', handleProductWebhookUpdate);
+      socket.emit('unsubscribe:product-webhooks');
+      socket.off('product-webhook:update', handleWebhookUpdate);
+      socket.off('subscription:confirmed', handleSubscriptionConfirmed);
+      socket.off('subscription:failed', handleSubscriptionFailed);
+      console.log('📡 Unsubscribed from product webhooks updates');
     };
-  }, [socket, handleProductWebhookUpdate]);
+  }, [socket]);
 }
