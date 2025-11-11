@@ -1,0 +1,87 @@
+index-CT15mYMs.js:23 [Violation] 'message' handler took 153ms
+vendor-sentry-B9MY0m1g.js:17 ❌ WebSocket disconnected
+vendor-sentry-B9MY0m1g.js:17 📦 Unsubscribing from customer orders updates...
+index-CT15mYMs.js:189 [Violation] 'setTimeout' handler took 158ms
+vendor-sentry-B9MY0m1g.js:17 🔍 Fetching orders with filters: {orderNumber: '', customerEmail: '', productId: '', sku: '', fulfillmentStatus: '', …}
+vendor-sentry-B9MY0m1g.js:17 📋 URL params: dateFrom=2025-11-10&dateTo=2025-11-11&limit=50&offset=0&sortBy=orderDate&sortOrder=desc
+vendor-socket-CA1CrNgP.js:1 WebSocket connection to 'wss://rank.jerky.com/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+_onClose @ vendor-socket-CA1CrNgP.js:1
+e @ vendor-socket-CA1CrNgP.js:1
+close @ vendor-socket-CA1CrNgP.js:1
+onclose @ vendor-socket-CA1CrNgP.js:1
+_close @ vendor-socket-CA1CrNgP.js:1
+_destroy @ vendor-socket-CA1CrNgP.js:1
+destroy @ vendor-socket-CA1CrNgP.js:1
+disconnect @ vendor-socket-CA1CrNgP.js:1
+(anonymous) @ index-CT15mYMs.js:420
+react_stack_bottom_frame @ index-CT15mYMs.js:233
+H @ index-CT15mYMs.js:47
+Uo @ index-CT15mYMs.js:167
+vd @ index-CT15mYMs.js:167
+D0 @ index-CT15mYMs.js:167
+Q0 @ index-CT15mYMs.js:180
+H @ index-CT15mYMs.js:47
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+H @ index-CT15mYMs.js:47
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+jd @ index-CT15mYMs.js:180
+X0 @ index-CT15mYMs.js:180
+Y0 @ index-CT15mYMs.js:167
+ai @ index-CT15mYMs.js:167
+K0 @ index-CT15mYMs.js:189
+oi @ index-CT15mYMs.js:189
+L0 @ index-CT15mYMs.js:167
+Td @ index-CT15mYMs.js:167
+j0 @ index-CT15mYMs.js:167
+R0 @ index-CT15mYMs.js:167
+J0 @ index-CT15mYMs.js:189
+v @ index-CT15mYMs.js:23
+vendor-sentry-B9MY0m1g.js:17 📦 Subscribing to customer orders updates...
+vendor-sentry-B9MY0m1g.js:17 ✅ WebSocket connected
+vendor-sentry-B9MY0m1g.js:17 🔐 Socket authenticated: {userId: 2}
+vendor-sentry-B9MY0m1g.js:17 ✅ Subscribed to customer orders updates
+vendor-sentry-B9MY0m1g.js:17 📦 Customer order update received: {action: 'upserted', orderNumber: 'JK3825342940', itemsCount: 3, deletedCount: 0, fulfillmentStatuses: Array(1), …}
+vendor-sentry-B9MY0m1g.js:17 📦 Order update received: {action: 'upserted', orderNumber: 'JK3825342940', itemsCount: 3, deletedCount: 0, fulfillmentStatuses: Array(1), …}
+vendor-sentry-B9MY0m1g.js:17 📥 Toast added to queue (1 in queue)
+vendor-sentry-B9MY0m1g.js:17 🎬 Showing toast: New Order (0 remaining in queue)
+vendor-sentry-B9MY0m1g.js:17 🔍 Fetching orders with filters: {orderNumber: '', customerEmail: '', productId: '', sku: '', fulfillmentStatus: '', …}
+vendor-sentry-B9MY0m1g.js:17 📋 URL params: dateFrom=2025-11-10&dateTo=2025-11-11&limit=50&offset=0&sortBy=orderDate&sortOrder=desc
+vendor-sentry-B9MY0m1g.js:17 ✅ Toast dismissed, processing next (0 in queue)
