@@ -160,11 +160,11 @@
   border-radius: 0 0 2px 2px;
 }
 
-.ranker-info {
+.podium-widget .ranker-info {
   text-align: center;
 }
 
-.ranker-name {
+.podium-widget .ranker-name {
   font-size: 1.1em;
   font-weight: 600;
   color: #f5f3ed;
@@ -172,7 +172,7 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-.ranker-score {
+.podium-widget .ranker-score {
   font-size: 0.9em;
   color: #c4a962;
   font-weight: 600;
@@ -470,11 +470,11 @@
     padding: 12px 18px;
   }
 
-  .ranker-name {
+  .podium-widget .ranker-name {
     font-size: 0.95em;
   }
 
-  .ranker-score {
+  .podium-widget .ranker-score {
     font-size: 0.85em;
   }
 
