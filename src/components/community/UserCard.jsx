@@ -88,11 +88,11 @@ const FLAVOR_COMMUNITY_CONFIG = {
     emoji: '🍱',
     label: 'Teriyaki'
   },
-  peppered: {
+  peppery: {
     color: '#4B5563',
     bgGradient: 'linear-gradient(135deg, #4B5563 0%, #374151 100%)',
     emoji: '⚫',
-    label: 'Peppered'
+    label: 'Peppery'
   },
   original: {
     color: '#B8860B',
