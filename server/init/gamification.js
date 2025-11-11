@@ -50,15 +50,29 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   // Ensure both database instances are query-ready before proceeding
   // This prevents cold-start errors on Neon Serverless
   // Warm both the primary DB and the injected pooled DB
+  let isColdStart = false;
+  
   try {
-    await Promise.all([
+    const [primaryWarmup, pooledWarmup] = await Promise.all([
       ensureDatabaseReady(primaryDb),
       ensureDatabaseReady(db)
     ]);
+    
+    // Detect cold start from warmup metadata
+    // A cold start is when warmup took >1s or required multiple attempts
+    isColdStart = primaryWarmup.isColdStart || pooledWarmup.isColdStart;
+    
     console.log('✅ Database instances warmed and ready for queries');
+    
+    if (isColdStart) {
+      console.log('🧊 Cold start detected - cache warming will use sequential strategy');
+    }
   } catch (error) {
     console.warn('⚠️ Database warmup failed during initialization, but proceeding anyway');
     console.warn(`   Warmup error: ${error.message}`);
+    
+    // Assume cold start if warmup failed
+    isColdStart = true;
     
     // Log to Sentry as warning (not error) since this doesn't break functionality
     Sentry.captureException(error, {
@@ -273,8 +287,9 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
 
   // Warm all caches asynchronously (non-blocking)
   // This runs in background after server starts accepting requests
+  // Uses adaptive strategy based on cold-start detection
   setImmediate(() => {
-    cacheWarmer.warmAllAsync();
+    cacheWarmer.warmAllAsync({ isColdStart });
   });
 
   console.log('🎮 Gamification system initialized successfully');

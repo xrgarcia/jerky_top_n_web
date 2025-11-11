@@ -29,7 +29,7 @@ console.log('💾 Primary database connection configured (no pooler - read from 
  * Ensure database is ready for queries
  * Call this before any database operations during startup
  * @param {object} dbInstance - Drizzle database instance to warm (defaults to primaryDb)
- * @returns {Promise<boolean>} - True if database is ready
+ * @returns {Promise<{success: boolean, duration: number, attempts: number, isColdStart: boolean}>} - Warmup metadata
  */
 async function ensureDatabaseReady(dbInstance = null) {
   const targetDb = dbInstance || primaryDb;

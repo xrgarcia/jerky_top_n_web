@@ -1,0 +1,247 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2K
+Title: Error: Failed query: 
+Status: unresolved
+Level: warning
+Environment: PRODUCTION
+
+First Seen: 2025-11-10T23:23:53.063000Z
+Last Seen: 2025-11-10T23:23:53Z
+Event Count: 1
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: 
+
+--- CULPRIT ---
+LeaderboardManager.getTopRankers(server.services:LeaderboardManager)
+
+--- STACK TRACE ---
+Error: timeout exceeded when trying to connect
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at runNextTicks (node:internal/process/task_queues:?:?)
+  at listOnTimeout (node:internal/timers:?:?)
+  at process.processTimers (node:internal/timers:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at LeaderboardManager.getTopRankers (/home/runner/workspace/server/services/LeaderboardManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/services/CacheWarmer.js:?:?) [in app]
+
+Error: Failed query: 
+      SELECT 
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.email,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
+        COALESCE(ues.unique_products_count, 0)::int as unique_products,
+        COALESCE(ues.engagement_score, 0)::int as engagement_score
+      FROM users u
+      INNER JOIN user_engagement_scores ues ON ues.user_id = u.id
+      WHERE u.active = true
+        AND ues.engagement_score > 0
+      ORDER BY ues.engagement_score DESC
+      LIMIT 5
+    
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at runNextTicks (node:internal/process/task_queues:?:?)
+  at listOnTimeout (node:internal/timers:?:?)
+  at process.processTimers (node:internal/timers:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at LeaderboardManager.getTopRankers (/home/runner/workspace/server/services/LeaderboardManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/services/CacheWarmer.js:?:?) [in app]
+  at Promise.allSettled (index 1:?:?)
+  at CacheWarmer.warmAll (/home/runner/workspace/server/services/CacheWarmer.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-10T23:23:33.585000Z] console (info):    Database: ✅ Connected
+[2025-11-10T23:23:33.585000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-10T23:23:33.645000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-10T23:23:33.645000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-10T23:23:33.645000Z] console (info): 🔍 Redis environment: PRODUCTION
+[2025-11-10T23:23:33.645000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL_PROD
+[2025-11-10T23:23:33.645000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-10T23:23:33.662000Z] console (info): [Filtered]
+[2025-11-10T23:23:33.664000Z] console (info): 🎮 Initializing gamification system...
+[2025-11-10T23:23:33.664000Z] console (info): 🔌 Warming up database connection...
+[2025-11-10T23:23:33.666000Z] console (info): 🔌 Warming up database connection...
+[2025-11-10T23:23:33.709000Z] http (info): {"http.method":"GET","status_code":200,"url":"http://127.0.0.1:1106/object-storage/default-bucket"}
+[2025-11-10T23:23:33.742000Z] console (info): ✅ Redis connection pool established
+[2025-11-10T23:23:33.877000Z] console (info): ✅ Redis ready for commands
+[2025-11-10T23:23:33.882000Z] console (info): 🏓 Redis PING successful - connection pool active
+[2025-11-10T23:23:33.883000Z] console (info): ✅ homeStats: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ leaderboard: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ leaderboardPosition: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ achievement: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ metadata: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ rankingStats: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ products: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ All caches using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ leaderboard: Using Redis for distributed caching
+[2025-11-10T23:23:33.883000Z] console (info): ✅ LeaderboardCache initialized
+[2025-11-10T23:23:33.883000Z] console (info): 🔌 Setting up Socket.IO Redis adapter with shared connection...
+[2025-11-10T23:23:33.912000Z] console (info): ✅ Socket.IO using Redis adapter for cross-instance communication
+[2025-11-10T23:23:33.912000Z] console (info): ✅ Scalability initialization complete
+[2025-11-10T23:23:33.912000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-10T23:23:33.956000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-10T23:23:34.002000Z] console (info): ✅ Database is query-ready (1 attempt, 336ms)
+[2025-11-10T23:23:34.003000Z] console (info): ✅ Database is query-ready (1 attempt, 339ms)
+[2025-11-10T23:23:34.003000Z] console (info): ✅ Database instances warmed and ready for queries
+[2025-11-10T23:23:34.003000Z] console (info): ✅ recentAchievements: Using Redis for distributed caching
+[2025-11-10T23:23:34.003000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.005000Z] console (info): ✅ Classification queue initialized
+[2025-11-10T23:23:34.009000Z] console (info): ✅ Gamification routes registered at /api/gamification
+[2025-11-10T23:23:34.009000Z] console (info): ✅ Community routes registered at /api/community
+[2025-11-10T23:23:34.009000Z] console (info): ✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+[2025-11-10T23:23:34.009000Z] console (info): ✅ Profile routes registered at /api/profile
+[2025-11-10T23:23:34.009000Z] console (info): 🏷️  WebSocket environment prefix: prod
+[2025-11-10T23:23:34.010000Z] console (info): ✅ WebSocket gateway initialized
+[2025-11-10T23:23:34.010000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.012000Z] console (info): ✅ Classification worker initialized (concurrency: 5)
+[2025-11-10T23:23:34.012000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.012000Z] console (info): 🔌 Creating dedicated Redis connection for BullMQ queue...
+[2025-11-10T23:23:34.028000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:34.030000Z] console (info): ✅ BullMQ queue Redis connection READY
+[2025-11-10T23:23:34.030000Z] console (info): ✅ Bulk import queue initialized with hardened Redis connection
+[2025-11-10T23:23:34.031000Z] console (info): ✅ BulkImportService initialized with WebSocket gateway and classification queue
+[2025-11-10T23:23:34.031000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.031000Z] console (info): 🔌 Creating dedicated Redis connection for BullMQ worker...
+[2025-11-10T23:23:34.033000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:34.046000Z] console (info): ✅ BullMQ worker Redis connection READY
+[2025-11-10T23:23:34.047000Z] console (info): ✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 50 jobs/min)
+[2025-11-10T23:23:34.048000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.051000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:34.067000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:34.071000Z] console (info): ✅ Engagement backfill queue initialized (Worker handles stalled jobs via lockDuration)
+[2025-11-10T23:23:34.072000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-10T23:23:34.072000Z] console (info): 🔌 Creating dedicated Redis connection for engagement backfill worker...
+[2025-11-10T23:23:34.073000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:34.083000Z] console (info): ✅ Engagement backfill worker Redis connection READY
+[2025-11-10T23:23:34.083000Z] console (info): ✅ Engagement backfill worker initialized (concurrency: 10)
+[2025-11-10T23:23:34.085000Z] console (info): 🎮 Gamification system initialized successfully
+[2025-11-10T23:23:34.085000Z] console (info): ✅ Gamification services available for achievements
+[2025-11-10T23:23:34.086000Z] console (info): ✅ Profile routes registered at /api/profile
+[2025-11-10T23:23:34.124000Z] console (info): 📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*
+[2025-11-10T23:23:34.138000Z] console (info): ✅ Tools routes registered at /api/tools
+[2025-11-10T23:23:34.139000Z] console (info): ✅ Object storage route registered at /objects/*
+[2025-11-10T23:23:34.251000Z] console (info): ✅ Admin routes registered at /api/admin
+[2025-11-10T23:23:34.251000Z] console (info): ✅ All routes initialized (catch-all already registered early)
+[2025-11-10T23:23:34.253000Z] console (info): 🔥 CacheWarmer: Starting to warm 3 cache(s)...
+[2025-11-10T23:23:34.254000Z] console (info): 🚫 HomeStatsCache MISS: Data expired or not found
+[2025-11-10T23:23:34.258000Z] console (info): 🚫 Cache MISS: No cached data
+[2025-11-10T23:23:34.258000Z] console (info): 🔄 Fetching fresh products from Shopify API...
+[2025-11-10T23:23:35.765000Z] console (info): 📨 Registering Shopify webhooks...
+[2025-11-10T23:23:36.266000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-10T23:23:36.763000Z] console (info): 🚫 LeaderboardCache MISS: period:all_time:top:5
+[2025-11-10T23:23:37.267000Z] console (info): 🚫 LeaderboardCache MISS: period:all_time:top:5
+[2025-11-10T23:23:44.363000Z] console (warning): ⚠️ CacheWarmer: HomeStatsCache failed to warm (10110ms): Failed query: 
+      SELECT 
+        shopify_product_id,
+        MAX(product_data::text)::jsonb as product_data,
+        COUNT(*) as rank_count,
+        AVG(ranking) as avg_rank,
+        MIN(ranking) as best_rank,
+        MAX(ranking) as worst_rank
+      FROM product_rankings
+      WHERE product_data IS NOT NULL
+      GROUP BY shopify_product_id
+      HAVING COUNT(*) >= 1
+      ORDER BY avg_rank ASC
+      LIMIT $1
+    
+params: 5
+[2025-11-10T23:23:49.465000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.465000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.466000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.466000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.466000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.466000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.466000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.467000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.467000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.963000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.964000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:49.965000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-10T23:23:51.263000Z] console (info): ⏳ seeding achievement rank_10 failed (attempt 1/3), retrying in 500ms...
+[2025-11-10T23:23:51.563000Z] console (warning): ⚠️ CacheWarmer: LeaderboardCache failed to warm (17306ms): Failed query: 
+      SELECT 
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.email,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
+        COALESCE(ues.unique_products_count, 0)::int as unique_products,
+        COALESCE(ues.engagement_score, 0)::int as engagement_score
+      FROM users u
+      INNER JOIN user_engagement_scores ues ON ues.user_id = u.id
+      WHERE u.active = true
+        AND ues.engagement_score > 0
+      ORDER BY ues.engagement_score DESC
+      LIMIT 5
+    
+params: 
+
+--- TAGS ---
+  app_url: undefined
+  cache_name: undefined
+  duration_ms: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

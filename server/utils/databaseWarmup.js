@@ -12,7 +12,7 @@ const Sentry = require('@sentry/node');
  * Wait for database to be query-ready
  * @param {object} db - Drizzle database instance
  * @param {object} options - Configuration options
- * @returns {Promise<boolean>} - True if database is ready, throws if timeout
+ * @returns {Promise<{success: boolean, duration: number, attempts: number}>} - Warmup metadata
  */
 async function waitForDatabaseReady(db, options = {}) {
   const {
@@ -32,6 +32,7 @@ async function waitForDatabaseReady(db, options = {}) {
     
     // Check if we've exceeded total timeout
     if (Date.now() - startTime > timeoutMs) {
+      const duration = Date.now() - startTime;
       const error = new Error(`Database warmup timeout after ${timeoutMs}ms`);
       console.error(`❌ Database warmup failed: ${error.message}`);
       
@@ -43,7 +44,7 @@ async function waitForDatabaseReady(db, options = {}) {
         },
         extra: {
           attempts: attempt,
-          durationMs: Date.now() - startTime,
+          durationMs: duration,
           maxRetries,
           timeoutMs
         }
@@ -58,9 +59,17 @@ async function waitForDatabaseReady(db, options = {}) {
       const result = await db.execute(sql.raw(pingQuery));
       
       const duration = Date.now() - startTime;
-      console.log(`✅ Database is query-ready (${attempt} attempt${attempt > 1 ? 's' : ''}, ${duration}ms)`);
+      const isColdStart = duration > 1000 || attempt > 1;
       
-      return true;
+      console.log(`✅ Database is query-ready (${attempt} attempt${attempt > 1 ? 's' : ''}, ${duration}ms)${isColdStart ? ' [COLD START DETECTED]' : ''}`);
+      
+      // Return metadata for intelligent cache warming
+      return {
+        success: true,
+        duration,
+        attempts: attempt,
+        isColdStart
+      };
     } catch (error) {
       const elapsed = Date.now() - startTime;
       console.log(`⏳ Database not ready yet (attempt ${attempt}/${maxRetries}, ${elapsed}ms)...`);
@@ -73,6 +82,7 @@ async function waitForDatabaseReady(db, options = {}) {
   }
 
   // If we get here, all retries failed
+  const duration = Date.now() - startTime;
   const error = new Error(`Database warmup failed after ${maxRetries} attempts`);
   console.error(`❌ ${error.message}`);
   
@@ -84,7 +94,7 @@ async function waitForDatabaseReady(db, options = {}) {
     },
     extra: {
       attempts: maxRetries,
-      durationMs: Date.now() - startTime,
+      durationMs: duration,
       retryDelayMs
     }
   });
