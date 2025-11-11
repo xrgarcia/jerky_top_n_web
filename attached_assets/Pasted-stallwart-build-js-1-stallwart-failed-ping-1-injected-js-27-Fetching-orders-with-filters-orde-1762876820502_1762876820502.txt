@@ -1,0 +1,83 @@
+stallwart.build.js:1 stallwart: failed ping 1
+injected.js:27 🔍 Fetching orders with filters: {orderNumber: '', customerEmail: '', productId: '', sku: '', fulfillmentStatus: '', …}
+injected.js:27 📋 URL params: dateFrom=2025-11-10&dateTo=2025-11-11&limit=50&offset=0&sortBy=orderDate&sortOrder=desc
+useSocket.js:66 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ socket__io-client.js?v=c39df7d6:1035
+close @ socket__io-client.js?v=c39df7d6:511
+_onClose @ socket__io-client.js?v=c39df7d6:1609
+close @ socket__io-client.js?v=c39df7d6:1556
+close @ socket__io-client.js?v=c39df7d6:1581
+onclose @ socket__io-client.js?v=c39df7d6:3313
+_close @ socket__io-client.js?v=c39df7d6:3291
+_destroy @ socket__io-client.js?v=c39df7d6:3259
+destroy @ socket__io-client.js?v=c39df7d6:2745
+disconnect @ socket__io-client.js?v=c39df7d6:2767
+(anonymous) @ useSocket.js:66
+react_stack_bottom_frame @ react-dom_client.js?v=c39df7d6:18573
+runWithFiberInDEV @ react-dom_client.js?v=c39df7d6:997
+commitHookEffectListUnmount @ react-dom_client.js?v=c39df7d6:9449
+commitHookPassiveUnmountEffects @ react-dom_client.js?v=c39df7d6:9468
+disconnectPassiveEffect @ react-dom_client.js?v=c39df7d6:11560
+doubleInvokeEffectsOnFiber @ react-dom_client.js?v=c39df7d6:13339
+runWithFiberInDEV @ react-dom_client.js?v=c39df7d6:997
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13312
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+runWithFiberInDEV @ react-dom_client.js?v=c39df7d6:999
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13326
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+recursivelyTraverseAndDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13317
+commitDoubleInvokeEffectsInDEV @ react-dom_client.js?v=c39df7d6:13347
+flushPassiveEffects @ react-dom_client.js?v=c39df7d6:13157
+flushPendingEffects @ react-dom_client.js?v=c39df7d6:13088
+performSyncWorkOnRoot @ react-dom_client.js?v=c39df7d6:13514
+flushSyncWorkAcrossRoots_impl @ react-dom_client.js?v=c39df7d6:13414
+flushSpawnedWork @ react-dom_client.js?v=c39df7d6:13067
+commitRoot @ react-dom_client.js?v=c39df7d6:12804
+commitRootWhenReady @ react-dom_client.js?v=c39df7d6:12016
+performWorkOnRoot @ react-dom_client.js?v=c39df7d6:11950
+performWorkOnRootViaSchedulerTask @ react-dom_client.js?v=c39df7d6:13505
+performWorkUntilDeadline @ react-dom_client.js?v=c39df7d6:36
+injected.js:27 📦 Subscribing to customer orders updates...
+react-dom_client.js?v=c39df7d6:13527 [Violation] 'setTimeout' handler took 129ms
+stallwart.build.js:1 stallwart: failed ping 2
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Subscribed to customer orders updates
+stallwart.build.js:1 stallwart: failed ping 3
+stallwart.build.js:1 stallwart: failed ping 4
+stallwart.build.js:1 stallwart: failed ping 5
+stallwart.build.js:1 stallwart: session stalled

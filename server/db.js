@@ -42,19 +42,32 @@ const pool = new Pool({
   connectionString,
   max: 20, // Maximum 20 concurrent connections
   idleTimeoutMillis: 30000, // Close idle connections after 30s
-  connectionTimeoutMillis: 5000, // Timeout if connection takes >5s
+  connectionTimeoutMillis: 10000, // Timeout if connection takes >10s
+  keepAlive: true, // Enable TCP keepalive to prevent idle disconnects
+  keepAliveInitialDelayMillis: 10000, // Start keepalive after 10s
 });
 
 // Add pool error handling to prevent uncaught exceptions
 pool.on('error', (err) => {
+  // Handle expected network errors gracefully
+  if (err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT' || err.code === 'ECONNREFUSED') {
+    console.warn('⚠️ Database connection issue (will retry):', {
+      code: err.code,
+      message: err.message,
+      timestamp: new Date().toISOString()
+    });
+    // Don't log to Sentry for expected network hiccups
+    return;
+  }
+  
+  // Log unexpected errors with full details
   console.error('❌ Unexpected database pool error:', {
     message: err.message,
     code: err.code,
-    stack: err.stack,
     timestamp: new Date().toISOString()
   });
   
-  // Log to Sentry if available
+  // Log to Sentry if available (only for unexpected errors)
   if (typeof Sentry !== 'undefined' && Sentry.captureException) {
     Sentry.captureException(err, {
       tags: { service: 'database_pool' },
@@ -79,16 +92,23 @@ pool.on('connect', (client) => {
   
   // Add error handler to individual clients
   client.on('error', (err) => {
+    // Handle expected network errors gracefully
+    if (err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT' || err.code === 'ECONNREFUSED') {
+      console.warn('⚠️ Database client connection issue (will reconnect):', {
+        code: err.code,
+        message: err.message,
+        timestamp: new Date().toISOString()
+      });
+      return;
+    }
+    
+    // Log unexpected errors
     console.error('❌ Database client error:', {
       message: err.message,
       code: err.code,
       name: err.name,
-      stack: err.stack,
       timestamp: new Date().toISOString()
     });
-    
-    // Also log the full error as JSON to capture all properties
-    console.error('Full client error details:', JSON.stringify(err, Object.getOwnPropertyNames(err), 2));
   });
 });
 
@@ -99,9 +119,45 @@ pool.on('remove', () => {
   });
 });
 
+/**
+ * Retry wrapper for database queries to handle transient network errors
+ * Automatically retries ECONNRESET, ETIMEDOUT, and ECONNREFUSED with exponential backoff
+ * 
+ * @param {Function} queryFn - Async function that performs the database query
+ * @param {number} maxRetries - Maximum number of retry attempts (default: 3)
+ * @returns {Promise} Result of the query
+ */
+async function queryWithRetry(queryFn, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await queryFn();
+    } catch (err) {
+      const isRetryable = err.code === 'ECONNRESET' || 
+                          err.code === 'ETIMEDOUT' || 
+                          err.code === 'ECONNREFUSED';
+      
+      if (isRetryable && attempt < maxRetries) {
+        const delayMs = 100 * Math.pow(2, attempt - 1); // Exponential backoff: 100ms, 200ms, 400ms
+        console.warn(`⚠️ Database query failed (${err.code}), retrying in ${delayMs}ms (attempt ${attempt}/${maxRetries})...`);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        continue;
+      }
+      
+      // Non-retryable error or max retries exceeded
+      throw err;
+    }
+  }
+}
+
+// Wrap pool.query with automatic retry logic
+const originalPoolQuery = pool.query.bind(pool);
+pool.query = async function(...args) {
+  return await queryWithRetry(() => originalPoolQuery(...args));
+};
+
 const db = drizzle({ client: pool, schema });
 
-console.log('💾 Database connection pool configured with pooler endpoint');
+console.log('💾 Database connection pool configured with pooler endpoint (with auto-retry)');
 
 /**
  * Create a dedicated database pool for webhook workers
@@ -113,11 +169,23 @@ function createWebhookPool() {
     connectionString,
     max: 5, // Dedicated 5 connections for webhook processing
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    connectionTimeoutMillis: 10000,
+    keepAlive: true, // Enable TCP keepalive
+    keepAliveInitialDelayMillis: 10000,
   });
 
   // Add pool error handling
   webhookPool.on('error', (err) => {
+    // Handle expected network errors gracefully
+    if (err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT' || err.code === 'ECONNREFUSED') {
+      console.warn('⚠️ Webhook pool connection issue (will retry):', {
+        code: err.code,
+        message: err.message,
+        timestamp: new Date().toISOString()
+      });
+      return;
+    }
+    
     console.error('❌ Webhook pool error:', {
       message: err.message,
       code: err.code,
@@ -140,11 +208,17 @@ function createWebhookPool() {
     });
   });
 
+  // Wrap webhook pool query with automatic retry logic
+  const originalWebhookQuery = webhookPool.query.bind(webhookPool);
+  webhookPool.query = async function(...args) {
+    return await queryWithRetry(() => originalWebhookQuery(...args));
+  };
+
   const webhookDb = drizzle({ client: webhookPool, schema });
   
-  console.log('💾 Dedicated webhook pool created (5 connections)');
+  console.log('💾 Dedicated webhook pool created (5 connections, with auto-retry)');
   
   return { webhookPool, webhookDb };
 }
 
-module.exports = { pool, db, createWebhookPool };
+module.exports = { pool, db, createWebhookPool, queryWithRetry };

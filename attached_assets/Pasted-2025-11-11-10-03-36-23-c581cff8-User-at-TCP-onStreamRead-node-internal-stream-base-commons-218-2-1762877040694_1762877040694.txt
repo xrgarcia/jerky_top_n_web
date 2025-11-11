@@ -1,0 +1,206 @@
+2025-11-11 10:03:36.23
+c581cff8
+User
+at TCP.onStreamRead (node:internal/stream_base_commons:218:20)
+2025-11-11 10:03:36.23
+c581cff8
+User
+at TCP.callbackTrampoline (node:internal/async_hooks:130:17) {
+2025-11-11 10:03:36.23
+c581cff8
+User
+errno: -104,
+2025-11-11 10:03:36.23
+c581cff8
+User
+code: 'ECONNRESET',
+2025-11-11 10:03:36.23
+c581cff8
+User
+syscall: 'read'
+2025-11-11 10:03:36.23
+c581cff8
+User
+}
+2025-11-11 10:03:39.17
+c581cff8
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-11 10:03:39.17
+c581cff8
+User
+✅ Webhook signature verified
+2025-11-11 10:03:39.17
+c581cff8
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762877019172)
+2025-11-11 10:03:39.18
+c581cff8
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762877019172)
+2025-11-11 10:03:39.18
+c581cff8
+User
+📦 Processing orders/updated webhook for order JK3825343436
+2025-11-11 10:03:39.18
+c581cff8
+User
+📦 Processing order JK3825343436: 1 line items
+2025-11-11 10:03:39.31
+c581cff8
+User
+✅ Processed 1 line items for order JK3825343436 (user: 7499)
+2025-11-11 10:03:39.31
+c581cff8
+User
+🔄 Invalidating purchase history cache for user 7499
+2025-11-11 10:03:39.31
+c581cff8
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-11-11 10:03:39.36
+c581cff8
+User
+✅ Order webhook side effects completed
+2025-11-11 10:03:39.36
+c581cff8
+User
+✅ Webhook job completed: orders/orders/updated (191ms)
+2025-11-11 10:03:40.76
+c581cff8
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762877020762)
+2025-11-11 10:03:40.77
+c581cff8
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762877020762)
+2025-11-11 10:03:40.77
+c581cff8
+User
+📦 Processing order JK3825343435: 1 line items
+2025-11-11 10:03:40.81
+c581cff8
+User
+✅ Found existing user by Shopify ID: 7498 (ethansemrad@gmail.com)
+2025-11-11 10:03:40.90
+c581cff8
+User
+✅ Processed 1 line items for order JK3825343435 (user: 7498)
+2025-11-11 10:03:40.90
+c581cff8
+User
+🗑️ Purchase cache invalidated for user 7498
+2025-11-11 10:03:40.90
+c581cff8
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-11-11 10:03:40.94
+c581cff8
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-11 10:03:40.95
+c581cff8
+User
+📋 Enqueued classification job for user 7498 (reason: purchase)
+2025-11-11 10:03:41.88
+c581cff8
+User
+👋 WebSocket client disconnected: AATCj0FZw50wW8iCAAAF
+2025-11-11 10:03:41.88
+c581cff8
+User
+👤 User 2 still has 3 active socket(s)
+2025-11-11 10:03:43.49
+c581cff8
+User
+✅ WebSocket client connected: OjQCKwoHtGTGALHWAAAh
+2025-11-11 10:03:43.53
+c581cff8
+User
+🔐 User 2 authenticated on socket OjQCKwoHtGTGALHWAAAh (room: prod:user:2)
+2025-11-11 10:03:45.97
+c581cff8
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-11 10:03:45.97
+c581cff8
+User
+✅ Webhook signature verified
+2025-11-11 10:03:45.98
+c581cff8
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1762877025977)
+2025-11-11 10:03:45.98
+c581cff8
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762877025977)
+2025-11-11 10:03:45.98
+c581cff8
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762877025977)
+2025-11-11 10:03:45.98
+c581cff8
+User
+📦 Processing orders/updated webhook for order JK3825343420
+2025-11-11 10:03:45.98
+c581cff8
+User
+📦 Processing order JK3825343420: 2 line items
+2025-11-11 10:03:46.03
+c581cff8
+User
+✅ Found existing user by Shopify ID: 7484 (williamrook.156@gmail.com)
+2025-11-11 10:03:46.16
+c581cff8
+User
+✅ Processed 2 line items for order JK3825343420 (user: 7484)
+2025-11-11 10:03:46.16
+c581cff8
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343420
+2025-11-11 10:03:46.16
+c581cff8
+User
+🔄 Invalidating purchase history cache for user 7484
+2025-11-11 10:03:46.16
+c581cff8
+User
+🗑️ Purchase cache invalidated for user 7484
+2025-11-11 10:03:46.16
+c581cff8
+User
+🔄 Recalculating ranking stats for 2 product(s)
+2025-11-11 10:03:46.20
+c581cff8
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-11 10:03:46.20
+c581cff8
+User
+⚠️ No ranking stats found for 2 product(s) - products may not have been ranked yet
+2025-11-11 10:03:46.20
+c581cff8
+User
+📋 Enqueued classification job for user 7484 (reason: purchase)
+2025-11-11 10:03:46.20
+c581cff8
+User
+📋 Enqueued classification job for user 7484 (reason: purchase)
+2025-11-11 10:03:46.20
+c581cff8
+User
+✅ Order webhook side effects completed
+2025-11-11 10:03:46.20
+c581cff8
+User
+✅ Webhook processed: orders/orders/updated (220ms)
+2025-11-11 10:03:46.21
+c581cff8
+User
+✅ Webhook job completed: orders/orders/updated (233ms)
+
+Collapse
+
+Wrap
+
+Colors
