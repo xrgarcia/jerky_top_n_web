@@ -1,6 +1,6 @@
 const { Worker } = require('bullmq');
 const redisClient = require('./RedisClient');
-const { primaryDb } = require('../db-primary');
+const { workerDb } = require('../db-worker'); // Dedicated worker pool to prevent connection exhaustion
 const { userGuidanceCache } = require('../../shared/schema');
 const { eq, and } = require('drizzle-orm');
 
@@ -180,7 +180,7 @@ class ClassificationWorker {
       };
 
       // Upsert to cache (update if exists, insert if not)
-      const existing = await primaryDb
+      const existing = await workerDb
         .select()
         .from(userGuidanceCache)
         .where(
@@ -193,7 +193,7 @@ class ClassificationWorker {
 
       if (existing.length > 0) {
         // Update existing cache entry
-        await primaryDb
+        await workerDb
           .update(userGuidanceCache)
           .set({
             guidanceData,
@@ -203,7 +203,7 @@ class ClassificationWorker {
           .where(eq(userGuidanceCache.id, existing[0].id));
       } else {
         // Insert new cache entry
-        await primaryDb.insert(userGuidanceCache).values({
+        await workerDb.insert(userGuidanceCache).values({
           userId,
           pageContext,
           guidanceData,

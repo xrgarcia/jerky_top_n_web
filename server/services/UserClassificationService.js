@@ -15,7 +15,9 @@ const flavorProfileCommunityService = require('./FlavorProfileCommunityService')
  * 6. Flavor Communities: micro-communities per flavor profile (curious/seeker/taster/enthusiast/explorer)
  */
 class UserClassificationService {
-  constructor() {
+  constructor({ db: dbInstance = db, flavorProfileCommunityService: communityService = flavorProfileCommunityService } = {}) {
+    this.db = dbInstance;
+    this.flavorProfileCommunityService = communityService;
     this.configCache = null;
     this.configCacheTime = null;
     this.configCacheTTL = 5 * 60 * 1000; // 5 minutes
@@ -30,7 +32,7 @@ class UserClassificationService {
       return this.configCache;
     }
 
-    const configs = await db.select().from(classificationConfig);
+    const configs = await this.db.select().from(classificationConfig);
     
     const configMap = {};
     configs.forEach(config => {
@@ -69,7 +71,7 @@ class UserClassificationService {
     const focusAreas = this._determineFocusAreas(userData);
 
     // Update flavor profile communities (micro-communities per flavor profile)
-    const flavorCommunities = await flavorProfileCommunityService.updateUserFlavorCommunities(userId);
+    const flavorCommunities = await this.flavorProfileCommunityService.updateUserFlavorCommunities(userId);
 
     const classificationData = {
       totalRankings: userData.totalRankings,
@@ -86,7 +88,7 @@ class UserClassificationService {
     };
 
     // Store or update classification
-    const existing = await db
+    const existing = await this.db
       .select()
       .from(userClassifications)
       .where(eq(userClassifications.userId, userId))
@@ -104,12 +106,12 @@ class UserClassificationService {
     };
 
     if (existing.length > 0) {
-      await db
+      await this.db
         .update(userClassifications)
         .set(classificationRecord)
         .where(eq(userClassifications.userId, userId));
     } else {
-      await db.insert(userClassifications).values(classificationRecord);
+      await this.db.insert(userClassifications).values(classificationRecord);
     }
 
     return {
@@ -126,7 +128,7 @@ class UserClassificationService {
    * Get user classification (from database)
    */
   async getUserClassification(userId) {
-    const result = await db
+    const result = await this.db
       .select()
       .from(userClassifications)
       .where(eq(userClassifications.userId, userId))
@@ -143,7 +145,7 @@ class UserClassificationService {
     const thirtyDaysAgo = new Date(now.getTime() - 30 * 24 * 60 * 60 * 1000);
 
     // Get total rankings with metadata
-    const rankings = await db
+    const rankings = await this.db
       .select({
         shopifyProductId: productRankings.shopifyProductId,
         createdAt: productRankings.createdAt,
@@ -155,7 +157,7 @@ class UserClassificationService {
       .where(eq(productRankings.userId, userId));
 
     // Get engagement coins
-    const engagementCoins = await db
+    const engagementCoins = await this.db
       .select()
       .from(userAchievements)
       .leftJoin(achievements, eq(userAchievements.achievementId, achievements.id))
@@ -167,7 +169,7 @@ class UserClassificationService {
       );
 
     // Get activities in last 30 days
-    const recentActivities = await db
+    const recentActivities = await this.db
       .select()
       .from(userActivities)
       .where(
@@ -399,7 +401,7 @@ class UserClassificationService {
    * Get all users with classifications for admin view
    */
   async getAllClassifications(limit = 100, offset = 0) {
-    return await db
+    return await this.db
       .select()
       .from(userClassifications)
       .limit(limit)
@@ -407,5 +409,13 @@ class UserClassificationService {
   }
 }
 
+// Default singleton instance for HTTP routes (uses general pool)
 const userClassificationService = new UserClassificationService();
+
+// Factory function for creating worker-specific instances
+function createUserClassificationService({ db: dbInstance, flavorProfileCommunityService: communityService }) {
+  return new UserClassificationService({ db: dbInstance, flavorProfileCommunityService: communityService });
+}
+
 module.exports = userClassificationService;
+module.exports.createUserClassificationService = createUserClassificationService;

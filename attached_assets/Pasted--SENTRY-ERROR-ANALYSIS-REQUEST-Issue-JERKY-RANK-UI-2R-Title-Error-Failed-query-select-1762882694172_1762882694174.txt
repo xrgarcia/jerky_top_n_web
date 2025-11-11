@@ -1,0 +1,487 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2R
+Title: Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "p...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T02:11:03.105000Z
+Last Seen: 2025-11-11T17:27:26Z
+Event Count: 6
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "p...
+
+--- CULPRIT ---
+AchievementRepository.getAllAchievements(server.repositories:AchievementRepository)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "points", "is_active", "created_at", "updated_at" from "achievements"
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at AchievementRepository.getAllAchievements (/home/runner/workspace/server/repositories/AchievementRepository.js:?:?) [in app]
+  at EngagementManager.seedAchievements (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T17:27:22.449000Z] console (error): ❌ Error processing classification for user 2462: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.450000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:22.451000Z] console (error): ❌ Error processing classification for user 2463: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.480000Z] console (info): 🔄 Processing classification for user 2464 (reason: bulk_import)...
+[2025-11-11T17:27:22.481000Z] console (info): 🔄 Processing classification for user 2465 (reason: bulk_import)...
+[2025-11-11T17:27:22.483000Z] console (error): ❌ Classification job failed for user 2462: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.483000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:22.484000Z] console (error): ❌ Error processing classification for user 2464: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.484000Z] console (error): ❌ Classification job failed for user 2463: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.485000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:22.485000Z] console (error): ❌ Error processing classification for user 2465: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.517000Z] console (error): ❌ Classification job failed for user 2464: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:22.519000Z] console (error): ❌ Classification job failed for user 2465: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.260000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.260000Z] console (error): ❌ seeding achievement community_leader failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: community_leader,Community Leader,Have 10 or more people view your rankings,👥,emoji,silver,social,legacy,{"type":"profile_views","value":10},,0,200,0,1,
+[2025-11-11T17:27:23.260000Z] console (error): ❌ Failed to seed achievement community_leader: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: community_leader,Community Leader,Have 10 or more people view your rankings,👥,emoji,silver,social,legacy,{"type":"profile_views","value":10},,0,200,0,1, Error: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+     ...
+[2025-11-11T17:27:23.264000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.264000Z] console (info): ⏳ seeding achievement early_adopter failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T17:27:23.277000Z] console (info): 🔄 Processing classification for user 2470 (reason: bulk_import)...
+[2025-11-11T17:27:23.281000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.281000Z] console (error): ❌ Error processing classification for user 2470: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.340000Z] console (error): ❌ Classification job failed for user 2470: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.409000Z] console (info): 🔄 Processing classification for user 2471 (reason: bulk_import)...
+[2025-11-11T17:27:23.411000Z] console (info): 🔄 Processing classification for user 2473 (reason: bulk_import)...
+[2025-11-11T17:27:23.413000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.414000Z] console (error): ❌ Error processing classification for user 2471: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.414000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.415000Z] console (error): ❌ Error processing classification for user 2473: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.444000Z] console (info): 🔄 Processing classification for user 2474 (reason: bulk_import)...
+[2025-11-11T17:27:23.446000Z] console (info): 🔄 Processing classification for user 2475 (reason: bulk_import)...
+[2025-11-11T17:27:23.447000Z] console (error): ❌ Classification job failed for user 2471: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.448000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.448000Z] console (error): ❌ Error processing classification for user 2474: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.449000Z] console (error): ❌ Classification job failed for user 2473: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.449000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.449000Z] console (error): ❌ Error processing classification for user 2475: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.481000Z] console (error): ❌ Classification job failed for user 2474: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.482000Z] console (error): ❌ Classification job failed for user 2475: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:23.768000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:23.768000Z] console (info): ⏳ seeding achievement early_adopter failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T17:27:24.242000Z] console (info): 🔄 Processing classification for user 2480 (reason: bulk_import)...
+[2025-11-11T17:27:24.245000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.245000Z] console (error): ❌ Error processing classification for user 2480: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.278000Z] console (error): ❌ Classification job failed for user 2480: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.374000Z] console (info): 🔄 Processing classification for user 2481 (reason: bulk_import)...
+[2025-11-11T17:27:24.376000Z] console (info): 🔄 Processing classification for user 2483 (reason: bulk_import)...
+[2025-11-11T17:27:24.378000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.378000Z] console (error): ❌ Error processing classification for user 2481: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.379000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.379000Z] console (error): ❌ Error processing classification for user 2483: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.409000Z] console (info): 🔄 Processing classification for user 2484 (reason: bulk_import)...
+[2025-11-11T17:27:24.410000Z] console (info): 🔄 Processing classification for user 2485 (reason: bulk_import)...
+[2025-11-11T17:27:24.412000Z] console (error): ❌ Classification job failed for user 2481: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.412000Z] console (error): ❌ Classification job failed for user 2483: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.413000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.413000Z] console (error): ❌ Error processing classification for user 2484: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.414000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.414000Z] console (error): ❌ Error processing classification for user 2485: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.446000Z] console (error): ❌ Classification job failed for user 2484: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.447000Z] console (error): ❌ Classification job failed for user 2485: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:24.771000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.771000Z] console (error): ❌ seeding achievement early_adopter failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: early_adopter,Early Adopter,Join the community in its first month,🚀,emoji,gold,special,legacy,{"type":"join_before","value":"2025-11-10"},,0,250,0,1,
+[2025-11-11T17:27:24.771000Z] console (error): ❌ Failed to seed achievement early_adopter: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: early_adopter,Early Adopter,Join the community in its first month,🚀,emoji,gold,special,legacy,{"type":"join_before","value":"2025-11-10"},,0,250,0,1, Error: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+           ...
+[2025-11-11T17:27:24.775000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:24.775000Z] console (info): ⏳ seeding achievement taste_maker failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T17:27:25.257000Z] console (info): 🔄 Processing classification for user 2490 (reason: bulk_import)...
+[2025-11-11T17:27:25.261000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.261000Z] console (error): ❌ Error processing classification for user 2490: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.277000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.277000Z] console (info): ⏳ seeding achievement taste_maker failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T17:27:25.294000Z] console (error): ❌ Classification job failed for user 2490: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.390000Z] console (info): 🔄 Processing classification for user 2492 (reason: bulk_import)...
+[2025-11-11T17:27:25.392000Z] console (info): 🔄 Processing classification for user 2493 (reason: bulk_import)...
+[2025-11-11T17:27:25.394000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.394000Z] console (error): ❌ Error processing classification for user 2492: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.395000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.395000Z] console (error): ❌ Error processing classification for user 2493: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.425000Z] console (info): 🔄 Processing classification for user 2494 (reason: bulk_import)...
+[2025-11-11T17:27:25.427000Z] console (info): 🔄 Processing classification for user 2495 (reason: bulk_import)...
+[2025-11-11T17:27:25.429000Z] console (error): ❌ Classification job failed for user 2492: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.429000Z] console (error): ❌ Classification job failed for user 2493: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.430000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.430000Z] console (error): ❌ Error processing classification for user 2494: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.431000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:25.431000Z] console (error): ❌ Error processing classification for user 2495: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.463000Z] console (error): ❌ Classification job failed for user 2494: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:25.464000Z] console (error): ❌ Classification job failed for user 2495: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:26.222000Z] console (info): 🔄 Processing classification for user 2500 (reason: bulk_import)...
+[2025-11-11T17:27:26.226000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:26.226000Z] console (error): ❌ Error processing classification for user 2500: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:26.259000Z] console (error): ❌ Classification job failed for user 2500: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-11T17:27:26.280000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:26.281000Z] console (error): ❌ seeding achievement taste_maker failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: taste_maker,Taste Maker,Rank a product that becomes top 10 most ranked,👑,emoji,platinum,special,legacy,{"type":"trendsetter","value":10},,0,500,0,1,
+[2025-11-11T17:27:26.281000Z] console (error): ❌ Failed to seed achievement taste_maker: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8,
+                $9::jsonb,
+                $10,
+                $11,
+                $12,
+                $13,
+                $14,
+                $15
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
+            
+params: taste_maker,Taste Maker,Rank a product that becomes top 10 most ranked,👑,emoji,platinum,special,legacy,{"type":"trendsetter","value":10},,0,500,0,1, Error: Failed query: 
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+              ...
+[2025-11-11T17:27:26.281000Z] console (warning): ⚠️ 17 achievement(s) failed to seed: [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+[2025-11-11T17:27:26.286000Z] console (info): ✅ Seeded/updated 0/17 achievements
+[2025-11-11T17:27:26.286000Z] console (info): 🗑️ AchievementCache INVALIDATE: Clearing cache
+[2025-11-11T17:27:26.286000Z] console (info): 🚫 AchievementCache MISS: Data expired or not found
+[2025-11-11T17:27:26.289000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:27:26.290000Z] console (error): ❌ Failed to seed achievements: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "points", "is_active", "created_at", "updated_at" from "achievements"
+params: 
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

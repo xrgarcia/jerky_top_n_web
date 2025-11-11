@@ -221,4 +221,66 @@ function createWebhookPool() {
   return { webhookPool, webhookDb };
 }
 
-module.exports = { pool, db, createWebhookPool, queryWithRetry };
+/**
+ * Create a dedicated database pool for BullMQ background workers
+ * This prevents worker jobs from exhausting the shared connection pool
+ * Used for: ClassificationWorker, BulkImportWorker, EngagementBackfillWorker
+ */
+function createWorkerPool() {
+  const workerPool = new Pool({ 
+    connectionString,
+    max: 10, // Dedicated 10 connections for BullMQ workers (concurrency: 5 × 2 for overhead)
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 10000,
+    keepAlive: true, // Enable TCP keepalive
+    keepAliveInitialDelayMillis: 10000,
+  });
+
+  // Add pool error handling
+  workerPool.on('error', (err) => {
+    // Handle expected network errors gracefully
+    if (err.code === 'ECONNRESET' || err.code === 'ETIMEDOUT' || err.code === 'ECONNREFUSED') {
+      console.warn('⚠️ Worker pool connection issue (will retry):', {
+        code: err.code,
+        message: err.message,
+        timestamp: new Date().toISOString()
+      });
+      return;
+    }
+    
+    console.error('❌ Worker pool error:', {
+      message: err.message,
+      code: err.code,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  workerPool.on('connect', () => {
+    console.log('🔌 Worker pool client connected', {
+      totalConnections: workerPool.totalCount,
+      idleConnections: workerPool.idleCount,
+      waitingRequests: workerPool.waitingCount
+    });
+  });
+
+  workerPool.on('remove', () => {
+    console.log('🔌 Worker pool client removed', {
+      totalConnections: workerPool.totalCount,
+      idleConnections: workerPool.idleCount
+    });
+  });
+
+  // Wrap worker pool query with automatic retry logic
+  const originalWorkerQuery = workerPool.query.bind(workerPool);
+  workerPool.query = async function(...args) {
+    return await queryWithRetry(() => originalWorkerQuery(...args));
+  };
+
+  const workerDb = drizzle({ client: workerPool, schema });
+  
+  console.log('💾 Dedicated worker pool created (10 connections, with auto-retry)');
+  
+  return { workerPool, workerDb };
+}
+
+module.exports = { pool, db, createWebhookPool, createWorkerPool, queryWithRetry };
