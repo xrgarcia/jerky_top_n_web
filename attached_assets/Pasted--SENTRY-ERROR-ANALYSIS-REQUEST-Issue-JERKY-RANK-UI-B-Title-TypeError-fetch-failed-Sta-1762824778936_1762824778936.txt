@@ -1,0 +1,99 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-B
+Title: TypeError: fetch failed
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-10-25T15:31:10.503000Z
+Last Seen: 2025-11-11T00:16:01Z
+Event Count: 27
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+TypeError: fetch failed
+
+--- CULPRIT ---
+?(undici)
+
+--- STACK TRACE ---
+TypeError: fetch failed
+  at anonymous (node:internal/deps/undici/undici:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at getDefaultBucketId (/home/runner/workspace/node_modules/@replit/object-storage/dist/index.js:?:?)
+  at Client.init (/home/runner/workspace/node_modules/@replit/object-storage/dist/index.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T00:15:48.505000Z] console (info): ✅ Sentry error monitoring initialized (PRODUCTION @ 9d95e290-480e-4ec1-97c7-72ad17cba1f4-00-m5giucd65l5b.spock.replit.dev)
+[2025-11-11T00:15:48.505000Z] console (info): 🚀 Starting Jerky Top N Web Application...
+[2025-11-11T00:15:48.505000Z] console (info): 🔍 Checking environment configuration...
+[2025-11-11T00:15:48.505000Z] console (info): [Filtered]
+[2025-11-11T00:15:48.506000Z] console (info): ✅ Database URL found
+[2025-11-11T00:15:48.785000Z] console (info): 📂 Database storage connected
+[2025-11-11T00:15:48.785000Z] console (info): [Filtered]
+[2025-11-11T00:15:48.786000Z] console (info): 🏪  Shop Domain: jerky-com.myshopify.com
+[2025-11-11T00:15:48.786000Z] console (info): 🌐  App Domain: 9d95e290-480e-4ec1-97c7-72ad17cba1f4-00-m5giucd65l5b.spock.replit.dev
+[2025-11-11T00:15:48.786000Z] console (info): 🔑  Using Customer Account API for jerky.com accounts
+[2025-11-11T00:15:50.951000Z] console (info): ✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+[2025-11-11T00:15:54.178000Z] console (info): ✅ Rate limiters configured using memory (single-instance)
+[2025-11-11T00:15:58.310000Z] console (info): 💾 Primary database connection configured (no pooler - read from primary)
+[2025-11-11T00:16:01.396000Z] console (info): ✅ Server successfully started!
+[2025-11-11T00:16:01.396000Z] console (info): 🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+[2025-11-11T00:16:01.396000Z] console (info): Visit the app at: http://localhost:5000
+[2025-11-11T00:16:01.396000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T00:16:01.396000Z] console (info): 📊 Service Status:
+[2025-11-11T00:16:01.396000Z] console (info):    Shopify Integration: ✅ Available
+[2025-11-11T00:16:01.397000Z] console (info):    Database: ✅ Connected
+[2025-11-11T00:16:01.397000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T00:16:01.412000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-11T00:16:01.413000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-11T00:16:01.413000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-11T00:16:01.413000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-11T00:16:01.413000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-11T00:16:01.427000Z] console (info): [Filtered]
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
