@@ -4,8 +4,9 @@ const { extractAnimalFromTitle } = require('../utils/animalExtractor');
 const { extractFlavorsFromTitle } = require('../utils/flavorExtractor');
 
 class WebhookProductService {
-  constructor(db) {
+  constructor(db, webSocketGateway = null) {
     this.repository = new ProductsMetadataRepository(db);
+    this.wsGateway = webSocketGateway;
   }
 
   async processProductWebhook(productData, topic) {
@@ -57,6 +58,23 @@ class WebhookProductService {
 
     console.log(`✅ Updated metadata for product ${shopifyProductId} (${productData.title})`);
 
+    // Broadcast to admin room
+    this.broadcastAdminUpdate({
+      data: {
+        topic: topic,
+        type: 'products',
+        data: {
+          id: productData.id,
+          title: productData.title,
+          vendor: productData.vendor,
+          status: productData.status,
+          product_type: productData.product_type
+        }
+      },
+      action: 'upserted',
+      productId: shopifyProductId
+    });
+
     return {
       success: true,
       action: 'upserted',
@@ -75,12 +93,44 @@ class WebhookProductService {
 
     console.log(`🗑️ Product ${shopifyProductId} deleted - metadata will be cleaned up on next sync`);
 
+    // Broadcast to admin room
+    this.broadcastAdminUpdate({
+      data: {
+        topic: topic,
+        type: 'products',
+        data: {
+          id: productData.id,
+          title: productData.title,
+          vendor: productData.vendor
+        }
+      },
+      action: 'deleted',
+      productId: shopifyProductId
+    });
+
     return {
       success: true,
       action: 'noted',
       productId: shopifyProductId,
       note: 'Metadata will be cleaned up on next full product sync'
     };
+  }
+
+  /**
+   * Broadcast admin update to WebSocket room
+   * @param {Object} updateData - Update data to broadcast
+   */
+  broadcastAdminUpdate(updateData) {
+    if (!this.wsGateway) {
+      console.log('⚠️ WebSocket gateway not available, skipping broadcast');
+      return;
+    }
+
+    const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+    const roomName = `admin:${environment}`;
+
+    this.wsGateway.io.to(roomName).emit('product_webhook_update', updateData);
+    console.log(`📡 Broadcasted product webhook update to ${roomName}`);
   }
 }
 

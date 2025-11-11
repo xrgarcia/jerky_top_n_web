@@ -3820,6 +3820,11 @@ if (databaseAvailable && storage) {
       const customerWebhooksRouter = createCustomerWebhooksRoutes();
       adminRouter.use(customerWebhooksRouter);
       
+      // Add product webhooks route
+      const createProductWebhooksRoutes = require('./server/routes/admin/productWebhooks');
+      const productWebhooksRouter = createProductWebhooksRoutes();
+      adminRouter.use(productWebhooksRouter);
+      
       // Add Sentry monitoring route
       const createSentryRoutes = require('./server/routes/admin/sentry');
       const sentryRouter = createSentryRoutes(storage);
