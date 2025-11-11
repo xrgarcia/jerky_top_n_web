@@ -7,14 +7,6 @@ import './ProductPodium.css';
  * Adapts PodiumWidget design for products instead of users
  */
 function ProductPodium({ products }) {
-  if (!products || products.length === 0) {
-    return (
-      <div className="product-podium-empty">
-        <p>No rankings yet</p>
-      </div>
-    );
-  }
-
   const getPositionClass = (index) => {
     switch(index) {
       case 0: return 'position-1';
@@ -37,8 +29,21 @@ function ProductPodium({ products }) {
     return badges[position] || badges[1];
   };
 
-  // Only show products that exist (handle cases where user has < 5 rankings)
-  const displayedProducts = products.filter(p => p.shopifyProductId);
+  // Filter valid products and create placeholders for empty slots
+  const validProducts = products?.filter(p => p.shopifyProductId) || [];
+  const displayedProducts = [];
+  
+  // Fill array with products or empty placeholders up to 5 slots
+  for (let i = 0; i < 5; i++) {
+    if (validProducts[i]) {
+      displayedProducts.push(validProducts[i]);
+    } else {
+      displayedProducts.push({
+        isEmpty: true,
+        rankPosition: i + 1
+      });
+    }
+  }
 
   return (
     <div className="product-podium">
@@ -46,6 +51,36 @@ function ProductPodium({ products }) {
       <div className="product-podium-stage">
         {displayedProducts.map((product, index) => {
           const badge = getPositionBadge(product.rankPosition);
+          
+          // Render empty slot
+          if (product.isEmpty) {
+            return (
+              <div
+                key={`empty-${index}`}
+                className={`product-podium-item ${getPositionClass(index)} product-podium-empty-slot`}
+              >
+                <div className="product-glow-container">
+                  <div className="product-image-container">
+                    <div className="product-podium-placeholder empty">
+                      ?
+                    </div>
+                  </div>
+                  <div className="product-position-badge">
+                    {badge.text}
+                  </div>
+                </div>
+                <div className="product-platform-base">
+                  <div className="product-platform">
+                    <div className="product-info">
+                      <div className="product-title empty-title">Not yet ranked</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }
+          
+          // Render actual product
           return (
             <Link
               key={product.shopifyProductId}

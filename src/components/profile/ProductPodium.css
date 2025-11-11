@@ -334,13 +334,28 @@
   width: 105px;
 }
 
-.product-podium-empty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 200px;
-  color: rgba(255, 255, 255, 0.5);
+/* Empty slot styling */
+.product-podium-empty-slot {
+  opacity: 0.4;
+  cursor: default;
+  pointer-events: none;
+}
+
+.product-podium-empty-slot:hover {
+  transform: none;
+}
+
+.product-podium-placeholder.empty {
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 2.5em;
+}
+
+.product-title.empty-title {
+  color: rgba(255, 255, 255, 0.4);
   font-style: italic;
+  font-weight: 500;
 }
 
 /* Responsive */
