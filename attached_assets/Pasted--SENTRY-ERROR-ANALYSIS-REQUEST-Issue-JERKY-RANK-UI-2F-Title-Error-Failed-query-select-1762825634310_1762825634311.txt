@@ -1,0 +1,785 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2F
+Title: Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+Status: unresolved
+Level: error
+Environment: development
+
+First Seen: 2025-11-10T09:00:42.653000Z
+Last Seen: 2025-11-10T15:43:01Z
+Event Count: 99
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+
+--- CULPRIT ---
+POST /api/webhooks/shopify/orders
+
+--- STACK TRACE ---
+error: column "shopify_created_at" does not exist
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.findOrCreateUser (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_status", "profile_image_url", "handle", "hide_name_privacy", "shopify_created_at", "created_at", "updated_at" from "users" where "users"."shopify_customer_id" = $1 limit $2
+params: 9435358789946,1
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.findOrCreateUser (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-10T15:41:29.714000Z] console (info): 🔒 Preserving manual edits for 9902446739770: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.730000Z] console (info): 🔒 Preserving manual edits for 9901636944186: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.747000Z] console (info): 🔒 Preserving manual edits for 9902444183866: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.765000Z] console (info): 🔒 Preserving manual edits for 9401502105914: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.788000Z] console (info): 🔒 Preserving manual edits for 8511001100602: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.809000Z] console (info): 🔒 Preserving manual edits for 8238330577210: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.825000Z] console (info): 🔒 Preserving manual edits for 9148484976954: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.845000Z] console (info): 🔒 Preserving manual edits for 8356622041402: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.864000Z] console (info): 🔒 Preserving manual edits for 9456981639482: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.880000Z] console (info): 🔒 Preserving manual edits for 8922662535482: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.907000Z] console (info): 🔒 Preserving manual edits for 9445783142714: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.924000Z] console (info): 🔒 Preserving manual edits for 8291080470842: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.943000Z] console (info): 🔒 Preserving manual edits for 8922663223610: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.964000Z] console (info): 🔒 Preserving manual edits for 8836375707962: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:29.979000Z] console (info): 🔒 Preserving manual edits for 8328334934330: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.003000Z] console (info): 🔒 Preserving manual edits for 8922663780666: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, flavorDisplay
+[2025-11-10T15:41:30.019000Z] console (info): 🔒 Preserving manual edits for 8922661552442: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.035000Z] console (info): 🔒 Preserving manual edits for 8264492220730: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.064000Z] console (info): 🔒 Preserving manual edits for 9887114133818: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.080000Z] console (info): 🔒 Preserving manual edits for 9895696367930: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.099000Z] console (info): 🔒 Preserving manual edits for 9862734119226: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.119000Z] console (info): 🔒 Preserving manual edits for 9862734643514: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.137000Z] console (info): 🔒 Preserving manual edits for 8425039626554: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.153000Z] console (info): 🔒 Preserving manual edits for 9862732382522: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.171000Z] console (info): 🔒 Preserving manual edits for 9887113019706: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.199000Z] console (info): 🔒 Preserving manual edits for 8594061197626: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.219000Z] console (info): 🔒 Preserving manual edits for 8291087384890: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.234000Z] console (info): 🔒 Preserving manual edits for 9887114232122: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.251000Z] console (info): 🔒 Preserving manual edits for 8229996003642: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.267000Z] console (info): 🔒 Preserving manual edits for 9861034705210: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.282000Z] console (info): 🔒 Preserving manual edits for 9861041619258: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.308000Z] console (info): 🔒 Preserving manual edits for 8048942973242: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.324000Z] console (info): 🔒 Preserving manual edits for 9861042045242: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.340000Z] console (info): 🔒 Preserving manual edits for 8131544908090: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.355000Z] console (info): 🔒 Preserving manual edits for 8192656572730: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.372000Z] console (info): 🔒 Preserving manual edits for 8238324318522: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.391000Z] console (info): 🔒 Preserving manual edits for 8291073458490: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.410000Z] console (info): 🔒 Preserving manual edits for 8356600709434: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.427000Z] console (info): 🔒 Preserving manual edits for 8425035235642: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.447000Z] console (info): 🔒 Preserving manual edits for 8516377084218: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.467000Z] console (info): 🔒 Preserving manual edits for 9861038506298: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.483000Z] console (info): 🔒 Preserving manual edits for 8627363905850: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.499000Z] console (info): 🔒 Preserving manual edits for 8769414693178: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.515000Z] console (info): 🔒 Preserving manual edits for 8836361847098: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.537000Z] console (info): 🔒 Preserving manual edits for 9901726433594: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.555000Z] console (info): 🔒 Preserving manual edits for 8934088966458: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.574000Z] console (info): 🔒 Preserving manual edits for 8977815601466: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.591000Z] console (info): 🔒 Preserving manual edits for 9035259576634: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.606000Z] console (info): 🔒 Preserving manual edits for 9148468134202: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.623000Z] console (info): 🔒 Preserving manual edits for 9279929254202: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.648000Z] console (info): 🔒 Preserving manual edits for 9401498140986: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.666000Z] console (info): 🔒 Preserving manual edits for 9861038965050: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.684000Z] console (info): 🔒 Preserving manual edits for 9456979345722: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.708000Z] console (info): 🔒 Preserving manual edits for 9504314360122: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.729000Z] console (info): 🔒 Preserving manual edits for 9656912085306: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.745000Z] console (info): 🔒 Preserving manual edits for 9708200362298: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.762000Z] console (info): 🔒 Preserving manual edits for 9741030621498: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.778000Z] console (info): 🔒 Preserving manual edits for 9763730227514: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.796000Z] console (info): 🔒 Preserving manual edits for 9788034941242: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.815000Z] console (info): 🔒 Preserving manual edits for 9814176006458: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.839000Z] console (info): 🔒 Preserving manual edits for 9822624743738: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.860000Z] console (info): 🔒 Preserving manual edits for 9822641815866: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.876000Z] console (info): 🔒 Preserving manual edits for 9861039325498: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.895000Z] console (info): 🔒 Preserving manual edits for 9884230222138: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.915000Z] console (info): 🔒 Preserving manual edits for 9896817656122: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.935000Z] console (info): 🔒 Preserving manual edits for 9923487498554: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.950000Z] console (info): 🔒 Preserving manual edits for 9953357365562: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.967000Z] console (info): 🔒 Preserving manual edits for 9975308124474: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:30.985000Z] console (info): 🔒 Preserving manual edits for 9861039817018: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.003000Z] console (info): 🔒 Preserving manual edits for 9861040275770: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.019000Z] console (info): 🔒 Preserving manual edits for 9861040603450: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.043000Z] console (info): 🔒 Preserving manual edits for 9861040931130: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.063000Z] console (info): 🔒 Preserving manual edits for 7226515947608: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.080000Z] console (info): 🔒 Preserving manual edits for 9861041291578: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-10T15:41:31.081000Z] console (info): 🧹 Checking for orphaned products in metadata table...
+[2025-11-10T15:41:31.081000Z] console (info):    Current rankable products: 162
+[2025-11-10T15:41:31.118000Z] console (info): 🗑️ Cleaned up 1 orphaned products from metadata table
+[2025-11-10T15:41:31.118000Z] console (info): 🏷️ Synced metadata for 162 fresh products
+[2025-11-10T15:41:31.118000Z] console (info): 🗑️ Metadata cache invalidated
+[2025-11-10T15:41:31.118000Z] console (info): 🚫 RankingStats Cache MISS: Data expired or not found
+[2025-11-10T15:41:31.153000Z] console (info): 📊 Found ranking stats for 108 products
+[2025-11-10T15:41:31.154000Z] console (info): ✅ RankingStats Cache UPDATED: Stored 108 product stats (webhook-invalidated only)
+[2025-11-10T15:41:31.154000Z] console (info): 🚫 Metadata Cache MISS: Data expired or not found
+[2025-11-10T15:41:31.191000Z] console (info): ✅ Metadata Cache UPDATED: Stored 162 products (webhook-invalidated only)
+[2025-11-10T15:41:31.192000Z] console (info): 🏷️ Products cache warmed and metadata synchronized: 162 products
+[2025-11-10T15:41:31.192000Z] console (info): ✅ CacheWarmer: ProductsCache warmed in 3861ms
+[2025-11-10T15:41:36.490000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:40.476000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:41.651000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:46.104000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:49.412000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:50.769000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:41:56.441000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:43:01.310000Z] console (info): 📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+[2025-11-10T15:43:01.311000Z] console (info): ✅ Webhook signature verified
+[2025-11-10T15:43:01.311000Z] console (info): 📦 Processing orders/updated webhook for order JK3825342731
+[2025-11-10T15:43:01.311000Z] console (info): 📦 Processing order JK3825342731: 1 line items
+[2025-11-10T15:43:01.367000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-10T15:43:01.390000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-10T15:43:01.390000Z] console (error): [Filtered]
+
+--- TAGS ---
+  action: undefined
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/api/webhooks/shopify/orders",
+  "query": [],
+  "fragment": null,
+  "data": {
+    "admin_graphql_api_id": "gid://shopify/Order/6828844286266",
+    "app_id": 294517,
+    "billing_address": {
+      "address1": "514 West Jefferson Street",
+      "address2": null,
+      "city": "Aberdeen",
+      "company": null,
+      "country": "United States",
+      "country_code": "US",
+      "first_name": "Hunter",
+      "last_name": "McEachin",
+      "latitude": 33.8234924,
+      "longitude": -88.5499967,
+      "name": "Hunter McEachin",
+      "phone": null,
+      "province": "Mississippi",
+      "province_code": "MS",
+      "zip": "39730"
+    },
+    "browser_ip": "127.0.0.1",
+    "buyer_accepts_marketing": false,
+    "cancel_reason": null,
+    "cancelled_at": null,
+    "cart_token": null,
+    "checkout_id": null,
+    "checkout_token": "[Filtered]",
+    "client_details": {
+      "accept_language": null,
+      "browser_height": null,
+      "browser_ip": "127.0.0.1",
+      "browser_width": null,
+      "session_hash": null,
+      "user_agent": null
+    },
+    "closed_at": null,
+    "confirmation_number": "HWU5AKJFC",
+    "confirmed": true,
+    "contact_email": "specter228@hotmail.com",
+    "created_at": "2025-11-06T00:05:21-06:00",
+    "currency": "USD",
+    "current_shipping_price_set": {
+      "presentment_money": {
+        "amount": "4.95",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "4.95",
+        "currency_code": "USD"
+      }
+    },
+    "current_subtotal_price": "10.44",
+    "current_subtotal_price_set": {
+      "presentment_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      }
+    },
+    "current_total_additional_fees_set": null,
+    "current_total_discounts": "0.00",
+    "current_total_discounts_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "current_total_duties_set": null,
+    "current_total_price": "15.39",
+    "current_total_price_set": {
+      "presentment_money": {
+        "amount": "15.39",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "15.39",
+        "currency_code": "USD"
+      }
+    },
+    "current_total_tax": "0.00",
+    "current_total_tax_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "customer": {
+      "admin_graphql_api_id": "gid://shopify/Customer/9435358789946",
+      "created_at": "2025-09-23T10:07:45-05:00",
+      "currency": "USD",
+      "default_address": {
+        "address1": "514 West Jefferson Street",
+        "address2": null,
+        "city": "Aberdeen",
+        "company": null,
+        "country": "United States",
+        "country_code": "US",
+        "country_name": "United States",
+        "customer_id": 9435358789946,
+        "default": true,
+        "first_name": "Hunter",
+        "id": 11015287308602,
+        "last_name": "McEachin",
+        "name": "Hunter McEachin",
+        "phone": "7754616437",
+        "province": "Mississippi",
+        "province_code": "MS",
+        "zip": "39730"
+      },
+      "email": "specter228@hotmail.com",
+      "first_name": "Hunter",
+      "id": 9435358789946,
+      "last_name": "McEachin",
+      "multipass_identifier": null,
+      "note": null,
+      "phone": "+17754616437",
+      "state": "enabled",
+      "tax_exempt": false,
+      "tax_exemptions": [],
+      "updated_at": "2025-11-06T00:06:05-06:00",
+      "verified_email": true
+    },
+    "customer_locale": "en-US",
+    "device_id": null,
+    "discount_applications": [],
+    "discount_codes": [],
+    "duties_included": false,
+    "email": "specter228@hotmail.com",
+    "estimated_taxes": false,
+    "financial_status": "paid",
+    "fulfillment_status": "fulfilled",
+    "fulfillments": [
+      {
+        "admin_graphql_api_id": "gid://shopify/Fulfillment/6015826559290",
+        "created_at": "2025-11-06T10:54:42-06:00",
+        "id": 6015826559290,
+        "line_items": [
+          {
+            "admin_graphql_api_id": "gid://shopify/LineItem/16551518044474",
+            "attributed_staffs": [],
+            "current_quantity": 1,
+            "discount_allocations": [],
+            "duties": [],
+            "fulfillable_quantity": 0,
+            "fulfillment_service": "manual",
+            "fulfillment_status": "fulfilled",
+            "gift_card": false,
+            "grams": 57,
+            "id": 16551518044474,
+            "name": "All-Natural Venison Jerky - Original - 1.75 oz.",
+            "pre_tax_price": "10.44",
+            "pre_tax_price_set": {
+              "presentment_money": "{\"amount\":\"10.44\",\"currency_code\":\"USD\"}",
+              "shop_money": "{\"amount\":\"10.44\",\"currency_code\":\"USD\"}"
+            },
+            "price": "10.44",
+            "price_set": {
+              "presentment_money": "{\"amount\":\"10.44\",\"currency_code\":\"USD\"}",
+              "shop_money": "{\"amount\":\"10.44\",\"currency_code\":\"USD\"}"
+            },
+            "product_exists": true,
+            "product_id": 11821165775,
+            "properties": [],
+            "quantity": 1,
+            "requires_shipping": true,
+            "sku": "JCB-VEJ-1-17",
+            "tax_lines": [
+              "{\"channel_liable\":false,\"price\":\"0.00\",\"price_set\":{\"presentment_money\":{\"amount\":\"0.00\",\"currency_code\":\"USD\"},\"shop_money\":{\"amount\":\"0.00\",\"currency_code\":\"USD\"}},\"rate\":0.0,\"title\":\"Mississippi State Tax\"}"
+            ],
+            "taxable": true,
+            "title": "All-Natural Venison Jerky - Original",
+            "total_discount": "0.00",
+            "total_discount_set": {
+              "presentment_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}",
+              "shop_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}"
+            },
+            "variant_id": 49434373071,
+            "variant_inventory_management": "shopify",
+            "variant_title": "1.75 oz.",
+            "vendor": "Jerky.com"
+          }
+        ],
+        "location_id": 60964372568,
+        "name": "JK3825342731.1",
+        "order_id": 6828844286266,
+        "origin_address": {},
+        "receipt": {},
+        "service": "manual",
+        "shipment_status": "in_transit",
+        "status": "success",
+        "tracking_company": "USPS",
+        "tracking_number": "9400150206217360916688",
+        "tracking_numbers": [
+          "9400150206217360916688"
+        ],
+        "tracking_url": "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400150206217360916688",
+        "tracking_urls": [
+          "https://tools.usps.com/go/TrackConfirmAction.action?tLabels=9400150206217360916688"
+        ],
+        "updated_at": "2025-11-06T21:31:18-06:00"
+      }
+    ],
+    "id": 6828844286266,
+    "landing_site": null,
+    "landing_site_ref": null,
+    "line_items": [
+      {
+        "admin_graphql_api_id": "gid://shopify/LineItem/16551518044474",
+        "attributed_staffs": [],
+        "current_quantity": 1,
+        "discount_allocations": [],
+        "duties": [],
+        "fulfillable_quantity": 0,
+        "fulfillment_service": "manual",
+        "fulfillment_status": "fulfilled",
+        "gift_card": false,
+        "grams": 57,
+        "id": 16551518044474,
+        "name": "All-Natural Venison Jerky - Original - 1.75 oz.",
+        "pre_tax_price": "10.44",
+        "pre_tax_price_set": {
+          "presentment_money": {
+            "amount": "10.44",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "10.44",
+            "currency_code": "USD"
+          }
+        },
+        "price": "10.44",
+        "price_set": {
+          "presentment_money": {
+            "amount": "10.44",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "10.44",
+            "currency_code": "USD"
+          }
+        },
+        "product_exists": true,
+        "product_id": 11821165775,
+        "properties": [],
+        "quantity": 1,
+        "requires_shipping": true,
+        "sales_line_item_group_id": null,
+        "sku": "JCB-VEJ-1-17",
+        "tax_lines": [
+          {
+            "channel_liable": false,
+            "price": "0.00",
+            "price_set": {
+              "presentment_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}",
+              "shop_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}"
+            },
+            "rate": 0,
+            "title": "Mississippi State Tax"
+          }
+        ],
+        "taxable": true,
+        "title": "All-Natural Venison Jerky - Original",
+        "total_discount": "0.00",
+        "total_discount_set": {
+          "presentment_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "0.00",
+            "currency_code": "USD"
+          }
+        },
+        "variant_id": 49434373071,
+        "variant_inventory_management": "shopify",
+        "variant_title": "1.75 oz.",
+        "vendor": "Jerky.com"
+      }
+    ],
+    "location_id": null,
+    "merchant_business_entity_id": "MTE4NjY1OTQ3",
+    "merchant_of_record_app_id": null,
+    "name": "JK3825342731",
+    "note": null,
+    "note_attributes": [],
+    "number": 341731,
+    "order_number": 342731,
+    "order_status_url": "[Filtered]",
+    "original_total_additional_fees_set": null,
+    "original_total_duties_set": null,
+    "payment_gateway_names": [
+      "shopify_payments"
+    ],
+    "payment_terms": null,
+    "phone": "+17754616437",
+    "po_number": null,
+    "presentment_currency": "USD",
+    "processed_at": "2025-11-06T00:05:19-06:00",
+    "reference": null,
+    "referring_site": null,
+    "refunds": [],
+    "returns": [],
+    "shipping_address": {
+      "address1": "514 West Jefferson Street",
+      "address2": null,
+      "city": "Aberdeen",
+      "company": null,
+      "country": "United States",
+      "country_code": "US",
+      "first_name": "Hunter",
+      "last_name": "McEachin",
+      "latitude": 33.8234924,
+      "longitude": -88.5499967,
+      "name": "Hunter McEachin",
+      "phone": "7754616437",
+      "province": "Mississippi",
+      "province_code": "MS",
+      "zip": "39730"
+    },
+    "shipping_lines": [
+      {
+        "carrier_identifier": null,
+        "code": "Economy - 7 to 10 Business Days",
+        "current_discounted_price_set": {
+          "presentment_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          }
+        },
+        "discount_allocations": [],
+        "discounted_price": "4.95",
+        "discounted_price_set": {
+          "presentment_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          }
+        },
+        "id": 5323469062458,
+        "is_removed": false,
+        "phone": null,
+        "price": "4.95",
+        "price_set": {
+          "presentment_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          },
+          "shop_money": {
+            "amount": "4.95",
+            "currency_code": "USD"
+          }
+        },
+        "requested_fulfillment_service_id": null,
+        "source": "shopify",
+        "tax_lines": [
+          {
+            "channel_liable": false,
+            "price": "0.00",
+            "price_set": {
+              "presentment_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}",
+              "shop_money": "{\"amount\":\"0.00\",\"currency_code\":\"USD\"}"
+            },
+            "rate": 0,
+            "title": "Mississippi State Tax"
+          }
+        ],
+        "title": "Economy - 7 to 10 Business Days"
+      }
+    ],
+    "source_identifier": null,
+    "source_name": "subscription_contract_checkout_one",
+    "source_url": null,
+    "subtotal_price": "10.44",
+    "subtotal_price_set": {
+      "presentment_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      }
+    },
+    "tags": "Subscription, Subscription Recurring Order",
+    "tax_exempt": false,
+    "tax_lines": [],
+    "taxes_included": false,
+    "test": false,
+    "token": "[Filtered]",
+    "total_cash_rounding_payment_adjustment_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "total_cash_rounding_refund_adjustment_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "total_discounts": "0.00",
+    "total_discounts_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "total_line_items_price": "10.44",
+    "total_line_items_price_set": {
+      "presentment_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "10.44",
+        "currency_code": "USD"
+      }
+    },
+    "total_outstanding": "0.00",
+    "total_price": "15.39",
+    "total_price_set": {
+      "presentment_money": {
+        "amount": "15.39",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "15.39",
+        "currency_code": "USD"
+      }
+    },
+    "total_shipping_price_set": {
+      "presentment_money": {
+        "amount": "4.95",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "4.95",
+        "currency_code": "USD"
+      }
+    },
+    "total_tax": "0.00",
+    "total_tax_set": {
+      "presentment_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      },
+      "shop_money": {
+        "amount": "0.00",
+        "currency_code": "USD"
+      }
+    },
+    "total_tip_received": "0.00",
+    "total_weight": 57,
+    "updated_at": "2025-11-10T05:42:47-06:00",
+    "user_id": null
+  },
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"
+    ],
+    [
+      "Content-Length",
+      "9979"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev"
+    ],
+    [
+      "User-Agent",
+      "Shopify-Captain-Hook"
+    ],
+    [
+      "X-Forwarded-For",
+      "34.10.74.153, 10.82.0.23"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ],
+    [
+      "X-Shopify-Api-Version",
+      "2025-07"
+    ],
+    [
+      "X-Shopify-Event-Id",
+      "d21ee443-58ad-470b-8b52-ddd7b22783b9"
+    ],
+    [
+      "X-Shopify-Hmac-Sha256",
+      "tLyYCFjthiGQp3ZKbnWuPs1kfXnOo8Q9FmJ6iyDXmwg="
+    ],
+    [
+      "X-Shopify-Order-Id",
+      "6828844286266"
+    ],
+    [
+      "X-Shopify-Shop-Domain",
+      "jerky-com.myshopify.com"
+    ],
+    [
+      "X-Shopify-Test",
+      "false"
+    ],
+    [
+      "X-Shopify-Topic",
+      "orders/updated"
+    ],
+    [
+      "X-Shopify-Triggered-At",
+      "2025-11-10T11:42:47.877155687Z"
+    ],
+    [
+      "X-Shopify-Webhook-Id",
+      "ebff96d2-b101-480e-b49b-00e6251cea5b"
+    ]
+  ],
+  "cookies": [],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
