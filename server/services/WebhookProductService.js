@@ -4,10 +4,9 @@ const { extractAnimalFromTitle } = require('../utils/animalExtractor');
 const { extractFlavorsFromTitle } = require('../utils/flavorExtractor');
 
 class WebhookProductService {
-  constructor(db, webSocketGateway = null, metadataCache = null) {
+  constructor(db, webSocketGateway = null) {
     this.repository = new ProductsMetadataRepository(db);
     this.wsGateway = webSocketGateway;
-    this.metadataCache = metadataCache;
   }
 
   async processProductWebhook(productData, topic) {
@@ -58,11 +57,6 @@ class WebhookProductService {
     const [result] = await this.repository.upsertProductMetadata(shopifyProductId, metadata);
 
     console.log(`✅ Updated metadata for product ${shopifyProductId} (${productData.title})`);
-
-    // Update metadata cache with new product data (granular invalidation)
-    if (this.metadataCache) {
-      this.metadataCache.updateProduct(shopifyProductId, result);
-    }
 
     // Broadcast to admin room
     this.broadcastAdminUpdate({
