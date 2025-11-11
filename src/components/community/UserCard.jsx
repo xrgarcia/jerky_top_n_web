@@ -115,7 +115,7 @@ function UserCard({ user }) {
       </div>
 
       <div className="card-profile">
-        <div className="profile-avatar">
+        <div className="avatar avatar-medium">
           {user.avatar_url ? (
             <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
           ) : (

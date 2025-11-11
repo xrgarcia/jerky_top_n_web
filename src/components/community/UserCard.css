@@ -61,34 +61,10 @@
   gap: 16px;
 }
 
-.profile-avatar {
-  flex-shrink: 0;
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: linear-gradient(135deg, #f5f3ed 0%, #e8e4d9 100%);
+/* Avatar styling - use unified avatar system with stage-based border */
+.card-profile .avatar-medium {
   border: 3px solid var(--stage-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.profile-avatar .avatar-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.profile-avatar .avatar-initials {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #8b4513;
-  background: var(--stage-gradient);
-  color: white;
 }
 
 .profile-info {
