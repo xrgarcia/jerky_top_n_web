@@ -73,10 +73,14 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 The application uses Drizzle ORM for database schema management. **Critical**: Always sync the database schema before deploying code changes that modify the schema.
 
 **Schema Validation:**
-- Automatic validation runs on server startup (non-blocking)
-- Logs warnings if database schema is out of sync with Drizzle definitions
+- Automatic validation runs on server startup (non-blocking) with cold-start resilience
+- Configurable startup delay (SCHEMA_VALIDATION_STARTUP_DELAY_MS, default 3-5s) allows DNS/networking to stabilize in production
+- Automatic retry logic with exponential backoff (1s, 3s) handles transient network errors
+- Distinguishes network failures (DNS, connection errors) from real schema mismatches
+- Network errors logged at info level with Sentry breadcrumbs only (no false-positive warnings)
+- Real schema drift still triggers warning-level logs and Sentry alerts for monitoring
 - Checks critical tables: `users`, `product_rankings`, `customer_order_items`, `achievements`
-- Validation results are sent to Sentry for monitoring
+- Skips startup delay in dev/test environments for fast feedback loops
 
 **Deployment Workflow:**
 1. **Safe Deployment**: Use `npm run start:safe` (syncs schema, then starts server)
