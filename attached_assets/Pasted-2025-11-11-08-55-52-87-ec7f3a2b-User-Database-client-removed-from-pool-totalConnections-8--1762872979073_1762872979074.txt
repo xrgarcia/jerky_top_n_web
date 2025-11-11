@@ -1,0 +1,206 @@
+2025-11-11 08:55:52.87
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 8, idleConnections: 8 }
+2025-11-11 08:55:52.87
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 7, idleConnections: 7 }
+2025-11-11 08:55:52.87
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 6, idleConnections: 6 }
+2025-11-11 08:55:52.87
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 5, idleConnections: 5 }
+2025-11-11 08:55:52.87
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 4, idleConnections: 4 }
+2025-11-11 08:55:52.93
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 3, idleConnections: 3 }
+2025-11-11 08:55:52.93
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-11-11 08:55:55.71
+ec7f3a2b
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-11 08:55:55.71
+ec7f3a2b
+User
+✅ Webhook signature verified
+2025-11-11 08:55:55.72
+ec7f3a2b
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1762872955714)
+2025-11-11 08:55:55.72
+ec7f3a2b
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762872955714)
+2025-11-11 08:55:55.74
+ec7f3a2b
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762872955714)
+2025-11-11 08:55:55.74
+ec7f3a2b
+User
+📦 Processing orders/updated webhook for order JK3825342734
+2025-11-11 08:55:55.74
+ec7f3a2b
+User
+📦 Processing order JK3825342734: 5 line items
+2025-11-11 08:55:55.78
+ec7f3a2b
+User
+✅ Found existing user by Shopify ID: 1830 (shesler_saige@yahoo.com)
+2025-11-11 08:55:55.93
+ec7f3a2b
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 0 }
+2025-11-11 08:55:56.03
+ec7f3a2b
+User
+✅ Processed 5 line items for order JK3825342734 (user: 1830)
+2025-11-11 08:55:56.03
+ec7f3a2b
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825342734
+2025-11-11 08:55:56.03
+ec7f3a2b
+User
+🔄 Invalidating purchase history cache for user 1830
+2025-11-11 08:55:56.03
+ec7f3a2b
+User
+🗑️ Purchase cache invalidated for user 1830
+2025-11-11 08:55:56.03
+ec7f3a2b
+User
+🔄 Recalculating ranking stats for 5 product(s)
+2025-11-11 08:55:56.07
+ec7f3a2b
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-11 08:55:56.08
+ec7f3a2b
+User
+📋 Enqueued classification job for user 1830 (reason: purchase)
+2025-11-11 08:55:56.08
+ec7f3a2b
+User
+📋 Enqueued classification job for user 1830 (reason: purchase)
+2025-11-11 08:55:56.08
+ec7f3a2b
+User
+✅ Order webhook side effects completed
+2025-11-11 08:55:56.08
+ec7f3a2b
+User
+✅ Webhook processed: orders/orders/updated (345ms)
+2025-11-11 08:55:56.09
+ec7f3a2b
+User
+✅ Webhook job completed: orders/orders/updated (377ms)
+2025-11-11 08:55:56.97
+ec7f3a2b
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-11 08:55:56.97
+ec7f3a2b
+User
+✅ Webhook signature verified
+2025-11-11 08:55:56.98
+ec7f3a2b
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1762872956978)
+2025-11-11 08:55:56.98
+ec7f3a2b
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762872956978)
+2025-11-11 08:55:57.36
+6f39fba0
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343020
+2025-11-11 08:55:57.36
+6f39fba0
+User
+🔄 Invalidating purchase history cache for user 2086
+2025-11-11 08:55:57.36
+6f39fba0
+User
+🗑️ Purchase cache invalidated for user 2086
+2025-11-11 08:55:57.40
+6f39fba0
+User
+📊 Recalculated ranking stats for 1 product(s)
+2025-11-11 08:55:57.40
+6f39fba0
+User
+✅ RankingStatsCache: Updated 1 product(s): 8814759149882 - timestamp reset
+2025-11-11 08:55:57.41
+6f39fba0
+User
+✅ Order webhook side effects completed
+2025-11-11 08:55:57.41
+6f39fba0
+User
+📋 Enqueued classification job for user 2086 (reason: purchase)
+2025-11-11 08:55:57.41
+6f39fba0
+User
+📋 Enqueued classification job for user 2086 (reason: purchase)
+2025-11-11 08:55:57.41
+6f39fba0
+User
+✅ Webhook processed: orders/orders/updated (425ms)
+2025-11-11 08:55:57.41
+6f39fba0
+User
+✅ Webhook job completed: orders/orders/updated (436ms)
+2025-11-11 08:56:11.52
+ec7f3a2b
+User
+📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+2025-11-11 08:56:11.52
+ec7f3a2b
+User
+✅ Webhook signature verified
+2025-11-11 08:56:11.52
+ec7f3a2b
+User
+📋 Webhook enqueued: products/products/update (job: products:products/update:1762872971521)
+2025-11-11 08:56:11.52
+ec7f3a2b
+User
+✅ Product webhook enqueued for async processing (job: products:products/update:1762872971521)
+2025-11-11 08:56:11.52
+6f39fba0
+User
+🔄 Processing webhook: products/products/update (job: products:products/update:1762872971521)
+2025-11-11 08:56:11.52
+6f39fba0
+User
+🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+2025-11-11 08:56:11.61
+6f39fba0
+User
+✅ Updated metadata for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+2025-11-11 08:56:11.61
+6f39fba0
+User
+✅ MetadataCache: Updated product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime)) - timestamp reset
+2025-11-11 08:56:11.62
+6f39fba0
+User
+✅ Webhook job completed: products/products/update (98ms)
+
+Collapse
+
+Wrap
+
+Colors
