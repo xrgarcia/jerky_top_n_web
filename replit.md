@@ -4,9 +4,17 @@
 A web application for ranking jerky flavors, designed to be a comprehensive and engaging platform for jerky enthusiasts. The project aims to become a leading platform in the jerky enthusiast community through gamification, social interaction, and advanced flavor filtering, capturing a significant market share in the niche online food review and community space.
 
 ## Recent Changes
+**November 11, 2025 - ProductsService Integration & Schema Fix**
+- **CRITICAL FIX**: Refactored ProfileRepository to use ProductsService as golden source for product data, eliminating schema mismatch error where code tried to access non-existent `imageUrl` column in `products_metadata` table
+- Added `getProductsByIds()` method to ProductsService that leverages existing Shopify cache, reuses enrichment logic (_getRankingStats, _getMetadata, _enrichProduct), and returns products with images from Shopify product data (product.images[0].src)
+- Implemented dependency injection pattern in ProfileRepository: constructor now accepts ProductsService, changed from singleton to class export
+- Updated three ProfileRepository methods with defensive fallbacks for missing products (deleted/cache misses): getTopRankedProducts, getTimelineMoments, getAllRankingsWithPurchases now return "Product Unavailable" placeholders instead of crashing
+- Updated profile routes to instantiate ProfileRepository with injected ProductsService and map responses to correct field names (id, image)
+- **Result**: Public profile podium now displays product images correctly, timeline and rankings are enriched with metadata, and API never crashes when products are missing
+
 **November 11, 2025 - Public Profile Page Enhancement**
 - Built complete public profile page feature with ProfileHero, ProductPodium (top 5 rankings with podium-style visualization), FlavorJourneyTimeline (horizontal swipeable carousel), and RankingsList (filterable table)
-- Fixed CRITICAL schema mismatch bug in ProfileRepository: Changed all references from non-existent `rankPosition`/`rankedAt` columns to correct `ranking`/`createdAt` columns in three methods (getTopRankedProducts, getTimelineMoments, getAllRankingsWithPurchases)
+- Fixed schema column name references in ProfileRepository: Changed from non-existent `rankPosition`/`rankedAt` to correct `ranking`/`createdAt` columns
 - Implemented privacy-aware DTO system preventing PII leakage (email, tokens, auth flags sanitized server-side)
 - Updated routing: /profile (private edit) and /community/:userId (public view with rich narrative-driven experience)
 
