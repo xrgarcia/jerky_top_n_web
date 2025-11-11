@@ -3,6 +3,13 @@
 ## Overview
 A web application for ranking jerky flavors, designed to be a comprehensive and engaging platform for jerky enthusiasts. The project aims to become a leading platform in the jerky enthusiast community through gamification, social interaction, and advanced flavor filtering, capturing a significant market share in the niche online food review and community space.
 
+## Recent Changes
+**November 11, 2025 - Public Profile Page Enhancement**
+- Built complete public profile page feature with ProfileHero, ProductPodium (top 5 rankings with podium-style visualization), FlavorJourneyTimeline (horizontal swipeable carousel), and RankingsList (filterable table)
+- Fixed CRITICAL schema mismatch bug in ProfileRepository: Changed all references from non-existent `rankPosition`/`rankedAt` columns to correct `ranking`/`createdAt` columns in three methods (getTopRankedProducts, getTimelineMoments, getAllRankingsWithPurchases)
+- Implemented privacy-aware DTO system preventing PII leakage (email, tokens, auth flags sanitized server-side)
+- Updated routing: /profile (private edit) and /community/:userId (public view with rich narrative-driven experience)
+
 ## User Preferences
 - Clean, professional design aesthetic
 - Focus on user interaction and ranking functionality

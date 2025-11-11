@@ -96,8 +96,8 @@ class ProfileRepository {
       const topRankings = await db
         .select({
           shopifyProductId: productRankings.shopifyProductId,
-          rankPosition: productRankings.rankPosition,
-          rankedAt: productRankings.rankedAt,
+          rankPosition: productRankings.ranking,
+          rankedAt: productRankings.createdAt,
           title: productsMetadata.title,
           imageUrl: productsMetadata.imageUrl,
           vendor: productsMetadata.vendor,
@@ -110,7 +110,7 @@ class ProfileRepository {
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
         ))
-        .orderBy(asc(productRankings.rankPosition))
+        .orderBy(asc(productRankings.ranking))
         .limit(5);
 
       return topRankings;
@@ -152,9 +152,9 @@ class ProfileRepository {
       const rankings = await db
         .select({
           type: sql`'ranking'`,
-          date: productRankings.rankedAt,
+          date: productRankings.createdAt,
           shopifyProductId: productRankings.shopifyProductId,
-          rankPosition: productRankings.rankPosition,
+          rankPosition: productRankings.ranking,
           title: productsMetadata.title,
           imageUrl: productsMetadata.imageUrl,
           vendor: productsMetadata.vendor
@@ -165,7 +165,7 @@ class ProfileRepository {
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
         ))
-        .orderBy(desc(productRankings.rankedAt));
+        .orderBy(desc(productRankings.createdAt));
 
       // Merge and sort by date
       const allEvents = [...purchases, ...rankings].sort((a, b) => 
@@ -196,8 +196,8 @@ class ProfileRepository {
       const rankings = await db
         .select({
           shopifyProductId: productRankings.shopifyProductId,
-          rankPosition: productRankings.rankPosition,
-          rankedAt: productRankings.rankedAt,
+          rankPosition: productRankings.ranking,
+          rankedAt: productRankings.createdAt,
           title: productsMetadata.title,
           imageUrl: productsMetadata.imageUrl,
           vendor: productsMetadata.vendor,
@@ -217,7 +217,7 @@ class ProfileRepository {
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
         ))
-        .orderBy(asc(productRankings.rankPosition));
+        .orderBy(asc(productRankings.ranking));
 
       return rankings;
     } catch (error) {
