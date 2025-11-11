@@ -37,39 +37,155 @@ class WebhookCustomerService {
         email: customerData.email
       });
       
-      // Find user by Shopify customer ID
-      const [user] = await this.db
+      // Find user by Shopify customer ID first, then by email
+      let user = null;
+      
+      const [userByShopifyId] = await this.db
         .select()
         .from(users)
         .where(eq(users.shopifyCustomerId, shopifyCustomerId))
         .limit(1);
       
+      if (userByShopifyId) {
+        user = userByShopifyId;
+      } else if (customerData.email) {
+        // Try to find by email in case user was created through different flow
+        const [userByEmail] = await this.db
+          .select()
+          .from(users)
+          .where(eq(users.email, customerData.email))
+          .limit(1);
+        
+        if (userByEmail) {
+          console.log(`✅ Found user by email ${customerData.email}, linking Shopify ID ${shopifyCustomerId}`);
+          // Link the Shopify customer ID to this existing user
+          await this.db
+            .update(users)
+            .set({ 
+              shopifyCustomerId,
+              updatedAt: new Date()
+            })
+            .where(eq(users.id, userByEmail.id));
+          
+          user = { ...userByEmail, shopifyCustomerId };
+        }
+      }
+      
       if (!user) {
-        console.log(`⚠️ Customer ${shopifyCustomerId} not found in database - skipping update`);
+        console.log(`👤 Customer ${shopifyCustomerId} not found in database - creating new user`);
         
-        // Broadcast to admin room
-        this.broadcastAdminUpdate({
-          data: {
-            topic: topic,
-            type: 'customers',
+        // Parse Shopify created_at timestamp
+        const shopifyCreatedAt = customerData.created_at ? new Date(customerData.created_at) : null;
+        
+        // Create new user record
+        const email = customerData.email || `${shopifyCustomerId}@placeholder.jerky.com`;
+        const firstName = customerData.first_name || null;
+        const lastName = customerData.last_name || null;
+        const displayName = firstName && lastName 
+          ? `${firstName} ${lastName}`.trim()
+          : firstName || email.split('@')[0];
+        
+        try {
+          const [newUser] = await this.db
+            .insert(users)
+            .values({
+              shopifyCustomerId,
+              email,
+              firstName,
+              lastName,
+              displayName,
+              role: 'user',
+              active: false, // Not active until they log in
+              importStatus: 'pending',
+              fullHistoryImported: false,
+              shopifyCreatedAt,
+              createdAt: new Date(),
+              updatedAt: new Date()
+            })
+            .returning({ id: users.id });
+          
+          console.log(`✅ Created new user ${newUser.id} for Shopify customer ${shopifyCustomerId}`);
+          
+          // Broadcast to admin room
+          this.broadcastAdminUpdate({
             data: {
-              id: customerData.id,
-              email: customerData.email,
-              first_name: customerData.first_name,
-              last_name: customerData.last_name
+              topic: topic,
+              type: 'customers',
+              data: {
+                id: customerData.id,
+                email: email,
+                first_name: firstName,
+                last_name: lastName
+              }
+            },
+            action: 'created',
+            userId: newUser.id,
+            shopifyCustomerId
+          });
+          
+          return {
+            success: true,
+            action: 'created',
+            userId: newUser.id,
+            shopifyCustomerId,
+            email
+          };
+        } catch (createError) {
+          console.error(`❌ Failed to create user for Shopify customer ${shopifyCustomerId}:`, createError);
+          
+          // If it's a duplicate key error, try to find the user again (race condition)
+          if (createError.code === '23505') { // PostgreSQL unique violation
+            console.log(`🔄 Duplicate key detected, refetching user ${shopifyCustomerId}`);
+            
+            // Try by Shopify ID first
+            let existingUser = await this.db
+              .select()
+              .from(users)
+              .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+              .limit(1)
+              .then(results => results[0]);
+            
+            // If not found by Shopify ID, try by email
+            if (!existingUser && email && !email.includes('@placeholder.jerky.com')) {
+              existingUser = await this.db
+                .select()
+                .from(users)
+                .where(eq(users.email, email))
+                .limit(1)
+                .then(results => results[0]);
+              
+              if (existingUser) {
+                console.log(`✅ Found user by email, linking Shopify ID ${shopifyCustomerId}`);
+                // Link the Shopify customer ID
+                await this.db
+                  .update(users)
+                  .set({ 
+                    shopifyCustomerId,
+                    updatedAt: new Date()
+                  })
+                  .where(eq(users.id, existingUser.id));
+                
+                user = { ...existingUser, shopifyCustomerId };
+              }
             }
-          },
-          action: 'skipped',
-          shopifyCustomerId,
-          reason: 'user_not_found'
-        });
-        
-        return {
-          success: true,
-          action: 'skipped',
-          reason: 'user_not_found',
-          shopifyCustomerId
-        };
+            
+            if (existingUser && !user) {
+              console.log(`✅ Found existing user ${existingUser.id} after race condition`);
+              user = existingUser;
+            }
+            
+            if (!user) {
+              throw createError;
+            }
+          } else {
+            throw createError;
+          }
+        }
+      }
+      
+      // If we created the user and returned early, we're done
+      if (!user) {
+        return;
       }
 
       // Parse Shopify created_at timestamp

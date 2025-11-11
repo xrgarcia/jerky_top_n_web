@@ -19,7 +19,7 @@ function CustomerWebhooksPage() {
     const customerData = updateData.data?.data || updateData.data || {};
     
     const action = topic?.includes('update') ? 'Customer Updated' : 
-                   topic?.includes('create') ? 'Customer Created' : 
+                   topic?.includes('create') ? 'New User Created' : 
                    'Customer Event';
     
     const customerName = customerData.first_name && customerData.last_name
@@ -78,10 +78,26 @@ function CustomerWebhooksPage() {
     return 'Unknown';
   };
 
+  const getProcessingAction = (webhook) => {
+    // Check the returnValue for the actual processing action
+    const action = webhook.returnValue?.action;
+    if (action === 'created') return 'User Created';
+    if (action === 'updated') return 'Updated';
+    if (action === 'no_changes') return 'No Changes';
+    if (action === 'skipped') return 'Skipped';
+    
+    // Fallback to topic-based action
+    return getWebhookAction(webhook.data?.topic);
+  };
+
   const getActionBadgeClass = (action) => {
     switch(action?.toLowerCase()) {
       case 'update': return 'status-badge partial';
+      case 'updated': return 'status-badge partial';
+      case 'user created': return 'status-badge fulfilled';
       case 'create': return 'status-badge fulfilled';
+      case 'no changes': return 'status-badge';
+      case 'skipped': return 'status-badge unfulfilled';
       case 'delete': return 'status-badge unfulfilled';
       default: return 'status-badge';
     }
@@ -325,7 +341,7 @@ function CustomerWebhooksPage() {
             </thead>
             <tbody>
               {webhooks.map((webhook) => {
-                const action = getWebhookAction(webhook.data?.topic);
+                const action = getProcessingAction(webhook);
                 return (
                   <tr key={webhook.id}>
                     <td className="order-date">
