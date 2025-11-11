@@ -1,0 +1,282 @@
+.user-card-narrative {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  gap: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid transparent;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+}
+
+.user-card-narrative::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--stage-gradient);
+  opacity: 0.8;
+}
+
+.user-card-narrative:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+  border-color: var(--stage-border);
+}
+
+.card-tier-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 6px 14px;
+  background: var(--stage-gradient);
+  border-radius: 20px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tier-emoji {
+  font-size: 1em;
+}
+
+.tier-label {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.card-profile {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5f3ed 0%, #e8e4d9 100%);
+  border: 3px solid var(--stage-color);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar .avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-avatar .avatar-initials {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #8b4513;
+  background: var(--stage-gradient);
+  color: white;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-name {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin-bottom: 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-narrative {
+  margin: 0;
+  font-size: 0.9375rem;
+  color: #666;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.card-stats {
+  display: flex;
+  gap: 16px;
+  padding: 16px;
+  background: #faf8f3;
+  border-radius: 12px;
+  border: 1px solid #e8e4d9;
+}
+
+.stat-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.stat-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.stat-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.stat-streak {
+  background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+  border-radius: 8px;
+  padding: 8px;
+  margin: -8px 0;
+  border: 1px solid #ffb74d;
+}
+
+.card-focus-areas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.focus-tag {
+  display: inline-block;
+  padding: 6px 12px;
+  background: var(--stage-gradient);
+  color: white;
+  border-radius: 16px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  opacity: 0.9;
+}
+
+.card-milestone {
+  padding: 16px;
+  background: linear-gradient(135deg, #f9f7f4 0%, #faf8f3 100%);
+  border-radius: 12px;
+  border: 2px solid var(--stage-border);
+}
+
+.milestone-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.milestone-icon {
+  font-size: 1.25rem;
+}
+
+.milestone-name {
+  flex: 1;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #2d2d2d;
+}
+
+.milestone-percent {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--stage-color);
+}
+
+.milestone-progress-bar {
+  height: 8px;
+  background: #e8e4d9;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.milestone-progress-fill {
+  height: 100%;
+  background: var(--stage-gradient);
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px var(--stage-color);
+}
+
+.milestone-status {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #666;
+  text-align: right;
+  font-weight: 600;
+}
+
+.card-badges {
+  display: flex;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e8e4d9;
+}
+
+.badge-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.badge-icon:hover {
+  transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .user-card-narrative {
+    padding: 20px;
+  }
+  
+  .profile-avatar {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .profile-name {
+    font-size: 1.125rem;
+  }
+  
+  .card-stats {
+    gap: 12px;
+    padding: 12px;
+  }
+  
+  .stat-value {
+    font-size: 1.125rem;
+  }
+  
+  .focus-tag {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+}
