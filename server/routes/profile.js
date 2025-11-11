@@ -169,10 +169,16 @@ function createProfileRoutes(services) {
           updated_at: users.updatedAt,
         });
 
-      // Invalidate caches if handle or privacy settings changed
-      // This ensures updated display names appear everywhere
-      if (updates.handle !== undefined || updates.hideNamePrivacy !== undefined) {
+      // Invalidate caches if handle, privacy settings, or profile image changed
+      // This ensures updated display data appears everywhere
+      if (updates.handle !== undefined || updates.hideNamePrivacy !== undefined || updates.profileImageUrl !== undefined) {
         try {
+          // Invalidate user profile cache (Redis-backed)
+          const UserProfileCache = require('../cache/UserProfileCache');
+          const userProfileCache = UserProfileCache.getInstance();
+          await userProfileCache.invalidateUser(session.userId);
+          console.log(`🗑️ Invalidated user profile cache for user ${session.userId}`);
+          
           // Check if user is in leaderboard top 50
           if (leaderboardManager && leaderboardManager.cache) {
             const leaderboardData = leaderboardManager.cache.get('all_time', 50);
@@ -181,7 +187,7 @@ function createProfileRoutes(services) {
               const userInLeaderboard = leaderboardData.users?.some(u => u.userId === session.userId);
               
               if (userInLeaderboard) {
-                leaderboardManager.cache.invalidate();
+                await leaderboardManager.cache.invalidate();
                 console.log(`🗑️ Invalidated leaderboard cache (user ${session.userId} handle/privacy updated)`);
               }
             }

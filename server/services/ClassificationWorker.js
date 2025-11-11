@@ -128,7 +128,22 @@ class ClassificationWorker {
 
       console.log(`  ✓ User classified: ${classification.journeyStage}/${classification.engagementLevel}`);
 
-      // Step 2: Calculate and cache guidance for all page contexts
+      // Invalidate caches BEFORE recalculation (clear stale data from Redis)
+      const UserClassificationCache = require('../cache/UserClassificationCache');
+      const userClassificationCache = UserClassificationCache.getInstance();
+      await userClassificationCache.invalidateUser(userId);
+      
+      const ProgressCache = require('../cache/ProgressCache');
+      const progressCache = ProgressCache.getInstance();
+      await progressCache.invalidateUser(userId);
+      
+      const GuidanceCache = require('../cache/GuidanceCache');
+      const guidanceCache = GuidanceCache.getInstance();
+      await guidanceCache.invalidateUser(userId);
+      
+      console.log(`  ✓ Invalidated classification, progress, and guidance caches`);
+
+      // Step 2: Calculate and cache guidance for all page contexts (writes to database)
       const totalRankableProducts = this.services.getRankableProductCount();
       const cachePromises = [];
 
@@ -138,7 +153,7 @@ class ClassificationWorker {
 
       await Promise.all(cachePromises);
 
-      console.log(`  ✓ Guidance cached for ${this.PAGE_CONTEXTS.length} page contexts`);
+      console.log(`  ✓ Guidance cached in database for ${this.PAGE_CONTEXTS.length} page contexts (Redis will populate on next request)`);
 
       // Step 3: Mark user as calculated (for debouncing)
       const ClassificationQueue = require('./ClassificationQueue');

@@ -1,9 +1,13 @@
+const DistributedCache = require('../services/DistributedCache');
+
 /**
- * AchievementCache - Singleton Pattern
+ * AchievementCache - Redis-backed distributed cache for achievement definitions
+ * Caches achievement definitions to avoid repeated database queries
  * 
- * Caches achievement definitions to avoid repeated database queries.
- * Since achievement definitions rarely change, we can keep them in memory
- * with a longer TTL or invalidate only when definitions are updated.
+ * Cache Keys:
+ * - all → All achievement definitions
+ * 
+ * TTL: 1 hour (achievements rarely change)
  */
 class AchievementCache {
   constructor() {
@@ -11,57 +15,80 @@ class AchievementCache {
       return AchievementCache.instance;
     }
 
-    this.definitions = null;
-    this.timestamp = null;
-    this.TTL = 60 * 60 * 1000; // 1 hour TTL (achievements rarely change)
+    this.cache = new DistributedCache('achievement');
+    this.TTL = 3600; // 1 hour in seconds (for Redis)
+    this.initialized = false;
     
     AchievementCache.instance = this;
   }
 
   /**
-   * Check if cached data is still valid
+   * Initialize the cache (must be called on startup)
    */
-  isValid() {
-    if (!this.definitions || !this.timestamp) {
-      return false;
+  async initialize() {
+    if (!this.initialized) {
+      await this.cache.initialize();
+      this.initialized = true;
+      console.log('✅ AchievementCache initialized');
     }
-    
-    const age = Date.now() - this.timestamp;
-    return age < this.TTL;
+  }
+
+  /**
+   * Generate cache key for all achievements
+   * @returns {string} Cache key
+   */
+  getCacheKey() {
+    return 'all';
   }
 
   /**
    * Get cached achievement definitions
-   * @returns {Array|null} Cached definitions or null if invalid
+   * @returns {Promise<Array|null>} Cached definitions or null
    */
-  get() {
-    if (this.isValid()) {
-      const ageMinutes = Math.floor((Date.now() - this.timestamp) / 60000);
-      console.log(`💾 AchievementCache HIT: Returning ${this.definitions.length} definitions (age: ${ageMinutes} minutes)`);
-      return this.definitions;
+  async get() {
+    try {
+      const key = this.getCacheKey();
+      const cached = await this.cache.get(key);
+      
+      if (cached) {
+        const data = JSON.parse(cached);
+        console.log(`💾 AchievementCache HIT: Returning ${data.length} definitions`);
+        return data;
+      }
+      
+      console.log('🚫 AchievementCache MISS: Data expired or not found');
+      return null;
+    } catch (error) {
+      console.error('❌ AchievementCache GET error:', error.message);
+      return null;
     }
-    
-    console.log('🚫 AchievementCache MISS: Data expired or not found');
-    return null;
   }
 
   /**
    * Set achievement definitions in cache
    * @param {Array} definitions - Array of achievement definitions
    */
-  set(definitions) {
-    this.definitions = definitions;
-    this.timestamp = Date.now();
-    console.log(`✅ AchievementCache SET: Cached ${definitions.length} definitions`);
+  async set(definitions) {
+    try {
+      const key = this.getCacheKey();
+      const serialized = JSON.stringify(definitions);
+      await this.cache.set(key, serialized, this.TTL);
+      console.log(`✅ AchievementCache SET: Cached ${definitions.length} definitions`);
+    } catch (error) {
+      console.error('❌ AchievementCache SET error:', error.message);
+    }
   }
 
   /**
    * Invalidate the cache (e.g., when definitions are updated)
    */
-  invalidate() {
-    console.log('🗑️ AchievementCache INVALIDATE: Clearing cache');
-    this.definitions = null;
-    this.timestamp = null;
+  async invalidate() {
+    try {
+      await this.cache.clear();
+      console.log('🗑️ AchievementCache: Cache cleared');
+    } catch (error) {
+      console.error('❌ AchievementCache CLEAR error:', error.message);
+    }
   }
 
   /**

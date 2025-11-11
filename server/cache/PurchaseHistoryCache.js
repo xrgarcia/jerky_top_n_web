@@ -1,43 +1,68 @@
+const DistributedCache = require('../services/DistributedCache');
+
 /**
- * PurchaseHistoryCache - Caches user purchase history (purchased product IDs)
- * Per-user cache with TTL to minimize database queries
+ * PurchaseHistoryCache - Redis-backed distributed cache for user purchase history
+ * Caches purchased product IDs per user to minimize database queries
+ * 
+ * Cache Keys:
+ * - user:{userId} → Array of purchased product IDs
+ * 
+ * TTL: 30 minutes (purchase history doesn't change frequently)
  */
 class PurchaseHistoryCache {
   constructor(ttlMinutes = 30) {
-    this.cache = new Map(); // userId -> { data, timestamp }
-    this.TTL = ttlMinutes * 60 * 1000; // Convert minutes to milliseconds
+    this.cache = new DistributedCache('purchase_history');
+    this.TTL = ttlMinutes * 60; // Convert minutes to seconds for Redis
+    this.initialized = false;
   }
 
   /**
-   * Check if cached data is still valid for a user
-   * @param {number} userId - User ID
-   * @returns {boolean} True if cache is valid
+   * Initialize the cache (called automatically in PurchaseHistoryService)
    */
-  isValid(userId) {
-    const cached = this.cache.get(userId);
-    if (!cached || !cached.timestamp) {
-      return false;
+  async initialize() {
+    if (!this.initialized) {
+      await this.cache.initialize();
+      this.initialized = true;
+      console.log('✅ PurchaseHistoryCache initialized');
     }
-    
-    const age = Date.now() - cached.timestamp;
-    return age < this.TTL;
+  }
+
+  /**
+   * Generate cache key for user purchase history
+   * @param {number} userId - User ID
+   * @returns {string} Cache key
+   */
+  getCacheKey(userId) {
+    return `user:${userId}`;
   }
 
   /**
    * Get cached purchase history for a user
    * @param {number} userId - User ID
-   * @returns {Array<string>|null} Array of product IDs or null if expired
+   * @returns {Promise<Array<string>|null>} Array of product IDs or null if expired
    */
-  get(userId) {
-    if (this.isValid(userId)) {
-      const cached = this.cache.get(userId);
-      const ageMinutes = Math.floor((Date.now() - cached.timestamp) / 60000);
-      console.log(`💾 Purchase Cache HIT for user ${userId} (age: ${ageMinutes} minutes)`);
-      return cached.data;
+  async get(userId) {
+    try {
+      // Ensure cache is initialized
+      if (!this.initialized) {
+        await this.initialize();
+      }
+
+      const key = this.getCacheKey(userId);
+      const cached = await this.cache.get(key);
+      
+      if (cached) {
+        const data = JSON.parse(cached);
+        console.log(`💾 Purchase Cache HIT for user ${userId} (${data.length} products)`);
+        return data;
+      }
+      
+      console.log(`🚫 Purchase Cache MISS for user ${userId}`);
+      return null;
+    } catch (error) {
+      console.error('❌ PurchaseHistoryCache GET error:', error.message);
+      return null;
     }
-    
-    console.log(`🚫 Purchase Cache MISS for user ${userId}`);
-    return null;
   }
 
   /**
@@ -45,41 +70,45 @@ class PurchaseHistoryCache {
    * @param {number} userId - User ID
    * @param {Array<string>} productIds - Array of purchased product IDs
    */
-  set(userId, productIds) {
-    const timestamp = Date.now();
-    this.cache.set(userId, { data: productIds, timestamp });
-    
-    console.log(`✅ Purchase Cache UPDATED for user ${userId}: ${productIds.length} products, valid for ${this.TTL / 60000} minutes`);
-    
-    // Schedule automatic cleanup for this user's cache
-    setTimeout(() => {
-      this.invalidate(userId);
-    }, this.TTL);
+  async set(userId, productIds) {
+    try {
+      // Ensure cache is initialized
+      if (!this.initialized) {
+        await this.initialize();
+      }
+
+      const key = this.getCacheKey(userId);
+      const serialized = JSON.stringify(productIds);
+      await this.cache.set(key, serialized, this.TTL);
+      
+      console.log(`✅ Purchase Cache UPDATED for user ${userId}: ${productIds.length} products, valid for ${this.TTL / 60} minutes`);
+    } catch (error) {
+      console.error('❌ PurchaseHistoryCache SET error:', error.message);
+    }
   }
 
   /**
    * Manually invalidate cache for a user
    * @param {number} userId - User ID (if null, clears all)
    */
-  invalidate(userId = null) {
-    if (userId === null) {
-      console.log('🗑️ Purchase cache cleared for all users');
-      this.cache.clear();
-    } else {
-      this.cache.delete(userId);
-      console.log(`🗑️ Purchase cache invalidated for user ${userId}`);
-    }
-  }
+  async invalidate(userId = null) {
+    try {
+      // Ensure cache is initialized
+      if (!this.initialized) {
+        await this.initialize();
+      }
 
-  /**
-   * Get cache age in minutes for a user
-   * @param {number} userId - User ID
-   * @returns {number|null} Age in minutes or null
-   */
-  getAge(userId) {
-    const cached = this.cache.get(userId);
-    if (!cached || !cached.timestamp) return null;
-    return Math.floor((Date.now() - cached.timestamp) / 60000);
+      if (userId === null) {
+        await this.cache.clear();
+        console.log('🗑️ Purchase cache cleared for all users');
+      } else {
+        const key = this.getCacheKey(userId);
+        await this.cache.del(key);
+        console.log(`🗑️ Purchase cache invalidated for user ${userId}`);
+      }
+    } catch (error) {
+      console.error('❌ PurchaseHistoryCache INVALIDATE error:', error.message);
+    }
   }
 
   /**
@@ -88,21 +117,10 @@ class PurchaseHistoryCache {
    * @returns {Object} Cache stats
    */
   getStats(userId = null) {
-    if (userId !== null) {
-      const cached = this.cache.get(userId);
-      return {
-        hasData: !!cached,
-        isValid: this.isValid(userId),
-        ageMinutes: this.getAge(userId),
-        ttlMinutes: this.TTL / 60000,
-        itemCount: cached?.data?.length || 0
-      };
-    }
-    
-    // Global stats
     return {
-      totalUsers: this.cache.size,
-      ttlMinutes: this.TTL / 60000,
+      ttlMinutes: this.TTL / 60,
+      usingRedis: this.cache.isUsingRedis(),
+      ...(userId && { userId })
     };
   }
 }

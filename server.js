@@ -2373,6 +2373,14 @@ app.post('/api/rankings/products', async (req, res) => {
           const streakResult = await streakManager.updateStreak(userId, 'daily_rank');
           console.log(`🔥 Streak update result:`, streakResult);
           
+          // Invalidate streak cache when streak changes
+          if (streakResult && (streakResult.continued || streakResult.broken)) {
+            const StreakCache = require('./server/cache/StreakCache');
+            const streakCache = StreakCache.getInstance();
+            await streakCache.invalidateUser(userId);
+            console.log(`🗑️ Invalidated streak cache for user ${userId}`);
+          }
+          
           // Broadcast streak update via WebSocket if streak changed
           if (streakResult && (streakResult.continued || streakResult.broken) && io) {
             const { getRoomName } = require('./server/websocket/gateway');

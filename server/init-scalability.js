@@ -2,6 +2,13 @@ const cacheService = require('./services/CacheService');
 const redisClient = require('./services/RedisClient');
 const { createAdapter } = require('@socket.io/redis-adapter');
 const LeaderboardCache = require('./cache/LeaderboardCache');
+const UserClassificationCache = require('./cache/UserClassificationCache');
+const StreakCache = require('./cache/StreakCache');
+const ProgressCache = require('./cache/ProgressCache');
+const AchievementCache = require('./cache/AchievementCache');
+const UserProfileCache = require('./cache/UserProfileCache');
+const PurchaseHistoryCache = require('./cache/PurchaseHistoryCache');
+const GuidanceCache = require('./cache/GuidanceCache');
 
 async function initializeScalability(io) {
   console.log('🚀 Initializing scalability features...');
@@ -9,9 +16,31 @@ async function initializeScalability(io) {
   // Initialize Redis cache service (establishes shared connection pool)
   await cacheService.initialize();
   
-  // Initialize LeaderboardCache (Redis-backed distributed cache)
+  // Initialize all Redis-backed distributed caches
+  console.log('📦 Initializing distributed caches...');
+  
   const leaderboardCache = LeaderboardCache.getInstance();
   await leaderboardCache.initialize();
+  
+  const userClassificationCache = UserClassificationCache.getInstance();
+  await userClassificationCache.initialize();
+  
+  const streakCache = StreakCache.getInstance();
+  await streakCache.initialize();
+  
+  const progressCache = ProgressCache.getInstance();
+  await progressCache.initialize();
+  
+  const achievementCache = AchievementCache.getInstance();
+  await achievementCache.initialize();
+  
+  const userProfileCache = UserProfileCache.getInstance();
+  await userProfileCache.initialize();
+  
+  const guidanceCache = GuidanceCache.getInstance();
+  await guidanceCache.initialize();
+  
+  console.log('✅ All distributed caches initialized');
   
   // Setup Socket.IO Redis adapter for cross-instance communication
   const client = redisClient.getClient();

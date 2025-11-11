@@ -319,15 +319,24 @@ class WebhookCustomerService {
           const userInLeaderboard = leaderboardData.users?.some(u => u.userId === userId);
           
           if (userInLeaderboard) {
-            this.leaderboardCache.invalidate();
+            await this.leaderboardCache.invalidate();
             invalidations.push('leaderboard');
             console.log(`🗑️ Invalidated leaderboard cache (user ${userId} is in top 50)`);
           }
         }
       }
 
-      // Note: Individual profile data is fetched fresh each time, no specific cache to invalidate
-      // The community endpoint queries the database directly
+      // Invalidate user profile cache (Redis-backed)
+      const UserProfileCache = require('../cache/UserProfileCache');
+      const userProfileCache = UserProfileCache.getInstance();
+      await userProfileCache.invalidateUser(userId);
+      invalidations.push('user_profile');
+
+      // Invalidate user classification cache (Redis-backed)
+      const UserClassificationCache = require('../cache/UserClassificationCache');
+      const userClassificationCache = UserClassificationCache.getInstance();
+      await userClassificationCache.invalidateUser(userId);
+      invalidations.push('user_classification');
 
       if (invalidations.length > 0) {
         console.log(`✅ Targeted cache invalidation complete for user ${userId}: [${invalidations.join(', ')}]`);

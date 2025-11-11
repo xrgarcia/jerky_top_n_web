@@ -15,15 +15,15 @@ class AchievementRepository {
   }
 
   async getAllAchievements() {
-    // Check cache first (Singleton pattern)
-    const cached = this.achievementCache.get();
+    // Check cache first (Redis-backed distributed cache)
+    const cached = await this.achievementCache.get();
     if (cached) {
       return cached;
     }
 
     // Fetch from database and cache
     const definitions = await this.db.select().from(achievements);
-    this.achievementCache.set(definitions);
+    await this.achievementCache.set(definitions);
     return definitions;
   }
 

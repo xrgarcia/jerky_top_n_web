@@ -57,7 +57,7 @@ class PurchaseHistoryService {
         console.log(`⚡ Fast-path: User ${user.id} has 0 orders, skipping order fetch`);
         
         // Cache empty result to avoid repeated checks
-        this.cache.set(user.id, []);
+        await this.cache.set(user.id, []);
         
         const duration = Date.now() - startTime;
         return { 
@@ -79,7 +79,7 @@ class PurchaseHistoryService {
         console.log(`ℹ️ No orders found for user ${user.id}`);
         
         // Cache empty result to avoid repeated API calls
-        this.cache.set(user.id, []);
+        await this.cache.set(user.id, []);
         
         return { success: true, itemsImported: 0, ordersProcessed: 0 };
       }
@@ -93,7 +93,7 @@ class PurchaseHistoryService {
 
       if (orderItems.length === 0) {
         console.log(`ℹ️ No line items found in orders for user ${user.id}`);
-        this.cache.set(user.id, []);
+        await this.cache.set(user.id, []);
         return { success: true, itemsImported: 0, ordersProcessed: orders.length };
       }
 
@@ -101,7 +101,7 @@ class PurchaseHistoryService {
       await this.repository.bulkUpsertOrderItems(orderItems);
 
       // 4. Invalidate cache to force refresh
-      this.cache.invalidate(user.id);
+      await this.cache.invalidate(user.id);
 
       const duration = Date.now() - startTime;
       console.log(`✅ Order sync completed for user ${user.id}: ${orderItems.length} items from ${orders.length} orders in ${duration}ms`);
@@ -134,7 +134,7 @@ class PurchaseHistoryService {
   async getPurchasedProductIds(userId) {
     try {
       // Check cache first
-      const cached = this.cache.get(userId);
+      const cached = await this.cache.get(userId);
       if (cached !== null) {
         return cached;
       }
@@ -144,7 +144,7 @@ class PurchaseHistoryService {
       const productIds = await this.repository.getPurchasedProductIdsByUser(userId);
 
       // Cache the result
-      this.cache.set(userId, productIds);
+      await this.cache.set(userId, productIds);
 
       return productIds;
     } catch (error) {
@@ -163,8 +163,8 @@ class PurchaseHistoryService {
    * Invalidate cache for a user (e.g., after manual order sync)
    * @param {number} userId - User ID
    */
-  invalidateUserCache(userId) {
-    this.cache.invalidate(userId);
+  async invalidateUserCache(userId) {
+    await this.cache.invalidate(userId);
   }
 
   /**

@@ -82,7 +82,7 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
             console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
             
             const purchaseHistoryService = new PurchaseHistoryService();
-            purchaseHistoryService.invalidateUserCache(result.userId);
+            await purchaseHistoryService.invalidateUserCache(result.userId);
           }
           
           // Update only affected products in ranking stats cache

@@ -211,7 +211,7 @@ class WebhookWorker {
       // Invalidate purchase history cache for the user
       if (result.userId && purchaseHistoryService) {
         console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
-        purchaseHistoryService.invalidateUserCache(result.userId);
+        await purchaseHistoryService.invalidateUserCache(result.userId);
       }
       
       // Update ranking stats cache for affected products
