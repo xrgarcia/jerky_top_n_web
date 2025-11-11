@@ -60,9 +60,9 @@ function createCommunityRoutes(services) {
           // Get user classification (journey stage, engagement level, focus areas) - Redis cached
           const classification = await classificationCache.get(user.id);
           
-          // Get current streak - Redis cached
-          const streakData = await streakCache.get(user.id);
-          const currentStreak = streakData?.daily_rank?.currentStreak || 0;
+          // Get current daily ranking streak - Redis cached
+          const dailyRankStreak = await streakCache.getStreakType(user.id, 'daily_rank');
+          const currentStreak = dailyRankStreak?.currentStreak || 0;
           
           // Get closest milestone progress - Redis cached
           const progress = await progressCache.get(user.id);
