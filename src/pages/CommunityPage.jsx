@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
 import { useHomeStats } from '../hooks/useGamification';
 import PodiumWidget from '../components/community/PodiumWidget';
 import CommunityStatsBar from '../components/community/CommunityStatsBar';
 import JourneySection from '../components/community/JourneySection';
 import CommunityPulse from '../components/community/CommunityPulse';
-import { renderAchievementIcon } from '../utils/iconUtils';
+import UserCard from '../components/community/UserCard';
 import './CommunityPage.css';
 
 function CommunityPage() {
@@ -111,39 +110,7 @@ function CommunityPage() {
               {!isLoading && !error && users.length > 0 && (
                 <div className="users-grid">
                   {users.map(user => (
-                    <Link 
-                      key={user.user_id} 
-                      to={`/community/${user.user_id}`}
-                      className="user-card"
-                    >
-                      <div className="avatar avatar-large">
-                        {user.avatar_url ? (
-                          <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
-                        ) : (
-                          <div className="avatar-initials">{user.initials}</div>
-                        )}
-                      </div>
-                      <h3 className="user-name">{user.display_name}</h3>
-                      <div className="user-stats">
-                        <div className="user-stat">
-                          <span className="stat-icon">🥩</span>
-                          <span>{user.unique_products || 0} products</span>
-                        </div>
-                        <div className="user-stat">
-                          <span className="stat-icon">🏆</span>
-                          <span>{user.engagement_score || 0} pts</span>
-                        </div>
-                      </div>
-                      {user.badges && user.badges.length > 0 && (
-                        <div className="user-badges">
-                          {user.badges.slice(0, 3).map((badge, i) => (
-                            <span key={i} className="badge" title={badge.name}>
-                              {renderAchievementIcon(badge, 24)}
-                            </span>
-                          ))}
-                        </div>
-                      )}
-                    </Link>
+                    <UserCard key={user.user_id} user={user} />
                   ))}
                 </div>
               )}
