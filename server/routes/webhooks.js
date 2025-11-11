@@ -7,6 +7,7 @@ const WebhookCustomerService = require('../services/WebhookCustomerService');
 const { db } = require('../db');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 const webhookQueue = require('../services/WebhookQueue');
+const webhookWorker = require('../services/WebhookWorker');
 
 function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classificationQueue = null) {
   const router = express.Router();
@@ -15,9 +16,22 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
   const orderService = new WebhookOrderService(webSocketGateway);
   const productService = new WebhookProductService(db);
   const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
+  const purchaseHistoryService = new PurchaseHistoryService();
   
   // Use shared cache instances passed from server.js
   const { metadataCache, rankingStatsCache } = sharedCaches;
+  
+  // Inject services into WebhookWorker (if worker is initialized)
+  // This allows the worker to use the same service instances when processing jobs
+  if (webhookWorker && webhookWorker.services) {
+    webhookWorker.services.orderService = orderService;
+    webhookWorker.services.productService = productService;
+    webhookWorker.services.customerService = customerService;
+    webhookWorker.services.purchaseHistoryService = purchaseHistoryService;
+    webhookWorker.services.rankingStatsCache = rankingStatsCache;
+    webhookWorker.services.metadataCache = metadataCache;
+    console.log('✅ Webhook services injected into worker');
+  }
 
   router.post('/orders', async (req, res) => {
     try {

@@ -32,6 +32,8 @@ const BulkImportWorker = require('../services/BulkImportWorker');
 const BulkImportService = require('../services/BulkImportService');
 const EngagementBackfillQueue = require('../services/EngagementBackfillQueue');
 const EngagementBackfillWorker = require('../services/EngagementBackfillWorker');
+const WebhookQueue = require('../services/WebhookQueue');
+const WebhookWorker = require('../services/WebhookWorker');
 
 const HomeStatsCache = require('../cache/HomeStatsCache');
 
@@ -222,6 +224,25 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   
   services.engagementBackfillQueue = engagementBackfillQueue;
   services.engagementBackfillWorker = engagementBackfillWorker;
+  
+  // Initialize WebhookQueue (BullMQ with Redis for Shopify webhooks)
+  const webhookQueue = WebhookQueue; // Singleton instance
+  await webhookQueue.initialize();
+  
+  // Initialize WebhookWorker (BullMQ background processor for all 3 webhook types)
+  const webhookWorker = WebhookWorker; // Singleton instance
+  await webhookWorker.initialize({
+    orderService: null, // Will be set when webhook routes are created
+    productService: null, // Will be set when webhook routes are created
+    customerService: null, // Will be set when webhook routes are created
+    purchaseHistoryService,
+    rankingStatsCache: null, // Will be set when webhook routes are created
+    metadataCache: null, // Will be set when webhook routes are created
+    classificationQueue,
+  });
+  
+  services.webhookQueue = webhookQueue;
+  services.webhookWorker = webhookWorker;
 
   // Seed achievements with retry logic (this also warms AchievementCache)
   // Using fire-and-forget pattern with proper error handling
