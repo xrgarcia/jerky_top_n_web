@@ -42,6 +42,7 @@ const createProfileRoutes = require('../routes/profile');
 const WebSocketGateway = require('../websocket/gateway');
 
 const { primaryDb, ensureDatabaseReady } = require('../db-primary');
+const Sentry = require('@sentry/node');
 
 async function initializeGamification(app, io, db, storage, fetchAllShopifyProducts, getRankableProductCount, productsService = null, rateLimiters = null, purchaseHistoryService = null) {
   console.log('🎮 Initializing gamification system...');
@@ -49,11 +50,31 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   // Ensure both database instances are query-ready before proceeding
   // This prevents cold-start errors on Neon Serverless
   // Warm both the primary DB and the injected pooled DB
-  await Promise.all([
-    ensureDatabaseReady(primaryDb),
-    ensureDatabaseReady(db)
-  ]);
-  console.log('✅ Database instances warmed and ready for queries');
+  try {
+    await Promise.all([
+      ensureDatabaseReady(primaryDb),
+      ensureDatabaseReady(db)
+    ]);
+    console.log('✅ Database instances warmed and ready for queries');
+  } catch (error) {
+    console.warn('⚠️ Database warmup failed during initialization, but proceeding anyway');
+    console.warn(`   Warmup error: ${error.message}`);
+    
+    // Log to Sentry as warning (not error) since this doesn't break functionality
+    Sentry.captureException(error, {
+      level: 'warning',
+      tags: {
+        service: 'gamification',
+        operation: 'database_warmup'
+      },
+      extra: {
+        errorMessage: error.message,
+        context: 'Database warmup failed but initialization continuing - connections will be established on first query'
+      }
+    });
+    
+    // Continue with initialization - database connections will be established when first used
+  }
 
   const achievementRepo = new AchievementRepository(db);
   const streakRepo = new StreakRepository(db);
