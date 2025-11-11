@@ -16,6 +16,7 @@ function ToolsLayout() {
     { path: '/admin/tools/live-users', label: 'Live Users', icon: '👥' },
     { path: '/admin/tools/products', label: 'Manage Products', icon: '🥩' },
     { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },
+    { path: '/admin/tools/customer-webhooks', label: 'Customer Webhooks', icon: '📡' },
     { path: '/admin/tools/user-guidance', label: 'User Guidance', icon: '🎯' },
     { path: '/admin/tools/queue-monitor', label: 'Classification Queue Monitor', icon: '🔄' },
     { path: '/admin/tools/bulk-import', label: 'Customer Import', icon: '📦' },

@@ -32,6 +32,7 @@ const FlavorCommunitiesPageAdmin = lazy(() => import('../../pages/admin/FlavorCo
 const LiveUsersPage = lazy(() => import('../../pages/admin/LiveUsersPage'));
 const ProductsPageAdmin = lazy(() => import('../../pages/admin/ProductsPageAdmin'));
 const OrderItemsPage = lazy(() => import('../../pages/admin/OrderItemsPage'));
+const CustomerWebhooksPage = lazy(() => import('../../pages/admin/CustomerWebhooksPage'));
 const SentryPage = lazy(() => import('../../pages/admin/SentryPage'));
 const SentryIssueDetailsPage = lazy(() => import('../../pages/admin/SentryIssueDetailsPage'));
 const DataPage = lazy(() => import('../../pages/admin/DataPage'));
@@ -116,6 +117,7 @@ function AppLayout() {
               <Route path="live-users" element={<LiveUsersPage />} />
               <Route path="products" element={<ProductsPageAdmin />} />
               <Route path="orders" element={<OrderItemsPage />} />
+              <Route path="customer-webhooks" element={<CustomerWebhooksPage />} />
               <Route path="user-guidance" element={<UserGuidanceTab />} />
               <Route path="queue-monitor" element={<QueueMonitorPage />} />
               <Route path="bulk-import" element={<BulkImportPage />} />
