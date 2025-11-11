@@ -2,6 +2,7 @@ const { db } = require('../db');
 const { userClassifications, classificationConfig, productRankings, userAchievements, achievements, userActivities, productsMetadata, customerOrderItems } = require('../../shared/schema');
 const { eq, and, gte, count, sql } = require('drizzle-orm');
 const flavorProfileCommunityService = require('./FlavorProfileCommunityService');
+const UserClassificationCache = require('../cache/UserClassificationCache');
 
 /**
  * UserClassificationService - Analyzes user behavior and assigns classification attributes
@@ -18,6 +19,7 @@ class UserClassificationService {
   constructor({ db: dbInstance = db, flavorProfileCommunityService: communityService = flavorProfileCommunityService } = {}) {
     this.db = dbInstance;
     this.flavorProfileCommunityService = communityService;
+    this.classificationCache = UserClassificationCache.getInstance();
     this.configCache = null;
     this.configCacheTime = null;
     this.configCacheTTL = 5 * 60 * 1000; // 5 minutes
@@ -114,7 +116,7 @@ class UserClassificationService {
       await this.db.insert(userClassifications).values(classificationRecord);
     }
 
-    return {
+    const result = {
       userId,
       journeyStage,
       engagementLevel,
@@ -122,6 +124,11 @@ class UserClassificationService {
       focusAreas,
       classificationData
     };
+
+    // Cache the classification data for fast API access
+    await this.classificationCache.set(userId, result);
+
+    return result;
   }
 
   /**
