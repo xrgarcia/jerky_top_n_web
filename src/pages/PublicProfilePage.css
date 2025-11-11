@@ -1,0 +1,114 @@
+/* PublicProfilePage - Public user profile viewing page */
+
+.public-profile-page {
+  min-height: 100vh;
+  background: #faf8f3;
+}
+
+.public-profile-loading,
+.public-profile-error,
+.public-profile-empty {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 40px;
+  text-align: center;
+}
+
+.public-profile-loading .loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 4px solid #e8e4d9;
+  border-top-color: #7b8b52;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.public-profile-loading p {
+  color: #666;
+  font-size: 1.125rem;
+}
+
+.public-profile-error h2 {
+  margin: 0 0 12px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+}
+
+.public-profile-error p {
+  margin: 0;
+  color: #666;
+  font-size: 1.125rem;
+}
+
+.public-profile-empty {
+  background: white;
+  border-radius: 16px;
+  border: 2px solid #e8e4d9;
+  margin: 60px auto;
+  max-width: 600px;
+}
+
+.public-profile-empty h2 {
+  margin: 0 0 12px;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #2d2d2d;
+}
+
+.public-profile-empty p {
+  margin: 0;
+  color: #666;
+  font-size: 1rem;
+  font-style: italic;
+}
+
+.public-profile-achievements {
+  padding: 60px 40px;
+  background: white;
+}
+
+.achievements-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.achievements-title {
+  margin: 0 0 32px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .public-profile-loading,
+  .public-profile-error,
+  .public-profile-empty {
+    padding: 40px 20px;
+  }
+
+  .public-profile-error h2,
+  .public-profile-empty h2 {
+    font-size: 1.5rem;
+  }
+
+  .public-profile-achievements {
+    padding: 40px 20px;
+  }
+
+  .achievements-title {
+    font-size: 1.5rem;
+  }
+}

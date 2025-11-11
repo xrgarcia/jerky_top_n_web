@@ -9,9 +9,10 @@ const {
   validateHandleFormat 
 } = require('../utils/handleGenerator');
 const { ObjectStorageService } = require('../objectStorage');
+const ProfileRepository = require('../repositories/ProfileRepository');
 
 function createProfileRoutes(services) {
-  const { db, storage, leaderboardManager } = services;
+  const { db, storage, leaderboardManager, achievementRepo } = services;
   const router = express.Router();
   const objectStorage = new ObjectStorageService();
 
@@ -73,6 +74,124 @@ function createProfileRoutes(services) {
     } catch (error) {
       console.error('Error fetching profile:', error);
       res.status(500).json({ error: 'Failed to fetch profile' });
+    }
+  });
+
+  /**
+   * GET /api/profile/:userId
+   * Get public profile page data for any user
+   * Returns: hero data, top products, timeline moments, all rankings, achievements
+   */
+  router.get('/:userId', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      if (!userId || isNaN(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      // Fetch all profile data in parallel
+      const [
+        profileData,
+        topProducts,
+        timelineMoments,
+        allRankings,
+        achievements
+      ] = await Promise.all([
+        ProfileRepository.getUserProfileData(userId),
+        ProfileRepository.getTopRankedProducts(userId),
+        ProfileRepository.getTimelineMoments(userId),
+        ProfileRepository.getAllRankingsWithPurchases(userId),
+        achievementRepo.getUserAchievements(userId)
+      ]);
+
+      if (!profileData) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Get classification data (journey stage, etc.)
+      const UserClassificationCache = require('../cache/UserClassificationCache');
+      const classificationCache = UserClassificationCache.getInstance();
+      
+      let classification = await classificationCache.get(userId);
+      
+      // Fallback to database if cache miss
+      if (!classification) {
+        const { userClassifications } = require('../../shared/schema');
+        const dbResult = await db
+          .select()
+          .from(userClassifications)
+          .where(eq(userClassifications.userId, userId))
+          .limit(1);
+        
+        if (dbResult.length > 0) {
+          classification = {
+            journeyStage: dbResult[0].journeyStage,
+            engagementLevel: dbResult[0].engagementLevel,
+            explorationBreadth: dbResult[0].explorationBreadth,
+            focusAreas: dbResult[0].focusAreas,
+            classificationData: dbResult[0].classificationData
+          };
+          
+          await classificationCache.set(userId, classification);
+        }
+      }
+
+      // Get engagement score
+      const position = await leaderboardManager.getUserPosition(userId, 'all_time');
+
+      res.json({
+        user: {
+          id: profileData.id,
+          displayName: profileData.displayName,
+          firstName: profileData.firstName,
+          lastName: profileData.lastName,
+          avatarUrl: profileData.avatarUrl,
+          initials: profileData.initials,
+          handle: profileData.handle,
+          hideNamePrivacy: profileData.hideNamePrivacy,
+          rankingCount: profileData.rankingCount,
+          journeyStage: classification?.journeyStage || 'new_user',
+          engagementLevel: classification?.engagementLevel || 'none',
+          explorationBreadth: classification?.explorationBreadth || 'narrow',
+          focusAreas: classification?.focusAreas || [],
+          engagementScore: position?.engagementScore || 0
+        },
+        topProducts: topProducts.map(p => ({
+          shopifyProductId: p.shopifyProductId,
+          rankPosition: p.rankPosition,
+          title: p.title,
+          imageUrl: p.imageUrl,
+          vendor: p.vendor,
+          primaryFlavor: p.primaryFlavor,
+          animalType: p.animalType
+        })),
+        timeline: timelineMoments,
+        rankings: allRankings.map(r => ({
+          shopifyProductId: r.shopifyProductId,
+          rankPosition: r.rankPosition,
+          rankedAt: r.rankedAt,
+          purchaseDate: r.purchaseDate,
+          title: r.title,
+          imageUrl: r.imageUrl,
+          vendor: r.vendor,
+          primaryFlavor: r.primaryFlavor,
+          animalType: r.animalType
+        })),
+        achievements: achievements.map(a => ({
+          id: a.id,
+          name: a.name,
+          description: a.description,
+          icon: a.icon,
+          iconType: a.iconType,
+          tier: a.tier,
+          coinType: a.coinType,
+          earnedAt: a.earnedAt
+        }))
+      });
+    } catch (error) {
+      console.error('Error fetching user profile page:', error);
+      res.status(500).json({ error: 'Failed to fetch profile page' });
     }
   });
 
