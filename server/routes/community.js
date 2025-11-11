@@ -1,5 +1,7 @@
 const express = require('express');
 const router = express.Router();
+const { userClassifications } = require('../../shared/schema');
+const { eq } = require('drizzle-orm');
 
 /**
  * Community API Routes
@@ -57,8 +59,30 @@ function createCommunityRoutes(services) {
             iconType: ach.iconType
           }));
 
-          // Get user classification (journey stage, engagement level, focus areas) - Redis cached
-          const classification = await classificationCache.get(user.id);
+          // Get user classification (journey stage, engagement level, focus areas) - Redis cached with DB fallback
+          let classification = await classificationCache.get(user.id);
+          
+          // Fallback to database if cache miss
+          if (!classification) {
+            const dbResult = await db
+              .select()
+              .from(userClassifications)
+              .where(eq(userClassifications.userId, user.id))
+              .limit(1);
+            
+            if (dbResult.length > 0) {
+              classification = {
+                journeyStage: dbResult[0].journeyStage,
+                engagementLevel: dbResult[0].engagementLevel,
+                explorationBreadth: dbResult[0].explorationBreadth,
+                focusAreas: dbResult[0].focusAreas,
+                classificationData: dbResult[0].classificationData
+              };
+              
+              // Populate cache for next request
+              await classificationCache.set(user.id, classification);
+            }
+          }
           
           // Get current daily ranking streak - Redis cached
           const dailyRankStreak = await streakCache.getStreakType(user.id, 'daily_rank');
@@ -75,8 +99,8 @@ function createCommunityRoutes(services) {
           const primaryCommunity = flavorCommunities.length > 0
             ? flavorCommunities.reduce((prev, current) => {
                 const statePriority = { enthusiast: 5, explorer: 4, taster: 3, seeker: 2, curious: 1 };
-                const prevPriority = statePriority[prev.communityState] || 0;
-                const currPriority = statePriority[current.communityState] || 0;
+                const prevPriority = statePriority[prev.state] || 0;
+                const currPriority = statePriority[current.state] || 0;
                 return currPriority > prevPriority ? current : prev;
               })
             : null;
@@ -100,7 +124,7 @@ function createCommunityRoutes(services) {
             // Flavor community data (micro-community identity)
             primary_flavor_community: primaryCommunity ? {
               flavor: primaryCommunity.flavorProfile,
-              state: primaryCommunity.communityState,
+              state: primaryCommunity.state,
               products_ranked: primaryCommunity.productsRanked || 0
             } : null,
             
