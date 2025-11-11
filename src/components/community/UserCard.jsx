@@ -173,7 +173,7 @@ function UserCard({ user }) {
   // Get flavor community configuration
   const flavorCommunity = user.primary_flavor_community;
   const flavorConfig = flavorCommunity ? FLAVOR_COMMUNITY_CONFIG[flavorCommunity.flavor] : null;
-  const communityStateLabel = flavorCommunity ? COMMUNITY_STATE_LABELS[flavorCommunity.state] : null;
+  const communityStateLabel = flavorCommunity ? (COMMUNITY_STATE_LABELS[flavorCommunity.state] || '') : null;
 
   return (
     <Link 

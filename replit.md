@@ -22,6 +22,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Collection Progress Bar**: Tier-based colors, animated gradient, percentage display.
 - **Toast Notifications**: Sequential queue-based display.
 - **Tier Emoji System**: Centralized JSON-based emoji constants.
+- **Flavor Community Badges**: Visual identity system displaying user's primary flavor profile (Sweet, Savory, Spicy, Exotic, Teriyaki, Peppered, Original, Smoky, BBQ, Hot) with unique colors, gradients, emojis, and community states (Enthusiast, Explorer, Taster, Seeker, Curious) on community cards for "jerky tribe" discovery.
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client.
@@ -52,7 +53,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Product Detail Page**: Comprehensive product information including images, brand, flavors, pricing, ranking statistics, and tags.
 - **Flavor Profile Pages**: Dynamic pages for each flavor type.
 - **Purchase History**: Automatic background synchronization of Shopify orders.
-- **Community**: User discovery, search, profiles with ranking stats, top rankers widget, privacy-aware display, avatar support.
+- **Community**: User discovery, search, profiles with ranking stats, top rankers widget, privacy-aware display, avatar support. Narrative-driven UserCard component with journey-stage tier colors, smart progress bars (70%+ threshold), and flavor community badges for visual tribe discovery.
 - **Leaderboard**: Top 50 rankers with engagement scores and badges.
 - **User Profile**: Private dashboard with handle management, privacy controls, and professional profile picture upload system (cropping, compression, multi-layer validation, Replit Object Storage). Public profile pages with privacy-aware display.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
