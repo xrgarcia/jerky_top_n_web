@@ -49,11 +49,18 @@ class WebhookCustomerService {
         
         // Broadcast to admin room
         this.broadcastAdminUpdate({
+          data: {
+            topic: topic,
+            type: 'customers',
+            data: {
+              id: customerData.id,
+              email: customerData.email,
+              first_name: customerData.first_name,
+              last_name: customerData.last_name
+            }
+          },
           action: 'skipped',
           shopifyCustomerId,
-          email: customerData.email,
-          firstName: customerData.first_name,
-          lastName: customerData.last_name,
           reason: 'user_not_found'
         });
         
@@ -91,12 +98,19 @@ class WebhookCustomerService {
         
         // Broadcast to admin room
         this.broadcastAdminUpdate({
+          data: {
+            topic: topic,
+            type: 'customers',
+            data: {
+              id: customerData.id,
+              email: user.email,
+              first_name: user.firstName,
+              last_name: user.lastName
+            }
+          },
           action: 'no_changes',
           userId: user.id,
-          shopifyCustomerId,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName
+          shopifyCustomerId
         });
         
         return {
@@ -123,12 +137,19 @@ class WebhookCustomerService {
       
       // Broadcast to admin room
       this.broadcastAdminUpdate({
+        data: {
+          topic: topic,
+          type: 'customers',
+          data: {
+            id: customerData.id,
+            email: updateData.email,
+            first_name: updateData.firstName,
+            last_name: updateData.lastName
+          }
+        },
         action: 'updated',
         userId: user.id,
         shopifyCustomerId,
-        email: updateData.email,
-        firstName: updateData.firstName,
-        lastName: updateData.lastName,
         changes: {
           firstName: updateData.firstName !== user.firstName,
           lastName: updateData.lastName !== user.lastName,
