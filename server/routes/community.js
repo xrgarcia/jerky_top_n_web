@@ -19,6 +19,8 @@ function createCommunityRoutes(services) {
    * GET /api/community/users
    * List all users or search by name/flavor
    * Query params: search, page, limit
+   * 
+   * Enhanced with Redis-backed caches for journey stages, streaks, and milestones
    */
   router.get('/users', async (req, res) => {
     try {
@@ -32,7 +34,16 @@ function createCommunityRoutes(services) {
         users = await communityService.getCommunityUsers(parseInt(limit), offset);
       }
 
-      // Enrich user data with engagement scores and badges
+      // Load caches (singleton pattern)
+      const UserClassificationCache = require('../cache/UserClassificationCache');
+      const StreakCache = require('../cache/StreakCache');
+      const ProgressCache = require('../cache/ProgressCache');
+      
+      const classificationCache = UserClassificationCache.getInstance();
+      const streakCache = StreakCache.getInstance();
+      const progressCache = ProgressCache.getInstance();
+
+      // Enrich user data with engagement, classification, streaks, and milestones
       const enrichedUsers = await Promise.all(
         users.map(async (user) => {
           // Get engagement score from leaderboard
@@ -46,15 +57,44 @@ function createCommunityRoutes(services) {
             iconType: ach.iconType
           }));
 
+          // Get user classification (journey stage, engagement level, focus areas) - Redis cached
+          const classification = await classificationCache.get(user.id);
+          
+          // Get current streak - Redis cached
+          const streakData = await streakCache.get(user.id);
+          const currentStreak = streakData?.daily_rank?.currentStreak || 0;
+          
+          // Get closest milestone progress - Redis cached
+          const progress = await progressCache.get(user.id);
+          const closestMilestone = progress?.closestMilestone || null;
+
           return {
             user_id: user.id,
-            display_name: user.displayName, // Already privacy-filtered
-            avatar_url: user.avatarUrl, // Profile image or null
-            initials: user.initials, // Privacy-aware initials
+            display_name: user.displayName,
+            avatar_url: user.avatarUrl,
+            initials: user.initials,
             unique_products: user.rankedCount || 0,
             engagement_score: position?.engagementScore || 0,
-            handle: user.handle, // Only present if privacy allows
-            badges
+            handle: user.handle,
+            badges,
+            
+            // Journey & classification data (for narrative cards)
+            journey_stage: classification?.journeyStage || 'new_user',
+            engagement_level: classification?.engagementLevel || 'none',
+            exploration_breadth: classification?.explorationBreadth || 'narrow',
+            focus_areas: classification?.focusAreas || [],
+            
+            // Streak data
+            current_streak: currentStreak,
+            
+            // Milestone progress (only if close to achievement)
+            closest_milestone: closestMilestone ? {
+              name: closestMilestone.name,
+              progress: closestMilestone.progress,
+              current: closestMilestone.current,
+              target: closestMilestone.target,
+              icon: closestMilestone.icon
+            } : null
           };
         })
       );
