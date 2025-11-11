@@ -1,0 +1,122 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2N
+Title: Database schema validation failed
+Status: unresolved
+Level: warning
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T01:54:44.514000Z
+Last Seen: 2025-11-11T17:26:49Z
+Event Count: 7
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Database schema validation failed
+
+--- CULPRIT ---
+N/A
+
+--- STACK TRACE ---
+No stack trace available
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T17:26:39.926000Z] console (info): ✅ Sentry error monitoring initialized (PRODUCTION @ 6d479e9a-f207-4788-9215-d7f49e7a41c9-00-fdcm9dhldrh2.spock.replit.dev)
+[2025-11-11T17:26:39.927000Z] console (info): 🚀 Starting Jerky Top N Web Application...
+[2025-11-11T17:26:39.927000Z] console (info): 🔍 Checking environment configuration...
+[2025-11-11T17:26:39.927000Z] console (info): [Filtered]
+[2025-11-11T17:26:39.927000Z] console (info): ✅ Database URL found
+[2025-11-11T17:26:40.242000Z] console (info): 📂 Database storage connected
+[2025-11-11T17:26:40.242000Z] console (info): [Filtered]
+[2025-11-11T17:26:40.242000Z] console (info): 🏪  Shop Domain: jerky-com.myshopify.com
+[2025-11-11T17:26:40.242000Z] console (info): 🌐  App Domain: 6d479e9a-f207-4788-9215-d7f49e7a41c9-00-fdcm9dhldrh2.spock.replit.dev
+[2025-11-11T17:26:40.243000Z] console (info): 🔑  Using Customer Account API for jerky.com accounts
+[2025-11-11T17:26:41.493000Z] console (info): ✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+[2025-11-11T17:26:44.100000Z] console (info): ✅ Rate limiters configured using memory (single-instance)
+[2025-11-11T17:26:47.296000Z] console (info): 💾 Primary database connection configured (no pooler - read from primary)
+[2025-11-11T17:26:49.386000Z] console (info): ✅ Server successfully started!
+[2025-11-11T17:26:49.387000Z] console (info): 🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+[2025-11-11T17:26:49.387000Z] console (info): Visit the app at: http://localhost:5000
+[2025-11-11T17:26:49.387000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T17:26:49.387000Z] console (info): 📊 Service Status:
+[2025-11-11T17:26:49.387000Z] console (info):    Shopify Integration: ✅ Available
+[2025-11-11T17:26:49.387000Z] console (info):    Database: ✅ Connected
+[2025-11-11T17:26:49.387000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T17:26:49.404000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-11T17:26:49.404000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-11T17:26:49.405000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-11T17:26:49.405000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-11T17:26:49.405000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-11T17:26:49.422000Z] console (info): [Filtered]
+[2025-11-11T17:26:49.424000Z] console (info): 🔍 Validating database schema against Drizzle definitions...
+[2025-11-11T17:26:49.486000Z] console (info): 🎮 Initializing gamification system...
+[2025-11-11T17:26:49.486000Z] console (info): 🔌 Warming up database connection...
+[2025-11-11T17:26:49.487000Z] console (info): 🔌 Warming up database connection...
+[2025-11-11T17:26:49.494000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.496000Z] console (warning): ⚠️ Could not fetch columns for table users: getaddrinfo ENOTFOUND helium
+[2025-11-11T17:26:49.496000Z] console (warning): [Filtered]
+[2025-11-11T17:26:49.496000Z] console (warning):    → Run 'npm run db:push' to sync the schema
+[2025-11-11T17:26:49.498000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.499000Z] console (info): ⏳ Database not ready yet (attempt 1/10, 13ms)...
+[2025-11-11T17:26:49.500000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.500000Z] console (info): ⏳ Database not ready yet (attempt 1/10, 13ms)...
+[2025-11-11T17:26:49.500000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.501000Z] console (warning): ⚠️ Could not fetch columns for table product_rankings: getaddrinfo ENOTFOUND helium
+[2025-11-11T17:26:49.501000Z] console (warning): ⚠️ SCHEMA MISMATCH: Table 'product_rankings' is missing columns in database: id, user_id, shopify_product_id, product_data, ranking, ranking_list_id, created_at, updated_at
+[2025-11-11T17:26:49.501000Z] console (warning):    → Run 'npm run db:push' to sync the schema
+[2025-11-11T17:26:49.504000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.504000Z] console (warning): ⚠️ Could not fetch columns for table customer_order_items: getaddrinfo ENOTFOUND helium
+[2025-11-11T17:26:49.504000Z] console (warning): ⚠️ SCHEMA MISMATCH: Table 'customer_order_items' is missing columns in database: id, order_number, order_date, shopify_product_id, sku, quantity, fulfillment_status, user_id, customer_email, line_item_data, created_at, updated_at
+[2025-11-11T17:26:49.504000Z] console (warning):    → Run 'npm run db:push' to sync the schema
+[2025-11-11T17:26:49.507000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T17:26:49.507000Z] console (warning): ⚠️ Could not fetch columns for table achievements: getaddrinfo ENOTFOUND helium
+[2025-11-11T17:26:49.507000Z] console (warning): ⚠️ SCHEMA MISMATCH: Table 'achievements' is missing columns in database: id, code, name, description, icon, icon_type, tier, collection_type, category, protein_category, protein_categories, is_hidden, prerequisite_achievement_id, requirement, tier_thresholds, has_tiers, points, is_active, created_at, updated_at
+[2025-11-11T17:26:49.507000Z] console (warning):    → Run 'npm run db:push' to sync the schema
+[2025-11-11T17:26:49.507000Z] console (warning): ⚠️ Database schema validation found issues (see above)
+[2025-11-11T17:26:49.507000Z] console (warning):    Server will continue running, but some features may fail
+[2025-11-11T17:26:49.507000Z] console (warning):    Fix by running: npm run db:push
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  level: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  validation_status: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
