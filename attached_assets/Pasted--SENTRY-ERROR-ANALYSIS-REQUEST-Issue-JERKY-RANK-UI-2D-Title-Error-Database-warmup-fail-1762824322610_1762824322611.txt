@@ -1,0 +1,163 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2D
+Title: Error: Database warmup failed after 10 attempts
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-08T19:32:54.841000Z
+Last Seen: 2025-11-11T00:16:10Z
+Event Count: 7
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Database warmup failed after 10 attempts
+
+--- CULPRIT ---
+waitForDatabaseReady(server.utils:databaseWarmup)
+
+--- STACK TRACE ---
+Error: Database warmup failed after 10 attempts
+  at waitForDatabaseReady (/home/runner/workspace/server/utils/databaseWarmup.js:?:?) [in app]
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at Promise.all (index 0:?:?)
+  at initializeGamification (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T00:15:48.505000Z] console (info): ✅ Sentry error monitoring initialized (PRODUCTION @ 9d95e290-480e-4ec1-97c7-72ad17cba1f4-00-m5giucd65l5b.spock.replit.dev)
+[2025-11-11T00:15:48.505000Z] console (info): 🚀 Starting Jerky Top N Web Application...
+[2025-11-11T00:15:48.505000Z] console (info): 🔍 Checking environment configuration...
+[2025-11-11T00:15:48.505000Z] console (info): [Filtered]
+[2025-11-11T00:15:48.506000Z] console (info): ✅ Database URL found
+[2025-11-11T00:15:48.785000Z] console (info): 📂 Database storage connected
+[2025-11-11T00:15:48.785000Z] console (info): [Filtered]
+[2025-11-11T00:15:48.786000Z] console (info): 🏪  Shop Domain: jerky-com.myshopify.com
+[2025-11-11T00:15:48.786000Z] console (info): 🌐  App Domain: 9d95e290-480e-4ec1-97c7-72ad17cba1f4-00-m5giucd65l5b.spock.replit.dev
+[2025-11-11T00:15:48.786000Z] console (info): 🔑  Using Customer Account API for jerky.com accounts
+[2025-11-11T00:15:50.951000Z] console (info): ✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+[2025-11-11T00:15:54.178000Z] console (info): ✅ Rate limiters configured using memory (single-instance)
+[2025-11-11T00:15:58.310000Z] console (info): 💾 Primary database connection configured (no pooler - read from primary)
+[2025-11-11T00:16:01.396000Z] console (info): ✅ Server successfully started!
+[2025-11-11T00:16:01.396000Z] console (info): 🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+[2025-11-11T00:16:01.396000Z] console (info): Visit the app at: http://localhost:5000
+[2025-11-11T00:16:01.396000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T00:16:01.396000Z] console (info): 📊 Service Status:
+[2025-11-11T00:16:01.396000Z] console (info):    Shopify Integration: ✅ Available
+[2025-11-11T00:16:01.397000Z] console (info):    Database: ✅ Connected
+[2025-11-11T00:16:01.397000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T00:16:01.412000Z] console (info): 🚀 Initializing scalability features...
+[2025-11-11T00:16:01.413000Z] console (info): 🚀 Initializing distributed cache service...
+[2025-11-11T00:16:01.413000Z] console (info): 🔍 Redis environment: DEVELOPMENT
+[2025-11-11T00:16:01.413000Z] console (info): 🔍 Using Redis variable: UPSTASH_REDIS_URL
+[2025-11-11T00:16:01.413000Z] console (info): 🔌 Establishing Redis connection pool...
+[2025-11-11T00:16:01.427000Z] console (info): [Filtered]
+[2025-11-11T00:16:01.439000Z] console (error): ❌ Unhandled Rejection at: [object Promise]
+[2025-11-11T00:16:01.440000Z] console (error): Reason: TypeError: fetch failed
+[2025-11-11T00:16:01.444000Z] console (info): 🎮 Initializing gamification system...
+[2025-11-11T00:16:01.444000Z] console (info): 🔌 Warming up database connection...
+[2025-11-11T00:16:01.459000Z] console (info): 🔌 Warming up database connection...
+[2025-11-11T00:16:01.473000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:01.475000Z] console (info): ⏳ Database not ready yet (attempt 1/10, 31ms)...
+[2025-11-11T00:16:01.475000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:01.476000Z] console (info): ⏳ Database not ready yet (attempt 1/10, 17ms)...
+[2025-11-11T00:16:01.656000Z] console (info): ✅ Redis connection pool established
+[2025-11-11T00:16:01.738000Z] console (info): ✅ Redis ready for commands
+[2025-11-11T00:16:01.775000Z] console (info): 🏓 Redis PING successful - connection pool active
+[2025-11-11T00:16:01.775000Z] console (info): ✅ homeStats: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ leaderboard: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ leaderboardPosition: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ achievement: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ metadata: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ rankingStats: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ products: Using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ All caches using Redis for distributed caching
+[2025-11-11T00:16:01.775000Z] console (info): ✅ leaderboard: Using Redis for distributed caching
+[2025-11-11T00:16:01.776000Z] console (info): ✅ LeaderboardCache initialized
+[2025-11-11T00:16:01.776000Z] console (info): 🔌 Setting up Socket.IO Redis adapter with shared connection...
+[2025-11-11T00:16:02.079000Z] console (info): ✅ Socket.IO using Redis adapter for cross-instance communication
+[2025-11-11T00:16:02.079000Z] console (info): ✅ Scalability initialization complete
+[2025-11-11T00:16:02.079000Z] console (info): {"arguments":[""],"logger":"console"}
+[2025-11-11T00:16:02.481000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:02.482000Z] console (info): ⏳ Database not ready yet (attempt 2/10, 1037ms)...
+[2025-11-11T00:16:02.482000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:02.483000Z] console (info): ⏳ Database not ready yet (attempt 2/10, 1023ms)...
+[2025-11-11T00:16:03.488000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:03.488000Z] console (info): ⏳ Database not ready yet (attempt 3/10, 2044ms)...
+[2025-11-11T00:16:03.489000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:03.489000Z] console (info): ⏳ Database not ready yet (attempt 3/10, 2030ms)...
+[2025-11-11T00:16:04.495000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:04.495000Z] console (info): ⏳ Database not ready yet (attempt 4/10, 3051ms)...
+[2025-11-11T00:16:04.496000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:04.496000Z] console (info): ⏳ Database not ready yet (attempt 4/10, 3037ms)...
+[2025-11-11T00:16:05.502000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:05.503000Z] console (info): ⏳ Database not ready yet (attempt 5/10, 4059ms)...
+[2025-11-11T00:16:05.503000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:05.504000Z] console (info): ⏳ Database not ready yet (attempt 5/10, 4045ms)...
+[2025-11-11T00:16:06.507000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:06.508000Z] console (info): ⏳ Database not ready yet (attempt 6/10, 5064ms)...
+[2025-11-11T00:16:06.508000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:06.509000Z] console (info): ⏳ Database not ready yet (attempt 6/10, 5050ms)...
+[2025-11-11T00:16:07.512000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:07.513000Z] console (info): ⏳ Database not ready yet (attempt 7/10, 6069ms)...
+[2025-11-11T00:16:07.513000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:07.514000Z] console (info): ⏳ Database not ready yet (attempt 7/10, 6055ms)...
+[2025-11-11T00:16:08.518000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:08.518000Z] console (info): ⏳ Database not ready yet (attempt 8/10, 7074ms)...
+[2025-11-11T00:16:08.519000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:08.519000Z] console (info): ⏳ Database not ready yet (attempt 8/10, 7060ms)...
+[2025-11-11T00:16:09.524000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:09.524000Z] console (info): ⏳ Database not ready yet (attempt 9/10, 8080ms)...
+[2025-11-11T00:16:09.525000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:09.525000Z] console (info): ⏳ Database not ready yet (attempt 9/10, 8066ms)...
+[2025-11-11T00:16:10.530000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T00:16:10.530000Z] console (info): ⏳ Database not ready yet (attempt 10/10, 9086ms)...
+[2025-11-11T00:16:10.531000Z] console (error): ❌ Database warmup failed after 10 attempts
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
