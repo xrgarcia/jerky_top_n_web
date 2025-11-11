@@ -6,6 +6,7 @@ const WebhookProductService = require('../services/WebhookProductService');
 const WebhookCustomerService = require('../services/WebhookCustomerService');
 const { db } = require('../db');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
+const webhookQueue = require('../services/WebhookQueue');
 
 function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classificationQueue = null) {
   const router = express.Router();
@@ -34,46 +35,67 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
 
       console.log('✅ Webhook signature verified');
 
-      const orderData = req.body;
-      const result = await orderService.processOrderWebhook(orderData, topic);
+      // Enqueue webhook for async processing (fast response to Shopify)
+      if (webhookQueue.isReady()) {
+        const orderData = req.body;
+        const job = await webhookQueue.enqueue('orders', topic, orderData, {
+          shopDomain,
+          receivedAt: new Date().toISOString(),
+        });
 
-      if (result.success && (result.userId || result.action === 'deleted')) {
-        if (result.userId) {
-          console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
-          
-          const purchaseHistoryService = new PurchaseHistoryService();
-          purchaseHistoryService.invalidateUserCache(result.userId);
-        }
+        console.log(`✅ Order webhook enqueued for async processing (job: ${job.id})`);
+
+        // Fast 200 response to Shopify (prevents retries)
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook accepted and queued for processing',
+          jobId: job.id,
+        });
+      } else {
+        // Fallback to synchronous processing if queue not available
+        console.warn('⚠️ Webhook queue not available, processing synchronously');
         
-        // Update only affected products in ranking stats cache
-        if (result.affectedProductIds && result.affectedProductIds.length > 0 && rankingStatsCache) {
-          console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
-          const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
-          if (Object.keys(freshStats).length > 0) {
-            rankingStatsCache.updateProducts(freshStats);
+        const orderData = req.body;
+        const result = await orderService.processOrderWebhook(orderData, topic);
+
+        if (result.success && (result.userId || result.action === 'deleted')) {
+          if (result.userId) {
+            console.log(`🔄 Invalidating purchase history cache for user ${result.userId}`);
+            
+            const purchaseHistoryService = new PurchaseHistoryService();
+            purchaseHistoryService.invalidateUserCache(result.userId);
+          }
+          
+          // Update only affected products in ranking stats cache
+          if (result.affectedProductIds && result.affectedProductIds.length > 0 && rankingStatsCache) {
+            console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
+            const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
+            if (Object.keys(freshStats).length > 0) {
+              rankingStatsCache.updateProducts(freshStats);
+            }
+          }
+          
+          console.log('✅ Caches updated');
+          
+          // Trigger classification queue for purchase events
+          if (result.userId && classificationQueue && result.action !== 'deleted') {
+            setImmediate(async () => {
+              try {
+                await classificationQueue.enqueue(result.userId, 'purchase');
+                console.log(`📋 Enqueued classification job for user ${result.userId} (reason: purchase)`);
+              } catch (err) {
+                console.error('Failed to enqueue classification for purchase:', err);
+              }
+            });
           }
         }
-        
-        console.log('✅ Caches updated');
-        
-        // Trigger classification queue for purchase events
-        if (result.userId && classificationQueue && result.action !== 'deleted') {
-          setImmediate(async () => {
-            try {
-              await classificationQueue.enqueue(result.userId, 'purchase');
-              console.log(`📋 Enqueued classification job for user ${result.userId} (reason: purchase)`);
-            } catch (err) {
-              console.error('Failed to enqueue classification for purchase:', err);
-            }
-          });
-        }
-      }
 
-      res.status(200).json({ 
-        success: true,
-        message: 'Webhook processed successfully',
-        result
-      });
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook processed successfully (synchronous fallback)',
+          result
+        });
+      }
 
     } catch (error) {
       console.error('❌ Error processing order webhook:', error);
@@ -104,19 +126,40 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
 
       console.log('✅ Webhook signature verified');
 
-      const productData = req.body;
-      const result = await productService.processProductWebhook(productData, topic);
+      // Enqueue webhook for async processing (fast response to Shopify)
+      if (webhookQueue.isReady()) {
+        const productData = req.body;
+        const job = await webhookQueue.enqueue('products', topic, productData, {
+          shopDomain,
+          receivedAt: new Date().toISOString(),
+        });
 
-      if (result.success && result.action === 'upserted' && metadataCache) {
-        // Update just this product in the cache instead of invalidating everything
-        metadataCache.updateProduct(result.productId, result.metadata);
+        console.log(`✅ Product webhook enqueued for async processing (job: ${job.id})`);
+
+        // Fast 200 response to Shopify (prevents retries)
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook accepted and queued for processing',
+          jobId: job.id,
+        });
+      } else {
+        // Fallback to synchronous processing if queue not available
+        console.warn('⚠️ Webhook queue not available, processing synchronously');
+        
+        const productData = req.body;
+        const result = await productService.processProductWebhook(productData, topic);
+
+        if (result.success && result.action === 'upserted' && metadataCache) {
+          // Update just this product in the cache instead of invalidating everything
+          metadataCache.updateProduct(result.productId, result.metadata);
+        }
+
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook processed successfully (synchronous fallback)',
+          result
+        });
       }
-
-      res.status(200).json({ 
-        success: true,
-        message: 'Webhook processed successfully',
-        result
-      });
 
     } catch (error) {
       console.error('❌ Error processing product webhook:', error);
@@ -147,14 +190,35 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
 
       console.log('✅ Webhook signature verified');
 
-      const customerData = req.body;
-      const result = await customerService.processCustomerWebhook(customerData, topic);
+      // Enqueue webhook for async processing (fast response to Shopify)
+      if (webhookQueue.isReady()) {
+        const customerData = req.body;
+        const job = await webhookQueue.enqueue('customers', topic, customerData, {
+          shopDomain,
+          receivedAt: new Date().toISOString(),
+        });
 
-      res.status(200).json({ 
-        success: true,
-        message: 'Webhook processed successfully',
-        result
-      });
+        console.log(`✅ Customer webhook enqueued for async processing (job: ${job.id})`);
+
+        // Fast 200 response to Shopify (prevents retries)
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook accepted and queued for processing',
+          jobId: job.id,
+        });
+      } else {
+        // Fallback to synchronous processing if queue not available
+        console.warn('⚠️ Webhook queue not available, processing synchronously');
+        
+        const customerData = req.body;
+        const result = await customerService.processCustomerWebhook(customerData, topic);
+
+        return res.status(200).json({ 
+          success: true,
+          message: 'Webhook processed successfully (synchronous fallback)',
+          result
+        });
+      }
 
     } catch (error) {
       console.error('❌ Error processing customer webhook:', error);
