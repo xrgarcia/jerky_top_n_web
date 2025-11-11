@@ -68,6 +68,19 @@ function createCommunityRoutes(services) {
           const progress = await progressCache.get(user.id);
           const closestMilestone = progress?.closestMilestone || null;
 
+          // Extract flavor communities from classification data
+          const flavorCommunities = classification?.classificationData?.flavorCommunities || [];
+          
+          // Find primary (most engaged) flavor community
+          const primaryCommunity = flavorCommunities.length > 0
+            ? flavorCommunities.reduce((prev, current) => {
+                const statePriority = { enthusiast: 5, explorer: 4, taster: 3, seeker: 2, curious: 1 };
+                const prevPriority = statePriority[prev.communityState] || 0;
+                const currPriority = statePriority[current.communityState] || 0;
+                return currPriority > prevPriority ? current : prev;
+              })
+            : null;
+
           return {
             user_id: user.id,
             display_name: user.displayName,
@@ -83,6 +96,13 @@ function createCommunityRoutes(services) {
             engagement_level: classification?.engagementLevel || 'none',
             exploration_breadth: classification?.explorationBreadth || 'narrow',
             focus_areas: classification?.focusAreas || [],
+            
+            // Flavor community data (micro-community identity)
+            primary_flavor_community: primaryCommunity ? {
+              flavor: primaryCommunity.flavorProfile,
+              state: primaryCommunity.communityState,
+              products_ranked: primaryCommunity.productsRanked || 0
+            } : null,
             
             // Streak data
             current_streak: currentStreak,
