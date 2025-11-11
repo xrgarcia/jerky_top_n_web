@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useSocket } from '../context/SocketContext';
+import { useSocket } from './useSocket';
 
 export function useCustomerWebhooksWebSocket({ onWebhookUpdate }) {
   const { socket } = useSocket();
