@@ -103,4 +103,48 @@ const db = drizzle({ client: pool, schema });
 
 console.log('💾 Database connection pool configured with pooler endpoint');
 
-module.exports = { pool, db };
+/**
+ * Create a dedicated database pool for webhook workers
+ * This prevents webhook processing from exhausting the shared connection pool
+ * Used for: WebhookOrderService, WebhookProductService, WebhookCustomerService
+ */
+function createWebhookPool() {
+  const webhookPool = new Pool({ 
+    connectionString,
+    max: 5, // Dedicated 5 connections for webhook processing
+    idleTimeoutMillis: 30000,
+    connectionTimeoutMillis: 5000,
+  });
+
+  // Add pool error handling
+  webhookPool.on('error', (err) => {
+    console.error('❌ Webhook pool error:', {
+      message: err.message,
+      code: err.code,
+      timestamp: new Date().toISOString()
+    });
+  });
+
+  webhookPool.on('connect', () => {
+    console.log('🔌 Webhook pool client connected', {
+      totalConnections: webhookPool.totalCount,
+      idleConnections: webhookPool.idleCount,
+      waitingRequests: webhookPool.waitingCount
+    });
+  });
+
+  webhookPool.on('remove', () => {
+    console.log('🔌 Webhook pool client removed', {
+      totalConnections: webhookPool.totalCount,
+      idleConnections: webhookPool.idleCount
+    });
+  });
+
+  const webhookDb = drizzle({ client: webhookPool, schema });
+  
+  console.log('💾 Dedicated webhook pool created (5 connections)');
+  
+  return { webhookPool, webhookDb };
+}
+
+module.exports = { pool, db, createWebhookPool };

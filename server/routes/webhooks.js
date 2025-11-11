@@ -4,7 +4,7 @@ const ShopifyWebhookVerifier = require('../utils/shopifyWebhookVerifier');
 const WebhookOrderService = require('../services/WebhookOrderService');
 const WebhookProductService = require('../services/WebhookProductService');
 const WebhookCustomerService = require('../services/WebhookCustomerService');
-const { db } = require('../db');
+const { db, createWebhookPool } = require('../db');
 const PurchaseHistoryService = require('../services/PurchaseHistoryService');
 const webhookQueue = require('../services/WebhookQueue');
 const webhookWorker = require('../services/WebhookWorker');
@@ -13,8 +13,13 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
   const router = express.Router();
   
   const verifier = new ShopifyWebhookVerifier(process.env.SHOPIFY_API_SECRET);
-  const orderService = new WebhookOrderService(webSocketGateway);
-  const productService = new WebhookProductService(db);
+  
+  // Create dedicated database pool for webhook processing (prevents pool exhaustion)
+  const { webhookDb } = createWebhookPool();
+  
+  // Initialize services with dedicated webhook database connection
+  const orderService = new WebhookOrderService(webSocketGateway, webhookDb);
+  const productService = new WebhookProductService(webhookDb);
   const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
   const purchaseHistoryService = new PurchaseHistoryService();
   

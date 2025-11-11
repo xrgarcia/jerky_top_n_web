@@ -5,10 +5,18 @@ const { eq, and } = require('drizzle-orm');
 const OrdersService = require('./OrdersService');
 
 class WebhookOrderService {
-  constructor(webSocketGateway = null) {
-    this.db = db;
+  /**
+   * @param {Object} webSocketGateway - WebSocket gateway for real-time updates
+   * @param {Object} dedicatedDb - Optional dedicated database connection (prevents pool exhaustion)
+   */
+  constructor(webSocketGateway = null, dedicatedDb = null) {
+    this.db = dedicatedDb || db; // Use dedicated connection if provided, otherwise fall back to shared pool
     this.webSocketGateway = webSocketGateway;
     this.ordersService = new OrdersService();
+    
+    if (dedicatedDb) {
+      console.log('✅ WebhookOrderService using dedicated database pool');
+    }
   }
 
   async processOrderWebhook(orderData, topic) {
@@ -544,6 +552,12 @@ class WebhookOrderService {
       }
 
       console.log(`📊 Recalculated ranking stats for ${Object.keys(statsMap).length} product(s)`);
+      
+      // Log warning if we expected stats but got none (indicates potential issue)
+      if (productIds.length > 0 && Object.keys(statsMap).length === 0) {
+        console.warn(`⚠️ No ranking stats found for ${productIds.length} product(s) - products may not have been ranked yet`);
+      }
+      
       return statsMap;
     } catch (error) {
       // Extract nested error message from Drizzle wrapper
@@ -551,18 +565,36 @@ class WebhookOrderService {
       const cause = error.cause?.message || error.cause || 'No cause provided';
       const fullErrorDetails = `${errorMessage}${cause !== 'No cause provided' ? ` | Cause: ${cause}` : ''}`;
       
-      console.error('❌ Error fetching product ranking stats:', fullErrorDetails);
-      console.error('Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      // CRITICAL ERROR: Database query failed - this is NOT normal
+      console.error('❌ CRITICAL: Failed to fetch product ranking stats (database connection issue?)');
+      console.error(`   Error: ${fullErrorDetails}`);
+      console.error(`   Affected products: ${productIds.join(', ')}`);
+      console.error('   Full error object:', JSON.stringify(error, Object.getOwnPropertyNames(error), 2));
+      
+      // Check if this is a connection pool exhaustion error
+      if (error.code === 'ECONNREFUSED' || error.code === 'ETIMEDOUT' || 
+          errorMessage.includes('pool') || errorMessage.includes('connection')) {
+        console.error('   ⚠️ This appears to be a database connection pool exhaustion issue');
+      }
       
       Sentry.captureException(error, {
-        tags: { service: 'webhook-order', method: 'getProductRankingStats' },
+        level: 'error',
+        tags: { 
+          service: 'webhook-order', 
+          method: 'getProductRankingStats',
+          error_type: 'database_query_failure'
+        },
         extra: { 
           productIds,
+          productCount: productIds.length,
           errorMessage,
+          errorCode: error.code,
           cause: String(cause),
           fullErrorDetails
         }
       });
+      
+      // Return empty object but error has been logged with severity
       return {};
     }
   }
