@@ -12,7 +12,7 @@
   flex-shrink: 0;
   overflow: hidden;
   position: relative;
-  background: linear-gradient(135deg, #7b8b52, #c4a962);
+  background: var(--avatar-bg, linear-gradient(135deg, #7b8b52, #c4a962));
   color: white;
 }
 

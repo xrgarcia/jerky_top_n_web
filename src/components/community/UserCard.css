@@ -61,8 +61,9 @@
   gap: 16px;
 }
 
-/* Avatar styling - use unified avatar system with stage-based border */
+/* Avatar styling - use unified avatar system with stage-based border and background */
 .card-profile .avatar-medium {
+  --avatar-bg: var(--stage-gradient);
   border: 3px solid var(--stage-color);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
