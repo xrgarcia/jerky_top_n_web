@@ -14,9 +14,9 @@ class WebhookProductService {
       console.log(`🏷️ Processing ${topic} webhook for product ${productData.id} (${productData.title})`);
 
       if (topic === 'products/update' || topic === 'products/create') {
-        return await this.handleProductUpdate(productData);
+        return await this.handleProductUpdate(productData, topic);
       } else if (topic === 'products/delete') {
-        return await this.handleProductDelete(productData);
+        return await this.handleProductDelete(productData, topic);
       }
 
       console.warn(`⚠️ Unknown product webhook topic: ${topic}`);
@@ -31,7 +31,7 @@ class WebhookProductService {
     }
   }
 
-  async handleProductUpdate(productData) {
+  async handleProductUpdate(productData, topic) {
     const shopifyProductId = productData.id?.toString();
     
     if (!shopifyProductId) {
@@ -83,7 +83,7 @@ class WebhookProductService {
     };
   }
 
-  async handleProductDelete(productData) {
+  async handleProductDelete(productData, topic) {
     const shopifyProductId = productData.id?.toString();
     
     if (!shopifyProductId) {
