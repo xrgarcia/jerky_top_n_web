@@ -257,33 +257,52 @@ class EngagementManager {
           ? definition.requirement 
           : JSON.stringify(definition.requirement);
         
+        // Prepare tier thresholds JSON
+        const tierThresholdsJson = definition.tierThresholds 
+          ? (typeof definition.tierThresholds === 'string' ? definition.tierThresholds : JSON.stringify(definition.tierThresholds))
+          : null;
+        
         // Upsert with retry logic to handle cold start issues
         await retryDatabaseOperation(
           async () => {
             await db.execute(sql`
-              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              INSERT INTO achievements (
+                code, name, description, icon, icon_type, tier, category, 
+                collection_type, requirement, tier_thresholds, has_tiers, 
+                points, is_hidden, is_active, prerequisite_achievement_id
+              )
               VALUES (
                 ${definition.code},
                 ${definition.name},
                 ${definition.description},
                 ${definition.icon},
+                ${definition.iconType || 'emoji'},
                 ${definition.tier},
                 ${definition.category},
                 ${definition.collectionType || 'legacy'},
                 ${requirementJson}::jsonb,
+                ${tierThresholdsJson ? sql`${tierThresholdsJson}::jsonb` : null},
                 ${definition.hasTiers ? 1 : 0},
-                ${definition.points}
+                ${definition.points},
+                ${definition.isHidden ? 1 : 0},
+                ${definition.isActive !== undefined ? (definition.isActive ? 1 : 0) : 1},
+                ${definition.prerequisiteAchievementId || null}
               )
               ON CONFLICT (code) DO UPDATE SET
                 name = EXCLUDED.name,
                 description = EXCLUDED.description,
                 icon = EXCLUDED.icon,
+                icon_type = EXCLUDED.icon_type,
                 tier = EXCLUDED.tier,
                 category = EXCLUDED.category,
                 collection_type = EXCLUDED.collection_type,
                 requirement = EXCLUDED.requirement,
+                tier_thresholds = EXCLUDED.tier_thresholds,
                 has_tiers = EXCLUDED.has_tiers,
-                points = EXCLUDED.points
+                points = EXCLUDED.points,
+                is_hidden = EXCLUDED.is_hidden,
+                is_active = EXCLUDED.is_active,
+                prerequisite_achievement_id = EXCLUDED.prerequisite_achievement_id
             `);
           },
           {
