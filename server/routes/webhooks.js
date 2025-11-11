@@ -17,14 +17,14 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
   // Create dedicated database pool for webhook processing (prevents pool exhaustion)
   const { webhookDb } = createWebhookPool();
   
-  // Initialize services with dedicated webhook database connection
-  const orderService = new WebhookOrderService(webSocketGateway, webhookDb);
-  const productService = new WebhookProductService(webhookDb);
-  const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
-  const purchaseHistoryService = new PurchaseHistoryService();
-  
   // Use shared cache instances passed from server.js
   const { metadataCache, rankingStatsCache } = sharedCaches;
+  
+  // Initialize services with dedicated webhook database connection
+  const orderService = new WebhookOrderService(webSocketGateway, webhookDb);
+  const productService = new WebhookProductService(webhookDb, webSocketGateway, metadataCache);
+  const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
+  const purchaseHistoryService = new PurchaseHistoryService();
   
   // Inject services into WebhookWorker (if worker is initialized)
   // This allows the worker to use the same service instances when processing jobs
