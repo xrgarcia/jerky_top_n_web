@@ -292,6 +292,22 @@ const userActivities = pgTable('user_activities', {
   createdAtIdx: index('idx_user_activities_created_at').on(table.createdAt),
 }));
 
+// Anonymous searches - tracks search behavior without user authentication for analytics
+const anonymousSearches = pgTable('anonymous_searches', {
+  id: serial('id').primaryKey(),
+  searchTerm: text('search_term').notNull(),
+  resultCount: integer('result_count').notNull(),
+  context: text('context').notNull(), // 'products', 'rank_page', 'global_search', 'product_rankings'
+  sessionHash: text('session_hash'), // Anonymized session identifier (nullable for privacy)
+  metadata: jsonb('metadata'), // Additional analytics data (e.g., user agent, referrer)
+  createdAt: timestamp('created_at').defaultNow(),
+}, (table) => ({
+  // Indexes for analytics queries
+  contextIdx: index('idx_anonymous_searches_context').on(table.context),
+  createdAtIdx: index('idx_anonymous_searches_created_at').on(table.createdAt),
+  contextTimeIdx: index('idx_anonymous_searches_context_time').on(table.context, table.createdAt),
+}));
+
 // User engagement scores - pre-aggregated rollup table for leaderboard performance
 const userEngagementScores = pgTable('user_engagement_scores', {
   id: serial('id').primaryKey(),
@@ -446,6 +462,7 @@ module.exports = {
   customerOrderItems,
   systemConfig,
   userActivities,
+  anonymousSearches,
   userEngagementScores,
   userClassifications,
   classificationConfig,

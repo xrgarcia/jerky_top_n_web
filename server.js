@@ -478,8 +478,19 @@ async function getAuthLimiter() {
   return rateLimiters.authLimiter;
 }
 
+// Lazy-loaded anonymous search repository
+let anonymousSearchRepo = null;
+function getAnonymousSearchRepository() {
+  if (!anonymousSearchRepo) {
+    const { db } = require('./server/db.js');
+    const AnonymousSearchRepository = require('./server/repositories/AnonymousSearchRepository');
+    anonymousSearchRepo = new AnonymousSearchRepository(db);
+  }
+  return anonymousSearchRepo;
+}
+
 /**
- * Unified search tracking helper - logs to user_activities table
+ * Unified search tracking helper - forks to authenticated or anonymous tracking
  * @param {string} searchTerm - The search query
  * @param {number} resultCount - Number of results returned
  * @param {number|null} userId - User ID (null for anonymous)
@@ -489,15 +500,21 @@ async function trackUserSearch(searchTerm, resultCount, userId, context) {
   if (!searchTerm || !searchTerm.trim()) return;
   
   try {
-    // Log to user_activities (powers "Be Curious" achievement and engagement tracking)
-    if (userId && gamificationServices?.activityTrackingService) {
-      await gamificationServices.activityTrackingService.trackSearch(userId, searchTerm, resultCount, context);
-      console.log(`🔍 Search tracked: "${searchTerm}" (${resultCount} results) by user ${userId} on ${context}`);
-    } else if (!userId) {
-      console.log(`🔍 Anonymous search: "${searchTerm}" (${resultCount} results) on ${context} (not tracked)`);
+    if (userId) {
+      // Authenticated user: log to user_activities (powers "Be Curious" achievement)
+      if (gamificationServices?.activityTrackingService) {
+        await gamificationServices.activityTrackingService.trackSearch(userId, searchTerm, resultCount, context);
+        console.log(`🔍 Authenticated search: "${searchTerm}" (${resultCount} results) by user ${userId} on ${context}`);
+      }
+    } else {
+      // Anonymous user: log to anonymous_searches for analytics
+      const repo = getAnonymousSearchRepository();
+      await repo.logSearch(searchTerm, resultCount, context);
+      console.log(`🔍 Anonymous search: "${searchTerm}" (${resultCount} results) on ${context}`);
     }
   } catch (error) {
     console.error('❌ Error tracking search:', error);
+    // Don't throw - search tracking is fire-and-forget
   }
 }
 
