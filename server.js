@@ -479,7 +479,7 @@ async function getAuthLimiter() {
 }
 
 /**
- * Unified search tracking helper - writes to BOTH tracking systems
+ * Unified search tracking helper - logs to user_activities table
  * @param {string} searchTerm - The search query
  * @param {number} resultCount - Number of results returned
  * @param {number|null} userId - User ID (null for anonymous)
@@ -489,17 +489,13 @@ async function trackUserSearch(searchTerm, resultCount, userId, context) {
   if (!searchTerm || !searchTerm.trim()) return;
   
   try {
-    // 1. Log to user_product_searches (legacy analytics system)
-    if (storage) {
-      await storage.logProductSearch(searchTerm, resultCount, userId, context);
-    }
-    
-    // 2. Log to user_activities (gamification system - powers "be Curious" coin)
+    // Log to user_activities (powers "Be Curious" achievement and engagement tracking)
     if (userId && gamificationServices?.activityTrackingService) {
       await gamificationServices.activityTrackingService.trackSearch(userId, searchTerm, resultCount, context);
+      console.log(`🔍 Search tracked: "${searchTerm}" (${resultCount} results) by user ${userId} on ${context}`);
+    } else if (!userId) {
+      console.log(`🔍 Anonymous search: "${searchTerm}" (${resultCount} results) on ${context} (not tracked)`);
     }
-    
-    console.log(`🔍 Search tracked in both systems: "${searchTerm}" (${resultCount} results) by user ${userId || 'anonymous'} on ${context}`);
   } catch (error) {
     console.error('❌ Error tracking search:', error);
   }
@@ -1492,8 +1488,8 @@ app.get('/api/products/all', async (req, res) => {
         // Continue without userId
       }
       
-      // Fire-and-forget logging
-      storage.logProductSearch(searchTerm, resultCount, userId, 'products').catch(err => {
+      // Fire-and-forget logging using unified tracking system
+      trackUserSearch(searchTerm, resultCount, userId, 'products').catch(err => {
         console.error('Failed to log search:', err);
       });
     }

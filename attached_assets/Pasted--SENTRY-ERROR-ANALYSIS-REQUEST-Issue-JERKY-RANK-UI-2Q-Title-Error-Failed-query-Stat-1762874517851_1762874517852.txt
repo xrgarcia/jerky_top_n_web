@@ -1,0 +1,232 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2Q
+Title: Error: Failed query: 
+Status: unresolved
+Level: warning
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T02:10:37.732000Z
+Last Seen: 2025-11-11T14:48:50Z
+Event Count: 2
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: 
+
+--- CULPRIT ---
+LeaderboardManager.getTopRankers(server.services:LeaderboardManager)
+
+--- STACK TRACE ---
+Error: Failed query: 
+      SELECT 
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.email,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
+        COALESCE(ues.unique_products_count, 0)::int as unique_products,
+        COALESCE(ues.engagement_score, 0)::int as engagement_score
+      FROM users u
+      INNER JOIN user_engagement_scores ues ON ues.user_id = u.id
+      WHERE u.active = true
+        AND ues.engagement_score > 0
+      ORDER BY ues.engagement_score DESC
+      LIMIT 5
+    
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at LeaderboardManager.getTopRankers (/home/runner/workspace/server/services/LeaderboardManager.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/init/gamification.js:?:?) [in app]
+  at CacheWarmer.warmAll (/home/runner/workspace/server/services/CacheWarmer.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T14:48:45.221000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:45.221000Z] console (info): ⏳ Database not ready yet (attempt 7/10, 6148ms)...
+[2025-11-11T14:48:46.225000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:46.225000Z] console (info): ⏳ Database not ready yet (attempt 8/10, 7153ms)...
+[2025-11-11T14:48:46.226000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:46.226000Z] console (info): ⏳ Database not ready yet (attempt 8/10, 7153ms)...
+[2025-11-11T14:48:47.230000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:47.231000Z] console (info): ⏳ Database not ready yet (attempt 9/10, 8159ms)...
+[2025-11-11T14:48:47.231000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:47.231000Z] console (info): ⏳ Database not ready yet (attempt 9/10, 8158ms)...
+[2025-11-11T14:48:48.236000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:48.236000Z] console (info): ⏳ Database not ready yet (attempt 10/10, 9164ms)...
+[2025-11-11T14:48:48.236000Z] console (error): ❌ Database warmup failed after 10 attempts
+[2025-11-11T14:48:48.240000Z] console (warning): ⚠️ Database warmup failed during initialization, but proceeding anyway
+[2025-11-11T14:48:48.240000Z] console (warning):    Warmup error: Database warmup failed after 10 attempts
+[2025-11-11T14:48:48.241000Z] console (info): ✅ recentAchievements: Using Redis for distributed caching
+[2025-11-11T14:48:48.241000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.243000Z] console (info): ✅ Classification queue initialized
+[2025-11-11T14:48:48.247000Z] console (info): ✅ Gamification routes registered at /api/gamification
+[2025-11-11T14:48:48.247000Z] console (info): ✅ Community routes registered at /api/community
+[2025-11-11T14:48:48.247000Z] console (info): ✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+[2025-11-11T14:48:48.247000Z] console (info): ✅ Profile routes registered at /api/profile
+[2025-11-11T14:48:48.247000Z] console (info): 🏷️  WebSocket environment prefix: dev
+[2025-11-11T14:48:48.248000Z] console (info): ✅ WebSocket gateway initialized
+[2025-11-11T14:48:48.248000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.250000Z] console (info): ✅ Classification worker initialized (concurrency: 5)
+[2025-11-11T14:48:48.250000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.250000Z] console (info): 🔌 Creating dedicated Redis connection for BullMQ queue...
+[2025-11-11T14:48:48.253000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:48.254000Z] console (info): ⏳ Database not ready yet (attempt 10/10, 9181ms)...
+[2025-11-11T14:48:48.254000Z] console (error): ❌ Database warmup failed after 10 attempts
+[2025-11-11T14:48:48.407000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:48.408000Z] console (info): ✅ BullMQ queue Redis connection READY
+[2025-11-11T14:48:48.409000Z] console (info): ✅ Bulk import queue initialized with hardened Redis connection
+[2025-11-11T14:48:48.410000Z] console (info): ✅ BulkImportService initialized with WebSocket gateway and classification queue
+[2025-11-11T14:48:48.410000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.410000Z] console (info): 🔌 Creating dedicated Redis connection for BullMQ worker...
+[2025-11-11T14:48:48.446000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:48.646000Z] console (info): ✅ BullMQ worker Redis connection READY
+[2025-11-11T14:48:48.647000Z] console (info): ✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 50 jobs/min)
+[2025-11-11T14:48:48.648000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.680000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:48.799000Z] console (info): ✅ Engagement backfill queue initialized (Worker handles stalled jobs via lockDuration)
+[2025-11-11T14:48:48.800000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.800000Z] console (info): 🔌 Creating dedicated Redis connection for engagement backfill worker...
+[2025-11-11T14:48:48.820000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:48.836000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:48.937000Z] console (info): ✅ Engagement backfill worker Redis connection READY
+[2025-11-11T14:48:48.937000Z] console (info): ✅ Engagement backfill worker initialized (concurrency: 10)
+[2025-11-11T14:48:48.938000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.939000Z] console (info): ✅ Webhook queue initialized
+[2025-11-11T14:48:48.939000Z] console (info): 💾 Redis: Using existing connection (connection pool)
+[2025-11-11T14:48:48.939000Z] console (info): 🔌 Creating dedicated Redis connection for webhook worker...
+[2025-11-11T14:48:48.971000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:49.076000Z] console (info): ✅ Webhook worker Redis connection READY
+[2025-11-11T14:48:49.077000Z] console (info): ✅ Webhook worker initialized (concurrency: 3)
+[2025-11-11T14:48:49.080000Z] console (info): 🎮 Gamification system initialized successfully
+[2025-11-11T14:48:49.082000Z] console (info): ✅ Gamification services available for achievements
+[2025-11-11T14:48:49.082000Z] console (info): ✅ Profile routes registered at /api/profile
+[2025-11-11T14:48:49.224000Z] console (info): ✅ Webhook services injected into worker
+[2025-11-11T14:48:49.225000Z] console (info): 📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*
+[2025-11-11T14:48:49.233000Z] console (info): ✅ Tools routes registered at /api/tools
+[2025-11-11T14:48:49.233000Z] console (info): ✅ Object storage route registered at /objects/*
+[2025-11-11T14:48:49.637000Z] console (info): ✅ Admin routes registered at /api/admin
+[2025-11-11T14:48:49.637000Z] console (info): ✅ All routes initialized (catch-all already registered early)
+[2025-11-11T14:48:49.639000Z] console (info): 🔥 CacheWarmer: Starting to warm 3 cache(s) [SEQUENTIAL mode]...
+[2025-11-11T14:48:49.639000Z] console (info): 🚫 HomeStatsCache MISS: Data expired or not found
+[2025-11-11T14:48:49.660000Z] console (info): 📨 Registering Shopify webhooks...
+[2025-11-11T14:48:49.687000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:49.689000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.691000Z] console (info): ⏳ seeding achievement first_rank failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T14:48:49.691000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.692000Z] console (warning): ⚠️ CacheWarmer: HomeStatsCache failed to warm (53ms): Failed query: 
+      SELECT 
+        pr.shopify_product_id,
+        pr.product_data,
+        pr.ranking,
+        pr.created_at,
+        u.first_name,
+        u.last_name
+      FROM product_rankings pr
+      JOIN users u ON pr.user_id = u.id
+      WHERE pr.product_data IS NOT NULL
+      ORDER BY pr.created_at DESC
+      LIMIT $1
+    
+params: 15
+[2025-11-11T14:48:49.694000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.695000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.701000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.702000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.702000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.702000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.702000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.703000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.703000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.703000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.703000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.703000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.704000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.704000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.704000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.704000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.705000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.705000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.706000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:49.706000Z] console (info): 🚫 LeaderboardCache MISS: period:all_time:top:5
+[2025-11-11T14:48:49.765000Z] console (warning): IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+[2025-11-11T14:48:49.766000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.767000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:49.861000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:50.006000Z] console (info): 🚫 LeaderboardCache MISS: period:all_time:top:5
+[2025-11-11T14:48:50.009000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T14:48:50.009000Z] console (warning): ⚠️ CacheWarmer: LeaderboardCache failed to warm (40ms): Failed query: 
+      SELECT 
+        u.id as user_id,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.email,
+        u.profile_image_url,
+        u.handle,
+        u.hide_name_privacy,
+        COALESCE(ues.unique_products_count, 0)::int as unique_products,
+        COALESCE(ues.engagement_score, 0)::int as engagement_score
+      FROM users u
+      INNER JOIN user_engagement_scores ues ON ues.user_id = u.id
+      WHERE u.active = true
+        AND ues.engagement_score > 0
+      ORDER BY ues.engagement_score DESC
+      LIMIT 5
+    
+params: 
+
+--- TAGS ---
+  app_url: undefined
+  cache_name: undefined
+  cold_start: undefined
+  duration_ms: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  warmingStrategy: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future

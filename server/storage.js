@@ -1,4 +1,4 @@
-const { users, sessions, rankings, magicLinks, productRankings, userProductSearches, rankingOperations } = require('../shared/schema.js');
+const { users, sessions, rankings, magicLinks, productRankings, rankingOperations } = require('../shared/schema.js');
 const { db } = require('./db.js');
 const { eq, lt } = require('drizzle-orm');
 const crypto = require('crypto');
@@ -470,24 +470,6 @@ class DatabaseStorage {
       Sentry.captureException(error, {
         tags: { service: 'rankings', operation: 'cleanup_operations' },
         extra: { daysOld }
-      });
-    }
-  }
-
-  async logProductSearch(searchTerm, resultCount, userId = null, pageName) {
-    try {
-      await db.insert(userProductSearches).values({
-        userId,
-        searchTerm,
-        resultCount,
-        pageName,
-      });
-    } catch (error) {
-      // Silently fail - don't interrupt the search experience
-      console.error('Error logging product search:', error);
-      Sentry.captureException(error, {
-        tags: { service: 'products' },
-        extra: { searchTerm, resultCount, userId, pageName }
       });
     }
   }

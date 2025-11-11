@@ -1,0 +1,309 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2S
+Title: TypeError: Cannot read properties of undefined (reading 'Symbol(drizzle:Columns)')
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T02:54:57.721000Z
+Last Seen: 2025-11-11T02:55:30Z
+Event Count: 6
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+TypeError: Cannot read properties of undefined (reading 'Symbol(drizzle:Columns)')
+
+--- CULPRIT ---
+GET /api/search/global
+
+--- STACK TRACE ---
+TypeError: Cannot read properties of undefined (reading 'Symbol(drizzle:Columns)')
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/pg-core/query-builders/insert.cjs:?:?)
+  at Array.map (<anonymous>:?:?)
+  at PgInsertBuilder.values (/home/runner/workspace/node_modules/drizzle-orm/pg-core/query-builders/insert.cjs:?:?)
+  at DatabaseStorage.logProductSearch (/home/runner/workspace/server/storage.js:?:?) [in app]
+  at trackUserSearch (/home/runner/workspace/server.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server.js:?:?) [in app]
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T02:54:28.763000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:54:28.801000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:54:28.874000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:54:28.919000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:54:28.965000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:54:28.965000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:54:28.966000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 2 unique product views
+[2025-11-11T02:54:28.967000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 0 total searches
+[2025-11-11T02:54:28.967000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 6 total page views
+[2025-11-11T02:54:28.968000Z] console (info): 🔄 [be_curious] User 7629: 0/10 (0%) → TIER: null (hasTiers: 0)
+[2025-11-11T02:54:28.968000Z] console (info): 🔄 [expand_your_horizons] User 7629: 2/100 (2%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:54:28.968000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 0 achievement update(s)
+[2025-11-11T02:54:29.398000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T02:54:50.115000Z] console (info): 👋 WebSocket client disconnected: 8VWPKnQ1vDJhLmrfAACz
+[2025-11-11T02:54:50.115000Z] console (info): 👤 User 7629 still has 4 active socket(s)
+[2025-11-11T02:54:50.118000Z] console (info): 👋 WebSocket client disconnected: 4CPvMdLB5Xkhd35jAACx
+[2025-11-11T02:54:50.118000Z] console (info): 👤 User 7629 still has 3 active socket(s)
+[2025-11-11T02:54:50.256000Z] console (info): ✅ WebSocket client connected: E5scY_k8CdkiQOvzAAC1
+[2025-11-11T02:54:50.300000Z] console (info): [Filtered]
+[2025-11-11T02:54:50.376000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:54:50.415000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:54:50.485000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:54:50.489000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: product_view)
+[2025-11-11T02:54:50.529000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:54:50.572000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 12 total searches
+[2025-11-11T02:54:50.572000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 3 unique product views
+[2025-11-11T02:54:50.572000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:54:50.577000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:54:50.577000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 7 total page views
+[2025-11-11T02:54:50.577000Z] console (info): 🔄 [be_curious] User 7629: 12/10 (100%) → TIER: complete (hasTiers: 0)
+[2025-11-11T02:54:50.623000Z] console (info): 🎯 [be_curious] Awarding 1 tier(s): complete
+[2025-11-11T02:54:50.718000Z] console (info): 🎉 [be_curious] New achievement: complete - 250 points
+[2025-11-11T02:54:50.719000Z] console (info): 🔄 [expand_your_horizons] User 7629: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:54:50.719000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 1 achievement update(s)
+[2025-11-11T02:54:50.719000Z] console (info): 🎯 [WEBSOCKET PRODUCT_DETAIL] User 7629 updated 1 engagement achievement(s)
+[2025-11-11T02:55:01.315000Z] console (info): 👋 WebSocket client disconnected: E5scY_k8CdkiQOvzAAC1
+[2025-11-11T02:55:01.316000Z] console (info): 👤 User 7629 still has 3 active socket(s)
+[2025-11-11T02:55:01.434000Z] console (info): ✅ WebSocket client connected: uMltJPKHnQ5kkVi3AAC3
+[2025-11-11T02:55:01.567000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T02:55:01.608000Z] console (info): [Filtered]
+[2025-11-11T02:55:01.698000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:55:01.735000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:55:01.762000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:55:01.792000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:55:01.815000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:55:01.819000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: profile_view)
+[2025-11-11T02:55:01.858000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:55:01.876000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:55:01.881000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: profile_view)
+[2025-11-11T02:55:01.899000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:55:01.900000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 9 total page views
+[2025-11-11T02:55:01.900000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 3 unique product views
+[2025-11-11T02:55:01.901000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 13 total searches
+[2025-11-11T02:55:01.902000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:55:01.903000Z] console (info): 🔄 [be_curious] User 7629: 13/10 (100%) → TIER: complete (hasTiers: 0)
+[2025-11-11T02:55:01.939000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:55:01.946000Z] console (info): 🔄 [expand_your_horizons] User 7629: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:55:01.946000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 0 achievement update(s)
+[2025-11-11T02:55:01.981000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 13 total searches
+[2025-11-11T02:55:01.982000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:55:01.983000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:55:01.984000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 9 total page views
+[2025-11-11T02:55:01.987000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 3 unique product views
+[2025-11-11T02:55:01.987000Z] console (info): 🔄 [be_curious] User 7629: 13/10 (100%) → TIER: complete (hasTiers: 0)
+[2025-11-11T02:55:02.031000Z] console (info): 🔄 [expand_your_horizons] User 7629: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:55:02.031000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 0 achievement update(s)
+[2025-11-11T02:55:15.472000Z] console (info): 👋 WebSocket client disconnected: LT4hPIAc3xaaZNezAACR
+[2025-11-11T02:55:15.472000Z] console (info): 👤 User 2 still has 4 active socket(s)
+[2025-11-11T02:55:16.889000Z] console (info): ✅ WebSocket client connected: oniFknzJMNoUcc4XAAC5
+[2025-11-11T02:55:16.932000Z] console (info): [Filtered]
+[2025-11-11T02:55:17.799000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:55:17.838000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:55:17.906000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:55:17.910000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: profile_view)
+[2025-11-11T02:55:17.949000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:55:17.992000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:55:17.993000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:55:17.993000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 3 unique product views
+[2025-11-11T02:55:17.993000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 10 total page views
+[2025-11-11T02:55:17.994000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 15 total searches
+[2025-11-11T02:55:17.994000Z] console (info): 🔄 [be_curious] User 7629: 15/10 (100%) → TIER: complete (hasTiers: 0)
+[2025-11-11T02:55:18.037000Z] console (info): 🔄 [expand_your_horizons] User 7629: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:55:18.037000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 0 achievement update(s)
+[2025-11-11T02:55:18.369000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: page_view)
+[2025-11-11T02:55:18.404000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-11T02:55:18.477000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 7629 (granular, timestamp-aware, pattern-based)
+[2025-11-11T02:55:18.480000Z] console (info): 📋 Enqueued classification job for user 7629 (reason: profile_view)
+[2025-11-11T02:55:18.520000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 7629: Checking 2 engagement achievements
+[2025-11-11T02:55:18.562000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 7629: Current streak 0 days (longest: 0)
+[2025-11-11T02:55:18.562000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 7629: Current login streak 0 days (longest: 0)
+[2025-11-11T02:55:18.563000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 7629: 3 unique product views
+[2025-11-11T02:55:18.563000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 7629: 11 total page views
+[2025-11-11T02:55:18.563000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 7629: 15 total searches
+[2025-11-11T02:55:18.564000Z] console (info): 🔄 [be_curious] User 7629: 15/10 (100%) → TIER: complete (hasTiers: 0)
+[2025-11-11T02:55:18.607000Z] console (info): 🔄 [expand_your_horizons] User 7629: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-11T02:55:18.607000Z] console (info): ✅ [ENGAGEMENT CHECK] User 7629: 0 achievement update(s)
+[2025-11-11T02:55:25.655000Z] console (info): 👋 WebSocket client disconnected: sT6fCRL3_cCvNIdZAACc
+[2025-11-11T02:55:25.655000Z] console (info): 👤 User 3 fully disconnected (no active sockets)
+[2025-11-11T02:55:29.988000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 22 minutes)
+[2025-11-11T02:55:30.079000Z] console (error): Error logging product search: TypeError: Cannot read properties of undefined (reading 'Symbol(drizzle:Columns)')
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "GET",
+  "url": "https://rank.jerky.com/api/search/global",
+  "query": [
+    [
+      "q",
+      "Jo"
+    ]
+  ],
+  "fragment": null,
+  "data": null,
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip, deflate, br"
+    ],
+    [
+      "Accept-Language",
+      "en-US,en;q=0.9"
+    ],
+    [
+      "Baggage",
+      "sentry-environment=PRODUCTION,sentry-public_key=12afa859655c2d785bd0bbf477ef624a,sentry-trace_id=4cbd056c4a3e45f5afd28f9c35f1479b,sentry-org_id=[Filtered],sentry-sampled=true,sentry-sample_rand=0.43946316986826284,sentry-sample_rate=1"
+    ],
+    [
+      "Host",
+      "rank.jerky.com"
+    ],
+    [
+      "Priority",
+      "u=3, i"
+    ],
+    [
+      "Referer",
+      "https://rank.jerky.com/community/3"
+    ],
+    [
+      "Sec-Fetch-Dest",
+      "empty"
+    ],
+    [
+      "Sec-Fetch-Mode",
+      "cors"
+    ],
+    [
+      "Sec-Fetch-Site",
+      "same-origin"
+    ],
+    [
+      "Sentry-Trace",
+      "4cbd056c4a3e45f5afd28f9c35f1479b-a1eb6f5d98069e26-1"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762829729972, pid1req;dur=1762829729986"
+    ],
+    [
+      "Traceparent",
+      "00-1f3632dc9a98fc2a4e7b3e739d3f3a29-f6f6bfb427cf0c61-01"
+    ],
+    [
+      "User-Agent",
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 18_6_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Mobile/15E148 Safari/604.1"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "1f3632dc9a98fc2a4e7b3e739d3f3a29/17795621758083992673;o=1"
+    ],
+    [
+      "X-Forwarded-For",
+      "45.27.167.135, 34.111.179.208, 35.191.74.186,104.154.74.102"
+    ],
+    [
+      "X-Forwarded-Host",
+      "rank.jerky.com"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ]
+  ],
+  "cookies": [
+    [
+      "session_id",
+      "125e2254a66a90a185aaa55645849882ae90fa0c9ec079e226e3535085cf3b6c"
+    ]
+  ],
+  "env": null,
+  "inferredContentType": null
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
