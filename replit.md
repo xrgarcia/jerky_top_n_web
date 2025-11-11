@@ -64,3 +64,35 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
 - **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icons.
+
+## Deployment and Schema Management
+
+### Database Schema Synchronization
+The application uses Drizzle ORM for database schema management. **Critical**: Always sync the database schema before deploying code changes that modify the schema.
+
+**Schema Validation:**
+- Automatic validation runs on server startup (non-blocking)
+- Logs warnings if database schema is out of sync with Drizzle definitions
+- Checks critical tables: `users`, `product_rankings`, `customer_order_items`, `achievements`
+- Validation results are sent to Sentry for monitoring
+
+**Deployment Workflow:**
+1. **Safe Deployment**: Use `npm run start:safe` (syncs schema, then starts server)
+2. **Production Deployment**: Use `npm run deploy:safe` (syncs schema, builds assets, then starts server)
+3. **Manual Sync**: Run `npm run db:push` to sync schema without starting server
+
+**Common Issues Prevented:**
+- **Schema Mismatch Errors**: When code references columns that don't exist yet in the database
+- **Webhook Failures**: Shopify webhooks failing due to missing columns in `users` or `customer_order_items` tables
+- **Silent Data Loss**: Queries failing silently during cold starts
+
+**Best Practices:**
+1. Always run `npm run db:push` after pulling schema changes from git
+2. Test schema changes locally before deploying to production
+3. Monitor Sentry for schema validation warnings
+4. Use safe deployment scripts to ensure schema is synced before code runs
+
+**Troubleshooting:**
+- If you see "column does not exist" errors, run `npm run db:push` immediately
+- Check server startup logs for schema validation warnings
+- Review Sentry errors tagged with `service: schema_validation` for drift detection

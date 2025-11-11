@@ -3661,7 +3661,15 @@ app.get('/api/config', (req, res) => {
 let gamificationServices = null;
 if (databaseAvailable && storage) {
   const initializeGamification = require('./server/init/gamification');
-  const { db } = require('./server/db');
+  const { db, pool } = require('./server/db');
+  const schema = require('./shared/schema');
+  const { validateSchemaAsync } = require('./server/utils/schemaValidator');
+  
+  // Validate database schema matches Drizzle definitions
+  // Non-blocking - logs warnings if schema is out of sync
+  setImmediate(() => {
+    validateSchemaAsync(pool, schema);
+  });
   
   // Create shared ProductsService instance
   const ProductsService = require('./server/services/ProductsService');
