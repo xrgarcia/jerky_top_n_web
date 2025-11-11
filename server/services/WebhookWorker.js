@@ -34,30 +34,62 @@ class WebhookWorker {
     this.services = services;
 
     try {
-      // Get the correct Redis URL based on environment
-      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
-      const redisUrl = isProduction 
-        ? process.env.UPSTASH_REDIS_URL_PROD 
-        : process.env.UPSTASH_REDIS_URL;
+      // Ensure Redis client is connected
+      const baseClient = await redisClient.connect();
       
-      if (!redisUrl) {
-        console.warn('⚠️ Redis URL not available, webhook worker disabled');
+      if (!baseClient) {
+        console.warn('⚠️ Redis not available, webhook worker disabled');
         return false;
       }
 
-      // Ensure Redis client is connected (for other operations)
-      await redisClient.connect();
+      console.log('🔌 Creating dedicated Redis connection for webhook worker...');
+      
+      // Duplicate the hardened RedisClient connection for BullMQ worker
+      // This ensures proper TLS, keepalive, and auth configuration
+      // CRITICAL: Must use the same Redis instance as WebhookQueue for job consumption
+      const workerConnection = baseClient.duplicate({
+        lazyConnect: false, // Connect immediately
+        keepAlive: 30000, // 30s keepalive
+        enableReadyCheck: true, // Wait for READY before accepting commands
+        maxRetriesPerRequest: null, // Required by BullMQ Worker
+      });
 
-      // BullMQ Worker accepts Redis URL directly
+      // Add error listener before connecting
+      workerConnection.on('error', (err) => {
+        console.error('❌ Webhook worker Redis connection error:', err.message);
+        Sentry.captureException(err, {
+          tags: { component: 'webhook-worker', context: 'redis-connection' },
+          extra: { errorMessage: err.message }
+        });
+      });
+
+      workerConnection.on('ready', () => {
+        console.log('✅ Webhook worker Redis connection READY');
+      });
+
+      // Wait for connection to be ready
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Webhook worker connection timeout after 10s'));
+        }, 10000);
+
+        workerConnection.once('ready', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        workerConnection.once('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
+
+      // BullMQ Worker uses the duplicated connection
       this.worker = new Worker(
         'shopify-webhooks',
         async (job) => this.processJob(job),
         {
-          connection: {
-            url: redisUrl,
-            maxRetriesPerRequest: null,
-            enableReadyCheck: false,
-          },
+          connection: workerConnection,
           concurrency: 3, // Process up to 3 webhooks concurrently
           limiter: {
             max: 20, // Max 20 jobs

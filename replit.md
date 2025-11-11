@@ -32,7 +32,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
 - **Icon Rendering**: Unified utility (`src/utils/iconUtils.jsx`) for various icon types (emoji, URL, base64).
 - **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking.
-- **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks with caching and orphan cleanup.
+- **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks with caching and orphan cleanup. Async BullMQ-based webhook processing prevents database connection timeouts by responding to Shopify in <100ms and processing database writes in background workers.
 - **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications.
 - **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine (BullMQ-based) that analyzes user behavior to provide targeted messages with CTAs.
 - **Flavor Profile Communities**: Micro-community system tracking user journey states and admin-configurable thresholds.
