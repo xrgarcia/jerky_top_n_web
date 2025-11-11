@@ -31,15 +31,18 @@ module.exports = function createCustomerWebhooksRoutes() {
         .filter(job => job.data?.type === 'customers')
         .map(job => ({
           id: job.id,
-          topic: job.data.topic,
+          data: {
+            topic: job.data.topic,
+            type: job.data.type,
+            data: {
+              id: job.data.data?.id,
+              email: job.data.data?.email,
+              first_name: job.data.data?.first_name,
+              last_name: job.data.data?.last_name
+            }
+          },
           state: job.failedReason ? 'failed' : 'completed',
           timestamp: job.processedOn || job.finishedOn || job.timestamp,
-          customerData: {
-            shopifyCustomerId: job.data.data?.id,
-            email: job.data.data?.email,
-            firstName: job.data.data?.first_name,
-            lastName: job.data.data?.last_name
-          },
           returnValue: job.returnvalue || null,
           failedReason: job.failedReason || null,
           processedAt: job.processedOn,
