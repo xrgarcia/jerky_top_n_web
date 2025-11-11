@@ -3,11 +3,104 @@
 const { Storage } = require('@google-cloud/storage');
 const { Client } = require('@replit/object-storage');
 const crypto = require('crypto');
+const Sentry = require('@sentry/node');
 
 const REPLIT_SIDECAR_ENDPOINT = 'http://127.0.0.1:1106';
 
-// Official Replit Object Storage client (for uploads)
-const replitStorageClient = new Client();
+// Lazy initialization for Replit Object Storage client
+// This prevents cold-start fetch failures during module load
+let replitStorageClientInstance = null;
+let initializationPromise = null;
+
+/**
+ * Initialize Replit Object Storage client with retry logic
+ * Handles transient network failures during cold starts
+ */
+async function initializeReplitStorageClient() {
+  const maxRetries = 3;
+  const retryDelays = [500, 1000, 2000]; // Exponential backoff
+  
+  for (let attempt = 0; attempt < maxRetries; attempt++) {
+    try {
+      console.log(`🔌 Initializing Replit Object Storage client (attempt ${attempt + 1}/${maxRetries})...`);
+      const client = new Client();
+      console.log('✅ Replit Object Storage client initialized successfully');
+      return client;
+    } catch (error) {
+      const isLastAttempt = attempt === maxRetries - 1;
+      
+      if (isLastAttempt) {
+        // Final attempt failed - log as error
+        console.error('❌ Failed to initialize Replit Object Storage client after all retries');
+        console.error(`   Error: ${error.message}`);
+        
+        Sentry.captureException(error, {
+          level: 'error',
+          tags: {
+            service: 'object_storage',
+            operation: 'client_initialization'
+          },
+          extra: {
+            errorMessage: error.message,
+            attempts: maxRetries,
+            context: 'Critical failure - object storage unavailable'
+          }
+        });
+        
+        throw new Error(`Object Storage initialization failed after ${maxRetries} attempts: ${error.message}`);
+      } else {
+        // Retry attempt - log as warning
+        console.warn(`⚠️ Object Storage client initialization failed (attempt ${attempt + 1}/${maxRetries})`);
+        console.warn(`   Error: ${error.message}`);
+        console.warn(`   Retrying in ${retryDelays[attempt]}ms...`);
+        
+        Sentry.captureException(error, {
+          level: 'warning',
+          tags: {
+            service: 'object_storage',
+            operation: 'client_initialization_retry'
+          },
+          extra: {
+            errorMessage: error.message,
+            attempt: attempt + 1,
+            maxRetries,
+            nextRetryDelayMs: retryDelays[attempt]
+          }
+        });
+        
+        // Wait before retrying
+        await new Promise(resolve => setTimeout(resolve, retryDelays[attempt]));
+      }
+    }
+  }
+}
+
+/**
+ * Get initialized Replit Object Storage client
+ * Uses lazy initialization with caching and retry logic
+ */
+async function getReplitStorageClient() {
+  // Return cached instance if available
+  if (replitStorageClientInstance) {
+    return replitStorageClientInstance;
+  }
+  
+  // If initialization is already in progress, wait for it
+  if (initializationPromise) {
+    return initializationPromise;
+  }
+  
+  // Start new initialization
+  initializationPromise = initializeReplitStorageClient();
+  
+  try {
+    replitStorageClientInstance = await initializationPromise;
+    return replitStorageClientInstance;
+  } finally {
+    // Clear the promise so future calls can retry if this failed
+    initializationPromise = null;
+  }
+}
 
 // Google Cloud Storage client (for serving/downloads)
 const objectStorageClient = new Storage({
@@ -55,8 +148,11 @@ class ObjectStorageService {
     const ext = filename.split('.').pop();
     const objectPath = `achievement-icons/${objectId}.${ext}`;
 
+    // Get initialized client with retry logic
+    const client = await getReplitStorageClient();
+    
     // Upload using official Replit client
-    const { ok, error } = await replitStorageClient.uploadFromBytes(objectPath, buffer);
+    const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
 
     if (!ok) {
       throw new Error(`Failed to upload icon: ${error}`);
@@ -72,8 +168,11 @@ class ObjectStorageService {
     const ext = filename.split('.').pop();
     const objectPath = `profile-images/${objectId}.${ext}`;
 
+    // Get initialized client with retry logic
+    const client = await getReplitStorageClient();
+    
     // Upload using official Replit client
-    const { ok, error } = await replitStorageClient.uploadFromBytes(objectPath, buffer);
+    const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
 
     if (!ok) {
       throw new Error(`Failed to upload profile image: ${error}`);
@@ -131,8 +230,11 @@ class ObjectStorageService {
       // Extract the file path from the normalized path
       const entityId = iconPath.slice('/objects/'.length);
       
+      // Get initialized client with retry logic
+      const client = await getReplitStorageClient();
+      
       // Delete using official Replit client
-      const { ok, error } = await replitStorageClient.delete(entityId);
+      const { ok, error } = await client.delete(entityId);
       
       if (!ok) {
         throw new Error(`Failed to delete icon: ${error}`);
@@ -147,9 +249,12 @@ class ObjectStorageService {
 
   async downloadObject(objectName, res, cacheTtlSec = 3600) {
     try {
+      // Get initialized client with retry logic
+      const client = await getReplitStorageClient();
+      
       // Use Replit client to download as stream
       // Note: downloadAsStream returns a Readable stream directly, not a Result type
-      const stream = replitStorageClient.downloadAsStream(objectName);
+      const stream = client.downloadAsStream(objectName);
 
       // Set response headers
       res.set({
