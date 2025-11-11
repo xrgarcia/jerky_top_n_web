@@ -44,12 +44,12 @@ const FOCUS_AREA_LABELS = {
   teriyaki: 'Teriyaki',
   peppered: 'Peppered',
   original: 'Original',
-  cattle: '🐄 Beef',
-  poultry: '🐔 Poultry',
-  pork: '🐷 Pork',
-  game: '🦌 Game',
-  seafood: '🐟 Seafood',
-  exotic_meat: '🦘 Exotic'
+  cattle: 'Beef',
+  poultry: 'Poultry',
+  pork: 'Pork',
+  game: 'Game',
+  seafood: 'Seafood',
+  exotic_meat: 'Exotic'
 };
 
 const FLAVOR_COMMUNITY_CONFIG = {
