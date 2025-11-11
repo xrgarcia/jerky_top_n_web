@@ -119,15 +119,6 @@ class ClassificationWorker {
     try {
       console.log(`🔄 Processing classification for user ${userId} (reason: ${reason})...`);
 
-      // Step 1: Classify user (this also updates flavor communities internally)
-      const classification = await this.services.userClassificationService.classifyUser(userId);
-      
-      if (!classification) {
-        throw new Error('Classification failed - no result returned');
-      }
-
-      console.log(`  ✓ User classified: ${classification.journeyStage}/${classification.engagementLevel}`);
-
       // Invalidate caches BEFORE recalculation (clear stale data from Redis)
       const UserClassificationCache = require('../cache/UserClassificationCache');
       const userClassificationCache = UserClassificationCache.getInstance();
@@ -141,7 +132,16 @@ class ClassificationWorker {
       const guidanceCache = GuidanceCache.getInstance();
       await guidanceCache.invalidateUser(userId);
       
-      console.log(`  ✓ Invalidated classification, progress, and guidance caches`);
+      console.log(`  ✓ Invalidated stale classification, progress, and guidance caches`);
+
+      // Step 1: Classify user (this also updates flavor communities internally AND populates cache)
+      const classification = await this.services.userClassificationService.classifyUser(userId);
+      
+      if (!classification) {
+        throw new Error('Classification failed - no result returned');
+      }
+
+      console.log(`  ✓ User classified: ${classification.journeyStage}/${classification.engagementLevel}`);
 
       // Step 2: Calculate and cache guidance for all page contexts (writes to database)
       const totalRankableProducts = this.services.getRankableProductCount();
