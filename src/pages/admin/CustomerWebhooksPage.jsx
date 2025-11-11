@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useCustomerWebhooks } from '../../hooks/useCustomerWebhooks';
 import { useCustomerWebhooksWebSocket } from '../../hooks/useCustomerWebhooksWebSocket';
 import { useToast } from '../../context/ToastContext';
@@ -6,25 +6,30 @@ import './AdminPages.css';
 
 function CustomerWebhooksPage() {
   const { showToast } = useToast();
+  const [selectedWebhook, setSelectedWebhook] = useState(null);
   
   const { data: webhooks = [], isLoading, isError, error, refetch } = useCustomerWebhooks(50);
 
   const handleWebhookUpdate = useCallback((updateData) => {
     console.log('👤 Webhook update received:', updateData);
     
-    const action = updateData.topic?.includes('update') ? 'Customer Updated' : 
-                   updateData.topic?.includes('create') ? 'Customer Created' : 
+    // Unwrap nested structure from WebSocket broadcast
+    const topic = updateData.data?.topic || updateData.topic;
+    const customerData = updateData.data?.data || updateData.data || {};
+    
+    const action = topic?.includes('update') ? 'Customer Updated' : 
+                   topic?.includes('create') ? 'Customer Created' : 
                    'Customer Event';
     
-    const customerName = updateData.data?.first_name && updateData.data?.last_name
-      ? `${updateData.data.first_name} ${updateData.data.last_name}`
-      : updateData.data?.email || 'Unknown';
+    const customerName = customerData.first_name && customerData.last_name
+      ? `${customerData.first_name} ${customerData.last_name}`
+      : customerData.email || 'Unknown';
     
     showToast({
       type: 'info',
       icon: '👤',
       title: action,
-      message: `${customerName} - ${updateData.topic}`,
+      message: `${customerName} - ${topic}`,
       duration: 4000
     });
     
@@ -97,6 +102,32 @@ function CustomerWebhooksPage() {
         </p>
       </div>
 
+      {selectedWebhook && (
+        <div className="modal-overlay" onClick={() => setSelectedWebhook(null)}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Webhook Details</h3>
+              <button className="modal-close-btn" onClick={() => setSelectedWebhook(null)}>
+                ×
+              </button>
+            </div>
+            <div className="modal-body">
+              <pre style={{
+                background: '#f5f5f5',
+                padding: '16px',
+                borderRadius: '8px',
+                overflow: 'auto',
+                maxHeight: '60vh',
+                fontSize: '13px',
+                lineHeight: '1.5'
+              }}>
+                {JSON.stringify(selectedWebhook, null, 2)}
+              </pre>
+            </div>
+          </div>
+        </div>
+      )}
+
       {isLoading ? (
         <div className="loading-state">
           <p>Loading webhooks...</p>
@@ -121,6 +152,7 @@ function CustomerWebhooksPage() {
                 <th>Customer Name</th>
                 <th>Topic</th>
                 <th>Job ID</th>
+                <th>Details</th>
               </tr>
             </thead>
             <tbody>
@@ -147,6 +179,15 @@ function CustomerWebhooksPage() {
                     </td>
                     <td className="job-id" style={{ fontFamily: 'monospace', fontSize: '0.85em' }}>
                       {webhook.id}
+                    </td>
+                    <td>
+                      <button
+                        className="btn-secondary"
+                        style={{ padding: '6px 12px', fontSize: '13px' }}
+                        onClick={() => setSelectedWebhook(webhook)}
+                      >
+                        View Details
+                      </button>
                     </td>
                   </tr>
                 );
