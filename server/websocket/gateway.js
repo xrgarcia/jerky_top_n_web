@@ -288,6 +288,31 @@ class WebSocketGateway {
         console.log(`📦 Socket ${socket.id} unsubscribed from customer orders updates`);
       });
 
+      socket.on('subscribe:customer-webhooks', () => {
+        // Only allow admin users to subscribe to customer webhooks updates
+        if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
+          socket.join(this.room('admin:customer-webhooks'));
+          console.log(`👤 Socket ${socket.id} subscribed to customer webhooks updates (room: ${this.room('admin:customer-webhooks')}, user: ${socket.userData.email}, role: ${socket.userData.role})`);
+          // Acknowledge subscription success
+          socket.emit('subscription:confirmed', { room: 'customer-webhooks' });
+        } else {
+          const reason = !socket.userData 
+            ? 'socket not authenticated (userData missing)' 
+            : `insufficient permissions (role: ${socket.userData.role}, email: ${socket.userData.email})`;
+          console.warn(`⚠️ Socket ${socket.id} attempted to subscribe to customer webhooks: ${reason}`);
+          // Notify client of failed subscription
+          socket.emit('subscription:failed', { 
+            room: 'customer-webhooks', 
+            reason: 'Admin access required' 
+          });
+        }
+      });
+
+      socket.on('unsubscribe:customer-webhooks', () => {
+        socket.leave(this.room('admin:customer-webhooks'));
+        console.log(`👤 Socket ${socket.id} unsubscribed from customer webhooks updates`);
+      });
+
       socket.on('subscribe:queue-monitor', () => {
         // Only allow admin users to subscribe to queue monitor updates
         if (socket.userData && (socket.userData.role === 'employee_admin' || socket.userData.email?.endsWith('@jerky.com'))) {
@@ -481,6 +506,14 @@ class WebSocketGateway {
       timestamp: new Date().toISOString(),
     });
     console.log(`📦 Broadcasting customer orders update to admin room (${this.room('admin:customer-orders')}): ${data.action} - ${data.orderNumber}`);
+  }
+
+  broadcastCustomerWebhookUpdate(data) {
+    this.io.to(this.room('admin:customer-webhooks')).emit('customer-webhooks:updated', {
+      ...data,
+      timestamp: new Date().toISOString(),
+    });
+    console.log(`👤 Broadcasting customer webhook update to admin room (${this.room('admin:customer-webhooks')}): ${data.action} - ${data.email}`);
   }
 
   /**

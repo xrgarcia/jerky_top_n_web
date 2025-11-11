@@ -46,6 +46,17 @@ class WebhookCustomerService {
       
       if (!user) {
         console.log(`⚠️ Customer ${shopifyCustomerId} not found in database - skipping update`);
+        
+        // Broadcast to admin room
+        this.broadcastAdminUpdate({
+          action: 'skipped',
+          shopifyCustomerId,
+          email: customerData.email,
+          firstName: customerData.first_name,
+          lastName: customerData.last_name,
+          reason: 'user_not_found'
+        });
+        
         return {
           success: true,
           action: 'skipped',
@@ -77,6 +88,17 @@ class WebhookCustomerService {
 
       if (!hasChanges) {
         console.log(`✅ Customer ${shopifyCustomerId} already up to date - no changes needed`);
+        
+        // Broadcast to admin room
+        this.broadcastAdminUpdate({
+          action: 'no_changes',
+          userId: user.id,
+          shopifyCustomerId,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName
+        });
+        
         return {
           success: true,
           action: 'no_changes',
@@ -98,6 +120,22 @@ class WebhookCustomerService {
 
       // Broadcast real-time update to user's active sessions
       this.broadcastProfileUpdate(user.id, updateData);
+      
+      // Broadcast to admin room
+      this.broadcastAdminUpdate({
+        action: 'updated',
+        userId: user.id,
+        shopifyCustomerId,
+        email: updateData.email,
+        firstName: updateData.firstName,
+        lastName: updateData.lastName,
+        changes: {
+          firstName: updateData.firstName !== user.firstName,
+          lastName: updateData.lastName !== user.lastName,
+          email: updateData.email !== user.email,
+          shopifyCreatedAt: shopifyCreatedAt && user.shopifyCreatedAt?.getTime() !== shopifyCreatedAt.getTime()
+        }
+      });
 
       return {
         success: true,
@@ -192,6 +230,23 @@ class WebhookCustomerService {
 
     } catch (error) {
       console.error(`⚠️ Error broadcasting profile update for user ${userId}:`, error);
+      // Don't throw - broadcast failure shouldn't fail the webhook
+    }
+  }
+
+  /**
+   * Broadcast customer webhook update to admin room
+   * @param {Object} data - Webhook update data
+   */
+  broadcastAdminUpdate(data) {
+    if (!this.wsGateway || !this.wsGateway.broadcastCustomerWebhookUpdate) {
+      return;
+    }
+
+    try {
+      this.wsGateway.broadcastCustomerWebhookUpdate(data);
+    } catch (error) {
+      console.error(`⚠️ Error broadcasting admin update:`, error);
       // Don't throw - broadcast failure shouldn't fail the webhook
     }
   }

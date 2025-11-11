@@ -3815,6 +3815,11 @@ if (databaseAvailable && storage) {
       const customerOrderItemsRouter = createCustomerOrdersRoutes(db);
       adminRouter.use(customerOrderItemsRouter);
       
+      // Add customer webhooks route
+      const createCustomerWebhooksRoutes = require('./server/routes/admin/customerWebhooks');
+      const customerWebhooksRouter = createCustomerWebhooksRoutes();
+      adminRouter.use(customerWebhooksRouter);
+      
       // Add Sentry monitoring route
       const createSentryRoutes = require('./server/routes/admin/sentry');
       const sentryRouter = createSentryRoutes(storage);
