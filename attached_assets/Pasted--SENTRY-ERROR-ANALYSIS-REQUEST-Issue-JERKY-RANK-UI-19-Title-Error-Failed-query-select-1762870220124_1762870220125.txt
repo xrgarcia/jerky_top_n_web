@@ -1,0 +1,329 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-19
+Title: Error: Failed query: select "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at" from "customer_order_items" where "customer_order_items"."o...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-10-31T01:02:07.354000Z
+Last Seen: 2025-11-11T09:02:51Z
+Event Count: 3
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at" from "customer_order_items" where "customer_order_items"."o...
+
+--- CULPRIT ---
+POST /api/webhooks/shopify/orders
+
+--- STACK TRACE ---
+Error: Connection terminated unexpectedly
+  at anonymous (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at anonymous (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+Error: Failed query: select "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at" from "customer_order_items" where "customer_order_items"."order_number" = $1
+params: JK3825343199
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/server/routes/webhooks.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T08:23:25.137000Z] console (info): 👋 WebSocket client disconnected: CYf-N2CDyGbYG7WLAAHk
+[2025-11-11T08:23:25.137000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:23:26.714000Z] console (info): ✅ WebSocket client connected: hXGryBSw20rtFJS4AAHo
+[2025-11-11T08:23:26.847000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T08:23:27.340000Z] console (info): [Filtered]
+[2025-11-11T08:23:57.410000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T08:26:38.024000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:28:27.685000Z] console (info): 👋 WebSocket client disconnected: hXGryBSw20rtFJS4AAHo
+[2025-11-11T08:28:27.685000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:28:29.278000Z] console (info): ✅ WebSocket client connected: IcB4XtED2HfA00z-AAHq
+[2025-11-11T08:28:29.416000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T08:28:31.903000Z] console (info): [Filtered]
+[2025-11-11T08:29:01.974000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T08:31:18.283000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:31:38.332000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:32:18.374000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:32:18.374000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:32:38.391000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:33:18.460000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:33:30.249000Z] console (info): 👋 WebSocket client disconnected: IcB4XtED2HfA00z-AAHq
+[2025-11-11T08:33:30.249000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:33:31.475000Z] console (info): ✅ WebSocket client connected: YqdKUdjkokQHXBVRAAHs
+[2025-11-11T08:33:31.522000Z] console (info): [Filtered]
+[2025-11-11T08:33:38.477000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:34:38.561000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:34:58.569000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:35:38.604000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:36:38.675000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:36:58.723000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:37:38.731000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:37:58.747000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:38:32.446000Z] console (info): 👋 WebSocket client disconnected: YqdKUdjkokQHXBVRAAHs
+[2025-11-11T08:38:32.446000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:38:33.259000Z] console (info): ✅ WebSocket client connected: 408fpqEWk79EgJ8sAAHu
+[2025-11-11T08:38:33.440000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T08:38:33.495000Z] console (info): [Filtered]
+[2025-11-11T08:38:38.779000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:39:03.543000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T08:39:18.822000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:39:38.848000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:39:38.871000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:40:18.903000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:40:18.904000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:40:38.920000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:40:58.943000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:41:38.979000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:43:19.074000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:43:34.232000Z] console (info): 👋 WebSocket client disconnected: 408fpqEWk79EgJ8sAAHu
+[2025-11-11T08:43:34.232000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:43:35.503000Z] console (info): ✅ WebSocket client connected: fR6oSNWBB1iEktvUAAHw
+[2025-11-11T08:43:35.639000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T08:43:35.693000Z] console (info): [Filtered]
+[2025-11-11T08:44:05.737000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T08:45:19.216000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:45:39.253000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:47:59.417000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:48:36.474000Z] console (info): 👋 WebSocket client disconnected: fR6oSNWBB1iEktvUAAHw
+[2025-11-11T08:48:36.475000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:48:37.764000Z] console (info): ✅ WebSocket client connected: Q1aOK9OwnHn5DOfsAAHy
+[2025-11-11T08:48:37.805000Z] console (info): [Filtered]
+[2025-11-11T08:48:39.445000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:48:59.462000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:49:19.480000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:50:19.532000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:50:39.548000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:51:59.746000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:52:19.749000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:52:39.752000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:53:38.727000Z] console (info): 👋 WebSocket client disconnected: Q1aOK9OwnHn5DOfsAAHy
+[2025-11-11T08:53:38.727000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:53:40.353000Z] console (info): ✅ WebSocket client connected: G2SXrkbfnTxAQ9YfAAH0
+[2025-11-11T08:53:40.515000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T08:53:43.005000Z] console (info): [Filtered]
+[2025-11-11T08:54:13.077000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T08:56:00.280000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:57:00.332000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:57:00.340000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:57:20.351000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:58:00.408000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T08:58:41.323000Z] console (info): 👋 WebSocket client disconnected: G2SXrkbfnTxAQ9YfAAH0
+[2025-11-11T08:58:41.323000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-11T08:58:42.892000Z] console (info): ✅ WebSocket client connected: 2Bs3SOMinjzrnyA2AAH2
+[2025-11-11T08:58:42.940000Z] console (info): [Filtered]
+[2025-11-11T09:01:00.594000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T09:01:20.645000Z] console (error): ❌ Worker error: Error: write EPIPE
+[2025-11-11T09:01:46.084000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T09:01:46.086000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T09:02:16.136000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T09:02:16.138000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T09:02:51.699000Z] console (info): 📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+[2025-11-11T09:02:51.699000Z] console (info): ✅ Webhook signature verified
+[2025-11-11T09:02:51.699000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343199
+[2025-11-11T09:02:51.699000Z] console (info): 📦 Processing order JK3825343199: 1 line items
+[2025-11-11T09:02:51.844000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-11T09:02:51.890000Z] console (info): ✅ Found existing user by Shopify ID: 7282 (floors2001@aol.com)
+[2025-11-11T09:02:51.892000Z] console (error): ❌ Database client error: [object Object]
+[2025-11-11T09:02:51.893000Z] console (error): Full client error details: {
+  "stack": "Error: Connection terminated unexpectedly\n    at An.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1009:76)\n    at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:326:95)\n    at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at S.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:970:58)\n    at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:316:79)\n    at WebSocket.<anonymous> (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:402:74)\n    at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:290:14)\n    at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:220:9)\n    at WebSocket.emit (node:events:524:28)\n    at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:272:10)",
+  "message": "Connection terminated unexpectedly"
+}
+[2025-11-11T09:02:51.894000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-11T09:02:51.894000Z] console (error): ❌ Error processing order webhook: Failed query: select "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at" from "customer_order_items" where "customer_order_items"."order_number" = $1
+params: JK3825343199 | Cause: Connection terminated unexpectedly
+[2025-11-11T09:02:51.894000Z] console (error): Full error: {
+  "stack": "Error: Failed query: select \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\" from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1\nparams: JK3825343199\n    at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:66:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:131:20)\n    at async WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:361:27)\n    at async WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:21:16)\n    at async /home/runner/workspace/server/routes/webhooks.js:38:22",
+  "message": "Failed query: select \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\" from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1\nparams: JK3825343199",
+  "query": "select \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\" from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1",
+  "params": [
+    "JK3825343199"
+  ],
+  "cause": {
+    "stack": "Error: Connection terminated unexpectedly\n    at /home/runner/workspace/node_modules/@neondatabase/serverless/index.js:1086:33\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async /home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:132:14\n    at async NeonPreparedQu...
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  topic: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+{
+  "apiTarget": null,
+  "method": "POST",
+  "url": "https://jerkyrankings.replit.app/api/webhooks/shopify/orders",
+  "query": [],
+  "fragment": null,
+  "data": "[Filtered]",
+  "headers": [
+    [
+      "Accept",
+      "*/*"
+    ],
+    [
+      "Accept-Encoding",
+      "gzip;q=1.0,deflate;q=0.6,identity;q=0.3"
+    ],
+    [
+      "Content-Length",
+      "10496"
+    ],
+    [
+      "Content-Type",
+      "application/json"
+    ],
+    [
+      "Host",
+      "jerkyrankings.replit.app"
+    ],
+    [
+      "Server-Timing",
+      "depproxy;dur=1762851771651, pid1req;dur=1762851771696"
+    ],
+    [
+      "Traceparent",
+      "00-b74fdeff97cc9b0db14e6648bd32d902-01194a44e6737948-01"
+    ],
+    [
+      "User-Agent",
+      "Shopify-Captain-Hook"
+    ],
+    [
+      "Via",
+      "1.1 google"
+    ],
+    [
+      "X-Cloud-Trace-Context",
+      "b74fdeff97cc9b0db14e6648bd32d902/79176128240253256;o=1"
+    ],
+    [
+      "X-Forwarded-For",
+      "34.134.122.19, 34.117.33.233, 35.191.75.25,104.154.182.220"
+    ],
+    [
+      "X-Forwarded-Host",
+      "jerkyrankings.replit.app"
+    ],
+    [
+      "X-Forwarded-Proto",
+      "https"
+    ],
+    [
+      "X-Replit-User-Bio",
+      ""
+    ],
+    [
+      "X-Replit-User-Id",
+      ""
+    ],
+    [
+      "X-Replit-User-Name",
+      ""
+    ],
+    [
+      "X-Replit-User-Profile-Image",
+      ""
+    ],
+    [
+      "X-Replit-User-Roles",
+      ""
+    ],
+    [
+      "X-Replit-User-Teams",
+      ""
+    ],
+    [
+      "X-Replit-User-Url",
+      ""
+    ],
+    [
+      "X-Shopify-Api-Version",
+      "2025-07"
+    ],
+    [
+      "X-Shopify-Event-Id",
+      "38b9ec89-6836-4d86-a20d-1dbe025c4995"
+    ],
+    [
+      "X-Shopify-Hmac-Sha256",
+      "UwPe+hDigMtaqLeSmMSoyk7PN46U+mLcfuvK9P5c0Pk="
+    ],
+    [
+      "X-Shopify-Order-Id",
+      "6833023058234"
+    ],
+    [
+      "X-Shopify-Shop-Domain",
+      "jerky-com.myshopify.com"
+    ],
+    [
+      "X-Shopify-Test",
+      "false"
+    ],
+    [
+      "X-Shopify-Topic",
+      "orders/updated"
+    ],
+    [
+      "X-Shopify-Triggered-At",
+      "2025-11-11T09:02:48.969113982Z"
+    ],
+    [
+      "X-Shopify-Webhook-Id",
+      "258b4659-b45a-4186-963c-3d77e72c1bff"
+    ]
+  ],
+  "cookies": [],
+  "env": null,
+  "inferredContentType": "application/json"
+}
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
