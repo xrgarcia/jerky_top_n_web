@@ -22,26 +22,52 @@ class ClassificationQueue {
    */
   async initialize() {
     try {
-      const redis = await redisClient.connect();
+      const baseClient = await redisClient.connect();
       
-      if (!redis) {
+      if (!baseClient) {
         console.warn('⚠️ Redis not available, classification queue disabled');
         return false;
       }
 
-      // BullMQ requires a Redis connection config
-      // We can extract the config from our existing ioredis client
-      const redisConfig = {
-        host: redis.options.host,
-        port: redis.options.port,
-        password: redis.options.password,
-        tls: redis.options.tls,
+      console.log('🔌 Creating dedicated Redis connection for classification queue...');
+      
+      // Duplicate the hardened RedisClient connection for BullMQ queue
+      // This ensures proper TLS, keepalive, and auth configuration
+      const queueConnection = baseClient.duplicate({
+        lazyConnect: false, // Connect immediately
+        keepAlive: 30000, // 30s keepalive (prevents EPIPE/ECONNRESET)
+        enableReadyCheck: true, // Wait for READY before accepting commands
         maxRetriesPerRequest: null, // Required for BullMQ
-        enableReadyCheck: false,
-      };
+      });
+
+      // Add error listener before connecting
+      queueConnection.on('error', (err) => {
+        console.error('❌ Classification queue Redis connection error:', err.message);
+      });
+
+      queueConnection.on('ready', () => {
+        console.log('✅ Classification queue Redis connection READY');
+      });
+
+      // Wait for connection to be ready
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Classification queue connection timeout after 10s'));
+        }, 10000);
+
+        queueConnection.once('ready', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        queueConnection.once('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
 
       this.queue = new Queue('user-classification', {
-        connection: redisConfig,
+        connection: queueConnection,
         defaultJobOptions: {
           attempts: 3, // Retry failed jobs up to 3 times
           backoff: {
@@ -59,7 +85,7 @@ class ClassificationQueue {
         },
       });
 
-      console.log('✅ Classification queue initialized');
+      console.log('✅ Classification queue initialized with hardened Redis connection');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize classification queue:', error);

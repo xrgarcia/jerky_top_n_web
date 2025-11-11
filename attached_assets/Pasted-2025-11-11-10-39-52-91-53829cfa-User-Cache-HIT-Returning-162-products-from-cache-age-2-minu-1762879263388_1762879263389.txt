@@ -1,0 +1,200 @@
+2025-11-11 10:39:52.91
+53829cfa
+User
+💾 Cache HIT: Returning 162 products from cache (age: 2 minutes)
+2025-11-11 10:39:52.91
+53829cfa
+User
+💾 RankingStats Cache HIT: Returning data (age: 1 minutes)
+2025-11-11 10:39:52.91
+53829cfa
+User
+💾 Metadata Cache HIT: Returning data (age: 1 minutes)
+2025-11-11 10:39:52.92
+53829cfa
+User
+📦 Admin products endpoint: Returning 162 products
+2025-11-11 10:39:52.98
+53829cfa
+User
+👥 Returning 20 users
+2025-11-11 10:39:55.26
+53829cfa
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-11 10:39:55.26
+53829cfa
+User
+✅ Webhook signature verified
+2025-11-11 10:39:55.27
+53829cfa
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1762879195268)
+2025-11-11 10:39:55.27
+53829cfa
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1762879195268)
+2025-11-11 10:39:55.28
+53829cfa
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762879195268)
+2025-11-11 10:39:55.28
+53829cfa
+User
+📦 Processing orders/updated webhook for order JK3825342753
+2025-11-11 10:39:55.28
+53829cfa
+User
+📦 Processing order JK3825342753: 1 line items
+2025-11-11 10:39:55.41
+53829cfa
+User
+🔌 Webhook pool client connected { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-11 10:39:55.45
+53829cfa
+User
+✅ Found existing user by Shopify ID: 1849 (andra.spieles@icloud.com)
+2025-11-11 10:39:55.54
+53829cfa
+User
+✅ Processed 1 line items for order JK3825342753 (user: 1849)
+2025-11-11 10:39:55.54
+53829cfa
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825342753
+2025-11-11 10:39:55.54
+53829cfa
+User
+🔄 Invalidating purchase history cache for user 1849
+2025-11-11 10:39:55.54
+53829cfa
+User
+🗑️ Purchase cache invalidated for user 1849
+2025-11-11 10:39:55.54
+53829cfa
+User
+🔄 Recalculating ranking stats for 1 product(s)
+2025-11-11 10:39:55.58
+53829cfa
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-11 10:39:55.58
+53829cfa
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-11 10:39:55.58
+53829cfa
+User
+📋 Enqueued classification job for user 1849 (reason: purchase)
+2025-11-11 10:39:55.58
+53829cfa
+User
+📋 Enqueued classification job for user 1849 (reason: purchase)
+2025-11-11 10:39:55.58
+53829cfa
+User
+✅ Order webhook side effects completed
+2025-11-11 10:39:55.58
+53829cfa
+User
+✅ Webhook processed: orders/orders/updated (298ms)
+2025-11-11 10:39:55.58
+53829cfa
+User
+✅ Webhook job completed: orders/orders/updated (321ms)
+2025-11-11 10:39:56.21
+53829cfa
+User
+📊 Fetching Sentry issues: https://sentry.io/api/0/projects/jerkycom/jerky-rank-ui/issues/?query=is%3Aunresolved+environment%3APRODUCTION&statsPeriod=14d
+2025-11-11 10:40:00.07
+53829cfa
+User
+✅ Fetched 19 Sentry issues (filtered by: is:unresolved environment:PRODUCTION)
+2025-11-11 10:40:00.20
+53829cfa
+User
+📊 Fetching Sentry issues: https://sentry.io/api/0/projects/jerkycom/jerky-rank-ui/issues/?query=is%3Aunresolved+environment%3APRODUCTION&statsPeriod=14d
+2025-11-11 10:40:04.61
+53829cfa
+User
+✅ Fetched 19 Sentry issues (filtered by: is:unresolved environment:PRODUCTION)
+2025-11-11 10:40:14.53
+53829cfa
+User
+🏷️ Processing products/update webhook for product 9902463058234 (The Perfect Gift Combo Pack)
+2025-11-11 10:40:14.64
+53829cfa
+User
+✅ Webhook job completed: products/products/update (119ms)
+2025-11-11 10:40:16.73
+53829cfa
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/create:1762879216736)
+2025-11-11 10:40:16.92
+53829cfa
+User
+✅ Order webhook side effects completed
+2025-11-11 10:40:16.92
+53829cfa
+User
+📋 Enqueued classification job for user 7684 (reason: purchase)
+2025-11-11 10:40:16.92
+53829cfa
+User
+📋 Enqueued classification job for user 7684 (reason: purchase)
+2025-11-11 10:40:16.92
+53829cfa
+User
+✅ Webhook processed: orders/orders/create (175ms)
+2025-11-11 10:40:16.92
+53829cfa
+User
+✅ Webhook job completed: orders/orders/create (192ms)
+2025-11-11 10:40:22.90
+53829cfa
+User
+🔌 Database client removed from pool { totalConnections: 2, idleConnections: 2 }
+2025-11-11 10:40:22.97
+53829cfa
+User
+🔌 Database client removed from pool { totalConnections: 1, idleConnections: 1 }
+2025-11-11 10:40:25.34
+53829cfa
+User
+🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762879225328)
+2025-11-11 10:40:25.38
+53829cfa
+User
+✅ Found existing user by Shopify ID: 7684 (joys120m@comcast.net)
+2025-11-11 10:40:25.46
+53829cfa
+User
+📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343649
+2025-11-11 10:40:25.46
+53829cfa
+User
+🗑️ Purchase cache invalidated for user 7684
+2025-11-11 10:40:25.51
+53829cfa
+User
+📊 Recalculated ranking stats for 0 product(s)
+2025-11-11 10:40:25.51
+53829cfa
+User
+📋 Enqueued classification job for user 7684 (reason: purchase)
+2025-11-11 10:40:25.51
+53829cfa
+User
+📋 Enqueued classification job for user 7684 (reason: purchase)
+2025-11-11 10:40:25.51
+53829cfa
+User
+✅ Order webhook side effects completed
+2025-11-11 10:40:25.51
+53829cfa
+User
+✅ Webhook job completed: orders/orders/updated (188ms)
+2025-11-11 10:40:30.20
+53829cfa
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 

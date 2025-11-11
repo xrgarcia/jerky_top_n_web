@@ -26,30 +26,58 @@ class ClassificationWorker {
    */
   async initialize() {
     try {
-      // Get the correct Redis URL based on environment
-      const isProduction = process.env.REPLIT_DEPLOYMENT === '1';
-      const redisUrl = isProduction 
-        ? process.env.UPSTASH_REDIS_URL_PROD 
-        : process.env.UPSTASH_REDIS_URL;
+      // Ensure Redis client is connected
+      const baseClient = await redisClient.connect();
       
-      if (!redisUrl) {
-        console.warn('⚠️ Redis URL not available, classification worker disabled');
+      if (!baseClient) {
+        console.warn('⚠️ Redis not available, classification worker disabled');
         return false;
       }
 
-      // Ensure Redis client is connected (for other operations)
-      await redisClient.connect();
+      console.log('🔌 Creating dedicated Redis connection for classification worker...');
+      
+      // Duplicate the hardened RedisClient connection for BullMQ worker
+      // This ensures proper TLS, keepalive, and auth configuration
+      // CRITICAL: Must use the same Redis instance as ClassificationQueue for job consumption
+      const workerConnection = baseClient.duplicate({
+        lazyConnect: false, // Connect immediately
+        keepAlive: 30000, // 30s keepalive (prevents EPIPE/ECONNRESET)
+        enableReadyCheck: true, // Wait for READY before accepting commands
+        maxRetriesPerRequest: null, // Required by BullMQ Worker
+      });
 
-      // BullMQ Worker accepts Redis URL directly
+      // Add error listener before connecting
+      workerConnection.on('error', (err) => {
+        console.error('❌ Classification worker Redis connection error:', err.message);
+      });
+
+      workerConnection.on('ready', () => {
+        console.log('✅ Classification worker Redis connection READY');
+      });
+
+      // Wait for connection to be ready
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          reject(new Error('Classification worker connection timeout after 10s'));
+        }, 10000);
+
+        workerConnection.once('ready', () => {
+          clearTimeout(timeout);
+          resolve();
+        });
+
+        workerConnection.once('error', (err) => {
+          clearTimeout(timeout);
+          reject(err);
+        });
+      });
+
+      // BullMQ Worker uses the duplicated connection
       this.worker = new Worker(
         'user-classification',
         async (job) => this.processJob(job),
         {
-          connection: {
-            url: redisUrl,
-            maxRetriesPerRequest: null,
-            enableReadyCheck: false,
-          },
+          connection: workerConnection,
           concurrency: 5, // Process up to 5 jobs concurrently
           limiter: {
             max: 10, // Max 10 jobs
@@ -72,7 +100,7 @@ class ClassificationWorker {
         console.error('❌ Worker error:', err);
       });
 
-      console.log('✅ Classification worker initialized (concurrency: 5)');
+      console.log('✅ Classification worker initialized with hardened Redis connection (concurrency: 5)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize classification worker:', error);
