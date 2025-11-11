@@ -1,5 +1,18 @@
 /* Wood-inspired, earth-tone toast notifications for admin dashboard */
 
+/* react-hot-toast container positioning - ensures toasts are visible */
+[class*="go"][role="region"] {
+  position: fixed !important;
+  top: 16px !important;
+  right: 16px !important;
+  z-index: 999999 !important;
+  pointer-events: none !important;
+}
+
+[class*="go"][role="region"] > div {
+  pointer-events: auto !important;
+}
+
 /* Base toast styling */
 .admin-toast {
   position: relative;
