@@ -78,6 +78,50 @@ class ProductsService {
   }
   
   /**
+   * Get specific products by their Shopify IDs with complete data
+   * Leverages existing cache and enrichment logic for consistency
+   * 
+   * @param {Array<string>} productIds - Array of Shopify product IDs
+   * @param {Object} options - Options for metadata and ranking stats inclusion
+   * @returns {Promise<Array>} Enriched products matching the requested IDs
+   */
+  async getProductsByIds(productIds, options = {}) {
+    const { includeMetadata = true, includeRankingStats = true } = options;
+    
+    // Guard against empty/invalid input
+    if (!productIds || productIds.length === 0) {
+      return [];
+    }
+    
+    // 1. Fetch all products from Shopify cache
+    const { products } = await this.fetchShopifyProducts();
+    
+    // 2. Get ranking stats (with 30-min cache)
+    let rankingStats = {};
+    if (includeRankingStats) {
+      rankingStats = await this._getRankingStats();
+    }
+    
+    // 3. Get metadata (with 30-min cache)
+    let metadataMap = {};
+    if (includeMetadata) {
+      metadataMap = await this._getMetadata();
+    }
+    
+    // 4. Create a Set for O(1) lookup
+    const requestedIds = new Set(productIds.map(id => id.toString()));
+    
+    // 5. Filter to requested products and enrich them
+    const matchedProducts = products
+      .filter(product => requestedIds.has(product.id.toString()))
+      .map(product => this._enrichProduct(product, rankingStats, metadataMap));
+    
+    console.log(`🎯 Found ${matchedProducts.length}/${productIds.length} products by IDs`);
+    
+    return matchedProducts;
+  }
+  
+  /**
    * Get ranking statistics for all products
    * Uses 30-minute cache for performance
    */

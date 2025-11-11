@@ -8,6 +8,9 @@ const Sentry = require('@sentry/node');
  * Handles fetching user profile data including rankings, purchases, and timeline moments
  */
 class ProfileRepository {
+  constructor(productsService = null) {
+    this.productsService = productsService;
+  }
   /**
    * Get user profile data with basic stats (privacy-aware, sanitized DTO)
    * @param {number} userId - The user's ID
@@ -93,19 +96,14 @@ class ProfileRepository {
    */
   async getTopRankedProducts(userId) {
     try {
+      // 1. Query rankings from database (just positions and IDs)
       const topRankings = await db
         .select({
           shopifyProductId: productRankings.shopifyProductId,
           rankPosition: productRankings.ranking,
-          rankedAt: productRankings.createdAt,
-          title: productsMetadata.title,
-          imageUrl: productsMetadata.imageUrl,
-          vendor: productsMetadata.vendor,
-          primaryFlavor: productsMetadata.primaryFlavor,
-          animalType: productsMetadata.animalType
+          rankedAt: productRankings.createdAt
         })
         .from(productRankings)
-        .leftJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
         .where(and(
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
@@ -113,7 +111,46 @@ class ProfileRepository {
         .orderBy(asc(productRankings.ranking))
         .limit(5);
 
-      return topRankings;
+      if (topRankings.length === 0) {
+        return [];
+      }
+
+      // 2. Get enriched product data from ProductsService (golden source)
+      if (!this.productsService) {
+        console.warn('⚠️ ProductsService not injected into ProfileRepository');
+        return topRankings;
+      }
+
+      const productIds = topRankings.map(r => r.shopifyProductId);
+      const enrichedProducts = await this.productsService.getProductsByIds(productIds);
+
+      // 3. Merge ranking positions with enriched product data
+      const enrichedRankings = topRankings.map(ranking => {
+        const product = enrichedProducts.find(p => p.id === ranking.shopifyProductId);
+        
+        // Defensive fallback: if product not found (deleted/cache miss), use minimal placeholder
+        if (!product) {
+          console.warn(`⚠️ Product ${ranking.shopifyProductId} not found in ProductsService for user ${userId}`);
+          return {
+            id: ranking.shopifyProductId,
+            title: 'Product Unavailable',
+            image: null,
+            vendor: null,
+            primaryFlavor: null,
+            animalType: null,
+            rankPosition: ranking.rankPosition,
+            rankedAt: ranking.rankedAt
+          };
+        }
+        
+        return {
+          ...product,
+          rankPosition: ranking.rankPosition,
+          rankedAt: ranking.rankedAt
+        };
+      });
+
+      return enrichedRankings;
     } catch (error) {
       Sentry.captureException(error, {
         tags: { service: 'profile-repository', method: 'getTopRankedProducts' },
@@ -131,48 +168,100 @@ class ProfileRepository {
    */
   async getTimelineMoments(userId) {
     try {
-      // Get all purchases
+      // 1. Get all purchases (just IDs and dates)
       const purchases = await db
         .select({
           type: sql`'purchase'`,
           date: customerOrderItems.orderDate,
           orderNumber: customerOrderItems.orderNumber,
           shopifyProductId: customerOrderItems.shopifyProductId,
-          quantity: customerOrderItems.quantity,
-          title: productsMetadata.title,
-          imageUrl: productsMetadata.imageUrl,
-          vendor: productsMetadata.vendor
+          quantity: customerOrderItems.quantity
         })
         .from(customerOrderItems)
-        .leftJoin(productsMetadata, eq(customerOrderItems.shopifyProductId, productsMetadata.shopifyProductId))
         .where(eq(customerOrderItems.userId, userId))
         .orderBy(desc(customerOrderItems.orderDate));
 
-      // Get all rankings
+      // 2. Get all rankings (just IDs and dates)
       const rankings = await db
         .select({
           type: sql`'ranking'`,
           date: productRankings.createdAt,
           shopifyProductId: productRankings.shopifyProductId,
-          rankPosition: productRankings.ranking,
-          title: productsMetadata.title,
-          imageUrl: productsMetadata.imageUrl,
-          vendor: productsMetadata.vendor
+          rankPosition: productRankings.ranking
         })
         .from(productRankings)
-        .leftJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
         .where(and(
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
         ))
         .orderBy(desc(productRankings.createdAt));
 
-      // Merge and sort by date
-      const allEvents = [...purchases, ...rankings].sort((a, b) => 
+      // 3. Get all unique product IDs
+      const allProductIds = [...new Set([
+        ...purchases.map(p => p.shopifyProductId),
+        ...rankings.map(r => r.shopifyProductId)
+      ])];
+
+      // 4. Get enriched product data from ProductsService
+      let enrichedProductsMap = {};
+      if (this.productsService && allProductIds.length > 0) {
+        const enrichedProducts = await this.productsService.getProductsByIds(allProductIds);
+        enrichedProductsMap = Object.fromEntries(
+          enrichedProducts.map(p => [p.id, p])
+        );
+      }
+
+      // 5. Enrich purchases and rankings with product data
+      const enrichedPurchases = purchases.map(p => {
+        const product = enrichedProductsMap[p.shopifyProductId];
+        
+        // Defensive fallback: if product not found, use minimal placeholder
+        if (!product) {
+          console.warn(`⚠️ Product ${p.shopifyProductId} not found in ProductsService for user ${userId} (purchase)`);
+          return {
+            ...p,
+            title: 'Product Unavailable',
+            image: null,
+            vendor: null
+          };
+        }
+        
+        return {
+          ...p,
+          title: product.title,
+          image: product.image,
+          vendor: product.vendor
+        };
+      });
+
+      const enrichedRankings = rankings.map(r => {
+        const product = enrichedProductsMap[r.shopifyProductId];
+        
+        // Defensive fallback: if product not found, use minimal placeholder
+        if (!product) {
+          console.warn(`⚠️ Product ${r.shopifyProductId} not found in ProductsService for user ${userId} (ranking)`);
+          return {
+            ...r,
+            title: 'Product Unavailable',
+            image: null,
+            vendor: null
+          };
+        }
+        
+        return {
+          ...r,
+          title: product.title,
+          image: product.image,
+          vendor: product.vendor
+        };
+      });
+
+      // 6. Merge and sort by date
+      const allEvents = [...enrichedPurchases, ...enrichedRankings].sort((a, b) => 
         new Date(b.date) - new Date(a.date)
       );
 
-      // Group into timeline moments (by date + type)
+      // 7. Group into timeline moments (by date + type)
       const moments = this._groupIntoMoments(allEvents);
 
       return moments;
@@ -193,16 +282,12 @@ class ProfileRepository {
    */
   async getAllRankingsWithPurchases(userId) {
     try {
+      // 1. Query rankings with purchase dates from database
       const rankings = await db
         .select({
           shopifyProductId: productRankings.shopifyProductId,
           rankPosition: productRankings.ranking,
           rankedAt: productRankings.createdAt,
-          title: productsMetadata.title,
-          imageUrl: productsMetadata.imageUrl,
-          vendor: productsMetadata.vendor,
-          primaryFlavor: productsMetadata.primaryFlavor,
-          animalType: productsMetadata.animalType,
           // Get most recent purchase date for this product
           purchaseDate: sql`(
             SELECT MIN(order_date) 
@@ -212,14 +297,54 @@ class ProfileRepository {
           )`
         })
         .from(productRankings)
-        .leftJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
         .where(and(
           eq(productRankings.userId, userId),
           eq(productRankings.rankingListId, 'topN')
         ))
         .orderBy(asc(productRankings.ranking));
 
-      return rankings;
+      if (rankings.length === 0) {
+        return [];
+      }
+
+      // 2. Get enriched product data from ProductsService
+      if (!this.productsService) {
+        console.warn('⚠️ ProductsService not injected into ProfileRepository');
+        return rankings;
+      }
+
+      const productIds = rankings.map(r => r.shopifyProductId);
+      const enrichedProducts = await this.productsService.getProductsByIds(productIds);
+
+      // 3. Merge ranking data with enriched product data
+      const enrichedRankings = rankings.map(ranking => {
+        const product = enrichedProducts.find(p => p.id === ranking.shopifyProductId);
+        
+        // Defensive fallback: if product not found (deleted/cache miss), use minimal placeholder
+        if (!product) {
+          console.warn(`⚠️ Product ${ranking.shopifyProductId} not found in ProductsService for user ${userId}`);
+          return {
+            id: ranking.shopifyProductId,
+            title: 'Product Unavailable',
+            image: null,
+            vendor: null,
+            primaryFlavor: null,
+            animalType: null,
+            rankPosition: ranking.rankPosition,
+            rankedAt: ranking.rankedAt,
+            purchaseDate: ranking.purchaseDate
+          };
+        }
+        
+        return {
+          ...product,
+          rankPosition: ranking.rankPosition,
+          rankedAt: ranking.rankedAt,
+          purchaseDate: ranking.purchaseDate
+        };
+      });
+
+      return enrichedRankings;
     } catch (error) {
       Sentry.captureException(error, {
         tags: { service: 'profile-repository', method: 'getAllRankingsWithPurchases' },
@@ -298,4 +423,4 @@ class ProfileRepository {
   }
 }
 
-module.exports = new ProfileRepository();
+module.exports = ProfileRepository;

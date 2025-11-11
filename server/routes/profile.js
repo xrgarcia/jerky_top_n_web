@@ -12,9 +12,12 @@ const { ObjectStorageService } = require('../objectStorage');
 const ProfileRepository = require('../repositories/ProfileRepository');
 
 function createProfileRoutes(services) {
-  const { db, storage, leaderboardManager, achievementRepo } = services;
+  const { db, storage, leaderboardManager, achievementRepo, productsService } = services;
   const router = express.Router();
   const objectStorage = new ObjectStorageService();
+  
+  // Instantiate ProfileRepository with ProductsService (golden source for product data)
+  const profileRepository = new ProfileRepository(productsService);
 
   // Configure multer for profile image uploads
   const profileImageUpload = multer({
@@ -98,10 +101,10 @@ function createProfileRoutes(services) {
         allRankings,
         achievements
       ] = await Promise.all([
-        ProfileRepository.getUserProfileData(userId),
-        ProfileRepository.getTopRankedProducts(userId),
-        ProfileRepository.getTimelineMoments(userId),
-        ProfileRepository.getAllRankingsWithPurchases(userId),
+        profileRepository.getUserProfileData(userId),
+        profileRepository.getTopRankedProducts(userId),
+        profileRepository.getTimelineMoments(userId),
+        profileRepository.getAllRankingsWithPurchases(userId),
         achievementRepo.getUserAchievements(userId)
       ]);
 
@@ -158,22 +161,22 @@ function createProfileRoutes(services) {
           engagementScore: position?.engagementScore || 0
         },
         topProducts: topProducts.map(p => ({
-          shopifyProductId: p.shopifyProductId,
+          shopifyProductId: p.id,
           rankPosition: p.rankPosition,
           title: p.title,
-          imageUrl: p.imageUrl,
+          imageUrl: p.image,
           vendor: p.vendor,
           primaryFlavor: p.primaryFlavor,
           animalType: p.animalType
         })),
         timeline: timelineMoments,
         rankings: allRankings.map(r => ({
-          shopifyProductId: r.shopifyProductId,
+          shopifyProductId: r.id,
           rankPosition: r.rankPosition,
           rankedAt: r.rankedAt,
           purchaseDate: r.purchaseDate,
           title: r.title,
-          imageUrl: r.imageUrl,
+          imageUrl: r.image,
           vendor: r.vendor,
           primaryFlavor: r.primaryFlavor,
           animalType: r.animalType
