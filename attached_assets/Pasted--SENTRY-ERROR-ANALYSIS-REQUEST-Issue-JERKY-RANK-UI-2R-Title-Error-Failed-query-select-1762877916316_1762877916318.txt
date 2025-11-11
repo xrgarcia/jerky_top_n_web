@@ -1,0 +1,1227 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2R
+Title: Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "p...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T02:11:03.105000Z
+Last Seen: 2025-11-11T16:05:44Z
+Event Count: 4
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "p...
+
+--- CULPRIT ---
+AchievementRepository.getAllAchievements(server.repositories:AchievementRepository)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "points", "is_active", "created_at", "updated_at" from "achievements"
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at AchievementRepository.getAllAchievements (/home/runner/workspace/server/repositories/AchievementRepository.js:?:?) [in app]
+  at EngagementManager.seedAchievements (/home/runner/workspace/server/services/EngagementManager.js:?:?) [in app]
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-11T16:05:24.817000Z] console (error): ❌ seeding achievement rank_50 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: rank_50,Half Century,Rank 50 products,⭐,gold,ranking,legacy,{"type":"rank_count","value":50},0,200
+[2025-11-11T16:05:24.817000Z] console (error): ❌ Failed to seed achievement rank_50: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: rank_50,Half Century,Rank 50 products,⭐,gold,ranking,legacy,{"type":"rank_count","value":50},0,200 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: rank_50,Half Century,Rank 50 products,⭐,gold,ranking,legacy,{"type":"rank_count","value":50},0,200
+[2025-11-11T16:05:24.821000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:24.822000Z] console (info): ⏳ seeding achievement streak_3 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:25.324000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:25.325000Z] console (info): ⏳ seeding achievement streak_3 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:26.327000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:26.328000Z] console (error): ❌ seeding achievement streak_3 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_3,Getting Consistent,Maintain a 3-day ranking streak,🔥,bronze,streak,legacy,{"type":"streak_days","value":3},0,30
+[2025-11-11T16:05:26.328000Z] console (error): ❌ Failed to seed achievement streak_3: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_3,Getting Consistent,Maintain a 3-day ranking streak,🔥,bronze,streak,legacy,{"type":"streak_days","value":3},0,30 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_3,Getting Consistent,Maintain a 3-day ranking streak,🔥,bronze,streak,legacy,{"type":"streak_days","value":3},0,30
+[2025-11-11T16:05:26.331000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:26.331000Z] console (info): ⏳ seeding achievement streak_7 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:26.835000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:26.835000Z] console (info): ⏳ seeding achievement streak_7 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:27.838000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:27.838000Z] console (error): ❌ seeding achievement streak_7 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_7,Week Warrior,Maintain a 7-day ranking streak,🔥,silver,streak,legacy,{"type":"streak_days","value":7},0,100
+[2025-11-11T16:05:27.838000Z] console (error): ❌ Failed to seed achievement streak_7: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_7,Week Warrior,Maintain a 7-day ranking streak,🔥,silver,streak,legacy,{"type":"streak_days","value":7},0,100 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_7,Week Warrior,Maintain a 7-day ranking streak,🔥,silver,streak,legacy,{"type":"streak_days","value":7},0,100
+[2025-11-11T16:05:27.842000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:27.843000Z] console (info): ⏳ seeding achievement streak_30 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:28.346000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:28.346000Z] console (info): ⏳ seeding achievement streak_30 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:28.570000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-11T16:05:29.349000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:29.349000Z] console (error): ❌ seeding achievement streak_30 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_30,Monthly Master,Maintain a 30-day ranking streak,🔥,gold,streak,legacy,{"type":"streak_days","value":30},0,500
+[2025-11-11T16:05:29.349000Z] console (error): ❌ Failed to seed achievement streak_30: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_30,Monthly Master,Maintain a 30-day ranking streak,🔥,gold,streak,legacy,{"type":"streak_days","value":30},0,500 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_30,Monthly Master,Maintain a 30-day ranking streak,🔥,gold,streak,legacy,{"type":"streak_days","value":30},0,500
+[2025-11-11T16:05:29.352000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:29.352000Z] console (info): ⏳ seeding achievement streak_100 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:29.856000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:29.856000Z] console (info): ⏳ seeding achievement streak_100 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:30.860000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:30.860000Z] console (error): ❌ seeding achievement streak_100 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_100,Unstoppable,Maintain a 100-day ranking streak,🔥,platinum,streak,legacy,{"type":"streak_days","value":100},0,1000
+[2025-11-11T16:05:30.860000Z] console (error): ❌ Failed to seed achievement streak_100: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_100,Unstoppable,Maintain a 100-day ranking streak,🔥,platinum,streak,legacy,{"type":"streak_days","value":100},0,1000 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: streak_100,Unstoppable,Maintain a 100-day ranking streak,🔥,platinum,streak,legacy,{"type":"streak_days","value":100},0...
+[2025-11-11T16:05:30.863000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:30.864000Z] console (info): ⏳ seeding achievement explorer failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:31.368000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:31.368000Z] console (info): ⏳ seeding achievement explorer failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:32.373000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:32.373000Z] console (error): ❌ seeding achievement explorer failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: explorer,Taste Explorer,Try ranking products from your first brand,🗺️,bronze,discovery,legacy,{"type":"unique_brands","value":1},0,50
+[2025-11-11T16:05:32.373000Z] console (error): ❌ Failed to seed achievement explorer: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: explorer,Taste Explorer,Try ranking products from your first brand,🗺️,bronze,discovery,legacy,{"type":"unique_brands","value":1},0,50 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: explorer,Taste Explorer,Try ranking products from your first brand,🗺️,bronze,discovery,legacy,{"type":"unique_...
+[2025-11-11T16:05:32.377000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:32.377000Z] console (info): ⏳ seeding achievement adventurer failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:32.881000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:32.881000Z] console (info): ⏳ seeding achievement adventurer failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:33.884000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:33.885000Z] console (error): ❌ seeding achievement adventurer failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: adventurer,Flavor Adventurer,Try ranking products from 2 different brands,🌍,silver,discovery,legacy,{"type":"unique_brands","value":2},0,150
+[2025-11-11T16:05:33.885000Z] console (error): ❌ Failed to seed achievement adventurer: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: adventurer,Flavor Adventurer,Try ranking products from 2 different brands,🌍,silver,discovery,legacy,{"type":"unique_brands","value":2},0,150 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: adventurer,Flavor Adventurer,Try ranking products from 2 different brands,🌍,silver,discovery,legacy,{...
+[2025-11-11T16:05:33.889000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:33.889000Z] console (info): ⏳ seeding achievement globe_trotter failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:34.392000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:34.392000Z] console (info): ⏳ seeding achievement globe_trotter failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:35.394000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:35.395000Z] console (error): ❌ seeding achievement globe_trotter failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: globe_trotter,Global Taster,Try ranking products from all 3 brands,✈️,gold,discovery,legacy,{"type":"unique_brands","value":3},0,300
+[2025-11-11T16:05:35.395000Z] console (error): ❌ Failed to seed achievement globe_trotter: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: globe_trotter,Global Taster,Try ranking products from all 3 brands,✈️,gold,discovery,legacy,{"type":"unique_brands","value":3},0,300 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: globe_trotter,Global Taster,Try ranking products from all 3 brands,✈️,gold,discovery,legacy,{"type":"unique_...
+[2025-11-11T16:05:35.398000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:35.398000Z] console (info): ⏳ seeding achievement animal_specialist failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:35.902000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:35.903000Z] console (info): ⏳ seeding achievement animal_specialist failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:36.905000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:36.906000Z] console (error): ❌ seeding achievement animal_specialist failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: animal_specialist,Animal Specialist,Rank all products from the same animal type,🎓,silver,discovery,legacy,{"type":"complete_animal_category","value":1},0,200
+[2025-11-11T16:05:36.906000Z] console (error): ❌ Failed to seed achievement animal_specialist: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: animal_specialist,Animal Specialist,Rank all products from the same animal type,🎓,silver,discovery,legacy,{"type":"complete_animal_category","value":1},0,200 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: animal_specialist,Animal Specialist,Rank all products from the same animal typ...
+[2025-11-11T16:05:36.909000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:36.909000Z] console (info): ⏳ seeding achievement top_10 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:37.413000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:37.413000Z] console (info): ⏳ seeding achievement top_10 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:38.416000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:38.416000Z] console (error): ❌ seeding achievement top_10 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_10,Top 10 Ranker,Reach the top 10 on the leaderboard,🏅,gold,social,legacy,{"type":"leaderboard_position","value":10},0,500
+[2025-11-11T16:05:38.416000Z] console (error): ❌ Failed to seed achievement top_10: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_10,Top 10 Ranker,Reach the top 10 on the leaderboard,🏅,gold,social,legacy,{"type":"leaderboard_position","value":10},0,500 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_10,Top 10 Ranker,Reach the top 10 on the leaderboard,🏅,gold,social,legacy,{"type":"leaderboard_position","value":10...
+[2025-11-11T16:05:38.419000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:38.419000Z] console (info): ⏳ seeding achievement top_3 failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:38.923000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:38.923000Z] console (info): ⏳ seeding achievement top_3 failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:39.929000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:39.929000Z] console (error): ❌ seeding achievement top_3 failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_3,Podium Finisher,Reach the top 3 on the leaderboard,🥇,platinum,social,legacy,{"type":"leaderboard_position","value":3},0,1000
+[2025-11-11T16:05:39.929000Z] console (error): ❌ Failed to seed achievement top_3: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_3,Podium Finisher,Reach the top 3 on the leaderboard,🥇,platinum,social,legacy,{"type":"leaderboard_position","value":3},0,1000 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: top_3,Podium Finisher,Reach the top 3 on the leaderboard,🥇,platinum,social,legacy,{"type":"leaderboard_position","va...
+[2025-11-11T16:05:39.933000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:39.933000Z] console (info): ⏳ seeding achievement community_leader failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:40.435000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:40.435000Z] console (info): ⏳ seeding achievement community_leader failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:41.440000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:41.440000Z] console (error): ❌ seeding achievement community_leader failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: community_leader,Community Leader,Have 10 or more people view your rankings,👥,silver,social,legacy,{"type":"profile_views","value":10},0,200
+[2025-11-11T16:05:41.440000Z] console (error): ❌ Failed to seed achievement community_leader: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: community_leader,Community Leader,Have 10 or more people view your rankings,👥,silver,social,legacy,{"type":"profile_views","value":10},0,200 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: community_leader,Community Leader,Have 10 or more people view your rankings,👥,silver,social,leg...
+[2025-11-11T16:05:41.445000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:41.445000Z] console (info): ⏳ seeding achievement early_adopter failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:41.947000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:41.947000Z] console (info): ⏳ seeding achievement early_adopter failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:42.951000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:42.952000Z] console (error): ❌ seeding achievement early_adopter failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: early_adopter,Early Adopter,Join the community in its first month,🚀,gold,special,legacy,{"type":"join_before","value":"2025-11-10"},0,250
+[2025-11-11T16:05:42.952000Z] console (error): ❌ Failed to seed achievement early_adopter: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: early_adopter,Early Adopter,Join the community in its first month,🚀,gold,special,legacy,{"type":"join_before","value":"2025-11-10"},0,250 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: early_adopter,Early Adopter,Join the community in its first month,🚀,gold,special,legacy,{"type":"join...
+[2025-11-11T16:05:42.955000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:42.955000Z] console (info): ⏳ seeding achievement taste_maker failed (attempt 1/3), retrying in 500ms...
+[2025-11-11T16:05:43.458000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:43.459000Z] console (info): ⏳ seeding achievement taste_maker failed (attempt 2/3), retrying in 1000ms...
+[2025-11-11T16:05:44.462000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:44.462000Z] console (error): ❌ seeding achievement taste_maker failed after 3 attempts: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: taste_maker,Taste Maker,Rank a product that becomes top 10 most ranked,👑,platinum,special,legacy,{"type":"trendsetter","value":10},0,500
+[2025-11-11T16:05:44.463000Z] console (error): ❌ Failed to seed achievement taste_maker: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: taste_maker,Taste Maker,Rank a product that becomes top 10 most ranked,👑,platinum,special,legacy,{"type":"trendsetter","value":10},0,500 Error: Failed query: 
+              INSERT INTO achievements (code, name, description, icon, tier, category, collection_type, requirement, has_tiers, points)
+              VALUES (
+                $1,
+                $2,
+                $3,
+                $4,
+                $5,
+                $6,
+                $7,
+                $8::jsonb,
+                $9,
+                $10
+              )
+              ON CONFLICT (code) DO UPDATE SET
+                name = EXCLUDED.name,
+                description = EXCLUDED.description,
+                icon = EXCLUDED.icon,
+                tier = EXCLUDED.tier,
+                category = EXCLUDED.category,
+                collection_type = EXCLUDED.collection_type,
+                requirement = EXCLUDED.requirement,
+                has_tiers = EXCLUDED.has_tiers,
+                points = EXCLUDED.points
+            
+params: taste_maker,Taste Maker,Rank a product that becomes top 10 most ranked,👑,platinum,special,legacy,{"type"...
+[2025-11-11T16:05:44.463000Z] console (warning): ⚠️ 17 achievement(s) failed to seed: [object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object],[object Object]
+[2025-11-11T16:05:44.466000Z] console (info): ✅ Seeded/updated 0/17 achievements
+[2025-11-11T16:05:44.466000Z] console (info): 🗑️ AchievementCache INVALIDATE: Clearing cache
+[2025-11-11T16:05:44.467000Z] console (info): 🚫 AchievementCache MISS: Data expired or not found
+[2025-11-11T16:05:44.470000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-11T16:05:44.470000Z] console (error): ❌ Failed to seed achievements: Failed query: select "id", "code", "name", "description", "icon", "icon_type", "tier", "collection_type", "category", "protein_category", "protein_categories", "is_hidden", "prerequisite_achievement_id", "requirement", "tier_thresholds", "has_tiers", "points", "is_active", "created_at", "updated_at" from "achievements"
+params: 
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  operation: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
