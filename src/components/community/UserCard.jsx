@@ -8,36 +8,31 @@ const JOURNEY_STAGE_CONFIG = {
     color: '#8B7355',
     bgGradient: 'linear-gradient(135deg, #8B7355 0%, #6B5645 100%)',
     borderColor: '#8B7355',
-    label: 'Dormant',
-    emoji: '💤'
+    label: 'Dormant'
   },
   new_user: {
     color: '#CD7F32',
     bgGradient: 'linear-gradient(135deg, #CD7F32 0%, #B87333 100%)',
     borderColor: '#CD7F32',
-    label: 'New Explorer',
-    emoji: '🌱'
+    label: 'New Explorer'
   },
   exploring: {
     color: '#C0C0C0',
     bgGradient: 'linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%)',
     borderColor: '#C0C0C0',
-    label: 'Explorer',
-    emoji: '🧭'
+    label: 'Explorer'
   },
   engaged: {
     color: '#DAA520',
     bgGradient: 'linear-gradient(135deg, #DAA520 0%, #B8860B 100%)',
     borderColor: '#DAA520',
-    label: 'Engaged',
-    emoji: '⚡'
+    label: 'Engaged'
   },
   power_user: {
-    color: '#B9F2FF',
-    bgGradient: 'linear-gradient(135deg, #B9F2FF 0%, #87CEEB 100%)',
-    borderColor: '#B9F2FF',
-    label: 'Legend',
-    emoji: '💎'
+    color: '#7C2D12',
+    bgGradient: 'linear-gradient(135deg, #7C2D12 0%, #5C1F0E 100%)',
+    borderColor: '#7C2D12',
+    label: 'Power User'
   }
 };
 
@@ -61,61 +56,51 @@ const FLAVOR_COMMUNITY_CONFIG = {
   sweet: {
     color: '#D4A76A',
     bgGradient: 'linear-gradient(135deg, #D4A76A 0%, #C4976A 100%)',
-    emoji: '🍯',
     label: 'Sweet'
   },
   savory: {
     color: '#8B4513',
     bgGradient: 'linear-gradient(135deg, #8B4513 0%, #704214 100%)',
-    emoji: '🥩',
     label: 'Savory'
   },
   spicy: {
     color: '#DC143C',
     bgGradient: 'linear-gradient(135deg, #DC143C 0%, #B91C1C 100%)',
-    emoji: '🌶️',
     label: 'Spicy'
   },
   exotic: {
     color: '#9333EA',
     bgGradient: 'linear-gradient(135deg, #9333EA 0%, #7C3AED 100%)',
-    emoji: '🦘',
     label: 'Exotic'
   },
   teriyaki: {
     color: '#92400E',
     bgGradient: 'linear-gradient(135deg, #92400E 0%, #78350F 100%)',
-    emoji: '🍱',
     label: 'Teriyaki'
   },
   peppery: {
     color: '#4B5563',
     bgGradient: 'linear-gradient(135deg, #4B5563 0%, #374151 100%)',
-    emoji: '⚫',
     label: 'Peppery'
   },
   original: {
     color: '#B8860B',
     bgGradient: 'linear-gradient(135deg, #B8860B 0%, #9A7209 100%)',
-    emoji: '🥇',
     label: 'Original'
   },
   smoky: {
     color: '#6B7280',
     bgGradient: 'linear-gradient(135deg, #6B7280 0%, #4B5563 100%)',
-    emoji: '💨',
     label: 'Smoky'
   },
   bbq: {
     color: '#B45309',
     bgGradient: 'linear-gradient(135deg, #B45309 0%, #92400E 100%)',
-    emoji: '🍖',
     label: 'BBQ'
   },
   hot: {
     color: '#EF4444',
     bgGradient: 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)',
-    emoji: '🔥',
     label: 'Hot'
   }
 };
@@ -187,7 +172,6 @@ function UserCard({ user }) {
     >
       <div className="card-badges-header">
         <div className="card-tier-badge">
-          <span className="tier-emoji">{stageConfig.emoji}</span>
           <span className="tier-label">{stageConfig.label}</span>
         </div>
         
@@ -199,14 +183,13 @@ function UserCard({ user }) {
               '--flavor-gradient': flavorConfig.bgGradient
             }}
           >
-            <span className="flavor-emoji">{flavorConfig.emoji}</span>
             <span className="flavor-label">{flavorConfig.label} {communityStateLabel}</span>
           </div>
         )}
       </div>
 
       <div className="card-profile">
-        <div className="avatar avatar-medium">
+        <div className="avatar avatar-card">
           {user.avatar_url ? (
             <img src={user.avatar_url} alt={user.display_name} className="avatar-image" />
           ) : (
@@ -222,21 +205,18 @@ function UserCard({ user }) {
 
       <div className="card-stats">
         <div className="stat-item">
-          <span className="stat-icon">🥩</span>
           <span className="stat-value">{user.unique_products}</span>
           <span className="stat-label">flavors</span>
         </div>
         
         {user.current_streak > 0 && (
           <div className="stat-item stat-streak">
-            <span className="stat-icon">🔥</span>
             <span className="stat-value">{user.current_streak}</span>
             <span className="stat-label">day{user.current_streak !== 1 ? 's' : ''}</span>
           </div>
         )}
         
         <div className="stat-item">
-          <span className="stat-icon">⭐</span>
           <span className="stat-value">{user.engagement_score}</span>
           <span className="stat-label">points</span>
         </div>
