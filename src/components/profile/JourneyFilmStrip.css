@@ -98,13 +98,14 @@
 }
 
 .film-reel {
-  display: flex;
+  display: inline-flex;
   gap: 0;
   padding: 0 1.5rem 0 0;
   position: relative;
   background: #1a1410;
   border-radius: 6px;
   overflow: hidden;
+  min-width: 100%;
 }
 
 .film-reel::before {
