@@ -1,12 +1,133 @@
+/* ========================================
+   HERO SECTION - Dark elegant background
+   ======================================== */
+
 .rank-page {
-  padding: 2rem;
-  min-height: calc(100vh - 200px);
+  padding: 0;
+  min-height: 100vh;
+  background: #f5f3ed;
+}
+
+.rank-hero {
+  position: relative;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+  padding: 60px 0 80px;
+  overflow: hidden;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 1200px;
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 69, 19, 0.1) 30%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+.rank-hero-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-intro {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.hero-title {
+  font-size: 3.5rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 20px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
+}
+
+.hero-subtitle {
+  font-size: 1.25rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 auto;
+  max-width: 800px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   INTRODUCTION SECTION
+   ======================================== */
+
+.rank-introduction {
+  background: white;
+  padding: 80px 0;
+}
+
+.intro-content {
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.intro-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin: 0 0 32px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.intro-text {
+  font-size: 1.125rem;
+  color: #444;
+  line-height: 1.75;
+  margin: 0 0 24px;
+}
+
+.intro-text:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   RANKING WIDGET SECTION
+   ======================================== */
+
+.rank-widget-section {
+  background: #f5f3ed;
+  padding: 60px 0 80px;
 }
 
 .rank-container {
   max-width: 1400px;
   margin: 0 auto;
-  height: 100%;
+  padding: 0 40px;
 }
 
 .rank-columns-grid {
@@ -521,18 +642,49 @@
 }
 
 /* Responsive design */
-@media (max-width: 968px) {
+@media (max-width: 1024px) {
+  .rank-hero-container,
   .rank-container {
-    grid-template-columns: 1fr;
+    padding: 0 20px;
   }
-  
-  .rank-page {
-    padding: 1rem;
+
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.0625rem;
+  }
+
+  .intro-title {
+    font-size: 2rem;
+  }
+
+  .intro-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 968px) {
+  .rank-columns-grid {
+    grid-template-columns: 1fr;
   }
   
   .products-grid {
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 1rem;
+  }
+  
+  .rank-hero {
+    padding: 40px 0 60px;
+  }
+
+  .rank-introduction {
+    padding: 60px 0;
+  }
+
+  .rank-widget-section {
+    padding: 40px 0 60px;
   }
 }
 

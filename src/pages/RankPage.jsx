@@ -15,7 +15,6 @@ import { SortableSlot } from '../components/rank/SortableSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { RankingModal } from '../components/rank/RankingModal';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
-import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import './RankPage.css';
 
 export default function RankPage() {
@@ -622,13 +621,40 @@ Continue?`;
       }}
     >
       <div className="rank-page">
-        <div className="rank-container">
-          {/* Personalized Guidance - Shows user-specific tips and recommendations */}
-          <PersonalizedGuidance page="rank" />
-          
-          {/* Coin Book Widget - Shows user's achievement progress */}
-          <CoinBookWidget defaultCollapsed={true} />
-          
+        {/* Hero Section - Dark background with collapsed Coin Book */}
+        <section className="rank-hero">
+          <div className="hero-background">
+            <div className="hero-glow"></div>
+          </div>
+          <div className="rank-hero-container">
+            <div className="hero-intro">
+              <h1 className="hero-title">Your Flavor Rankings</h1>
+              <p className="hero-subtitle">
+                Rank the jerky you've tasted. Unlock achievements. Discover your taste profile.
+              </p>
+            </div>
+            <CoinBookWidget defaultCollapsed={true} />
+          </div>
+        </section>
+
+        {/* Introduction Section - Explains ranking */}
+        <section className="rank-introduction">
+          <div className="rank-container">
+            <div className="intro-content">
+              <h2 className="intro-title">START RANKING</h2>
+              <p className="intro-text">
+                Every jerky has a story. Every ranking reveals your taste. Drag flavors from your purchased products into your personal top list and watch your collection grow—each choice earns coins, unlocks achievements, and helps you discover what makes your palate unique.
+              </p>
+              <p className="intro-text">
+                Your rankings are yours alone. Reorder anytime. The more you rank, the more you unlock—from Flavor Coins to Master Collection achievements. Start with your favorites, then explore the rest.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Ranking Widget Section */}
+        <div className="rank-widget-section">
+          <div className="rank-container">
           <div className="rank-columns-grid">
             <div className="rank-column ranks-column">
               <div className="header-with-status">
@@ -799,7 +825,8 @@ Continue?`;
             </div>
           </div>
         </div>
-      </div>
+          </div>
+        </div>
       </div>
       
       <RankingModal
