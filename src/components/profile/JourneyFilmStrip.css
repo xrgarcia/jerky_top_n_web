@@ -56,12 +56,12 @@
 
 .film-scroll-container {
   overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: visible;
   scrollbar-width: thin;
   scrollbar-color: #8b7355 #2a2520;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
-  padding: 0;
+  padding: 20px 0;
   position: relative;
 }
 
