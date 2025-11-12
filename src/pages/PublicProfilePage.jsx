@@ -137,6 +137,8 @@ function PublicProfilePage() {
       {achievements && achievements.length > 0 && (
         <section className="profile-section section-achievements" ref={achievementsRef}>
           <div className="achievements-container">
+            <h2 className="section-header">Achievements Unlocked</h2>
+            
             {/* Transition intro text */}
             {milestones.length > 0 && (
               <div className="coin-book-intro">
@@ -149,7 +151,6 @@ function PublicProfilePage() {
               </div>
             )}
             
-            <h2 className="section-header">Achievements Unlocked</h2>
             <CoinBookWidget 
               achievements={achievements}
               collapsible={false}

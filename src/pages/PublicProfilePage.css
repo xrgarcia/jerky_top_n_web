@@ -120,15 +120,8 @@
 
 /* Coin Book Intro - Transition text */
 .coin-book-intro {
-  padding: 60px 40px;
-  margin: 0 -40px 60px;
-  background: linear-gradient(
-    to bottom,
-    #f5f1e8 0%,
-    #e8e3d8 20%,
-    #4a4a4a 80%,
-    #2d2d2d 100%
-  );
+  max-width: 800px;
+  margin: 0 auto 40px;
   text-align: center;
   opacity: 0;
   transform: translateY(10px);
@@ -141,18 +134,13 @@
 }
 
 .coin-book-intro p {
-  max-width: 800px;
-  margin: 0 auto 1.25rem;
-  font-size: 1.25rem;
-  line-height: 1.8;
-}
-
-.coin-book-intro .intro-line-1 {
+  margin: 0 0 1rem;
+  font-size: 1.125rem;
+  line-height: 1.7;
   color: #5a4a3a;
 }
 
 .coin-book-intro .intro-line-2 {
-  color: #f5f1e8;
   margin-bottom: 0;
 }
 
@@ -198,12 +186,11 @@
   }
 
   .coin-book-intro {
-    padding: 50px 20px;
-    margin: 0 -20px 50px;
+    margin-bottom: 32px;
   }
 
   .coin-book-intro p {
-    font-size: 1.1rem;
+    font-size: 1.05rem;
   }
 }
 
