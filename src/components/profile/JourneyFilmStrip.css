@@ -100,25 +100,20 @@
   top: 0;
   left: 0;
   right: 0;
-  height: 24px;
+  height: 20px;
   background: repeating-linear-gradient(
     to right,
     #1a1410 0px,
-    #1a1410 8px,
-    transparent 8px,
-    transparent 10px
+    #1a1410 4px,
+    transparent 4px,
+    transparent 10px,
+    #1a1410 10px,
+    #1a1410 14px,
+    transparent 14px,
+    transparent 20px
   );
   z-index: 10;
   pointer-events: none;
-}
-
-.film-reel::before {
-  background-image: 
-    radial-gradient(circle at 50% 50%, #000 35%, transparent 36%),
-    linear-gradient(to bottom, #1a1410 0%, #0d0a08 100%);
-  background-size: 16px 24px, 100% 24px;
-  background-position: 8px 0, 0 0;
-  background-repeat: repeat-x, no-repeat;
 }
 
 .film-reel::after {
@@ -127,13 +122,18 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 24px;
-  background-image: 
-    radial-gradient(circle at 50% 50%, #000 35%, transparent 36%),
-    linear-gradient(to bottom, #0d0a08 0%, #1a1410 100%);
-  background-size: 16px 24px, 100% 24px;
-  background-position: 8px 0, 0 0;
-  background-repeat: repeat-x, no-repeat;
+  height: 20px;
+  background: repeating-linear-gradient(
+    to right,
+    #1a1410 0px,
+    #1a1410 4px,
+    transparent 4px,
+    transparent 10px,
+    #1a1410 10px,
+    #1a1410 14px,
+    transparent 14px,
+    transparent 20px
+  );
   z-index: 10;
   pointer-events: none;
 }
@@ -150,7 +150,7 @@
   transition: transform 0.3s ease, filter 0.3s ease;
   animation: fadeIn 0.5s ease;
   background: linear-gradient(135deg, #d4c4a8 0%, #c4b49a 50%, #b8a88c 100%);
-  border-right: 2px solid #1a1410;
+  border-right: 8px solid #1a1410;
   box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
   padding: 20px 0.75rem;
 }
