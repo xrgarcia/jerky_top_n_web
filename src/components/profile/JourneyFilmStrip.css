@@ -98,21 +98,26 @@
 
 .sprocket-holes {
   display: flex;
-  gap: 10px;
+  gap: 6px;
   background: #1a1410;
-  padding: 8px 3px;
+  padding: 6px 3px;
   border-radius: 4px;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.sprocket-holes::-webkit-scrollbar {
+  display: none;
 }
 
 .sprocket-hole {
-  width: 8px;
-  height: 16px;
-  background: transparent;
-  border: 2px solid #1a1410;
-  border-left: none;
-  border-right: none;
+  width: 6px;
+  height: 12px;
+  background: #f5f1e8;
   flex-shrink: 0;
+  border-radius: 1px;
 }
 
 .reel-canister {
