@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
@@ -22,6 +22,14 @@ function PublicProfilePage() {
   const journeyRef = useRef(null);
   const achievementsRef = useRef(null);
   const rankingsRef = useRef(null);
+
+  // Track which sections are visible (React state for declarative className)
+  const [visibleSections, setVisibleSections] = useState(new Set());
+
+  // Reset visibility state only when navigating to a different profile
+  useEffect(() => {
+    setVisibleSections(new Set());
+  }, [userId]);
 
   // Track page view
   usePageView('public_profile', { profileId: userId });
@@ -88,17 +96,28 @@ function PublicProfilePage() {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
-  // Scroll-triggered animations
+  // Scroll-triggered animations (React state-driven, not imperative DOM manipulation)
   useEffect(() => {
     const observerOptions = {
       threshold: 0.05,
       rootMargin: '50px 0px -50px 0px'
     };
 
+    const markSectionVisible = (sectionName) => {
+      setVisibleSections(prev => new Set([...prev, sectionName]));
+    };
+
     const observerCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('section-visible');
+          // Determine which section this is and update state
+          if (entry.target === journeyRef.current) {
+            markSectionVisible('journey');
+          } else if (entry.target === achievementsRef.current) {
+            markSectionVisible('achievements');
+          } else if (entry.target === rankingsRef.current) {
+            markSectionVisible('rankings');
+          }
         }
       });
     };
@@ -112,11 +131,18 @@ function PublicProfilePage() {
       return rect.top < windowHeight && rect.bottom > 0;
     };
 
-    [journeyRef, achievementsRef, rankingsRef].forEach(ref => {
+    // Check and observe each section
+    const sections = [
+      { ref: journeyRef, name: 'journey' },
+      { ref: achievementsRef, name: 'achievements' },
+      { ref: rankingsRef, name: 'rankings' }
+    ];
+
+    sections.forEach(({ ref, name }) => {
       if (ref.current) {
-        // If element is already in viewport, immediately add visible class
+        // If element is already in viewport, immediately mark as visible
         if (isElementVisible(ref.current)) {
-          ref.current.classList.add('section-visible');
+          markSectionVisible(name);
         }
         // Still observe for future scroll events
         observer.observe(ref.current);
@@ -172,9 +198,11 @@ function PublicProfilePage() {
           </div>
         </section>
       ) : milestones.length > 0 ? (
-        <section className="profile-section section-journey">
+        <section 
+          className={`profile-section section-journey ${visibleSections.has('journey') ? 'section-visible' : ''}`}
+          ref={journeyRef}
+        >
           <JourneyTwoColumn
-            ref={journeyRef}
             userHandle={user.handle}
             milestones={milestones}
             journeyStage={user.journeyStage}
@@ -186,7 +214,10 @@ function PublicProfilePage() {
 
       {/* Act 3: Achievement Showcase - What I've earned */}
       {achievements && achievements.length > 0 && (
-        <section className="profile-section section-achievements" ref={achievementsRef}>
+        <section 
+          className={`profile-section section-achievements ${visibleSections.has('achievements') ? 'section-visible' : ''}`}
+          ref={achievementsRef}
+        >
           <div className="achievements-container">
             <h2 className="section-header">Achievements Unlocked</h2>
             
@@ -211,7 +242,10 @@ function PublicProfilePage() {
       )}
 
       {/* Act 4: Current Rankings - What I'm doing next */}
-      <section className="profile-section section-rankings" ref={rankingsRef}>
+      <section 
+        className={`profile-section section-rankings ${visibleSections.has('rankings') ? 'section-visible' : ''}`}
+        ref={rankingsRef}
+      >
         <div className="rankings-container">
           <h2 className="section-header">Current Rankings</h2>
           
