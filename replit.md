@@ -35,6 +35,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Rate Limiting**: Authentication endpoints are rate-limited using Redis.
 - **Icon Rendering**: Unified utility (`src/utils/iconUtils.jsx`) for various icon types (emoji, URL, base64).
 - **Code Splitting**: Route-based lazy loading using React.lazy() and Suspense, with manual vendor chunking.
+- **Scroll Animations**: React state-driven IntersectionObserver pattern for section visibility animations. CSS classes (`section-visible`) are managed declaratively through React state (`useState` with Set) rather than imperative DOM manipulation (`classList.add`), ensuring animations persist through React Query refetches and client-side navigation. Each observed section updates state via callback, and manual viewport checks handle already-visible sections on mount. Applied to: PublicProfilePage (journey/achievements/rankings sections) and CommunityPage (journey/pulse/discover sections).
 - **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks with caching and orphan cleanup. Async BullMQ-based webhook processing and auto-user creation from Shopify customer webhooks.
 - **Gamification**: Dual-manager pattern (`EngagementManager` and `CollectionManager`) with an event-driven system for achievements, streaks, leaderboards, and notifications.
 - **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine (BullMQ-based) that analyzes user behavior to provide targeted messages with CTAs.
@@ -70,3 +71,82 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Real-time**: Socket.IO.
 - **Email**: Custom SMTP service using nodemailer with Google Workspace.
 - **Object Storage**: Replit Object Storage (Google Cloud Storage) for custom achievement icons.
+
+## Coding Patterns & Best Practices
+
+### IntersectionObserver + React: State-Driven Approach
+
+**Problem:** Using imperative DOM manipulation (`classList.add`) to add CSS classes for scroll animations breaks when React re-renders, causing sections to become invisible during client-side navigation or React Query refetches.
+
+**Solution:** Use React state to manage visibility classes declaratively.
+
+#### ❌ WRONG - Imperative DOM Manipulation
+```javascript
+// DON'T DO THIS - React re-renders wipe out manually added classes
+useEffect(() => {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('section-visible'); // ❌ Breaks on re-render
+      }
+    });
+  });
+  observer.observe(ref.current);
+}, []);
+```
+
+#### ✅ CORRECT - React State-Driven
+```javascript
+// DO THIS - React manages className declaratively
+const [visibleSections, setVisibleSections] = useState(new Set());
+
+useEffect(() => {
+  const markSectionVisible = (name) => {
+    setVisibleSections(prev => new Set([...prev, name]));
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        if (entry.target === journeyRef.current) {
+          markSectionVisible('journey'); // ✅ Updates React state
+        }
+      }
+    });
+  });
+
+  // Manual check for already-visible sections
+  const isElementVisible = (element) => {
+    const rect = element.getBoundingClientRect();
+    const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+    return rect.top < windowHeight && rect.bottom > 0;
+  };
+
+  if (journeyRef.current) {
+    if (isElementVisible(journeyRef.current)) {
+      markSectionVisible('journey');
+    }
+    observer.observe(journeyRef.current);
+  }
+
+  return () => observer.disconnect();
+}, []);
+
+// Render with state-driven className
+<section 
+  className={`section-journey ${visibleSections.has('journey') ? 'section-visible' : ''}`}
+  ref={journeyRef}
+>
+```
+
+#### Key Principles
+1. **Never mix imperative DOM manipulation with React** - Let React control the DOM declaratively
+2. **Manual viewport checks are required** - IntersectionObserver callbacks don't fire for elements already in viewport when first observed
+3. **Reset visibility state on navigation** - Use separate useEffect with `[userId]` dependency (for profile pages) to reset state only when changing profiles, not on data refetches
+4. **State persists through re-renders** - React Query refetches won't clear visibility state when managed properly
+
+#### Applied To
+- `PublicProfilePage.jsx` - Journey, Achievements, Rankings sections
+- `CommunityPage.jsx` - Journey, Pulse, Discover sections
+
+**When adding new scroll animations:** Always use this state-driven pattern instead of imperative classList manipulation.

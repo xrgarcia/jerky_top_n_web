@@ -21,24 +21,58 @@ function CommunityPage() {
   const pulseRef = useRef(null);
   const discoverRef = useRef(null);
 
+  // Track which sections are visible (React state for declarative className)
+  const [visibleSections, setVisibleSections] = useState(new Set());
+
+  // Scroll-triggered animations (React state-driven, not imperative DOM manipulation)
   useEffect(() => {
     const observerOptions = {
       threshold: 0.1,
       rootMargin: '0px 0px -100px 0px'
     };
 
+    const markSectionVisible = (sectionName) => {
+      setVisibleSections(prev => new Set([...prev, sectionName]));
+    };
+
     const observerCallback = (entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.classList.add('section-visible');
+          // Determine which section this is and update state
+          if (entry.target === journeyRef.current) {
+            markSectionVisible('journey');
+          } else if (entry.target === pulseRef.current) {
+            markSectionVisible('pulse');
+          } else if (entry.target === discoverRef.current) {
+            markSectionVisible('discover');
+          }
         }
       });
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    [journeyRef, pulseRef, discoverRef].forEach(ref => {
+    // Helper to check if element is already visible in viewport
+    const isElementVisible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < windowHeight && rect.bottom > 0;
+    };
+
+    // Check and observe each section
+    const sections = [
+      { ref: journeyRef, name: 'journey' },
+      { ref: pulseRef, name: 'pulse' },
+      { ref: discoverRef, name: 'discover' }
+    ];
+
+    sections.forEach(({ ref, name }) => {
       if (ref.current) {
+        // If element is already in viewport, immediately mark as visible
+        if (isElementVisible(ref.current)) {
+          markSectionVisible(name);
+        }
+        // Still observe for future scroll events
         observer.observe(ref.current);
       }
     });
@@ -69,13 +103,19 @@ function CommunityPage() {
         </div>
       </section>
 
-      <section className="section-journey" ref={journeyRef}>
+      <section 
+        className={`section-journey ${visibleSections.has('journey') ? 'section-visible' : ''}`}
+        ref={journeyRef}
+      >
         <div className="community-container">
           <JourneySection />
         </div>
       </section>
 
-      <section className="section-pulse" ref={pulseRef}>
+      <section 
+        className={`section-pulse ${visibleSections.has('pulse') ? 'section-visible' : ''}`}
+        ref={pulseRef}
+      >
         <div className="community-container">
           <CommunityPulse 
             activityStats={homeStats?.activityStats}
@@ -84,7 +124,10 @@ function CommunityPage() {
         </div>
       </section>
 
-      <section className="section-discover" ref={discoverRef}>
+      <section 
+        className={`section-discover ${visibleSections.has('discover') ? 'section-visible' : ''}`}
+        ref={discoverRef}
+      >
         <div className="community-container">
           <div className="discover-split">
             <div className="discover-left">
