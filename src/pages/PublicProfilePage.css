@@ -90,14 +90,18 @@
 
 .section-achievements {
   background: white;
+}
+
+.section-achievements .section-header {
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(15px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.section-achievements.section-visible {
+.section-achievements.section-visible .section-header {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: 0.3s;
 }
 
 .section-rankings {
@@ -125,12 +129,13 @@
   text-align: center;
   opacity: 0;
   transform: translateY(10px);
-  transition: opacity 0.6s ease 0.2s, transform 0.6s ease 0.2s;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .section-visible .coin-book-intro {
   opacity: 1;
   transform: translateY(0);
+  transition-delay: 0.5s;
 }
 
 .coin-book-intro p {
@@ -147,6 +152,19 @@
 .coin-book-intro strong {
   font-weight: 700;
   letter-spacing: 0.5px;
+}
+
+/* Coin Book Widget - Staggered reveal */
+.section-achievements .coinbook-widget {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.section-achievements.section-visible .coinbook-widget {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.7s;
 }
 
 .section-header {
@@ -202,12 +220,16 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
-  .coin-book-intro {
+  .section-achievements .section-header,
+  .coin-book-intro,
+  .section-achievements .coinbook-widget {
     transition: opacity 0.3s ease;
     transform: none;
   }
   
-  .section-visible .coin-book-intro {
+  .section-achievements.section-visible .section-header,
+  .section-visible .coin-book-intro,
+  .section-achievements.section-visible .coinbook-widget {
     transform: none;
   }
 }
