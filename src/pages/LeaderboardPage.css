@@ -1,166 +1,408 @@
+/* Leaderboard Page - Three-Act Structure */
+
 .leaderboard-page {
   background: #f5f3ed;
-  min-height: 80vh;
-  padding: 40px 20px;
+  min-height: 100vh;
 }
 
-.leaderboard-container {
+/* Loading & Error States */
+.leaderboard-loading,
+.leaderboard-error,
+.leaderboard-empty {
+  text-align: center;
+  padding: 100px 20px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.leaderboard-loading .loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e8e4d9;
+  border-top-color: #7b8b52;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.leaderboard-loading p,
+.leaderboard-error p,
+.leaderboard-empty p {
+  font-size: 1.25rem;
+  color: #666;
+}
+
+.leaderboard-error p {
+  color: #e74c3c;
+}
+
+/* Section Intros - Shared Styling */
+.section-intro {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* ========================================
+   ACT 1: THE CHAMPIONS (Top 1-5)
+   Dark, dramatic, prestigious
+   ======================================== */
+
+.champions-section {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+  padding: 80px 40px 100px;
+  position: relative;
+  overflow: hidden;
+}
+
+.champions-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+}
+
+.champions-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.champions-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.champions-subtitle {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  font-style: italic;
+}
+
+/* ========================================
+   ACT 2: RISING CONTENDERS (Places 6-10)
+   Clean, competitive, 2-column grid
+   ======================================== */
+
+.rising-section {
+  background: white;
+  padding: 80px 40px;
+}
+
+.rising-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.rising-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 12px;
+}
+
+.rising-subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  margin: 0;
+  font-style: italic;
+}
+
+.rising-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+.rising-card {
+  background: linear-gradient(135deg, #faf8f3 0%, #f5f3ed 100%);
+  border-radius: 16px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 2px solid #e8e4d9;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.rising-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7b8b52, #6b7a42);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rising-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+  border-color: #7b8b52;
+}
+
+.rising-card:hover::before {
+  opacity: 1;
+}
+
+.rising-rank {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #7b8b52;
+  opacity: 0.3;
+}
+
+.rising-avatar-container {
+  margin-bottom: 20px;
+}
+
+.rising-info {
+  width: 100%;
+}
+
+.rising-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 16px;
+}
+
+.rising-stats {
+  margin-bottom: 12px;
+}
+
+.rising-score {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.rising-score .score-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #7b8b52;
+}
+
+.rising-score .score-label {
+  font-size: 0.875rem;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.gap-to-podium {
+  font-size: 0.875rem;
+  color: #e67e22;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.rising-products {
+  font-size: 0.9375rem;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.rising-badges {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e8e4d9;
+}
+
+/* ========================================
+   ACT 3: THE COMMUNITY (Places 11+)
+   Inclusive, list-based, accessible
+   ======================================== */
+
+.community-section {
+  background: #faf8f3;
+  padding: 80px 40px 100px;
+}
+
+.community-container {
   max-width: 1000px;
   margin: 0 auto;
 }
 
-.leaderboard-header {
-  text-align: center;
-  margin-bottom: 40px;
+.community-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin: 0 0 12px;
 }
 
-.leaderboard-header h1 {
-  font-size: 2.5em;
-  color: #333;
-  margin-bottom: 10px;
-}
-
-.leaderboard-header p {
-  font-size: 1.1em;
+.community-subtitle {
+  font-size: 1.125rem;
   color: #666;
+  margin: 0;
+  font-style: italic;
 }
 
-.leaderboard-list {
+.community-list {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 16px;
 }
 
-.leaderboard-item {
+.community-item {
   background: white;
   border-radius: 12px;
-  padding: 20px;
+  padding: 20px 24px;
   display: flex;
   align-items: center;
   gap: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  border: 1px solid #e8e4d9;
 }
 
-.leaderboard-item:hover {
-  transform: translateX(5px);
+.community-item:hover {
+  transform: translateX(8px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  border-color: #7b8b52;
 }
 
-.leaderboard-item.rank-1 {
-  background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
-}
-
-.leaderboard-item.rank-2 {
-  background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
-}
-
-.leaderboard-item.rank-3 {
-  background: linear-gradient(135deg, #cd7f32 0%, #e59866 100%);
-}
-
-.rank-badge {
+.community-rank {
   min-width: 60px;
   text-align: center;
-}
-
-.medal {
-  font-size: 2.5em;
-}
-
-.rank-number {
-  font-size: 1.5em;
+  font-size: 1.25rem;
   font-weight: 700;
-  color: #6B8E23;
+  color: #7b8b52;
 }
 
-.ranker-info {
+.community-info {
   flex: 1;
 }
 
-.ranker-name {
-  font-size: 1.3em;
+.community-name {
+  font-size: 1.125rem;
   font-weight: 600;
-  color: #333;
-  margin-bottom: 8px;
+  color: #2d2d2d;
+  margin-bottom: 6px;
 }
 
-.ranker-stats {
+.community-stats {
   display: flex;
   gap: 20px;
-  font-size: 0.9em;
+  font-size: 0.875rem;
   color: #666;
 }
 
 .stat {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 6px;
 }
 
-.stat-icon {
-  font-size: 1.1em;
-}
-
-.engagement-score {
+.community-score {
   text-align: center;
   min-width: 80px;
 }
 
-.score-value {
-  font-size: 2em;
+.community-score .score-value {
+  font-size: 1.75rem;
   font-weight: 700;
-  color: #6B8E23;
+  color: #7b8b52;
+  line-height: 1;
 }
 
-.score-label {
-  font-size: 0.8em;
+.community-score .score-label {
+  font-size: 0.75rem;
   color: #666;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
 }
 
-.badges {
+.community-badges {
   display: flex;
   gap: 8px;
+  align-items: center;
 }
 
 .badge {
-  font-size: 1.8em;
+  font-size: 1.5em;
 }
 
-.badge-icon {
-  width: 32px;
-  height: 32px;
-  object-fit: contain;
-}
-
-.loading,
-.error {
-  text-align: center;
-  padding: 60px 20px;
-  font-size: 1.2em;
-  color: #666;
-}
-
-.error {
-  color: #e74c3c;
+/* Responsive */
+@media (max-width: 1024px) {
+  .rising-grid {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+    margin: 0 auto;
+  }
 }
 
 @media (max-width: 768px) {
-  .leaderboard-item {
-    flex-wrap: wrap;
+  .champions-section,
+  .rising-section,
+  .community-section {
+    padding: 60px 20px;
   }
 
-  .rank-badge {
+  .champions-title {
+    font-size: 2.25rem;
+  }
+
+  .rising-title,
+  .community-title {
+    font-size: 2rem;
+  }
+
+  .rising-card {
+    padding: 28px 20px;
+  }
+
+  .community-item {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .community-rank {
     min-width: 50px;
   }
 
-  .engagement-score {
+  .community-score {
     margin-left: auto;
   }
 
-  .badges {
+  .community-badges {
     width: 100%;
     justify-content: center;
+    padding-top: 12px;
+    border-top: 1px solid #e8e4d9;
   }
 }
