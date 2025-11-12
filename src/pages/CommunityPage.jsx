@@ -131,9 +131,9 @@ function CommunityPage() {
         <div className="community-container">
           <div className="discover-split">
             <div className="discover-left">
-              <h2 className="search-title">Your Tribe: Find Your Flavor Soulmates</h2>
+              <h2 className="search-title">Discover Flavor Fanatics</h2>
               <p className="search-subtitle">
-                Connect with fellow jerky enthusiasts, explore their collections, and discover rankers who share your taste.
+                Connect with fellow jerky enthusiasts, explore their collections, and find your flavor soulmates.
               </p>
               <div className="search-bar">
                 <input
