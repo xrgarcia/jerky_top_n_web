@@ -67,6 +67,24 @@ function PublicProfilePage() {
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
+  const { data: rankingsData, isLoading: rankingsLoading, error: rankingsError } = useQuery({
+    queryKey: ['profileRankings', userId],
+    queryFn: async () => {
+      const response = await fetch(`/api/profile/${userId}/rankings`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        console.error(`Rankings API failed with status ${response.status}`);
+        throw new Error('Failed to fetch rankings');
+      }
+      return response.json();
+    },
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 5, // 5 minutes
+    retry: 3, // Retry up to 3 times on failure
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
+  });
+
   // Scroll-triggered animations
   useEffect(() => {
     const observerOptions = {
@@ -115,8 +133,9 @@ function PublicProfilePage() {
     return null;
   }
 
-  const { user, topProducts, timeline, rankings, achievements } = data;
+  const { user, topProducts, timeline, achievements } = data;
   const milestones = journeyData?.milestones || [];
+  const rankings = rankingsData?.rankings || [];
 
   return (
     <div className="public-profile-page">
@@ -177,20 +196,28 @@ function PublicProfilePage() {
       )}
 
       {/* Act 4: Current Rankings - What I'm doing next */}
-      {rankings && rankings.length > 0 ? (
-        <section className="profile-section section-rankings" ref={rankingsRef}>
-          <div className="rankings-container">
-            <h2 className="section-header">Current Rankings</h2>
+      <section className="profile-section section-rankings" ref={rankingsRef}>
+        <div className="rankings-container">
+          <h2 className="section-header">Current Rankings</h2>
+          
+          {rankingsLoading ? (
+            <div className="rankings-loading">
+              <div className="loading-spinner"></div>
+              <p>Fetching {user.firstName || user.displayName}'s flavor list! Hold tight...</p>
+            </div>
+          ) : rankingsError ? (
+            <div className="rankings-error">
+              <p>😕 Rankings temporarily unavailable. Check back soon!</p>
+            </div>
+          ) : rankings && rankings.length > 0 ? (
             <RankingsList rankings={rankings} />
-          </div>
-        </section>
-      ) : (
-        <section className="profile-section section-rankings" ref={rankingsRef}>
-          <EmptyRankingsState 
-            hasAchievements={achievements && achievements.length > 0}
-          />
-        </section>
-      )}
+          ) : (
+            <EmptyRankingsState 
+              hasAchievements={achievements && achievements.length > 0}
+            />
+          )}
+        </div>
+      </section>
     </div>
   );
 }

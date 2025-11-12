@@ -93,18 +93,16 @@ function createProfileRoutes(services) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
-      // Fetch all profile data in parallel
+      // Fetch core profile data in parallel (rankings split to separate endpoint for performance)
       const [
         profileData,
         topProducts,
         timelineMoments,
-        allRankings,
         achievements
       ] = await Promise.all([
         profileRepository.getUserProfileData(userId),
         profileRepository.getTopRankedProducts(userId),
         profileRepository.getTimelineMoments(userId),
-        profileRepository.getAllRankingsWithPurchases(userId),
         achievementRepo.getUserAchievements(userId)
       ]);
 
@@ -170,17 +168,6 @@ function createProfileRoutes(services) {
           animalType: p.animalType
         })),
         timeline: timelineMoments,
-        rankings: allRankings.map(r => ({
-          shopifyProductId: r.id,
-          rankPosition: r.rankPosition,
-          rankedAt: r.rankedAt,
-          purchaseDate: r.purchaseDate,
-          title: r.title,
-          imageUrl: r.image,
-          vendor: r.vendor,
-          primaryFlavor: r.primaryFlavor,
-          animalType: r.animalType
-        })),
         achievements: achievements.map(a => ({
           id: a.id,
           name: a.name,
@@ -668,6 +655,41 @@ function createProfileRoutes(services) {
     } catch (error) {
       console.error('Error deleting profile image:', error);
       res.status(500).json({ error: 'Failed to delete profile image' });
+    }
+  });
+
+  /**
+   * GET /api/profile/:userId/rankings
+   * Get all rankings for a user (for separate loading)
+   * Returns: All product rankings with purchase data
+   */
+  router.get('/:userId/rankings', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      if (!userId || isNaN(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      // Fetch rankings (this is the slow query we're isolating)
+      const allRankings = await profileRepository.getAllRankingsWithPurchases(userId);
+
+      res.json({
+        rankings: allRankings.map(r => ({
+          shopifyProductId: r.id,
+          rankPosition: r.rankPosition,
+          rankedAt: r.rankedAt,
+          purchaseDate: r.purchaseDate,
+          title: r.title,
+          imageUrl: r.image,
+          vendor: r.vendor,
+          primaryFlavor: r.primaryFlavor,
+          animalType: r.animalType
+        }))
+      });
+    } catch (error) {
+      console.error('Error fetching user rankings:', error);
+      res.status(500).json({ error: 'Failed to fetch rankings' });
     }
   });
 
