@@ -4,8 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import ProfileHero from '../components/profile/ProfileHero';
-import JourneyIntro from '../components/profile/JourneyIntro';
-import JourneyFilmStrip from '../components/profile/JourneyFilmStrip';
+import JourneyTwoColumn from '../components/profile/JourneyTwoColumn';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './PublicProfilePage.css';
@@ -19,7 +18,7 @@ function PublicProfilePage() {
   const { userId } = useParams();
   const { user: currentUser } = useAuthStore();
   
-  const journeyIntroRef = useRef(null);
+  const journeyRef = useRef(null);
   const achievementsRef = useRef(null);
   const rankingsRef = useRef(null);
 
@@ -81,7 +80,7 @@ function PublicProfilePage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    [journeyIntroRef, achievementsRef, rankingsRef].forEach(ref => {
+    [journeyRef, achievementsRef, rankingsRef].forEach(ref => {
       if (ref.current) {
         observer.observe(ref.current);
       }
@@ -123,12 +122,9 @@ function PublicProfilePage() {
       {/* Act 2: Journey Film Strip - How I got here */}
       {milestones.length > 0 && (
         <section className="profile-section section-journey">
-          <JourneyIntro 
-            ref={journeyIntroRef}
+          <JourneyTwoColumn
+            ref={journeyRef}
             userHandle={user.handle}
-            journeyStage={user.journeyStage}
-          />
-          <JourneyFilmStrip 
             milestones={milestones}
             journeyStage={user.journeyStage}
             explorationBreadth={user.explorationBreadth}
