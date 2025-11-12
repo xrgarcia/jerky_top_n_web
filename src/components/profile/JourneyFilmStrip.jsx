@@ -17,13 +17,13 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
 
   const handleScrollLeft = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -140, behavior: 'smooth' });
+      scrollContainerRef.current.scrollBy({ left: -450, behavior: 'smooth' });
     }
   };
 
   const handleScrollRight = () => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 140, behavior: 'smooth' });
+      scrollContainerRef.current.scrollBy({ left: 450, behavior: 'smooth' });
     }
   };
 
