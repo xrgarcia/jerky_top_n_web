@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSentryIssues, useSentryEnvironments, useSentryCurrentEnvironment } from '../../hooks/useAdminTools';
+import { formatTimeAgo } from '../../utils/dateUtils';
 import './AdminPages.css';
 
 function SentryPage() {

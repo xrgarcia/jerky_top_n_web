@@ -6,6 +6,7 @@ import { usePageView } from '../hooks/usePageView';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import HeroCarousel from '../components/home/HeroCarousel';
 import { renderAchievementIcon } from '../utils/iconUtils';
+import { formatTimeAgo } from '../utils/dateUtils';
 import './HomePage.css';
 
 function HomePage() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { renderAchievementIcon } from '../../utils/iconUtils';
+import { formatTimeAgo } from '../../utils/dateUtils';
 import './ActivityFeed.css';
 
 function ActivityFeed({ recentAchievements, recentlyRanked, isLoading }) {

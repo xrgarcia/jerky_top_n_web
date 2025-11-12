@@ -1,0 +1,22 @@
+Unexpected Application Error!
+formatTimeAgo is not defined
+ReferenceError: formatTimeAgo is not defined
+    at https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/pages/HomePage.jsx:384:22
+    at Array.map (<anonymous>)
+    at HomePage (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/pages/HomePage.jsx:367:172)
+    at Object.react_stack_bottom_frame (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:18509:20)
+    at renderWithHooks (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:5654:24)
+    at updateFunctionComponent (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:7475:21)
+    at beginWork (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:8525:20)
+    at runWithFiberInDEV (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:997:72)
+    at performUnitOfWork (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:12561:98)
+    at workLoopSync (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:12424:43)
+    at renderRootSync (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:12408:13)
+    at performWorkOnRoot (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:11827:37)
+    at performSyncWorkOnRoot (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:13517:9)
+    at flushSyncWorkAcrossRoots_impl (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:13414:122)
+    at processRootScheduleInMicrotask (https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:13437:106)
+    at https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/@fs/home/runner/workspace/node_modules/.vite/deps/react-dom_client.js?v=0ef9f64d:13531:15
+💿 Hey developer 👋
+
+You can provide a way better UX than this when your app throws errors by providing your own ErrorBoundary or errorElement prop on your route.
