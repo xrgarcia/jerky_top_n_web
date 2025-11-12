@@ -18,14 +18,13 @@
 .journey-left {
   opacity: 0;
   transform: translateX(-20px);
-  animation: slideInLeft 0.6s ease 0.2s forwards;
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-@keyframes slideInLeft {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.journey-two-column.section-visible .journey-left,
+.section-visible .journey-two-column .journey-left {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .journey-section-title {
@@ -64,15 +63,14 @@
 .journey-right {
   opacity: 0;
   transform: translateX(20px);
-  animation: slideInRight 0.6s ease 0.35s forwards;
+  transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
   min-width: 0;
 }
 
-@keyframes slideInRight {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.journey-two-column.section-visible .journey-right,
+.section-visible .journey-two-column .journey-right {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Override film strip container padding since it's now in a constrained space */
@@ -110,22 +108,17 @@
     text-align: center;
   }
 
-  .journey-left {
-    animation: slideInMobile 0.6s ease 0.2s forwards;
+  .journey-left,
+  .journey-right {
+    transform: translateY(20px);
+  }
+
+  .journey-two-column.section-visible .journey-left,
+  .journey-two-column.section-visible .journey-right {
+    transform: translateY(0);
   }
 
   .journey-right {
-    animation: slideInMobile 0.6s ease 0.3s forwards;
-  }
-
-  @keyframes slideInMobile {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    transition-delay: 0.1s;
   }
 }
