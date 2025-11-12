@@ -47,18 +47,20 @@ function WhatsNextCard({ journeyStage, explorationBreadth }) {
 
   return (
     <div className="whats-next-card">
-      <div className="next-card-perforations-top"></div>
+      <div className="next-card-outer-ring"></div>
       <div className="next-card-content">
         <div className="next-card-icon">{content.icon}</div>
         <div className="next-card-text">
           <h3 className="next-card-headline">{content.headline}</h3>
           <p className="next-card-subtitle">{content.subtitle}</p>
         </div>
+      </div>
+      <div className="next-card-label">
         <Link to={content.link} className="next-card-cta">
           {content.linkText} →
         </Link>
       </div>
-      <div className="next-card-perforations-bottom"></div>
+      <div className="next-card-center-hub"></div>
     </div>
   );
 }

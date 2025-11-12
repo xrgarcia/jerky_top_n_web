@@ -5,6 +5,14 @@
   background: #faf8f3;
 }
 
+.profile-hero + * {
+  margin-top: 0 !important;
+}
+
+.public-profile-page > .journey-film-strip {
+  margin-top: -2px;
+}
+
 .public-profile-loading,
 .public-profile-error,
 .public-profile-empty {
