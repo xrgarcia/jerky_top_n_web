@@ -41,14 +41,14 @@ class ProfileRepository {
         ));
 
       // Generate privacy-aware display name and initials
-      const firstName = user.first_name || '';
-      const lastName = user.last_name || '';
+      const firstName = user.firstName || '';
+      const lastName = user.lastName || '';
       const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase() || '?';
       
       let displayName;
       if (user.handle) {
         displayName = `@${user.handle}`;
-      } else if (user.hide_name_privacy) {
+      } else if (user.hideNamePrivacy) {
         // Privacy enabled: show initials only
         displayName = initials;
       } else {
@@ -68,17 +68,17 @@ class ProfileRepository {
         displayName,
         initials,
         handle: user.handle || null,
-        avatarUrl: user.profile_image_url || null,
-        hideNamePrivacy: user.hide_name_privacy || false,
+        avatarUrl: user.profileImageUrl || null,
+        hideNamePrivacy: user.hideNamePrivacy || false,
         // Only include actual names if privacy is disabled
-        firstName: user.hide_name_privacy ? null : firstName,
-        lastName: user.hide_name_privacy ? null : lastName,
+        firstName: user.hideNamePrivacy ? null : firstName,
+        lastName: user.hideNamePrivacy ? null : lastName,
         // Stats
         rankingCount: parseInt(rankingCount[0]?.count || 0),
-        engagementScore: user.engagement_score || 0,
-        journeyStage: user.journey_stage || 'new_user',
+        engagementScore: user.engagementScore || 0,
+        journeyStage: user.journeyStage || 'new_user',
         // Membership info
-        memberSince: user.created_at
+        memberSince: user.createdAt
       };
     } catch (error) {
       Sentry.captureException(error, {
