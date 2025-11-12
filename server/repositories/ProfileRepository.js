@@ -36,7 +36,7 @@ class ProfileRepository {
         .from(productRankings)
         .where(and(
           eq(productRankings.userId, userId),
-          eq(productRankings.rankingListId, 'topN')
+          eq(productRankings.rankingListId, 'default')
         ));
 
       // Generate privacy-aware display name and initials
@@ -106,7 +106,7 @@ class ProfileRepository {
         .from(productRankings)
         .where(and(
           eq(productRankings.userId, userId),
-          eq(productRankings.rankingListId, 'topN')
+          eq(productRankings.rankingListId, 'default')
         ))
         .orderBy(asc(productRankings.ranking))
         .limit(5);
@@ -192,7 +192,7 @@ class ProfileRepository {
         .from(productRankings)
         .where(and(
           eq(productRankings.userId, userId),
-          eq(productRankings.rankingListId, 'topN')
+          eq(productRankings.rankingListId, 'default')
         ))
         .orderBy(desc(productRankings.createdAt));
 
@@ -299,7 +299,7 @@ class ProfileRepository {
         .from(productRankings)
         .where(and(
           eq(productRankings.userId, userId),
-          eq(productRankings.rankingListId, 'topN')
+          eq(productRankings.rankingListId, 'default')
         ))
         .orderBy(asc(productRankings.ranking));
 
