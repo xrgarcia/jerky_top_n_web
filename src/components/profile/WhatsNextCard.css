@@ -36,7 +36,7 @@
   height: 140px;
   border-radius: 8px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);
+  background: #e8dcc8;
   box-shadow: 
     0 4px 12px rgba(0, 0, 0, 0.6),
     inset 0 0 15px rgba(0, 0, 0, 0.15);
@@ -49,32 +49,6 @@
   justify-content: center;
   gap: 0.5rem;
   padding: 1rem;
-}
-
-.next-card-content::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 115, 85, 0.03) 2px,
-      rgba(139, 115, 85, 0.03) 4px
-    ),
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 2px,
-      rgba(139, 115, 85, 0.03) 2px,
-      rgba(139, 115, 85, 0.03) 4px
-    );
-  pointer-events: none;
-  z-index: 1;
 }
 
 .next-card-icon {
