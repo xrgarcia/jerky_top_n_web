@@ -1,6 +1,6 @@
 const { db } = require('../db');
 const { users, productRankings, customerOrderItems, productsMetadata, achievements, userAchievements, userClassifications } = require('../../shared/schema');
-const { eq, and, desc, asc, sql, inArray } = require('drizzle-orm');
+const { eq, and, desc, asc, sql, inArray, sum } = require('drizzle-orm');
 const Sentry = require('@sentry/node');
 const JourneyCache = require('../cache/JourneyCache');
 
@@ -440,31 +440,35 @@ class ProfileRepository {
 
       const milestones = [];
 
-      // MILESTONE 1: First purchase ever
-      const firstPurchase = await this._getFirstPurchase(userId);
-      if (firstPurchase) milestones.push(firstPurchase);
+      // MILESTONE 0: Account created (FIRST CARD - shows when user joined jerky.com)
+      const accountCreated = await this._getAccountCreated(userId);
+      if (accountCreated) milestones.push(accountCreated);
 
-      // MILESTONE 2-9: First flavor discoveries (Sweet, Spicy, Hot, Teriyaki, BBQ, Peppered, Smoky, Original)
+      // MILESTONE 1-5: Significant purchases (first 3-5 orders with product images)
+      const purchases = await this._getSignificantPurchases(userId);
+      milestones.push(...purchases);
+
+      // MILESTONE 6-13: First flavor discoveries (Sweet, Spicy, Hot, Teriyaki, BBQ, Peppered, Smoky, Original)
       const flavorDiscoveries = await this._getFlavorDiscoveries(userId);
       milestones.push(...flavorDiscoveries);
 
-      // MILESTONE 10: First exotic animal (bison, elk, venison, wild boar)
+      // MILESTONE 14: First exotic animal (bison, elk, venison, wild boar)
       const exoticAnimal = await this._getFirstExoticAnimal(userId);
       if (exoticAnimal) milestones.push(exoticAnimal);
 
-      // MILESTONE 11: First achievement unlocked
+      // MILESTONE 15: First achievement unlocked
       const firstAchievement = await this._getFirstAchievement(userId);
       if (firstAchievement) milestones.push(firstAchievement);
 
-      // MILESTONE 12: Joined flavor community
+      // MILESTONE 16: Joined flavor community
       const communityJoin = await this._getCommunityJoinMoment(userId);
       if (communityJoin) milestones.push(communityJoin);
 
-      // MILESTONE 13: 100th ranking milestone
+      // MILESTONE 17: 100th ranking milestone
       const hundredthRanking = await this._get100thRanking(userId);
       if (hundredthRanking) milestones.push(hundredthRanking);
 
-      // MILESTONE 14: First #1 ranking
+      // MILESTONE 18: First #1 ranking
       const firstTopRanking = await this._getFirstTopRanking(userId);
       if (firstTopRanking) milestones.push(firstTopRanking);
 
@@ -489,29 +493,54 @@ class ProfileRepository {
     }
   }
 
-  // Helper: Get first purchase ever
-  async _getFirstPurchase(userId) {
+  // Helper: Get account creation date (FIRST MILESTONE)
+  async _getAccountCreated(userId) {
     const result = await db
       .select({
-        orderDate: customerOrderItems.orderDate,
-        shopifyProductId: customerOrderItems.shopifyProductId
+        shopifyCreatedAt: users.shopifyCreatedAt
       })
-      .from(customerOrderItems)
-      .where(eq(customerOrderItems.userId, userId))
-      .orderBy(asc(customerOrderItems.orderDate))
+      .from(users)
+      .where(eq(users.id, userId))
       .limit(1);
 
-    if (result.length === 0) return null;
+    if (result.length === 0 || !result[0].shopifyCreatedAt) return null;
 
     return {
-      type: 'first_purchase',
-      date: result[0].orderDate,
-      productId: result[0].shopifyProductId,
-      headline: 'First Bite',
-      subtitle: 'Your jerky journey began',
-      badge: '🎬'
+      type: 'account_created',
+      date: result[0].shopifyCreatedAt,
+      productId: null,
+      headline: 'Welcome to Jerky.com',
+      subtitle: 'Your journey begins',
+      badge: '🎉'
     };
   }
+
+  // Helper: Get significant purchases (first 3-5 orders with product images)
+  async _getSignificantPurchases(userId) {
+    // Get first 5 orders grouped by order_number using raw SQL query
+    const result = await db.execute(sql`
+      SELECT 
+        order_number,
+        order_date,
+        SUM(quantity)::integer as total_qty,
+        (ARRAY_AGG(shopify_product_id ORDER BY id ASC))[1] as first_product_id
+      FROM customer_order_items
+      WHERE user_id = ${userId}
+      GROUP BY order_number, order_date
+      ORDER BY order_date ASC
+      LIMIT 5
+    `);
+
+    return result.rows.map(row => ({
+      type: 'purchase',
+      date: row.order_date,
+      productId: row.first_product_id,
+      headline: 'Order Delivered',
+      subtitle: `${row.total_qty} flavor${row.total_qty !== 1 ? 's' : ''} received`,
+      badge: '📦'
+    }));
+  }
+
 
   // Helper: Get first flavor discoveries for each primary flavor (single grouped query)
   async _getFlavorDiscoveries(userId) {
