@@ -240,7 +240,7 @@ function createProfileRoutes(services) {
         product: milestone.productId && productsMap[milestone.productId] ? {
           id: productsMap[milestone.productId].id,
           title: productsMap[milestone.productId].title,
-          image: productsMap[milestone.productId].images?.[0]?.src || null,
+          image: productsMap[milestone.productId].image || null, // ProductsService returns 'image' not 'images'
           vendor: productsMap[milestone.productId].vendor
         } : null
       }));
