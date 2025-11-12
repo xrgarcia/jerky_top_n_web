@@ -36,26 +36,26 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth, userCr
     const formattedDate = format(new Date(milestone.date), 'MMM d, yyyy');
 
     return (
-      <div key={`${milestone.type}-${index}`} className="film-frame">
-        <div className="film-perforations-top"></div>
-        <div className="film-content">
+      <div key={`${milestone.type}-${index}`} className="reel-canister">
+        <div className="reel-outer-ring"></div>
+        <div className="reel-inner-disc">
           {milestone.product?.image ? (
             <img 
               src={milestone.product.image} 
               alt={milestone.product.title} 
-              className="film-image"
+              className="reel-image"
             />
           ) : (
-            <div className="film-image-placeholder">
-              <span className="film-badge">{milestone.badge}</span>
+            <div className="reel-image-placeholder">
+              <span className="reel-badge">{milestone.badge}</span>
             </div>
           )}
-          <div className="film-details">
-            <div className="film-headline">{milestone.headline}</div>
-            <div className="film-date">{formattedDate}</div>
-          </div>
         </div>
-        <div className="film-perforations-bottom"></div>
+        <div className="vintage-label">
+          <div className="label-title">{milestone.headline}</div>
+          <div className="label-date">{formattedDate}</div>
+        </div>
+        <div className="reel-center-hub"></div>
       </div>
     );
   };
