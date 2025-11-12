@@ -7,6 +7,7 @@ import ProfileHero from '../components/profile/ProfileHero';
 import JourneyTwoColumn from '../components/profile/JourneyTwoColumn';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
+import EmptyRankingsState from '../components/profile/EmptyRankingsState';
 import './PublicProfilePage.css';
 
 /**
@@ -160,21 +161,17 @@ function PublicProfilePage() {
       )}
 
       {/* Act 4: Current Rankings - What I'm doing next */}
-      {rankings && rankings.length > 0 && (
+      {rankings && rankings.length > 0 ? (
         <section className="profile-section section-rankings" ref={rankingsRef}>
           <div className="rankings-container">
             <h2 className="section-header">Current Rankings</h2>
             <RankingsList rankings={rankings} />
           </div>
         </section>
-      )}
-
-      {/* Empty state if user has no data */}
-      {(!rankings || rankings.length === 0) && milestones.length === 0 && (
-        <div className="public-profile-empty">
-          <h2>Just Getting Started</h2>
-          <p>This user hasn't ranked any flavors yet.</p>
-        </div>
+      ) : (
+        <section className="profile-section section-rankings" ref={rankingsRef}>
+          <EmptyRankingsState hasAchievements={achievements && achievements.length > 0} />
+        </section>
       )}
     </div>
   );

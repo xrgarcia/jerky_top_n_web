@@ -1,0 +1,108 @@
+/* EmptyRankingsState - Adventure-themed empty state with vintage aesthetic */
+
+.empty-rankings-state {
+  background: #faf8f3;
+  padding: 100px 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+.empty-rankings-content {
+  max-width: 600px;
+  text-align: center;
+  background: white;
+  border-radius: 24px;
+  padding: 60px 48px;
+  border: 2px solid #e8e4d9;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.empty-rankings-icon {
+  font-size: 4rem;
+  margin-bottom: 24px;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.empty-rankings-title {
+  margin: 0 0 20px 0;
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  line-height: 1.2;
+}
+
+.empty-rankings-message {
+  margin: 0 0 36px 0;
+  font-size: 1.0625rem;
+  line-height: 1.7;
+  color: #5a5a5a;
+}
+
+.empty-rankings-cta {
+  display: inline-block;
+  padding: 16px 40px;
+  background: linear-gradient(135deg, #7b8b52 0%, #6a7a47 100%);
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 4px 12px rgba(123, 139, 82, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.empty-rankings-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 20px rgba(123, 139, 82, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  background: linear-gradient(135deg, #8a9a5e 0%, #7b8b52 100%);
+}
+
+.empty-rankings-cta:active {
+  transform: translateY(0);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .empty-rankings-state {
+    padding: 60px 24px;
+    min-height: 350px;
+  }
+
+  .empty-rankings-content {
+    padding: 48px 32px;
+  }
+
+  .empty-rankings-icon {
+    font-size: 3rem;
+  }
+
+  .empty-rankings-title {
+    font-size: 1.75rem;
+  }
+
+  .empty-rankings-message {
+    font-size: 1rem;
+  }
+
+  .empty-rankings-cta {
+    padding: 14px 32px;
+    font-size: 1rem;
+  }
+}
