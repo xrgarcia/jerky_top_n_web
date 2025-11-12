@@ -2,28 +2,11 @@
 
 .profile-hero {
   background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-  padding: 60px 40px 80px;
+  padding: 60px 40px 40px;
   position: relative;
   overflow: visible;
   border-radius: 12px 12px 0 0;
   margin-bottom: 0;
-}
-
-.profile-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 5%;
-  right: 5%;
-  height: 12px;
-  background: linear-gradient(135deg, #b8860b 0%, #8b6914 50%, #b8860b 100%);
-  border-radius: 6px 6px 0 0;
-  box-shadow: 
-    0 -2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border: 2px solid #6d5300;
-  border-bottom: none;
-  z-index: 10;
 }
 
 /* Subtle background pattern */
