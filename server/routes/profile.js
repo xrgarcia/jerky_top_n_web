@@ -199,6 +199,50 @@ function createProfileRoutes(services) {
   });
 
   /**
+   * Generate celebratory headline for purchase milestones
+   * @param {Object} product - Product data with primaryFlavor and animalType
+   * @param {boolean} isFirst - Is this the first purchase?
+   * @param {boolean} isMostRecent - Is this the most recent purchase?
+   * @returns {string} Celebratory headline
+   */
+  function generatePurchaseHeadline(product, isFirst, isMostRecent) {
+    if (!product) return 'Order Delivered';
+
+    const flavor = product.primaryFlavor || '';
+    const animal = product.animalType || '';
+
+    // Capitalize animal name
+    const animalDisplay = animal.charAt(0).toUpperCase() + animal.slice(1).replace('_', ' ');
+
+    if (isFirst) {
+      // First purchase: "FIRST BITE - Original Beef"
+      if (flavor && animal) {
+        return `FIRST BITE - ${flavor} ${animalDisplay}`;
+      } else if (flavor) {
+        return `FIRST BITE - ${flavor} Jerky`;
+      } else if (animal) {
+        return `FIRST BITE - ${animalDisplay}`;
+      }
+      return 'FIRST BITE';
+    }
+
+    if (isMostRecent) {
+      // Most recent: "LATEST HAUL - Spicy Pork"
+      if (flavor && animal) {
+        return `LATEST HAUL - ${flavor} ${animalDisplay}`;
+      } else if (flavor) {
+        return `LATEST HAUL - ${flavor}`;
+      } else if (animal) {
+        return `LATEST HAUL - ${animalDisplay}`;
+      }
+      return 'LATEST HAUL';
+    }
+
+    // Middle purchases: Keep simple
+    return 'ORDER DELIVERED';
+  }
+
+  /**
    * GET /api/profile/:userId/journey
    * Get journey milestones for user's film strip timeline
    * Returns: ~10-15 milestone moments (first purchase, flavor discoveries, achievements, etc.)
@@ -228,22 +272,38 @@ function createProfileRoutes(services) {
         }, {});
       }
 
-      // Map milestones to enriched response
-      const enrichedMilestones = milestones.map(milestone => ({
-        type: milestone.type,
-        date: milestone.date,
-        productId: milestone.productId, // Preserve for deep-linking and identification
-        headline: milestone.headline,
-        subtitle: milestone.subtitle,
-        badge: milestone.badge,
-        iconType: milestone.iconType, // For achievement milestones
-        product: milestone.productId && productsMap[milestone.productId] ? {
-          id: productsMap[milestone.productId].id,
-          title: productsMap[milestone.productId].title,
-          image: productsMap[milestone.productId].image || null, // ProductsService returns 'image' not 'images'
-          vendor: productsMap[milestone.productId].vendor
-        } : null
-      }));
+      // Map milestones to enriched response with celebratory headlines for purchases
+      const enrichedMilestones = milestones.map(milestone => {
+        const product = milestone.productId && productsMap[milestone.productId] 
+          ? productsMap[milestone.productId] 
+          : null;
+
+        // Generate custom headline for purchase milestones
+        let customHeadline = milestone.headline;
+        if (milestone.type === 'purchase' && product) {
+          customHeadline = generatePurchaseHeadline(
+            product,
+            milestone.isFirstPurchase,
+            milestone.isMostRecentPurchase
+          );
+        }
+
+        return {
+          type: milestone.type,
+          date: milestone.date,
+          productId: milestone.productId,
+          headline: customHeadline,
+          subtitle: milestone.subtitle,
+          badge: milestone.badge,
+          iconType: milestone.iconType,
+          product: product ? {
+            id: product.id,
+            title: product.title,
+            image: product.image || null,
+            vendor: product.vendor
+          } : null
+        };
+      });
 
       res.json({
         milestones: enrichedMilestones
