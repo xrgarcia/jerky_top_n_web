@@ -105,8 +105,20 @@ function PublicProfilePage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
+    // Helper to check if element is already visible in viewport
+    const isElementVisible = (element) => {
+      const rect = element.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      return rect.top < windowHeight && rect.bottom > 0;
+    };
+
     [journeyRef, achievementsRef, rankingsRef].forEach(ref => {
       if (ref.current) {
+        // If element is already in viewport, immediately add visible class
+        if (isElementVisible(ref.current)) {
+          ref.current.classList.add('section-visible');
+        }
+        // Still observe for future scroll events
         observer.observe(ref.current);
       }
     });
@@ -139,21 +151,6 @@ function PublicProfilePage() {
   const { user, topProducts, timeline, achievements } = data;
   const milestones = journeyData?.milestones || [];
   const rankings = rankingsData?.rankings || [];
-
-  // Debug logging
-  console.log('🔍 Profile Data State:', {
-    userId,
-    hasData: !!data,
-    hasJourneyData: !!journeyData,
-    milestonesLength: milestones.length,
-    journeyLoading,
-    journeyError,
-    hasRankingsData: !!rankingsData,
-    rankingsLength: rankings.length,
-    rankingsLoading,
-    rankingsError,
-    hasAchievements: achievements?.length || 0
-  });
 
   return (
     <div className="public-profile-page">
