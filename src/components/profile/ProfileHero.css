@@ -30,7 +30,7 @@
   display: grid;
   grid-template-columns: 1fr 1.5fr;
   gap: 60px;
-  align-items: center;
+  align-items: stretch;
   position: relative;
   z-index: 1;
 }
@@ -143,6 +143,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 40px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Responsive */
@@ -152,7 +160,8 @@
     gap: 40px;
   }
 
-  .profile-user-card {
+  .profile-user-card,
+  .profile-podium-container {
     max-width: 500px;
     margin: 0 auto;
   }
@@ -163,7 +172,8 @@
     padding: 40px 20px;
   }
 
-  .profile-user-card {
+  .profile-user-card,
+  .profile-podium-container {
     padding: 32px 24px;
   }
 
