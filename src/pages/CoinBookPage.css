@@ -1,8 +1,15 @@
-/* Coin Book Page - Three-Act Narrative Structure */
+/* Coin Book Page - Elegant Three-Act Narrative */
 
 .coinbook-page {
   background: #f5f3ed;
   min-height: 100vh;
+  padding: 0;
+}
+
+.coinbook-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
 /* ========================================
@@ -10,45 +17,61 @@
    ======================================== */
 
 .coinbook-hero {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-  padding: 60px 40px 80px;
   position: relative;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+  padding: 60px 0 100px;
   overflow: hidden;
 }
 
-.coinbook-hero::before {
-  content: '';
+.hero-background {
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 50px 50px;
+  overflow: hidden;
   pointer-events: none;
+  z-index: 0;
 }
 
-.hero-container {
-  max-width: 1400px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
+.hero-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 1200px;
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 69, 19, 0.1) 30%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
 }
 
 .hero-intro {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-title {
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 800;
   color: white;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
   text-transform: uppercase;
   letter-spacing: 2px;
+  text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
 }
 
 .hero-subtitle {
@@ -56,6 +79,43 @@
   color: rgba(255, 255, 255, 0.8);
   margin: 0 auto;
   max-width: 800px;
+  line-height: 1.7;
+}
+
+/* ========================================
+   ACT HEADER STYLING - SHARED
+   ======================================== */
+
+.act-header {
+  text-align: center;
+  margin-bottom: 56px;
+}
+
+.act-label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #8b4513;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.act-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: #2d2d2d;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.act-subtitle {
+  font-size: 1.125rem;
+  color: #666;
+  margin: 0 auto;
+  max-width: 700px;
   line-height: 1.6;
 }
 
@@ -66,79 +126,76 @@
 
 .act-one {
   background: white;
-  padding: 80px 40px;
-}
-
-.act-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.act-header {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-.act-title {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  margin: 0 0 12px;
-}
-
-.act-subtitle {
-  font-size: 1.125rem;
-  color: #666;
-  margin: 0;
-  font-style: italic;
+  padding: 100px 0;
 }
 
 .story-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  margin-bottom: 48px;
+  gap: 40px;
+  margin-bottom: 56px;
 }
 
 .story-card {
-  background: linear-gradient(135deg, #faf8f3 0%, #f5f3ed 100%);
-  border-radius: 16px;
-  padding: 40px;
-  border: 2px solid #e8e4d9;
-  transition: all 0.3s ease;
+  position: relative;
+  background: #faf8f3;
+  border-radius: 12px;
+  padding: 48px 40px;
+  border: 1px solid #e8e4d9;
+  transition: all 0.4s ease;
+  overflow: hidden;
 }
 
 .story-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-  border-color: #7b8b52;
+  transform: translateY(-6px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+  border-color: #8b4513;
 }
 
-.card-icon {
-  font-size: 3rem;
-  margin-bottom: 20px;
+.card-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #7b8b52 0%, #6b7a42 100%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.story-card:hover .card-accent {
+  opacity: 1;
+}
+
+.story-card.flavor-coins .card-accent {
+  background: linear-gradient(180deg, #8b4513 0%, #6b3410 100%);
+}
+
+.story-card.engagement-coins .card-accent {
+  background: linear-gradient(180deg, #daa520 0%, #b8860b 100%);
 }
 
 .card-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: #2d2d2d;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
+  letter-spacing: 0.5px;
 }
 
 .card-description {
   font-size: 1.0625rem;
   color: #444;
-  line-height: 1.7;
-  margin-bottom: 16px;
+  line-height: 1.75;
+  margin-bottom: 20px;
 }
 
 .card-detail {
   font-size: 1rem;
-  color: #7b8b52;
+  color: #8b4513;
   font-weight: 600;
   font-style: italic;
-  padding-top: 16px;
+  padding-top: 20px;
   border-top: 1px solid #e8e4d9;
 }
 
@@ -149,44 +206,46 @@
 
 .act-two {
   background: #faf8f3;
-  padding: 80px 40px;
+  padding: 100px 0;
+}
+
+.act-two .act-title {
+  color: #2d2d2d;
 }
 
 .collection-showcase {
   display: flex;
   flex-direction: column;
   gap: 32px;
-  margin-bottom: 48px;
+  margin-bottom: 56px;
 }
 
 .collection-type {
+  position: relative;
   background: white;
-  border-radius: 16px;
+  border-radius: 12px;
   padding: 40px;
-  border: 2px solid #e8e4d9;
-  transition: all 0.3s ease;
-}
-
-.collection-type.featured {
-  background: linear-gradient(135deg, #f8f6f0 0%, #f3f0e8 100%);
-  border: 3px solid #7b8b52;
-  box-shadow: 0 4px 16px rgba(123, 139, 82, 0.15);
+  border: 1px solid #e8e4d9;
+  transition: all 0.4s ease;
 }
 
 .collection-type:hover {
   transform: translateX(8px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-.type-header {
+.collection-type.featured {
+  background: linear-gradient(135deg, #f8f6f0 0%, #f3f0e8 100%);
+  border: 2px solid #8b4513;
+  box-shadow: 0 4px 20px rgba(139, 69, 19, 0.12);
+}
+
+.collection-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  justify-content: space-between;
   margin-bottom: 20px;
-}
-
-.type-icon {
-  font-size: 2.5rem;
+  gap: 16px;
 }
 
 .type-title {
@@ -194,25 +253,26 @@
   font-weight: 700;
   color: #2d2d2d;
   margin: 0;
+  letter-spacing: 0.5px;
 }
 
 .type-description {
   font-size: 1.0625rem;
   color: #444;
-  line-height: 1.7;
-  margin-bottom: 20px;
+  line-height: 1.75;
 }
 
 .type-badge {
   display: inline-block;
-  padding: 8px 16px;
-  background: #7b8b52;
+  padding: 6px 16px;
+  background: #8b4513;
   color: white;
   border-radius: 20px;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  white-space: nowrap;
 }
 
 .type-badge.mystery {
@@ -231,16 +291,16 @@
   }
 }
 
-/* Tier Progression Display */
+/* Tier Progression Display - Keep functional emojis */
 .tier-progression {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 24px 0;
-  padding: 24px;
+  margin: 28px 0 0;
+  padding: 28px;
   background: white;
   border-radius: 12px;
-  border: 2px solid #e8e4d9;
+  border: 1px solid #e8e4d9;
 }
 
 .tier-step {
@@ -270,7 +330,7 @@
 
 .tier-arrow {
   font-size: 1.5rem;
-  color: #7b8b52;
+  color: #8b4513;
   font-weight: 700;
 }
 
@@ -280,8 +340,8 @@
    ======================================== */
 
 .act-three {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-  padding: 80px 40px 100px;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+  padding: 100px 0 120px;
   position: relative;
   overflow: hidden;
 }
@@ -300,9 +360,13 @@
   pointer-events: none;
 }
 
-.act-three .act-container {
+.act-three .coinbook-container {
   position: relative;
   z-index: 1;
+}
+
+.act-three .act-label {
+  color: rgba(218, 165, 32, 0.7);
 }
 
 .act-three .act-title {
@@ -315,73 +379,99 @@
 
 .masters-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 28px;
+  margin-bottom: 56px;
 }
 
 .master-card {
+  position: relative;
   background: rgba(255, 255, 255, 0.05);
-  border: 2px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 32px;
-  text-align: center;
-  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 40px 36px;
+  transition: all 0.4s ease;
   backdrop-filter: blur(10px);
+  overflow: hidden;
 }
 
 .master-card:hover {
   transform: translateY(-8px);
   background: rgba(255, 255, 255, 0.08);
-  border-color: #7b8b52;
-  box-shadow: 0 12px 32px rgba(123, 139, 82, 0.3);
+  border-color: rgba(218, 165, 32, 0.5);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3);
 }
 
-.master-icon {
-  font-size: 4rem;
-  margin-bottom: 20px;
+.master-accent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #daa520, transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.master-card:hover .master-accent {
+  opacity: 1;
+}
+
+/* Category-specific accent colors */
+.master-card.beef .master-accent {
+  background: linear-gradient(90deg, transparent, #8b4513, transparent);
+}
+
+.master-card.game .master-accent {
+  background: linear-gradient(90deg, transparent, #556b2f, transparent);
+}
+
+.master-card.pork .master-accent {
+  background: linear-gradient(90deg, transparent, #cd853f, transparent);
+}
+
+.master-card.poultry .master-accent {
+  background: linear-gradient(90deg, transparent, #daa520, transparent);
+}
+
+.master-card.exotic .master-accent {
+  background: linear-gradient(90deg, transparent, #9370db, transparent);
 }
 
 .master-title {
   font-size: 1.75rem;
   font-weight: 700;
   color: white;
-  margin: 0 0 16px;
+  margin: 0 0 20px;
+  letter-spacing: 0.5px;
 }
 
 .master-description {
   font-size: 1.0625rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
 }
 
 .masters-note {
-  background: rgba(123, 139, 82, 0.15);
-  border: 2px solid rgba(123, 139, 82, 0.3);
-  border-radius: 16px;
-  padding: 32px;
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-  margin-bottom: 48px;
-}
-
-.note-icon {
-  font-size: 3rem;
-  flex-shrink: 0;
+  background: rgba(139, 69, 19, 0.15);
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  border-radius: 12px;
+  padding: 40px;
+  margin-bottom: 56px;
 }
 
 .note-content h4 {
   font-size: 1.5rem;
   font-weight: 700;
   color: white;
-  margin: 0 0 12px;
+  margin: 0 0 16px;
+  letter-spacing: 0.5px;
 }
 
 .note-content p {
   font-size: 1.0625rem;
-  color: rgba(255, 255, 255, 0.8);
-  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.7;
   margin: 0 0 12px;
 }
 
@@ -390,9 +480,8 @@
 }
 
 .note-highlight {
-  color: #a4b86d !important;
+  color: #daa520 !important;
   font-weight: 600;
-  font-style: italic;
 }
 
 /* ========================================
@@ -401,41 +490,44 @@
 
 .act-cta {
   display: flex;
-  gap: 16px;
+  gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
 }
 
 .story-button {
   display: inline-block;
-  padding: 16px 40px;
+  padding: 16px 48px;
   border-radius: 8px;
   font-weight: 600;
   font-size: 1.0625rem;
   text-decoration: none;
   transition: all 0.3s ease;
   text-align: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-size: 0.9375rem;
 }
 
 .story-button.primary {
-  background: linear-gradient(135deg, #7b8b52 0%, #6b7a42 100%);
+  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
   color: white;
-  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
+  box-shadow: 0 4px 16px rgba(139, 69, 19, 0.3);
 }
 
 .story-button.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(123, 139, 82, 0.4);
+  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.4);
 }
 
 .story-button.secondary {
   background: white;
-  color: #7b8b52;
-  border: 2px solid #7b8b52;
+  color: #8b4513;
+  border: 2px solid #8b4513;
 }
 
 .story-button.secondary:hover {
-  background: #7b8b52;
+  background: #8b4513;
   color: white;
 }
 
@@ -460,20 +552,24 @@
   }
 
   .masters-grid {
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   }
 }
 
 @media (max-width: 768px) {
+  .coinbook-container {
+    padding: 0 20px;
+  }
+
   .coinbook-hero,
   .act-one,
   .act-two,
   .act-three {
-    padding: 60px 20px;
+    padding: 60px 0;
   }
 
   .hero-title {
-    font-size: 2.25rem;
+    font-size: 2.5rem;
   }
 
   .hero-subtitle {
@@ -484,14 +580,20 @@
     font-size: 2rem;
   }
 
+  .act-subtitle {
+    font-size: 1rem;
+  }
+
   .story-card,
-  .collection-type {
-    padding: 28px;
+  .collection-type,
+  .masters-note {
+    padding: 32px 28px;
   }
 
   .tier-progression {
     flex-wrap: wrap;
     gap: 16px;
+    justify-content: center;
   }
 
   .tier-arrow {
@@ -502,20 +604,16 @@
     grid-template-columns: 1fr;
   }
 
-  .masters-note {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .note-icon {
-    align-self: center;
-  }
-
   .act-cta {
     flex-direction: column;
   }
 
   .story-button {
     width: 100%;
+  }
+
+  .collection-header {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

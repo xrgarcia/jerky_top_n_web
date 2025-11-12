@@ -8,9 +8,12 @@ function CoinBookPage() {
     <div className="coinbook-page">
       {/* Hero: The Coin Book */}
       <section className="coinbook-hero">
-        <div className="hero-container">
+        <div className="hero-background">
+          <div className="hero-glow"></div>
+        </div>
+        <div className="coinbook-container">
           <div className="hero-intro">
-            <h1 className="hero-title">🪙 Your Coin Book</h1>
+            <h1 className="hero-title">Your Coin Book</h1>
             <p className="hero-subtitle">
               Like collecting state quarters, your Coin Book shows both what you've earned and what's waiting to be discovered. 
               Each coin tells a story of exploration, discovery, and mastery.
@@ -22,15 +25,16 @@ function CoinBookPage() {
 
       {/* Act 1: First Bite - Starting Your Collection */}
       <section className="act-one">
-        <div className="act-container">
+        <div className="coinbook-container">
           <div className="act-header">
-            <h2 className="act-title">🥩 First Bite: Starting Your Collection</h2>
+            <span className="act-label">Act I</span>
+            <h2 className="act-title">First Bite</h2>
             <p className="act-subtitle">Every jerky lover's journey begins with curiosity and that first taste</p>
           </div>
 
           <div className="story-grid">
-            <div className="story-card">
-              <div className="card-icon">🪙</div>
+            <div className="story-card flavor-coins">
+              <div className="card-accent"></div>
               <h3 className="card-title">Flavor Coins</h3>
               <p className="card-description">
                 Each time you <strong>purchase AND rank</strong> a unique flavor, you earn its coin—a badge of honor 
@@ -38,17 +42,17 @@ function CoinBookPage() {
                 and then ranked by you.
               </p>
               <p className="card-detail">
-                Each coin represents both <strong>participation</strong> (your journey) and <strong>flavor history</strong> (what you've tasted).
+                Each coin represents both participation (your journey) and flavor history (what you've tasted).
               </p>
             </div>
 
-            <div className="story-card">
-              <div className="card-icon">⚡</div>
+            <div className="story-card engagement-coins">
+              <div className="card-accent"></div>
               <h3 className="card-title">Engagement Coins</h3>
               <p className="card-description">
                 Earned through site activities like searches, logins, ranking streaks, and milestones. 
-                These coins demonstrate both your <strong>exploration</strong> (breadth of trying new things) 
-                and <strong>discovery</strong> (depth of refining preferences).
+                These coins demonstrate both your exploration (breadth of trying new things) 
+                and discovery (depth of refining preferences).
               </p>
               <p className="card-detail">
                 Your engagement builds the foundation for everything that follows.
@@ -69,35 +73,35 @@ function CoinBookPage() {
 
       {/* Act 2: Building Mastery - The Collections */}
       <section className="act-two">
-        <div className="act-container">
+        <div className="coinbook-container">
           <div className="act-header">
-            <h2 className="act-title">🏆 Building Mastery: The Collections</h2>
+            <span className="act-label">Act II</span>
+            <h2 className="act-title">Building Mastery</h2>
             <p className="act-subtitle">As you explore more flavors, you start building themed collections and discovering your preferences</p>
           </div>
 
           <div className="collection-showcase">
-            <div className="collection-type">
-              <div className="type-header">
-                <div className="type-icon">📌</div>
+            <div className="collection-type static">
+              <div className="collection-header">
                 <h3 className="type-title">Static Collection Coins</h3>
+                <span className="type-badge">One-time achievements</span>
               </div>
               <p className="type-description">
                 Complete specific sets like <strong>"Classic Beef"</strong> or <strong>"Original Master"</strong>. 
                 These fixed, finite challenges never change—but they're yours forever once earned.
               </p>
-              <div className="type-badge">One-time achievements</div>
             </div>
 
-            <div className="collection-type featured">
-              <div className="type-header">
-                <div className="type-icon">🔄</div>
+            <div className="collection-type dynamic featured">
+              <div className="collection-header">
                 <h3 className="type-title">Dynamic Collection Coins</h3>
+                <span className="type-badge">Living challenges</span>
               </div>
               <p className="type-description">
                 Living collections like <strong>"All Beef"</strong> or <strong>"All Poultry"</strong> update 
-                automatically as new flavors are released or retired. Your <strong>tier</strong> (Bronze → Silver → Gold → Platinum → Diamond) 
-                shows how much of each collection you've mastered.
+                automatically as new flavors are released or retired. Your tier shows how much of each collection you've mastered.
               </p>
+              
               <div className="tier-progression">
                 <div className="tier-step">
                   <span className="tier-emoji">🥉</span>
@@ -129,20 +133,18 @@ function CoinBookPage() {
                   <span className="tier-percent">100%</span>
                 </div>
               </div>
-              <div className="type-badge">Living challenges</div>
             </div>
 
-            <div className="collection-type">
-              <div className="type-header">
-                <div className="type-icon">🎭</div>
+            <div className="collection-type hidden">
+              <div className="collection-header">
                 <h3 className="type-title">Hidden Collection Coins</h3>
+                <span className="type-badge mystery">???</span>
               </div>
               <p className="type-description">
                 Secret achievements are hiding in your Coin Book... 
                 Can you unlock <strong>"BBQ Lovers"</strong>, <strong>"Sweet Tooth"</strong>, or <strong>"Heat Seeker"</strong>? 
                 Meet hidden criteria to reveal these themed treasures.
               </p>
-              <div className="type-badge mystery">???</div>
             </div>
           </div>
 
@@ -156,15 +158,16 @@ function CoinBookPage() {
 
       {/* Act 3: The Masters - Elite Status */}
       <section className="act-three">
-        <div className="act-container">
+        <div className="coinbook-container">
           <div className="act-header">
-            <h2 className="act-title">👑 The Masters: Elite Status</h2>
+            <span className="act-label">Act III</span>
+            <h2 className="act-title">The Masters</h2>
             <p className="act-subtitle">The ultimate goal—becoming a true master of your favorite protein categories</p>
           </div>
 
           <div className="masters-grid">
-            <div className="master-card">
-              <div className="master-icon">🐄</div>
+            <div className="master-card beef">
+              <div className="master-accent"></div>
               <h3 className="master-title">Beef Master</h3>
               <p className="master-description">
                 Master every beef flavor as they're released. From classic cuts to exotic preparations, 
@@ -172,8 +175,8 @@ function CoinBookPage() {
               </p>
             </div>
 
-            <div className="master-card">
-              <div className="master-icon">🦌</div>
+            <div className="master-card game">
+              <div className="master-accent"></div>
               <h3 className="master-title">Game Master</h3>
               <p className="master-description">
                 Conquer the wild frontier—elk, venison, wild boar, and beyond. 
@@ -181,8 +184,8 @@ function CoinBookPage() {
               </p>
             </div>
 
-            <div className="master-card">
-              <div className="master-icon">🐷</div>
+            <div className="master-card pork">
+              <div className="master-accent"></div>
               <h3 className="master-title">Pork Master</h3>
               <p className="master-description">
                 From traditional to innovative, master every pork-based flavor. 
@@ -190,8 +193,8 @@ function CoinBookPage() {
               </p>
             </div>
 
-            <div className="master-card">
-              <div className="master-icon">🦃</div>
+            <div className="master-card poultry">
+              <div className="master-accent"></div>
               <h3 className="master-title">Poultry Master</h3>
               <p className="master-description">
                 Chicken and turkey in all their glory. 
@@ -199,8 +202,8 @@ function CoinBookPage() {
               </p>
             </div>
 
-            <div className="master-card">
-              <div className="master-icon">🦘</div>
+            <div className="master-card exotic">
+              <div className="master-accent"></div>
               <h3 className="master-title">Exotic Master</h3>
               <p className="master-description">
                 Alligator, alpaca, kangaroo, ostrich, lamb—dare to taste the extraordinary. 
@@ -210,7 +213,6 @@ function CoinBookPage() {
           </div>
 
           <div className="masters-note">
-            <div className="note-icon">🔥</div>
             <div className="note-content">
               <h4>Master Collections Are Living Challenges</h4>
               <p>
