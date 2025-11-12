@@ -86,35 +86,42 @@ function PublicProfilePage() {
 
   return (
     <div className="public-profile-page">
-      {/* Act 1: Hero Spotlight - Who they are */}
+      {/* Act 1: Hero - Who I am */}
       <ProfileHero user={user} topProducts={topProducts} />
 
-      {/* Act 2: Journey Film Reel - The story */}
+      {/* Act 2: Journey Film Strip - How I got here */}
       {milestones.length > 0 && (
-        <JourneyFilmStrip 
-          milestones={milestones}
-          journeyStage={user.journeyStage}
-          explorationBreadth={user.explorationBreadth}
-          userCreatedAt={user.createdAt}
-        />
+        <section className="profile-section section-journey">
+          <JourneyFilmStrip 
+            milestones={milestones}
+            journeyStage={user.journeyStage}
+            explorationBreadth={user.explorationBreadth}
+            userCreatedAt={user.createdAt}
+          />
+        </section>
       )}
 
-      {/* Act 3: Rankings List - The details */}
-      {rankings && rankings.length > 0 && (
-        <RankingsList rankings={rankings} />
-      )}
-
-      {/* Act 4: Achievement Showcase - The trophies */}
+      {/* Act 3: Achievement Showcase - What I've earned */}
       {achievements && achievements.length > 0 && (
-        <div className="public-profile-achievements">
+        <section className="profile-section section-achievements">
           <div className="achievements-container">
-            <h2 className="achievements-title">Achievements</h2>
+            <h2 className="section-header">Achievements Unlocked</h2>
             <CoinBookWidget 
               achievements={achievements}
               collapsible={false}
             />
           </div>
-        </div>
+        </section>
+      )}
+
+      {/* Act 4: Current Rankings - What I'm doing next */}
+      {rankings && rankings.length > 0 && (
+        <section className="profile-section section-rankings">
+          <div className="rankings-container">
+            <h2 className="section-header">Current Rankings</h2>
+            <RankingsList rankings={rankings} />
+          </div>
+        </section>
       )}
 
       {/* Empty state if user has no data */}

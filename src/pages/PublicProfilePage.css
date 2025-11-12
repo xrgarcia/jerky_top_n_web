@@ -77,22 +77,37 @@
   font-style: italic;
 }
 
-.public-profile-achievements {
+.profile-section {
   padding: 60px 40px;
+  margin: 0;
+}
+
+.section-journey {
+  padding: 0;
+  background: transparent;
+}
+
+.section-achievements {
   background: white;
 }
 
-.achievements-container {
+.section-rankings {
+  background: #faf8f3;
+}
+
+.achievements-container,
+.rankings-container {
   max-width: 1200px;
   margin: 0 auto;
 }
 
-.achievements-title {
-  margin: 0 0 32px;
+.section-header {
+  margin: 0 0 40px;
   font-size: 2rem;
   font-weight: 700;
   color: #2d2d2d;
   text-align: center;
+  letter-spacing: -0.02em;
 }
 
 /* Responsive */
@@ -108,11 +123,16 @@
     font-size: 1.5rem;
   }
 
-  .public-profile-achievements {
+  .profile-section {
     padding: 40px 20px;
   }
 
-  .achievements-title {
+  .section-journey {
+    padding: 0;
+  }
+
+  .section-header {
     font-size: 1.5rem;
+    margin-bottom: 32px;
   }
 }
