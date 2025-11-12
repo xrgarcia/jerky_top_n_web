@@ -1,6 +1,6 @@
 const { db } = require('../db');
-const { users, productRankings, customerOrderItems, productsMetadata } = require('../../shared/schema');
-const { eq, and, desc, asc, sql } = require('drizzle-orm');
+const { users, productRankings, customerOrderItems, productsMetadata, achievements, userAchievements, userClassifications } = require('../../shared/schema');
+const { eq, and, desc, asc, sql, inArray } = require('drizzle-orm');
 const Sentry = require('@sentry/node');
 
 /**
@@ -420,6 +420,264 @@ class ProfileRepository {
 
     // Sort moments by date (newest first)
     return moments.sort((a, b) => b.date - a.date);
+  }
+
+  /**
+   * Get journey milestones for narrative-driven film strip timeline
+   * Returns ~10-15 milestone moments celebrating user's flavor journey
+   * @param {number} userId - The user's ID
+   * @returns {Promise<Array>} Array of milestone objects {type, date, productId, headline, subtitle, badge}
+   */
+  async getJourneyMilestones(userId) {
+    try {
+      const milestones = [];
+
+      // MILESTONE 1: First purchase ever
+      const firstPurchase = await this._getFirstPurchase(userId);
+      if (firstPurchase) milestones.push(firstPurchase);
+
+      // MILESTONE 2-9: First flavor discoveries (Sweet, Spicy, Hot, Teriyaki, BBQ, Peppered, Smoky, Original)
+      const flavorDiscoveries = await this._getFlavorDiscoveries(userId);
+      milestones.push(...flavorDiscoveries);
+
+      // MILESTONE 10: First exotic animal (bison, elk, venison, wild boar)
+      const exoticAnimal = await this._getFirstExoticAnimal(userId);
+      if (exoticAnimal) milestones.push(exoticAnimal);
+
+      // MILESTONE 11: First achievement unlocked
+      const firstAchievement = await this._getFirstAchievement(userId);
+      if (firstAchievement) milestones.push(firstAchievement);
+
+      // MILESTONE 12: Joined flavor community
+      const communityJoin = await this._getCommunityJoinMoment(userId);
+      if (communityJoin) milestones.push(communityJoin);
+
+      // MILESTONE 13: 100th ranking milestone
+      const hundredthRanking = await this._get100thRanking(userId);
+      if (hundredthRanking) milestones.push(hundredthRanking);
+
+      // MILESTONE 14: First #1 ranking
+      const firstTopRanking = await this._getFirstTopRanking(userId);
+      if (firstTopRanking) milestones.push(firstTopRanking);
+
+      // Sort by date (oldest first for chronological storytelling)
+      const sorted = milestones.sort((a, b) => a.date - b.date);
+
+      // Limit to 15 most meaningful milestones
+      return sorted.slice(0, 15);
+
+    } catch (error) {
+      Sentry.captureException(error, {
+        tags: { service: 'ProfileRepository', method: 'getJourneyMilestones' },
+        extra: { userId }
+      });
+      console.error('Error fetching journey milestones:', error);
+      return [];
+    }
+  }
+
+  // Helper: Get first purchase ever
+  async _getFirstPurchase(userId) {
+    const result = await db
+      .select({
+        orderDate: customerOrderItems.orderDate,
+        shopifyProductId: customerOrderItems.shopifyProductId
+      })
+      .from(customerOrderItems)
+      .where(eq(customerOrderItems.userId, userId))
+      .orderBy(asc(customerOrderItems.orderDate))
+      .limit(1);
+
+    if (result.length === 0) return null;
+
+    return {
+      type: 'first_purchase',
+      date: result[0].orderDate,
+      productId: result[0].shopifyProductId,
+      headline: 'First Bite',
+      subtitle: 'Your jerky journey began',
+      badge: '🎬'
+    };
+  }
+
+  // Helper: Get first flavor discoveries for each primary flavor (single grouped query)
+  async _getFlavorDiscoveries(userId) {
+    const flavorMeta = {
+      'Sweet': { emoji: '🍯', headline: 'Sweet Discovery' },
+      'Spicy': { emoji: '🌶️', headline: 'Spicy Awakening' },
+      'Hot': { emoji: '🔥', headline: 'Heat Seeker' },
+      'Teriyaki': { emoji: '🥢', headline: 'Teriyaki Journey' },
+      'BBQ': { emoji: '🍖', headline: 'BBQ Tradition' },
+      'Peppered': { emoji: '⚫', headline: 'Pepper Power' },
+      'Smoky': { emoji: '💨', headline: 'Smoke Signals' },
+      'Original': { emoji: '⭐', headline: 'Classic Taste' }
+    };
+
+    // Single query with grouped MIN to get first purchase per flavor
+    const results = await db
+      .select({
+        primaryFlavor: productsMetadata.primaryFlavor,
+        firstOrderDate: sql`MIN(${customerOrderItems.orderDate})`.as('first_order_date'),
+        shopifyProductId: sql`(
+          ARRAY_AGG(${customerOrderItems.shopifyProductId} ORDER BY ${customerOrderItems.orderDate} ASC)
+        )[1]`.as('first_product_id')
+      })
+      .from(customerOrderItems)
+      .innerJoin(productsMetadata, eq(customerOrderItems.shopifyProductId, productsMetadata.shopifyProductId))
+      .where(eq(customerOrderItems.userId, userId))
+      .groupBy(productsMetadata.primaryFlavor);
+
+    // Map results to milestone objects
+    return results
+      .filter(r => flavorMeta[r.primaryFlavor]) // Only known flavors
+      .map(r => ({
+        type: 'flavor_discovery',
+        date: new Date(r.firstOrderDate),
+        productId: r.shopifyProductId,
+        headline: flavorMeta[r.primaryFlavor].headline,
+        subtitle: `First ${r.primaryFlavor} flavor`,
+        badge: flavorMeta[r.primaryFlavor].emoji
+      }));
+  }
+
+  // Helper: Get first exotic animal purchase
+  async _getFirstExoticAnimal(userId) {
+    const exoticAnimals = ['bison', 'elk', 'venison', 'wild_boar', 'alligator'];
+    
+    const result = await db
+      .select({
+        orderDate: customerOrderItems.orderDate,
+        shopifyProductId: customerOrderItems.shopifyProductId,
+        animalType: productsMetadata.animalType
+      })
+      .from(customerOrderItems)
+      .innerJoin(productsMetadata, eq(customerOrderItems.shopifyProductId, productsMetadata.shopifyProductId))
+      .where(and(
+        eq(customerOrderItems.userId, userId),
+        inArray(productsMetadata.animalType, exoticAnimals)
+      ))
+      .orderBy(asc(customerOrderItems.orderDate))
+      .limit(1);
+
+    if (result.length === 0) return null;
+
+    return {
+      type: 'exotic_animal',
+      date: result[0].orderDate,
+      productId: result[0].shopifyProductId,
+      headline: 'Wild Side',
+      subtitle: `First ${result[0].animalType} adventure`,
+      badge: '🦌'
+    };
+  }
+
+  // Helper: Get first achievement unlocked
+  async _getFirstAchievement(userId) {
+    const result = await db
+      .select({
+        earnedAt: userAchievements.earnedAt,
+        name: achievements.name,
+        icon: achievements.icon
+      })
+      .from(userAchievements)
+      .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
+      .where(eq(userAchievements.userId, userId))
+      .orderBy(asc(userAchievements.earnedAt))
+      .limit(1);
+
+    if (result.length === 0) return null;
+
+    return {
+      type: 'achievement',
+      date: result[0].earnedAt,
+      productId: null, // Achievement has no product
+      headline: 'Achievement Unlocked',
+      subtitle: result[0].name,
+      badge: result[0].icon
+    };
+  }
+
+  // Helper: Get community join moment
+  async _getCommunityJoinMoment(userId) {
+    const result = await db
+      .select({
+        lastCalculated: userClassifications.lastCalculated,
+        focusAreas: userClassifications.focusAreas
+      })
+      .from(userClassifications)
+      .where(eq(userClassifications.userId, userId))
+      .limit(1);
+
+    if (result.length === 0 || !result[0].lastCalculated) return null;
+
+    const focusAreas = result[0].focusAreas || [];
+    const primaryFocus = focusAreas[0] || 'Flavor';
+
+    return {
+      type: 'community',
+      date: result[0].lastCalculated,
+      productId: null,
+      headline: 'Joined the Tribe',
+      subtitle: `${primaryFocus} community member`,
+      badge: '👥'
+    };
+  }
+
+  // Helper: Get 100th ranking milestone
+  async _get100thRanking(userId) {
+    const result = await db
+      .select({
+        createdAt: productRankings.createdAt,
+        shopifyProductId: productRankings.shopifyProductId
+      })
+      .from(productRankings)
+      .where(and(
+        eq(productRankings.userId, userId),
+        eq(productRankings.rankingListId, 'default')
+      ))
+      .orderBy(asc(productRankings.createdAt))
+      .limit(100);
+
+    if (result.length < 100) return null;
+
+    const hundredthRanking = result[99]; // 0-indexed
+
+    return {
+      type: 'milestone_ranking',
+      date: hundredthRanking.createdAt,
+      productId: hundredthRanking.shopifyProductId,
+      headline: 'Century Club',
+      subtitle: '100 flavors ranked',
+      badge: '💯'
+    };
+  }
+
+  // Helper: Get first #1 ranking
+  async _getFirstTopRanking(userId) {
+    const result = await db
+      .select({
+        createdAt: productRankings.createdAt,
+        shopifyProductId: productRankings.shopifyProductId
+      })
+      .from(productRankings)
+      .where(and(
+        eq(productRankings.userId, userId),
+        eq(productRankings.rankingListId, 'default'),
+        eq(productRankings.ranking, 1)
+      ))
+      .orderBy(asc(productRankings.createdAt))
+      .limit(1);
+
+    if (result.length === 0) return null;
+
+    return {
+      type: 'top_ranking',
+      date: result[0].createdAt,
+      productId: result[0].shopifyProductId,
+      headline: 'Crowned Your Favorite',
+      subtitle: 'First #1 ranking',
+      badge: '👑'
+    };
   }
 }
 
