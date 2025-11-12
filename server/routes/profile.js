@@ -211,8 +211,22 @@ function createProfileRoutes(services) {
     const flavor = product.primaryFlavor || '';
     const animal = product.animalType || '';
 
-    // Capitalize animal name
-    const animalDisplay = animal.charAt(0).toUpperCase() + animal.slice(1).replace('_', ' ');
+    // Map animal types to user-friendly names
+    const animalNameMap = {
+      'cattle': 'Beef',
+      'poultry': 'Chicken',
+      'swine': 'Pork',
+      'turkey': 'Turkey',
+      'bison': 'Bison',
+      'elk': 'Elk',
+      'venison': 'Venison',
+      'wild_boar': 'Wild Boar',
+      'alligator': 'Alligator',
+      'salmon': 'Salmon'
+    };
+
+    const animalDisplay = animalNameMap[animal?.toLowerCase()] || 
+      (animal ? animal.charAt(0).toUpperCase() + animal.slice(1).replace('_', ' ') : '');
 
     if (isFirst) {
       // First purchase: "FIRST BITE - Original Beef"
