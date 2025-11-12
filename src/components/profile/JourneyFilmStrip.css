@@ -88,9 +88,9 @@
   gap: 0;
   padding: 0 1.5rem 0 0;
   position: relative;
-  background: #1a1410;
+  background: transparent;
   border-radius: 6px;
-  overflow: hidden;
+  overflow: visible;
   min-width: 100%;
 }
 
