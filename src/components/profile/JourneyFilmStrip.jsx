@@ -37,7 +37,6 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth, userCr
 
     return (
       <div key={`${milestone.type}-${index}`} className="reel-canister">
-        <div className="reel-outer-ring"></div>
         <div className="reel-inner-disc">
           {milestone.product?.image ? (
             <img 
@@ -55,7 +54,6 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth, userCr
           <div className="label-title">{milestone.headline}</div>
           <div className="label-date">{formattedDate}</div>
         </div>
-        <div className="reel-center-hub"></div>
       </div>
     );
   };
