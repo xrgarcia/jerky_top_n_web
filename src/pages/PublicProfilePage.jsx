@@ -100,7 +100,7 @@ function PublicProfilePage() {
   useEffect(() => {
     const observerOptions = {
       threshold: 0.05,
-      rootMargin: '50px 0px -50px 0px'
+      rootMargin: '50px 0px 200px 0px' // Increased bottom margin to trigger rankings section earlier
     };
 
     const markSectionVisible = (sectionName) => {
