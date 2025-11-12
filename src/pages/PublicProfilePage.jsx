@@ -100,7 +100,7 @@ function PublicProfilePage() {
   useEffect(() => {
     const observerOptions = {
       threshold: 0.05,
-      rootMargin: '50px 0px 400px 0px' // Trigger rankings section much earlier
+      rootMargin: '50px 0px 800px 0px' // Trigger rankings section very early
     };
 
     const markSectionVisible = (sectionName) => {
