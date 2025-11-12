@@ -252,7 +252,14 @@ function createProfileRoutes(services) {
       return 'LATEST HAUL';
     }
 
-    // Middle purchases: Keep simple
+    // Middle purchases: Celebratory but not as special as first/last
+    if (flavor && animal) {
+      return `FLAVOR DROP - ${flavor} ${animalDisplay}`;
+    } else if (flavor) {
+      return `FLAVOR DROP - ${flavor}`;
+    } else if (animal) {
+      return `NEW HAUL - ${animalDisplay}`;
+    }
     return 'ORDER DELIVERED';
   }
 
