@@ -179,18 +179,24 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
           {slide.id === 'leaderboard' && slide.topRankers && slide.topRankers.length > 0 && (
             <div className="leaderboard-preview">
               {slide.topRankers.map((ranker, index) => (
-                <div key={index} className="ranker-card" onClick={() => navigate(`/community/${ranker.handle || ranker.userId}`)}>
+                <div 
+                  key={ranker.userId || index} 
+                  className="ranker-card" 
+                  onClick={() => navigate(`/community/${ranker.handle || ranker.userId}`)}
+                >
                   <div className="ranker-position">#{index + 1}</div>
-                  <div className="ranker-avatar">
-                    {ranker.profilePictureUrl ? (
-                      <img src={ranker.profilePictureUrl} alt={ranker.userName} />
+                  
+                  <div className="avatar avatar-small">
+                    {ranker.avatarUrl ? (
+                      <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
                     ) : (
-                      <div className="avatar-placeholder">{ranker.userName?.[0] || '?'}</div>
+                      <div className="avatar-initials">{ranker.initials || ranker.displayName?.[0] || '?'}</div>
                     )}
                   </div>
+
                   <div className="ranker-info">
-                    <div className="ranker-name">{ranker.userName}</div>
-                    <div className="ranker-score">{ranker.totalScore?.toLocaleString()} pts</div>
+                    <div className="ranker-name">{ranker.displayName}</div>
+                    <div className="ranker-score">{ranker.engagementScore?.toLocaleString() || 0} pts</div>
                   </div>
                 </div>
               ))}
