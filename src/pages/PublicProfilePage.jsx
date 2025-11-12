@@ -112,7 +112,7 @@ function PublicProfilePage() {
     });
 
     return () => observer.disconnect();
-  }, [data]);
+  }, [userId, data, journeyData, rankingsData]);
 
   if (isLoading) {
     return (
