@@ -125,8 +125,20 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
     );
   };
 
+  const renderSprocketHoles = () => {
+    const holeCount = 50;
+    return (
+      <div className="sprocket-holes">
+        {Array.from({ length: holeCount }).map((_, index) => (
+          <div key={index} className="sprocket-hole" />
+        ))}
+      </div>
+    );
+  };
+
   return (
     <div className="journey-film-strip">
+      {renderSprocketHoles()}
       <div className="film-scroll-container" ref={scrollContainerRef}>
         <div className="film-reel">
           {renderHeaderCard()}
@@ -137,6 +149,7 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
           />
         </div>
       </div>
+      {renderSprocketHoles()}
 
       <div className="film-nav">
         <button 
