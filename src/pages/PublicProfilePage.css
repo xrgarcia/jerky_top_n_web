@@ -5,8 +5,8 @@
   background: #faf8f3;
 }
 
-.profile-hero + * {
-  margin-top: 0 !important;
+.profile-hero {
+  margin-bottom: 0;
 }
 
 .public-profile-loading,
@@ -83,6 +83,7 @@
 }
 
 .section-journey {
+  margin-top: 60px;
   padding: 0;
   background: transparent;
 }
@@ -128,6 +129,7 @@
   }
 
   .section-journey {
+    margin-top: 40px;
     padding: 0;
   }
 
