@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import './JourneyIntro.css';
 
-function JourneyIntro({ userHandle, journeyStage }) {
+const JourneyIntro = forwardRef(({ userHandle, journeyStage }, ref) => {
   return (
-    <div className="journey-intro">
+    <div className="journey-intro" ref={ref}>
       <div className="journey-intro-content">
         <h2 className="journey-intro-title">
           The Flavor Journey
@@ -14,6 +14,8 @@ function JourneyIntro({ userHandle, journeyStage }) {
       </div>
     </div>
   );
-}
+});
+
+JourneyIntro.displayName = 'JourneyIntro';
 
 export default JourneyIntro;

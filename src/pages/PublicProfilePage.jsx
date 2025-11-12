@@ -123,12 +123,11 @@ function PublicProfilePage() {
       {/* Act 2: Journey Film Strip - How I got here */}
       {milestones.length > 0 && (
         <section className="profile-section section-journey">
-          <div ref={journeyIntroRef}>
-            <JourneyIntro 
-              userHandle={user.handle}
-              journeyStage={user.journeyStage}
-            />
-          </div>
+          <JourneyIntro 
+            ref={journeyIntroRef}
+            userHandle={user.handle}
+            journeyStage={user.journeyStage}
+          />
           <JourneyFilmStrip 
             milestones={milestones}
             journeyStage={user.journeyStage}
