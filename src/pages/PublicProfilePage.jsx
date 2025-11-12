@@ -49,19 +49,22 @@ function PublicProfilePage() {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
-  const { data: journeyData } = useQuery({
+  const { data: journeyData, isLoading: journeyLoading, error: journeyError } = useQuery({
     queryKey: ['profileJourney', userId],
     queryFn: async () => {
       const response = await fetch(`/api/profile/${userId}/journey`, {
         credentials: 'include',
       });
       if (!response.ok) {
+        console.error(`Journey API failed with status ${response.status}`);
         throw new Error('Failed to fetch journey');
       }
       return response.json();
     },
     enabled: !!userId,
     staleTime: 1000 * 60 * 10, // 10 minutes (matches cache TTL)
+    retry: 3, // Retry up to 3 times on failure
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
 
   // Scroll-triggered animations
@@ -121,7 +124,20 @@ function PublicProfilePage() {
       <ProfileHero user={user} topProducts={topProducts} />
 
       {/* Act 2: Journey Film Strip - How I got here */}
-      {milestones.length > 0 && (
+      {journeyLoading ? (
+        <section className="profile-section section-journey">
+          <div className="journey-loading">
+            <div className="loading-spinner"></div>
+            <p>Loading flavor journey...</p>
+          </div>
+        </section>
+      ) : journeyError ? (
+        <section className="profile-section section-journey">
+          <div className="journey-error">
+            <p>😕 Journey timeline temporarily unavailable. Check back soon!</p>
+          </div>
+        </section>
+      ) : milestones.length > 0 ? (
         <section className="profile-section section-journey">
           <JourneyTwoColumn
             ref={journeyRef}
@@ -132,7 +148,7 @@ function PublicProfilePage() {
             userCreatedAt={user.createdAt}
           />
         </section>
-      )}
+      ) : null}
 
       {/* Act 3: Achievement Showcase - What I've earned */}
       {achievements && achievements.length > 0 && (
