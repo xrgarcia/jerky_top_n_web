@@ -140,6 +140,21 @@ function PublicProfilePage() {
   const milestones = journeyData?.milestones || [];
   const rankings = rankingsData?.rankings || [];
 
+  // Debug logging
+  console.log('🔍 Profile Data State:', {
+    userId,
+    hasData: !!data,
+    hasJourneyData: !!journeyData,
+    milestonesLength: milestones.length,
+    journeyLoading,
+    journeyError,
+    hasRankingsData: !!rankingsData,
+    rankingsLength: rankings.length,
+    rankingsLoading,
+    rankingsError,
+    hasAchievements: achievements?.length || 0
+  });
+
   return (
     <div className="public-profile-page">
       {/* Act 1: Hero - Who I am */}
