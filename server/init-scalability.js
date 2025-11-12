@@ -9,6 +9,7 @@ const AchievementCache = require('./cache/AchievementCache');
 const UserProfileCache = require('./cache/UserProfileCache');
 const PurchaseHistoryCache = require('./cache/PurchaseHistoryCache');
 const GuidanceCache = require('./cache/GuidanceCache');
+const JourneyCache = require('./cache/JourneyCache');
 
 async function initializeScalability(io) {
   console.log('🚀 Initializing scalability features...');
@@ -39,6 +40,9 @@ async function initializeScalability(io) {
   
   const guidanceCache = GuidanceCache.getInstance();
   await guidanceCache.initialize();
+  
+  const journeyCache = JourneyCache.getInstance();
+  await journeyCache.initialize();
   
   console.log('✅ All distributed caches initialized');
   

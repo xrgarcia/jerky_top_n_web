@@ -100,8 +100,13 @@ class PurchaseHistoryService {
       // 3. Bulk insert/update order items in database
       await this.repository.bulkUpsertOrderItems(orderItems);
 
-      // 4. Invalidate cache to force refresh
+      // 4. Invalidate caches to force refresh
       await this.cache.invalidate(user.id);
+      
+      // Invalidate journey cache (milestones include purchase data)
+      const JourneyCache = require('../cache/JourneyCache');
+      const journeyCache = JourneyCache.getInstance();
+      await journeyCache.invalidateUser(user.id);
 
       const duration = Date.now() - startTime;
       console.log(`✅ Order sync completed for user ${user.id}: ${orderItems.length} items from ${orders.length} orders in ${duration}ms`);

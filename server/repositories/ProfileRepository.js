@@ -2,6 +2,7 @@ const { db } = require('../db');
 const { users, productRankings, customerOrderItems, productsMetadata, achievements, userAchievements, userClassifications } = require('../../shared/schema');
 const { eq, and, desc, asc, sql, inArray } = require('drizzle-orm');
 const Sentry = require('@sentry/node');
+const JourneyCache = require('../cache/JourneyCache');
 
 /**
  * ProfileRepository
@@ -430,6 +431,13 @@ class ProfileRepository {
    */
   async getJourneyMilestones(userId) {
     try {
+      // Check cache first (10min TTL)
+      const journeyCache = JourneyCache.getInstance();
+      const cached = await journeyCache.get(userId);
+      if (cached) {
+        return cached;
+      }
+
       const milestones = [];
 
       // MILESTONE 1: First purchase ever
@@ -464,7 +472,12 @@ class ProfileRepository {
       const sorted = milestones.sort((a, b) => a.date - b.date);
 
       // Limit to 15 most meaningful milestones
-      return sorted.slice(0, 15);
+      const final = sorted.slice(0, 15);
+
+      // Store in cache (10min TTL)
+      await journeyCache.set(userId, final);
+
+      return final;
 
     } catch (error) {
       Sentry.captureException(error, {
