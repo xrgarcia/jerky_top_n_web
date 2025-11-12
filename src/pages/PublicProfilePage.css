@@ -90,6 +90,7 @@
 
 .section-achievements {
   background: white;
+  margin-top: 100px;
 }
 
 .section-achievements .section-header {
@@ -101,7 +102,7 @@
 .section-achievements.section-visible .section-header {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.3s;
+  transition-delay: 0.5s;
 }
 
 .section-rankings {
@@ -135,7 +136,7 @@
 .section-visible .coin-book-intro {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.5s;
+  transition-delay: 0.7s;
 }
 
 .coin-book-intro p {
@@ -164,7 +165,7 @@
 .section-achievements.section-visible .coinbook-widget {
   opacity: 1;
   transform: translateY(0);
-  transition-delay: 0.7s;
+  transition-delay: 0.9s;
 }
 
 .section-header {
@@ -196,6 +197,10 @@
   .section-journey {
     margin-top: 40px;
     padding: 0;
+  }
+
+  .section-achievements {
+    margin-top: 60px;
   }
 
   .section-header {
