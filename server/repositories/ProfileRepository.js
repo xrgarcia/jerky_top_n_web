@@ -531,13 +531,17 @@ class ProfileRepository {
       LIMIT 5
     `);
 
-    return result.rows.map(row => ({
+    const totalPurchases = result.rows.length;
+
+    return result.rows.map((row, index) => ({
       type: 'purchase',
       date: row.order_date,
       productId: row.first_product_id,
       headline: 'Order Delivered',
       subtitle: `${row.total_qty} flavor${row.total_qty !== 1 ? 's' : ''} received`,
-      badge: '📦'
+      badge: '📦',
+      isFirstPurchase: index === 0,
+      isMostRecentPurchase: index === totalPurchases - 1
     }));
   }
 
