@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { format } from 'date-fns';
 import WhatsNextCard from './WhatsNextCard';
 import { renderAchievementIcon } from '../../utils/iconUtils';
@@ -6,6 +6,18 @@ import './JourneyFilmStrip.css';
 
 function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
   const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      const container = scrollContainerRef.current;
+      console.log('🎬 Film Strip Mounted:', {
+        scrollWidth: container.scrollWidth,
+        clientWidth: container.clientWidth,
+        isScrollable: container.scrollWidth > container.clientWidth,
+        scrollLeft: container.scrollLeft
+      });
+    }
+  }, [milestones]);
 
   if (!milestones || milestones.length === 0) {
     return (
@@ -16,14 +28,38 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
   }
 
   const handleScrollLeft = () => {
+    console.log('⬅️ Left arrow clicked');
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: -450, behavior: 'smooth' });
+      const container = scrollContainerRef.current;
+      console.log('Before scroll:', {
+        scrollLeft: container.scrollLeft,
+        scrollWidth: container.scrollWidth,
+        clientWidth: container.clientWidth
+      });
+      container.scrollBy({ left: -450, behavior: 'smooth' });
+      setTimeout(() => {
+        console.log('After scroll:', { scrollLeft: container.scrollLeft });
+      }, 100);
+    } else {
+      console.error('❌ scrollContainerRef.current is null!');
     }
   };
 
   const handleScrollRight = () => {
+    console.log('➡️ Right arrow clicked');
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollBy({ left: 450, behavior: 'smooth' });
+      const container = scrollContainerRef.current;
+      console.log('Before scroll:', {
+        scrollLeft: container.scrollLeft,
+        scrollWidth: container.scrollWidth,
+        clientWidth: container.clientWidth
+      });
+      container.scrollBy({ left: 450, behavior: 'smooth' });
+      setTimeout(() => {
+        console.log('After scroll:', { scrollLeft: container.scrollLeft });
+      }, 100);
+    } else {
+      console.error('❌ scrollContainerRef.current is null!');
     }
   };
 
