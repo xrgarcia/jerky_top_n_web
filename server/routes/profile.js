@@ -199,6 +199,61 @@ function createProfileRoutes(services) {
   });
 
   /**
+   * GET /api/profile/:userId/journey
+   * Get journey milestones for user's film strip timeline
+   * Returns: ~10-15 milestone moments (first purchase, flavor discoveries, achievements, etc.)
+   */
+  router.get('/:userId/journey', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      
+      if (!userId || isNaN(userId)) {
+        return res.status(400).json({ error: 'Invalid user ID' });
+      }
+
+      // Get milestone moments from repository (with 10min cache)
+      const milestones = await profileRepository.getJourneyMilestones(userId);
+
+      // Enrich milestones with product images using ProductsService (golden source)
+      const productIds = milestones
+        .filter(m => m.productId)
+        .map(m => m.productId);
+
+      let productsMap = {};
+      if (productIds.length > 0) {
+        const products = await productsService.getProductsByIds(productIds);
+        productsMap = products.reduce((acc, p) => {
+          acc[p.id] = p;
+          return acc;
+        }, {});
+      }
+
+      // Map milestones to enriched response
+      const enrichedMilestones = milestones.map(milestone => ({
+        type: milestone.type,
+        date: milestone.date,
+        productId: milestone.productId, // Preserve for deep-linking and identification
+        headline: milestone.headline,
+        subtitle: milestone.subtitle,
+        badge: milestone.badge,
+        product: milestone.productId && productsMap[milestone.productId] ? {
+          id: productsMap[milestone.productId].id,
+          title: productsMap[milestone.productId].title,
+          image: productsMap[milestone.productId].images?.[0]?.src || null,
+          vendor: productsMap[milestone.productId].vendor
+        } : null
+      }));
+
+      res.json({
+        milestones: enrichedMilestones
+      });
+    } catch (error) {
+      console.error('Error fetching journey milestones:', error);
+      res.status(500).json({ error: 'Failed to fetch journey milestones' });
+    }
+  });
+
+  /**
    * PATCH /api/profile
    * Update current user's profile
    * Accepts: { handle, hideNamePrivacy, profileImageUrl }
