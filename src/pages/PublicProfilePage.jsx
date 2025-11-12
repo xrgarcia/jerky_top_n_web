@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import ProfileHero from '../components/profile/ProfileHero';
+import JourneyIntro from '../components/profile/JourneyIntro';
 import JourneyFilmStrip from '../components/profile/JourneyFilmStrip';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
@@ -17,6 +18,10 @@ import './PublicProfilePage.css';
 function PublicProfilePage() {
   const { userId } = useParams();
   const { user: currentUser } = useAuthStore();
+  
+  const journeyIntroRef = useRef(null);
+  const achievementsRef = useRef(null);
+  const rankingsRef = useRef(null);
 
   // Track page view
   usePageView('public_profile', { profileId: userId });
@@ -59,6 +64,32 @@ function PublicProfilePage() {
     staleTime: 1000 * 60 * 10, // 10 minutes (matches cache TTL)
   });
 
+  // Scroll-triggered animations
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observerCallback = (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('section-visible');
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    [journeyIntroRef, achievementsRef, rankingsRef].forEach(ref => {
+      if (ref.current) {
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [data]);
+
   if (isLoading) {
     return (
       <div className="public-profile-loading">
@@ -92,6 +123,12 @@ function PublicProfilePage() {
       {/* Act 2: Journey Film Strip - How I got here */}
       {milestones.length > 0 && (
         <section className="profile-section section-journey">
+          <div ref={journeyIntroRef}>
+            <JourneyIntro 
+              userHandle={user.handle}
+              journeyStage={user.journeyStage}
+            />
+          </div>
           <JourneyFilmStrip 
             milestones={milestones}
             journeyStage={user.journeyStage}
@@ -103,7 +140,7 @@ function PublicProfilePage() {
 
       {/* Act 3: Achievement Showcase - What I've earned */}
       {achievements && achievements.length > 0 && (
-        <section className="profile-section section-achievements">
+        <section className="profile-section section-achievements" ref={achievementsRef}>
           <div className="achievements-container">
             <h2 className="section-header">Achievements Unlocked</h2>
             <CoinBookWidget 
@@ -116,7 +153,7 @@ function PublicProfilePage() {
 
       {/* Act 4: Current Rankings - What I'm doing next */}
       {rankings && rankings.length > 0 && (
-        <section className="profile-section section-rankings">
+        <section className="profile-section section-rankings" ref={rankingsRef}>
           <div className="rankings-container">
             <h2 className="section-header">Current Rankings</h2>
             <RankingsList rankings={rankings} />

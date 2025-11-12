@@ -1,0 +1,55 @@
+/* JourneyIntro - Narrative bridge between Hero and Film Strip */
+
+.journey-intro {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 32px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.journey-intro.section-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.journey-intro-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.journey-intro-title {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.journey-intro-description {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #5a5a5a;
+  font-weight: 400;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .journey-intro {
+    padding: 32px 20px 24px;
+  }
+
+  .journey-intro-title {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+  }
+
+  .journey-intro-description {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
