@@ -170,7 +170,9 @@ function PublicProfilePage() {
         </section>
       ) : (
         <section className="profile-section section-rankings" ref={rankingsRef}>
-          <EmptyRankingsState hasAchievements={achievements && achievements.length > 0} />
+          <EmptyRankingsState 
+            hasAchievements={achievements && achievements.length > 0}
+          />
         </section>
       )}
     </div>

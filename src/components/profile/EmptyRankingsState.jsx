@@ -1,35 +1,32 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import './EmptyRankingsState.css';
 
 /**
- * EmptyRankingsState - Adventure-themed empty state for users with no rankings
- * Concludes the storytelling arc: Hero → Journey → Achievements → "Your Quest Awaits"
- * Adapts messaging based on whether user has achievements or not
+ * EmptyRankingsState - Adventure-themed empty state for public profiles with no rankings
+ * Third-person messaging for viewing other users' profiles (no CTA)
+ * Adapts based on whether the user has achievements
  */
 function EmptyRankingsState({ hasAchievements = false }) {
-  const content = hasAchievements 
+  const content = hasAchievements
     ? {
-        title: 'Your Flavor Quest Awaits',
+        title: 'Their Quest Continues',
         message: (
           <>
-            You've collected achievements, now it's time to build your flavor legacy.
+            They've unlocked achievements along the way, but their ranking journey is still taking shape.
             <br />
-            Each ranking adds to your journey from curious taster to certified legend.
+            Check back later to see their flavor legacy unfold.
           </>
-        ),
-        cta: 'Begin Your Rankings →'
+        )
       }
     : {
-        title: 'Your Flavor Adventure Starts Here',
+        title: 'Just Getting Started',
         message: (
           <>
-            Start ranking jerky to unlock achievements, climb the leaderboard, and build your flavor legacy.
+            This flavor explorer is at the beginning of their jerky journey.
             <br />
-            Each ranking adds to your journey from curious taster to certified legend.
+            Their first rankings and achievements are waiting to be discovered.
           </>
-        ),
-        cta: 'Start Ranking →'
+        )
       };
 
   return (
@@ -40,9 +37,6 @@ function EmptyRankingsState({ hasAchievements = false }) {
         <p className="empty-rankings-message">
           {content.message}
         </p>
-        <Link to="/rank" className="empty-rankings-cta">
-          {content.cta}
-        </Link>
       </div>
     </div>
   );
