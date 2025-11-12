@@ -1,0 +1,123 @@
+.whats-next-card {
+  position: relative;
+  flex-shrink: 0;
+  width: 120px;
+  background: linear-gradient(to bottom, #2a2520, #1a1510);
+  border-radius: 4px;
+  padding: 8px 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeIn 0.5s ease 0.3s backwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.whats-next-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+}
+
+.next-card-perforations-top,
+.next-card-perforations-bottom {
+  height: 6px;
+  background: repeating-linear-gradient(
+    to right,
+    transparent,
+    transparent 4px,
+    #4a4035 4px,
+    #4a4035 6px,
+    transparent 6px,
+    transparent 10px
+  );
+  border-radius: 2px;
+}
+
+.next-card-perforations-top {
+  margin-bottom: 4px;
+}
+
+.next-card-perforations-bottom {
+  margin-top: 4px;
+}
+
+.next-card-content {
+  background: #f5f1e8;
+  border: 2px dashed #8b7355;
+  border-radius: 2px;
+  padding: 0.75rem 0.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 140px;
+  gap: 0.5rem;
+}
+
+.next-card-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.next-card-text {
+  text-align: center;
+}
+
+.next-card-headline {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5a4a3a;
+  margin: 0 0 0.25rem 0;
+  line-height: 1.2;
+}
+
+.next-card-subtitle {
+  font-size: 0.65rem;
+  color: #8b7355;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.next-card-cta {
+  display: inline-block;
+  padding: 0.4rem 0.6rem;
+  background: #8b7355;
+  color: #f5f1e8;
+  text-decoration: none;
+  border-radius: 4px;
+  font-size: 0.65rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.next-card-cta:hover {
+  background: #6d5844;
+  transform: scale(1.05);
+}
+
+.next-card-cta:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 768px) {
+  .whats-next-card {
+    width: 110px;
+  }
+
+  .next-card-content {
+    min-height: 130px;
+  }
+
+  .next-card-icon {
+    font-size: 1.75rem;
+  }
+}

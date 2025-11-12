@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import ProfileHero from '../components/profile/ProfileHero';
-import FlavorJourneyTimeline from '../components/profile/FlavorJourneyTimeline';
+import JourneyFilmStrip from '../components/profile/JourneyFilmStrip';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './PublicProfilePage.css';
@@ -44,6 +44,21 @@ function PublicProfilePage() {
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
 
+  const { data: journeyData } = useQuery({
+    queryKey: ['profileJourney', userId],
+    queryFn: async () => {
+      const response = await fetch(`/api/profile/${userId}/journey`, {
+        credentials: 'include',
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch journey');
+      }
+      return response.json();
+    },
+    enabled: !!userId,
+    staleTime: 1000 * 60 * 10, // 10 minutes (matches cache TTL)
+  });
+
   if (isLoading) {
     return (
       <div className="public-profile-loading">
@@ -67,15 +82,21 @@ function PublicProfilePage() {
   }
 
   const { user, topProducts, timeline, rankings, achievements } = data;
+  const milestones = journeyData?.milestones || [];
 
   return (
     <div className="public-profile-page">
       {/* Act 1: Hero Spotlight - Who they are */}
       <ProfileHero user={user} topProducts={topProducts} />
 
-      {/* Act 2: Journey Chronicle - The story */}
-      {timeline && timeline.length > 0 && (
-        <FlavorJourneyTimeline timeline={timeline} />
+      {/* Act 2: Journey Film Reel - The story */}
+      {milestones.length > 0 && (
+        <JourneyFilmStrip 
+          milestones={milestones}
+          journeyStage={user.journeyStage}
+          explorationBreadth={user.explorationBreadth}
+          userCreatedAt={user.createdAt}
+        />
       )}
 
       {/* Act 3: Rankings List - The details */}
@@ -97,7 +118,7 @@ function PublicProfilePage() {
       )}
 
       {/* Empty state if user has no data */}
-      {(!rankings || rankings.length === 0) && (!timeline || timeline.length === 0) && (
+      {(!rankings || rankings.length === 0) && milestones.length === 0 && (
         <div className="public-profile-empty">
           <h2>Just Getting Started</h2>
           <p>This user hasn't ranked any flavors yet.</p>
