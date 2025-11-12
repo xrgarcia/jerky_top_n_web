@@ -5,7 +5,6 @@ import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import ProfileHero from '../components/profile/ProfileHero';
 import JourneyTwoColumn from '../components/profile/JourneyTwoColumn';
-import CoinBookTransition from '../components/profile/CoinBookTransition';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './PublicProfilePage.css';
@@ -20,7 +19,6 @@ function PublicProfilePage() {
   const { user: currentUser } = useAuthStore();
   
   const journeyRef = useRef(null);
-  const transitionRef = useRef(null);
   const achievementsRef = useRef(null);
   const rankingsRef = useRef(null);
 
@@ -82,7 +80,7 @@ function PublicProfilePage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    [journeyRef, transitionRef, achievementsRef, rankingsRef].forEach(ref => {
+    [journeyRef, achievementsRef, rankingsRef].forEach(ref => {
       if (ref.current) {
         observer.observe(ref.current);
       }
@@ -135,15 +133,22 @@ function PublicProfilePage() {
         </section>
       )}
 
-      {/* Transition: Journey → Coin Book */}
-      {milestones.length > 0 && achievements && achievements.length > 0 && (
-        <CoinBookTransition ref={transitionRef} />
-      )}
-
       {/* Act 3: Achievement Showcase - What I've earned */}
       {achievements && achievements.length > 0 && (
         <section className="profile-section section-achievements" ref={achievementsRef}>
           <div className="achievements-container">
+            {/* Transition intro text */}
+            {milestones.length > 0 && (
+              <div className="coin-book-intro">
+                <p className="intro-line-1">
+                  The journey reel captured the bites; now your <strong>COIN BOOK</strong> captures the legend.
+                </p>
+                <p className="intro-line-2">
+                  Pop each capsule to celebrate the hunts, streaks, and discoveries that keep you on top.
+                </p>
+              </div>
+            )}
+            
             <h2 className="section-header">Achievements Unlocked</h2>
             <CoinBookWidget 
               achievements={achievements}
