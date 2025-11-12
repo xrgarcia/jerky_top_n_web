@@ -65,13 +65,13 @@
 .journey-step {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 24px;
   padding: 24px 28px;
   background: white;
   border-radius: 16px;
   border: 1px solid rgba(139, 69, 19, 0.1);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .journey-step:hover {
@@ -80,11 +80,21 @@
   border-color: rgba(139, 69, 19, 0.25);
 }
 
-.step-icon {
-  font-size: 40px;
+.step-number {
+  font-size: 48px;
+  font-weight: 900;
+  color: #8b4513;
+  opacity: 0.2;
   line-height: 1;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -2px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.journey-step:hover .step-number {
+  opacity: 0.35;
+  transform: scale(1.05);
 }
 
 .step-content {
@@ -163,8 +173,8 @@
     transform: translateY(-4px);
   }
 
-  .step-icon {
-    font-size: 32px;
+  .step-number {
+    font-size: 36px;
   }
 
   .step-title {
