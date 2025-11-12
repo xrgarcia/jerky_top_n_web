@@ -47,7 +47,6 @@ function WhatsNextCard({ journeyStage, explorationBreadth }) {
 
   return (
     <div className="whats-next-card">
-      <div className="next-card-outer-ring"></div>
       <div className="next-card-content">
         <div className="next-card-icon">{content.icon}</div>
         <div className="next-card-text">
@@ -60,7 +59,6 @@ function WhatsNextCard({ journeyStage, explorationBreadth }) {
           {content.linkText} →
         </Link>
       </div>
-      <div className="next-card-center-hub"></div>
     </div>
   );
 }
