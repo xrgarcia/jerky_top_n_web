@@ -1,0 +1,124 @@
+/* JourneyTwoColumn - 2-column layout for Journey section */
+
+.journey-two-column {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 40px 0;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+.journey-two-column.section-visible {
+  opacity: 1;
+}
+
+.journey-grid {
+  display: grid;
+  grid-template-columns: 1fr 1px 2fr;
+  gap: 48px;
+  align-items: start;
+}
+
+/* Left column - Title and description (1/3) */
+.journey-left {
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.journey-two-column.section-visible .journey-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.journey-section-title {
+  margin: 0 0 16px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2d2d2d;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.journey-section-description {
+  margin: 0;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #5a5a5a;
+  font-weight: 400;
+}
+
+/* Separator */
+.journey-separator {
+  width: 1px;
+  height: 100%;
+  min-height: 200px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    #d4c4a8 20%,
+    #d4c4a8 80%,
+    transparent 100%
+  );
+  opacity: 0.4;
+}
+
+/* Right column - Film strip (2/3) */
+.journey-right {
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.6s ease 0.15s, transform 0.6s ease 0.15s;
+}
+
+.journey-two-column.section-visible .journey-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Override film strip container padding since it's now in a constrained space */
+.journey-right .journey-film-strip {
+  margin: 0;
+  padding: 0;
+}
+
+/* Responsive - Stack on mobile */
+@media (max-width: 968px) {
+  .journey-two-column {
+    padding: 32px 20px 0;
+  }
+
+  .journey-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .journey-separator {
+    display: none;
+  }
+
+  .journey-section-title {
+    font-size: 1.5rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+
+  .journey-section-description {
+    font-size: 1rem;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .journey-left,
+  .journey-right {
+    transform: translateY(20px);
+  }
+
+  .journey-two-column.section-visible .journey-left,
+  .journey-two-column.section-visible .journey-right {
+    transform: translateY(0);
+  }
+
+  .journey-right {
+    transition-delay: 0.1s;
+  }
+}
