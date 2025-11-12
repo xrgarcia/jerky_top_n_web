@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import ProfileHero from '../components/profile/ProfileHero';
 import JourneyTwoColumn from '../components/profile/JourneyTwoColumn';
+import CoinBookTransition from '../components/profile/CoinBookTransition';
 import RankingsList from '../components/profile/RankingsList';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './PublicProfilePage.css';
@@ -19,6 +20,7 @@ function PublicProfilePage() {
   const { user: currentUser } = useAuthStore();
   
   const journeyRef = useRef(null);
+  const transitionRef = useRef(null);
   const achievementsRef = useRef(null);
   const rankingsRef = useRef(null);
 
@@ -80,7 +82,7 @@ function PublicProfilePage() {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    [journeyRef, achievementsRef, rankingsRef].forEach(ref => {
+    [journeyRef, transitionRef, achievementsRef, rankingsRef].forEach(ref => {
       if (ref.current) {
         observer.observe(ref.current);
       }
@@ -131,6 +133,11 @@ function PublicProfilePage() {
             userCreatedAt={user.createdAt}
           />
         </section>
+      )}
+
+      {/* Transition: Journey → Coin Book */}
+      {milestones.length > 0 && achievements && achievements.length > 0 && (
+        <CoinBookTransition ref={transitionRef} />
       )}
 
       {/* Act 3: Achievement Showcase - What I've earned */}

@@ -1,0 +1,105 @@
+.coin-book-transition {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  position: relative;
+  background: linear-gradient(
+    to bottom,
+    #f5f1e8 0%,
+    #e8e3d8 30%,
+    #4a4a4a 70%,
+    #2d2d2d 100%
+  );
+  overflow: hidden;
+}
+
+.page-turn-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.transition-content {
+  position: relative;
+  z-index: 1;
+}
+
+.transition-line {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #5a4a3a;
+  margin: 0 0 1.5rem 0;
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.transition-line strong {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* Activation via parent section-visible */
+.section-visible .page-turn-wrapper {
+  opacity: 1;
+}
+
+.section-visible .line-1 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+}
+
+.section-visible .line-2 {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.6s;
+  color: #f5f1e8;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .page-turn-wrapper,
+  .transition-line {
+    transition: opacity 0.3s ease-out;
+    transform: none;
+  }
+  
+  .section-visible .line-1,
+  .section-visible .line-2 {
+    transform: none;
+  }
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .transition-line {
+    font-size: 1.2rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .coin-book-transition {
+    padding: 60px 20px;
+  }
+
+  .transition-line {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .coin-book-transition {
+    padding: 50px 16px;
+  }
+
+  .transition-line {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+}
