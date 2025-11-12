@@ -57,7 +57,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Flavor Profile Pages**: Dynamic pages for each flavor type.
 - **Purchase History**: Automatic background synchronization of Shopify orders.
 - **Community**: User discovery, search, profiles with ranking stats, top rankers widget, privacy-aware display, avatar support. Narrative-driven UserCard component with journey-stage tier colors, smart progress bars, and flavor community badges.
-- **Leaderboard**: Top 50 rankers with engagement scores and badges.
+- **Leaderboard**: Three-act storytelling structure celebrating achievement. "The Champions" (top 1-5) displayed in dramatic podium hero section with dark background. "Rising Contenders" (places 6-10) in 2-column grid showing competitive gap to podium. "The Community" (11+) in accessible list format. Dynamic rank calculation ensures sequential numbering regardless of dataset size.
 - **User Profile**: Private dashboard with handle management, privacy controls, and professional profile picture upload system. Public profile pages with privacy-aware display.
 - **Gamification**: Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
 - **Coin Book Widget**: Collapsible achievement tracker on the Rank page with US quarter coin book styling, tier-aware styling, hover effects, and tooltips.
