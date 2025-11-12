@@ -160,11 +160,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
               {slide.latestAchievement && (
                 <div className="latest-achievement">
                   <span className="achievement-icon-large">
-                    {renderAchievementIcon({
-                      icon: slide.latestAchievement.achievementIcon,
-                      iconType: slide.latestAchievement.achievementIconType,
-                      name: slide.latestAchievement.achievementName
-                    }, 48)}
+                    {renderAchievementIcon(slide.latestAchievement, 48)}
                   </span>
                   <div className="achievement-details">
                     <span className="achievement-user-name">{slide.latestAchievement.userName}</span>
