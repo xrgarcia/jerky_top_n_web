@@ -1,0 +1,604 @@
+/* ========================================
+   HERO CAROUSEL - Elegant storytelling
+   ======================================== */
+
+.hero-carousel {
+  position: relative;
+  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+  min-height: 700px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 80px 20px;
+}
+
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1400px;
+  height: 1400px;
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.25) 0%, rgba(139, 69, 19, 0.15) 30%, transparent 70%);
+  border-radius: 50%;
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.carousel-content {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.slide-wrapper {
+  animation: slideIn 0.6s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ========================================
+   TYPOGRAPHY
+   ======================================== */
+
+.carousel-title {
+  font-size: 4rem;
+  font-weight: 800;
+  color: white;
+  margin: 0 0 24px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
+  line-height: 1.1;
+}
+
+.carousel-subtitle {
+  font-size: 1.375rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 48px;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* ========================================
+   SLIDE 1: DISCOVERY METRICS
+   ======================================== */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin: 0 auto 48px;
+  max-width: 600px;
+}
+
+.metric-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 32px 24px;
+  transition: all 0.3s ease;
+}
+
+.metric-card:hover {
+  transform: translateY(-4px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(218, 165, 32, 0.5);
+  box-shadow: 0 12px 32px rgba(218, 165, 32, 0.2);
+}
+
+.metric-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.metric-value {
+  font-size: 2.75rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.metric-label {
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* ========================================
+   SLIDE 2: TRENDING PRODUCTS
+   ======================================== */
+
+.trending-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin: 0 auto 48px;
+  max-width: 900px;
+}
+
+.trending-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trending-card:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(218, 165, 32, 0.6);
+  box-shadow: 0 16px 40px rgba(218, 165, 32, 0.25);
+}
+
+.trending-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.trending-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.trending-name {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1.3;
+  text-align: left;
+}
+
+.trending-badge {
+  display: inline-block;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: white;
+  text-align: left;
+  width: fit-content;
+}
+
+/* ========================================
+   SLIDE 3: ACHIEVEMENTS
+   ======================================== */
+
+.achievements-showcase {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  margin: 0 auto 48px;
+  max-width: 700px;
+}
+
+.latest-achievement {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-left: 4px solid #daa520;
+  border-radius: 16px;
+  padding: 28px 32px;
+  animation: achievementPulse 2s ease-in-out infinite;
+}
+
+@keyframes achievementPulse {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(218, 165, 32, 0.2);
+  }
+  50% {
+    box-shadow: 0 12px 32px rgba(218, 165, 32, 0.35);
+  }
+}
+
+.achievement-icon-large {
+  font-size: 3rem;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 12px rgba(218, 165, 32, 0.4));
+}
+
+.achievement-details {
+  flex: 1;
+  text-align: left;
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+}
+
+.achievement-user-name {
+  font-weight: 700;
+  color: #daa520;
+  text-shadow: 0 2px 8px rgba(218, 165, 32, 0.3);
+}
+
+.achievement-action {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.achievement-coin-name {
+  font-weight: 600;
+  color: white;
+  font-style: italic;
+}
+
+.achievements-count {
+  font-size: 1.125rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
+}
+
+.count-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #daa520;
+  text-shadow: 0 2px 8px rgba(218, 165, 32, 0.4);
+}
+
+/* ========================================
+   SLIDE 4: LEADERBOARD
+   ======================================== */
+
+.leaderboard-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin: 0 auto 48px;
+  max-width: 600px;
+}
+
+.ranker-card {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  padding: 20px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ranker-card:hover {
+  transform: translateX(8px);
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(218, 165, 32, 0.5);
+  box-shadow: 0 8px 24px rgba(218, 165, 32, 0.2);
+}
+
+.ranker-card:first-child {
+  border-left: 4px solid #daa520;
+}
+
+.ranker-card:nth-child(2) {
+  border-left: 4px solid #c0c0c0;
+}
+
+.ranker-card:nth-child(3) {
+  border-left: 4px solid #cd7f32;
+}
+
+.ranker-position {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.6);
+  min-width: 48px;
+  text-align: center;
+}
+
+.ranker-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.ranker-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ranker-info {
+  flex: 1;
+  text-align: left;
+}
+
+.ranker-name {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.ranker-score {
+  font-size: 0.9375rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 600;
+}
+
+/* ========================================
+   CTA BUTTON
+   ======================================== */
+
+.carousel-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 48px;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 16px;
+}
+
+.carousel-cta.primary {
+  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+  color: white;
+  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.4);
+}
+
+.carousel-cta.primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(139, 69, 19, 0.5);
+}
+
+.carousel-cta.secondary {
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.carousel-cta.secondary:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: white;
+}
+
+.cta-arrow {
+  font-size: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.carousel-cta:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* ========================================
+   NAVIGATION CONTROLS
+   ======================================== */
+
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.carousel-arrow {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 2rem;
+  font-weight: 300;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+.carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #daa520;
+  transform: scale(1.1);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 12px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.dot.active {
+  background: #daa520;
+  width: 32px;
+  border-radius: 6px;
+}
+
+.dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 1024px) {
+  .carousel-title {
+    font-size: 3rem;
+  }
+
+  .carousel-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .hero-carousel {
+    min-height: 600px;
+    padding: 60px 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .carousel-title {
+    font-size: 2.25rem;
+    letter-spacing: 1px;
+  }
+
+  .carousel-subtitle {
+    font-size: 1rem;
+    margin-bottom: 36px;
+  }
+
+  .hero-carousel {
+    min-height: 550px;
+    padding: 40px 16px;
+  }
+
+  .metrics-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .trending-products {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .latest-achievement {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .achievement-details {
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .ranker-card {
+    padding: 16px 20px;
+  }
+
+  .carousel-cta {
+    padding: 16px 36px;
+    font-size: 1rem;
+  }
+
+  .carousel-controls {
+    margin-top: 40px;
+    gap: 16px;
+  }
+
+  .carousel-arrow {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .carousel-title {
+    font-size: 1.875rem;
+  }
+
+  .carousel-subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .metric-value {
+    font-size: 2.25rem;
+  }
+
+  .ranker-position {
+    font-size: 1.5rem;
+    min-width: 40px;
+  }
+
+  .ranker-avatar {
+    width: 48px;
+    height: 48px;
+  }
+
+  .carousel-cta {
+    width: 100%;
+  }
+}

@@ -4,6 +4,7 @@ import { useHeroStats, useHomeStats } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
+import HeroCarousel from '../components/home/HeroCarousel';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './HomePage.css';
 
@@ -12,110 +13,18 @@ function HomePage() {
   const { isAuthenticated } = useAuthStore();
   const { data: heroStats, isLoading: heroLoading } = useHeroStats();
   const { data: homeStats, isLoading: homeLoading } = useHomeStats();
-  const [currentAchievement, setCurrentAchievement] = useState(0);
   
   // Track page view for user guidance and classification
   usePageView('general');
 
-  // Rotate achievements slider
-  useEffect(() => {
-    if (!heroStats?.recentAchievements || heroStats.recentAchievements.length === 0) return;
-    
-    const interval = setInterval(() => {
-      setCurrentAchievement((prev) => (prev + 1) % heroStats.recentAchievements.length);
-    }, 5000);
-    
-    return () => clearInterval(interval);
-  }, [heroStats?.recentAchievements]);
-
-  const formatTimeAgo = (timestamp) => {
-    const seconds = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
-    if (seconds < 60) return 'just now';
-    const minutes = Math.floor(seconds / 60);
-    if (minutes < 60) return `${minutes}m ago`;
-    const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
-    const days = Math.floor(hours / 24);
-    return `${days}d ago`;
-  };
-
   return (
     <div className="home-page">
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-overlay"></div>
-        <div className="hero-content">
-          {/* Main Title Banner */}
-          <div className="hero-banner">
-            <h1 className="hero-title">Rank Your Favorite Jerky</h1>
-            <p className="hero-subtitle">Join the community • Discover new flavors • Earn achievements</p>
-          </div>
-
-          {/* Gamification Dashboard */}
-          <div className="hero-dashboard">
-            {/* Live Stats Counters */}
-            <div className="hero-stats">
-              <div className="hero-stat-card">
-                <div className="stat-icon">🔥</div>
-                <div className="stat-value">{heroLoading ? '...' : (heroStats?.activeRankersToday || 0)}</div>
-                <div className="stat-label">Active Rankers Today</div>
-              </div>
-              <div className="hero-stat-card">
-                <div className="stat-icon">⭐</div>
-                <div className="stat-value">{heroLoading ? '...' : (heroStats?.achievementsThisWeek || 0)}</div>
-                <div className="stat-label">Achievements This Week</div>
-              </div>
-              <div className="hero-stat-card">
-                <div className="stat-icon">🏆</div>
-                <div className="stat-value">{heroLoading ? '...' : (heroStats?.totalRankings || 0)}</div>
-                <div className="stat-label">Total Rankings</div>
-              </div>
-            </div>
-
-            {/* Social Proof Achievements Slider */}
-            <div className="hero-achievements-slider">
-              <div className="slider-container">
-                {heroLoading ? (
-                  <div className="slider-item">Loading recent achievements...</div>
-                ) : heroStats?.recentAchievements && heroStats.recentAchievements.length > 0 ? (
-                  <div className="slider-item" key={currentAchievement}>
-                    <span className="achievement-badge">
-                      {renderAchievementIcon({
-                        icon: heroStats.recentAchievements[currentAchievement].achievementIcon,
-                        iconType: heroStats.recentAchievements[currentAchievement].achievementIconType,
-                        name: heroStats.recentAchievements[currentAchievement].achievementName
-                      }, 28)}
-                    </span>
-                    <span className="achievement-text">
-                      <span className="achievement-user">{heroStats.recentAchievements[currentAchievement].userName}</span>
-                      {' '}earned{' '}
-                      <span className="achievement-name">{heroStats.recentAchievements[currentAchievement].achievementName}</span>
-                    </span>
-                    <span className="achievement-time">{formatTimeAgo(heroStats.recentAchievements[currentAchievement].earnedAt)}</span>
-                  </div>
-                ) : (
-                  <div className="slider-item">
-                    <span className="achievement-badge">🎖️</span>
-                    <span className="achievement-text">Sign in using your <strong>Jerky.com</strong> account</span>
-                  </div>
-                )}
-              </div>
-            </div>
-
-            {/* Dual CTAs */}
-            <div className="hero-cta-buttons">
-              <button className="hero-cta-btn primary" onClick={() => navigate(isAuthenticated ? '/rank' : '/login')}>
-                <span className="cta-text">Start Ranking Now</span>
-                <span className="cta-icon">→</span>
-              </button>
-              <button className="hero-cta-btn secondary" onClick={() => navigate('/leaderboard')}>
-                <span className="cta-text">View Leaderboard</span>
-                <span className="cta-icon">🏆</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Carousel - Metric-driven storytelling */}
+      <HeroCarousel 
+        heroStats={heroStats}
+        homeStats={homeStats}
+        isLoading={heroLoading || homeLoading}
+      />
 
       {/* Personalized Guidance for authenticated users */}
       {isAuthenticated && (
