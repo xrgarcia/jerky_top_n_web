@@ -47,6 +47,7 @@ function PublicProfilePage() {
     },
     enabled: !!userId,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: 'always', // Always refetch when navigating to different profiles
   });
 
   const { data: journeyData, isLoading: journeyLoading, error: journeyError } = useQuery({
@@ -63,6 +64,7 @@ function PublicProfilePage() {
     },
     enabled: !!userId,
     staleTime: 1000 * 60 * 10, // 10 minutes (matches cache TTL)
+    refetchOnMount: 'always', // Always refetch when navigating to different profiles
     retry: 3, // Retry up to 3 times on failure
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
@@ -81,6 +83,7 @@ function PublicProfilePage() {
     },
     enabled: !!userId,
     staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: 'always', // Always refetch when navigating to different profiles
     retry: 3, // Retry up to 3 times on failure
     retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
   });
