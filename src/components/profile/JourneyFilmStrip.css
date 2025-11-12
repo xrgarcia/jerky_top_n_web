@@ -88,29 +88,31 @@
   gap: 0;
   padding: 0 1.5rem 0 0;
   position: relative;
-  background: transparent;
-  border-radius: 6px;
+  background: #1a1410;
+  border: 14px solid #1a1410;
+  border-radius: 8px;
   overflow: visible;
   min-width: 100%;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 .film-reel::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
+  top: -14px;
+  left: -14px;
+  right: -14px;
+  height: 32px;
   background: repeating-linear-gradient(
     to right,
     #1a1410 0px,
-    #1a1410 4px,
-    transparent 4px,
-    transparent 10px,
-    #1a1410 10px,
-    #1a1410 14px,
-    transparent 14px,
-    transparent 20px
+    #1a1410 6px,
+    transparent 6px,
+    transparent 12px,
+    #1a1410 12px,
+    #1a1410 18px,
+    transparent 18px,
+    transparent 24px
   );
   z-index: 10;
   pointer-events: none;
@@ -119,20 +121,20 @@
 .film-reel::after {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
+  bottom: -14px;
+  left: -14px;
+  right: -14px;
+  height: 32px;
   background: repeating-linear-gradient(
     to right,
     #1a1410 0px,
-    #1a1410 4px,
-    transparent 4px,
-    transparent 10px,
-    #1a1410 10px,
-    #1a1410 14px,
-    transparent 14px,
-    transparent 20px
+    #1a1410 6px,
+    transparent 6px,
+    transparent 12px,
+    #1a1410 12px,
+    #1a1410 18px,
+    transparent 18px,
+    transparent 24px
   );
   z-index: 10;
   pointer-events: none;
