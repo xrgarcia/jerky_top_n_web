@@ -52,10 +52,27 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
     );
   };
 
+  const renderHeaderCard = () => {
+    return (
+      <div className="reel-canister header-card">
+        <div className="reel-inner-disc">
+          <div className="reel-image-placeholder">
+            <span className="reel-badge">🎬</span>
+          </div>
+        </div>
+        <div className="vintage-label">
+          <div className="label-title">Your Flavor Journey</div>
+          <div className="label-date">Scroll to explore →</div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="journey-film-strip">
       <div className="film-scroll-container" ref={scrollContainerRef}>
         <div className="film-reel">
+          {renderHeaderCard()}
           {milestones.map((milestone, index) => renderMilestone(milestone, index))}
           <WhatsNextCard 
             journeyStage={journeyStage} 
