@@ -619,7 +619,8 @@ class ProfileRepository {
       .select({
         earnedAt: userAchievements.earnedAt,
         name: achievements.name,
-        icon: achievements.icon
+        icon: achievements.icon,
+        iconType: achievements.iconType
       })
       .from(userAchievements)
       .innerJoin(achievements, eq(userAchievements.achievementId, achievements.id))
@@ -635,7 +636,8 @@ class ProfileRepository {
       productId: null, // Achievement has no product
       headline: 'Achievement Unlocked',
       subtitle: result[0].name,
-      badge: result[0].icon
+      badge: result[0].icon,
+      iconType: result[0].iconType
     };
   }
 

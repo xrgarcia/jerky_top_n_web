@@ -236,6 +236,7 @@ function createProfileRoutes(services) {
         headline: milestone.headline,
         subtitle: milestone.subtitle,
         badge: milestone.badge,
+        iconType: milestone.iconType, // For achievement milestones
         product: milestone.productId && productsMap[milestone.productId] ? {
           id: productsMap[milestone.productId].id,
           title: productsMap[milestone.productId].title,

@@ -23,7 +23,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Toast Notifications**: Sequential queue-based display.
 - **Tier Emoji System**: Centralized JSON-based emoji constants.
 - **Flavor Community Badges**: Visual identity system displaying user's primary flavor profile (Sweet, Savory, Spicy, Exotic, Teriyaki, Peppered, Original, Smoky, BBQ, Hot) with unique colors, gradients, emojis, and community states (Enthusiast, Explorer, Taster, Seeker, Curious) on community cards for "jerky tribe" discovery.
-- **Journey Film Reel Feature**: Apple-style storytelling for public profile pages, celebrating users' flavor discovery journey from first purchase to present with horizontal scrolling film strip, product images, and narrative moments.
+- **Journey Film Reel Feature**: Apple-style storytelling for public profile pages, celebrating users' flavor discovery journey from first purchase to present with horizontal scrolling film strip, product images, and narrative moments. Header card as first frame, proper achievement icon rendering using `renderAchievementIcon` utility, and product images for purchase milestones.
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client.

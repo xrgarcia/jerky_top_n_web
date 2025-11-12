@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { format } from 'date-fns';
 import WhatsNextCard from './WhatsNextCard';
+import { renderAchievementIcon } from '../../utils/iconUtils';
 import './JourneyFilmStrip.css';
 
 function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
@@ -29,20 +30,40 @@ function JourneyFilmStrip({ milestones, journeyStage, explorationBreadth }) {
   const renderMilestone = (milestone, index) => {
     const formattedDate = format(new Date(milestone.date), 'MMM d, yyyy');
 
+    const renderMilestoneImage = () => {
+      if (milestone.product?.image) {
+        return (
+          <img 
+            src={milestone.product.image} 
+            alt={milestone.product.title} 
+            className="reel-image"
+          />
+        );
+      }
+      
+      if (milestone.type === 'achievement' && milestone.badge) {
+        const iconElement = renderAchievementIcon(
+          { icon: milestone.badge, iconType: milestone.iconType },
+          80
+        );
+        return (
+          <div className="reel-image-placeholder">
+            <span className="reel-badge">{iconElement}</span>
+          </div>
+        );
+      }
+      
+      return (
+        <div className="reel-image-placeholder">
+          <span className="reel-badge">{milestone.badge}</span>
+        </div>
+      );
+    };
+
     return (
       <div key={`${milestone.type}-${index}`} className="reel-canister">
         <div className="reel-inner-disc">
-          {milestone.product?.image ? (
-            <img 
-              src={milestone.product.image} 
-              alt={milestone.product.title} 
-              className="reel-image"
-            />
-          ) : (
-            <div className="reel-image-placeholder">
-              <span className="reel-badge">{milestone.badge}</span>
-            </div>
-          )}
+          {renderMilestoneImage()}
         </div>
         <div className="vintage-label">
           <div className="label-title">{milestone.headline}</div>
