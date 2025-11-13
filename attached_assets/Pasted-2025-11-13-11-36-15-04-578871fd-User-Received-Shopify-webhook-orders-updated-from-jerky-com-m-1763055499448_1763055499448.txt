@@ -1,0 +1,206 @@
+2025-11-13 11:36:15.04
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:36:15.04
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:15.09
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055375042)
+2025-11-13 11:36:15.09
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055375042)
+2025-11-13 11:36:15.68
+578871fd
+User
+📨 Received Shopify webhook: customers/update from jerky-com.myshopify.com
+2025-11-13 11:36:15.68
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:15.74
+578871fd
+User
+📋 Webhook enqueued: customers/customers/update (job: customers:customers/update:1763055375686)
+2025-11-13 11:36:15.74
+578871fd
+User
+✅ Customer webhook enqueued for async processing (job: customers:customers/update:1763055375686)
+2025-11-13 11:36:16.95
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:36:16.95
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:17.06
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055376950)
+2025-11-13 11:36:17.06
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055376950)
+2025-11-13 11:36:19.10
+578871fd
+User
+📨 Received Shopify webhook: products/update from jerky-com.myshopify.com
+2025-11-13 11:36:19.10
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:19.15
+578871fd
+User
+📋 Webhook enqueued: products/products/update (job: products:products/update:1763055379100)
+2025-11-13 11:36:19.15
+578871fd
+User
+✅ Product webhook enqueued for async processing (job: products:products/update:1763055379100)
+2025-11-13 11:36:23.45
+578871fd
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-11-13 11:36:30.50
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:36:30.50
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:30.56
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055390504)
+2025-11-13 11:36:30.56
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055390504)
+2025-11-13 11:36:38.17
+578871fd
+User
+📨 Received Shopify webhook: orders/create from jerky-com.myshopify.com
+2025-11-13 11:36:38.17
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:38.23
+578871fd
+User
+📋 Webhook enqueued: orders/orders/create (job: orders:orders/create:1763055398178)
+2025-11-13 11:36:38.23
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/create:1763055398178)
+2025-11-13 11:36:47.38
+578871fd
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-13 11:36:47.47
+578871fd
+User
+📊 Fetching Sentry issues: https://sentry.io/api/0/projects/jerkycom/jerky-rank-ui/issues/?query=is%3Aunresolved+environment%3APRODUCTION&statsPeriod=14d
+2025-11-13 11:36:49.11
+578871fd
+User
+✅ Fetched 14 Sentry issues (filtered by: is:unresolved environment:PRODUCTION)
+2025-11-13 11:36:55.85
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:36:55.85
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:36:55.91
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055415854)
+2025-11-13 11:36:55.91
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055415854)
+2025-11-13 11:37:06.15
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:37:06.15
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:37:06.21
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055426153)
+2025-11-13 11:37:06.21
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055426153)
+2025-11-13 11:37:17.46
+578871fd
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+2025-11-13 11:37:34.04
+578871fd
+User
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+2025-11-13 11:37:34.13
+578871fd
+User
+✅ 90-day session validated for: Ray Garcia
+2025-11-13 11:37:37.91
+578871fd
+User
+✅ 90-day session validated for: Ray Garcia
+2025-11-13 11:37:39.64
+578871fd
+User
+✅ 90-day session validated for: Ray Garcia
+2025-11-13 11:37:48.79
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:37:48.79
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:37:48.90
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055468792)
+2025-11-13 11:37:48.90
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055468792)
+2025-11-13 11:38:03.17
+578871fd
+User
+📨 Received Shopify webhook: orders/updated from jerky-com.myshopify.com
+2025-11-13 11:38:03.17
+578871fd
+User
+✅ Webhook signature verified
+2025-11-13 11:38:03.26
+578871fd
+User
+📋 Webhook enqueued: orders/orders/updated (job: orders:orders/updated:1763055483179)
+2025-11-13 11:38:03.26
+578871fd
+User
+✅ Order webhook enqueued for async processing (job: orders:orders/updated:1763055483179)
+2025-11-13 11:38:09.64
+578871fd
+User
+🔌 Database client removed from pool { totalConnections: 0, idleConnections: 0 }
+
+Collapse
+
+Wrap
+
+Colors

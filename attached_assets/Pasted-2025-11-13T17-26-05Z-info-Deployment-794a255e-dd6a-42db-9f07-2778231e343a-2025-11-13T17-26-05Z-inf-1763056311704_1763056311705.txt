@@ -1,0 +1,320 @@
+2025-11-13T17:26:05Z info: Deployment: 794a255e-dd6a-42db-9f07-2778231e343a
+2025-11-13T17:26:05Z info: Build: 578871fd-97ed-47cf-93bb-a2452eb1e275
+2025-11-13T17:26:05Z info: Connecting to builder
+2025-11-13T17:26:05Z info: Builder connected
+2025-11-13T17:26:07Z info: Installing packages
+--> npm install
+
+
+up to date, audited 422 packages in 6s
+
+47 packages are looking for funding
+  run `npm fund` for details
+
+
+4 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.6.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+npm notice To update run: npm install -g npm@11.6.2
+npm notice
+
+2025-11-13T17:26:14Z info: Starting Build
+
+up to date, audited 422 packages in 1s
+
+
+47 packages are looking for funding
+
+  run `npm fund` for details
+
+
+4 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+
+> jerky-top-n-web@1.0.0 build
+> npm run build:legacy && npm run build:react
+
+
+
+> jerky-top-n-web@1.0.0 build:legacy
+> node scripts/build-legacy-icon-bridge.js
+
+
+✓ Legacy icon bridge built successfully
+
+
+> jerky-top-n-web@1.0.0 build:react
+> vite build
+
+
+vite v7.1.12 building for production...
+
+transforming...
+
+✓ 1698 modules transformed.
+
+rendering chunks...
+
+[plugin vite:reporter] 
+(!) /home/runner/workspace/src/utils/PersistentQueue.js is dynamically imported by /home/runner/workspace/src/pages/RankPage.jsx but also statically imported by /home/runner/workspace/src/hooks/useRanking.js, dynamic import will not move module into another chunk.
+
+
+computing gzip size...
+
+../public/dist/index.html                                       0.91 kB │ gzip:   0.41 kB
+
+../public/dist/assets/DataPage-BvdbPtu2.css                     2.20 kB │ gzip:   0.87 kB
+
+../public/dist/assets/ToolsLayout-Bzt7azfW.css                  2.34 kB │ gzip:   0.79 kB
+../public/dist/assets/FlavorProfilePage-C-ZOWa1a.css            2.92 kB │ gzip:   0.97 kB
+
+../public/dist/assets/CoinProfilePage-BztTGHIY.css              3.16 kB │ gzip:   1.14 kB
+
+../public/dist/assets/ProductDetailPage-BHAZry0Y.css            3.20 kB │ gzip:   0.99 kB
+../public/dist/assets/CoinTypesPageAdmin-RN88quPg.css           5.30 kB │ gzip:   1.48 kB
+
+../public/dist/assets/ProductsPage-DvaKpeYf.css                 5.38 kB │ gzip:   1.50 kB
+
+../public/dist/assets/QueueMonitorPage-C6juRa2H.css             5.53 kB │ gzip:   1.58 kB
+../public/dist/assets/PodiumWidget-Cg1Z7BA5.css                 6.85 kB │ gzip:   1.84 kB
+
+../public/dist/assets/UserGuidanceTab-BOhEnl-y.css              8.46 kB │ gzip:   2.10 kB
+
+../public/dist/assets/CoinBookPage-B0Lt4XRb.css                 8.55 kB │ gzip:   2.21 kB
+
+../public/dist/assets/LeaderboardPage-xuMChCzc.css              8.74 kB │ gzip:   1.95 kB
+
+../public/dist/assets/ManageCoinsPageAdmin-CzSW356y.css         8.93 kB │ gzip:   2.34 kB
+../public/dist/assets/BulkImportPage-1erujqXZ.css              10.02 kB │ gzip:   2.38 kB
+
+../public/dist/assets/CoinBookWidget-Cyu1dAkr.css              10.49 kB │ gzip:   2.39 kB
+../public/dist/assets/ProfilePage-DNH25kUa.css                 10.60 kB │ gzip:   2.50 kB
+
+../public/dist/assets/index-EzYXF57F.css                       13.97 kB │ gzip:   3.55 kB
+
+../public/dist/assets/CommunityPage-DnBJIYRz.css               15.26 kB │ gzip:   3.57 kB
+../public/dist/assets/RankPage-B9VFNn1Z.css                    17.45 kB │ gzip:   4.05 kB
+
+../public/dist/assets/PublicProfilePage-DZBFYyer.css           24.56 kB │ gzip:   5.02 kB
+
+../public/dist/assets/HomePage-DT1IVu2v.css                    25.72 kB │ gzip:   5.18 kB
+../public/dist/assets/AdminPages-DZ3DiwEz.css                  27.45 kB │ gzip:   5.17 kB
+
+../public/dist/assets/tierEmojis-RCWFwJCx.js                    0.10 kB │ gzip:   0.11 kB
+
+../public/dist/assets/usePageView-BRcW8nX9.js                   0.32 kB │ gzip:   0.27 kB
+
+../public/dist/assets/useGamification-Cv2LU1dF.js               0.35 kB │ gzip:   0.22 kB
+../public/dist/assets/useAdminAccess-BdRy8xWh.js                0.38 kB │ gzip:   0.29 kB
+
+../public/dist/assets/useProducts-DZ1yECVs.js                   0.64 kB │ gzip:   0.38 kB
+
+../public/dist/assets/api-C947NNjV.js                           1.15 kB │ gzip:   0.55 kB
+../public/dist/assets/PodiumWidget-Ds4tCyTh.js                  4.02 kB │ gzip:   1.09 kB
+
+../public/dist/assets/ToolsLayout-O6R8qJl4.js                   4.50 kB │ gzip:   1.07 kB
+../public/dist/assets/useAdminTools-D-8G3Jyb.js                 5.85 kB │ gzip:   1.56 kB
+
+../public/dist/assets/ProductsPage-CRG6MPTS.js                  6.58 kB │ gzip:   1.46 kB
+../public/dist/assets/LoginPage-DLMp9Kcm.js                     6.70 kB │ gzip:   2.03 kB
+../public/dist/assets/LiveUsersPage-CiMcw0JM.js                 7.35 kB │ gzip:   1.55 kB
+
+../public/dist/assets/en-US-DzAkKII6.js                         7.64 kB │ gzip:   2.69 kB
+../public/dist/assets/CoinProfilePage-Dh-eDvXt.js               7.88 kB │ gzip:   1.58 kB
+
+../public/dist/assets/FlavorProfilePage-uOm874j_.js             9.73 kB │ gzip:   2.00 kB
+../public/dist/assets/ProductDetailPage-DszoAWZ3.js            10.15 kB │ gzip:   1.51 kB
+
+../public/dist/assets/SentryPage-QbOtNoHp.js                   11.80 kB │ gzip:   2.05 kB
+
+../public/dist/assets/CoinTypesPageAdmin-BA_EWHOA.js           11.88 kB │ gzip:   1.95 kB
+../public/dist/assets/CoinBookWidget-n7JLVe3-.js               14.92 kB │ gzip:   3.14 kB
+../public/dist/assets/LeaderboardPage-D_THKECi.js              15.27 kB │ gzip:   2.18 kB
+
+../public/dist/assets/QueueMonitorPage-Cvpuu7hD.js             15.94 kB │ gzip:   2.69 kB
+../public/dist/assets/SentryIssueDetailsPage-BNgTBX_6.js       18.47 kB │ gzip:   3.37 kB
+
+../public/dist/assets/OrderItemsPage-DtK1gnYm.js               18.63 kB │ gzip:   3.55 kB
+../public/dist/assets/CustomerWebhooksPage-Bv1-GviQ.js         19.09 kB │ gzip:   3.27 kB
+
+../public/dist/assets/ProductWebhooksPage-mJbnf9Gm.js          20.78 kB │ gzip:   3.69 kB
+../public/dist/assets/CoinBookPage-BgwbqdQb.js                 22.76 kB │ gzip:   3.26 kB
+
+../public/dist/assets/ProductsPageAdmin-AI7OjRs9.js            23.86 kB │ gzip:   3.45 kB
+../public/dist/assets/FlavorCommunitiesPageAdmin-x4o2QKCf.js   32.05 kB │ gzip:   4.91 kB
+../public/dist/assets/HomePage-C1nRtXlc.js                     35.71 kB │ gzip:   5.07 kB
+../public/dist/assets/DataPage-Cb7z3WTN.js                     38.97 kB │ gzip:   5.96 kB
+
+../public/dist/assets/UserGuidanceTab-DgX6tlrp.js              39.28 kB │ gzip:   5.09 kB
+../public/dist/assets/ProfilePage-BDfFkjcd.js                  40.37 kB │ gzip:  11.23 kB
+../public/dist/assets/CommunityPage-CNV-zDHf.js                40.86 kB │ gzip:   6.58 kB
+
+../public/dist/assets/vendor-socket-CA1CrNgP.js                41.28 kB │ gzip:  12.91 kB
+../public/dist/assets/vendor-react-query-Dq4iOwXr.js           42.21 kB │ gzip:  13.29 kB
+../public/dist/assets/RankPage-Dza5OcMl.js                     42.89 kB │ gzip:  10.86 kB
+
+../public/dist/assets/BulkImportPage-Cmug92-c.js               43.81 kB │ gzip:   6.11 kB
+
+../public/dist/assets/PublicProfilePage-CUzn9wc_.js            51.88 kB │ gzip:   9.97 kB
+../public/dist/assets/ManageCoinsPageAdmin-CW2NMwBY.js         69.81 kB │ gzip:  10.42 kB
+../public/dist/assets/vendor-dnd-H3Ac9Kaa.js                   74.23 kB │ gzip:  24.08 kB
+../public/dist/assets/vendor-router-Dd1o6z0q.js                84.04 kB │ gzip:  28.61 kB
+
+../public/dist/assets/vendor-sentry-B9MY0m1g.js               309.29 kB │ gzip: 102.09 kB
+../public/dist/assets/index-uh5LbcbY.js                       427.09 kB │ gzip: 123.90 kB
+
+✓ built in 11.55s
+
+2025-11-13T17:26:30Z info: Pushing pid1 binary layer...
+2025-11-13T17:26:31Z info: Pushing Repl layer...
+2025-11-13T17:26:31Z info: Pushing hosting layer...
+2025-11-13T17:26:32Z info: Created hosting layer
+2025-11-13T17:26:32Z info: Created pid1 binary layer
+2025-11-13T17:27:20Z info: Created Repl layer
+2025-11-13T17:27:23Z info: Pushed image manifest
+2025-11-13T17:27:24Z info: Pushed soci index manifest
+2025-11-13T17:27:31Z info: Creating Autoscale service
+✅ Converted to pooler URL: ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech
+🔍 Environment Detection Debug:
+📂 Database storage connected
+🔍 Checking environment configuration...
+metasidecar: loaded enterprise status from environment is_enterprise=false
+> node server.js
+starting up user application
+🌐  Production deployment detected. Available domains: jerkyrankings.replit.app, rank.jerky.com
+✅ Server successfully started!
+✅ Selected domain: jerkyrankings.replit.app
+🔍 Redis environment: PRODUCTION
+🔑  Using Customer Account API for jerky.com accounts
+🏪  Shop Domain: jerky-com.myshopify.com
+💾 Primary database connection configured (no pooler - read from primary)
+💾 Dedicated worker pool created (10 connections, with auto-retry)
+   REPLIT_DOMAINS: jerkyrankings.replit.app,rank.jerky.com
+✅ Rate limiters configured using memory (single-instance)
+🚀 Initializing distributed cache service...
+📊 Service Status:
+✅ Redis connection pool established
+   Redis secrets available: [ 'UPSTASH_REDIS_URL', 'UPSTASH_REDIS_URL_PROD' ]
+   REPLIT_DEPLOYMENT: 1
+✅ Database URL found
+
+✅ Selected domain: jerkyrankings.replit.app
+> jerky-top-n-web@1.0.0 start
+🌐  App Domain: jerkyrankings.replit.app
+ℹ️  Waiting 3000ms for networking to stabilize before schema validation...
+🔌 Warming up database connection...
+✅ Rate limiters initialized for authentication endpoints
+🎮 Initializing gamification system...
+   NODE_ENV: PRODUCTION
+Visit the app at: http://localhost:5000
+✅ Shopify credentials found
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+✅ Redis ready for commands
+💾 Database connection pool configured with pooler endpoint (with auto-retry)
+🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+   Database: ✅ Connected
+   Shopify Integration: ✅ Available
+✅ Sentry error monitoring initialized (PRODUCTION @ jerkyrankings.replit.app)
+🔍 Using Redis variable: UPSTASH_REDIS_URL_PROD
+🚀 Starting Jerky Top N Web Application...
+🚀 Initializing scalability features...
+🔌 Establishing Redis connection pool...
+🌐  Production deployment detected. Available domains: jerkyrankings.replit.app, rank.jerky.com
+
+🔌 Warming up database connection...
+🔧 Shopify Customer Authentication Configuration:
+forwarding local port 5000 to external port 80 (mapped as 1104)
+💾 Redis: Using existing connection (connection pool)
+✅ LeaderboardCache initialized
+✅ Database is query-ready (1 attempt, 255ms)
+✅ homeStats: Using Redis for distributed caching
+✅ leaderboard: Using Redis for distributed caching
+🏓 Redis PING successful - connection pool active
+✅ metadata: Using Redis for distributed caching
+✅ products: Using Redis for distributed caching
+🔌 Setting up Socket.IO Redis adapter with shared connection...
+✅ recentAchievements: Using Redis for distributed caching
+✅ All caches using Redis for distributed caching
+✅ progress: Using Redis for distributed caching
+✅ Community routes registered at /api/community
+✅ Gamification routes registered at /api/gamification
+✅ BulkImport worker Redis connection READY
+✅ leaderboardPosition: Using Redis for distributed caching
+✅ Classification worker initialized with resilient error handling (concurrency: 5)
+✅ StreakCache initialized
+📦 Initializing distributed caches...
+✅ AchievementCache initialized
+✅ guidance: Using Redis for distributed caching
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ BullMQ queue Redis connection READY
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ ProgressCache initialized
+✅ achievement: Using Redis for distributed caching
+✅ user_classification: Using Redis for distributed caching
+✅ GuidanceCache initialized
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Profile routes registered at /api/profile
+✅ achievement: Using Redis for distributed caching
+✅ BulkImportService initialized with WebSocket gateway and classification queue
+
+💾 Redis: Using existing connection (connection pool)
+✅ UserClassificationCache initialized
+✅ WebSocket gateway initialized
+✅ Classification queue initialized with hardened Redis connection
+✅ UserProfileCache initialized
+✅ JourneyCache initialized
+✅ Scalability initialization complete
+✅ All distributed caches initialized
+💾 Redis: Using existing connection (connection pool)
+💾 Redis: Using existing connection (connection pool)
+✅ Classification worker Redis connection READY
+✅ Database instances warmed and ready for queries
+✅ journey: Using Redis for distributed caching
+✅ Health check routes registered at /api/health
+🔍 Validating database schema against Drizzle definitions...
+🔌 Creating dedicated Redis connection for BullMQ queue...
+✅ streak: Using Redis for distributed caching
+🔌 Creating dedicated Redis connection for BullMQ worker...
+✅ Bulk import queue initialized with hardened Redis connection
+✅ Socket.IO using Redis adapter for cross-instance communication
+✅ Database is query-ready (1 attempt, 263ms)
+🔌 Creating dedicated Redis connection for classification queue...
+✅ rankingStats: Using Redis for distributed caching
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Classification queue Redis connection READY
+✅ leaderboard: Using Redis for distributed caching
+🏷️  WebSocket environment prefix: prod
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+✅ user_profile: Using Redis for distributed caching
+✅ Bulk import worker initialized with resilient error handling (concurrency: 15, rate limit: 50 jobs/min)
+🔌 Creating dedicated Redis connection for classification worker...
+💾 Redis: Using existing connection (connection pool)
+💾 Redis: Using existing connection (connection pool)
+✅ Engagement backfill queue initialized (Worker handles stalled jobs via lockDuration)
+✅ Engagement backfill worker Redis connection READY
+✅ Database schema validation passed - all tables match Drizzle definitions
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+💾 Redis: Using existing connection (connection pool)
+💾 Redis: Using existing connection (connection pool)
+✅ Webhook queue initialized
+🔌 Creating dedicated Redis connection for engagement backfill worker...
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+🔌 Creating dedicated Redis connection for webhook worker...
+✅ Engagement backfill worker initialized with resilient error handling (concurrency: 10)
+2025-11-13T17:29:15Z info: Waiting for service to be ready
+2025-11-13T17:29:17Z info: Deployment successful
