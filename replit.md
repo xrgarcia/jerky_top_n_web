@@ -39,7 +39,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Leaderboard Optimization**: 345,000x speedup via pre-aggregated rollup table (`user_engagement_scores`), incremental updates, Redis-backed distributed cache, and granular invalidation. Both `getLeaderboard()` and `getUserPosition()` queries use the rollup table for consistent sub-100ms performance (400x improvement for position queries).
 - **Distributed Caching**: Comprehensive Redis-backed system with seven specialized cache classes and event-driven invalidation for sub-100ms response times.
 - **Database Connection**: Multi-pool architecture using Neon PostgreSQL with TCP keepalive and automatic retry logic.
-- **Redis Connection**: Singleton-based connection pooling for BullMQ workers and Upstash Redis.
+- **Redis Connection**: Singleton-based connection pooling for BullMQ workers and Upstash Redis with exponential backoff + jitter, event-driven lifecycle management, and automatic dependent connection reinitialization.
+- **Connection Resilience**: Production-grade error handling preventing cascading failures (JERKY-RANK-UI-9). All BullMQ workers (WebhookWorker, ClassificationWorker, BulkImportWorker, EngagementBackfillWorker) automatically pause during Redis outages and resume when reconnected. Health monitoring endpoint (`/api/health/connections`) tracks Redis, PostgreSQL, and worker status with accurate 503/200 responses.
 - **Feature Flags**: JSON-based configuration system.
 - **Database Schema Management**: Drizzle ORM with automatic validation, retry logic, and safe deployment scripts.
 - **Type Safety**: Multi-layer defense with String() conversions for Shopify IDs at service and repository layers (Neon serverless driver requirement for TEXT columns).
