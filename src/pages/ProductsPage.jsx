@@ -21,13 +21,16 @@ function ProductsPage() {
   return (
     <div className="products-page">
       <div className="products-container">
-        <div className="products-header">
+        {/* Hero Section */}
+        <div className="products-hero">
           <h1>Flavors</h1>
-          <p>Browse and explore our jerky flavors</p>
+          <p className="hero-subtitle">Discover your next favorite</p>
+          <div className="hero-stats">
+            <span className="hero-stat">{products.length} flavors</span>
+          </div>
         </div>
 
-        <PersonalizedGuidance page="products" />
-
+        {/* Filters Section */}
         <div className="products-filters">
           <input
             type="text"
@@ -90,38 +93,12 @@ function ProductsPage() {
                   )}
                 </div>
                 
-                <div style={{
-                  marginTop: '12px',
-                  paddingTop: '12px',
-                  borderTop: '1px solid #e5e5e5',
-                  display: 'flex',
-                  gap: '8px',
-                  justifyContent: 'center',
-                  flexWrap: 'wrap'
-                }}>
-                  <span style={{
-                    background: 'linear-gradient(135deg, #f5f3ed 0%, #faf9f5 100%)',
-                    color: '#5a5046',
-                    padding: '6px 12px',
-                    borderRadius: '12px',
-                    fontSize: '0.8rem',
-                    fontWeight: '600',
-                    border: '1px solid #e8e6df',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    📊 Avg: {product.avgRank?.toFixed(1) || 'N/A'}
+                <div className="product-stats-row">
+                  <span className="stat-badge stat-rank">
+                    Avg: {product.avgRank?.toFixed(1) || 'N/A'}
                   </span>
-                  <span style={{
-                    background: 'linear-gradient(135deg, #e8f4ea 0%, #f0f8f2 100%)',
-                    color: '#2d5f3d',
-                    padding: '6px 12px',
-                    borderRadius: '12px',
-                    fontSize: '0.8rem',
-                    fontWeight: '600',
-                    border: '1px solid #c4e0cc',
-                    whiteSpace: 'nowrap'
-                  }}>
-                    🏆 {product.rankingCount || 0} ranking{product.rankingCount !== 1 ? 's' : ''}
+                  <span className="stat-badge stat-count">
+                    {product.rankingCount || 0} ranking{product.rankingCount !== 1 ? 's' : ''}
                   </span>
                 </div>
               </div>
