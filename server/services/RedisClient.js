@@ -166,20 +166,35 @@ class RedisClient extends EventEmitter {
 
   /**
    * Reinitialize all dependent duplicated connections after reconnection
+   * This is fired after the base connection successfully reconnects
    */
   _reinitializeDependents() {
     if (this.dependents.size === 0) return;
     
     console.log(`🔄 Reinitializing ${this.dependents.size} dependent connection(s)...`);
     
-    // Notify all dependents that base connection is restored
-    // They should handle their own reconnection logic
-    this.dependents.forEach(client => {
+    // Clear the old dependents set - workers will re-register when they reconnect
+    const oldDependents = Array.from(this.dependents);
+    this.dependents.clear();
+    
+    // Attempt to reconnect each dependent
+    oldDependents.forEach(client => {
       try {
-        if (client.status !== 'ready' && client.status !== 'connecting') {
-          client.connect().catch(err => {
-            console.error('❌ Failed to reinitialize dependent connection:', err.message);
-          });
+        // Check if client is disconnected
+        if (client.status === 'end' || client.status === 'close' || client.status === 'reconnecting') {
+          console.log(`🔄 Reconnecting dependent client (status: ${client.status})...`);
+          
+          // Disconnect old client cleanly
+          if (client.status !== 'end') {
+            client.disconnect(false).catch(() => {});
+          }
+          
+          // Note: Workers should handle reconnection themselves by listening to
+          // the 'reconnected' event from this base client and creating new duplicate
+        } else if (client.status === 'ready' || client.status === 'connect') {
+          // Client is already connected, re-register it
+          this.dependents.add(client);
+          console.log(`✅ Dependent client already connected (status: ${client.status})`);
         }
       } catch (err) {
         console.error('❌ Error reinitializing dependent:', err.message);

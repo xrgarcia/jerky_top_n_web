@@ -58,16 +58,23 @@ class WebhookWorker {
       redisClient.registerDependent(workerConnection);
 
       // Add comprehensive error handlers to prevent crashes
-      workerConnection.on('error', (err) => {
+      workerConnection.on('error', async (err) => {
         // Filter expected network errors to avoid Sentry spam
         const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
         
         if (isExpectedError) {
           console.warn('⚠️ Webhook worker Redis connection issue (will auto-retry):', err.code || err.message);
-          // Pause worker to prevent job processing failures during outage
-          if (this.worker && !this.worker.isPaused()) {
-            this.worker.pause();
-            console.log('⏸️  Webhook worker PAUSED due to Redis connection issue');
+          // Pause worker to prevent job processing failures during outage (await the async operation)
+          if (this.worker) {
+            try {
+              const isPaused = await this.worker.isPaused();
+              if (!isPaused) {
+                await this.worker.pause();
+                console.log('⏸️  Webhook worker PAUSED due to Redis connection issue');
+              }
+            } catch (pauseErr) {
+              console.error('❌ Failed to pause webhook worker:', pauseErr.message);
+            }
           }
         } else {
           console.error('❌ Webhook worker Redis connection error:', err.message);
@@ -78,20 +85,34 @@ class WebhookWorker {
         }
       });
 
-      workerConnection.on('ready', () => {
+      workerConnection.on('ready', async () => {
         console.log('✅ Webhook worker Redis connection READY');
-        // Resume worker if it was paused
-        if (this.worker && this.worker.isPaused()) {
-          this.worker.resume();
-          console.log('▶️  Webhook worker RESUMED after Redis reconnection');
+        // Resume worker if it was paused (await the async operation)
+        if (this.worker) {
+          try {
+            const isPaused = await this.worker.isPaused();
+            if (isPaused) {
+              await this.worker.resume();
+              console.log('▶️  Webhook worker RESUMED after Redis reconnection');
+            }
+          } catch (resumeErr) {
+            console.error('❌ Failed to resume webhook worker:', resumeErr.message);
+          }
         }
       });
 
-      workerConnection.on('close', () => {
+      workerConnection.on('close', async () => {
         console.warn('⚠️ Webhook worker Redis connection CLOSED - pausing worker');
-        if (this.worker && !this.worker.isPaused()) {
-          this.worker.pause();
-          console.log('⏸️  Webhook worker PAUSED due to Redis disconnect');
+        if (this.worker) {
+          try {
+            const isPaused = await this.worker.isPaused();
+            if (!isPaused) {
+              await this.worker.pause();
+              console.log('⏸️  Webhook worker PAUSED due to Redis disconnect');
+            }
+          } catch (pauseErr) {
+            console.error('❌ Failed to pause webhook worker on close:', pauseErr.message);
+          }
         }
       });
 

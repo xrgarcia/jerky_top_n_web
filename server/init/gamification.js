@@ -41,6 +41,7 @@ const createGamificationRoutes = require('../routes/gamification');
 const createCommunityRoutes = require('../routes/community');
 const createFlavorProfileCommunitiesRoutes = require('../routes/flavorProfileCommunities');
 const createProfileRoutes = require('../routes/profile');
+const healthRouter = require('../routes/health');
 const WebSocketGateway = require('../websocket/gateway');
 
 const { primaryDb, ensureDatabaseReady } = require('../db-primary');
@@ -177,10 +178,15 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
     app.use('/api/flavor-profile-communities', flavorProfileCommunitiesRouter);
     app.use('/api/profile', profileRouter);
   }
+  
+  // Health check endpoints (no rate limiting)
+  app.use('/api/health', healthRouter);
+  
   console.log('✅ Gamification routes registered at /api/gamification');
   console.log('✅ Community routes registered at /api/community');
   console.log('✅ Flavor profile communities routes registered at /api/flavor-profile-communities');
   console.log('✅ Profile routes registered at /api/profile');
+  console.log('✅ Health check routes registered at /api/health');
 
   const wsGateway = new WebSocketGateway(io, services);
   console.log('✅ WebSocket gateway initialized');

@@ -50,36 +50,57 @@ class ClassificationWorker {
       redisClient.registerDependent(workerConnection);
 
       // Add comprehensive error handlers to prevent crashes
-      workerConnection.on('error', (err) => {
+      workerConnection.on('error', async (err) => {
         // Filter expected network errors to avoid log spam
         const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
         
         if (isExpectedError) {
           console.warn('⚠️ Classification worker Redis connection issue (will auto-retry):', err.code || err.message);
-          // Pause worker to prevent job processing failures during outage
-          if (this.worker && !this.worker.isPaused()) {
-            this.worker.pause();
-            console.log('⏸️  Classification worker PAUSED due to Redis connection issue');
+          // Pause worker to prevent job processing failures during outage (await the async operation)
+          if (this.worker) {
+            try {
+              const isPaused = await this.worker.isPaused();
+              if (!isPaused) {
+                await this.worker.pause();
+                console.log('⏸️  Classification worker PAUSED due to Redis connection issue');
+              }
+            } catch (pauseErr) {
+              console.error('❌ Failed to pause classification worker:', pauseErr.message);
+            }
           }
         } else {
           console.error('❌ Classification worker Redis connection error:', err.message);
         }
       });
 
-      workerConnection.on('ready', () => {
+      workerConnection.on('ready', async () => {
         console.log('✅ Classification worker Redis connection READY');
-        // Resume worker if it was paused
-        if (this.worker && this.worker.isPaused()) {
-          this.worker.resume();
-          console.log('▶️  Classification worker RESUMED after Redis reconnection');
+        // Resume worker if it was paused (await the async operation)
+        if (this.worker) {
+          try {
+            const isPaused = await this.worker.isPaused();
+            if (isPaused) {
+              await this.worker.resume();
+              console.log('▶️  Classification worker RESUMED after Redis reconnection');
+            }
+          } catch (resumeErr) {
+            console.error('❌ Failed to resume classification worker:', resumeErr.message);
+          }
         }
       });
 
-      workerConnection.on('close', () => {
+      workerConnection.on('close', async () => {
         console.warn('⚠️ Classification worker Redis connection CLOSED - pausing worker');
-        if (this.worker && !this.worker.isPaused()) {
-          this.worker.pause();
-          console.log('⏸️  Classification worker PAUSED due to Redis disconnect');
+        if (this.worker) {
+          try {
+            const isPaused = await this.worker.isPaused();
+            if (!isPaused) {
+              await this.worker.pause();
+              console.log('⏸️  Classification worker PAUSED due to Redis disconnect');
+            }
+          } catch (pauseErr) {
+            console.error('❌ Failed to pause classification worker on close:', pauseErr.message);
+          }
         }
       });
 
