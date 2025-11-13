@@ -34,10 +34,17 @@ function HomePage() {
         </div>
       )}
 
+      {/* Narrative Transition - Chapter Break */}
+      <section className="narrative-transition">
+        <div className="transition-content">
+          <p className="transition-text">Your flavor journey begins here</p>
+        </div>
+      </section>
+
       {/* Welcome Section with Community Stats */}
       <section className="welcome-section">
-        <h2>Find the Perfect Jerky For You!</h2>
-        <p>Discover What the Community Loves</p>
+        <h2>Discover Your Perfect Jerky</h2>
+        <p>Explore what thousands of jerky enthusiasts are ranking right now</p>
         
         {/* Community Stats Overview */}
         <div className="community-stats-overview">
