@@ -1,0 +1,193 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-3B
+Title: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-13T14:26:15.010000Z
+Last Seen: 2025-11-13T14:26:15Z
+Event Count: 1
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+
+--- CULPRIT ---
+UserClassificationService.getConfig(server.services:UserClassificationService)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at UserClassificationService.getConfig (/home/runner/workspace/server/services/UserClassificationService.js:?:?) [in app]
+  at UserClassificationService.classifyUser (/home/runner/workspace/server/services/UserClassificationService.js:?:?) [in app]
+  at ClassificationWorker.processJob (/home/runner/workspace/server/services/ClassificationWorker.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/node_modules/bullmq/dist/cjs/classes/worker.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-13T14:24:19.475000Z] console (info): 🏷️ Processing products/update webhook for product 8032167166266 (All-Natural Beef Jerky - Rosemary Garlic)
+[2025-11-13T14:24:19.478000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:24:19.478000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 8032167166266,1
+[2025-11-13T14:24:19.479000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 8032167166266,1
+[2025-11-13T14:24:19.514000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 8032167166266,1
+[2025-11-13T14:24:20.912000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763043860802)
+[2025-11-13T14:24:20.912000Z] console (info): 🏷️ Processing products/update webhook for product 11821177039 (All-Natural Beef Jerky - Montreal Style)
+[2025-11-13T14:24:20.916000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:24:20.916000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821177039,1
+[2025-11-13T14:24:20.917000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821177039,1
+[2025-11-13T14:24:20.952000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821177039,1
+[2025-11-13T14:24:21.782000Z] console (info): 🔄 Processing webhook: orders/orders/create (job: orders:orders/create:1763043861654)
+[2025-11-13T14:24:21.782000Z] console (info): 📦 Processing orders/create webhook for order JK3825343965
+[2025-11-13T14:24:21.782000Z] console (info): 📦 Processing order JK3825343965: 6 line items
+[2025-11-13T14:24:21.785000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:24:21.785000Z] console (error): [Filtered]
+[2025-11-13T14:24:21.786000Z] console (error): [Filtered]
+[2025-11-13T14:24:21.787000Z] console (error): [Filtered]
+[2025-11-13T14:24:21.787000Z] console (error): [Filtered]
+[2025-11-13T14:24:21.821000Z] console (error): [Filtered]
+[2025-11-13T14:24:27.785000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043867709)
+[2025-11-13T14:24:27.785000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343497
+[2025-11-13T14:24:27.785000Z] console (info): 📦 Processing order JK3825343497: 1 line items
+[2025-11-13T14:24:27.789000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:24:27.789000Z] console (error): [Filtered]
+[2025-11-13T14:24:27.790000Z] console (error): [Filtered]
+[2025-11-13T14:24:27.790000Z] console (error): [Filtered]
+[2025-11-13T14:24:27.790000Z] console (error): [Filtered]
+[2025-11-13T14:24:27.856000Z] console (error): [Filtered]
+[2025-11-13T14:25:28.326000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043928247)
+[2025-11-13T14:25:28.326000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343966
+[2025-11-13T14:25:28.326000Z] console (info): 📦 Processing order JK3825343966: 3 line items
+[2025-11-13T14:25:28.331000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:28.331000Z] console (error): [Filtered]
+[2025-11-13T14:25:28.332000Z] console (error): [Filtered]
+[2025-11-13T14:25:28.332000Z] console (error): [Filtered]
+[2025-11-13T14:25:28.333000Z] console (error): [Filtered]
+[2025-11-13T14:25:28.367000Z] console (error): [Filtered]
+[2025-11-13T14:25:29.566000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763043929456)
+[2025-11-13T14:25:29.566000Z] console (info): 🏷️ Processing products/update webhook for product 30079418383 (Premium Roast Sunflower Seeds - Roasted Garlic)
+[2025-11-13T14:25:29.569000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:29.570000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079418383,1
+[2025-11-13T14:25:29.571000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079418383,1
+[2025-11-13T14:25:29.605000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079418383,1
+[2025-11-13T14:25:29.697000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763043929622)
+[2025-11-13T14:25:29.697000Z] console (info): 🏷️ Processing products/update webhook for product 30079811599 (Premium Roast Sunflower Seeds - Cajun Honey Mustard)
+[2025-11-13T14:25:29.701000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:29.702000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079811599,1
+[2025-11-13T14:25:29.703000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079811599,1
+[2025-11-13T14:25:29.737000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079811599,1
+[2025-11-13T14:25:30.776000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763043930699)
+[2025-11-13T14:25:30.776000Z] console (info): 🏷️ Processing products/update webhook for product 30079778831 (Premium Roast Sunflower Seeds - Salt & Balsamic Vinegar)
+[2025-11-13T14:25:30.779000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:30.780000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079778831,1
+[2025-11-13T14:25:30.781000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079778831,1
+[2025-11-13T14:25:30.815000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 30079778831,1
+[2025-11-13T14:25:38.856000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043938746)
+[2025-11-13T14:25:38.856000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343966
+[2025-11-13T14:25:38.856000Z] console (info): 📦 Processing order JK3825343966: 3 line items
+[2025-11-13T14:25:38.860000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:38.860000Z] console (error): [Filtered]
+[2025-11-13T14:25:38.861000Z] console (error): [Filtered]
+[2025-11-13T14:25:38.861000Z] console (error): [Filtered]
+[2025-11-13T14:25:38.861000Z] console (error): [Filtered]
+[2025-11-13T14:25:38.895000Z] console (error): [Filtered]
+[2025-11-13T14:25:59.232000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043959073)
+[2025-11-13T14:25:59.232000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343584
+[2025-11-13T14:25:59.232000Z] console (info): 📦 Processing order JK3825343584: 2 line items
+[2025-11-13T14:25:59.236000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:25:59.236000Z] console (error): [Filtered]
+[2025-11-13T14:25:59.237000Z] console (error): [Filtered]
+[2025-11-13T14:25:59.237000Z] console (error): [Filtered]
+[2025-11-13T14:25:59.238000Z] console (error): [Filtered]
+[2025-11-13T14:25:59.272000Z] console (error): [Filtered]
+[2025-11-13T14:26:09.697000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043969569)
+[2025-11-13T14:26:09.697000Z] console (info): 📦 Processing orders/updated webhook for order JK3825342802
+[2025-11-13T14:26:09.697000Z] console (info): 📦 Processing order JK3825342802: 2 line items
+[2025-11-13T14:26:09.701000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:26:09.701000Z] console (error): [Filtered]
+[2025-11-13T14:26:09.703000Z] console (error): [Filtered]
+[2025-11-13T14:26:09.703000Z] console (error): [Filtered]
+[2025-11-13T14:26:09.703000Z] console (error): [Filtered]
+[2025-11-13T14:26:09.737000Z] console (error): [Filtered]
+[2025-11-13T14:26:13.146000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763043972983)
+[2025-11-13T14:26:13.146000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343524
+[2025-11-13T14:26:13.146000Z] console (info): 📦 Processing order JK3825343524: 2 line items
+[2025-11-13T14:26:13.150000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:26:13.150000Z] console (error): [Filtered]
+[2025-11-13T14:26:13.151000Z] console (error): [Filtered]
+[2025-11-13T14:26:13.151000Z] console (error): [Filtered]
+[2025-11-13T14:26:13.152000Z] console (error): [Filtered]
+[2025-11-13T14:26:13.186000Z] console (error): [Filtered]
+[2025-11-13T14:26:14.716000Z] console (info): 🔄 Processing classification for user 7576 (reason: purchase)...
+[2025-11-13T14:26:14.752000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7576
+[2025-11-13T14:26:14.789000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7576
+[2025-11-13T14:26:15.005000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7576
+[2025-11-13T14:26:15.005000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T14:26:15.009000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T14:26:15.009000Z] console (error): ❌ Error loading classification config from database: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T14:26:15.010000Z] console (warning): ⚠️ Falling back to default classification configuration
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
