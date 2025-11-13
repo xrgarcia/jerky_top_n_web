@@ -75,6 +75,13 @@ function HomePage() {
         </div>
       </section>
 
+      {/* Dashboard Transition */}
+      <section className="dashboard-transition">
+        <div className="transition-content">
+          <p className="transition-text">What the community is ranking</p>
+        </div>
+      </section>
+
       {/* Dashboard Widgets Grid */}
       <div className="home-container">
         <div className="home-dashboard">
@@ -82,7 +89,7 @@ function HomePage() {
           <div className="dashboard-section" id="topProductsSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>⭐ Community Favorites</h3>
+                <h3>Community Favorites</h3>
                 <p className="section-subtitle">The crowd has spoken! See what's winning hearts.</p>
               </div>
               <button className="widget-action-btn" onClick={() => navigate('/rank')}>Rank This Too!</button>
@@ -112,7 +119,7 @@ function HomePage() {
           <div className="dashboard-section" id="topRankersSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>🏆 Top Rankers</h3>
+                <h3>Top Rankers</h3>
                 <p className="section-subtitle">Think you can top them? Start ranking to compete!</p>
               </div>
               <button className="widget-action-btn" onClick={() => navigate('/rank')}>Join the Race</button>
@@ -145,7 +152,7 @@ function HomePage() {
           <div className="dashboard-section" id="recentlyRankedSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>🆕 Recently Ranked</h3>
+                <h3>Recently Ranked</h3>
                 <p className="section-subtitle">Fresh off the grill! See what's being ranked right now.</p>
               </div>
               <button className="widget-action-btn secondary" onClick={() => navigate('/products')}>Explore All</button>
@@ -173,7 +180,7 @@ function HomePage() {
           <div className="dashboard-section" id="trendingSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>🔥 Trending This Week</h3>
+                <h3>Trending This Week</h3>
                 <p className="section-subtitle">Don't miss out on what's hot in the community!</p>
               </div>
               <button className="widget-action-btn secondary" onClick={() => navigate('/rank')}>Jump In!</button>
@@ -200,7 +207,7 @@ function HomePage() {
           <div className="dashboard-section" id="debatedSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>⚔️ Most Debated</h3>
+                <h3>Most Debated</h3>
                 <p className="section-subtitle">The community can't agree - you decide!</p>
               </div>
               <button className="widget-action-btn" onClick={() => navigate('/rank')}>Settle It!</button>
@@ -231,7 +238,7 @@ function HomePage() {
           <div className="dashboard-section" id="achievementsSection">
             <div className="widget-header">
               <div className="widget-title-group">
-                <h3>🏅 Recent Achievements</h3>
+                <h3>Recent Achievements</h3>
                 <p className="section-subtitle">Unlock your next badge! Start ranking to earn.</p>
               </div>
               <button className="widget-action-btn" onClick={() => navigate('/rank')}>Earn Badges</button>

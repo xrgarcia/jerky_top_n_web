@@ -346,11 +346,36 @@
   font-weight: 500;
 }
 
+/* Dashboard Transition - Clean bridge to widgets */
+.dashboard-transition {
+  background: #fafafa;
+  padding: 64px 20px;
+  text-align: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-transition .transition-content {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.dashboard-transition .transition-text {
+  font-size: 28px;
+  font-weight: 500;
+  color: #1d1d1f;
+  margin: 0;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+}
+
 /* Home Container below hero */
 .home-container {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
+  background: #fafafa;
+  padding-top: 40px;
+  padding-bottom: 60px;
 }
 
 /* Dashboard Grid - Bento Box Layout */
@@ -396,55 +421,42 @@
 
 /* Dashboard Sections - Cards with Background */
 .dashboard-section {
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 16px;
-  padding: 24px;
+  background: #ffffff;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-top: 2px solid transparent;
+  border-radius: 20px;
+  padding: 28px;
   min-height: 200px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
-}
-
-.dashboard-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #7b8b52, #c4a962);
-  opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
 .dashboard-section:hover {
+  border-top-color: #d4b972;
+  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.08);
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-}
-
-.dashboard-section:hover::before {
-  opacity: 1;
 }
 
 .dashboard-section h3 {
   margin: 0 0 8px 0;
-  color: #3b2f25;
+  color: #1d1d1f;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.3px;
 }
 
 .section-subtitle {
-  margin: -2px 0 20px 0;
-  font-size: 14px;
-  color: #666;
+  margin: 0 0 24px 0;
+  font-size: 15px;
+  color: #6e6e73;
   font-weight: 400;
-  font-style: italic;
+  font-style: normal;
+  line-height: 1.4;
 }
 
 /* Widget Header with Actions */
@@ -460,23 +472,25 @@
 }
 
 .widget-action-btn {
-  background: #7b8b52;
+  background: #8B6F3D;
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(123, 139, 82, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.18);
   white-space: nowrap;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.2px;
 }
 
 .widget-action-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.4);
-  background: #5d6b3d;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(139, 111, 61, 0.24);
+  background: #7A6032;
 }
 
 .widget-action-btn:active {
@@ -484,13 +498,13 @@
 }
 
 .widget-action-btn.secondary {
-  background: linear-gradient(135deg, #CD7F32, #B87333);
-  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.3);
+  background: #AE7E54;
+  box-shadow: 0 4px 12px rgba(174, 126, 84, 0.18);
 }
 
 .widget-action-btn.secondary:hover {
-  background: linear-gradient(135deg, #DD8F42, #C88343);
-  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.4);
+  background: #9D6D45;
+  box-shadow: 0 6px 16px rgba(174, 126, 84, 0.24);
 }
 
 /* Dashboard List Items */
@@ -524,32 +538,37 @@
 
 /* Rank Badges */
 .rank-badge {
-  background: #7b8b52;
+  background: #8B6F3D;
   color: white;
   padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 700;
+  border-radius: 10px;
+  font-weight: 600;
   font-size: 13px;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.2px;
 }
 
 .rank-badge.rank-1 {
-  background: linear-gradient(135deg, #FFD700, #FFC700);
+  background: linear-gradient(135deg, #F5D682, #D4B972);
   color: #3b2f25;
-  box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+  box-shadow: 0 3px 10px rgba(245, 214, 130, 0.4);
+  font-weight: 600;
 }
 
 .rank-badge.rank-2 {
-  background: linear-gradient(135deg, #C0C0C0, #B0B0B0);
+  background: linear-gradient(135deg, #D5B28C, #B88A5B);
   color: #3b2f25;
-  box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+  box-shadow: 0 3px 10px rgba(213, 178, 140, 0.4);
+  font-weight: 600;
 }
 
 .rank-badge.rank-3 {
-  background: linear-gradient(135deg, #CD7F32, #BD6F22);
+  background: linear-gradient(135deg, #C98A64, #A0633D);
   color: white;
-  box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
+  box-shadow: 0 3px 10px rgba(201, 138, 100, 0.4);
+  font-weight: 600;
 }
 
 .trending-badge {
@@ -677,7 +696,7 @@
 
 /* Quick Action Buttons */
 .quick-action-btn {
-  background: #7b8b52;
+  background: #8B6F3D;
   color: white;
   border: none;
   width: 36px;
@@ -688,8 +707,8 @@
   justify-content: center;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 6px rgba(123, 139, 82, 0.3);
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 6px rgba(139, 111, 61, 0.2);
   flex-shrink: 0;
   opacity: 0;
   transform: scale(0.8);
@@ -711,8 +730,8 @@
 
 .quick-action-btn:hover {
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.5);
-  background: #5d6b3d;
+  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.4);
+  background: #6E5729;
 }
 
 .quick-action-btn:active {
@@ -720,13 +739,13 @@
 }
 
 .quick-action-btn.secondary {
-  background: linear-gradient(135deg, #CD7F32, #B87333);
-  box-shadow: 0 2px 6px rgba(205, 127, 50, 0.3);
+  background: #AE7E54;
+  box-shadow: 0 2px 6px rgba(174, 126, 84, 0.2);
 }
 
 .quick-action-btn.secondary:hover {
-  background: linear-gradient(135deg, #DD8F42, #C88343);
-  box-shadow: 0 4px 12px rgba(205, 127, 50, 0.5);
+  background: #9D6D45;
+  box-shadow: 0 4px 12px rgba(174, 126, 84, 0.4);
 }
 
 .empty-state {
