@@ -40,10 +40,13 @@ class WebhookCustomerService {
       // Find user by Shopify customer ID first, then by email
       let user = null;
       
+      // Double-check type before query (defense in depth)
+      const safeShopifyCustomerId = typeof shopifyCustomerId === 'string' ? shopifyCustomerId : String(shopifyCustomerId);
+      
       const [userByShopifyId] = await this.db
         .select()
         .from(users)
-        .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+        .where(eq(users.shopifyCustomerId, safeShopifyCustomerId))
         .limit(1);
       
       if (userByShopifyId) {
@@ -57,28 +60,28 @@ class WebhookCustomerService {
           .limit(1);
         
         if (userByEmail) {
-          console.log(`✅ Found user by email ${customerData.email}, linking Shopify ID ${shopifyCustomerId}`);
+          console.log(`✅ Found user by email ${customerData.email}, linking Shopify ID ${safeShopifyCustomerId}`);
           // Link the Shopify customer ID to this existing user
           await this.db
             .update(users)
             .set({ 
-              shopifyCustomerId,
+              shopifyCustomerId: safeShopifyCustomerId,
               updatedAt: new Date()
             })
             .where(eq(users.id, userByEmail.id));
           
-          user = { ...userByEmail, shopifyCustomerId };
+          user = { ...userByEmail, shopifyCustomerId: safeShopifyCustomerId };
         }
       }
       
       if (!user) {
-        console.log(`👤 Customer ${shopifyCustomerId} not found in database - creating new user`);
+        console.log(`👤 Customer ${safeShopifyCustomerId} not found in database - creating new user`);
         
         // Parse Shopify created_at timestamp
         const shopifyCreatedAt = customerData.created_at ? new Date(customerData.created_at) : null;
         
         // Create new user record
-        const email = customerData.email || `${shopifyCustomerId}@placeholder.jerky.com`;
+        const email = customerData.email || `${safeShopifyCustomerId}@placeholder.jerky.com`;
         const firstName = customerData.first_name || null;
         const lastName = customerData.last_name || null;
         const displayName = firstName && lastName 
@@ -89,7 +92,7 @@ class WebhookCustomerService {
           const [newUser] = await this.db
             .insert(users)
             .values({
-              shopifyCustomerId,
+              shopifyCustomerId: safeShopifyCustomerId,
               email,
               firstName,
               lastName,
@@ -104,7 +107,7 @@ class WebhookCustomerService {
             })
             .returning({ id: users.id });
           
-          console.log(`✅ Created new user ${newUser.id} for Shopify customer ${shopifyCustomerId}`);
+          console.log(`✅ Created new user ${newUser.id} for Shopify customer ${safeShopifyCustomerId}`);
           
           // Broadcast to admin room
           this.broadcastAdminUpdate({
@@ -120,28 +123,28 @@ class WebhookCustomerService {
             },
             action: 'created',
             userId: newUser.id,
-            shopifyCustomerId
+            shopifyCustomerId: safeShopifyCustomerId
           });
           
           return {
             success: true,
             action: 'created',
             userId: newUser.id,
-            shopifyCustomerId,
+            shopifyCustomerId: safeShopifyCustomerId,
             email
           };
         } catch (createError) {
-          console.error(`❌ Failed to create user for Shopify customer ${shopifyCustomerId}:`, createError);
+          console.error(`❌ Failed to create user for Shopify customer ${safeShopifyCustomerId}:`, createError);
           
           // If it's a duplicate key error, try to find the user again (race condition)
           if (createError.code === '23505') { // PostgreSQL unique violation
-            console.log(`🔄 Duplicate key detected, refetching user ${shopifyCustomerId}`);
+            console.log(`🔄 Duplicate key detected, refetching user ${safeShopifyCustomerId}`);
             
             // Try by Shopify ID first
             let existingUser = await this.db
               .select()
               .from(users)
-              .where(eq(users.shopifyCustomerId, shopifyCustomerId))
+              .where(eq(users.shopifyCustomerId, safeShopifyCustomerId))
               .limit(1)
               .then(results => results[0]);
             
@@ -155,17 +158,17 @@ class WebhookCustomerService {
                 .then(results => results[0]);
               
               if (existingUser) {
-                console.log(`✅ Found user by email, linking Shopify ID ${shopifyCustomerId}`);
+                console.log(`✅ Found user by email, linking Shopify ID ${safeShopifyCustomerId}`);
                 // Link the Shopify customer ID
                 await this.db
                   .update(users)
                   .set({ 
-                    shopifyCustomerId,
+                    shopifyCustomerId: safeShopifyCustomerId,
                     updatedAt: new Date()
                   })
                   .where(eq(users.id, existingUser.id));
                 
-                user = { ...existingUser, shopifyCustomerId };
+                user = { ...existingUser, shopifyCustomerId: safeShopifyCustomerId };
               }
             }
             
@@ -210,7 +213,7 @@ class WebhookCustomerService {
         (shopifyCreatedAt && user.shopifyCreatedAt?.getTime() !== shopifyCreatedAt.getTime());
 
       if (!hasChanges) {
-        console.log(`✅ Customer ${shopifyCustomerId} already up to date - no changes needed`);
+        console.log(`✅ Customer ${safeShopifyCustomerId} already up to date - no changes needed`);
         
         // Broadcast to admin room
         this.broadcastAdminUpdate({
@@ -226,7 +229,7 @@ class WebhookCustomerService {
           },
           action: 'no_changes',
           userId: user.id,
-          shopifyCustomerId
+          shopifyCustomerId: safeShopifyCustomerId
         });
         
         return {
@@ -243,7 +246,7 @@ class WebhookCustomerService {
         .where(eq(users.id, user.id));
 
       const duration = Date.now() - startTime;
-      console.log(`✅ Updated customer ${shopifyCustomerId} (user ${user.id}): ${updateData.firstName} ${updateData.lastName} in ${duration}ms`);
+      console.log(`✅ Updated customer ${safeShopifyCustomerId} (user ${user.id}): ${updateData.firstName} ${updateData.lastName} in ${duration}ms`);
 
       // Targeted cache invalidation
       await this.invalidateUserCaches(user.id);
@@ -265,7 +268,7 @@ class WebhookCustomerService {
         },
         action: 'updated',
         userId: user.id,
-        shopifyCustomerId,
+        shopifyCustomerId: safeShopifyCustomerId,
         changes: {
           firstName: updateData.firstName !== user.firstName,
           lastName: updateData.lastName !== user.lastName,
@@ -278,7 +281,7 @@ class WebhookCustomerService {
         success: true,
         action: 'updated',
         userId: user.id,
-        shopifyCustomerId,
+        shopifyCustomerId: safeShopifyCustomerId,
         changes: {
           firstName: updateData.firstName !== user.firstName,
           lastName: updateData.lastName !== user.lastName,

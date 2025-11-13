@@ -7,6 +7,13 @@ class ProductsMetadataRepository {
   }
 
   async upsertProductMetadata(shopifyProductId, metadata) {
+    // CRITICAL: Ensure shopifyProductId is always a string for Drizzle/Neon binding
+    // Guards against numeric IDs from cached webhook payloads or retry logic
+    if (shopifyProductId && typeof shopifyProductId !== 'string') {
+      shopifyProductId = String(shopifyProductId);
+      console.warn(`⚠️ Converted numeric Shopify product ID to string: ${shopifyProductId}`);
+    }
+    
     const existing = await this.db
       .select()
       .from(productsMetadata)
@@ -60,6 +67,11 @@ class ProductsMetadataRepository {
   }
 
   async getByShopifyProductId(shopifyProductId) {
+    // Ensure shopifyProductId is a string for Drizzle/Neon binding
+    if (shopifyProductId && typeof shopifyProductId !== 'string') {
+      shopifyProductId = String(shopifyProductId);
+    }
+    
     const result = await this.db
       .select()
       .from(productsMetadata)
