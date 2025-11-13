@@ -20,6 +20,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Flavor Community Badges**: Visual identity system displaying user's primary flavor profile with unique colors, gradients, emojis, and community states on community cards.
 - **Journey Film Reel Feature**: Apple-style storytelling for public profile pages, celebrating user flavor discovery journeys with horizontal scrolling film strips, product images, and narrative moments.
 - **Journey → Achievements Transition**: Storytelling-driven section transition with specific padding and margin for a "chapter break" effect, and staggered sequential reveal animation for achievements.
+- **HomePage Narrative Transition**: Dark-to-light gradient transition section between HeroCarousel and stats section with radial golden glow effect, creating smooth visual and narrative bridge following three-act pattern (Hero → Introduction → Action).
 - **Toast Notifications**: Sequential queue-based display.
 
 **Technical Implementations:**
