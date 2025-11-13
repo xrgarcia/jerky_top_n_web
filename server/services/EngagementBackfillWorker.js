@@ -47,17 +47,45 @@ class EngagementBackfillWorker {
         maxRetriesPerRequest: null,
       });
 
-      // Add error listener before connecting
+      // Register as dependent for auto-reinit when base reconnects
+      redisClient.registerDependent(workerConnection);
+
+      // Add comprehensive error handlers to prevent crashes
       workerConnection.on('error', (err) => {
-        console.error('❌ Engagement backfill worker Redis connection error:', err.message);
-        Sentry.captureException(err, {
-          tags: { component: 'engagement-backfill-worker', context: 'redis-connection' },
-          extra: { errorMessage: err.message }
-        });
+        // Filter expected network errors to avoid Sentry spam
+        const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
+        
+        if (isExpectedError) {
+          console.warn('⚠️ Engagement backfill worker Redis connection issue (will auto-retry):', err.code || err.message);
+          // Pause worker to prevent job processing failures during outage
+          if (this.worker && !this.worker.isPaused()) {
+            this.worker.pause();
+            console.log('⏸️  Engagement backfill worker PAUSED due to Redis connection issue');
+          }
+        } else {
+          console.error('❌ Engagement backfill worker Redis connection error:', err.message);
+          Sentry.captureException(err, {
+            tags: { component: 'engagement-backfill-worker', context: 'redis-connection' },
+            extra: { errorMessage: err.message }
+          });
+        }
       });
 
       workerConnection.on('ready', () => {
         console.log('✅ Engagement backfill worker Redis connection READY');
+        // Resume worker if it was paused
+        if (this.worker && this.worker.isPaused()) {
+          this.worker.resume();
+          console.log('▶️  Engagement backfill worker RESUMED after Redis reconnection');
+        }
+      });
+
+      workerConnection.on('close', () => {
+        console.warn('⚠️ Engagement backfill worker Redis connection CLOSED - pausing worker');
+        if (this.worker && !this.worker.isPaused()) {
+          this.worker.pause();
+          console.log('⏸️  Engagement backfill worker PAUSED due to Redis disconnect');
+        }
       });
 
       // Wait for connection to be ready
@@ -133,13 +161,25 @@ class EngagementBackfillWorker {
       });
 
       this.worker.on('error', (err) => {
-        console.error('❌ Engagement backfill worker error:', err);
-        Sentry.captureException(err, {
-          tags: { component: 'engagement-backfill-worker', context: 'worker-error' }
-        });
+        // Filter expected connection errors to avoid Sentry spam during outages
+        const isConnectionError = err.message && (
+          err.message.includes('ECONNRESET') ||
+          err.message.includes('ETIMEDOUT') ||
+          err.message.includes('ECONNREFUSED') ||
+          err.message.includes('Connection is closed')
+        );
+        
+        if (isConnectionError) {
+          console.warn('⚠️ Engagement backfill worker error (connection issue, will auto-recover):', err.message);
+        } else {
+          console.error('❌ Engagement backfill worker error:', err);
+          Sentry.captureException(err, {
+            tags: { component: 'engagement-backfill-worker', context: 'worker-error' }
+          });
+        }
       });
 
-      console.log('✅ Engagement backfill worker initialized (concurrency: 10)');
+      console.log('✅ Engagement backfill worker initialized with resilient error handling (concurrency: 10)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize engagement backfill worker:', error);

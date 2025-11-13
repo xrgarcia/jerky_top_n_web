@@ -52,13 +52,41 @@ class BulkImportWorker {
         maxRetriesPerRequest: null, // Required by BullMQ Worker (blocks until success or connection lost)
       });
 
-      // Add error listener before connecting
+      // Register as dependent for auto-reinit when base reconnects
+      redisClient.registerDependent(workerConnection);
+
+      // Add comprehensive error handlers to prevent crashes
       workerConnection.on('error', (err) => {
-        console.error('❌ BulkImport worker Redis connection error:', err.message);
+        // Filter expected network errors to avoid log spam
+        const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
+        
+        if (isExpectedError) {
+          console.warn('⚠️ BulkImport worker Redis connection issue (will auto-retry):', err.code || err.message);
+          // Pause worker to prevent job processing failures during outage
+          if (this.worker && !this.worker.isPaused()) {
+            this.worker.pause();
+            console.log('⏸️  BulkImport worker PAUSED due to Redis connection issue');
+          }
+        } else {
+          console.error('❌ BulkImport worker Redis connection error:', err.message);
+        }
       });
 
       workerConnection.on('ready', () => {
-        console.log('✅ BullMQ worker Redis connection READY');
+        console.log('✅ BulkImport worker Redis connection READY');
+        // Resume worker if it was paused
+        if (this.worker && this.worker.isPaused()) {
+          this.worker.resume();
+          console.log('▶️  BulkImport worker RESUMED after Redis reconnection');
+        }
+      });
+
+      workerConnection.on('close', () => {
+        console.warn('⚠️ BulkImport worker Redis connection CLOSED - pausing worker');
+        if (this.worker && !this.worker.isPaused()) {
+          this.worker.pause();
+          console.log('⏸️  BulkImport worker PAUSED due to Redis disconnect');
+        }
       });
 
       // Wait for connection to be ready
@@ -116,10 +144,22 @@ class BulkImportWorker {
       });
 
       this.worker.on('error', (err) => {
-        console.error('❌ Bulk import worker error:', err);
+        // Filter expected connection errors to avoid log spam during outages
+        const isConnectionError = err.message && (
+          err.message.includes('ECONNRESET') ||
+          err.message.includes('ETIMEDOUT') ||
+          err.message.includes('ECONNREFUSED') ||
+          err.message.includes('Connection is closed')
+        );
+        
+        if (isConnectionError) {
+          console.warn('⚠️ Bulk import worker error (connection issue, will auto-recover):', err.message);
+        } else {
+          console.error('❌ Bulk import worker error:', err);
+        }
       });
 
-      console.log('✅ Bulk import worker initialized with hardened Redis connection (concurrency: 15, rate limit: 50 jobs/min)');
+      console.log('✅ Bulk import worker initialized with resilient error handling (concurrency: 15, rate limit: 50 jobs/min)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize bulk import worker:', error);

@@ -46,13 +46,41 @@ class ClassificationWorker {
         maxRetriesPerRequest: null, // Required by BullMQ Worker
       });
 
-      // Add error listener before connecting
+      // Register as dependent for auto-reinit when base reconnects
+      redisClient.registerDependent(workerConnection);
+
+      // Add comprehensive error handlers to prevent crashes
       workerConnection.on('error', (err) => {
-        console.error('❌ Classification worker Redis connection error:', err.message);
+        // Filter expected network errors to avoid log spam
+        const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
+        
+        if (isExpectedError) {
+          console.warn('⚠️ Classification worker Redis connection issue (will auto-retry):', err.code || err.message);
+          // Pause worker to prevent job processing failures during outage
+          if (this.worker && !this.worker.isPaused()) {
+            this.worker.pause();
+            console.log('⏸️  Classification worker PAUSED due to Redis connection issue');
+          }
+        } else {
+          console.error('❌ Classification worker Redis connection error:', err.message);
+        }
       });
 
       workerConnection.on('ready', () => {
         console.log('✅ Classification worker Redis connection READY');
+        // Resume worker if it was paused
+        if (this.worker && this.worker.isPaused()) {
+          this.worker.resume();
+          console.log('▶️  Classification worker RESUMED after Redis reconnection');
+        }
+      });
+
+      workerConnection.on('close', () => {
+        console.warn('⚠️ Classification worker Redis connection CLOSED - pausing worker');
+        if (this.worker && !this.worker.isPaused()) {
+          this.worker.pause();
+          console.log('⏸️  Classification worker PAUSED due to Redis disconnect');
+        }
       });
 
       // Wait for connection to be ready
@@ -97,10 +125,22 @@ class ClassificationWorker {
       });
 
       this.worker.on('error', (err) => {
-        console.error('❌ Worker error:', err);
+        // Filter expected connection errors to avoid log spam during outages
+        const isConnectionError = err.message && (
+          err.message.includes('ECONNRESET') ||
+          err.message.includes('ETIMEDOUT') ||
+          err.message.includes('ECONNREFUSED') ||
+          err.message.includes('Connection is closed')
+        );
+        
+        if (isConnectionError) {
+          console.warn('⚠️ Classification worker error (connection issue, will auto-recover):', err.message);
+        } else {
+          console.error('❌ Classification worker error:', err);
+        }
       });
 
-      console.log('✅ Classification worker initialized with hardened Redis connection (concurrency: 5)');
+      console.log('✅ Classification worker initialized with resilient error handling (concurrency: 5)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize classification worker:', error);

@@ -1,9 +1,15 @@
 const Redis = require('ioredis');
+const EventEmitter = require('events');
 
-class RedisClient {
+class RedisClient extends EventEmitter {
   constructor() {
+    super();
     this.client = null;
     this.isConnected = false;
+    this.isReconnecting = false;
+    this.reconnectAttempts = 0;
+    this.maxReconnectAttempts = 10;
+    this.dependents = new Set(); // Track duplicated connections for reinitialization
   }
 
   async connect() {
@@ -11,6 +17,15 @@ class RedisClient {
     if (this.isConnected && this.client && this.client.status === 'ready') {
       console.log('💾 Redis: Using existing connection (connection pool)');
       return this.client;
+    }
+
+    // If already reconnecting, wait for that to complete
+    if (this.isReconnecting) {
+      console.log('⏳ Redis: Reconnection in progress, waiting...');
+      return new Promise((resolve) => {
+        this.once('reconnected', () => resolve(this.client));
+        this.once('reconnect_failed', () => resolve(null));
+      });
     }
 
     // Environment-specific Redis URL selection
@@ -41,42 +56,37 @@ class RedisClient {
         tls: {}, // Required for Upstash Redis TLS connections
         keepAlive: 30000, // Send keepalive packets every 30s (prevents idle disconnections)
         connectTimeout: 10000, // 10 second connection timeout
-        retryStrategy(times) {
-          if (times > 3) {
-            console.log('❌ Redis retry limit exceeded, using in-memory fallback');
+        retryStrategy: (times) => {
+          // Exponential backoff with jitter (prevents thundering herd)
+          const baseDelay = Math.min(Math.pow(2, times) * 100, 5000); // Cap at 5s
+          const jitter = Math.random() * 100; // Add 0-100ms jitter
+          const delay = baseDelay + jitter;
+          
+          if (times > this.maxReconnectAttempts) {
+            console.error(`❌ Redis retry limit exceeded (${times}/${this.maxReconnectAttempts}), giving up`);
+            this.emit('reconnect_failed');
             return null; // Stop retrying
           }
-          const delay = Math.min(times * 200, 1000);
+          
+          console.log(`🔄 Redis reconnecting in ${Math.round(delay)}ms (attempt ${times}/${this.maxReconnectAttempts})...`);
           return delay;
         },
-        reconnectOnError(err) {
-          const targetError = 'READONLY';
-          if (err.message.includes(targetError)) {
+        reconnectOnError: (err) => {
+          // Reconnect on READONLY errors and connection resets
+          const reconnectableErrors = ['READONLY', 'ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED'];
+          const shouldReconnect = reconnectableErrors.some(errType => 
+            err.message.includes(errType) || err.code === errType
+          );
+          
+          if (shouldReconnect) {
+            console.log(`🔄 Redis reconnecting due to ${err.code || err.message}`);
             return true;
           }
           return false;
         }
       });
 
-      this.client.on('connect', () => {
-        console.log('✅ Redis connection pool established');
-        this.isConnected = true;
-      });
-
-      this.client.on('ready', () => {
-        console.log('✅ Redis ready for commands');
-        this.isConnected = true;
-      });
-
-      this.client.on('error', (err) => {
-        console.error('❌ Redis connection error:', err.message);
-        this.isConnected = false;
-      });
-
-      this.client.on('close', () => {
-        console.log('⚠️ Redis connection closed');
-        this.isConnected = false;
-      });
+      this._setupEventHandlers();
 
       // Explicitly connect (lazyConnect: true means we control when to connect)
       await this.client.connect();
@@ -85,6 +95,7 @@ class RedisClient {
       await this.client.ping();
       console.log('🏓 Redis PING successful - connection pool active');
       this.isConnected = true;
+      this.reconnectAttempts = 0;
 
       return this.client;
     } catch (error) {
@@ -92,6 +103,88 @@ class RedisClient {
       this.isConnected = false;
       return null;
     }
+  }
+
+  _setupEventHandlers() {
+    this.client.on('connect', () => {
+      console.log('✅ Redis connection pool established');
+      this.isConnected = true;
+      this.emit('connect');
+    });
+
+    this.client.on('ready', () => {
+      console.log('✅ Redis ready for commands');
+      this.isConnected = true;
+      this.reconnectAttempts = 0;
+      
+      if (this.isReconnecting) {
+        this.isReconnecting = false;
+        console.log('🎉 Redis successfully reconnected - reinitializing dependents');
+        this.emit('reconnected');
+        this._reinitializeDependents();
+      }
+      
+      this.emit('ready');
+    });
+
+    this.client.on('error', (err) => {
+      // Filter out expected reconnection errors to avoid Sentry spam
+      const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
+      
+      if (isExpectedError) {
+        console.warn('⚠️ Redis connection issue (will auto-retry):', err.code || err.message);
+      } else {
+        console.error('❌ Redis connection error:', err.message);
+      }
+      
+      this.isConnected = false;
+      this.emit('error', err);
+    });
+
+    this.client.on('close', () => {
+      console.log('⚠️ Redis connection closed - will attempt reconnection');
+      this.isConnected = false;
+      this.isReconnecting = true;
+      this.emit('close');
+    });
+
+    this.client.on('reconnecting', (delay) => {
+      this.reconnectAttempts++;
+      console.log(`🔄 Redis reconnecting (attempt ${this.reconnectAttempts}, delay: ${delay}ms)...`);
+      this.isReconnecting = true;
+      this.emit('reconnecting', { attempt: this.reconnectAttempts, delay });
+    });
+  }
+
+  /**
+   * Register a duplicated connection as a dependent
+   * @param {Redis} duplicatedClient - The duplicated Redis client
+   */
+  registerDependent(duplicatedClient) {
+    this.dependents.add(duplicatedClient);
+  }
+
+  /**
+   * Reinitialize all dependent duplicated connections after reconnection
+   */
+  _reinitializeDependents() {
+    if (this.dependents.size === 0) return;
+    
+    console.log(`🔄 Reinitializing ${this.dependents.size} dependent connection(s)...`);
+    
+    // Notify all dependents that base connection is restored
+    // They should handle their own reconnection logic
+    this.dependents.forEach(client => {
+      try {
+        if (client.status !== 'ready' && client.status !== 'connecting') {
+          client.connect().catch(err => {
+            console.error('❌ Failed to reinitialize dependent connection:', err.message);
+          });
+        }
+      } catch (err) {
+        console.error('❌ Error reinitializing dependent:', err.message);
+      }
+    });
   }
 
   async get(key) {

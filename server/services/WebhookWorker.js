@@ -54,17 +54,45 @@ class WebhookWorker {
         maxRetriesPerRequest: null, // Required by BullMQ Worker
       });
 
-      // Add error listener before connecting
+      // Register as dependent for auto-reinit when base reconnects
+      redisClient.registerDependent(workerConnection);
+
+      // Add comprehensive error handlers to prevent crashes
       workerConnection.on('error', (err) => {
-        console.error('❌ Webhook worker Redis connection error:', err.message);
-        Sentry.captureException(err, {
-          tags: { component: 'webhook-worker', context: 'redis-connection' },
-          extra: { errorMessage: err.message }
-        });
+        // Filter expected network errors to avoid Sentry spam
+        const isExpectedError = ['ECONNRESET', 'ETIMEDOUT', 'ECONNREFUSED', 'EPIPE'].includes(err.code);
+        
+        if (isExpectedError) {
+          console.warn('⚠️ Webhook worker Redis connection issue (will auto-retry):', err.code || err.message);
+          // Pause worker to prevent job processing failures during outage
+          if (this.worker && !this.worker.isPaused()) {
+            this.worker.pause();
+            console.log('⏸️  Webhook worker PAUSED due to Redis connection issue');
+          }
+        } else {
+          console.error('❌ Webhook worker Redis connection error:', err.message);
+          Sentry.captureException(err, {
+            tags: { component: 'webhook-worker', context: 'redis-connection' },
+            extra: { errorMessage: err.message }
+          });
+        }
       });
 
       workerConnection.on('ready', () => {
         console.log('✅ Webhook worker Redis connection READY');
+        // Resume worker if it was paused
+        if (this.worker && this.worker.isPaused()) {
+          this.worker.resume();
+          console.log('▶️  Webhook worker RESUMED after Redis reconnection');
+        }
+      });
+
+      workerConnection.on('close', () => {
+        console.warn('⚠️ Webhook worker Redis connection CLOSED - pausing worker');
+        if (this.worker && !this.worker.isPaused()) {
+          this.worker.pause();
+          console.log('⏸️  Webhook worker PAUSED due to Redis disconnect');
+        }
       });
 
       // Wait for connection to be ready
@@ -122,13 +150,25 @@ class WebhookWorker {
       });
 
       this.worker.on('error', (err) => {
-        console.error('❌ Webhook worker error:', err);
-        Sentry.captureException(err, {
-          tags: { service: 'webhook-worker', context: 'worker-error' }
-        });
+        // Filter expected connection errors to avoid Sentry spam during outages
+        const isConnectionError = err.message && (
+          err.message.includes('ECONNRESET') ||
+          err.message.includes('ETIMEDOUT') ||
+          err.message.includes('ECONNREFUSED') ||
+          err.message.includes('Connection is closed')
+        );
+        
+        if (isConnectionError) {
+          console.warn('⚠️ Webhook worker error (connection issue, will auto-recover):', err.message);
+        } else {
+          console.error('❌ Webhook worker error:', err);
+          Sentry.captureException(err, {
+            tags: { service: 'webhook-worker', context: 'worker-error' }
+          });
+        }
       });
 
-      console.log('✅ Webhook worker initialized (concurrency: 3)');
+      console.log('✅ Webhook worker initialized with resilient error handling (concurrency: 3)');
       return true;
     } catch (error) {
       console.error('❌ Failed to initialize webhook worker:', error);
