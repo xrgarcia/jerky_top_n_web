@@ -16,6 +16,7 @@ function ProductsPage() {
   usePageView('products');
 
   const products = data?.products || [];
+  const total = data?.total || 0;
   const animals = ['Beef', 'Turkey', 'Pork', 'Chicken', 'Elk', 'Bison', 'Venison', 'Alligator', 'Kangaroo', 'Ostrich', 'Salmon'];
 
   return (
@@ -26,7 +27,7 @@ function ProductsPage() {
           <h1>Flavors</h1>
           <p className="hero-subtitle">Discover your next favorite</p>
           <div className="hero-stats">
-            <span className="hero-stat">{products.length} flavors</span>
+            <span className="hero-stat">{total} flavors</span>
           </div>
         </div>
 
