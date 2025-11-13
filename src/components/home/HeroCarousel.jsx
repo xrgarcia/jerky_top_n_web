@@ -11,7 +11,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
   const slides = [
     {
       id: 'discover',
-      title: 'DISCOVER YOUR FLAVOR PROFILE',
+      title: 'Discover Your Flavor Profile',
       subtitle: `Join ${homeStats?.communityStats?.totalRankers?.toLocaleString() || '...'} rankers exploring ${homeStats?.communityStats?.totalProducts || '...'} jerky products`,
       metrics: [
         { 
@@ -33,7 +33,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
     },
     {
       id: 'trending',
-      title: "SEE WHAT'S TRENDING",
+      title: "See What's Trending",
       subtitle: 'Discover what the community loves this week',
       trendingProducts: homeStats?.trending?.slice(0, 3) || [],
       cta: {
@@ -44,7 +44,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
     },
     {
       id: 'achievements',
-      title: 'COLLECT FLAVOR COINS',
+      title: 'Collect Flavor Coins',
       subtitle: 'Every ranking earns rewards. Bronze to Diamond.',
       latestAchievement: heroStats?.recentAchievements?.[0],
       achievementsThisWeek: heroStats?.achievementsThisWeek || 0,
@@ -56,7 +56,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
     },
     {
       id: 'leaderboard',
-      title: 'CLIMB THE LEADERBOARD',
+      title: 'Climb the Leaderboard',
       subtitle: 'Take your place on the podium with fellow jerky enthusiasts',
       topRankers: homeStats?.topRankers?.slice(0, 3) || [],
       cta: {
