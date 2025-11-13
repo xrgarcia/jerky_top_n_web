@@ -43,6 +43,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Connection Resilience**: Production-grade error handling preventing cascading failures (JERKY-RANK-UI-9). All BullMQ workers (WebhookWorker, ClassificationWorker, BulkImportWorker, EngagementBackfillWorker) automatically pause during Redis outages and resume when reconnected. Health monitoring endpoint (`/api/health/connections`) tracks Redis, PostgreSQL, and worker status with accurate 503/200 responses.
 - **Feature Flags**: JSON-based configuration system.
 - **Database Schema Management**: Drizzle ORM with automatic validation, retry logic, and safe deployment scripts.
+- **Migration Runner**: WebSocket-backed Pool/Client for true multi-statement execution with transactional guarantees (BEGIN/COMMIT/ROLLBACK). Properly handles complex PostgreSQL syntax (DO blocks, functions, triggers). Fixed Nov 2025 to resolve silent failure issue with HTTP driver that only executed first statement.
 - **Type Safety**: Multi-layer defense with String() conversions for Shopify IDs at service and repository layers (Neon serverless driver requirement for TEXT columns).
 
 **Feature Specifications:**
