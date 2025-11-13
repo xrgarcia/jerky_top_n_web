@@ -1,0 +1,177 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-39
+Title: Error: connect ETIMEDOUT
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-12T22:34:46.442000Z
+Last Seen: 2025-11-13T06:38:13Z
+Event Count: 2
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: connect ETIMEDOUT
+
+--- CULPRIT ---
+TLSSocket.?(ioredis.built:Redis)
+
+--- STACK TRACE ---
+Error: connect ETIMEDOUT
+  at TLSSocket.? (/home/runner/workspace/node_modules/ioredis/built/Redis.js:?:?)
+  at Object.onceWrapper (node:events:?:?)
+  at TLSSocket.emit (node:events:?:?)
+  at Socket._onTimeout (node:net:?:?)
+  at listOnTimeout (node:internal/timers:?:?)
+  at process.processTimers (node:internal/timers:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-13T06:37:36.402000Z] console (info): ⏱️ Total aggregation time: 7800ms
+[2025-11-13T06:37:36.402000Z] console (info): 🔌 Worker pool client connected [object Object]
+[2025-11-13T06:37:37.002000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 7747
+[2025-11-13T06:37:37.002000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T06:37:37.002000Z] console (info): 📊 ProgressTracker: 19 achievements have progress data (including tier upgrades)
+[2025-11-13T06:37:37.002000Z] console (info): 🎯 Closest milestone: Top 10 Ranker (100.0% complete - 999/10)
+[2025-11-13T06:37:37.403000Z] console (info): 🔌 Worker pool client connected [object Object]
+[2025-11-13T06:37:37.502000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 6500ms (total: 7300ms)
+[2025-11-13T06:37:37.502000Z] console (info): ⏱️ Batch 1 completed in 7300ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:37.502000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:37.502000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+[2025-11-13T06:37:37.702000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:37:38.402000Z] console (info): ⏱️ Batch 2 completed in 900ms (getCompletedAnimalCategories)
+[2025-11-13T06:37:38.402000Z] console (info): ⏱️ Total aggregation time: 8200ms
+[2025-11-13T06:37:38.502000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 7747
+[2025-11-13T06:37:38.502000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T06:37:38.702000Z] console (info): 📊 ProgressTracker: 0 achievements have progress data (including tier upgrades)
+[2025-11-13T06:37:38.702000Z] console (info): ✅ ProgressTracker: No achievements with progress data (user may have earned all available achievements)
+[2025-11-13T06:37:39.202000Z] console (info):   ✓ Cached guidance for user 7747 / products
+[2025-11-13T06:37:39.202000Z] console (info):   ✓ Cached guidance for user 7747 / rank
+[2025-11-13T06:37:39.401000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:37:40.002000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 7747
+[2025-11-13T06:37:40.201000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T06:37:40.202000Z] console (info): 📊 ProgressTracker: 19 achievements have progress data (including tier upgrades)
+[2025-11-13T06:37:40.202000Z] console (info): 🎯 Closest milestone: Top 10 Ranker (100.0% complete - 999/10)
+[2025-11-13T06:37:40.402000Z] console (info): 🔌 Worker pool client connected [object Object]
+[2025-11-13T06:37:40.602000Z] console (info): 🔌 Worker pool client connected [object Object]
+[2025-11-13T06:37:41.402000Z] console (info):   ✓ Cached guidance for user 7747 / coinbook
+[2025-11-13T06:37:41.402000Z] console (info):   ✓ Cached guidance for user 7747 / general
+[2025-11-13T06:37:41.402000Z] console (info):   ✓ Cached guidance for user 7747 / community
+[2025-11-13T06:37:41.402000Z] console (info):   ✓ Guidance cached in database for 5 page contexts (Redis will populate on next request)
+[2025-11-13T06:37:41.402000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763015860355)
+[2025-11-13T06:37:41.402000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343648
+[2025-11-13T06:37:41.402000Z] console (info): 📦 Processing order JK3825343648: 1 line items
+[2025-11-13T06:37:42.002000Z] console (info): ✅ Classification complete for user 7747 (22999ms)
+[2025-11-13T06:37:42.102000Z] console (info): ✅ Classification job completed for user 7747
+[2025-11-13T06:37:42.601000Z] console (info): 🔌 Webhook pool client connected [object Object]
+[2025-11-13T06:37:42.702000Z] console (info): ✅ Found existing user by Shopify ID: 7683 (gwenmiddleton@yahoo.com)
+[2025-11-13T06:37:43.402000Z] console (info): ✅ Processed 1 line items for order JK3825343648 (user: 7683)
+[2025-11-13T06:37:43.402000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343648
+[2025-11-13T06:37:43.402000Z] console (info): 🔄 Invalidating purchase history cache for user 7683
+[2025-11-13T06:37:43.501000Z] console (info): 🗑️ Purchase cache invalidated for user 7683
+[2025-11-13T06:37:43.502000Z] console (info): 🔄 Recalculating ranking stats for 1 product(s)
+[2025-11-13T06:37:43.742000Z] console (info): 📊 Recalculated ranking stats for 0 product(s)
+[2025-11-13T06:37:43.742000Z] console (warning): ⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+[2025-11-13T06:37:43.902000Z] console (info): 📋 Enqueued classification job for user 7683 (reason: purchase)
+[2025-11-13T06:37:43.902000Z] console (info): 📋 Enqueued classification job for user 7683 (reason: purchase)
+[2025-11-13T06:37:43.902000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-13T06:37:43.902000Z] console (info): ✅ Webhook processed: orders/orders/updated (2500ms)
+[2025-11-13T06:37:44.102000Z] console (info): 🔄 Processing classification for user 7683 (reason: purchase)...
+[2025-11-13T06:37:44.102000Z] console (info): ✅ Webhook job completed: orders/orders/updated (3747ms)
+[2025-11-13T06:37:44.301000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7683
+[2025-11-13T06:37:44.401000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7683
+[2025-11-13T06:37:44.804000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7683
+[2025-11-13T06:37:44.804000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T06:37:46.702000Z] console (info): ✅ UserClassificationCache SET: user 7683
+[2025-11-13T06:37:46.702000Z] console (info):   ✓ User classified: dormant/none
+[2025-11-13T06:37:50.802000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 7683
+[2025-11-13T06:37:50.802000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 7683
+[2025-11-13T06:37:50.802000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 7683
+[2025-11-13T06:37:51.202000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 7683
+[2025-11-13T06:37:51.402000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 7683
+[2025-11-13T06:37:53.003000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-13T06:37:53.102000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-13T06:37:53.302000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-13T06:37:53.302000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-13T06:37:53.502000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-13T06:37:54.802000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 6000ms (total: 7200ms)
+[2025-11-13T06:37:54.802000Z] console (info): ⏱️ Batch 1 completed in 7200ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:54.802000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:54.802000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+[2025-11-13T06:37:55.102000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 6300ms (total: 7000ms)
+[2025-11-13T06:37:55.102000Z] console (info): ⏱️ Batch 1 completed in 7000ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:55.102000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:55.102000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+[2025-11-13T06:37:55.702000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 7201ms (total: 8400ms)
+[2025-11-13T06:37:55.702000Z] console (info): ⏱️ Batch 1 completed in 8400ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:55.702000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:55.702000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+[2025-11-13T06:37:56.302000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 7500ms (total: 8400ms)
+[2025-11-13T06:37:56.302000Z] console (info): ⏱️ Batch 1 completed in 8401ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:56.302000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:56.302000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 8 minutes)
+[2025-11-13T06:37:56.702000Z] console (info): ⏱️ getUserPosition() optimized COUNT query: 7900ms (total: 8401ms)
+[2025-11-13T06:37:56.702000Z] console (info): ⏱️ Batch 1 completed in 8600ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-13T06:37:56.702000Z] console (info): 💾 Cache HIT: Returning 162 products from cache (age: 20 minutes)
+[2025-11-13T06:37:56.702000Z] console (info): 💾 Metadata Cache HIT: Returning data (age: 9 minutes)
+[2025-11-13T06:37:57.102000Z] console (info): ⏱️ Batch 2 completed in 2300ms (getCompletedAnimalCategories)
+[2025-11-13T06:37:57.102000Z] console (info): ⏱️ Total aggregation time: 9500ms
+[2025-11-13T06:37:57.102000Z] console (info): ⏱️ Batch 2 completed in 2000ms (getCompletedAnimalCategories)
+[2025-11-13T06:37:57.102000Z] console (info): ⏱️ Total aggregation time: 9000ms
+[2025-11-13T06:37:57.502000Z] console (info): ⏱️ Batch 2 completed in 1799ms (getCompletedAnimalCategories)
+[2025-11-13T06:37:57.502000Z] console (info): ⏱️ Total aggregation time: 10200ms
+[2025-11-13T06:37:57.502000Z] console (info): ⏱️ Batch 2 completed in 1200ms (getCompletedAnimalCategories)
+[2025-11-13T06:37:57.502000Z] console (info): ⏱️ Total aggregation time: 9601ms
+[2025-11-13T06:38:03.102000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:38:10.402000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:38:11.902000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:38:12.301000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T06:38:12.502000Z] console (error): ❌ Engagement backfill worker error: Error: connect ETIMEDOUT
+
+--- TAGS ---
+  app_url: undefined
+  component: undefined
+  context: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
