@@ -304,6 +304,7 @@
 .hero-carousel .ranker-card {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 20px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -386,6 +387,17 @@
   color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Smaller fonts for #2 and #3 rankers */
+.hero-carousel .ranker-card:nth-child(2) .ranker-name,
+.hero-carousel .ranker-card:nth-child(3) .ranker-name {
+  font-size: 1.25rem;
+}
+
+.hero-carousel .ranker-card:nth-child(2) .ranker-score,
+.hero-carousel .ranker-card:nth-child(3) .ranker-score {
+  font-size: 1rem;
 }
 
 /* ========================================
