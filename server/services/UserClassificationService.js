@@ -3,6 +3,39 @@ const { userClassifications, classificationConfig, productRankings, userAchievem
 const { eq, and, gte, count, sql } = require('drizzle-orm');
 const flavorProfileCommunityService = require('./FlavorProfileCommunityService');
 const UserClassificationCache = require('../cache/UserClassificationCache');
+const Sentry = require('@sentry/node');
+
+/**
+ * Default classification configuration
+ * Used as fallback if database config is missing or empty
+ */
+const DEFAULT_CLASSIFICATION_CONFIG = {
+  journey_stage_thresholds: {
+    dormant: { days_since_last_activity: 30 },
+    engaged: { max_rankings: 30, min_rankings: 11, min_engagement_coins: 3 },
+    new_user: { max_rankings: 0, max_days_active: 7 },
+    exploring: { max_rankings: 10, min_rankings: 1, min_activities: 5 },
+    power_user: { min_rankings: 31, min_login_streak: 3, min_engagement_coins: 10 }
+  },
+  engagement_level_rules: {
+    low: { min_activities_30d: 1, max_engagement_coins: 2 },
+    high: { max_engagement_coins: 19, min_engagement_coins: 10 },
+    none: { max_activities_30d: 0, max_engagement_coins: 0 },
+    medium: { max_engagement_coins: 9, min_engagement_coins: 3 },
+    very_high: { min_engagement_coins: 20 }
+  },
+  exploration_breadth_rules: {
+    narrow: { max_unique_animals: 1, max_unique_flavors: 3 },
+    diverse: { min_unique_animals: 3, min_unique_flavors: 9 },
+    moderate: { max_unique_flavors: 8, min_unique_animals: 2, min_unique_flavors: 4 }
+  },
+  flavor_community_thresholds: {
+    delivered_status: "delivered",
+    enthusiast_top_pct: 40,
+    explorer_bottom_pct: 40,
+    min_products_for_state: 1
+  }
+};
 
 /**
  * UserClassificationService - Analyzes user behavior and assigns classification attributes
@@ -27,6 +60,7 @@ class UserClassificationService {
 
   /**
    * Get classification configuration from database with caching
+   * Falls back to DEFAULT_CLASSIFICATION_CONFIG if database is empty
    */
   async getConfig() {
     const now = Date.now();
@@ -34,17 +68,63 @@ class UserClassificationService {
       return this.configCache;
     }
 
-    const configs = await this.db.select().from(classificationConfig);
-    
-    const configMap = {};
-    configs.forEach(config => {
-      configMap[config.configKey] = config.configValue;
-    });
+    try {
+      const configs = await this.db.select().from(classificationConfig);
+      
+      // Check if config table is empty
+      if (!configs || configs.length === 0) {
+        console.warn('⚠️ classification_config table is empty - using default configuration');
+        console.warn('⚠️ Run migration 005_seed_classification_config.sql to populate the table');
+        
+        Sentry.captureMessage('Classification config table is empty, using defaults', {
+          level: 'warning',
+          tags: { service: 'user_classification' }
+        });
+        
+        this.configCache = DEFAULT_CLASSIFICATION_CONFIG;
+        this.configCacheTime = now;
+        return DEFAULT_CLASSIFICATION_CONFIG;
+      }
+      
+      const configMap = {};
+      configs.forEach(config => {
+        configMap[config.configKey] = config.configValue;
+      });
 
-    this.configCache = configMap;
-    this.configCacheTime = now;
+      // Merge with defaults to ensure all required keys exist
+      const mergedConfig = { ...DEFAULT_CLASSIFICATION_CONFIG, ...configMap };
+      
+      // Warn about missing config keys
+      const requiredKeys = Object.keys(DEFAULT_CLASSIFICATION_CONFIG);
+      const missingKeys = requiredKeys.filter(key => !configMap[key]);
+      if (missingKeys.length > 0) {
+        console.warn(`⚠️ Missing classification config keys: ${missingKeys.join(', ')} - using defaults`);
+        Sentry.captureMessage('Some classification config keys are missing', {
+          level: 'warning',
+          tags: { service: 'user_classification' },
+          extra: { missingKeys }
+        });
+      }
 
-    return configMap;
+      this.configCache = mergedConfig;
+      this.configCacheTime = now;
+
+      return mergedConfig;
+    } catch (error) {
+      console.error('❌ Error loading classification config from database:', error);
+      console.warn('⚠️ Falling back to default classification configuration');
+      
+      Sentry.captureException(error, {
+        tags: { service: 'user_classification' },
+        extra: { fallback: 'using_defaults' }
+      });
+      
+      // Cache the defaults to prevent repeated DB hits during outages
+      this.configCache = DEFAULT_CLASSIFICATION_CONFIG;
+      this.configCacheTime = now;
+      
+      return DEFAULT_CLASSIFICATION_CONFIG;
+    }
   }
 
   /**

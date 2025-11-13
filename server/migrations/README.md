@@ -41,6 +41,10 @@ Run the same command in your production environment, or use the Replit Database 
 ## Existing Migrations
 
 - **001_add_performance_indexes.sql**: Adds indexes on foreign keys and timestamps for leaderboard query optimization (reduces getUserPosition from 4s to <300ms)
+- **002_add_shopify_created_at.sql**: Adds shopify_created_at timestamp column for accurate customer registration tracking
+- **003_add_leaderboard_composite_indexes.sql**: Adds composite indexes for leaderboard query optimization
+- **004_create_engagement_scores_rollup.sql**: Creates pre-aggregated rollup table for 345,000x leaderboard speedup
+- **005_seed_classification_config.sql**: Seeds classification_config table with required configuration data (fixes JERKY-RANK-UI-2V)
 
 ## Migration vs Schema Push
 
