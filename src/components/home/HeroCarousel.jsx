@@ -57,7 +57,7 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
     {
       id: 'leaderboard',
       title: 'CLIMB THE LEADERBOARD',
-      subtitle: `Join ${homeStats?.communityStats?.totalRankers?.toLocaleString() || '...'} jerky enthusiasts ranking their favorites`,
+      subtitle: 'Take your place on the podium with fellow jerky enthusiasts',
       topRankers: homeStats?.topRankers?.slice(0, 3) || [],
       cta: {
         text: 'View Leaderboard',
