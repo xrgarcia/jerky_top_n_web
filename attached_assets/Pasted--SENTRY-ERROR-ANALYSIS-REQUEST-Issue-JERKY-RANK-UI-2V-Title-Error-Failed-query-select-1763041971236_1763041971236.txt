@@ -1,0 +1,202 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2V
+Title: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "produc...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T16:48:33.784000Z
+Last Seen: 2025-11-13T01:54:06Z
+Event Count: 16
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "produc...
+
+--- CULPRIT ---
+ProductsMetadataRepository.upsertProductMetadata(server.repositories:ProductsMetadataRepository)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at ProductsMetadataRepository.upsertProductMetadata (/home/runner/workspace/server/repositories/ProductsMetadataRepository.js:?:?) [in app]
+  at WebhookProductService.handleProductUpdate (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at WebhookProductService.processProductWebhook (/home/runner/workspace/server/services/WebhookProductService.js:?:?) [in app]
+  at WebhookWorker.processProductWebhook (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at WebhookWorker.processJob (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/node_modules/bullmq/dist/cjs/classes/worker.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-13T01:53:37.544000Z] console (error): [Filtered]
+[2025-11-13T01:53:37.545000Z] console (error): [Filtered]
+[2025-11-13T01:53:37.583000Z] console (error): [Filtered]
+[2025-11-13T01:53:38.266000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998817065)
+[2025-11-13T01:53:38.266000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-13T01:53:38.270000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:38.271000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:38.272000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:38.280000Z] console (info): 🔄 Processing classification for user 7964 (reason: purchase)...
+[2025-11-13T01:53:38.312000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:38.317000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7964
+[2025-11-13T01:53:38.353000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7964
+[2025-11-13T01:53:38.572000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7964
+[2025-11-13T01:53:38.572000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T01:53:38.576000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:38.576000Z] console (error): ❌ Error processing classification for user 7964: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:38.610000Z] console (error): ❌ Classification job failed for user 7964: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:38.620000Z] console (info): 🔄 Processing webhook: customers/customers/update (job: customers:customers/update:1762998817422)
+[2025-11-13T01:53:38.620000Z] console (info): 📥 Shopify customer data received: [object Object]
+[2025-11-13T01:53:38.624000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:38.624000Z] console (error): [Filtered]
+[2025-11-13T01:53:38.626000Z] console (error): [Filtered]
+[2025-11-13T01:53:38.665000Z] console (error): [Filtered]
+[2025-11-13T01:53:40.384000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998817065)
+[2025-11-13T01:53:40.384000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-13T01:53:40.388000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:40.388000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:40.389000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:40.464000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:53:40.680000Z] console (info): 🔄 Processing classification for user 7964 (reason: purchase)...
+[2025-11-13T01:53:40.701000Z] console (info): 🔄 Processing webhook: customers/customers/update (job: customers:customers/update:1762998817422)
+[2025-11-13T01:53:40.701000Z] console (info): 📥 Shopify customer data received: [object Object]
+[2025-11-13T01:53:40.705000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:40.705000Z] console (error): [Filtered]
+[2025-11-13T01:53:40.707000Z] console (error): [Filtered]
+[2025-11-13T01:53:40.716000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7964
+[2025-11-13T01:53:40.744000Z] console (error): [Filtered]
+[2025-11-13T01:53:40.752000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7964
+[2025-11-13T01:53:40.971000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7964
+[2025-11-13T01:53:40.971000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T01:53:40.975000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:40.975000Z] console (error): ❌ Error processing classification for user 7964: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:41.008000Z] console (error): ❌ Classification job failed for user 7964: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:45.045000Z] console (info): 🔄 Processing classification for user 7964 (reason: purchase)...
+[2025-11-13T01:53:45.081000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7964
+[2025-11-13T01:53:45.118000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7964
+[2025-11-13T01:53:45.337000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7964
+[2025-11-13T01:53:45.337000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T01:53:45.341000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:45.342000Z] console (error): ❌ Error processing classification for user 7964: Error: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:45.408000Z] console (error): ❌ Classification job failed for user 7964: Failed query: select "id", "config_key", "config_value", "description", "updated_at", "updated_by" from "classification_config"
+params: 
+[2025-11-13T01:53:50.613000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998830495)
+[2025-11-13T01:53:50.613000Z] console (info): 🏷️ Processing products/update webhook for product 10056832188730 (Garlic Butter & Herb Snack Sticks)
+[2025-11-13T01:53:50.617000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:53:50.617000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10056832188730,1
+[2025-11-13T01:53:50.619000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10056832188730,1
+[2025-11-13T01:53:50.657000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10056832188730,1
+[2025-11-13T01:54:00.702000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762998840596)
+[2025-11-13T01:54:00.703000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343210
+[2025-11-13T01:54:00.703000Z] console (info): 📦 Processing order JK3825343210: 1 line items
+[2025-11-13T01:54:00.708000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:00.708000Z] console (error): [Filtered]
+[2025-11-13T01:54:00.709000Z] console (error): [Filtered]
+[2025-11-13T01:54:00.709000Z] console (error): [Filtered]
+[2025-11-13T01:54:00.710000Z] console (error): [Filtered]
+[2025-11-13T01:54:00.747000Z] console (error): [Filtered]
+[2025-11-13T01:54:01.822000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762998840596)
+[2025-11-13T01:54:01.822000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343210
+[2025-11-13T01:54:01.822000Z] console (info): 📦 Processing order JK3825343210: 1 line items
+[2025-11-13T01:54:01.826000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:01.827000Z] console (error): [Filtered]
+[2025-11-13T01:54:01.828000Z] console (error): [Filtered]
+[2025-11-13T01:54:01.828000Z] console (error): [Filtered]
+[2025-11-13T01:54:01.829000Z] console (error): [Filtered]
+[2025-11-13T01:54:01.867000Z] console (error): [Filtered]
+[2025-11-13T01:54:03.616000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998843535)
+[2025-11-13T01:54:03.616000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-13T01:54:03.620000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:03.620000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:03.622000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:03.660000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:03.941000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762998840596)
+[2025-11-13T01:54:03.941000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343210
+[2025-11-13T01:54:03.941000Z] console (info): 📦 Processing order JK3825343210: 1 line items
+[2025-11-13T01:54:03.945000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:03.945000Z] console (error): [Filtered]
+[2025-11-13T01:54:03.946000Z] console (error): [Filtered]
+[2025-11-13T01:54:03.946000Z] console (error): [Filtered]
+[2025-11-13T01:54:03.947000Z] console (error): [Filtered]
+[2025-11-13T01:54:03.985000Z] console (error): [Filtered]
+[2025-11-13T01:54:04.696000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998843535)
+[2025-11-13T01:54:04.696000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-13T01:54:04.700000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:04.700000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:04.702000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:04.740000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+[2025-11-13T01:54:06.814000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762998843535)
+[2025-11-13T01:54:06.814000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-13T01:54:06.818000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T01:54:06.818000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 10051192881466,1
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  topic: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
