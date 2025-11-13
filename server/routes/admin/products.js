@@ -130,7 +130,7 @@ router.get('/products', requireEmployeeAuth, async (req, res) => {
  */
 router.patch('/products/:productId/metadata', async (req, res) => {
   try {
-    const { productId } = req.params;
+    let { productId } = req.params;
     const { 
       animalType, animalDisplay, animalIcon,
       vendor,
@@ -144,6 +144,13 @@ router.patch('/products/:productId/metadata', async (req, res) => {
         success: false,
         error: 'Product ID is required',
       });
+    }
+
+    // CRITICAL: Ensure productId is always a string for Drizzle/Neon binding
+    // Guards against numeric IDs from frontend or retry logic
+    if (typeof productId !== 'string') {
+      productId = String(productId);
+      console.warn(`⚠️ Converted numeric Shopify product ID to string: ${productId}`);
     }
 
     // Build update object (only include fields that are provided)
