@@ -1,0 +1,167 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-3A
+Title: Classification config table is empty, using defaults
+Status: unresolved
+Level: warning
+Environment: PRODUCTION
+
+First Seen: 2025-11-13T14:14:53.296000Z
+Last Seen: 2025-11-13T16:24:39Z
+Event Count: 24
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Classification config table is empty, using defaults
+
+--- CULPRIT ---
+N/A
+
+--- STACK TRACE ---
+No stack trace available
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-13T16:24:05.709000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T16:24:05.732000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T16:24:05.734000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T16:24:05.734000Z] console (info): 💾 AchievementCache HIT: Returning 26 definitions
+[2025-11-13T16:24:05.750000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 2085
+[2025-11-13T16:24:05.750000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T16:24:05.751000Z] console (info): 📊 ProgressTracker: 19 achievements have progress data (including tier upgrades)
+[2025-11-13T16:24:05.751000Z] console (info): 🎯 Closest milestone: Top 10 Ranker (100.0% complete - 999/10)
+[2025-11-13T16:24:05.752000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 2085
+[2025-11-13T16:24:05.752000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T16:24:05.752000Z] console (info): 📊 ProgressTracker: 0 achievements have progress data (including tier upgrades)
+[2025-11-13T16:24:05.752000Z] console (info): ✅ ProgressTracker: No achievements with progress data (user may have earned all available achievements)
+[2025-11-13T16:24:05.776000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 2085
+[2025-11-13T16:24:05.776000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T16:24:05.776000Z] console (info): 📊 ProgressTracker: 4 achievements have progress data (including tier upgrades)
+[2025-11-13T16:24:05.776000Z] console (info): 🎯 Closest milestone: Getting Started (0.0% complete - 0/10)
+[2025-11-13T16:24:05.777000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 2085
+[2025-11-13T16:24:05.777000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T16:24:05.777000Z] console (info): 📊 ProgressTracker: 0 achievements have progress data (including tier upgrades)
+[2025-11-13T16:24:05.777000Z] console (info): ✅ ProgressTracker: No achievements with progress data (user may have earned all available achievements)
+[2025-11-13T16:24:05.778000Z] console (info): 📊 ProgressTracker: Found 24 total achievements for user 2085
+[2025-11-13T16:24:05.778000Z] console (info):    ✅ Earned: 0 | 🔒 Unearned: 24
+[2025-11-13T16:24:05.778000Z] console (info): 📊 ProgressTracker: 19 achievements have progress data (including tier upgrades)
+[2025-11-13T16:24:05.778000Z] console (info): 🎯 Closest milestone: Top 10 Ranker (100.0% complete - 999/10)
+[2025-11-13T16:24:05.833000Z] console (info):   ✓ Cached guidance for user 2085 / community
+[2025-11-13T16:24:05.838000Z] console (info):   ✓ Cached guidance for user 2085 / coinbook
+[2025-11-13T16:24:05.859000Z] console (info):   ✓ Cached guidance for user 2085 / rank
+[2025-11-13T16:24:05.860000Z] console (info):   ✓ Cached guidance for user 2085 / products
+[2025-11-13T16:24:05.861000Z] console (info):   ✓ Cached guidance for user 2085 / general
+[2025-11-13T16:24:05.861000Z] console (info):   ✓ Guidance cached in database for 5 page contexts (Redis will populate on next request)
+[2025-11-13T16:24:05.913000Z] console (info): ✅ Classification complete for user 2085 (1282ms)
+[2025-11-13T16:24:05.965000Z] console (info): ✅ Classification job completed for user 2085
+[2025-11-13T16:24:10.494000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:10.495000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:10.495000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:29.697000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:34.427000Z] console (info): 🔌 Webhook pool client removed [object Object]
+[2025-11-13T16:24:35.538000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.539000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.539000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.540000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.750000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.751000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.776000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.776000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-13T16:24:35.833000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-13T16:24:35.838000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-13T16:24:35.859000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-13T16:24:35.861000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-13T16:24:35.861000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-13T16:24:35.949000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763051075763)
+[2025-11-13T16:24:35.949000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343377
+[2025-11-13T16:24:35.949000Z] console (info): 📦 Processing order JK3825343377: 2 line items
+[2025-11-13T16:24:36.085000Z] console (info): 🔌 Webhook pool client connected [object Object]
+[2025-11-13T16:24:36.135000Z] console (info): ✅ Found existing user by Shopify ID: 7445 (kishbutton@yahoo.com)
+[2025-11-13T16:24:36.262000Z] console (info): ✅ Processed 2 line items for order JK3825343377 (user: 7445)
+[2025-11-13T16:24:36.263000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343377
+[2025-11-13T16:24:36.263000Z] console (info): 🔄 Invalidating purchase history cache for user 7445
+[2025-11-13T16:24:36.315000Z] console (info): 🗑️ Purchase cache invalidated for user 7445
+[2025-11-13T16:24:36.315000Z] console (info): 🔄 Recalculating ranking stats for 2 product(s)
+[2025-11-13T16:24:36.357000Z] console (info): 📊 Recalculated ranking stats for 1 product(s)
+[2025-11-13T16:24:36.357000Z] console (info): ✅ RankingStatsCache: Updated 1 product(s): 1291529551940 - timestamp reset
+[2025-11-13T16:24:36.461000Z] console (info): 📋 Enqueued classification job for user 7445 (reason: purchase)
+[2025-11-13T16:24:36.461000Z] console (info): 📋 Enqueued classification job for user 7445 (reason: purchase)
+[2025-11-13T16:24:36.461000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-13T16:24:36.461000Z] console (info): ✅ Webhook processed: orders/orders/updated (512ms)
+[2025-11-13T16:24:36.516000Z] console (info): ✅ Webhook job completed: orders/orders/updated (753ms)
+[2025-11-13T16:24:38.226000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763051078039)
+[2025-11-13T16:24:38.227000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343395
+[2025-11-13T16:24:38.227000Z] console (info): 📦 Processing order JK3825343395: 3 line items
+[2025-11-13T16:24:38.269000Z] console (info): ✅ Found existing user by Shopify ID: 7463 (gentlebreezes1952@yahoo.com)
+[2025-11-13T16:24:38.437000Z] console (info): ✅ Processed 3 line items for order JK3825343395 (user: 7463)
+[2025-11-13T16:24:38.437000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343395
+[2025-11-13T16:24:38.437000Z] console (info): 🔄 Invalidating purchase history cache for user 7463
+[2025-11-13T16:24:38.492000Z] console (info): 🗑️ Purchase cache invalidated for user 7463
+[2025-11-13T16:24:38.492000Z] console (info): 🔄 Recalculating ranking stats for 3 product(s)
+[2025-11-13T16:24:38.534000Z] console (info): 📊 Recalculated ranking stats for 1 product(s)
+[2025-11-13T16:24:38.534000Z] console (info): ✅ RankingStatsCache: Updated 1 product(s): 9899784077626 - timestamp reset
+[2025-11-13T16:24:38.554000Z] console (info): 🔄 Processing webhook: customers/customers/update (job: customers:customers/update:1763051078444)
+[2025-11-13T16:24:38.554000Z] console (info): 📥 Shopify customer data received: [object Object]
+[2025-11-13T16:24:38.646000Z] console (info): 📋 Enqueued classification job for user 7463 (reason: purchase)
+[2025-11-13T16:24:38.646000Z] console (info): 📋 Enqueued classification job for user 7463 (reason: purchase)
+[2025-11-13T16:24:38.646000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-13T16:24:38.646000Z] console (info): ✅ Webhook processed: orders/orders/updated (420ms)
+[2025-11-13T16:24:38.701000Z] console (info): 🔄 Processing classification for user 7463 (reason: purchase)...
+[2025-11-13T16:24:38.701000Z] console (info): ✅ Webhook job completed: orders/orders/updated (662ms)
+[2025-11-13T16:24:38.752000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 7463
+[2025-11-13T16:24:38.804000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 7463
+[2025-11-13T16:24:38.805000Z] console (info): ✅ Updated customer 9363496599866 (user 6806): Andrew Brown in 251ms
+[2025-11-13T16:24:38.855000Z] console (info): 🗑️ UserProfileCache INVALIDATE: user 6806
+[2025-11-13T16:24:38.906000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 6806
+[2025-11-13T16:24:38.906000Z] console (info): ✅ Targeted cache invalidation complete for user 6806: [user_profile, user_classification]
+[2025-11-13T16:24:38.906000Z] console (info): 📢 Broadcasted profile update to room prod:user:6806
+[2025-11-13T16:24:38.906000Z] console (info): 👤 Broadcasting customer webhook update to admin room (prod:admin:customer-webhooks): updated - undefined
+[2025-11-13T16:24:38.906000Z] console (info): ✅ Webhook processed: customers/customers/update (352ms)
+[2025-11-13T16:24:38.961000Z] console (info): ✅ Webhook job completed: customers/customers/update (517ms)
+[2025-11-13T16:24:39.113000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 7463
+[2025-11-13T16:24:39.113000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T16:24:39.163000Z] console (warning): ⚠️ classification_config table is empty - using default configuration
+[2025-11-13T16:24:39.163000Z] console (warning): ⚠️ Run migration 005_seed_classification_config.sql to populate the table
+
+--- TAGS ---
+  app_url: undefined
+  environment: undefined
+  level: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
