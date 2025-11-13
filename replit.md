@@ -42,7 +42,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Redis Connection**: Singleton-based connection pooling for BullMQ workers and Upstash Redis.
 - **Feature Flags**: JSON-based configuration system.
 - **Database Schema Management**: Drizzle ORM with automatic validation, retry logic, and safe deployment scripts.
-- **Schema Sync Strategy**: Production schema fixes resolved via migration 006 (JERKY-RANK-UI-2T) to add missing `products_metadata.id` primary key column.
+- **Type Safety**: Multi-layer defense with String() conversions for Shopify IDs at service and repository layers (Neon serverless driver requirement for TEXT columns).
 
 **Feature Specifications:**
 - **Rank Page**: Elegant three-section page with hero section, introduction, and two-column drag-and-drop interface for ranking purchased products. Features persistent rankings, visual modal, duplicate prevention, optimistic UI, and responsive design.
