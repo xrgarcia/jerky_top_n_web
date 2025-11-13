@@ -1,0 +1,184 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-9
+Title: Error: Connection terminated unexpectedly
+Status: unresolved
+Level: fatal
+Environment: PRODUCTION
+
+First Seen: 2025-10-16T16:36:50.187000Z
+Last Seen: 2025-11-12T08:02:45Z
+Event Count: 70
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Connection terminated unexpectedly
+
+--- CULPRIT ---
+An.?(@neondatabase.serverless:index)
+
+--- STACK TRACE ---
+Error: Connection terminated unexpectedly
+  at An.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at Object.onceWrapper (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at An.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at S.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at S.emit (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at WebSocket.? (/home/runner/workspace/node_modules/@neondatabase/serverless/index.js:?:?)
+  at callListener (/home/runner/workspace/node_modules/ws/lib/event-target.js:?:?)
+  at WebSocket.onClose (/home/runner/workspace/node_modules/ws/lib/event-target.js:?:?)
+  at WebSocket.emit (node:events:?:?)
+  at WebSocket.emitClose (/home/runner/workspace/node_modules/ws/lib/websocket.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-12T08:00:28.435000Z] console (info): ✅ Webhook processed: orders/orders/updated (221ms)
+[2025-11-12T08:00:28.436000Z] console (info): ✅ Webhook job completed: orders/orders/updated (230ms)
+[2025-11-12T08:00:41.891000Z] console (info): 🔌 Webhook pool client removed [object Object]
+[2025-11-12T08:00:49.155000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762934449149)
+[2025-11-12T08:00:49.155000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343125
+[2025-11-12T08:00:49.155000Z] console (info): 📦 Processing order JK3825343125: 2 line items
+[2025-11-12T08:00:49.200000Z] console (info): ✅ Found existing user by Shopify ID: 1812 (gmshields@earthlink.net)
+[2025-11-12T08:00:49.328000Z] console (info): ✅ Processed 2 line items for order JK3825343125 (user: 1812)
+[2025-11-12T08:00:49.328000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343125
+[2025-11-12T08:00:49.328000Z] console (info): 🔄 Invalidating purchase history cache for user 1812
+[2025-11-12T08:00:49.329000Z] console (info): 🗑️ Purchase cache invalidated for user 1812
+[2025-11-12T08:00:49.329000Z] console (info): 🔄 Recalculating ranking stats for 2 product(s)
+[2025-11-12T08:00:49.371000Z] console (info): 📊 Recalculated ranking stats for 0 product(s)
+[2025-11-12T08:00:49.371000Z] console (warning): ⚠️ No ranking stats found for 2 product(s) - products may not have been ranked yet
+[2025-11-12T08:00:49.371000Z] console (warning): ⚠️ Classification queue not initialized
+[2025-11-12T08:00:49.371000Z] console (info): 📋 Enqueued classification job for user 1812 (reason: purchase)
+[2025-11-12T08:00:49.371000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-12T08:00:49.371000Z] console (info): ✅ Webhook processed: orders/orders/updated (216ms)
+[2025-11-12T08:00:49.374000Z] console (info): ✅ Webhook job completed: orders/orders/updated (225ms)
+[2025-11-12T08:01:19.371000Z] console (info): 🔌 Webhook pool client removed [object Object]
+[2025-11-12T08:01:49.514000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762934509506)
+[2025-11-12T08:01:49.514000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343466
+[2025-11-12T08:01:49.514000Z] console (info): 📦 Processing order JK3825343466: 2 line items
+[2025-11-12T08:01:49.685000Z] console (info): 🔌 Webhook pool client connected [object Object]
+[2025-11-12T08:01:51.737000Z] console (info): ✅ Found existing user by Shopify ID: 7524 (wrg9419@gmail.com)
+[2025-11-12T08:01:51.867000Z] console (info): ✅ Processed 2 line items for order JK3825343466 (user: 7524)
+[2025-11-12T08:01:51.867000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343466
+[2025-11-12T08:01:51.867000Z] console (info): 🔄 Invalidating purchase history cache for user 7524
+[2025-11-12T08:01:51.868000Z] console (info): 🗑️ Purchase cache invalidated for user 7524
+[2025-11-12T08:01:51.868000Z] console (info): 🔄 Recalculating ranking stats for 2 product(s)
+[2025-11-12T08:01:51.913000Z] console (info): 📊 Recalculated ranking stats for 1 product(s)
+[2025-11-12T08:01:51.913000Z] console (info): ✅ RankingStatsCache: Updated 1 product(s): 11821180559 - timestamp reset
+[2025-11-12T08:01:51.913000Z] console (warning): ⚠️ Classification queue not initialized
+[2025-11-12T08:01:51.913000Z] console (info): 📋 Enqueued classification job for user 7524 (reason: purchase)
+[2025-11-12T08:01:51.913000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-12T08:01:51.913000Z] console (info): ✅ Webhook processed: orders/orders/updated (2399ms)
+[2025-11-12T08:01:51.915000Z] console (info): ✅ Webhook job completed: orders/orders/updated (2409ms)
+[2025-11-12T08:02:14.610000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1762934534594)
+[2025-11-12T08:02:14.610000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-12T08:02:14.666000Z] console (info): 🔒 Preserving manual edits for 10051192881466: title, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+[2025-11-12T08:02:14.666000Z] console (info): ✅ Updated metadata for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-12T08:02:14.666000Z] console (info): 📦 Broadcasting product webhook update to admin room (prod:admin:product-webhooks): upserted - 10051192881466
+[2025-11-12T08:02:14.666000Z] console (info): 🔄 Updating metadata cache for product 10051192881466
+[2025-11-12T08:02:14.666000Z] console (info): ✅ MetadataCache: Updated product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime)) - timestamp reset
+[2025-11-12T08:02:14.666000Z] console (info): ✅ Webhook processed: products/products/update (56ms)
+[2025-11-12T08:02:14.669000Z] console (info): ✅ Webhook job completed: products/products/update (75ms)
+[2025-11-12T08:02:17.076000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1762934537064)
+[2025-11-12T08:02:17.076000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343472
+[2025-11-12T08:02:17.076000Z] console (info): 📦 Processing order JK3825343472: 3 line items
+[2025-11-12T08:02:17.117000Z] console (info): ✅ Found existing user by Shopify ID: 7530 (chris142131@gmail.com)
+[2025-11-12T08:02:17.284000Z] console (info): ✅ Processed 3 line items for order JK3825343472 (user: 7530)
+[2025-11-12T08:02:17.284000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343472
+[2025-11-12T08:02:17.285000Z] console (info): 🔄 Invalidating purchase history cache for user 7530
+[2025-11-12T08:02:17.286000Z] console (info): 🗑️ Purchase cache invalidated for user 7530
+[2025-11-12T08:02:17.286000Z] console (info): 🔄 Recalculating ranking stats for 3 product(s)
+[2025-11-12T08:02:17.332000Z] console (info): 📊 Recalculated ranking stats for 2 product(s)
+[2025-11-12T08:02:17.332000Z] console (info): ✅ RankingStatsCache: Updated 2 product(s): 11821167759, 9902471315770 - timestamp reset
+[2025-11-12T08:02:17.332000Z] console (warning): ⚠️ Classification queue not initialized
+[2025-11-12T08:02:17.332000Z] console (info): 📋 Enqueued classification job for user 7530 (reason: purchase)
+[2025-11-12T08:02:17.332000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-12T08:02:17.332000Z] console (info): ✅ Webhook processed: orders/orders/updated (256ms)
+[2025-11-12T08:02:17.333000Z] console (info): ✅ Webhook job completed: orders/orders/updated (269ms)
+[2025-11-12T08:02:32.907000Z] console (info): 👋 WebSocket client disconnected: 0nA76FoGkJ_eEL_9AAK9
+[2025-11-12T08:02:32.907000Z] console (info): 👤 User 2 still has 3 active socket(s)
+[2025-11-12T08:02:34.258000Z] console (info): ✅ WebSocket client connected: Cq0BBy22ClYCRyBSAALB
+[2025-11-12T08:02:34.381000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-12T08:02:34.431000Z] console (info): [Filtered]
+[2025-11-12T08:02:34.556000Z] console (warning): ⚠️ Classification queue not initialized
+[2025-11-12T08:02:34.615000Z] console (info): [ActivityTrackingService] Flushed 1 activities
+[2025-11-12T08:02:34.685000Z] console (info): 🗑️ LeaderboardCache INVALIDATE USER: 2 (granular, timestamp-aware, pattern-based)
+[2025-11-12T08:02:34.685000Z] console (warning): ⚠️ Classification queue not initialized
+[2025-11-12T08:02:34.878000Z] console (info): 🎯 [ENGAGEMENT CHECK] User 2: Checking 2 engagement achievements
+[2025-11-12T08:02:34.927000Z] console (info): 🔍 [SEARCH ENGAGEMENT] User 2: 0 total searches
+[2025-11-12T08:02:35.066000Z] console (info): 🔐 [LOGIN ENGAGEMENT] User 2: Current login streak 0 days (longest: 0)
+[2025-11-12T08:02:35.069000Z] console (info): 🔥 [STREAK ENGAGEMENT] User 2: Current streak 0 days (longest: 0)
+[2025-11-12T08:02:35.079000Z] console (info): 📦 [PRODUCT VIEW ENGAGEMENT] User 2: 3 unique product views
+[2025-11-12T08:02:35.087000Z] console (info): 📄 [PAGE VIEW ENGAGEMENT] User 2: 206 total page views
+[2025-11-12T08:02:35.087000Z] console (info): 🔄 [be_curious] User 2: 0/10 (0%) → TIER: null (hasTiers: 0)
+[2025-11-12T08:02:35.088000Z] console (info): 🔄 [expand_your_horizons] User 2: 3/100 (3%) → TIER: null (hasTiers: 1)
+[2025-11-12T08:02:35.088000Z] console (info): ✅ [ENGAGEMENT CHECK] User 2: 0 achievement update(s)
+[2025-11-12T08:02:45.459000Z] console (error): ❌ Classification worker Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.459000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.460000Z] console (error): ❌ Bulk import worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.460000Z] console (error): ❌ Engagement backfill worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.469000Z] console (error): ❌ Worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.471000Z] console (error): ❌ Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.471000Z] console (error): Error: read ECONNRESET
+[2025-11-12T08:02:45.471000Z] console (error): ❌ BulkImport worker Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.471000Z] console (error): ❌ Bulk import worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.472000Z] console (warning): missing 'error' handler on this Redis client
+[2025-11-12T08:02:45.472000Z] console (error): ❌ Webhook worker Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.473000Z] console (error): ❌ Webhook worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.477000Z] console (error): ❌ Classification queue Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.477000Z] console (error): ❌ BulkImport queue Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.477000Z] console (error): ❌ BullMQ queue error: read ECONNRESET
+[2025-11-12T08:02:45.477000Z] console (warning): missing 'error' handler on this Redis client
+[2025-11-12T08:02:45.478000Z] console (error): ❌ Webhook worker error: Error: read ECONNRESET
+[2025-11-12T08:02:45.481000Z] console (error): Error: read ECONNRESET
+[2025-11-12T08:02:45.481000Z] console (error): ❌ Engagement backfill worker Redis connection error: read ECONNRESET
+[2025-11-12T08:02:45.482000Z] console (error): ❌ Engagement backfill worker error: Error: read ECONNRESET
+
+--- TAGS ---
+  app_url: undefined
+  browser: undefined
+  browser.name: undefined
+  client_os: undefined
+  client_os.name: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  transaction: undefined
+  url: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "Council Bluffs",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
