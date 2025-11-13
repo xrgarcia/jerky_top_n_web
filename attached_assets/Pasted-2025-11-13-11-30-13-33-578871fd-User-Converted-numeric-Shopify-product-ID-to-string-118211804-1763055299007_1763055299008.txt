@@ -1,0 +1,200 @@
+2025-11-13 11:30:13.33
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821180495
+2025-11-13 11:30:13.37
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821180559
+2025-11-13 11:30:13.42
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 7174020890712
+2025-11-13 11:30:13.46
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 7134809063512
+2025-11-13 11:30:13.50
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821177039
+2025-11-13 11:30:13.55
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821175439
+2025-11-13 11:30:13.59
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821176079
+2025-11-13 11:30:13.63
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11845252111
+2025-11-13 11:30:13.67
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9997324157242
+2025-11-13 11:30:14.01
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821164559
+2025-11-13 11:30:14.11
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821188111
+2025-11-13 11:30:14.19
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 11821167247
+2025-11-13 11:30:18.03
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8516377084218
+2025-11-13 11:30:18.08
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9861038506298
+2025-11-13 11:30:18.12
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8627363905850
+2025-11-13 11:30:18.16
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8769414693178
+2025-11-13 11:30:18.20
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8836361847098
+2025-11-13 11:30:18.25
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9901726433594
+2025-11-13 11:30:18.29
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8934088966458
+2025-11-13 11:30:18.33
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 8977815601466
+2025-11-13 11:30:18.37
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9035259576634
+2025-11-13 11:30:18.42
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9148468134202
+2025-11-13 11:30:18.46
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9279929254202
+2025-11-13 11:30:18.50
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9401498140986
+2025-11-13 11:30:18.54
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9861038965050
+2025-11-13 11:30:18.59
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9456979345722
+2025-11-13 11:30:18.63
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9504314360122
+2025-11-13 11:30:18.67
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9656912085306
+2025-11-13 11:30:18.71
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9708200362298
+2025-11-13 11:30:18.76
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9741030621498
+2025-11-13 11:30:18.80
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9763730227514
+2025-11-13 11:30:18.85
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9788034941242
+2025-11-13 11:30:18.89
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9814176006458
+2025-11-13 11:30:18.93
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9822624743738
+2025-11-13 11:30:18.97
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9822641815866
+2025-11-13 11:30:19.02
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9861039325498
+2025-11-13 11:30:19.06
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9884230222138
+2025-11-13 11:30:19.10
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9896817656122
+2025-11-13 11:30:19.15
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9923487498554
+2025-11-13 11:30:19.19
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9953357365562
+2025-11-13 11:30:19.28
+578871fd
+User
+⚠️ Converted numeric Shopify product ID to string: 9861039817018
+2025-11-13 11:31:36.63
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-13 11:32:14.49
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-13 11:32:17.76
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-13 11:33:01.82
+b898c8b7
+User
+⚠️ classification_config table is empty - using default configuration
+2025-11-13 11:33:01.82
+b898c8b7
+User
+⚠️ Run migration 005_seed_classification_config.sql to populate the table
+2025-11-13 11:33:21.79
+b898c8b7
+User
+⚠️ No ranking stats found for 3 product(s) - products may not have been ranked yet
+2025-11-13 11:33:35.03
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-13 11:33:56.00
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
+2025-11-13 11:34:04.62
+b898c8b7
+User
+⚠️ No ranking stats found for 1 product(s) - products may not have been ranked yet
