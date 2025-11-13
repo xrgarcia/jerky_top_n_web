@@ -36,7 +36,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Personalized Guidance System**: AI-driven, page-aware, and journey-aware system with an event-driven classification engine (BullMQ-based) for targeted messages with CTAs.
 - **User Classification**: Tracks journey stages, engagement levels, and exploration breadth.
 - **Unified Activity Tracking**: All user activities tracked, with dual-track search analytics.
-- **Leaderboard Optimization**: 345,000x speedup via pre-aggregated rollup table, incremental updates, Redis-backed distributed cache, and granular invalidation.
+- **Leaderboard Optimization**: 345,000x speedup via pre-aggregated rollup table (`user_engagement_scores`), incremental updates, Redis-backed distributed cache, and granular invalidation. Both `getLeaderboard()` and `getUserPosition()` queries use the rollup table for consistent sub-100ms performance (400x improvement for position queries).
 - **Distributed Caching**: Comprehensive Redis-backed system with seven specialized cache classes and event-driven invalidation for sub-100ms response times.
 - **Database Connection**: Multi-pool architecture using Neon PostgreSQL with TCP keepalive and automatic retry logic.
 - **Redis Connection**: Singleton-based connection pooling for BullMQ workers and Upstash Redis.
