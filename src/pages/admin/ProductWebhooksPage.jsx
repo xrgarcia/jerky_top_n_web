@@ -8,6 +8,7 @@ function ProductWebhooksPage() {
   const { showToast } = useToast();
   const [selectedWebhook, setSelectedWebhook] = useState(null);
   const [activeTab, setActiveTab] = useState('summary');
+  const [isClearing, setIsClearing] = useState(false);
   
   const { data: webhooks = [], isLoading, isError, error, refetch } = useProductWebhooks(50);
 
@@ -33,6 +34,49 @@ function ProductWebhooksPage() {
     });
     
     refetch();
+  }, [showToast, refetch]);
+
+  const handleClearFailedQueue = useCallback(async () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to clear all failed product webhook jobs? This will remove old failed jobs from the queue.'
+    );
+    
+    if (!confirmed) return;
+
+    setIsClearing(true);
+    
+    try {
+      const response = await fetch('/api/admin/product-webhooks/clear-failed', {
+        method: 'POST',
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        showToast({
+          type: 'success',
+          icon: '✅',
+          title: 'Queue Cleared',
+          message: `Cleared ${data.clearedCount} failed product webhook jobs`,
+          duration: 5000
+        });
+        refetch();
+      } else {
+        throw new Error(data.error || 'Failed to clear queue');
+      }
+    } catch (error) {
+      console.error('Error clearing failed queue:', error);
+      showToast({
+        type: 'error',
+        icon: '⚠️',
+        title: 'Clear Failed',
+        message: error.message || 'Failed to clear failed webhook jobs',
+        duration: 5000
+      });
+    } finally {
+      setIsClearing(false);
+    }
   }, [showToast, refetch]);
 
   useProductWebhooksWebSocket({
@@ -98,15 +142,31 @@ function ProductWebhooksPage() {
     <div className="admin-page">
       <div className="admin-page-header">
         <h2>📦 Product Webhooks</h2>
-        {webhooks && (
-          <span className="count-badge">{webhooks.length} recent webhooks</span>
-        )}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {webhooks && (
+            <span className="count-badge">{webhooks.length} recent webhooks</span>
+          )}
+          <button
+            className="btn-secondary"
+            onClick={handleClearFailedQueue}
+            disabled={isClearing}
+            style={{ 
+              padding: '8px 16px',
+              fontSize: '14px',
+              opacity: isClearing ? 0.6 : 1,
+              cursor: isClearing ? 'not-allowed' : 'pointer'
+            }}
+          >
+            {isClearing ? '⏳ Clearing...' : '🗑️ Clear Failed Queue'}
+          </button>
+        </div>
       </div>
 
       <div className="info-card" style={{ marginBottom: '20px' }}>
         <p>
           Real-time monitoring of Shopify product webhook events. 
           This shows the most recent product create/update/delete events received from Shopify.
+          Use "Clear Failed Queue" to remove old failed jobs with data errors.
         </p>
       </div>
 

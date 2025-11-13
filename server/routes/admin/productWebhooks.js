@@ -68,5 +68,37 @@ module.exports = function createProductWebhooksRoutes() {
     }
   });
 
+  /**
+   * POST /api/admin/product-webhooks/clear-failed
+   * Clear all failed product webhook jobs from the queue
+   * Useful for clearing out old jobs with cached numeric IDs after deploying fixes
+   */
+  router.post('/product-webhooks/clear-failed', async (req, res) => {
+    try {
+      if (!webhookQueue || !webhookQueue.queue) {
+        return res.status(503).json({
+          success: false,
+          error: 'Webhook queue not initialized'
+        });
+      }
+
+      const result = await webhookQueue.clearFailedProductJobs();
+      
+      res.json({
+        success: true,
+        message: `Cleared ${result.clearedCount} failed product webhook jobs`,
+        clearedCount: result.clearedCount
+      });
+
+    } catch (error) {
+      console.error('Error clearing failed product webhooks:', error);
+      res.status(500).json({
+        success: false,
+        error: 'Failed to clear failed product webhooks',
+        message: error.message
+      });
+    }
+  });
+
   return router;
 };

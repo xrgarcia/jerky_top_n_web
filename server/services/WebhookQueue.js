@@ -153,6 +153,43 @@ class WebhookQueue {
   }
 
   /**
+   * Clear all failed product webhook jobs from the queue
+   * Useful for clearing out old jobs with cached numeric IDs
+   * @returns {Promise<Object>} - Cleared job counts
+   */
+  async clearFailedProductJobs() {
+    if (!this.queue) {
+      throw new Error('Webhook queue not initialized');
+    }
+
+    try {
+      // Get all failed jobs
+      const failed = await this.queue.getFailed(0, -1);
+      
+      // Filter to only product webhooks
+      const productFailed = failed.filter(job => job.data?.type === 'products');
+      
+      // Remove each failed product job
+      const removed = [];
+      for (const job of productFailed) {
+        await job.remove();
+        removed.push(job.id);
+      }
+      
+      console.log(`✅ Cleared ${removed.length} failed product webhook jobs`);
+      
+      return {
+        success: true,
+        clearedCount: removed.length,
+        clearedJobIds: removed
+      };
+    } catch (error) {
+      console.error('❌ Error clearing failed product jobs:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Check if queue is ready
    * @returns {boolean}
    */
