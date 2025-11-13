@@ -1,0 +1,406 @@
+2025-11-13T19:04:46Z info: Deployment: 794a255e-dd6a-42db-9f07-2778231e343a
+2025-11-13T19:04:46Z info: Build: 701f9220-e749-489f-8dc8-c58802b42f81
+2025-11-13T19:04:46Z info: Connecting to builder
+2025-11-13T19:04:47Z info: Builder connected
+2025-11-13T19:04:49Z info: Installing packages
+2025-11-13T19:04:51Z info: Starting Build
+
+up to date, audited 422 packages in 4s
+
+
+47 packages are looking for funding
+
+  run `npm fund` for details
+
+
+4 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+
+npm notice
+npm notice New major version of npm available! 10.8.2 -> 11.6.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v11.6.2
+npm notice To update run: npm install -g npm@11.6.2
+npm notice
+
+
+> jerky-top-n-web@1.0.0 db:migrate
+> node server/migrations/migrate.js
+
+
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+
+[dotenv@17.2.2] injecting env (0) from .env -- tip: ⚙️  suppress all logs with { quiet: true }
+
+🔄 Starting database migrations...
+
+⏭️  Skipping already executed: 001_add_performance_indexes
+
+⏭️  Skipping already executed: 002_add_shopify_created_at
+
+⏭️  Skipping already executed: 003_add_leaderboard_composite_indexes
+
+⏭️  Skipping already executed: 004_create_engagement_scores_rollup
+
+⏭️  Skipping already executed: 005_seed_classification_config
+
+⏭️  Skipping already executed: add-performance-indexes
+
+✨ All migrations up to date - nothing to run
+
+
+> jerky-top-n-web@1.0.0 build
+> npm run build:legacy && npm run build:react
+
+
+
+> jerky-top-n-web@1.0.0 build:legacy
+> node scripts/build-legacy-icon-bridge.js
+
+
+✓ Legacy icon bridge built successfully
+
+
+> jerky-top-n-web@1.0.0 build:react
+> vite build
+
+
+vite v7.1.12 building for production...
+
+transforming...
+
+✓ 1698 modules transformed.
+
+rendering chunks...
+
+[plugin vite:reporter] 
+(!) /home/runner/workspace/src/utils/PersistentQueue.js is dynamically imported by /home/runner/workspace/src/pages/RankPage.jsx but also statically imported by /home/runner/workspace/src/hooks/useRanking.js, dynamic import will not move module into another chunk.
+
+
+computing gzip size...
+
+../public/dist/index.html                                       0.91 kB │ gzip:   0.41 kB
+../public/dist/assets/DataPage-BvdbPtu2.css                     2.20 kB │ gzip:   0.87 kB
+
+../public/dist/assets/ToolsLayout-Bzt7azfW.css                  2.34 kB │ gzip:   0.79 kB
+../public/dist/assets/FlavorProfilePage-C-ZOWa1a.css            2.92 kB │ gzip:   0.97 kB
+../public/dist/assets/CoinProfilePage-BztTGHIY.css              3.16 kB │ gzip:   1.14 kB
+
+../public/dist/assets/ProductDetailPage-BHAZry0Y.css            3.20 kB │ gzip:   0.99 kB
+../public/dist/assets/CoinTypesPageAdmin-RN88quPg.css           5.30 kB │ gzip:   1.48 kB
+../public/dist/assets/ProductsPage-DvaKpeYf.css                 5.38 kB │ gzip:   1.50 kB
+../public/dist/assets/QueueMonitorPage-C6juRa2H.css             5.53 kB │ gzip:   1.58 kB
+../public/dist/assets/PodiumWidget-Cg1Z7BA5.css                 6.85 kB │ gzip:   1.84 kB
+../public/dist/assets/UserGuidanceTab-BOhEnl-y.css              8.46 kB │ gzip:   2.10 kB
+../public/dist/assets/CoinBookPage-B0Lt4XRb.css                 8.55 kB │ gzip:   2.21 kB
+../public/dist/assets/LeaderboardPage-xuMChCzc.css              8.74 kB │ gzip:   1.95 kB
+../public/dist/assets/ManageCoinsPageAdmin-CzSW356y.css         8.93 kB │ gzip:   2.34 kB
+../public/dist/assets/BulkImportPage-1erujqXZ.css              10.02 kB │ gzip:   2.38 kB
+../public/dist/assets/CoinBookWidget-Cyu1dAkr.css              10.49 kB │ gzip:   2.39 kB
+
+../public/dist/assets/ProfilePage-DNH25kUa.css                 10.60 kB │ gzip:   2.50 kB
+../public/dist/assets/index-EzYXF57F.css                       13.97 kB │ gzip:   3.55 kB
+
+../public/dist/assets/CommunityPage-DnBJIYRz.css               15.26 kB │ gzip:   3.57 kB
+../public/dist/assets/RankPage-B9VFNn1Z.css                    17.45 kB │ gzip:   4.05 kB
+
+../public/dist/assets/PublicProfilePage-DZBFYyer.css           24.56 kB │ gzip:   5.02 kB
+../public/dist/assets/HomePage-DT1IVu2v.css                    25.72 kB │ gzip:   5.18 kB
+../public/dist/assets/AdminPages-DZ3DiwEz.css                  27.45 kB │ gzip:   5.17 kB
+
+../public/dist/assets/tierEmojis-RCWFwJCx.js                    0.10 kB │ gzip:   0.11 kB
+
+../public/dist/assets/usePageView-BRcW8nX9.js                   0.32 kB │ gzip:   0.27 kB
+
+../public/dist/assets/useGamification-Cv2LU1dF.js               0.35 kB │ gzip:   0.22 kB
+../public/dist/assets/useAdminAccess-BdRy8xWh.js                0.38 kB │ gzip:   0.29 kB
+../public/dist/assets/useProducts-DZ1yECVs.js                   0.64 kB │ gzip:   0.38 kB
+
+../public/dist/assets/api-C947NNjV.js                           1.15 kB │ gzip:   0.55 kB
+
+../public/dist/assets/PodiumWidget-Ds4tCyTh.js                  4.02 kB │ gzip:   1.09 kB
+../public/dist/assets/ToolsLayout-O6R8qJl4.js                   4.50 kB │ gzip:   1.07 kB
+
+../public/dist/assets/useAdminTools-D-8G3Jyb.js                 5.85 kB │ gzip:   1.56 kB
+../public/dist/assets/ProductsPage-CRG6MPTS.js                  6.58 kB │ gzip:   1.46 kB
+../public/dist/assets/LoginPage-DLMp9Kcm.js                     6.70 kB │ gzip:   2.03 kB
+
+../public/dist/assets/LiveUsersPage-CiMcw0JM.js                 7.35 kB │ gzip:   1.55 kB
+
+../public/dist/assets/en-US-DzAkKII6.js                         7.64 kB │ gzip:   2.69 kB
+
+../public/dist/assets/CoinProfilePage-Dh-eDvXt.js               7.88 kB │ gzip:   1.58 kB
+../public/dist/assets/FlavorProfilePage-uOm874j_.js             9.73 kB │ gzip:   2.00 kB
+
+../public/dist/assets/ProductDetailPage-DszoAWZ3.js            10.15 kB │ gzip:   1.51 kB
+
+../public/dist/assets/SentryPage-QbOtNoHp.js                   11.80 kB │ gzip:   2.05 kB
+
+../public/dist/assets/CoinTypesPageAdmin-BA_EWHOA.js           11.88 kB │ gzip:   1.95 kB
+
+../public/dist/assets/CoinBookWidget-n7JLVe3-.js               14.92 kB │ gzip:   3.14 kB
+
+../public/dist/assets/LeaderboardPage-D_THKECi.js              15.27 kB │ gzip:   2.18 kB
+../public/dist/assets/QueueMonitorPage-Cvpuu7hD.js             15.94 kB │ gzip:   2.69 kB
+../public/dist/assets/SentryIssueDetailsPage-BNgTBX_6.js       18.47 kB │ gzip:   3.37 kB
+../public/dist/assets/OrderItemsPage-DtK1gnYm.js               18.63 kB │ gzip:   3.55 kB
+../public/dist/assets/CustomerWebhooksPage-Bv1-GviQ.js         19.09 kB │ gzip:   3.27 kB
+../public/dist/assets/ProductWebhooksPage-mJbnf9Gm.js          20.78 kB │ gzip:   3.69 kB
+../public/dist/assets/CoinBookPage-BgwbqdQb.js                 22.76 kB │ gzip:   3.26 kB
+../public/dist/assets/ProductsPageAdmin-AI7OjRs9.js            23.86 kB │ gzip:   3.45 kB
+../public/dist/assets/FlavorCommunitiesPageAdmin-x4o2QKCf.js   32.05 kB │ gzip:   4.91 kB
+../public/dist/assets/HomePage-C1nRtXlc.js                     35.71 kB │ gzip:   5.07 kB
+../public/dist/assets/DataPage-Cb7z3WTN.js                     38.97 kB │ gzip:   5.96 kB
+../public/dist/assets/UserGuidanceTab-DgX6tlrp.js              39.28 kB │ gzip:   5.09 kB
+../public/dist/assets/ProfilePage-BDfFkjcd.js                  40.37 kB │ gzip:  11.23 kB
+../public/dist/assets/CommunityPage-CNV-zDHf.js                40.86 kB │ gzip:   6.58 kB
+../public/dist/assets/vendor-socket-CA1CrNgP.js                41.28 kB │ gzip:  12.91 kB
+../public/dist/assets/vendor-react-query-Dq4iOwXr.js           42.21 kB │ gzip:  13.29 kB
+../public/dist/assets/RankPage-Dza5OcMl.js                     42.89 kB │ gzip:  10.86 kB
+
+../public/dist/assets/BulkImportPage-Cmug92-c.js               43.81 kB │ gzip:   6.11 kB
+../public/dist/assets/PublicProfilePage-CUzn9wc_.js            51.88 kB │ gzip:   9.97 kB
+../public/dist/assets/ManageCoinsPageAdmin-CW2NMwBY.js         69.81 kB │ gzip:  10.42 kB
+../public/dist/assets/vendor-dnd-H3Ac9Kaa.js                   74.23 kB │ gzip:  24.08 kB
+../public/dist/assets/vendor-router-Dd1o6z0q.js                84.04 kB │ gzip:  28.61 kB
+../public/dist/assets/vendor-sentry-B9MY0m1g.js               309.29 kB │ gzip: 102.09 kB
+
+../public/dist/assets/index-uh5LbcbY.js                       427.09 kB │ gzip: 123.90 kB
+
+✓ built in 17.42s
+
+2025-11-13T19:05:20Z info: Pushing pid1 binary layer...
+2025-11-13T19:05:21Z info: Pushing Repl layer...
+2025-11-13T19:05:21Z info: Pushing hosting layer...
+2025-11-13T19:05:22Z info: Created hosting layer
+2025-11-13T19:05:22Z info: Created pid1 binary layer
+2025-11-13T19:06:16Z info: Created Repl layer
+2025-11-13T19:06:19Z info: Pushed image manifest
+2025-11-13T19:06:20Z info: Pushed soci index manifest
+2025-11-13T19:06:26Z info: Creating Autoscale service
+🔍 Using Redis variable: UPSTASH_REDIS_URL_PROD
+🌐  Production deployment detected. Available domains: jerkyrankings.replit.app, rank.jerky.com
+metasidecar: loaded enterprise status from environment is_enterprise=false
+✅ leaderboard: Using Redis for distributed caching
+✅ guidance: Using Redis for distributed caching
+🔍 Checking environment configuration...
+   Database: ✅ Connected
+✅ leaderboard: Using Redis for distributed caching
+✅ homeStats: Using Redis for distributed caching
+🔌 Warming up database connection...
+🌐  App Domain: jerkyrankings.replit.app
+🔑  Using Customer Account API for jerky.com accounts
+🌐  Production deployment detected. Available domains: jerkyrankings.replit.app, rank.jerky.com
+✅ Converted to pooler URL: ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech
+✅ Selected domain: jerkyrankings.replit.app
+✅ metadata: Using Redis for distributed caching
+✅ progress: Using Redis for distributed caching
+✅ Shopify credentials found
+   REPLIT_DEPLOYMENT: 1
+✅ UserClassificationCache initialized
+✅ leaderboardPosition: Using Redis for distributed caching
+🚀 Initializing scalability features...
+✅ UserProfileCache initialized
+✅ Database URL found
+🎮 Initializing gamification system...
+✅ streak: Using Redis for distributed caching
+> jerky-top-n-web@1.0.0 start
+🔌 Establishing Redis connection pool...
+💾 Redis: Using existing connection (connection pool)
+✅ achievement: Using Redis for distributed caching
+✅ Email service initialized: no-reply@jerky.com via smtp.gmail.com:587
+starting up user application
+
+✅ AchievementCache initialized
+✅ GuidanceCache initialized
+📊 Service Status:
+✅ user_profile: Using Redis for distributed caching
+🔌 Creating dedicated Redis connection for BullMQ queue...
+💾 Dedicated worker pool created (10 connections, with auto-retry)
+✅ user_classification: Using Redis for distributed caching
+🏓 Redis PING successful - connection pool active
+🔌 Warming up database connection...
+📂 Database storage connected
+> node server.js
+   NODE_ENV: PRODUCTION
+forwarding local port 5000 to external port 80 (mapped as 1104)
+💾 Primary database connection configured (no pooler - read from primary)
+✅ Database is query-ready (1 attempt, 204ms)
+📦 Initializing distributed caches...
+✅ Rate limiters initialized for authentication endpoints
+✅ Rate limiters configured using memory (single-instance)
+💾 Database connection pool configured with pooler endpoint (with auto-retry)
+🔍 Environment Detection Debug:
+✅ Database is query-ready (1 attempt, 231ms)
+✅ Server successfully started!
+💾 Redis: Using existing connection (connection pool)
+ℹ️  Waiting 3000ms for networking to stabilize before schema validation...
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Selected domain: jerkyrankings.replit.app
+✅ Community routes registered at /api/community
+Visit the app at: http://localhost:5000
+✅ rankingStats: Using Redis for distributed caching
+🔍 Redis environment: PRODUCTION
+   Shopify Integration: ✅ Available
+✅ Gamification routes registered at /api/gamification
+💾 Redis: Using existing connection (connection pool)
+✅ Sentry error monitoring initialized (PRODUCTION @ jerkyrankings.replit.app)
+🥩 Jerky Top N Web server running on http://0.0.0.0:5000
+   Redis secrets available: [ 'UPSTASH_REDIS_URL', 'UPSTASH_REDIS_URL_PROD' ]
+✅ Classification worker Redis connection READY
+✅ WebSocket gateway initialized
+🚀 Initializing distributed cache service...
+✅ Socket.IO using Redis adapter for cross-instance communication
+✅ Scalability initialization complete
+🔌 Creating dedicated Redis connection for classification worker...
+✅ Classification queue Redis connection READY
+✅ All caches using Redis for distributed caching
+✅ Redis ready for commands
+✅ Health check routes registered at /api/health
+   REPLIT_DOMAINS: jerkyrankings.replit.app,rank.jerky.com
+🔌 Creating dedicated Redis connection for classification queue...
+✅ ProgressCache initialized
+🔌 Setting up Socket.IO Redis adapter with shared connection...
+✅ Redis connection pool established
+✅ StreakCache initialized
+✅ JourneyCache initialized
+✅ Flavor profile communities routes registered at /api/flavor-profile-communities
+🏪  Shop Domain: jerky-com.myshopify.com
+
+✅ All distributed caches initialized
+✅ products: Using Redis for distributed caching
+🔌 Database client connected to pool { totalConnections: 1, idleConnections: 0, waitingRequests: 0 }
+✅ Profile routes registered at /api/profile
+✅ journey: Using Redis for distributed caching
+
+✅ recentAchievements: Using Redis for distributed caching
+🚀 Starting Jerky Top N Web Application...
+🏷️  WebSocket environment prefix: prod
+✅ Classification queue initialized with hardened Redis connection
+🔧 Shopify Customer Authentication Configuration:
+✅ Database instances warmed and ready for queries
+✅ achievement: Using Redis for distributed caching
+✅ LeaderboardCache initialized
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Classification worker initialized with resilient error handling (concurrency: 5)
+2025-11-13T19:06:58Z info: Waiting for service to be ready
+💾 Dedicated webhook pool created (5 connections, with auto-retry)
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+💾 Redis: Using existing connection (connection pool)
+✅ BulkImportService initialized with WebSocket gateway and classification queue
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Tools routes registered at /api/tools
+✅ Bulk import queue initialized with hardened Redis connection
+✅ Engagement backfill queue initialized (Worker handles stalled jobs via lockDuration)
+🔌 Creating dedicated Redis connection for engagement backfill worker...
+🔌 Creating dedicated Redis connection for BullMQ worker...
+✅ Bulk import worker initialized with resilient error handling (concurrency: 15, rate limit: 50 jobs/min)
+✅ Gamification services available for achievements
+💾 Redis: Using existing connection (connection pool)
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+🔄 Fetching fresh products from Shopify API...
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ WebhookOrderService using dedicated database pool
+✅ Profile routes registered at /api/profile
+⚠️ Converted numeric Shopify product ID to string: 9902431404346
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+✅ Engagement backfill worker initialized with resilient error handling (concurrency: 10)
+✓ Webhook already registered: orders/create -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+✅ Webhook worker Redis connection READY
+🔥 CacheWarmer: Starting to warm 3 cache(s) [PARALLEL mode]...
+💾 Redis: Using existing connection (connection pool)
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+💾 Redis: Using existing connection (connection pool)
+📨 Shopify webhook endpoints registered at /api/webhooks/shopify/*
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+✓ Webhook already registered: products/create -> https://jerkyrankings.replit.app/api/webhooks/shopify/products
+🛍️ Total products fetched from Shopify: 469
+✅ LeaderboardCache SET: period:all_time:top:5 cached 5 entries
+🔌 Creating dedicated Redis connection for webhook worker...
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ BulkImport worker Redis connection READY
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ CacheWarmer: LeaderboardCache warmed in 452ms
+⚠️ Converted numeric Shopify product ID to string: 1339896660056
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+🔍 Validating database schema against Drizzle definitions...
+✅ Webhook queue initialized
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+🔒 Preserving manual edits for 8032166838586: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+⏱️ Leaderboard fetched in 107ms (cache MISS, period: all_time, limit: 50)
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+🚫 HomeStatsCache MISS: Data expired or not found
+✅ Filtered to 162 rankable products (out of 469 total)
+💾 AchievementCache HIT: Returning 26 definitions
+✅ Object storage route registered at /objects/*
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+✅ Webhook worker initialized with resilient error handling (concurrency: 3)
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+✅ LeaderboardCache SET: period:all_time:top:50 cached 8 entries
+⏱️ Home stats fetched in 404ms (cache MISS)
+⚠️ Converted numeric Shopify product ID to string: 11821177487
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+❌ Failed to register webhook customers/update: {"errors":{"address":["for this topic has already been taken"]}}
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+🗑️ achievement: Cache cleared
+🔒 Preserving manual edits for 11971532943: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+⚠️ Converted numeric Shopify product ID to string: 11971533199
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+✅ All routes initialized (catch-all already registered early)
+✅ Cache UPDATED: Loaded 162 products (auto-refresh disabled - using webhooks)
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+⚠️ Converted numeric Shopify product ID to string: 11821170447
+🚫 LeaderboardCache MISS: period:all_time:top:5
+⚠️ Converted numeric Shopify product ID to string: 11821175887
+🚫 LeaderboardCache MISS: period:all_time:top:50
+🔒 Preserving manual edits for 11821170447: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+⚠️ Converted numeric Shopify product ID to string: 11821170639
+✅ Webhook services injected into worker
+🚫 Cache MISS: No cached data
+🔒 Preserving manual edits for 7101112844376: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+🔒 Preserving manual edits for 11821170639: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+✓ Webhook already registered: orders/updated -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+⏱️ Leaderboard fetched in 245ms (cache MISS, period: all_time, limit: 5)
+🔒 Preserving manual edits for 11821175631: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+✅ Seeded/updated 17/17 achievements
+⚠️ Converted numeric Shopify product ID to string: 8032166838586
+✅ Webhook registration complete: 0 new, 5 existing, 1 failed
+📄 Fetched page 2: 219 products (total so far: 469)
+✅ CacheWarmer: HomeStatsCache warmed in 404ms
+✅ Shopify webhooks registered: 0 new, 5 existing
+💾 Redis: Using existing connection (connection pool)
+⏱️ Leaderboard fetched in 255ms (cache MISS, period: all_time, limit: 5)
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 3 }
+✅ Engagement backfill worker Redis connection READY
+✓ Webhook already registered: orders/cancelled -> https://jerkyrankings.replit.app/api/webhooks/shopify/orders
+⚠️ Converted numeric Shopify product ID to string: 7101112844376
+IMPORTANT! Eviction policy is optimistic-volatile. It should be "noeviction"
+✅ Admin routes registered at /api/admin
+📨 Registering Shopify webhooks...
+⚠️ Converted numeric Shopify product ID to string: 11971532943
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+✅ Achievements seeded
+🎮 Gamification system initialized successfully
+✅ HomeStatsCache SET: Cached home stats, valid for 300s
+🚫 LeaderboardCache MISS: period:all_time:top:5
+📄 Fetched page 1: 250 products (total so far: 250)
+✓ Webhook already registered: products/update -> https://jerkyrankings.replit.app/api/webhooks/shopify/products
+✅ LeaderboardCache SET: period:all_time:top:5 cached 5 entries
+🔒 Preserving manual edits for 11971533199: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+✅ BullMQ queue Redis connection READY
+🔌 Database client connected to pool { totalConnections: 20, idleConnections: 0, waitingRequests: 2 }
+🔒 Preserving manual edits for 11821175887: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+🔒 Preserving manual edits for 9902431404346: title, animalType, animalDisplay, animalIcon, vendor, primaryFlavor, secondaryFlavors, flavorDisplay, flavorIcon
+⚠️ Converted numeric Shopify product ID to string: 11821175631
+🗑️ AchievementCache: Cache cleared
+2025-11-13T19:07:01Z info: Deployment successful
