@@ -759,55 +759,45 @@
 /* Home CTA Section */
 .home-cta-section {
   grid-column: 1 / -1;
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .home-cta-content {
-  background: linear-gradient(135deg, rgba(123, 139, 82, 0.15) 0%, rgba(93, 107, 61, 0.15) 100%);
-  border: 1px solid rgba(123, 139, 82, 0.3);
-  border-radius: 16px;
-  padding: 50px 40px;
+  background: #ffffff;
+  border: 1px solid rgba(17, 17, 17, 0.08);
+  border-top: 3px solid #d4b972;
+  border-radius: 20px;
+  padding: 60px 50px;
   text-align: center;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 16px rgba(212, 185, 114, 0.12);
   position: relative;
-  overflow: hidden;
-}
-
-.home-cta-content::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(123, 139, 82, 0.05) 0%, transparent 70%);
-  pointer-events: none;
 }
 
 .home-cta-title {
-  font-size: 36px;
-  font-weight: 800;
-  color: #3b2f25;
-  margin-bottom: 30px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 28px;
   position: relative;
-  z-index: 1;
   text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
 }
 
 .home-cta-body {
   display: flex;
   align-items: center;
-  gap: 30px;
-  margin-bottom: 35px;
+  gap: 40px;
+  margin-bottom: 40px;
   position: relative;
-  z-index: 1;
-  max-width: 750px;
+  max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 }
 
 .home-cta-image {
-  width: 200px;
+  width: 220px;
   height: auto;
   flex-shrink: 0;
   position: relative;
@@ -816,49 +806,50 @@
 }
 
 .home-cta-text {
-  font-size: 18px;
-  line-height: 1.7;
-  color: #3b2f25;
+  font-size: 17px;
+  line-height: 1.5;
+  color: #6e6e73;
   position: relative;
-  z-index: 1;
   flex: 1;
   margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 400;
+  text-align: left;
 }
 
 .home-cta-button {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 18px 40px;
-  background: #c4a962;
-  color: #3b2f25;
+  gap: 10px;
+  padding: 16px 36px;
+  background: #8B6F3D;
+  color: white;
   border: none;
   text-decoration: none;
-  border-radius: 12px;
-  font-size: 18px;
-  font-weight: 700;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 6px 20px rgba(196, 169, 98, 0.4);
+  transition: all 0.25s ease;
+  box-shadow: 0 6px 18px rgba(139, 111, 61, 0.25);
   position: relative;
-  z-index: 1;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.2px;
 }
 
 .home-cta-button:hover {
-  background: #d4b972;
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(196, 169, 98, 0.5);
+  background: #7A6032;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 111, 61, 0.35);
 }
 
 .home-cta-button .cta-arrow {
-  font-size: 22px;
-  transition: transform 0.3s ease;
+  font-size: 18px;
+  transition: transform 0.25s ease;
 }
 
 .home-cta-button:hover .cta-arrow {
-  transform: translateX(5px);
+  transform: translateX(4px);
 }
 
 .home-grid {

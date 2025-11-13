@@ -274,7 +274,7 @@ function HomePage() {
           {/* Call to Action Section */}
           <div className="home-cta-section">
             <div className="home-cta-content">
-              <h2 className="home-cta-title">Join the Flavor Revolution 🔥</h2>
+              <h2 className="home-cta-title">Join the Flavor Revolution</h2>
               <div className="home-cta-body">
                 <img 
                   src="https://www.jerky.com/cdn/shop/files/browse_best_sellers.png?v=1704231147&width=240" 
@@ -282,8 +282,7 @@ function HomePage() {
                   className="home-cta-image"
                 />
                 <p className="home-cta-text">
-                  We're more than just jerky – we're a community of meat snack enthusiasts on a mission to find the perfect chew. 
-                  Share your rankings, discover new flavors, and compete for the top spot on our leaderboard. Your taste buds deserve the best!
+                  Share your rankings, discover new flavors, and compete for the top spot on our leaderboard.
                 </p>
               </div>
               <button className="home-cta-button" onClick={() => navigate('/rank')}>
