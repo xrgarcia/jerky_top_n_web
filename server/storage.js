@@ -49,6 +49,10 @@ async function retryOnConnectionError(operation, maxRetries = 2, delayMs = 100) 
 
 class DatabaseStorage {
   async getUser(shopifyCustomerId) {
+    // Ensure shopifyCustomerId is a string for Drizzle/Neon binding
+    if (shopifyCustomerId && typeof shopifyCustomerId !== 'string') {
+      shopifyCustomerId = String(shopifyCustomerId);
+    }
     const [user] = await db.select().from(users).where(eq(users.shopifyCustomerId, shopifyCustomerId));
     return user || undefined;
   }
@@ -64,6 +68,11 @@ class DatabaseStorage {
   }
 
   async createOrUpdateUser(userData) {
+    // Ensure shopifyCustomerId is a string for Drizzle/Neon binding
+    if (userData.shopifyCustomerId && typeof userData.shopifyCustomerId !== 'string') {
+      userData.shopifyCustomerId = String(userData.shopifyCustomerId);
+    }
+    
     // Check if user exists
     const existingUser = await this.getUser(userData.shopifyCustomerId);
     

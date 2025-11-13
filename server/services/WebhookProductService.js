@@ -32,7 +32,7 @@ class WebhookProductService {
   }
 
   async handleProductUpdate(productData, topic) {
-    const shopifyProductId = productData.id?.toString();
+    const shopifyProductId = productData.id ? String(productData.id) : null;
     
     if (!shopifyProductId) {
       console.warn('⚠️ Cannot process product: missing product ID');
@@ -84,7 +84,7 @@ class WebhookProductService {
   }
 
   async handleProductDelete(productData, topic) {
-    const shopifyProductId = productData.id?.toString();
+    const shopifyProductId = productData.id ? String(productData.id) : null;
     
     if (!shopifyProductId) {
       console.warn('⚠️ Cannot process product deletion: missing product ID');

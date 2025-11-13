@@ -63,6 +63,23 @@ class WebhookOrderService {
    */
   async findOrCreateUser(shopifyCustomerId, customerEmail, orderNumber) {
     try {
+      // CRITICAL: Ensure shopifyCustomerId is always a string for Drizzle/Neon binding
+      // Neon serverless driver is strict about parameter types and will bind numbers as numbers,
+      // causing query failures against TEXT columns. This guards against cached webhook payloads
+      // or other sources that may pass numeric IDs.
+      if (shopifyCustomerId && typeof shopifyCustomerId !== 'string') {
+        shopifyCustomerId = String(shopifyCustomerId);
+        console.warn(`⚠️ Converted numeric Shopify customer ID to string: ${shopifyCustomerId}`);
+      }
+      
+      // Log customer data for debugging
+      if (!shopifyCustomerId) {
+        console.warn(`⚠️ Order ${orderNumber}: Missing Shopify customer ID`, {
+          customerEmail: customerEmail || 'none',
+          orderNumber
+        });
+      }
+      
       // First try to find existing user by Shopify ID
       if (shopifyCustomerId) {
         const [existingUser] = await this.db
@@ -298,10 +315,19 @@ class WebhookOrderService {
     const orderNumber = orderData.name || orderData.order_number?.toString();
     const orderDate = new Date(orderData.created_at || orderData.processed_at);
     const customerEmail = orderData.customer?.email || orderData.email;
-    const shopifyCustomerId = orderData.customer?.id?.toString();
+    const shopifyCustomerId = orderData.customer?.id ? String(orderData.customer.id) : null;
 
     // Log order processing (minimal)
     console.log(`📦 Processing order ${orderNumber}: ${orderData.line_items?.length || 0} line items`);
+    
+    // Validate customer data
+    if (!shopifyCustomerId && !customerEmail) {
+      console.warn(`⚠️ Order ${orderNumber}: No customer ID or email available`, {
+        hasCustomerObject: !!orderData.customer,
+        customerId: orderData.customer?.id,
+        customerEmail: orderData.customer?.email
+      });
+    }
 
     if (!orderNumber || !orderDate) {
       console.warn('⚠️ Cannot process order: missing order number or date');
@@ -318,7 +344,7 @@ class WebhookOrderService {
     let skippedItems = 0;
 
     for (const item of lineItems) {
-      let productId = item.product_id?.toString();
+      let productId = item.product_id ? String(item.product_id) : null;
 
       if (item.product_id && typeof item.product_id === 'string' && item.product_id.includes('gid://')) {
         productId = item.product_id.split('/').pop();

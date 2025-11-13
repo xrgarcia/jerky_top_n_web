@@ -134,7 +134,7 @@ class OrdersService {
       
       for (const item of lineItems) {
         // Extract product ID (remove 'gid://shopify/Product/' prefix if present)
-        let productId = item.product_id?.toString();
+        let productId = item.product_id ? String(item.product_id) : null;
         
         // Handle GraphQL ID format if present
         if (item.product_id && typeof item.product_id === 'string' && item.product_id.includes('gid://')) {
