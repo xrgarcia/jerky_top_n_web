@@ -343,6 +343,15 @@
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Avatar wrapper for vertical alignment */
+.hero-carousel .avatar-wrapper {
+  width: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
 /* Use existing site avatar classes (avatar avatar-small) with carousel-specific enhancements */
 .hero-carousel .ranker-card .avatar {
   flex-shrink: 0;

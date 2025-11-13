@@ -186,12 +186,14 @@ export default function HeroCarousel({ heroStats, homeStats, isLoading }) {
                 >
                   <div className="ranker-position">#{index + 1}</div>
                   
-                  <div className="avatar avatar-small">
-                    {ranker.avatarUrl ? (
-                      <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
-                    ) : (
-                      <div className="avatar-initials">{ranker.initials || ranker.displayName?.[0] || '?'}</div>
-                    )}
+                  <div className="avatar-wrapper">
+                    <div className="avatar avatar-small">
+                      {ranker.avatarUrl ? (
+                        <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
+                      ) : (
+                        <div className="avatar-initials">{ranker.initials || ranker.displayName?.[0] || '?'}</div>
+                      )}
+                    </div>
                   </div>
 
                   <div className="ranker-info">
