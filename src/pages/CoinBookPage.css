@@ -1,7 +1,7 @@
 /* Coin Book Page - Elegant Three-Act Narrative */
 
 .coinbook-page {
-  background: #f5f3ed;
+  background: #fafafa;
   min-height: 100vh;
   padding: 0;
 }
@@ -41,7 +41,7 @@
   transform: translate(-50%, -50%);
   width: 1200px;
   height: 1200px;
-  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 69, 19, 0.1) 30%, transparent 70%);
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 111, 61, 0.1) 30%, transparent 70%);
   border-radius: 50%;
   animation: pulse-glow 8s ease-in-out infinite;
 }
@@ -66,12 +66,12 @@
 
 .hero-title {
   font-size: 3.5rem;
-  font-weight: 800;
+  font-weight: 600;
   color: white;
   margin: 0 0 20px;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: -0.5px;
   text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .hero-subtitle {
@@ -80,6 +80,8 @@
   margin: 0 auto;
   max-width: 800px;
   line-height: 1.7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 400;
 }
 
 /* ========================================
@@ -94,29 +96,31 @@
 .act-label {
   display: inline-block;
   font-size: 0.875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  color: #8b4513;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: #8B6F3D;
   margin-bottom: 12px;
   opacity: 0.7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .act-title {
   font-size: 2.75rem;
-  font-weight: 800;
-  color: #2d2d2d;
+  font-weight: 600;
+  color: #1d1d1f;
   margin: 0 0 16px;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: -0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .act-subtitle {
   font-size: 1.125rem;
-  color: #666;
+  color: #6e6e73;
   margin: 0 auto;
   max-width: 700px;
   line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 400;
 }
 
 /* ========================================
@@ -138,7 +142,7 @@
 
 .story-card {
   position: relative;
-  background: #faf8f3;
+  background: #fafafa;
   border-radius: 12px;
   padding: 48px 40px;
   border: 1px solid #e8e4d9;
@@ -149,7 +153,7 @@
 .story-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-  border-color: #8b4513;
+  border-color: #8B6F3D;
 }
 
 .card-accent {
@@ -158,7 +162,7 @@
   left: 0;
   width: 4px;
   height: 100%;
-  background: linear-gradient(180deg, #7b8b52 0%, #6b7a42 100%);
+  background: linear-gradient(180deg, #8B6F3D 0%, #7A6032 100%);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -168,19 +172,20 @@
 }
 
 .story-card.flavor-coins .card-accent {
-  background: linear-gradient(180deg, #8b4513 0%, #6b3410 100%);
+  background: linear-gradient(180deg, #8B6F3D 0%, #7A6032 100%);
 }
 
 .story-card.engagement-coins .card-accent {
-  background: linear-gradient(180deg, #daa520 0%, #b8860b 100%);
+  background: linear-gradient(180deg, #d4b972 0%, #c4a962 100%);
 }
 
 .card-title {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-weight: 600;
+  color: #1d1d1f;
   margin: 0 0 20px;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .card-description {
@@ -192,7 +197,7 @@
 
 .card-detail {
   font-size: 1rem;
-  color: #8b4513;
+  color: #8B6F3D;
   font-weight: 600;
   font-style: italic;
   padding-top: 20px;
@@ -205,12 +210,12 @@
    ======================================== */
 
 .act-two {
-  background: #faf8f3;
+  background: #fafafa;
   padding: 100px 0;
 }
 
 .act-two .act-title {
-  color: #2d2d2d;
+  color: #1d1d1f;
 }
 
 .collection-showcase {
@@ -236,8 +241,8 @@
 
 .collection-type.featured {
   background: linear-gradient(135deg, #f8f6f0 0%, #f3f0e8 100%);
-  border: 2px solid #8b4513;
-  box-shadow: 0 4px 20px rgba(139, 69, 19, 0.12);
+  border: 2px solid #8B6F3D;
+  box-shadow: 0 4px 20px rgba(139, 111, 61, 0.12);
 }
 
 .collection-header {
@@ -250,10 +255,11 @@
 
 .type-title {
   font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-weight: 600;
+  color: #1d1d1f;
   margin: 0;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .type-description {
@@ -265,7 +271,7 @@
 .type-badge {
   display: inline-block;
   padding: 6px 16px;
-  background: #8b4513;
+  background: #8B6F3D;
   color: white;
   border-radius: 20px;
   font-size: 0.8125rem;
@@ -316,10 +322,10 @@
 
 .tier-name {
   font-size: 0.875rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .tier-percent {
@@ -330,7 +336,7 @@
 
 .tier-arrow {
   font-size: 1.5rem;
-  color: #8b4513;
+  color: #8B6F3D;
   font-weight: 700;
 }
 
@@ -408,7 +414,7 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, transparent, #daa520, transparent);
+  background: linear-gradient(90deg, transparent, #d4b972, transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
@@ -419,11 +425,11 @@
 
 /* Category-specific accent colors */
 .master-card.beef .master-accent {
-  background: linear-gradient(90deg, transparent, #8b4513, transparent);
+  background: linear-gradient(90deg, transparent, #8B6F3D, transparent);
 }
 
 .master-card.game .master-accent {
-  background: linear-gradient(90deg, transparent, #556b2f, transparent);
+  background: linear-gradient(90deg, transparent, #8B6F3D, transparent);
 }
 
 .master-card.pork .master-accent {
@@ -431,7 +437,7 @@
 }
 
 .master-card.poultry .master-accent {
-  background: linear-gradient(90deg, transparent, #daa520, transparent);
+  background: linear-gradient(90deg, transparent, #d4b972, transparent);
 }
 
 .master-card.exotic .master-accent {
@@ -440,10 +446,11 @@
 
 .master-title {
   font-size: 1.75rem;
-  font-weight: 700;
+  font-weight: 600;
   color: white;
   margin: 0 0 20px;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.3px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .master-description {
@@ -453,8 +460,8 @@
 }
 
 .masters-note {
-  background: rgba(139, 69, 19, 0.15);
-  border: 1px solid rgba(139, 69, 19, 0.3);
+  background: rgba(139, 111, 61, 0.15);
+  border: 1px solid rgba(139, 111, 61, 0.3);
   border-radius: 12px;
   padding: 40px;
   margin-bottom: 56px;
@@ -480,7 +487,7 @@
 }
 
 .note-highlight {
-  color: #daa520 !important;
+  color: #d4b972 !important;
   font-weight: 600;
 }
 
@@ -510,24 +517,24 @@
 }
 
 .story-button.primary {
-  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+  background: linear-gradient(135deg, #8B6F3D 0%, #7A6032 100%);
   color: white;
-  box-shadow: 0 4px 16px rgba(139, 69, 19, 0.3);
+  box-shadow: 0 4px 16px rgba(139, 111, 61, 0.3);
 }
 
 .story-button.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.4);
+  box-shadow: 0 8px 24px rgba(139, 111, 61, 0.4);
 }
 
 .story-button.secondary {
   background: white;
-  color: #8b4513;
-  border: 2px solid #8b4513;
+  color: #8B6F3D;
+  border: 2px solid #8B6F3D;
 }
 
 .story-button.secondary:hover {
-  background: #8b4513;
+  background: #8B6F3D;
   color: white;
 }
 

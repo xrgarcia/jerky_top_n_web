@@ -1,5 +1,5 @@
 .community-page {
-  background: #f5f3ed;
+  background: #fafafa;
   min-height: 100vh;
   padding: 0;
   position: relative;
@@ -36,7 +36,7 @@
   transform: translate(-50%, -50%);
   width: 1200px;
   height: 1200px;
-  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 69, 19, 0.1) 30%, transparent 70%);
+  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 111, 61, 0.1) 30%, transparent 70%);
   border-radius: 50%;
   animation: pulse-glow 8s ease-in-out infinite;
 }
@@ -63,10 +63,10 @@
   font-size: 3.5em;
   color: #ffffff;
   margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  font-weight: 800;
+  letter-spacing: -0.5px;
+  font-weight: 600;
   text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .stats-bridge {
@@ -79,7 +79,7 @@
 }
 
 .section-journey {
-  background: #faf8f3;
+  background: #fafafa;
   padding: 120px 0 80px 0;
   position: relative;
   opacity: 0;
@@ -93,7 +93,7 @@
 }
 
 .section-pulse {
-  background: linear-gradient(135deg, #8b4513 0%, #6b3410 100%);
+  background: linear-gradient(135deg, #8B6F3D 0%, #7A6032 100%);
   padding: 80px 0;
   position: relative;
   opacity: 0;
@@ -117,7 +117,7 @@
 }
 
 .section-discover {
-  background: #f9f7f4;
+  background: #fafafa;
   padding: 80px 0 100px 0;
   opacity: 0;
   transform: translateY(30px);
@@ -147,18 +147,20 @@
 
 .search-title {
   font-size: 32px;
-  font-weight: 800;
-  color: #2c2c2c;
+  font-weight: 600;
+  color: #1d1d1f;
   margin: 0 0 16px 0;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: -0.5px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
 }
 
 .search-subtitle {
   font-size: 16px;
-  color: #666;
+  color: #6e6e73;
   margin: 0 0 32px 0;
   line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-weight: 400;
 }
 
 .search-bar {
@@ -168,18 +170,18 @@
 .page-search-input {
   width: 100%;
   padding: 18px 28px;
-  border: 2px solid rgba(139, 69, 19, 0.2);
+  border: 2px solid rgba(139, 111, 61, 0.2);
   border-radius: 40px;
   font-size: 16px;
   transition: all 0.3s ease;
   background: white;
-  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1);
+  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.1);
 }
 
 .page-search-input:focus {
   outline: none;
-  border-color: #8b4513;
-  box-shadow: 0 6px 20px rgba(139, 69, 19, 0.2);
+  border-color: #8B6F3D;
+  box-shadow: 0 6px 20px rgba(139, 111, 61, 0.2);
   transform: translateY(-2px);
 }
 
@@ -211,7 +213,7 @@
   padding: 30px;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(139, 69, 19, 0.1);
+  border: 1px solid rgba(139, 111, 61, 0.1);
   transition: all 0.3s ease;
   text-decoration: none;
   display: block;
@@ -220,8 +222,8 @@
 
 .user-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 30px rgba(139, 69, 19, 0.2);
-  border-color: rgba(139, 69, 19, 0.3);
+  box-shadow: 0 12px 30px rgba(139, 111, 61, 0.2);
+  border-color: rgba(139, 111, 61, 0.3);
 }
 
 .user-card .avatar {
@@ -230,9 +232,11 @@
 
 .user-name {
   font-size: 1.25em;
-  color: #2c2c2c;
-  font-weight: 700;
+  color: #1d1d1f;
+  font-weight: 600;
   margin-bottom: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  letter-spacing: -0.5px;
 }
 
 .user-stats {
@@ -241,8 +245,8 @@
   gap: 20px;
   margin-bottom: 16px;
   padding: 16px 0;
-  border-top: 1px solid rgba(139, 69, 19, 0.1);
-  border-bottom: 1px solid rgba(139, 69, 19, 0.1);
+  border-top: 1px solid rgba(139, 111, 61, 0.1);
+  border-bottom: 1px solid rgba(139, 111, 61, 0.1);
 }
 
 .user-stat {
