@@ -152,7 +152,8 @@
 .milestone-preview-icon-img {
   width: 18px;
   height: 18px;
-  object-fit: contain;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .milestone-preview-name {
@@ -507,6 +508,13 @@
 
 .coinbook-widget .milestone-icon {
   font-size: 20px;
+}
+
+.coinbook-widget .milestone-icon-img {
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 .coinbook-widget .milestone-name {
