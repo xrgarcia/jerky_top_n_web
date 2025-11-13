@@ -1,0 +1,191 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2T
+Title: Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T14:49:17.607000Z
+Last Seen: 2025-11-13T15:48:56Z
+Event Count: 104
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+
+--- CULPRIT ---
+WebhookOrderService.findOrCreateUser(server.services:WebhookOrderService)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_status", "profile_image_url", "handle", "hide_name_privacy", "shopify_created_at", "created_at", "updated_at" from "users" where "users"."shopify_customer_id" = $1 limit $2
+params: 9558200287546,1
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.findOrCreateUser (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookWorker.processOrderWebhook (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at WebhookWorker.processJob (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/node_modules/bullmq/dist/cjs/classes/worker.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-13T15:48:27.654000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 4908
+[2025-11-13T15:48:27.655000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-13T15:48:27.658000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:27.658000Z] console (error): ❌ Error processing classification for user 4908: Error: Failed query: select "product_rankings"."shopify_product_id", "product_rankings"."created_at", "products_metadata"."animal_type", "products_metadata"."primary_flavor" from "product_rankings" left join "products_metadata" on "product_rankings"."shopify_product_id" = "products_metadata"."shopify_product_id" where "product_rankings"."user_id" = $1
+params: 4908
+[2025-11-13T15:48:27.695000Z] console (error): ❌ Classification job failed for user 4908: Failed query: select "product_rankings"."shopify_product_id", "product_rankings"."created_at", "products_metadata"."animal_type", "products_metadata"."primary_flavor" from "product_rankings" left join "products_metadata" on "product_rankings"."shopify_product_id" = "products_metadata"."shopify_product_id" where "product_rankings"."user_id" = $1
+params: 4908
+[2025-11-13T15:48:31.507000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048911392)
+[2025-11-13T15:48:31.507000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343872
+[2025-11-13T15:48:31.507000Z] console (info): 📦 Processing order JK3825343872: 1 line items
+[2025-11-13T15:48:31.511000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:31.511000Z] console (error): [Filtered]
+[2025-11-13T15:48:31.512000Z] console (error): [Filtered]
+[2025-11-13T15:48:31.512000Z] console (error): [Filtered]
+[2025-11-13T15:48:31.512000Z] console (error): [Filtered]
+[2025-11-13T15:48:31.550000Z] console (error): [Filtered]
+[2025-11-13T15:48:32.623000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048911392)
+[2025-11-13T15:48:32.623000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343872
+[2025-11-13T15:48:32.623000Z] console (info): 📦 Processing order JK3825343872: 1 line items
+[2025-11-13T15:48:32.626000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:32.627000Z] console (error): [Filtered]
+[2025-11-13T15:48:32.627000Z] console (error): [Filtered]
+[2025-11-13T15:48:32.628000Z] console (error): [Filtered]
+[2025-11-13T15:48:32.628000Z] console (error): [Filtered]
+[2025-11-13T15:48:32.666000Z] console (error): [Filtered]
+[2025-11-13T15:48:34.740000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048911392)
+[2025-11-13T15:48:34.740000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343872
+[2025-11-13T15:48:34.740000Z] console (info): 📦 Processing order JK3825343872: 1 line items
+[2025-11-13T15:48:34.743000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:34.743000Z] console (error): [Filtered]
+[2025-11-13T15:48:34.744000Z] console (error): [Filtered]
+[2025-11-13T15:48:34.744000Z] console (error): [Filtered]
+[2025-11-13T15:48:34.745000Z] console (error): [Filtered]
+[2025-11-13T15:48:34.783000Z] console (error): [Filtered]
+[2025-11-13T15:48:35.242000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763048915164)
+[2025-11-13T15:48:35.243000Z] console (info): 🏷️ Processing products/update webhook for product 9796706959674 (Jerky.com's Steakhouse Beef Jerky Combo)
+[2025-11-13T15:48:35.246000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:35.246000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:35.248000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:35.286000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:36.360000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763048915164)
+[2025-11-13T15:48:36.360000Z] console (info): 🏷️ Processing products/update webhook for product 9796706959674 (Jerky.com's Steakhouse Beef Jerky Combo)
+[2025-11-13T15:48:36.363000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:36.363000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:36.364000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:36.401000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:38.475000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763048915164)
+[2025-11-13T15:48:38.475000Z] console (info): 🏷️ Processing products/update webhook for product 9796706959674 (Jerky.com's Steakhouse Beef Jerky Combo)
+[2025-11-13T15:48:38.479000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:38.479000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:38.482000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:38.519000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 9796706959674,1
+[2025-11-13T15:48:47.649000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048927483)
+[2025-11-13T15:48:47.649000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343168
+[2025-11-13T15:48:47.649000Z] console (info): 📦 Processing order JK3825343168: 2 line items
+[2025-11-13T15:48:47.653000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:47.653000Z] console (error): [Filtered]
+[2025-11-13T15:48:47.654000Z] console (error): [Filtered]
+[2025-11-13T15:48:47.654000Z] console (error): [Filtered]
+[2025-11-13T15:48:47.655000Z] console (error): [Filtered]
+[2025-11-13T15:48:47.692000Z] console (error): [Filtered]
+[2025-11-13T15:48:48.766000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048927483)
+[2025-11-13T15:48:48.766000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343168
+[2025-11-13T15:48:48.766000Z] console (info): 📦 Processing order JK3825343168: 2 line items
+[2025-11-13T15:48:48.769000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:48.770000Z] console (error): [Filtered]
+[2025-11-13T15:48:48.771000Z] console (error): [Filtered]
+[2025-11-13T15:48:48.771000Z] console (error): [Filtered]
+[2025-11-13T15:48:48.771000Z] console (error): [Filtered]
+[2025-11-13T15:48:48.809000Z] console (error): [Filtered]
+[2025-11-13T15:48:50.846000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048927483)
+[2025-11-13T15:48:50.846000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343168
+[2025-11-13T15:48:50.847000Z] console (info): 📦 Processing order JK3825343168: 2 line items
+[2025-11-13T15:48:50.850000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:50.850000Z] console (error): [Filtered]
+[2025-11-13T15:48:50.851000Z] console (error): [Filtered]
+[2025-11-13T15:48:50.851000Z] console (error): [Filtered]
+[2025-11-13T15:48:50.851000Z] console (error): [Filtered]
+[2025-11-13T15:48:50.889000Z] console (error): [Filtered]
+[2025-11-13T15:48:53.108000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048932978)
+[2025-11-13T15:48:53.108000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343476
+[2025-11-13T15:48:53.108000Z] console (info): 📦 Processing order JK3825343476: 5 line items
+[2025-11-13T15:48:53.111000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:53.112000Z] console (error): [Filtered]
+[2025-11-13T15:48:53.113000Z] console (error): [Filtered]
+[2025-11-13T15:48:53.113000Z] console (error): [Filtered]
+[2025-11-13T15:48:53.113000Z] console (error): [Filtered]
+[2025-11-13T15:48:53.150000Z] console (error): [Filtered]
+[2025-11-13T15:48:54.225000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048932978)
+[2025-11-13T15:48:54.225000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343476
+[2025-11-13T15:48:54.225000Z] console (info): 📦 Processing order JK3825343476: 5 line items
+[2025-11-13T15:48:54.229000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:54.229000Z] console (error): [Filtered]
+[2025-11-13T15:48:54.230000Z] console (error): [Filtered]
+[2025-11-13T15:48:54.230000Z] console (error): [Filtered]
+[2025-11-13T15:48:54.231000Z] console (error): [Filtered]
+[2025-11-13T15:48:54.268000Z] console (error): [Filtered]
+[2025-11-13T15:48:56.343000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763048932978)
+[2025-11-13T15:48:56.343000Z] console (info): 📦 Processing orders/updated webhook for order JK3825343476
+[2025-11-13T15:48:56.343000Z] console (info): 📦 Processing order JK3825343476: 5 line items
+[2025-11-13T15:48:56.346000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-13T15:48:56.347000Z] console (error): [Filtered]
+
+--- TAGS ---
+  action: undefined
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
