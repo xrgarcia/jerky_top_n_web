@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useHeroStats, useHomeStats } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
-import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
 import HeroCarousel from '../components/home/HeroCarousel';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import { formatTimeAgo } from '../utils/dateUtils';
@@ -26,13 +25,6 @@ function HomePage() {
         homeStats={homeStats}
         isLoading={heroLoading || homeLoading}
       />
-
-      {/* Personalized Guidance for authenticated users */}
-      {isAuthenticated && (
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
-          <PersonalizedGuidance page="general" />
-        </div>
-      )}
 
       {/* Narrative Transition - Chapter Break */}
       <section className="narrative-transition">
