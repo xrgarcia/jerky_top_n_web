@@ -1,0 +1,24 @@
+injected.js:27 🎯 handleRefreshCoin called for coin: {id: 6474, code: 'be_curious', name: 'Be Curious', description: 'find products to expand your taste buds!', icon: '/objects/achievement-icons/1d1244e8-73b1-46dd-a2f6-f7a60538a5f8.png', …}
+injected.js:27 ✅ Confirm modal opened
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔵 handleConfirmRecalculate called
+injected.js:27 📋 confirmModalData: {coin: {…}, title: 'Recalculate "Be Curious"?', message: 'This will award the achievement to all users who m…ime depends on the number of users in the system.'}
+injected.js:27 🎯 Recalculating coin: {id: 6474, code: 'be_curious', name: 'Be Curious', description: 'find products to expand your taste buds!', icon: '/objects/achievement-icons/1d1244e8-73b1-46dd-a2f6-f7a60538a5f8.png', …}
+injected.js:27 🚀 About to call mutateAsync for coin ID: 6474
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔧 useRecalculateCoin mutationFn called with coinId: 6474
+injected.js:27 📡 About to POST to: /admin/achievements/6474/recalculate
+injected.js:27 🎯 handleRefreshCoin called for coin: {id: 23248, code: 'flavor_rookie', name: 'Flavor Rookie', description: 'flavor rookie', icon: '/objects/achievement-icons/dc3fef84-288d-4485-9b4e-d4edf993f293.png', …}
+injected.js:27 ✅ Confirm modal opened
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔵 handleConfirmRecalculate called
+injected.js:27 📋 confirmModalData: {coin: {…}, title: 'Recalculate "Flavor Rookie"?', message: 'This will award the achievement to all users who m…ime depends on the number of users in the system.'}
+injected.js:27 🎯 Recalculating coin: {id: 23248, code: 'flavor_rookie', name: 'Flavor Rookie', description: 'flavor rookie', icon: '/objects/achievement-icons/dc3fef84-288d-4485-9b4e-d4edf993f293.png', …}
+injected.js:27 🚀 About to call mutateAsync for coin ID: 23248
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔧 useRecalculateCoin mutationFn called with coinId: 23248
+injected.js:27 📡 About to POST to: /admin/achievements/23248/recalculate

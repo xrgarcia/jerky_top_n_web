@@ -401,41 +401,8 @@ router.put('/achievements/:id', requireEmployeeAuth, async (req, res) => {
   }
 });
 
-/**
- * POST /api/admin/achievements/:id/recalculate
- * Trigger recalculation for a specific achievement
- * Awards the achievement to users who already meet the requirements
- */
-router.post('/achievements/:id/recalculate', requireEmployeeAuth, async (req, res) => {
-  console.log('🎯 Recalculate endpoint hit!');
-  try {
-    const achievementId = parseInt(req.params.id);
-    console.log('🎯 Achievement ID:', achievementId);
-    
-    if (isNaN(achievementId)) {
-      console.log('❌ Invalid achievement ID');
-      return res.status(400).json({ error: 'Invalid achievement ID' });
-    }
-    
-    console.log(`🔄 Manual recalculation triggered for achievement ${achievementId}`);
-    console.log('🔧 productsService available?', productsService ? 'YES' : 'NO (using null)');
-    
-    // Await recalculation to get actual stats
-    console.log('⏳ Starting recalculation...');
-    const stats = await triggerAchievementRecalculation(achievementId, req.db, productsService);
-    console.log('✅ Recalculation completed! Stats:', stats);
-    
-    res.json({ 
-      success: true, 
-      message: 'Recalculation completed',
-      stats
-    });
-  } catch (error) {
-    console.error('❌ Error triggering recalculation:', error);
-    console.error('❌ Error stack:', error.stack);
-    res.status(500).json({ error: 'Failed to trigger recalculation', details: error.message });
-  }
-});
+// NOTE: Recalculate endpoint moved to server/routes/admin/recalculate.js
+// to avoid route collision and handle engagement achievements properly
 
 /**
  * PATCH /api/admin/achievements/:id/toggle
