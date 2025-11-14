@@ -1,6 +1,6 @@
 const express = require('express');
 const { achievements, users } = require('../../../shared/schema');
-const { eq, and } = require('drizzle-orm');
+const { eq, and, inArray } = require('drizzle-orm');
 
 module.exports = function createRecalculateRoutes(storage, db, productsService = null) {
   const router = express.Router();
@@ -87,9 +87,35 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     console.log(`   Type: ${ach.collectionType}, Requirement: ${JSON.stringify(ach.requirement)}`);
     console.log(`   has_tiers: ${ach.hasTiers}, tier_thresholds: ${JSON.stringify(ach.tierThresholds)}`);
     
-    // Get all users from the database
-    const allUsers = await db.select({ id: users.id }).from(users);
-    console.log(`👥 Found ${allUsers.length} users to process`);
+    // Get users for recalculation
+    // For engagement achievements based on rankings, only check users who have rankings
+    let allUsers;
+    if (ach.collectionType === 'engagement_collection' && ach.requirement?.type === 'rank_count') {
+      console.log(`⚡ Optimized query: Fetching only users with rankings`);
+      const { productRankings } = require('../../../shared/schema');
+      
+      // Get distinct user IDs from productRankings
+      const usersWithRankings = await db
+        .selectDistinct({ userId: productRankings.userId })
+        .from(productRankings);
+      
+      const userIds = usersWithRankings.map(u => u.userId);
+      
+      if (userIds.length === 0) {
+        console.log(`⚠️ No users with rankings found`);
+        allUsers = [];
+      } else {
+        allUsers = await db.select({ id: users.id }).from(users).where(inArray(users.id, userIds));
+      }
+      
+      // Show the optimization savings
+      const totalUsers = await db.select({ count: users.id }).from(users);
+      console.log(`✅ Optimized: Checking ${allUsers.length} users with rankings (saved checking ${totalUsers.length - allUsers.length} users with 0 rankings)`);
+    } else {
+      // For other achievement types, check all users
+      allUsers = await db.select({ id: users.id }).from(users);
+      console.log(`👥 Found ${allUsers.length} users to process`);
+    }
     
     // Get the CollectionManager for custom collections
     const CollectionManager = require('../../services/CollectionManager');
