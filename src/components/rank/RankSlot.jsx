@@ -11,13 +11,16 @@ export function RankSlot({ position, product, isDragging }) {
   const {
     attributes,
     listeners,
-    setNodeRef: setDragRef,
-    transform
+    setNodeRef: setDragRef
   } = useDraggable({
     id: `draggable-slot-${position}`,
     disabled: !product,
     data: { product, position }
   });
+
+  // Keep content in place - just apply opacity via CSS when dragging
+  // This matches DraggableProduct behavior for consistency
+  const style = {};
 
   return (
     <div
@@ -29,6 +32,7 @@ export function RankSlot({ position, product, isDragging }) {
       {product ? (
         <div
           ref={setDragRef}
+          style={style}
           {...attributes}
           {...listeners}
           className="slot-content"
