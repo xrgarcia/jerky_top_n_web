@@ -253,6 +253,7 @@ class WebhookOrderService {
 
     console.log(`🗑️ Deleting customer_orders records for cancelled order: ${orderNumber}`);
 
+    // Step 1: Delete order items
     const deleted = await this.db
       .delete(customerOrderItems)
       .where(eq(customerOrderItems.orderNumber, orderNumber))
@@ -263,6 +264,51 @@ class WebhookOrderService {
     const userId = deleted.length > 0 ? deleted[0].userId : null;
     const affectedProductIds = [...new Set(deleted.map(record => record.shopifyProductId).filter(Boolean))];
 
+    let rankingDeletionResult = null;
+    
+    // Step 2: Delete rankings for affected products (cascade deletion)
+    if (userId && affectedProductIds.length > 0) {
+      try {
+        const ProductRankingRepository = require('../repositories/ProductRankingRepository');
+        rankingDeletionResult = await ProductRankingRepository.bulkDeleteRankingsForProducts(userId, affectedProductIds);
+        
+        if (rankingDeletionResult.deletedCount > 0) {
+          console.log(`🗑️ Cascade: Deleted ${rankingDeletionResult.deletedCount} rankings for cancelled products`);
+        }
+      } catch (error) {
+        console.error('❌ Failed to delete rankings for cancelled order:', error);
+        Sentry.captureException(error, {
+          tags: { service: 'webhook-order', action: 'delete_rankings' },
+          extra: { userId, affectedProductIds, orderNumber }
+        });
+      }
+    }
+
+    // Step 3: Enqueue coin recalculation (non-blocking)
+    if (userId && rankingDeletionResult?.deletedCount > 0) {
+      try {
+        const coinRecalculationQueue = require('./CoinRecalculationQueue');
+        await coinRecalculationQueue.enqueue(
+          userId,
+          'all', // Recalculate all coin types
+          'order_cancelled',
+          {
+            orderNumber,
+            deletedProductIds: affectedProductIds,
+            deletedRankingsCount: rankingDeletionResult.deletedCount
+          }
+        );
+        console.log(`🪙 Queued coin recalculation for user ${userId} (${rankingDeletionResult.deletedCount} rankings deleted)`);
+      } catch (error) {
+        console.error('❌ Failed to enqueue coin recalculation:', error);
+        Sentry.captureException(error, {
+          tags: { service: 'webhook-order', action: 'enqueue_recalculation' },
+          extra: { userId, orderNumber }
+        });
+      }
+    }
+
+    // Step 4: Broadcast WebSocket update
     if (this.webSocketGateway && deleted.length > 0) {
       this.webSocketGateway.broadcastCustomerOrdersUpdate({
         action: 'deleted',
@@ -278,7 +324,9 @@ class WebhookOrderService {
       userId,
       recordsDeleted: deleted.length,
       deletedRecords: deleted,
-      affectedProductIds
+      affectedProductIds,
+      rankingsDeleted: rankingDeletionResult?.deletedCount || 0,
+      coinRecalculationQueued: userId && rankingDeletionResult?.deletedCount > 0
     };
   }
 
@@ -397,6 +445,23 @@ class WebhookOrderService {
       .from(customerOrderItems)
       .where(eq(customerOrderItems.orderNumber, orderNumber));
 
+    // Track fulfillment status downgrades (delivered → not delivered)
+    const downgradedProducts = [];
+    for (const existing of existingItems) {
+      if (existing.fulfillmentStatus === 'delivered') {
+        // Find matching new item
+        const key = `${existing.orderNumber}:${existing.shopifyProductId}:${existing.sku}`;
+        const newItem = orderItems.find(item => 
+          `${item.orderNumber}:${item.shopifyProductId}:${item.sku}` === key
+        );
+        
+        if (newItem && newItem.fulfillmentStatus !== 'delivered') {
+          downgradedProducts.push(existing.shopifyProductId);
+          console.log(`⬇️ Fulfillment downgrade detected: ${existing.shopifyProductId} (delivered → ${newItem.fulfillmentStatus || 'null'})`);
+        }
+      }
+    }
+
     const itemsToDelete = existingItems.filter(existing => {
       const key = `${existing.orderNumber}:${existing.shopifyProductId}:${existing.sku}`;
       return !currentLineItemKeys.has(key);
@@ -505,6 +570,44 @@ class WebhookOrderService {
 
     console.log(`✅ Processed ${upserted.length} line items for order ${orderNumber} (user: ${user.id})`);
 
+    // Handle fulfillment status downgrades (delivered → not delivered)
+    let rankingDeletionResult = null;
+    if (downgradedProducts.length > 0) {
+      const uniqueDowngradedProducts = [...new Set(downgradedProducts)];
+      
+      try {
+        const ProductRankingRepository = require('../repositories/ProductRankingRepository');
+        rankingDeletionResult = await ProductRankingRepository.bulkDeleteRankingsForProducts(
+          user.id,
+          uniqueDowngradedProducts
+        );
+        
+        if (rankingDeletionResult.deletedCount > 0) {
+          console.log(`🗑️ Cascade: Deleted ${rankingDeletionResult.deletedCount} rankings for downgraded products`);
+          
+          // Enqueue coin recalculation
+          const coinRecalculationQueue = require('./CoinRecalculationQueue');
+          await coinRecalculationQueue.enqueue(
+            user.id,
+            'all',
+            'fulfillment_downgrade',
+            {
+              orderNumber,
+              downgradedProductIds: uniqueDowngradedProducts,
+              deletedRankingsCount: rankingDeletionResult.deletedCount
+            }
+          );
+          console.log(`🪙 Queued coin recalculation for user ${user.id} (fulfillment downgrade)`);
+        }
+      } catch (error) {
+        console.error('❌ Failed to handle fulfillment downgrade:', error);
+        Sentry.captureException(error, {
+          tags: { service: 'webhook-order', action: 'handle_downgrade' },
+          extra: { userId: user.id, downgradedProducts, orderNumber }
+        });
+      }
+    }
+
     // Broadcast if any state changed (upserts OR deletions in loop OR orphaned deletions)
     const totalDeletions = deletedInLoop + itemsToDelete.length;
     if (this.webSocketGateway && (upserted.length > 0 || totalDeletions > 0)) {
@@ -533,7 +636,9 @@ class WebhookOrderService {
       userId: user.id,
       itemsProcessed: upserted.length,
       items: upserted,
-      affectedProductIds: [...new Set(upserted.map(item => item.shopifyProductId))] // unique product IDs
+      affectedProductIds: [...new Set(upserted.map(item => item.shopifyProductId))], // unique product IDs
+      downgradedProducts: downgradedProducts.length > 0 ? [...new Set(downgradedProducts)] : undefined,
+      rankingsDeleted: rankingDeletionResult?.deletedCount || 0
     };
   }
 

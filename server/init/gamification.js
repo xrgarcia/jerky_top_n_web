@@ -32,6 +32,8 @@ const BulkImportWorker = require('../services/BulkImportWorker');
 const BulkImportService = require('../services/BulkImportService');
 const EngagementBackfillQueue = require('../services/EngagementBackfillQueue');
 const EngagementBackfillWorker = require('../services/EngagementBackfillWorker');
+const CoinRecalculationQueue = require('../services/CoinRecalculationQueue');
+const CoinRecalculationWorker = require('../services/CoinRecalculationWorker');
 const WebhookQueue = require('../services/WebhookQueue');
 const WebhookWorker = require('../services/WebhookWorker');
 
@@ -230,6 +232,38 @@ async function initializeGamification(app, io, db, storage, fetchAllShopifyProdu
   
   services.engagementBackfillQueue = engagementBackfillQueue;
   services.engagementBackfillWorker = engagementBackfillWorker;
+  
+  // Initialize CoinRecalculationQueue (BullMQ with Redis)
+  try {
+    console.log('🔧 Initializing CoinRecalculationQueue...');
+    const coinRecalculationQueue = CoinRecalculationQueue; // Singleton instance
+    await coinRecalculationQueue.initialize();
+    console.log('✅ CoinRecalculationQueue initialized');
+    
+    // Initialize CoinRecalculationWorker (BullMQ background processor)
+    console.log('🔧 Initializing CoinRecalculationWorker...');
+    const coinRecalculationWorker = new CoinRecalculationWorker();
+    await coinRecalculationWorker.initialize({
+      engagementManager,
+      collectionManager,
+      leaderboardManager,
+      wsGateway
+    });
+    console.log('✅ CoinRecalculationWorker initialized');
+    
+    services.coinRecalculationQueue = coinRecalculationQueue;
+    services.coinRecalculationWorker = coinRecalculationWorker;
+  } catch (err) {
+    console.error('❌ Failed to initialize CoinRecalculation system:', err.message);
+    console.error('Stack trace:', err.stack);
+    Sentry.captureException(err, {
+      level: 'error',
+      tags: {
+        service: 'gamification',
+        operation: 'coin_recalculation_init'
+      }
+    });
+  }
   
   // Initialize WebhookQueue (BullMQ with Redis for Shopify webhooks)
   const webhookQueue = WebhookQueue; // Singleton instance

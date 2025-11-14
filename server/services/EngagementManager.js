@@ -1008,6 +1008,100 @@ class EngagementManager {
     };
     return mapping[requirementType] || requirementType;
   }
+
+  /**
+   * Recalculate all engagement coins for a user
+   * Re-evaluates coin eligibility based on current state and revokes invalid coins
+   * Called by CoinRecalculationWorker when rankings are deleted or fulfillment status changes
+   * @param {number} userId - User ID
+   * @param {object} context - Additional context (e.g., deletedProductIds, reason)
+   * @returns {Promise<object>} Result object with revoked coins
+   */
+  async recalculateUserCoins(userId, context = {}) {
+    const { userAchievements } = require('../../shared/schema');
+    const { eq, and, inArray } = require('drizzle-orm');
+    
+    try {
+      console.log(`🔄 Recalculating engagement coins for user ${userId}...`);
+      
+      // Get current user stats
+      const ActivityStatsRepository = require('../repositories/ActivityStatsRepository');
+      const activityStatsRepo = new ActivityStatsRepository(this.db);
+      const userStats = await activityStatsRepo.getUserEngagementStats(userId);
+      
+      // Get all engagement-based achievements
+      const engagementAchievements = await this.achievementRepo.getAllAchievements();
+      const engagementOnly = engagementAchievements.filter(a => 
+        a.collectionType === 'engagement_collection' || 
+        a.category === 'ranking' || 
+        a.category === 'social' || 
+        a.category === 'discovery' || 
+        a.category === 'streak'
+      );
+      
+      // Get user's current achievements
+      const currentUserAchievements = await this.achievementRepo.getUserAchievements(userId);
+      const currentEngagementAchievements = currentUserAchievements.filter(ua => {
+        const achievement = engagementOnly.find(a => a.id === ua.achievementId);
+        return achievement !== undefined;
+      });
+      
+      const revokedCoins = [];
+      
+      // Re-evaluate each achievement
+      for (const userAchievement of currentEngagementAchievements) {
+        const achievement = engagementOnly.find(a => a.id === userAchievement.achievementId);
+        if (!achievement) continue;
+        
+        const evaluator = this.evaluators[achievement.requirement.type];
+        if (!evaluator) continue;
+        
+        const stillEligible = evaluator(userStats, achievement.requirement);
+        
+        if (!stillEligible) {
+          // User no longer meets requirements - revoke achievement
+          await this.db.delete(userAchievements)
+            .where(eq(userAchievements.id, userAchievement.id));
+          
+          await this.activityLogRepo.logActivity(
+            userId,
+            'coin_revoked',
+            {
+              achievementCode: achievement.code,
+              achievementName: achievement.name,
+              achievementIcon: achievement.icon,
+              reason: context.reason || 'recalculation',
+              context
+            }
+          );
+          
+          revokedCoins.push({
+            achievementId: achievement.id,
+            achievementCode: achievement.code,
+            achievementName: achievement.name,
+            tier: userAchievement.currentTier
+          });
+          
+          console.log(`  ❌ Revoked: ${achievement.code} (${achievement.name})`);
+        } else {
+          console.log(`  ✓ Retained: ${achievement.code} (${achievement.name})`);
+        }
+      }
+      
+      console.log(`✅ Engagement coin recalculation complete: ${revokedCoins.length} revoked, ${currentEngagementAchievements.length - revokedCoins.length} retained`);
+      
+      return {
+        userId,
+        totalChecked: currentEngagementAchievements.length,
+        revokedCount: revokedCoins.length,
+        retainedCount: currentEngagementAchievements.length - revokedCoins.length,
+        revokedCoins
+      };
+    } catch (error) {
+      console.error(`❌ Error recalculating engagement coins for user ${userId}:`, error);
+      throw error;
+    }
+  }
 }
 
 module.exports = EngagementManager;

@@ -10,7 +10,8 @@ const Sentry = require('@sentry/node');
  */
 class PurchaseHistoryRepository {
   /**
-   * Get all Shopify product IDs that a user has purchased
+   * Get all Shopify product IDs that a user has purchased AND received (delivered)
+   * Only products with fulfillment_status = 'delivered' are eligible for ranking
    * @param {number} userId - The user's ID
    * @returns {Promise<string[]>} Array of Shopify product IDs
    */
@@ -19,10 +20,18 @@ class PurchaseHistoryRepository {
       const purchasedProducts = await db
         .select({ shopifyProductId: customerOrderItems.shopifyProductId })
         .from(customerOrderItems)
-        .where(eq(customerOrderItems.userId, userId));
+        .where(
+          and(
+            eq(customerOrderItems.userId, userId),
+            eq(customerOrderItems.fulfillmentStatus, 'delivered')
+          )
+        );
 
       // Return unique product IDs (deduplicate in case of multiple orders)
       const uniqueProductIds = [...new Set(purchasedProducts.map(p => p.shopifyProductId))];
+      
+      console.log(`🚚 User ${userId}: ${uniqueProductIds.length} delivered products available for ranking`);
+      
       return uniqueProductIds;
     } catch (error) {
       Sentry.captureException(error, {
