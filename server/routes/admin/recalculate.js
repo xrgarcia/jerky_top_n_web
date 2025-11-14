@@ -110,8 +110,12 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
             if (progress.tier) {
               result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
             }
+          } else if (ach.collectionType === 'engagement_collection') {
+            // Engagement achievements (rankings, activity counts, etc.)
+            const EngagementManager = require('../../services/EngagementManager');
+            const engagementManager = new EngagementManager(storage, db);
+            result = await engagementManager.checkAndAwardEngagementAchievement(user.id, ach);
           }
-          // Legacy achievements would require different handling via EngagementManager
           
           processedCount++;
           
