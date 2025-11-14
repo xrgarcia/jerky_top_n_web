@@ -47,23 +47,23 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
   /**
    * POST /api/admin/data/clear-cache
-   * Clear all application caches
+   * Clear all game-related caches (achievements, leaderboards, progress, streaks, etc.)
+   * Does NOT clear: UserProfileCache, MetadataCache, PurchaseHistoryCache
    */
   router.post('/data/clear-cache', requireSuperAdmin, async (req, res) => {
     try {
-      console.log(`🗑️ Super admin ${req.user.email} clearing all caches...`);
+      console.log(`🗑️ Super admin ${req.user.email} clearing game caches...`);
 
-      // Clear all 13 system caches
+      // Clear game-related caches (10 total)
+      // User-specific game progress: StreakCache, ProgressCache, UserClassificationCache, GuidanceCache, JourneyCache
+      // Global game data: AchievementCache, HomeStatsCache, LeaderboardCache, LeaderboardPositionCache, RankingStatsCache
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
-      const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
       const JourneyCache = require('../../cache/JourneyCache');
       const GuidanceCache = require('../../cache/GuidanceCache');
-      const PurchaseHistoryCache = require('../../cache/PurchaseHistoryCache');
-      const UserProfileCache = require('../../cache/UserProfileCache');
       const ProgressCache = require('../../cache/ProgressCache');
       const StreakCache = require('../../cache/StreakCache');
       const UserClassificationCache = require('../../cache/UserClassificationCache');
@@ -72,31 +72,22 @@ module.exports = function createDataManagementRoutes(storage, db) {
       console.log('🗑️ Cleared AchievementCache');
       
       HomeStatsCache.getInstance().invalidate();
-      console.log('🗑️ Cleared HomeStatsCache (metrics)');
+      console.log('🗑️ Cleared HomeStatsCache');
       
       LeaderboardCache.getInstance().invalidate();
       console.log('🗑️ Cleared LeaderboardCache');
-      
-      new MetadataCache().invalidate();
-      console.log('🗑️ Cleared MetadataCache (products)');
       
       LeaderboardPositionCache.getInstance().invalidateAll();
       console.log('🗑️ Cleared LeaderboardPositionCache');
       
       new RankingStatsCache().invalidate();
-      console.log('🗑️ Cleared RankingStatsCache (rankings)');
+      console.log('🗑️ Cleared RankingStatsCache');
 
       new JourneyCache().invalidateAll();
       console.log('🗑️ Cleared JourneyCache');
 
       new GuidanceCache().invalidate();
       console.log('🗑️ Cleared GuidanceCache');
-
-      new PurchaseHistoryCache().invalidate();
-      console.log('🗑️ Cleared PurchaseHistoryCache');
-
-      new UserProfileCache().invalidate();
-      console.log('🗑️ Cleared UserProfileCache');
 
       new ProgressCache().invalidate();
       console.log('🗑️ Cleared ProgressCache');
@@ -109,26 +100,23 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
       res.json({ 
         success: true, 
-        message: 'All caches cleared successfully',
+        message: 'Game caches cleared successfully',
         clearedCaches: [
           'AchievementCache',
           'HomeStatsCache',
           'LeaderboardCache',
-          'MetadataCache',
           'LeaderboardPositionCache',
           'RankingStatsCache',
           'JourneyCache',
           'GuidanceCache',
-          'PurchaseHistoryCache',
-          'UserProfileCache',
           'ProgressCache',
           'StreakCache',
           'UserClassificationCache'
         ]
       });
     } catch (error) {
-      console.error('Error clearing caches:', error);
-      res.status(500).json({ error: 'Failed to clear caches', details: error.message });
+      console.error('Error clearing game caches:', error);
+      res.status(500).json({ error: 'Failed to clear game caches', details: error.message });
     }
   });
 
@@ -165,17 +153,14 @@ module.exports = function createDataManagementRoutes(storage, db) {
       await db.execute(sql`TRUNCATE TABLE streaks CASCADE`);
       console.log('🗑️ Truncated streaks');
       
-      // Clear all system caches after deletion
+      // Clear game-related caches after deletion (same as clear-cache endpoint)
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
-      const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
       const JourneyCache = require('../../cache/JourneyCache');
       const GuidanceCache = require('../../cache/GuidanceCache');
-      const PurchaseHistoryCache = require('../../cache/PurchaseHistoryCache');
-      const UserProfileCache = require('../../cache/UserProfileCache');
       const ProgressCache = require('../../cache/ProgressCache');
       const StreakCache = require('../../cache/StreakCache');
       const UserClassificationCache = require('../../cache/UserClassificationCache');
@@ -183,13 +168,10 @@ module.exports = function createDataManagementRoutes(storage, db) {
       AchievementCache.getInstance().invalidate();
       HomeStatsCache.getInstance().invalidate();
       LeaderboardCache.getInstance().invalidate();
-      new MetadataCache().invalidate();
       LeaderboardPositionCache.getInstance().invalidateAll();
       new RankingStatsCache().invalidate();
       new JourneyCache().invalidateAll();
       new GuidanceCache().invalidate();
-      new PurchaseHistoryCache().invalidate();
-      new UserProfileCache().invalidate();
       new ProgressCache().invalidate();
       new StreakCache().invalidate();
       new UserClassificationCache().invalidate();
