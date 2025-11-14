@@ -348,12 +348,30 @@ export function useRecalculateCoin() {
 
   return useMutation({
     mutationFn: async (coinId) => {
-      const data = await api.post(`/admin/achievements/${coinId}/recalculate`);
-      return data;
+      console.log('🔧 useRecalculateCoin mutationFn called with coinId:', coinId);
+      console.log('📡 About to POST to:', `/admin/achievements/${coinId}/recalculate`);
+      
+      try {
+        const data = await api.post(`/admin/achievements/${coinId}/recalculate`);
+        console.log('✅ POST successful, response:', data);
+        return data;
+      } catch (error) {
+        console.error('❌ POST failed with error:', error);
+        console.error('Error details:', {
+          message: error.message,
+          status: error.status,
+          data: error.data
+        });
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log('🎉 Mutation onSuccess called with data:', data);
       // Invalidate all relevant caches after recalculation
       queryClient.invalidateQueries({ queryKey: ['adminCoins'] });
+    },
+    onError: (error) => {
+      console.error('💥 Mutation onError called with error:', error);
     },
   });
 }
