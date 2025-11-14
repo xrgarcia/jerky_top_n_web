@@ -15,6 +15,7 @@ class ProductsMetadataService {
    */
   async syncProductsMetadata(products) {
     let syncedCount = 0;
+    const metadataMap = {};
     
     for (const product of products) {
       const animal = extractAnimalFromTitle(product.title);
@@ -34,12 +35,15 @@ class ProductsMetadataService {
       
       const [result] = await this.repository.upsertProductMetadata(product.id, metadata);
       
-      // Update metadata cache for this specific product (no full invalidation)
-      if (this.metadataCache) {
-        await this.metadataCache.updateProduct(product.id, result);
-      }
+      // Collect metadata for batch cache update
+      metadataMap[product.id] = result;
       
       syncedCount++;
+    }
+    
+    // Batch update cache with all metadata at once (efficient, no empty cache issues)
+    if (this.metadataCache && Object.keys(metadataMap).length > 0) {
+      await this.metadataCache.set(metadataMap);
     }
     
     return syncedCount;
