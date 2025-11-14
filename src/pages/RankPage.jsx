@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, PointerSensor, useSensor, useSensors, getFirstCollision } from '@dnd-kit/core';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
@@ -15,6 +15,51 @@ import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { RankingModal } from '../components/rank/RankingModal';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './RankPage.css';
+
+/**
+ * Custom collision detection that uses pointer position instead of dragged element's center.
+ * This ensures highlighting follows the cursor exactly, not the center of the dragged item.
+ */
+function pointerClosestCenter(args) {
+  const { pointerCoordinates, droppableContainers } = args;
+  
+  if (!pointerCoordinates) {
+    return [];
+  }
+
+  const collisions = [];
+  
+  // droppableContainers is a Map, so we iterate over its values
+  for (const droppableContainer of droppableContainers.values()) {
+    const { id, rect, disabled } = droppableContainer;
+    
+    // Skip disabled droppables
+    if (disabled || !rect.current) {
+      continue;
+    }
+
+    const droppableRect = rect.current;
+    
+    // Calculate center of droppable zone
+    const centerX = droppableRect.left + droppableRect.width / 2;
+    const centerY = droppableRect.top + droppableRect.height / 2;
+    
+    // Calculate distance from pointer to droppable center
+    const deltaX = pointerCoordinates.x - centerX;
+    const deltaY = pointerCoordinates.y - centerY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    
+    collisions.push({
+      id,
+      data: { droppableContainer, value: distance }
+    });
+  }
+  
+  // Sort by distance and return only the closest one
+  collisions.sort((a, b) => a.data.value - b.data.value);
+  
+  return collisions.length > 0 ? [collisions[0]] : [];
+}
 
 export default function RankPage() {
   const queryClient = useQueryClient();
@@ -546,7 +591,7 @@ Continue?`;
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCenter}
+      collisionDetection={pointerClosestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
