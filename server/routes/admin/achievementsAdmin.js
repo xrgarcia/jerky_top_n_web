@@ -66,14 +66,16 @@ async function triggerAchievementRecalculation(achievementId, database, products
   const AchievementRepository = require('../../repositories/AchievementRepository');
   const ProductsMetadataRepository = require('../../repositories/ProductsMetadataRepository');
   const ActivityLogRepository = require('../../repositories/ActivityLogRepository');
+  const StreakRepository = require('../../repositories/StreakRepository');
   
   const achievementRepo = new AchievementRepository(database);
   const productsMetadataRepo = new ProductsMetadataRepository(database);
   const activityLogRepo = new ActivityLogRepository(database);
+  const streakRepo = new StreakRepository(database);
   const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
   const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
   const leaderboardManager = new LeaderboardManager(database, primaryDb);
-  const streakManager = new StreakManager(database);
+  const streakManager = new StreakManager(streakRepo, activityLogRepo);
   
   // Process users in batches
   const BATCH_SIZE = 5;
