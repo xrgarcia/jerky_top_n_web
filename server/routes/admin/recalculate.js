@@ -1,6 +1,6 @@
 const express = require('express');
 const { achievements, users } = require('../../../shared/schema');
-const { eq } = require('drizzle-orm');
+const { eq, and } = require('drizzle-orm');
 
 module.exports = function createRecalculateRoutes(storage, db, productsService = null) {
   const router = express.Router();
@@ -134,11 +134,28 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
             const EngagementManager = require('../../services/EngagementManager');
             const engagementManager = new EngagementManager(storage, db);
             
-            // Get user stats needed for engagement achievement checking
-            const userStats = await storage.getUserStats(user.id);
-            if (userStats) {
-              result = await engagementManager.checkAndAwardEngagementAchievement(user.id, ach, userStats);
-            }
+            // Calculate user stats directly from database
+            const { productRankings, userActivities } = require('../../../shared/schema');
+            const { count } = require('drizzle-orm');
+            
+            const [rankingsResult, searchesResult] = await Promise.all([
+              db.select({ count: count() })
+                .from(productRankings)
+                .where(eq(productRankings.userId, user.id)),
+              db.select({ count: count() })
+                .from(userActivities)
+                .where(and(
+                  eq(userActivities.userId, user.id),
+                  eq(userActivities.activityType, 'search')
+                ))
+            ]);
+            
+            const userStats = {
+              totalRankings: rankingsResult[0]?.count || 0,
+              totalSearches: searchesResult[0]?.count || 0
+            };
+            
+            result = await engagementManager.checkAndAwardEngagementAchievement(user.id, ach, userStats);
           }
           
           processedCount++;
