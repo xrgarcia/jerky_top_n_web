@@ -22,7 +22,7 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
   
   // Initialize services with dedicated webhook database connection
   const orderService = new WebhookOrderService(webSocketGateway, webhookDb);
-  const productService = new WebhookProductService(webhookDb, webSocketGateway);
+  const productService = new WebhookProductService(webhookDb, webSocketGateway, metadataCache);
   const customerService = new WebhookCustomerService(webSocketGateway, sharedCaches);
   const purchaseHistoryService = new PurchaseHistoryService();
   

@@ -3,8 +3,9 @@ const { extractAnimalFromTitle } = require('../utils/animalExtractor');
 const { extractFlavorsFromTitle } = require('../utils/flavorExtractor');
 
 class ProductsMetadataService {
-  constructor(db) {
+  constructor(db, metadataCache = null) {
     this.repository = new ProductsMetadataRepository(db);
+    this.metadataCache = metadataCache;
   }
 
   /**
@@ -31,7 +32,13 @@ class ProductsMetadataService {
         flavorIcon: flavors?.icon || null,
       };
       
-      await this.repository.upsertProductMetadata(product.id, metadata);
+      const [result] = await this.repository.upsertProductMetadata(product.id, metadata);
+      
+      // Update metadata cache for this specific product (no full invalidation)
+      if (this.metadataCache) {
+        this.metadataCache.updateProduct(product.id, result);
+      }
+      
       syncedCount++;
     }
     

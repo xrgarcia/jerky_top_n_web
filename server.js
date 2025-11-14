@@ -1020,8 +1020,8 @@ const productCache = {
 // 30-minute ranking statistics cache (OOP implementation)
 const rankingStatsCache = new RankingStatsCache(30);
 
-// 30-minute metadata cache (OOP implementation)
-const metadataCache = new MetadataCache(30);
+// Metadata cache (no TTL - webhook-invalidated only)
+const metadataCache = new MetadataCache();
 
 // Shared purchase history service (singleton with persistent cache)
 const purchaseHistoryService = new PurchaseHistoryService();
@@ -1428,7 +1428,7 @@ app.get('/api/products/animals', async (req, res) => {
     
     const { db } = require('./server/db.js');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     const animals = await metadataService.getAnimalCategories();
     
@@ -1467,7 +1467,7 @@ app.get('/api/products/all', async (req, res) => {
     const ProductsService = require('./server/services/ProductsService');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     // Create service with dependency injection (using shared cache instances)
     const productsService = new ProductsService(
@@ -1537,7 +1537,7 @@ app.get('/api/products/search', async (req, res) => {
     const ProductsService = require('./server/services/ProductsService');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     const productsService = new ProductsService(
       db,
@@ -1743,7 +1743,7 @@ app.get('/api/products/rankable', async (req, res) => {
     const ProductsService = require('./server/services/ProductsService');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     const productsService = new ProductsService(
       db,
@@ -1922,7 +1922,7 @@ app.get('/api/products', async (req, res) => {
     const ProductsService = require('./server/services/ProductsService');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     const productsService = new ProductsService(
       db,
@@ -2084,7 +2084,7 @@ app.get('/api/products/:productId', async (req, res) => {
     const ProductsService = require('./server/services/ProductsService');
     const ProductsMetadataService = require('./server/services/ProductsMetadataService');
     
-    const metadataService = new ProductsMetadataService(db);
+    const metadataService = new ProductsMetadataService(db, metadataCache);
     
     const productsService = new ProductsService(
       db,
@@ -3695,7 +3695,7 @@ if (databaseAvailable && storage) {
   // Create shared ProductsService instance
   const ProductsService = require('./server/services/ProductsService');
   const ProductsMetadataService = require('./server/services/ProductsMetadataService');
-  const metadataService = new ProductsMetadataService(db);
+  const metadataService = new ProductsMetadataService(db, metadataCache);
   
   const productsService = new ProductsService(
     db,
