@@ -1327,13 +1327,20 @@ window.toggleAchievementStatus = async function(achievementId) {
  * Recalculate and award achievement to all qualifying users
  */
 window.recalculateAchievement = async function(achievementId) {
+  console.log('🔧 recalculateAchievement called with ID:', achievementId);
   const achievement = allAchievements.find(a => a.id === achievementId);
-  if (!achievement) return;
+  console.log('🔍 Found achievement:', achievement);
+  if (!achievement) {
+    console.error('❌ Achievement not found for ID:', achievementId);
+    return;
+  }
   
+  console.log('📋 Showing confirmation modal...');
   showConfirmationModal(
     'Recalculate Achievement',
     `This will calculate and award "${achievement.name}" to all qualifying users. This process may take a few seconds for each user in the database. Continue?`,
     async () => {
+      console.log('✅ User confirmed, starting recalculation...');
       try {
         // Show loading toast
         const loadingToast = showToast({
@@ -1344,15 +1351,19 @@ window.recalculateAchievement = async function(achievementId) {
           duration: 0 // Don't auto-dismiss
         });
         
+        console.log('🌐 Fetching:', `/api/admin/achievements/${achievementId}/recalculate`);
         const response = await fetch(`/api/admin/achievements/${achievementId}/recalculate`, {
           method: 'POST'
         });
+        
+        console.log('📥 Response status:', response.status, response.statusText);
         
         if (!response.ok) {
           throw new Error('Failed to recalculate achievement');
         }
         
         const result = await response.json();
+        console.log('📊 Recalculation result:', result);
         
         // Hide loading toast
         if (loadingToast && loadingToast.remove) {
