@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, PointerSensor, useSensor, useSensors, getFirstCollision } from '@dnd-kit/core';
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
