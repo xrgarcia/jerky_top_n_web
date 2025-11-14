@@ -172,6 +172,7 @@ const productsMetadata = pgTable('products_metadata', {
   flavorDisplay: text('flavor_display'), // e.g., 'Sweet & Spicy', 'Savory'
   flavorIcon: text('flavor_icon'), // Emoji icon for primary flavor
   title: text('title').notNull(), // Product title for reference
+  forceRankable: boolean('force_rankable').default(false), // Admin override - makes product rankable for all users during beta
   createdAt: timestamp('created_at').defaultNow(),
   updatedAt: timestamp('updated_at').defaultNow(),
 });
