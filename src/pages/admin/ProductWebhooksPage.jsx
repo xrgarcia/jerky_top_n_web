@@ -17,19 +17,38 @@ function ProductWebhooksPage() {
     
     const topic = updateData.data?.topic || updateData.topic;
     const productData = updateData.data?.data || updateData.data || {};
+    const disposition = updateData.disposition;
+    const reason = updateData.reason;
     
-    const action = updateData.action === 'upserted' ? 'Product Updated' :
-                   updateData.action === 'deleted' ? 'Product Deleted' :
-                   'Product Event';
+    let action, icon, type;
+    
+    if (disposition === 'skipped') {
+      action = 'Product Webhook Skipped';
+      icon = '⏭️';
+      type = 'info';
+    } else if (updateData.action === 'processed' || updateData.action === 'upserted') {
+      action = 'Product Updated';
+      icon = '✅';
+      type = 'success';
+    } else if (updateData.action === 'deleted') {
+      action = 'Product Deleted';
+      icon = '🗑️';
+      type = 'info';
+    } else {
+      action = 'Product Event';
+      icon = '📦';
+      type = 'info';
+    }
     
     const productTitle = productData.title || 'Unknown Product';
     const vendor = productData.vendor ? ` (${productData.vendor})` : '';
+    const reasonSuffix = reason ? ` - ${reason}` : '';
     
     showToast({
-      type: 'info',
-      icon: '📦',
+      type: type,
+      icon: icon,
       title: action,
-      message: `${productTitle}${vendor} - ${topic}`,
+      message: `${productTitle}${vendor}${reasonSuffix}`,
       duration: 4000
     });
     
@@ -318,6 +337,48 @@ function ProductWebhooksPage() {
                           {formatTimestamp(selectedWebhook.timestamp)}
                         </div>
                       </div>
+                      {selectedWebhook.disposition && (
+                        <div style={{ marginTop: '12px' }}>
+                          <strong style={{ color: '#666', fontSize: '13px' }}>Disposition:</strong>
+                          <div style={{ fontSize: '14px', marginTop: '4px' }}>
+                            <span className={selectedWebhook.disposition === 'processed' ? 'status-badge fulfilled' : 'status-badge'}>
+                              {selectedWebhook.disposition}
+                            </span>
+                          </div>
+                        </div>
+                      )}
+                      {selectedWebhook.reason && (
+                        <div style={{ marginTop: '12px' }}>
+                          <strong style={{ color: '#666', fontSize: '13px' }}>Reason:</strong>
+                          <div style={{ fontSize: '14px', marginTop: '4px', color: '#666' }}>
+                            {selectedWebhook.reason}
+                          </div>
+                        </div>
+                      )}
+                      {selectedWebhook.changedFields && selectedWebhook.changedFields.length > 0 && (
+                        <div style={{ marginTop: '12px' }}>
+                          <strong style={{ color: '#666', fontSize: '13px' }}>Changed Fields:</strong>
+                          <div style={{ fontSize: '14px', marginTop: '4px' }}>
+                            {selectedWebhook.changedFields.map((field, i) => (
+                              <span 
+                                key={i}
+                                style={{
+                                  display: 'inline-block',
+                                  background: '#7b8b52',
+                                  color: 'white',
+                                  padding: '4px 8px',
+                                  borderRadius: '4px',
+                                  fontSize: '12px',
+                                  marginRight: '6px',
+                                  marginBottom: '6px'
+                                }}
+                              >
+                                {field}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                       {selectedWebhook.returnValue && (
                         <div style={{ marginTop: '12px' }}>
                           <strong style={{ color: '#666', fontSize: '13px' }}>Result:</strong>

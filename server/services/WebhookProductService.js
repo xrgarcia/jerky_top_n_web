@@ -40,6 +40,52 @@ class WebhookProductService {
       return { success: false, reason: 'missing_product_id' };
     }
 
+    // For products/create, always process
+    if (topic === 'products/create') {
+      return await this.processProductUpdate(productData, topic, shopifyProductId, 'new_product');
+    }
+
+    // For products/update, check if important fields changed
+    const changeAnalysis = await this.analyzeProductChanges(shopifyProductId, productData);
+    
+    if (!changeAnalysis.hasImportantChanges) {
+      console.log(`⏭️ Skipping product ${shopifyProductId} - only inventory/timestamp changed`);
+      
+      // Broadcast skipped event to admin
+      this.broadcastAdminUpdate({
+        data: {
+          topic: topic,
+          type: 'products',
+          data: {
+            id: productData.id,
+            title: productData.title,
+            vendor: productData.vendor,
+            status: productData.status,
+            product_type: productData.product_type
+          }
+        },
+        action: 'skipped',
+        productId: shopifyProductId,
+        disposition: 'skipped',
+        reason: changeAnalysis.skipReason,
+        changedFields: changeAnalysis.changedFields
+      });
+
+      return {
+        success: true,
+        action: 'skipped',
+        productId: shopifyProductId,
+        reason: changeAnalysis.skipReason,
+        changedFields: changeAnalysis.changedFields
+      };
+    }
+
+    // Important fields changed - process the update
+    console.log(`✅ Processing product ${shopifyProductId} - important fields changed: ${changeAnalysis.changedFields.join(', ')}`);
+    return await this.processProductUpdate(productData, topic, shopifyProductId, 'important_changes', changeAnalysis.changedFields);
+  }
+
+  async processProductUpdate(productData, topic, shopifyProductId, reason, changedFields = []) {
     const animal = extractAnimalFromTitle(productData.title);
     const flavors = extractFlavorsFromTitle(productData.title);
 
@@ -77,17 +123,81 @@ class WebhookProductService {
           product_type: productData.product_type
         }
       },
-      action: 'upserted',
-      productId: shopifyProductId
+      action: 'processed',
+      productId: shopifyProductId,
+      disposition: 'processed',
+      reason: reason,
+      changedFields: changedFields
     });
 
     return {
       success: true,
-      action: 'upserted',
+      action: 'processed',
       productId: shopifyProductId,
-      metadata: result
+      metadata: result,
+      changedFields: changedFields
     };
   }
+
+  /**
+   * Analyze what changed in a product update webhook
+   * Returns whether important fields changed (vs just inventory)
+   */
+  async analyzeProductChanges(shopifyProductId, incomingProduct) {
+    try {
+      // Fetch current product metadata from database
+      const currentMetadata = await this.repository.getByShopifyProductId(shopifyProductId);
+      
+      // If product doesn't exist in our DB, treat it as important (new to us)
+      if (!currentMetadata) {
+        return {
+          hasImportantChanges: true,
+          changedFields: ['new_product'],
+          skipReason: null
+        };
+      }
+
+      // Check important fields that we care about
+      const importantFields = [];
+      
+      if (currentMetadata.title !== incomingProduct.title) {
+        importantFields.push('title');
+      }
+      
+      if (currentMetadata.vendor !== (incomingProduct.vendor || null)) {
+        importantFields.push('vendor');
+      }
+
+      // Note: We don't store tags in metadata, so we skip tag comparison
+      // Tag changes will be caught by the title/vendor check in most admin edits
+
+      // If any important fields changed, process the update
+      if (importantFields.length > 0) {
+        return {
+          hasImportantChanges: true,
+          changedFields: importantFields,
+          skipReason: null
+        };
+      }
+
+      // No important fields changed - this is likely just an inventory update from a purchase
+      return {
+        hasImportantChanges: false,
+        changedFields: [],
+        skipReason: 'Only inventory or timestamp changed (likely from purchase)'
+      };
+
+    } catch (error) {
+      console.error('⚠️ Error analyzing product changes:', error);
+      // On error, process the update to be safe
+      return {
+        hasImportantChanges: true,
+        changedFields: ['error_analyzing'],
+        skipReason: null
+      };
+    }
+  }
+
 
   async handleProductDelete(productData, topic) {
     const shopifyProductId = productData.id ? String(productData.id) : null;

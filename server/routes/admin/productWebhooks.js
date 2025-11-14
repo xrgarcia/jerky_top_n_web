@@ -29,26 +29,36 @@ module.exports = function createProductWebhooksRoutes() {
       const allJobs = [...completed, ...failed];
       const productJobs = allJobs
         .filter(job => job.data?.type === 'products')
-        .map(job => ({
-          id: job.id,
-          data: {
-            topic: job.data.topic,
-            type: job.data.type,
+        .map(job => {
+          const returnValue = job.returnvalue || {};
+          
+          return {
+            id: job.id,
             data: {
-              id: job.data.data?.id,
-              title: job.data.data?.title,
-              vendor: job.data.data?.vendor,
-              status: job.data.data?.status,
-              product_type: job.data.data?.product_type
-            }
-          },
-          state: job.failedReason ? 'failed' : 'completed',
-          timestamp: job.processedOn || job.finishedOn || job.timestamp,
-          returnValue: job.returnvalue || null,
-          failedReason: job.failedReason || null,
-          processedAt: job.processedOn,
-          finishedAt: job.finishedOn
-        }))
+              topic: job.data.topic,
+              type: job.data.type,
+              data: {
+                id: job.data.data?.id,
+                title: job.data.data?.title,
+                vendor: job.data.data?.vendor,
+                status: job.data.data?.status,
+                product_type: job.data.data?.product_type
+              }
+            },
+            state: job.failedReason ? 'failed' : 'completed',
+            timestamp: job.processedOn || job.finishedOn || job.timestamp,
+            returnValue: job.returnvalue || null,
+            failedReason: job.failedReason || null,
+            processedAt: job.processedOn,
+            finishedAt: job.finishedOn,
+            // Flatten important fields from returnValue for easier UI access
+            // Worker returns { success, action, productId, metadata, reason, changedFields }
+            disposition: returnValue.action === 'processed' ? 'processed' : 
+                        returnValue.action === 'skipped' ? 'skipped' : null,
+            reason: returnValue.reason || null,
+            changedFields: returnValue.changedFields || []
+          };
+        })
         .sort((a, b) => b.timestamp - a.timestamp)
         .slice(0, limit);
 
