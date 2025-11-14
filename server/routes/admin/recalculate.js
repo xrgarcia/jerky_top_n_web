@@ -151,15 +151,20 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
       console.log(`👥 Found ${allUsers.length} users to process`);
     }
     
-    // Get the CollectionManager for custom collections
+    // Get managers and repositories (create once, reuse for all users)
     const CollectionManager = require('../../services/CollectionManager');
+    const EngagementManager = require('../../services/EngagementManager');
     const AchievementRepository = require('../../repositories/AchievementRepository');
     const ProductsMetadataRepository = require('../../repositories/ProductsMetadataRepository');
+    const ActivityLogRepository = require('../../repositories/ActivityLogRepository');
     const { primaryDb } = require('../../db-primary');
     
     const achievementRepo = new AchievementRepository(db);
     const productsMetadataRepo = new ProductsMetadataRepository(db);
+    const activityLogRepo = new ActivityLogRepository(db);
+    
     const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
+    const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
     
     // Process users in batches to avoid overload
     const BATCH_SIZE = 5;
@@ -191,9 +196,6 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
             }
           } else if (ach.collectionType === 'engagement_collection') {
             // Engagement achievements (rankings, activity counts, etc.)
-            const EngagementManager = require('../../services/EngagementManager');
-            const engagementManager = new EngagementManager(storage, db);
-            
             // Calculate user stats directly from database
             const { productRankings, userActivities } = require('../../../shared/schema');
             const { count } = require('drizzle-orm');
