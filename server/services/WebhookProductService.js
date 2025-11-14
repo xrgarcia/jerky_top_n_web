@@ -40,7 +40,40 @@ class WebhookProductService {
       return { success: false, reason: 'missing_product_id' };
     }
 
-    // For products/create, always process
+    // Check if product has "rankable" tag - skip if it doesn't
+    if (!this.hasRankableTag(productData)) {
+      console.log(`⏭️ Skipping product ${shopifyProductId} (${productData.title}) - does not have 'rankable' tag`);
+      
+      // Broadcast skipped event to admin
+      this.broadcastAdminUpdate({
+        data: {
+          topic: topic,
+          type: 'products',
+          data: {
+            id: productData.id,
+            title: productData.title,
+            vendor: productData.vendor,
+            status: productData.status,
+            product_type: productData.product_type
+          }
+        },
+        action: 'skipped',
+        productId: shopifyProductId,
+        disposition: 'skipped',
+        reason: 'Product does not have "rankable" tag',
+        changedFields: []
+      });
+
+      return {
+        success: true,
+        action: 'skipped',
+        productId: shopifyProductId,
+        reason: 'Product does not have "rankable" tag',
+        changedFields: []
+      };
+    }
+
+    // For products/create, process if it has rankable tag
     if (topic === 'products/create') {
       return await this.processProductUpdate(productData, topic, shopifyProductId, 'new_product');
     }
@@ -137,6 +170,33 @@ class WebhookProductService {
       metadata: result,
       changedFields: changedFields
     };
+  }
+
+  /**
+   * Check if product has "rankable" tag
+   * @param {Object} productData - Shopify product data from webhook
+   * @returns {boolean} - True if product has rankable tag
+   */
+  hasRankableTag(productData) {
+    if (!productData || !productData.tags) {
+      return false;
+    }
+
+    // Shopify tags come as a comma-separated string or space-separated string
+    // Examples: "rankable, featured" or "rankable featured"
+    const tagsString = String(productData.tags).toLowerCase().trim();
+    
+    if (!tagsString) {
+      return false;
+    }
+
+    // Split by comma first, then by space as fallback
+    const tags = tagsString.includes(',') 
+      ? tagsString.split(',').map(t => t.trim())
+      : tagsString.split(/\s+/);
+
+    // Check if "rankable" is in the tag list
+    return tags.includes('rankable');
   }
 
   /**
