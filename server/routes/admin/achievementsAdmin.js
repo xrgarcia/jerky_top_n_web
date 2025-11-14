@@ -1,4 +1,5 @@
 const express = require('express');
+const Sentry = require('@sentry/node');
 const multer = require('multer');
 const AchievementAdminRepository = require('../../repositories/AchievementAdminRepository');
 const AchievementCache = require('../../cache/AchievementCache');
@@ -246,6 +247,23 @@ async function triggerAchievementRecalculation(achievementId, database, products
       } catch (error) {
         errorCount++;
         console.error(`❌ Error processing user ${user.id}:`, error);
+        
+        // Capture error in Sentry with full context
+        Sentry.captureException(error, {
+          tags: {
+            endpoint: 'background_recalculation',
+            achievement_id: ach.id,
+            achievement_code: ach.code,
+            achievement_type: ach.collectionType,
+            user_id: user.id
+          },
+          extra: {
+            achievementName: ach.name,
+            userId: user.id,
+            processedCount: awardedCount + tierUpgradeCount,
+            errorCount
+          }
+        });
       }
     });
     

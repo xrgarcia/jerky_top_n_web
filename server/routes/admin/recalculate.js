@@ -1,4 +1,5 @@
 const express = require('express');
+const Sentry = require('@sentry/node');
 const { achievements, users } = require('../../../shared/schema');
 const { eq, and, inArray } = require('drizzle-orm');
 
@@ -67,9 +68,10 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
    *    - Checks userStats against requirement.value
    */
   router.post('/achievements/:achievementId/recalculate', requireEmployeeAuth, async (req, res) => {
+  // Extract achievementId outside try block so it's accessible in catch
+  const { achievementId } = req.params;
+  
   try {
-    const { achievementId } = req.params;
-    
     console.log(`🔄 Starting retroactive recalculation for achievement ${achievementId}...`);
     
     // Get the achievement
@@ -229,6 +231,22 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
           }
         } catch (error) {
           console.error(`❌ Error processing user ${user.id}:`, error);
+          Sentry.captureException(error, {
+            tags: {
+              endpoint: 'admin_recalculate',
+              achievement_id: ach.id,
+              achievement_code: ach.code,
+              achievement_type: ach.collectionType,
+              user_id: user.id
+            },
+            extra: {
+              achievementName: ach.name,
+              userId: user.id,
+              batchNumber: Math.floor(i / BATCH_SIZE) + 1,
+              processedCount,
+              errorCount
+            }
+          });
           errorCount++;
         }
       });
@@ -278,6 +296,20 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     
   } catch (error) {
     console.error('Error recalculating achievement:', error);
+    
+    // Capture error in Sentry with full context
+    Sentry.captureException(error, {
+      tags: {
+        endpoint: 'admin_recalculate',
+        achievement_id: achievementId
+      },
+      extra: {
+        achievementId,
+        errorMessage: error.message,
+        errorStack: error.stack
+      }
+    });
+    
     res.status(500).json({ error: 'Failed to recalculate achievement', details: error.message });
   }
   });
