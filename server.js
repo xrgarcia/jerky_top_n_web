@@ -1270,9 +1270,6 @@ async function fetchProductsFromShopify() {
     // Add cursor for pagination (if we have one from previous page)
     if (pageInfo && pageInfo.next) {
       searchParams.set('page_info', pageInfo.next);
-    } else {
-      // Only set status on first page (not when using page_info)
-      searchParams.set('status', 'active');
     }
     
     const shopifyUrl = `https://${JERKY_SHOP_DOMAIN}/admin/api/2023-10/products.json?${searchParams}`;
