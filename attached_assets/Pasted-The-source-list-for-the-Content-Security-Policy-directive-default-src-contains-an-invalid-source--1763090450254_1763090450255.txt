@@ -1,0 +1,322 @@
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+jerkytopnweb:1 The source list for the Content Security Policy directive 'default-src' contains an invalid source: ''unsafe-dynamic''. It will be ignored.
+jerkytopnweb:1 The Content-Security-Policy directive 'default-src' contains 'report-uri' as a source expression. Did you want to add it as a directive and forget a semicolon?
+jerkytopnweb:1 The source list for Content Security Policy directive 'default-src' contains a source with an invalid path: '/api/4509669501698048/security/?sentry_key=7eb3d90eb4660416caf507087367e67e'. The query component, including the '?', will be ignored.
+stallwart.build.js:1 stallwart: failed ping 1
+f20a50e7c98b0fdf.js:2 [Coframe] Replit Enterprise watcher loaded
+f20a50e7c98b0fdf.js:2 
+      /////////////////////
+   ///////////////////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////        Curious and driven?
+  ///////////////@@@@@@@///////        Work with us!
+  ///////////////@@@@@@@///////
+  ///////////////@@@@@@@///////        https://join.replit.com/hack.with.us
+  ////////@@@@@@@//////////////
+  ////////@@@@@@@//////////////
+  ////////@@@@@@#//////////////
+   ///////////////////////////
+      /////////////////////
+      
+f20a50e7c98b0fdf.js:2 Download the Apollo DevTools for a better development experience: https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm
+f20a50e7c98b0fdf.js:2 [LaunchDarkly] LaunchDarkly client initialized
+ed1e693c96a75807.js:2 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'ambient-light-sensor'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'battery'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'layout-animations'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'legacy-image-formats'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'navigation-override'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'oversized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'publickey-credentials'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'speaker-selection'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unoptimized-images'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'unsized-media'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Unrecognized feature: 'pointer-lock'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+ed1e693c96a75807.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+z @ ed1e693c96a75807.js:2
+(anonymous) @ ed1e693c96a75807.js:2
+iA @ ed1e693c96a75807.js:2
+iV @ ed1e693c96a75807.js:2
+iU @ ed1e693c96a75807.js:2
+i_ @ ed1e693c96a75807.js:2
+C @ ed1e693c96a75807.js:2
+M @ ed1e693c96a75807.js:2
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'battery'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'layout-animations'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'legacy-image-formats'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'navigation-override'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'oversized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'publickey-credentials'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'speaker-selection'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'unoptimized-images'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Unrecognized feature: 'unsized-media'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev/__replco/workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+workspace_iframe.html?initialPath=%2F&id=%3Ar3p%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Ray'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+WebSocket connection to '<URL>' failed: WebSocket is closed before the connection is established.
+injected.js:27 🎯 Fetching guidance for page: general
+injected.js:27 📦 Guidance API Response: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 📊 Tracking page view: general {}
+injected.js:27 ✅ WebSocket connected
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 ✅ Rendering guidance: {classification: {…}, guidance: {…}, stats: {…}, cached: true, calculatedAt: '2025-11-14T02:21:09.320Z'}
+injected.js:27 👥 Users data: {usersData: undefined, isLoadingUsers: true, usersError: null, userCount: 0}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 🔍 useAdminUsers: Fetching users...
+injected.js:27 📋 useAdminUsers: Received data: {success: true, users: Array(20), total: 112593, hasMore: true, offset: 0, …}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar3p%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Ray'}
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 👥 Users data: {usersData: undefined, isLoadingUsers: true, usersError: null, userCount: 0}
+injected.js:27 👥 Users data: {usersData: undefined, isLoadingUsers: true, usersError: null, userCount: 0}
+injected.js:27 🔍 useAdminUsers: Fetching users...
+injected.js:27 📋 useAdminUsers: Received data: {success: true, users: Array(20), total: 112593, hasMore: true, offset: 0, …}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🎯 handleRefreshCoin called for coin: {id: 23248, code: 'flavor_rookie', name: 'Flavor Rookie', description: 'flavor rookie', icon: '/objects/achievement-icons/dc3fef84-288d-4485-9b4e-d4edf993f293.png', …}
+injected.js:27 ✅ Confirm modal opened
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔵 handleConfirmRecalculate called
+injected.js:27 📋 confirmModalData: {coin: {…}, title: 'Recalculate "Flavor Rookie"?', message: 'This will award the achievement to all users who m…ime depends on the number of users in the system.'}
+injected.js:27 🎯 Recalculating coin: {id: 23248, code: 'flavor_rookie', name: 'Flavor Rookie', description: 'flavor rookie', icon: '/objects/achievement-icons/dc3fef84-288d-4485-9b4e-d4edf993f293.png', …}
+injected.js:27 🚀 About to call mutateAsync for coin ID: 23248
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔧 useRecalculateCoin mutationFn called with coinId: 23248
+injected.js:27 📡 About to POST to: /admin/achievements/23248/recalculate
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📋 React Query: Auth response: {authenticated: true, role: 'employee_admin', user: 'Ray'}
+injected.js:27 🪙 Setting up coin book WebSocket listeners...
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: {userId: 2}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 ❌ WebSocket disconnected
+injected.js:27 🪙 Cleaning up coin book WebSocket listeners
+injected.js:27 🎯 handleRefreshCoin called for coin: {id: 7342, code: 'rank_them_all', name: 'Rank Them All', description: 'your taste buds are on another level!', icon: '/objects/achievement-icons/418047d4-7173-49a7-9a43-ba7998302142.png', …}
+injected.js:27 ✅ Confirm modal opened
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔵 handleConfirmRecalculate called
+injected.js:27 📋 confirmModalData: {coin: {…}, title: 'Recalculate "Rank Them All"?', message: 'This will award the achievement to all users who m…ime depends on the number of users in the system.'}
+injected.js:27 🎯 Recalculating coin: {id: 7342, code: 'rank_them_all', name: 'Rank Them All', description: 'your taste buds are on another level!', icon: '/objects/achievement-icons/418047d4-7173-49a7-9a43-ba7998302142.png', …}
+injected.js:27 🚀 About to call mutateAsync for coin ID: 7342
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 👥 Users data: {usersData: {…}, isLoadingUsers: false, usersError: null, userCount: 20}
+injected.js:27 🔧 useRecalculateCoin mutationFn called with coinId: 7342
+injected.js:27 📡 About to POST to: /admin/achievements/7342/recalculate
