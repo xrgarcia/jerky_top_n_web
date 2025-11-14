@@ -98,6 +98,37 @@ if (process.env.SENTRY_DSN) {
         environment: ENVIRONMENT,
       },
     },
+    // beforeSend runs ONLY when an error is being sent to Sentry (not on every request)
+    beforeSend: async (event, hint) => {
+      // Get session ID from event context (will be set by middleware)
+      const sessionId = event.contexts?.session?.session_id;
+      
+      if (sessionId) {
+        try {
+          // Lazy-load storage here to avoid circular dependency
+          const { storage } = require('./server/storage.js');
+          const session = await storage.getSession(sessionId);
+          
+          if (session && session.userId) {
+            event.user = {
+              id: session.userId,
+              email: session.email || 'unknown',
+              username: session.displayName || session.email || 'unknown',
+              role: session.role || 'customer',
+            };
+            
+            // Also tag with role for filtering
+            if (!event.tags) event.tags = {};
+            event.tags.user_role = session.role || 'customer';
+          }
+        } catch (err) {
+          // If user lookup fails, continue without user context
+          console.warn('Sentry beforeSend: Failed to fetch user context:', err.message);
+        }
+      }
+      
+      return event;
+    },
   });
   console.log(`✅ Sentry error monitoring initialized (${ENVIRONMENT} @ ${APP_URL})`);
 } else {
@@ -202,6 +233,45 @@ app.use('/api/webhooks/shopify', express.json({
 // Parse JSON bodies and cookies
 app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
+
+// Sentry request handler (must be before routes - captures request context only)
+if (process.env.SENTRY_DSN && Sentry.Handlers) {
+  app.use(Sentry.Handlers.requestHandler());
+  console.log('✅ Sentry request handler initialized');
+}
+
+// Sentry custom middleware - tag endpoint, method, route, and store session ID
+app.use((req, res, next) => {
+  if (!process.env.SENTRY_DSN) {
+    return next();
+  }
+  
+  // Use Sentry's scope API to tag within the active request scope
+  Sentry.configureScope((scope) => {
+    // Tag basic request info (available immediately)
+    scope.setTag('endpoint', req.path);
+    scope.setTag('method', req.method);
+    
+    // Store session ID in context for beforeSend to use (only when error occurs)
+    if (req.cookies && req.cookies.session_id) {
+      scope.setContext('session', {
+        session_id: req.cookies.session_id,
+      });
+    }
+    
+    // Add event processor to capture route pattern when event is sent
+    // This runs BEFORE the event is sent, so route tag will be included in error reports
+    scope.addEventProcessor((event) => {
+      if (req.route && req.route.path) {
+        if (!event.tags) event.tags = {};
+        event.tags.route = req.route.path;
+      }
+      return event;
+    });
+  });
+  
+  next();
+});
 
 // Cache busting strategy for SPA
 app.use((req, res, next) => {
