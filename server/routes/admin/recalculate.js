@@ -47,6 +47,24 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
   /**
    * POST /api/admin/achievements/:achievementId/recalculate
    * Retroactively award an achievement to all qualifying users
+   * 
+   * ACHIEVEMENT TYPES & BEHAVIOR:
+   * 
+   * 1. STATIC_COLLECTION (custom product lists):
+   *    - Requires explicit product IDs in requirement.products
+   *    - Awards based on how many products user has ranked
+   * 
+   * 2. DYNAMIC_COLLECTION (auto-calculated collections):
+   *    - complete_collection: Awards based on % of ALL rankable products
+   *    - brand_collection: Awards based on % of products from specific brands
+   *    - animal_collection: Awards based on % of products from specific animals
+   *    - If has_tiers = true: Awards tiers (bronze/silver/gold) at different percentages
+   *    - If has_tiers = false: ONLY awards when user reaches 100% completion
+   * 
+   * 3. ENGAGEMENT_COLLECTION (user activity):
+   *    - rank_count: Number of products ranked
+   *    - search_count: Number of searches performed
+   *    - Checks userStats against requirement.value
    */
   router.post('/achievements/:achievementId/recalculate', requireEmployeeAuth, async (req, res) => {
   try {
@@ -67,6 +85,7 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     const ach = achievement[0];
     console.log(`📊 Recalculating achievement: ${ach.name} (${ach.code})`);
     console.log(`   Type: ${ach.collectionType}, Requirement: ${JSON.stringify(ach.requirement)}`);
+    console.log(`   has_tiers: ${ach.hasTiers}, tier_thresholds: ${JSON.stringify(ach.tierThresholds)}`);
     
     // Get all users from the database
     const allUsers = await db.select({ id: users.id }).from(users);
