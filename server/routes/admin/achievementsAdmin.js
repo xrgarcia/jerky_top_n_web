@@ -44,18 +44,45 @@ async function triggerAchievementRecalculation(achievementId, database, products
   console.log(`🔄 Background recalculation started: ${ach.name} (${ach.code})`);
   console.log(`📋 Achievement requirement:`, JSON.stringify(ach.requirement));
   
-  // Get all users ordered by ID to ensure consistent processing
-  // Use primaryDb instead of pooled database to ensure ORDER BY works correctly
-  const allUsers = await primaryDb.select({ id: users.id }).from(users).orderBy(asc(users.id));
+  // Get users for recalculation
+  // For engagement achievements based on rankings, only check users who have rankings
+  let allUsers;
+  if (ach.collectionType === 'engagement_collection' && ach.requirement?.type === 'rank_count') {
+    console.log(`⚡ Optimized query: Fetching only users with rankings`);
+    const { productRankings } = require('../../../shared/schema');
+    const { inArray } = require('drizzle-orm');
+    
+    // Get distinct user IDs from productRankings
+    const usersWithRankings = await primaryDb
+      .selectDistinct({ userId: productRankings.userId })
+      .from(productRankings);
+    
+    const userIds = usersWithRankings.map(u => u.userId);
+    
+    if (userIds.length === 0) {
+      console.log(`⚠️ No users with rankings found`);
+      allUsers = [];
+    } else {
+      allUsers = await primaryDb.select({ id: users.id }).from(users).where(inArray(users.id, userIds)).orderBy(asc(users.id));
+    }
+    
+    // Show the optimization savings
+    const totalUsersResult = await primaryDb.select({ id: users.id }).from(users);
+    console.log(`✅ Optimized: Checking ${allUsers.length} users with rankings (saved checking ${totalUsersResult.length - allUsers.length} users with 0 rankings)`);
+  } else {
+    // For other achievement types, check all users
+    allUsers = await primaryDb.select({ id: users.id }).from(users).orderBy(asc(users.id));
+    console.log(`👥 Query returned ${allUsers.length} users`);
+  }
   
   // Log summary to confirm query results
   if (allUsers.length > 0) {
     const firstId = allUsers[0].id;
     const lastId = allUsers[allUsers.length - 1].id;
-    console.log(`👥 Query returned ${allUsers.length} users (IDs: ${firstId} to ${lastId})`);
+    console.log(`📊 Processing ${allUsers.length} users (IDs: ${firstId} to ${lastId})`);
     console.log(`🔍 First 10 user IDs:`, allUsers.slice(0, 10).map(u => u.id));
   } else {
-    console.log(`⚠️ No users found in database!`);
+    console.log(`⚠️ No users to process!`);
   }
   
   // Get the CollectionManager and EngagementManager
