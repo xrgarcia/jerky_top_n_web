@@ -317,17 +317,10 @@ class ProductsService {
     if (!isEmployee && this.purchaseHistoryService) {
       // Regular users: filter to only purchased products
       const purchasedProductIds = await this.purchaseHistoryService.getPurchasedProductIds(userId);
-      
-      // Graceful handling: if purchase history is empty, assume sync is still in progress
-      // Return all unranked products so users don't see empty state while orders are syncing
-      if (purchasedProductIds.length === 0) {
-        console.log(`⏳ User ${userId}: Purchase history empty (sync may be in progress), showing all ${unrankedProducts.length} unranked products`);
-        return unrankedProducts;
-      }
-      
       const purchasedSet = new Set(purchasedProductIds);
       
       // Filter to products that are both unranked AND purchased
+      // If no purchased products, returns empty array (enforces purchase-to-rank requirement)
       const purchasedUnrankedProducts = unrankedProducts.filter(product => purchasedSet.has(product.id));
       
       console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${purchasedProductIds.length} purchased, ${purchasedUnrankedProducts.length} available to rank`);
