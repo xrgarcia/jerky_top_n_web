@@ -114,7 +114,12 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
             // Engagement achievements (rankings, activity counts, etc.)
             const EngagementManager = require('../../services/EngagementManager');
             const engagementManager = new EngagementManager(storage, db);
-            result = await engagementManager.checkAndAwardEngagementAchievement(user.id, ach);
+            
+            // Get user stats needed for engagement achievement checking
+            const userStats = await storage.getUserStats(user.id);
+            if (userStats) {
+              result = await engagementManager.checkAndAwardEngagementAchievement(user.id, ach, userStats);
+            }
           }
           
           processedCount++;
