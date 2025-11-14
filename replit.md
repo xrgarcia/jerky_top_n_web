@@ -29,6 +29,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration.
 - **Real-time Communication**: Socket.IO for achievement notifications with multi-device support.
 - **Security**: Production-grade authentication using httpOnly cookies (90-day server-side sessions) and Redis-backed rate limiting for authentication endpoints.
+- **Error Monitoring**: Comprehensive Sentry instrumentation with automatic context enrichment. Zero per-request database overhead - user identity (id/email/username/role) fetched lazily via beforeSend hook only when errors occur. Middleware tags endpoint/method and uses scope-level event processor to capture matched Express routes. Every error report includes full context without impacting performance on successful requests.
 - **Icon Rendering**: Unified utility (`src/utils/iconUtils.jsx`) for various icon types (emoji, URL, base64).
 - **Performance**: Route-based lazy loading with React.lazy() and Suspense, manual vendor chunking, and state-driven IntersectionObserver for scroll animations.
 - **Shopify Synchronization**: Automatic sync of products, metadata, and customer profiles via webhooks with caching and orphan cleanup, processed asynchronously with BullMQ. Multi-layered type safety ensures numeric Shopify IDs are converted to strings at service and repository layers before database queries (Neon serverless driver requirement).
