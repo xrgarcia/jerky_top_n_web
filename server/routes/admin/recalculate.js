@@ -88,13 +88,18 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     console.log(`   has_tiers: ${ach.hasTiers}, tier_thresholds: ${JSON.stringify(ach.tierThresholds)}`);
     
     // Get users for recalculation
-    // For engagement achievements based on rankings, only check users who have rankings
+    // Optimize for engagement achievements by only checking users with relevant activity
     let allUsers;
+    
+    // Activity-based achievement types that use userActivities table
+    const activityBasedTypes = ['search_count', 'page_view_count', 'product_view_count', 
+                                'unique_product_view_count', 'profile_view_count', 'unique_profile_view_count'];
+    
     if (ach.collectionType === 'engagement_collection' && ach.requirement?.type === 'rank_count') {
+      // For rank-based achievements, only check users who have rankings
       console.log(`⚡ Optimized query: Fetching only users with rankings`);
       const { productRankings } = require('../../../shared/schema');
       
-      // Get distinct user IDs from productRankings
       const usersWithRankings = await db
         .selectDistinct({ userId: productRankings.userId })
         .from(productRankings);
@@ -108,9 +113,30 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
         allUsers = await db.select({ id: users.id }).from(users).where(inArray(users.id, userIds));
       }
       
-      // Show the optimization savings
       const totalUsers = await db.select({ count: users.id }).from(users);
       console.log(`✅ Optimized: Checking ${allUsers.length} users with rankings (saved checking ${totalUsers.length - allUsers.length} users with 0 rankings)`);
+      
+    } else if (ach.collectionType === 'engagement_collection' && activityBasedTypes.includes(ach.requirement?.type)) {
+      // For activity-based achievements, only check users who have any activity
+      console.log(`⚡ Optimized query: Fetching only users with activity records`);
+      const { userActivities } = require('../../../shared/schema');
+      
+      const usersWithActivity = await db
+        .selectDistinct({ userId: userActivities.userId })
+        .from(userActivities);
+      
+      const userIds = usersWithActivity.map(u => u.userId);
+      
+      if (userIds.length === 0) {
+        console.log(`⚠️ No users with activity found`);
+        allUsers = [];
+      } else {
+        allUsers = await db.select({ id: users.id }).from(users).where(inArray(users.id, userIds));
+      }
+      
+      const totalUsers = await db.select({ count: users.id }).from(users);
+      console.log(`✅ Optimized: Checking ${allUsers.length} users with activity (saved checking ${totalUsers.length - allUsers.length} users with 0 activity)`);
+      
     } else {
       // For other achievement types, check all users
       allUsers = await db.select({ id: users.id }).from(users);
