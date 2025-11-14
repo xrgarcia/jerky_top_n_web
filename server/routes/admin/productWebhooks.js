@@ -31,6 +31,8 @@ module.exports = function createProductWebhooksRoutes() {
         .filter(job => job.data?.type === 'products')
         .map(job => {
           const returnValue = job.returnvalue || {};
+          // Worker wraps the service result in a 'result' field
+          const result = returnValue.result || {};
           
           return {
             id: job.id,
@@ -51,12 +53,12 @@ module.exports = function createProductWebhooksRoutes() {
             failedReason: job.failedReason || null,
             processedAt: job.processedOn,
             finishedAt: job.finishedOn,
-            // Flatten important fields from returnValue for easier UI access
-            // Worker returns { success, action, productId, metadata, reason, changedFields }
-            disposition: returnValue.action === 'processed' ? 'processed' : 
-                        returnValue.action === 'skipped' ? 'skipped' : null,
-            reason: returnValue.reason || null,
-            changedFields: returnValue.changedFields || []
+            // Flatten important fields from returnValue.result for easier UI access
+            // Worker structure: { success, type, topic, result: { action, reason, changedFields, ... }, duration, metadata }
+            disposition: result.action === 'processed' ? 'processed' : 
+                        result.action === 'skipped' ? 'skipped' : null,
+            reason: result.reason || null,
+            changedFields: result.changedFields || []
           };
         })
         .sort((a, b) => b.timestamp - a.timestamp)

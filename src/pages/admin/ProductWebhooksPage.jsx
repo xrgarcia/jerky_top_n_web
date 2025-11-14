@@ -137,8 +137,13 @@ function ProductWebhooksPage() {
   };
 
   const getProcessingAction = (webhook) => {
+    // Use the flattened disposition field from API
+    if (webhook.disposition === 'skipped') return 'Skipped';
+    if (webhook.disposition === 'processed') return 'Processed';
+    
+    // Fallback to returnValue for backwards compatibility
     const action = webhook.returnValue?.action;
-    if (action === 'upserted') return 'Upserted';
+    if (action === 'upserted') return 'Processed';
     if (action === 'noted') return 'Noted (Delete)';
     if (action === 'skipped') return 'Skipped';
     
@@ -147,12 +152,13 @@ function ProductWebhooksPage() {
 
   const getActionBadgeClass = (action) => {
     switch(action?.toLowerCase()) {
+      case 'processed': return 'status-badge fulfilled';
       case 'upserted': return 'status-badge fulfilled';
       case 'update': return 'status-badge partial';
       case 'create': return 'status-badge fulfilled';
       case 'noted (delete)': return 'status-badge unfulfilled';
       case 'delete': return 'status-badge unfulfilled';
-      case 'skipped': return 'status-badge';
+      case 'skipped': return 'status-badge partial';
       default: return 'status-badge';
     }
   };
@@ -250,6 +256,38 @@ function ProductWebhooksPage() {
             <div className="modal-body">
               {activeTab === 'summary' ? (
                 <div>
+                  {selectedWebhook.disposition === 'skipped' && selectedWebhook.reason && (
+                    <div style={{
+                      background: '#fffbea',
+                      border: '1px solid #f0c94d',
+                      borderRadius: '8px',
+                      padding: '16px',
+                      marginBottom: '20px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                        <span style={{ fontSize: '20px' }}>⏭️</span>
+                        <div>
+                          <h4 style={{ 
+                            fontSize: '14px', 
+                            fontWeight: '600', 
+                            color: '#856404',
+                            marginBottom: '6px'
+                          }}>
+                            Webhook Skipped
+                          </h4>
+                          <p style={{ 
+                            fontSize: '13px', 
+                            color: '#856404',
+                            margin: 0,
+                            lineHeight: '1.5'
+                          }}>
+                            {selectedWebhook.reason}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                  
                   <div style={{ marginBottom: '20px' }}>
                     <h4 style={{ 
                       fontSize: '14px', 
