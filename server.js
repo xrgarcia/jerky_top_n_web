@@ -246,28 +246,28 @@ app.use((req, res, next) => {
     return next();
   }
   
-  // Use Sentry's scope API to tag within the active request scope
-  Sentry.configureScope((scope) => {
-    // Tag basic request info (available immediately)
-    scope.setTag('endpoint', req.path);
-    scope.setTag('method', req.method);
-    
-    // Store session ID in context for beforeSend to use (only when error occurs)
-    if (req.cookies && req.cookies.session_id) {
-      scope.setContext('session', {
-        session_id: req.cookies.session_id,
-      });
-    }
-    
-    // Add event processor to capture route pattern when event is sent
-    // This runs BEFORE the event is sent, so route tag will be included in error reports
-    scope.addEventProcessor((event) => {
-      if (req.route && req.route.path) {
-        if (!event.tags) event.tags = {};
-        event.tags.route = req.route.path;
-      }
-      return event;
+  // Get current scope using modern Sentry API
+  const scope = Sentry.getCurrentScope();
+  
+  // Tag basic request info (available immediately)
+  scope.setTag('endpoint', req.path);
+  scope.setTag('method', req.method);
+  
+  // Store session ID in context for beforeSend to use (only when error occurs)
+  if (req.cookies && req.cookies.session_id) {
+    scope.setContext('session', {
+      session_id: req.cookies.session_id,
     });
+  }
+  
+  // Add event processor to capture route pattern when event is sent
+  // This runs BEFORE the event is sent, so route tag will be included in error reports
+  scope.addEventProcessor((event) => {
+    if (req.route && req.route.path) {
+      if (!event.tags) event.tags = {};
+      event.tags.route = req.route.path;
+    }
+    return event;
   });
   
   next();
