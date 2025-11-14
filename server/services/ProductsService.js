@@ -195,7 +195,8 @@ class ProductsService {
           primaryFlavor: meta.primaryFlavor,
           secondaryFlavors: meta.secondaryFlavors ? JSON.parse(meta.secondaryFlavors) : [],
           flavorDisplay: meta.flavorDisplay,
-          flavorIcon: meta.flavorIcon
+          flavorIcon: meta.flavorIcon,
+          forceRankable: meta.forceRankable || false
         };
       });
       
@@ -292,16 +293,17 @@ class ProductsService {
   /**
    * Get rankable products for a specific user (excludes already-ranked products AND non-purchased products)
    * This ensures users with many rankings always see unranked products
-   * Employees (@jerky.com) can rank all products; regular users only see products they've purchased
+   * Beta feature: Products with force_rankable=true are available to all users
+   * Employees (@jerky.com) can rank all products; regular users see purchased products + beta products
    * 
    * @param {number} userId - The user ID to get unranked products for
    * @param {object} options - Same options as getAllProducts plus rankingListId and user
-   * @returns {Promise<Array>} Filtered products that user hasn't ranked yet and has purchased
+   * @returns {Promise<Array>} Filtered products that user hasn't ranked yet and has purchased (or force-rankable)
    */
   async getRankableProductsForUser(userId, options = {}) {
     const { rankingListId = 'topN', user = null, ...otherOptions } = options;
     
-    // 1. Get all products with full enrichment
+    // 1. Get all products with full enrichment (includes metadata with forceRankable flag)
     const allProducts = await this.getAllProducts(otherOptions);
     
     // 2. Get user's ranked product IDs
@@ -311,21 +313,30 @@ class ProductsService {
     // 3. Filter out already-ranked products
     let unrankedProducts = allProducts.filter(product => !rankedSet.has(product.id));
     
-    // 4. Apply purchase history filter for non-employee users
+    // 4. Apply purchase history filter for non-employee users (with beta product override)
     const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
     
     if (!isEmployee && this.purchaseHistoryService) {
-      // Regular users: filter to only purchased products
+      // Regular users: filter to purchased products OR force-rankable products (beta)
       const purchasedProductIds = await this.purchaseHistoryService.getPurchasedProductIds(userId);
       const purchasedSet = new Set(purchasedProductIds);
       
-      // Filter to products that are both unranked AND purchased
-      // If no purchased products, returns empty array (enforces purchase-to-rank requirement)
-      const purchasedUnrankedProducts = unrankedProducts.filter(product => purchasedSet.has(product.id));
+      // Get metadata to check force_rankable flag
+      const metadataMap = await this._getMetadata();
       
-      console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${purchasedProductIds.length} purchased, ${purchasedUnrankedProducts.length} available to rank`);
+      // Filter to products that are: (unranked AND purchased) OR (unranked AND force-rankable)
+      const availableProducts = unrankedProducts.filter(product => {
+        const isPurchased = purchasedSet.has(product.id);
+        const isForceRankable = metadataMap[product.id]?.forceRankable === true;
+        return isPurchased || isForceRankable;
+      });
       
-      return purchasedUnrankedProducts;
+      const betaCount = availableProducts.filter(p => metadataMap[p.id]?.forceRankable === true && !purchasedSet.has(p.id)).length;
+      const logSuffix = betaCount > 0 ? ` (including ${betaCount} beta products)` : '';
+      
+      console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${purchasedProductIds.length} purchased, ${availableProducts.length} available to rank${logSuffix}`);
+      
+      return availableProducts;
     } else {
       // Employees OR service not configured: can rank all unranked products
       const reason = isEmployee ? '(employee - unrestricted)' : '(purchase history service not configured)';
