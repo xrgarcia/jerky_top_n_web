@@ -12,6 +12,7 @@ function EditProductModal({ product, animalCategories, distinctFlavors, onClose,
   const [title, setTitle] = useState(product.title || '');
   const [primaryFlavor, setPrimaryFlavor] = useState(product.primaryFlavor || '');
   const [flavorDisplay, setFlavorDisplay] = useState(product.flavorDisplay || '');
+  const [forceRankable, setForceRankable] = useState(product.forceRankable || false);
 
   const handleSave = () => {
     const updateData = { productId: product.id };
@@ -27,6 +28,8 @@ function EditProductModal({ product, animalCategories, distinctFlavors, onClose,
     } else if (editField === 'flavor') {
       updateData.primaryFlavor = primaryFlavor;
       updateData.flavorDisplay = flavorDisplay;
+    } else if (editField === 'beta') {
+      updateData.forceRankable = forceRankable;
     }
     
     onSave(updateData);
@@ -64,6 +67,7 @@ function EditProductModal({ product, animalCategories, distinctFlavors, onClose,
               <option value="vendor">Vendor</option>
               <option value="title">Product Title</option>
               <option value="flavor">Primary Flavor</option>
+              <option value="beta">Beta Testing (Force Rankable)</option>
             </select>
           </div>
 
@@ -165,6 +169,30 @@ function EditProductModal({ product, animalCategories, distinctFlavors, onClose,
                 <p className="form-help">Select from existing display names (e.g., Teriyaki, Sweet & Smoky)</p>
               </div>
             </>
+          )}
+
+          {editField === 'beta' && (
+            <div className="form-group">
+              <label className="checkbox-label" style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                <input 
+                  type="checkbox" 
+                  checked={forceRankable}
+                  onChange={(e) => setForceRankable(e.target.checked)}
+                  disabled={isLoading}
+                  style={{ width: '20px', height: '20px', cursor: 'pointer' }}
+                />
+                <span>
+                  <strong>Force Rankable</strong> - Make this product available to all users during beta testing
+                </span>
+              </label>
+              <p className="form-help" style={{ marginTop: '10px', marginLeft: '30px' }}>
+                When enabled, all users can rank this product even if they haven't purchased it. 
+                Use this for beta testing specific products. Regular users will still need to purchase non-beta products.
+              </p>
+              <div className="preview-box" style={{ marginTop: '15px' }}>
+                <div><strong>Current Status:</strong> {forceRankable ? '✅ Enabled (Available to all users)' : '❌ Disabled (Purchase required)'}</div>
+              </div>
+            </div>
           )}
         </div>
 

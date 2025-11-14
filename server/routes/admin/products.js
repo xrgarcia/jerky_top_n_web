@@ -136,7 +136,8 @@ router.patch('/products/:productId/metadata', async (req, res) => {
       vendor,
       primaryFlavor, secondaryFlavors,
       flavorDisplay, flavorIcon,
-      title
+      title,
+      forceRankable
     } = req.body;
 
     if (!productId) {
@@ -165,6 +166,16 @@ router.patch('/products/:productId/metadata', async (req, res) => {
     if (flavorDisplay !== undefined) updateData.flavorDisplay = flavorDisplay;
     if (flavorIcon !== undefined) updateData.flavorIcon = flavorIcon;
     if (title !== undefined) updateData.title = title;
+    if (forceRankable !== undefined) {
+      // Validate boolean type
+      if (typeof forceRankable !== 'boolean') {
+        return res.status(400).json({
+          success: false,
+          error: 'forceRankable must be a boolean value',
+        });
+      }
+      updateData.forceRankable = forceRankable;
+    }
 
     if (Object.keys(updateData).length === 0) {
       return res.status(400).json({
