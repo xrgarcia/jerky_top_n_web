@@ -43,7 +43,7 @@ class ProductsService {
         console.log(`🏷️ Synced metadata for ${products.length} fresh products`);
         
         // Invalidate metadata cache to force refresh
-        this.metadataCache.invalidate();
+        await this.metadataCache.invalidate();
       } catch (error) {
         console.error('Error syncing metadata:', error);
         // Continue without metadata - non-critical
@@ -127,7 +127,7 @@ class ProductsService {
    */
   async _getRankingStats() {
     // Check cache first
-    const cached = this.rankingStatsCache.get();
+    const cached = await this.rankingStatsCache.get();
     if (cached) {
       return cached;
     }
@@ -162,7 +162,7 @@ class ProductsService {
       console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
       
       // Store in cache
-      this.rankingStatsCache.set(rankingStats);
+      await this.rankingStatsCache.set(rankingStats);
       
       return rankingStats;
     } catch (error) {
@@ -177,7 +177,7 @@ class ProductsService {
    */
   async _getMetadata() {
     // Check cache first
-    const cached = this.metadataCache.get();
+    const cached = await this.metadataCache.get();
     if (cached) {
       return cached;
     }
@@ -200,7 +200,7 @@ class ProductsService {
       });
       
       // Store in cache
-      this.metadataCache.set(metadataMap);
+      await this.metadataCache.set(metadataMap);
       
       return metadataMap;
     } catch (error) {
@@ -338,16 +338,16 @@ class ProductsService {
    * Invalidate ranking stats cache
    * Called when rankings are created/updated/deleted
    */
-  invalidateRankingStatsCache() {
-    this.rankingStatsCache.invalidate();
+  async invalidateRankingStatsCache() {
+    await this.rankingStatsCache.invalidate();
   }
   
   /**
    * Invalidate metadata cache
    * Called when metadata is synced
    */
-  invalidateMetadataCache() {
-    this.metadataCache.invalidate();
+  async invalidateMetadataCache() {
+    await this.metadataCache.invalidate();
   }
 }
 

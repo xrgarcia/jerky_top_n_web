@@ -90,7 +90,7 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
             console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
             const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
             if (Object.keys(freshStats).length > 0) {
-              rankingStatsCache.updateProducts(freshStats);
+              await rankingStatsCache.updateProducts(freshStats);
             }
           }
           
@@ -170,7 +170,7 @@ function createWebhookRoutes(webSocketGateway = null, sharedCaches = {}, classif
 
         if (result.success && result.action === 'upserted' && metadataCache) {
           // Update just this product in the cache instead of invalidating everything
-          metadataCache.updateProduct(result.productId, result.metadata);
+          await metadataCache.updateProduct(result.productId, result.metadata);
         }
 
         return res.status(200).json({ 

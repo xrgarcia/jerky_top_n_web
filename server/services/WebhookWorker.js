@@ -280,7 +280,7 @@ class WebhookWorker {
         console.log(`🔄 Recalculating ranking stats for ${result.affectedProductIds.length} product(s)`);
         const freshStats = await orderService.getProductRankingStats(result.affectedProductIds);
         if (Object.keys(freshStats).length > 0) {
-          rankingStatsCache.updateProducts(freshStats);
+          await rankingStatsCache.updateProducts(freshStats);
         }
       }
       
@@ -317,7 +317,7 @@ class WebhookWorker {
     // Update metadata cache if product was upserted
     if (result.success && result.action === 'upserted' && metadataCache) {
       console.log(`🔄 Updating metadata cache for product ${result.productId}`);
-      metadataCache.updateProduct(result.productId, result.metadata);
+      await metadataCache.updateProduct(result.productId, result.metadata);
     }
 
     return result;

@@ -275,7 +275,7 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     achievementCache.invalidate();
     homeStatsCache.invalidate();
     leaderboardCache.invalidate(); // invalidate() with no params clears all
-    rankingStatsCache.invalidate();
+    await rankingStatsCache.invalidate();
     leaderboardPositionCache.invalidateAll();
     console.log(`🗑️ All caches invalidated after recalculation`);
     

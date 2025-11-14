@@ -224,10 +224,10 @@ function createToolsRoutes(services) {
       
       // Clear ProductsService caches (accessible through services if available)
       if (services.productsService) {
-        services.productsService.rankingStatsCache.invalidate();
+        await services.productsService.rankingStatsCache.invalidate();
         cacheStatus.legacy_rankingStatsCache = 'cleared';
         
-        services.productsService.metadataCache.invalidate();
+        await services.productsService.metadataCache.invalidate();
         cacheStatus.legacy_metadataCache = 'cleared';
       } else {
         cacheStatus.productsServiceCaches = 'unavailable';

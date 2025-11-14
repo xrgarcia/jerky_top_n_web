@@ -191,7 +191,7 @@ router.patch('/products/:productId/metadata', async (req, res) => {
 
     // Invalidate the metadata cache so the change is immediately visible
     if (metadataCache) {
-      metadataCache.invalidate();
+      await metadataCache.invalidate();
       console.log('🗑️ Metadata cache invalidated after product update');
     }
 

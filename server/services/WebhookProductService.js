@@ -140,7 +140,7 @@ class WebhookProductService {
 
     // Update metadata cache for this specific product (no full invalidation)
     if (this.metadataCache) {
-      this.metadataCache.updateProduct(shopifyProductId, result);
+      await this.metadataCache.updateProduct(shopifyProductId, result);
     }
 
     // Broadcast to admin room

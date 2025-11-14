@@ -36,7 +36,7 @@ class ProductsMetadataService {
       
       // Update metadata cache for this specific product (no full invalidation)
       if (this.metadataCache) {
-        this.metadataCache.updateProduct(product.id, result);
+        await this.metadataCache.updateProduct(product.id, result);
       }
       
       syncedCount++;

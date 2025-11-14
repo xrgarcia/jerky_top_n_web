@@ -2297,7 +2297,7 @@ app.post('/api/rankings/product', async (req, res) => {
     }
     
     // Invalidate caches
-    rankingStatsCache.invalidate();
+    await rankingStatsCache.invalidate();
     if (gamificationServices?.homeStatsService) {
       gamificationServices.homeStatsService.invalidateCache();
     }
@@ -2375,7 +2375,7 @@ app.post('/api/rankings/products', async (req, res) => {
     })
     
     // Invalidate ranking stats cache since data changed
-    rankingStatsCache.invalidate();
+    await rankingStatsCache.invalidate();
     
     // Invalidate leaderboard position cache since rankings changed
     if (gamificationServices?.leaderboardManager) {
@@ -2819,7 +2819,7 @@ app.delete('/api/rankings/products/clear', async (req, res) => {
     await storage.clearUserProductRankings(session.userId, rankingListId);
     
     // Invalidate ranking stats cache since data changed
-    rankingStatsCache.invalidate();
+    await rankingStatsCache.invalidate();
     
     console.log(`🗑️ Cleared rankings for user ${session.userId}, list: ${rankingListId}`);
     res.json({ success: true });
@@ -4011,6 +4011,18 @@ const server = httpServer.listen(PORT, '0.0.0.0', async () => {
   // Initialize scalability features (Redis cache, Socket.IO adapter)
   const { initializeScalability } = require('./server/init-scalability');
   await initializeScalability(io);
+  
+  // Initialize distributed caches (Redis-backed)
+  console.log('🔄 Initializing distributed caches...');
+  try {
+    await rankingStatsCache.initialize();
+    await metadataCache.initialize();
+    console.log('✅ Distributed caches initialized (Redis-backed with in-memory fallback)');
+  } catch (error) {
+    console.error('⚠️ Cache initialization error (continuing with fallback):', error.message);
+    // Continue server startup - caches will use in-memory fallback
+  }
+  
   console.log('');
   if (!shopifyAvailable) {
     console.log('⚠️  To enable full functionality, configure these secrets in Deployment settings:');
