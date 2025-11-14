@@ -53,13 +53,20 @@ module.exports = function createDataManagementRoutes(storage, db) {
     try {
       console.log(`🗑️ Super admin ${req.user.email} clearing all caches...`);
 
-      // Clear all 6 system caches
+      // Clear all 13 system caches
       const AchievementCache = require('../../cache/AchievementCache');
       const HomeStatsCache = require('../../cache/HomeStatsCache');
       const LeaderboardCache = require('../../cache/LeaderboardCache');
       const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
+      const JourneyCache = require('../../cache/JourneyCache');
+      const GuidanceCache = require('../../cache/GuidanceCache');
+      const PurchaseHistoryCache = require('../../cache/PurchaseHistoryCache');
+      const UserProfileCache = require('../../cache/UserProfileCache');
+      const ProgressCache = require('../../cache/ProgressCache');
+      const StreakCache = require('../../cache/StreakCache');
+      const UserClassificationCache = require('../../cache/UserClassificationCache');
 
       AchievementCache.getInstance().invalidate();
       console.log('🗑️ Cleared AchievementCache');
@@ -79,6 +86,27 @@ module.exports = function createDataManagementRoutes(storage, db) {
       new RankingStatsCache().invalidate();
       console.log('🗑️ Cleared RankingStatsCache (rankings)');
 
+      new JourneyCache().invalidateAll();
+      console.log('🗑️ Cleared JourneyCache');
+
+      new GuidanceCache().invalidate();
+      console.log('🗑️ Cleared GuidanceCache');
+
+      new PurchaseHistoryCache().invalidate();
+      console.log('🗑️ Cleared PurchaseHistoryCache');
+
+      new UserProfileCache().invalidate();
+      console.log('🗑️ Cleared UserProfileCache');
+
+      new ProgressCache().invalidate();
+      console.log('🗑️ Cleared ProgressCache');
+
+      new StreakCache().invalidate();
+      console.log('🗑️ Cleared StreakCache');
+
+      new UserClassificationCache().invalidate();
+      console.log('🗑️ Cleared UserClassificationCache');
+
       res.json({ 
         success: true, 
         message: 'All caches cleared successfully',
@@ -88,7 +116,14 @@ module.exports = function createDataManagementRoutes(storage, db) {
           'LeaderboardCache',
           'MetadataCache',
           'LeaderboardPositionCache',
-          'RankingStatsCache'
+          'RankingStatsCache',
+          'JourneyCache',
+          'GuidanceCache',
+          'PurchaseHistoryCache',
+          'UserProfileCache',
+          'ProgressCache',
+          'StreakCache',
+          'UserClassificationCache'
         ]
       });
     } catch (error) {
@@ -137,6 +172,13 @@ module.exports = function createDataManagementRoutes(storage, db) {
       const MetadataCache = require('../../cache/MetadataCache');
       const LeaderboardPositionCache = require('../../cache/LeaderboardPositionCache');
       const RankingStatsCache = require('../../cache/RankingStatsCache');
+      const JourneyCache = require('../../cache/JourneyCache');
+      const GuidanceCache = require('../../cache/GuidanceCache');
+      const PurchaseHistoryCache = require('../../cache/PurchaseHistoryCache');
+      const UserProfileCache = require('../../cache/UserProfileCache');
+      const ProgressCache = require('../../cache/ProgressCache');
+      const StreakCache = require('../../cache/StreakCache');
+      const UserClassificationCache = require('../../cache/UserClassificationCache');
 
       AchievementCache.getInstance().invalidate();
       HomeStatsCache.getInstance().invalidate();
@@ -144,6 +186,13 @@ module.exports = function createDataManagementRoutes(storage, db) {
       new MetadataCache().invalidate();
       LeaderboardPositionCache.getInstance().invalidateAll();
       new RankingStatsCache().invalidate();
+      new JourneyCache().invalidateAll();
+      new GuidanceCache().invalidate();
+      new PurchaseHistoryCache().invalidate();
+      new UserProfileCache().invalidate();
+      new ProgressCache().invalidate();
+      new StreakCache().invalidate();
+      new UserClassificationCache().invalidate();
 
       // Clear recent achievement tracker to prevent false "recently emitted" blocks
       try {
