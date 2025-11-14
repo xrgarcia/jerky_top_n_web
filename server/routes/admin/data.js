@@ -109,14 +109,8 @@ module.exports = function createDataManagementRoutes(storage, db) {
 
       // Truncate all data tables using SQL TRUNCATE (faster and resets sequences)
       // NOTE: db.delete() without WHERE clause doesn't work in Drizzle
-      await db.execute(sql`TRUNCATE TABLE page_views CASCADE`);
-      console.log('🗑️ Truncated page_views');
-      
       await db.execute(sql`TRUNCATE TABLE rankings CASCADE`);
       console.log('🗑️ Truncated rankings');
-      
-      await db.execute(sql`TRUNCATE TABLE user_product_searches CASCADE`);
-      console.log('🗑️ Truncated user_product_searches');
       
       await db.execute(sql`TRUNCATE TABLE activity_logs CASCADE`);
       console.log('🗑️ Truncated activity_logs');
