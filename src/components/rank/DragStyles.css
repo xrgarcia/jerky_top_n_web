@@ -41,4 +41,38 @@
 .ranking-slot.drag-over {
   border-color: #8B4513;
   background-color: #fef8f0;
+  box-shadow: 0 0 0 2px rgba(139, 69, 19, 0.3);
+}
+
+/* Drag Overlay - The floating preview during drag */
+.drag-overlay-content {
+  cursor: grabbing;
+}
+
+.dragging-product-card {
+  background: white;
+  border: 2px solid #8B4513;
+  border-radius: 8px;
+  padding: 12px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.dragging-product-card img {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  object-fit: cover;
+  max-height: 150px;
+}
+
+.dragging-product-card .product-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
 }

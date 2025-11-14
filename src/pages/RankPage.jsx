@@ -1,8 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, pointerWithin, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { DndContext, closestCenter, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
@@ -11,7 +10,7 @@ import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
 import { addBreadcrumb, captureError } from '../utils/sentry';
 import { renderAchievementIcon } from '../utils/iconUtils';
-import { SortableSlot } from '../components/rank/SortableSlot';
+import { RankSlot } from '../components/rank/RankSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { RankingModal } from '../components/rank/RankingModal';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
@@ -477,9 +476,10 @@ Continue?`;
       }
       // If dropped outside a slot, product stays in available list (no action needed)
     }
-    // Check if reordering within slots
-    else if (activeId.startsWith('slot-') && overId.startsWith('slot-')) {
-      const fromPos = parseInt(activeId.replace('slot-', ''));
+    // Check if reordering within slots (draggable ID format: draggable-slot-{position})
+    // CRITICAL: Only process if dropped on a slot drop zone (slot-), not on the draggable itself (draggable-slot-)
+    else if (activeId.startsWith('draggable-slot-') && overId.startsWith('slot-') && !overId.startsWith('draggable-slot-')) {
+      const fromPos = parseInt(activeId.replace('draggable-slot-', ''));
       const toPos = parseInt(overId.replace('slot-', ''));
       
       if (fromPos !== toPos && Array.isArray(rankedProducts)) {
@@ -546,7 +546,7 @@ Continue?`;
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={pointerWithin}
+      collisionDetection={closestCenter}
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
       onDragCancel={handleDragCancel}
@@ -644,16 +644,16 @@ Continue?`;
                   {rankingsLoading ? (
                     <div className="loading-state">Loading rankings...</div>
                   ) : (
-                    <SortableContext items={slots.map(s => `slot-${s.position}`)} strategy={verticalListSortingStrategy}>
+                    <>
                       {slots.map(slot => (
-                        <SortableSlot
+                        <RankSlot
                           key={slot.position}
                           position={slot.position}
                           product={slot.product}
-                          isDragging={activeId === `slot-${slot.position}`}
+                          isDragging={activeId === `draggable-slot-${slot.position}`}
                         />
                       ))}
-                    </SortableContext>
+                    </>
                   )}
                 </div>
               </div>
@@ -776,6 +776,39 @@ Continue?`;
         onReplace={handleReplace}
         onInsert={handleInsert}
       />
+      
+      <DragOverlay>
+        {activeId ? (
+          <div className="drag-overlay-content">
+            {(() => {
+              if (activeId.startsWith('product-')) {
+                const productId = activeId.replace('product-', '');
+                const product = products.find(p => p?.id === productId);
+                if (product) {
+                  return (
+                    <div className="dragging-product-card">
+                      {product.image && <img src={product.image} alt={product.title} />}
+                      <div className="product-title">{product.title}</div>
+                    </div>
+                  );
+                }
+              } else if (activeId.startsWith('draggable-slot-')) {
+                const position = parseInt(activeId.replace('draggable-slot-', ''));
+                const ranked = rankedProducts.find(r => r?.ranking === position);
+                if (ranked?.productData) {
+                  return (
+                    <div className="dragging-product-card">
+                      {ranked.productData.image && <img src={ranked.productData.image} alt={ranked.productData.title} />}
+                      <div className="product-title">{ranked.productData.title}</div>
+                    </div>
+                  );
+                }
+              }
+              return null;
+            })()}
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }
