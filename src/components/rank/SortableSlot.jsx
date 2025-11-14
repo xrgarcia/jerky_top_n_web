@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import './SortableSlot.css';
 import './DragStyles.css';
 
-export function SortableSlot({ position, product, onRemove, isDragging }) {
+export function SortableSlot({ position, product, isDragging }) {
   const {
     attributes,
     listeners,
@@ -17,11 +17,6 @@ export function SortableSlot({ position, product, onRemove, isDragging }) {
   const style = {
     transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
     transition,
-  };
-
-  const handleRemove = (e) => {
-    e.stopPropagation();
-    onRemove(product.id);
   };
 
   return (
@@ -52,13 +47,6 @@ export function SortableSlot({ position, product, onRemove, isDragging }) {
               <p className="slot-product-price">${product.price}</p>
             )}
           </div>
-          <button
-            className="remove-button"
-            onClick={handleRemove}
-            title="Remove from ranking"
-          >
-            ×
-          </button>
         </div>
       ) : (
         <div className="slot-placeholder">

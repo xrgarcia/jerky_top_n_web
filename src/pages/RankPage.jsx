@@ -130,7 +130,6 @@ export default function RankPage() {
     saveStatus,
     isLoading: rankingsLoading,
     addRanking,
-    removeRanking,
     reorderRankings,
     replaceRanking,
     insertRanking,
@@ -171,31 +170,6 @@ export default function RankPage() {
   
   // Generate celebratory message based on position
   const getCelebratoryMessage = (state, position) => {
-    // Removal messages (position is negative)
-    if (position && position < 0) {
-      const absPosition = Math.abs(position);
-      
-      if (state === 'saving') {
-        const removalMessages = [
-          `Need to rethink that #${absPosition}?`,
-          `#${absPosition} back to the list!`,
-          `Second thoughts on #${absPosition}?`,
-          `Removing #${absPosition}...`
-        ];
-        return removalMessages[absPosition % removalMessages.length];
-      }
-      
-      if (state === 'saved') {
-        const removedMessages = [
-          `✓ #${absPosition} removed!`,
-          `✓ Back to the drawing board!`,
-          `✓ Unranked!`,
-          `✓ Removed from list!`
-        ];
-        return removedMessages[absPosition % removedMessages.length];
-      }
-    }
-    
     // Addition messages (position is positive)
     if (state === 'saving' && position && position > 0) {
       const messages = {
@@ -414,12 +388,7 @@ Continue?`;
         }))
       });
       
-      // CRITICAL FIX: Update local state to reflect synced rankings
-      // This ensures the UI shows the correct count immediately
-      setRankedProducts(rankingsToSync);
-      console.log(`✅ Updated local state with ${rankingsToSync.length} synced rankings`);
-      
-      // Clear the IndexedDB queue after successful sync AND state update
+      // Clear the IndexedDB queue after successful sync
       await queue.clear();
       
       // Invalidate all caches to force refresh
@@ -459,37 +428,6 @@ Continue?`;
     }
   };
   
-  /**
-   * Handle product unranking with optimistic UI
-   * Immediately adds product back to available products list (alphabetically sorted)
-   */
-  const handleRemoveRanking = (productId) => {
-    // Find the product data before removing
-    const rankedProduct = rankedProducts.find(r => r.productData.id === productId);
-    
-    if (rankedProduct) {
-      // Remove from rankings
-      removeRanking(productId);
-      
-      // Optimistically add back to products list in alphabetical order (with deduplication)
-      setProducts(prev => {
-        // Check if product already exists to avoid duplicates
-        if (prev.some(p => p.id === productId)) {
-          return prev; // Already in list, no need to add
-        }
-        
-        // Add and sort alphabetically
-        const newList = [...prev, rankedProduct.productData];
-        return newList.sort((a, b) => 
-          a.title.localeCompare(b.title, undefined, { sensitivity: 'base' })
-        );
-      });
-    } else {
-      // Fallback if product data not found
-      removeRanking(productId);
-    }
-  };
-
   useEffect(() => {
     // Load products on mount (using search term from URL if present)
     handleSearch();
@@ -553,12 +491,13 @@ Continue?`;
           const toProduct = rankedProducts.find(r => r && r.ranking === toPos);
           
           if (toProduct) {
-            // Both positions have products - use reorderRankings
+            // Both positions have products - swap them using reorderRankings
             const fromIndex = rankedProducts.findIndex(r => r && r.ranking === fromPos);
             const toIndex = rankedProducts.findIndex(r => r && r.ranking === toPos);
             reorderRankings(fromIndex, toIndex);
           } else {
-            // Target is empty - use addRanking to move to that position
+            // Target is empty - move product to that position
+            // addRanking has deduplication logic that removes existing entry before adding
             addRanking(fromProduct.productData, toPos);
           }
         }
@@ -711,7 +650,6 @@ Continue?`;
                           key={slot.position}
                           position={slot.position}
                           product={slot.product}
-                          onRemove={handleRemoveRanking}
                           isDragging={activeId === `slot-${slot.position}`}
                         />
                       ))}
@@ -723,7 +661,7 @@ Continue?`;
           
             <div className="rank-column products-column">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <h2>Purchased Products</h2>
+            <h2>Rankable Flavors</h2>
             {role === 'employee_admin' && rankedProducts.length > 0 && (
               <button 
                 onClick={handleForceSync}
