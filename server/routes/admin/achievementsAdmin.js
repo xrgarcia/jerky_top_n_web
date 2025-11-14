@@ -58,14 +58,22 @@ async function triggerAchievementRecalculation(achievementId, database, products
     console.log(`⚠️ No users found in database!`);
   }
   
-  // Get the CollectionManager
+  // Get the CollectionManager and EngagementManager
   const CollectionManager = require('../../services/CollectionManager');
+  const EngagementManager = require('../../services/EngagementManager');
+  const LeaderboardManager = require('../../services/LeaderboardManager');
+  const StreakManager = require('../../services/StreakManager');
   const AchievementRepository = require('../../repositories/AchievementRepository');
   const ProductsMetadataRepository = require('../../repositories/ProductsMetadataRepository');
+  const ActivityLogRepository = require('../../repositories/ActivityLogRepository');
   
   const achievementRepo = new AchievementRepository(database);
   const productsMetadataRepo = new ProductsMetadataRepository(database);
+  const activityLogRepo = new ActivityLogRepository(database);
   const collectionManager = new CollectionManager(achievementRepo, productsMetadataRepo, primaryDb, productsService);
+  const engagementManager = new EngagementManager(achievementRepo, activityLogRepo, primaryDb);
+  const leaderboardManager = new LeaderboardManager(database, primaryDb);
+  const streakManager = new StreakManager(database);
   
   // Process users in batches
   const BATCH_SIZE = 5;
@@ -97,6 +105,70 @@ async function triggerAchievementRecalculation(achievementId, database, products
           const progress = await collectionManager.calculateUserCoinProgress(user.id, ach);
           if (progress.tier) {
             result = await collectionManager.updateCollectionProgress(user.id, ach, progress);
+          }
+        } else if (ach.collectionType === 'engagement_collection') {
+          // Handle engagement achievements (rank_count, search_count, streak_days, etc.)
+          // Get user stats needed for engagement evaluators
+          const userStats = await leaderboardManager.getUserStats(user.id);
+          const streaks = await streakManager.getUserStreaks(user.id);
+          const dailyStreak = streaks.find(s => s.streakType === 'daily_rank');
+          const loginStreak = streaks.find(s => s.streakType === 'daily_login');
+          
+          // Build comprehensive stats object
+          const stats = {
+            ...userStats,
+            currentStreak: dailyStreak?.currentStreak || 0,
+            currentLoginStreak: loginStreak?.currentStreak || 0,
+          };
+          
+          // Add engagement-specific stats if needed by this achievement
+          if (ach.requirement.type === 'search_count') {
+            const searchData = await engagementManager.calculateSearchEngagement(user.id);
+            stats.totalSearches = searchData.totalSearches;
+          } else if (ach.requirement.type === 'product_view_count') {
+            const viewData = await engagementManager.calculateProductViewEngagement(user.id, false);
+            stats.totalProductViews = viewData.totalProductViews;
+          } else if (ach.requirement.type === 'unique_product_view_count') {
+            const viewData = await engagementManager.calculateProductViewEngagement(user.id, true);
+            stats.uniqueProductViews = viewData.uniqueProductViews;
+          } else if (ach.requirement.type === 'profile_view_count') {
+            const viewData = await engagementManager.calculateProfileViewEngagement(user.id, false);
+            stats.totalProfileViews = viewData.totalProfileViews;
+          } else if (ach.requirement.type === 'unique_profile_view_count') {
+            const viewData = await engagementManager.calculateProfileViewEngagement(user.id, true);
+            stats.uniqueProfileViews = viewData.uniqueProfileViews;
+          } else if (ach.requirement.type === 'page_view_count') {
+            const pageData = await engagementManager.calculatePageViewEngagement(user.id);
+            stats.totalPageViews = pageData.totalPageViews;
+          }
+          
+          // Check if user already has this achievement
+          const userAchievements = await achievementRepo.getUserAchievements(user.id);
+          const alreadyEarned = userAchievements.some(ua => ua.achievementId === ach.id);
+          
+          if (!alreadyEarned) {
+            // Check prerequisite: user must have earned the prerequisite achievement first
+            if (ach.prerequisiteAchievementId) {
+              const hasPrerequisite = userAchievements.some(ua => ua.achievementId === ach.prerequisiteAchievementId);
+              if (!hasPrerequisite) {
+                // Skip this achievement - user hasn't earned the prerequisite yet
+                return;
+              }
+            }
+            
+            // Use evaluator to check if user qualifies
+            const evaluator = engagementManager.evaluators[ach.requirement.type];
+            if (evaluator && evaluator(stats, ach.requirement)) {
+              // Award the achievement
+              await achievementRepo.awardAchievement(user.id, ach.id);
+              await activityLogRepo.logActivity(user.id, 'earn_badge', {
+                achievementCode: ach.code,
+                achievementName: ach.name,
+                achievementIcon: ach.icon,
+                achievementTier: ach.tier,
+              });
+              result = { type: 'new', tier: ach.tier || 'bronze' };
+            }
           }
         }
         
