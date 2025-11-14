@@ -150,6 +150,49 @@ class ProductsMetadataRepository {
       deletedProducts: orphaned
     };
   }
+
+  /**
+   * Update force_rankable flag for a specific product (beta feature flag)
+   * @param {string} shopifyProductId - Shopify product ID
+   * @param {boolean} forceRankable - Whether product should be force-rankable
+   * @returns {Promise<object|null>} Updated product metadata or null
+   * @throws {TypeError} If forceRankable is not a boolean
+   */
+  async updateForceRankable(shopifyProductId, forceRankable) {
+    // Ensure shopifyProductId is a string for Drizzle/Neon binding
+    if (shopifyProductId && typeof shopifyProductId !== 'string') {
+      shopifyProductId = String(shopifyProductId);
+    }
+    
+    // Validate forceRankable is a boolean to prevent runtime errors
+    if (typeof forceRankable !== 'boolean') {
+      throw new TypeError(
+        `forceRankable must be a boolean, got ${typeof forceRankable}: ${JSON.stringify(forceRankable)}`
+      );
+    }
+    
+    const result = await this.db
+      .update(productsMetadata)
+      .set({
+        forceRankable,
+        updatedAt: new Date(),
+      })
+      .where(eq(productsMetadata.shopifyProductId, shopifyProductId))
+      .returning();
+    
+    return result[0] || null;
+  }
+
+  /**
+   * Get all products where force_rankable is true (beta products)
+   * @returns {Promise<Array>} Array of force-rankable products
+   */
+  async getForceRankableProducts() {
+    return await this.db
+      .select()
+      .from(productsMetadata)
+      .where(eq(productsMetadata.forceRankable, true));
+  }
 }
 
 module.exports = ProductsMetadataRepository;
