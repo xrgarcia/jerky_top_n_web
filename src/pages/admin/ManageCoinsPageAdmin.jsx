@@ -83,24 +83,32 @@ function ManageCoinsPageAdmin() {
   };
 
   const handleRefreshCoin = (coin) => {
+    console.log('🎯 handleRefreshCoin called for coin:', coin);
     setConfirmModalData({
       coin,
       title: `Recalculate "${coin.name}"?`,
       message: `This will award the achievement to all users who meet the requirements.\n\nProcessing time depends on the number of users in the system.`,
     });
     setIsConfirmModalOpen(true);
+    console.log('✅ Confirm modal opened');
   };
 
   const handleConfirmRecalculate = async () => {
+    console.log('🔵 handleConfirmRecalculate called');
+    console.log('📋 confirmModalData:', confirmModalData);
     setIsConfirmModalOpen(false);
     
     const { coin } = confirmModalData;
+    console.log('🎯 Recalculating coin:', coin);
+    
     const loadingToast = toast.loading(`Recalculating "${coin.name}" for all users...`, {
       duration: 0
     });
 
     try {
+      console.log('🚀 About to call mutateAsync for coin ID:', coin.id);
       const result = await recalculateCoinMutation.mutateAsync(coin.id);
+      console.log('✅ Mutation successful! Result:', result);
       
       // Hide loading toast
       toast.dismiss(loadingToast);
@@ -116,6 +124,10 @@ function ManageCoinsPageAdmin() {
         { duration: 7000 }
       );
     } catch (error) {
+      console.error('❌ Mutation failed! Error:', error);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      
       // Hide loading toast
       toast.dismiss(loadingToast);
       
