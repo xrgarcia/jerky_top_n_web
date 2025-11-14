@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { DndContext, closestCenter, DragOverlay, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
@@ -776,39 +776,6 @@ Continue?`;
         onReplace={handleReplace}
         onInsert={handleInsert}
       />
-      
-      <DragOverlay>
-        {activeId ? (
-          <div className="drag-overlay-content">
-            {(() => {
-              if (activeId.startsWith('product-')) {
-                const productId = activeId.replace('product-', '');
-                const product = products.find(p => p?.id === productId);
-                if (product) {
-                  return (
-                    <div className="dragging-product-card">
-                      {product.image && <img src={product.image} alt={product.title} />}
-                      <div className="product-title">{product.title}</div>
-                    </div>
-                  );
-                }
-              } else if (activeId.startsWith('draggable-slot-')) {
-                const position = parseInt(activeId.replace('draggable-slot-', ''));
-                const ranked = rankedProducts.find(r => r?.ranking === position);
-                if (ranked?.productData) {
-                  return (
-                    <div className="dragging-product-card">
-                      {ranked.productData.image && <img src={ranked.productData.image} alt={ranked.productData.title} />}
-                      <div className="product-title">{ranked.productData.title}</div>
-                    </div>
-                  );
-                }
-              }
-              return null;
-            })()}
-          </div>
-        ) : null}
-      </DragOverlay>
     </DndContext>
   );
 }

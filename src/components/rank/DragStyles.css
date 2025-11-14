@@ -12,9 +12,8 @@
   cursor: grabbing;
 }
 
-/* Product Card - While Dragging (original stays in place) */
+/* Product Card - While Dragging (original stays in place, no visual change) */
 .product-card.dragging {
-  opacity: 0.5;
   position: relative;
 }
 
@@ -32,9 +31,9 @@
   cursor: grabbing;
 }
 
-/* Ranking Slot - While Dragging (original stays in place) */
+/* Ranking Slot - While Dragging (original stays in place, no visual change) */
 .ranking-slot.dragging {
-  opacity: 0.5;
+  /* No visual effects - item stays exactly as-is during drag */
 }
 
 /* Ranking Slot - Drop Target Highlighting */
