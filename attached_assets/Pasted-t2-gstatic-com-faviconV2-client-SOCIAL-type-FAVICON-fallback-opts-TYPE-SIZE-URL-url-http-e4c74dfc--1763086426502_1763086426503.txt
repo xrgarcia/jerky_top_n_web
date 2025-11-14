@@ -1,0 +1,79 @@
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=http://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev&size=32:1  Failed to load resource: the server responded with a status of 404 ()
+t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/&size=32:1  Failed to load resource: the server responded with a status of 404 ()
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'ambient-light-sensor'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'battery'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'execution-while-not-rendered'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'execution-while-out-of-viewport'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'layout-animations'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'legacy-image-formats'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'navigation-override'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'oversized-images'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'publickey-credentials'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'speaker-selection'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'unoptimized-images'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'unsized-media'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Unrecognized feature: 'pointer-lock'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Allow attribute will take precedence over 'allowfullscreen'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+4489bd0c9b3da3bb.js:2 Allow attribute will take precedence over 'allowpaymentrequest'.
+(anonymous) @ 4489bd0c9b3da3bb.js:2
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Error while parsing the 'sandbox' attribute: 'allow-downloads-without-user-activation' is an invalid sandbox flag.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'ambient-light-sensor'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'battery'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'execution-while-not-rendered'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'execution-while-out-of-viewport'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'layout-animations'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'legacy-image-formats'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'navigation-override'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'oversized-images'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'publickey-credentials'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'speaker-selection'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'unoptimized-images'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Unrecognized feature: 'unsized-media'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Allow attribute will take precedence over 'allowfullscreen'.
+workspace_iframe.html?initialPath=%2Fadmin%2Ftools&id=%3Ar52%3A:32 Allow attribute will take precedence over 'allowpaymentrequest'.
+injected.js:27 🔍 React Query: Fetching auth status...
+injected.js:27 📡 BroadcastChannel initialized for auth events
+socket__io-client.js?v=0ef9f64d:1035 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ socket__io-client.js?v=0ef9f64d:1035
+injected.js:27 📡 BroadcastChannel initialized for auth events
+injected.js:27 ✅ Sentry error tracking initialized (development)
+injected.js:27 📋 React Query: Auth response: Object
+injected.js:27 ✅ React Query: Setting authenticated state - role: employee_admin isEmployee: true
+socket__io-client.js?v=0ef9f64d:1035 WebSocket connection to 'wss://e4c74dfc-6d9f-4ca0-b301-e487b1730537-00-4z8i4d8stzmg.spock.replit.dev:5173/socket.io/?EIO=4&transport=websocket' failed: WebSocket is closed before the connection is established.
+doClose @ socket__io-client.js?v=0ef9f64d:1035
+injected.js:27 ✅ WebSocket connected
+injected.js:27 🔐 Socket authenticated: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 🔍 useAdminUsers: Fetching users...
+injected.js:27 📋 useAdminUsers: Received data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+1fa88b736dc94062.js:2 [Coframe] Mutation callback infinite loop protection triggered, disconnecting mutation observer Object
+(anonymous) @ 1fa88b736dc94062.js:2
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
+injected.js:27 👥 Users data: Object
