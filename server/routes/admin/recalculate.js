@@ -88,16 +88,22 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
     console.log(`   has_tiers: ${ach.hasTiers}, tier_thresholds: ${JSON.stringify(ach.tierThresholds)}`);
     
     // Get users for recalculation
-    // Optimize for engagement achievements by only checking users with relevant activity
+    // Optimize by only checking users with relevant activity/data
     let allUsers;
     
-    // Activity-based achievement types that use userActivities table
+    // Collection types that query productRankings (only need users who have rankings)
+    const rankingBasedTypes = ['dynamic_collection', 'static_collection', 'custom_product_list', 'flavor_coin'];
+    const isRankingBased = rankingBasedTypes.includes(ach.collectionType) || 
+                           (ach.collectionType === 'engagement_collection' && ach.requirement?.type === 'rank_count');
+    
+    // Activity-based engagement types that query userActivities
     const activityBasedTypes = ['search_count', 'page_view_count', 'product_view_count', 
                                 'unique_product_view_count', 'profile_view_count', 'unique_profile_view_count'];
+    const isActivityBased = ach.collectionType === 'engagement_collection' && activityBasedTypes.includes(ach.requirement?.type);
     
-    if (ach.collectionType === 'engagement_collection' && ach.requirement?.type === 'rank_count') {
-      // For rank-based achievements, only check users who have rankings
-      console.log(`⚡ Optimized query: Fetching only users with rankings`);
+    if (isRankingBased) {
+      // For ranking-based achievements/collections, only check users who have rankings
+      console.log(`⚡ Optimized query: Fetching only users with rankings (type: ${ach.collectionType})`);
       const { productRankings } = require('../../../shared/schema');
       
       const usersWithRankings = await db
@@ -116,7 +122,7 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
       const totalUsers = await db.select({ count: users.id }).from(users);
       console.log(`✅ Optimized: Checking ${allUsers.length} users with rankings (saved checking ${totalUsers.length - allUsers.length} users with 0 rankings)`);
       
-    } else if (ach.collectionType === 'engagement_collection' && activityBasedTypes.includes(ach.requirement?.type)) {
+    } else if (isActivityBased) {
       // For activity-based achievements, only check users who have any activity
       console.log(`⚡ Optimized query: Fetching only users with activity records`);
       const { userActivities } = require('../../../shared/schema');
@@ -138,7 +144,7 @@ module.exports = function createRecalculateRoutes(storage, db, productsService =
       console.log(`✅ Optimized: Checking ${allUsers.length} users with activity (saved checking ${totalUsers.length - allUsers.length} users with 0 activity)`);
       
     } else {
-      // For other achievement types, check all users
+      // For other achievement types (streaks, leaderboard, etc.), check all users
       allUsers = await db.select({ id: users.id }).from(users);
       console.log(`👥 Found ${allUsers.length} users to process`);
     }
