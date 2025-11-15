@@ -60,7 +60,7 @@ function Nav() {
   }, [searchQuery]);
 
   const handleProductClick = (productId) => {
-    navigate(`/products/${productId}`);
+    navigate(`/flavors/${productId}`);
     setSearchQuery('');
     setShowDropdown(false);
   };

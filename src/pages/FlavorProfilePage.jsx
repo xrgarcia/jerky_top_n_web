@@ -129,7 +129,7 @@ function FlavorProfilePage() {
                   filteredProducts.map((product) => (
                     <div key={product.id} className="flavor-product-card">
                       <Link 
-                        to={`/products/${product.id}`}
+                        to={`/flavors/${product.id}`}
                         className="flavor-product-link"
                       >
                         {product.image && (

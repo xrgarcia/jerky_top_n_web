@@ -64,7 +64,7 @@ function ActivityFeed({ recentAchievements, recentlyRanked, isLoading }) {
             rankings.map((ranking, index) => (
               <Link 
                 key={index} 
-                to={`/products/${ranking.productId}`}
+                to={`/flavors/${ranking.productId}`}
                 className="activity-item activity-link"
               >
                 <div className="activity-icon">

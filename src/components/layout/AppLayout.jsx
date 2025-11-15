@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { broadcastAuthChange } from '../../context/AuthContext';
 import { useSocket } from '../../hooks/useSocket';
@@ -43,6 +43,11 @@ const UserGuidanceTab = lazy(() => import('../../components/admin/UserGuidanceTa
 const QueueMonitorPage = lazy(() => import('../../pages/admin/QueueMonitorPage'));
 const BulkImportPage = lazy(() => import('../../pages/admin/BulkImportPage'));
 
+function RedirectToFlavor() {
+  const { productId } = useParams();
+  return <Navigate to={`/flavors/${productId}`} replace />;
+}
+
 function AppLayout() {
   // Initialize WebSocket connection for real-time updates
   useSocket();
@@ -69,7 +74,8 @@ function AppLayout() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
-            <Route path="/products/:productId" element={<ProductDetailPage />} />
+            <Route path="/products/:productId" element={<RedirectToFlavor />} />
+            <Route path="/flavors/:productId(\d+)" element={<ProductDetailPage />} />
             <Route path="/flavors/:flavorId" element={<FlavorProfilePage />} />
             <Route path="/login" element={<LoginPage />} />
             

@@ -84,7 +84,7 @@ function ProductPodium({ products }) {
           return (
             <Link
               key={product.shopifyProductId}
-              to={`/products/${product.shopifyProductId}`}
+              to={`/flavors/${product.shopifyProductId}`}
               className={`product-podium-item ${getPositionClass(index)}`}
             >
               <div className="product-glow-container">

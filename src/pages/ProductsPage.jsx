@@ -66,7 +66,7 @@ function ProductsPage() {
                   <div className="product-brand">{product.vendor}</div>
                 )}
                 
-                <Link to={`/products/${product.id}`} className="product-card-link">
+                <Link to={`/flavors/${product.id}`} className="product-card-link">
                   {product.image && (
                     <img src={product.image} alt={product.title} className="product-image" />
                   )}

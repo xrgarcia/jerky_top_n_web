@@ -57,7 +57,7 @@ function CommunityPulse({ activityStats, isLoading }) {
             {data.latest.rankedBy}
           </Link>
           {' '}ranked{' '}
-          <Link to={`/products/${data.latest.productData?.id}`} className="pulse-product">
+          <Link to={`/flavors/${data.latest.productData?.id}`} className="pulse-product">
             {data.latest.productData?.title}
           </Link>
           {' '}at <span className="pulse-rank">#{data.latest.ranking}</span>
@@ -125,7 +125,7 @@ function CommunityPulse({ activityStats, isLoading }) {
           </Link>
           ! Ranked{' '}
           {data.latest.productData?.title && (
-            <Link to={`/products/${data.latest.productData?.id}`} className="pulse-product">
+            <Link to={`/flavors/${data.latest.productData?.id}`} className="pulse-product">
               {data.latest.productData.title}
             </Link>
           )}
@@ -156,7 +156,7 @@ function CommunityPulse({ activityStats, isLoading }) {
       icon: '🔥',
       render: (data) => data.latest ? (
         <div className="pulse-example">
-          <Link to={`/products/${data.latest.productData?.id}`} className="pulse-product">
+          <Link to={`/flavors/${data.latest.productData?.id}`} className="pulse-product">
             {data.latest.productData?.title}
           </Link>
           {' '}ranked {data.latest.rankingCount}× today

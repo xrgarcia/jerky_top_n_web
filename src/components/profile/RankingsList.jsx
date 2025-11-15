@@ -103,7 +103,7 @@ function RankingsList({ rankings }) {
         {filteredRankings.map((ranking) => (
           <Link
             key={ranking.shopifyProductId}
-            to={`/products/${ranking.shopifyProductId}`}
+            to={`/flavors/${ranking.shopifyProductId}`}
             className="ranking-card"
           >
             <div className="ranking-position">
