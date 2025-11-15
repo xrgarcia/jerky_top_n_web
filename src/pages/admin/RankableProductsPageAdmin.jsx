@@ -191,10 +191,12 @@ function RankableProductsPageAdmin() {
                       >
                         <div style={{ fontWeight: '500', marginBottom: '4px' }}>
                           {user.role === 'employee_admin' && '👑 '}
-                          {user.username || 'No username'}
+                          {user.first_name && user.last_name 
+                            ? `${user.first_name} ${user.last_name}` 
+                            : user.email}
                         </div>
                         <div style={{ fontSize: '12px', color: '#666' }}>
-                          {user.email}
+                          {user.first_name && user.last_name ? user.email : `ID: ${user.id}`}
                         </div>
                         {user.role && (
                           <div style={{ fontSize: '11px', color: '#999', marginTop: '4px' }}>
