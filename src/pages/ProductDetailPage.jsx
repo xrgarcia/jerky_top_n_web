@@ -36,6 +36,14 @@ function RankingDistributionChart({ distribution, avgRank }) {
           );
         })}
       </div>
+      {avgRank && (
+        <div className="chart-legend">
+          <span className="legend-item">
+            <span className="legend-dot highlight"></span>
+            Community Average
+          </span>
+        </div>
+      )}
     </div>
   );
 }
@@ -112,7 +120,6 @@ function ProductDetailPage() {
                     to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
                     className="flavor-tag primary"
                   >
-                    {product.flavorIcon && `${product.flavorIcon} `}
                     {product.flavorDisplay || product.primaryFlavor}
                   </Link>
                 )}
@@ -134,24 +141,21 @@ function ProductDetailPage() {
           <div className="stats-grid">
             {product.userRank !== null && (
               <div className="stat-card user-rank">
-                <div className="stat-icon">🏆</div>
-                <div className="stat-value">#{product.userRank}</div>
                 <div className="stat-label">Your Rank</div>
+                <div className="stat-value">#{product.userRank}</div>
               </div>
             )}
             
             <div className="stat-card community-rank">
-              <div className="stat-icon">⭐</div>
+              <div className="stat-label">Community Average</div>
               <div className="stat-value">
                 {product.avgRank ? `#${parseFloat(product.avgRank).toFixed(1)}` : 'N/A'}
               </div>
-              <div className="stat-label">Community Average</div>
             </div>
             
             <div className="stat-card rankings-count">
-              <div className="stat-icon">📊</div>
-              <div className="stat-value">{product.rankingCount || 0}</div>
               <div className="stat-label">Total Rankings</div>
+              <div className="stat-value">{product.rankingCount || 0}</div>
             </div>
           </div>
         </section>
