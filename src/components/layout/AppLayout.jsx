@@ -48,6 +48,21 @@ function RedirectToFlavor() {
   return <Navigate to={`/flavors/${productId}`} replace />;
 }
 
+function FlavorRouter() {
+  const { id } = useParams();
+  
+  // Check if ID is numeric (product) or string (flavor profile)
+  const isNumeric = /^\d+$/.test(id);
+  
+  console.log(`🔀 FlavorRouter: id="${id}", isNumeric=${isNumeric}`);
+  
+  return (
+    <Suspense fallback={<PageLoader />}>
+      {isNumeric ? <ProductDetailPage /> : <FlavorProfilePage />}
+    </Suspense>
+  );
+}
+
 function AppLayout() {
   // Initialize WebSocket connection for real-time updates
   useSocket();
@@ -75,8 +90,7 @@ function AppLayout() {
             <Route path="/" element={<HomePage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:productId" element={<RedirectToFlavor />} />
-            <Route path="/flavors/:productId(\d+)" element={<ProductDetailPage />} />
-            <Route path="/flavors/:flavorId" element={<FlavorProfilePage />} />
+            <Route path="/flavors/:id" element={<FlavorRouter />} />
             <Route path="/login" element={<LoginPage />} />
             
             <Route path="/coinbook" element={

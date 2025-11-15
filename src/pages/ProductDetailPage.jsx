@@ -5,7 +5,7 @@ import { usePageView } from '../hooks/usePageView';
 import './ProductDetailPage.css';
 
 function ProductDetailPage() {
-  const { productId } = useParams();
+  const { id: productId } = useParams();
   const { data: product, isLoading, error } = useProductDetail(productId);
   
   // Track product view

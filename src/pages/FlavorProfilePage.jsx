@@ -16,7 +16,7 @@ const flavorInfo = {
 };
 
 function FlavorProfilePage() {
-  const { flavorId: rawFlavorId } = useParams();
+  const { id: rawFlavorId } = useParams();
   const [animalFilter, setAnimalFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
