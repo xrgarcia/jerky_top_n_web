@@ -9,7 +9,8 @@ function RankableProductsPageAdmin() {
   const [showUserResults, setShowUserResults] = useState(false);
   const searchRef = useRef(null);
 
-  // Search users by email/username
+  // Search users by email/username (only when actively searching, not when user is selected)
+  const shouldSearch = userSearchQuery.length >= 2 && !selectedUserId;
   const { data: userSearchData, isLoading: isSearching } = useQuery({
     queryKey: ['admin', 'userSearch', userSearchQuery],
     queryFn: async () => {
@@ -17,7 +18,7 @@ function RankableProductsPageAdmin() {
       const response = await api.get(`/api/admin/users?search=${encodeURIComponent(userSearchQuery)}&limit=20`);
       return response.data;
     },
-    enabled: userSearchQuery.length >= 2,
+    enabled: shouldSearch,
   });
 
   // Fetch rankable products for selected user
@@ -117,6 +118,10 @@ function RankableProductsPageAdmin() {
                 }}
                 onFocus={() => setShowUserResults(true)}
                 className="form-input"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
                 style={{ flex: 1, fontSize: '14px', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
               />
               {selectedUserId && (
