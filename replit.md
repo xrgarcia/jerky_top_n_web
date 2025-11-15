@@ -25,6 +25,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client.
+- **Routing Architecture**: Unified `/flavors/:id` route with intelligent FlavorRouter component that differentiates numeric product IDs from string flavor names using component-level validation (React Router v7 removed regex pattern support). Automatic redirects from legacy `/products/:id` URLs for backwards compatibility. Product detail pages accessed via `/flavors/[numeric-id]` and flavor profile pages via `/flavors/[flavor-name]`.
 - **Build Configuration**: Vite builds to `dist/` directory (separate from `public/` to avoid publicDir/outDir conflict). Express serves both unbundled public assets (logo, favicon, robots.txt) and built SPA bundle. Production branding uses "RANK." logo (Nov 2025).
 - **Backend**: Node.js and Express.js, employing a repository pattern.
 - **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration.
