@@ -31,6 +31,7 @@ const CoinTypesPageAdmin = lazy(() => import('../../pages/admin/CoinTypesPageAdm
 const FlavorCommunitiesPageAdmin = lazy(() => import('../../pages/admin/FlavorCommunitiesPageAdmin'));
 const LiveUsersPage = lazy(() => import('../../pages/admin/LiveUsersPage'));
 const ProductsPageAdmin = lazy(() => import('../../pages/admin/ProductsPageAdmin'));
+const RankableProductsPageAdmin = lazy(() => import('../../pages/admin/RankableProductsPageAdmin'));
 const OrderItemsPage = lazy(() => import('../../pages/admin/OrderItemsPage'));
 const CustomerWebhooksPage = lazy(() => import('../../pages/admin/CustomerWebhooksPage'));
 const ProductWebhooksPage = lazy(() => import('../../pages/admin/ProductWebhooksPage'));
@@ -117,6 +118,7 @@ function AppLayout() {
               <Route path="flavor-profile-communities" element={<FlavorCommunitiesPageAdmin />} />
               <Route path="live-users" element={<LiveUsersPage />} />
               <Route path="products" element={<ProductsPageAdmin />} />
+              <Route path="rankable-products" element={<RankableProductsPageAdmin />} />
               <Route path="orders" element={<OrderItemsPage />} />
               <Route path="customer-webhooks" element={<CustomerWebhooksPage />} />
               <Route path="product-webhooks" element={<ProductWebhooksPage />} />

@@ -3875,6 +3875,11 @@ if (databaseAvailable && storage) {
       const productsAdminRouter = createProductsAdminRoutes(storage, db, metadataCache);
       adminRouter.use(productsAdminRouter);
       
+      // Add rankable products admin route (for debugging/validation)
+      const createRankableProductsAdminRoutes = require('./server/routes/admin/rankableProducts');
+      const rankableProductsRouter = createRankableProductsAdminRoutes(storage, productsService, purchaseHistoryService);
+      adminRouter.use(rankableProductsRouter);
+      
       // Add recalculate route for retroactive achievement awards
       const createRecalculateRoutes = require('./server/routes/admin/recalculate');
       const recalculateRouter = createRecalculateRoutes(storage, db, productsService);

@@ -15,6 +15,7 @@ function ToolsLayout() {
     { path: '/admin/tools/flavor-profile-communities', label: 'Flavor Profile Communities', icon: '🌶️' },
     { path: '/admin/tools/live-users', label: 'Live Users', icon: '👥' },
     { path: '/admin/tools/products', label: 'Manage Products', icon: '🥩' },
+    { path: '/admin/tools/rankable-products', label: 'Rankable Products', icon: '🔍' },
     { path: '/admin/tools/orders', label: 'Order Items', icon: '🛒' },
     { path: '/admin/tools/customer-webhooks', label: 'Customer Webhooks', icon: '📡' },
     { path: '/admin/tools/product-webhooks', label: 'Product Webhooks', icon: '📦' },
