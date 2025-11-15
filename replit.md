@@ -52,7 +52,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 **Feature Specifications:**
 - **Rank Page**: Elegant three-section page with hero section, introduction, and two-column drag-and-drop interface for ranking purchased products. Features persistent rankings, visual modal, duplicate prevention, optimistic UI, and responsive design.
 - **Flavors Page**: Advanced sorting, filtering, client-side instant search, and server-side pagination.
-- **Product Detail Page**: Comprehensive product information including images, brand, flavors, pricing, ranking statistics, and tags.
+- **Product Detail Page**: Modern Apple-inspired redesign with hero section showcasing product image and metadata, stat cards displaying user rank (if ranked), community average, and total rankings, ranking distribution chart visualizing community preferences, and conditional CTAs ("Rank It" for purchased/unranked, "Try It Again" for purchased/ranked, "Discover Your New Favorite" for unpurchased). Enhanced backend endpoint `/api/products/:id/detail` returns user context, purchase status, and ranking distribution without requiring Shopify credentials (uses cached data).
 - **Flavor Profile Pages**: Dynamic pages for each flavor type.
 - **Purchase History**: Automatic background synchronization of Shopify orders.
 - **Community**: User discovery, search, profiles with ranking stats, top rankers widget, privacy-aware display, avatar support, and narrative-driven UserCard component.
