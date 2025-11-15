@@ -61,6 +61,12 @@
   margin-bottom: 48px;
 }
 
+/* Fix tooltip visibility - remove 3D transform that creates stacking context */
+.rank-hero .coinbook-widget {
+  transform: none;
+  transform-style: flat;
+}
+
 .hero-title {
   font-size: 3.5rem;
   font-weight: 600;
