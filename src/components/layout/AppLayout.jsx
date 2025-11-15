@@ -9,6 +9,7 @@ import Footer from './Footer';
 import ProtectedRoute from '../auth/ProtectedRoute';
 import EmployeeRoute from '../auth/EmployeeRoute';
 import PageLoader from '../common/PageLoader';
+import ScrollToTop from '../common/ScrollToTop';
 
 import './AppLayout.css';
 import '../../styles/toast.admin.css';
@@ -60,6 +61,7 @@ function AppLayout() {
 
   return (
     <div className="app-layout">
+      <ScrollToTop />
       <Header />
       <Nav />
       <main className="main-content fade-in">
