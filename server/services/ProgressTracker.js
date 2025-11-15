@@ -90,6 +90,9 @@ class ProgressTracker {
           // Apply category filter if specified (e.g., only 'ranking' achievements)
           if (categoryFilter && a.category !== categoryFilter) return false;
           
+          // Exclude flavor_coin achievements - they're always one achievement away and skew the calculation
+          if (a.collectionType === 'flavor_coin') return false;
+          
           // Must have progress data
           if (!a.progress) return false;
           
