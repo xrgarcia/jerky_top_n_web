@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '../../services/api';
+import { api } from '../../utils/api';
 
 function RankableProductsPageAdmin() {
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -10,7 +10,7 @@ function RankableProductsPageAdmin() {
   const { data: usersData } = useQuery({
     queryKey: ['admin', 'users'],
     queryFn: async () => {
-      const response = await apiClient.get('/api/admin/users?limit=1000');
+      const response = await api.get('/api/admin/users?limit=1000');
       return response.data;
     },
   });
@@ -19,7 +19,7 @@ function RankableProductsPageAdmin() {
   const { data: rankableData, isLoading, error } = useQuery({
     queryKey: ['admin', 'rankableProducts', selectedUserId],
     queryFn: async () => {
-      const response = await apiClient.get(`/api/admin/rankable-products/${selectedUserId}`);
+      const response = await api.get(`/api/admin/rankable-products/${selectedUserId}`);
       return response.data;
     },
     enabled: !!selectedUserId, // Only fetch when a user is selected
