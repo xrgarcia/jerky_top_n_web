@@ -1,18 +1,23 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../../utils/api';
 
 function RankableProductsPageAdmin() {
   const [selectedUserId, setSelectedUserId] = useState(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [productSearchQuery, setProductSearchQuery] = useState('');
+  const [showUserResults, setShowUserResults] = useState(false);
+  const searchRef = useRef(null);
 
-  // Fetch all users for the dropdown
-  const { data: usersData } = useQuery({
-    queryKey: ['admin', 'users'],
+  // Search users by email/username
+  const { data: userSearchData, isLoading: isSearching } = useQuery({
+    queryKey: ['admin', 'userSearch', userSearchQuery],
     queryFn: async () => {
-      const response = await api.get('/api/admin/users?limit=1000');
+      if (!userSearchQuery || userSearchQuery.length < 2) return { users: [] };
+      const response = await api.get(`/api/admin/users?search=${encodeURIComponent(userSearchQuery)}&limit=20`);
       return response.data;
     },
+    enabled: userSearchQuery.length >= 2,
   });
 
   // Fetch rankable products for selected user
@@ -22,18 +27,41 @@ function RankableProductsPageAdmin() {
       const response = await api.get(`/api/admin/rankable-products/${selectedUserId}`);
       return response.data;
     },
-    enabled: !!selectedUserId, // Only fetch when a user is selected
+    enabled: !!selectedUserId,
   });
 
-  const users = usersData?.users || [];
+  const searchResults = userSearchData?.users || [];
   const products = rankableData?.products || [];
   const targetUser = rankableData?.user || null;
 
+  // Close search results when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchRef.current && !searchRef.current.contains(event.target)) {
+        setShowUserResults(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleSelectUser = (user) => {
+    setSelectedUserId(user.id);
+    setUserSearchQuery(user.email);
+    setShowUserResults(false);
+  };
+
+  const handleClearUser = () => {
+    setSelectedUserId(null);
+    setUserSearchQuery('');
+    setProductSearchQuery('');
+  };
+
   // Filter products by search
   const filteredProducts = useMemo(() => {
-    if (!searchQuery) return products;
+    if (!productSearchQuery) return products;
 
-    const search = searchQuery.toLowerCase();
+    const search = productSearchQuery.toLowerCase();
     return products.filter((product) => {
       return (
         product.title?.toLowerCase().includes(search) ||
@@ -42,7 +70,7 @@ function RankableProductsPageAdmin() {
         product.primaryFlavor?.toLowerCase().includes(search)
       );
     });
-  }, [products, searchQuery]);
+  }, [products, productSearchQuery]);
 
   // Get reason badge styling
   const getReasonBadge = (reasons) => {
@@ -72,28 +100,99 @@ function RankableProductsPageAdmin() {
       </div>
 
       <div className="admin-content">
-        {/* User Selector */}
+        {/* User Search */}
         <div className="filters-section" style={{ marginBottom: '30px', padding: '20px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-          <div className="form-group">
-            <label className="form-label" style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px' }}>
-              Select User to Impersonate
+          <div className="form-group" ref={searchRef} style={{ position: 'relative' }}>
+            <label className="form-label" style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '10px', display: 'block' }}>
+              Search for User by Email or Username
             </label>
-            <select
-              value={selectedUserId || ''}
-              onChange={(e) => setSelectedUserId(e.target.value ? parseInt(e.target.value) : null)}
-              className="form-select"
-              style={{ fontSize: '14px', padding: '10px' }}
-            >
-              <option value="">-- Choose a user --</option>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.username} ({user.email}) {user.role === 'employee_admin' ? '👑' : ''}
-                </option>
-              ))}
-            </select>
-            <p className="form-help" style={{ marginTop: '10px' }}>
-              Select a user to see which products they can rank on their Rank page
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+              <input
+                type="text"
+                placeholder="Type email or username (min 2 characters)..."
+                value={userSearchQuery}
+                onChange={(e) => {
+                  setUserSearchQuery(e.target.value);
+                  setShowUserResults(true);
+                }}
+                onFocus={() => setShowUserResults(true)}
+                className="form-input"
+                style={{ flex: 1, fontSize: '14px', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+              />
+              {selectedUserId && (
+                <button
+                  onClick={handleClearUser}
+                  style={{ padding: '10px 20px', backgroundColor: '#dc3545', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+                >
+                  Clear Selection
+                </button>
+              )}
+            </div>
+            <p className="form-help" style={{ marginTop: '10px', marginBottom: 0 }}>
+              Type at least 2 characters to search across 412K users
             </p>
+
+            {/* Autocomplete Results */}
+            {showUserResults && userSearchQuery.length >= 2 && (
+              <div style={{
+                position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                backgroundColor: 'white',
+                border: '1px solid #ccc',
+                borderRadius: '4px',
+                marginTop: '5px',
+                maxHeight: '300px',
+                overflowY: 'auto',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                zIndex: 1000
+              }}>
+                {isSearching ? (
+                  <div style={{ padding: '15px', textAlign: 'center', color: '#666' }}>
+                    Searching...
+                  </div>
+                ) : searchResults.length === 0 ? (
+                  <div style={{ padding: '15px', textAlign: 'center', color: '#666' }}>
+                    No users found matching "{userSearchQuery}"
+                  </div>
+                ) : (
+                  <>
+                    <div style={{ padding: '10px 15px', backgroundColor: '#f8f9fa', borderBottom: '1px solid #e0e0e0', fontWeight: 'bold', fontSize: '12px', color: '#666' }}>
+                      Found {searchResults.length} user{searchResults.length === 1 ? '' : 's'}
+                    </div>
+                    {searchResults.map((user) => (
+                      <div
+                        key={user.id}
+                        onClick={() => handleSelectUser(user)}
+                        style={{
+                          padding: '12px 15px',
+                          cursor: 'pointer',
+                          borderBottom: '1px solid #f0f0f0',
+                          backgroundColor: selectedUserId === user.id ? '#e8f4f8' : 'white',
+                          transition: 'background-color 0.2s'
+                        }}
+                        onMouseEnter={(e) => e.target.style.backgroundColor = '#f8f9fa'}
+                        onMouseLeave={(e) => e.target.style.backgroundColor = selectedUserId === user.id ? '#e8f4f8' : 'white'}
+                      >
+                        <div style={{ fontWeight: '500', marginBottom: '4px' }}>
+                          {user.role === 'employee_admin' && '👑 '}
+                          {user.username || 'No username'}
+                        </div>
+                        <div style={{ fontSize: '12px', color: '#666' }}>
+                          {user.email}
+                        </div>
+                        {user.role && (
+                          <div style={{ fontSize: '11px', color: '#999', marginTop: '4px' }}>
+                            Role: {user.role}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -146,8 +245,8 @@ function RankableProductsPageAdmin() {
                     <input
                       type="text"
                       placeholder="Search by any attribute..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
+                      value={productSearchQuery}
+                      onChange={(e) => setProductSearchQuery(e.target.value)}
                       className="search-input"
                     />
                   </div>
@@ -160,9 +259,9 @@ function RankableProductsPageAdmin() {
                 {filteredProducts.length === 0 ? (
                   <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
                     <p style={{ fontSize: '18px', marginBottom: '10px' }}>
-                      {searchQuery ? 'No products match your search' : 'No rankable products for this user'}
+                      {productSearchQuery ? 'No products match your search' : 'No rankable products for this user'}
                     </p>
-                    {!targetUser?.isEmployee && !searchQuery && (
+                    {!targetUser?.isEmployee && !productSearchQuery && (
                       <p style={{ fontSize: '14px' }}>
                         This user hasn't purchased any products and there are no force-rankable beta products.
                       </p>
