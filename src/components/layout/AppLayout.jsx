@@ -88,6 +88,7 @@ function AppLayout() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/flavors" element={<ProductsPage />} />
             <Route path="/products" element={<ProductsPage />} />
             <Route path="/products/:productId" element={<RedirectToFlavor />} />
             <Route path="/flavors/:id" element={<FlavorRouter />} />
