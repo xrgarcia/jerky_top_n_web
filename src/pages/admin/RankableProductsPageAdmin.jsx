@@ -18,8 +18,8 @@ function RankableProductsPageAdmin() {
       // Get the actual input value (in case browser autofilled it)
       const actualValue = inputRef.current?.value || userSearchQuery;
       if (!actualValue || actualValue.length < 2) return { users: [] };
-      const response = await api.get(`/api/admin/users?search=${encodeURIComponent(actualValue)}&limit=20`);
-      return response.data;
+      const response = await api.get(`/admin/users?search=${encodeURIComponent(actualValue)}&limit=20`);
+      return response;
     },
     enabled: shouldSearch,
   });
@@ -28,8 +28,8 @@ function RankableProductsPageAdmin() {
   const { data: rankableData, isLoading, error } = useQuery({
     queryKey: ['admin', 'rankableProducts', selectedUserId],
     queryFn: async () => {
-      const response = await api.get(`/api/admin/rankable-products/${selectedUserId}`);
-      return response.data;
+      const response = await api.get(`/admin/rankable-products/${selectedUserId}`);
+      return response;
     },
     enabled: !!selectedUserId,
   });
