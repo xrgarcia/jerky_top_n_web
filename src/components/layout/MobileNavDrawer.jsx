@@ -49,7 +49,7 @@ export default function MobileNavDrawer({ isOpen, onClose }) {
           <Link to="/" className="mobile-nav-link" onClick={onClose}>
             Home
           </Link>
-          <Link to="/products" className="mobile-nav-link" onClick={onClose}>
+          <Link to="/flavors" className="mobile-nav-link" onClick={onClose}>
             Flavors
           </Link>
           {isAuthenticated && (

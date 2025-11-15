@@ -95,7 +95,7 @@ function Nav() {
           <Link to="/" className={`nav-link ${isActive('/')}`}>
             Home
           </Link>
-          <Link to="/products" className={`nav-link ${isActive('/products')}`}>
+          <Link to="/flavors" className={`nav-link ${isActive('/flavors')}`}>
             Flavors
           </Link>
           {isAuthenticated && (
