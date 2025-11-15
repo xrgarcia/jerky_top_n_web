@@ -284,8 +284,18 @@ app.use((req, res, next) => {
   next();
 });
 
+// Serve unbundled public assets (robots.txt, favicon, etc.)
+app.use(express.static('public', {
+  setHeaders: (res, path) => {
+    // Force no caching on ALL static files
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+  }
+}));
+
 // Serve React build static files with NO caching (temporary fix for browser cache issues)
-app.use(express.static('public/dist', {
+app.use(express.static('dist', {
   setHeaders: (res, path) => {
     // Force no caching on ALL static files
     res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
@@ -303,7 +313,7 @@ app.get('*', (req, res, next) => {
   }
   // Serve React app for all other routes
   const path = require('path');
-  res.sendFile(path.join(__dirname, 'public', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });
 
 // Note: Shopify webhook routes are mounted after gamification initialization

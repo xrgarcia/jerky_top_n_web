@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   root: 'src',
+  publicDir: '../public',
   envDir: '..',
   build: {
-    outDir: '../public/dist',
+    outDir: '../dist',
     emptyOutDir: true,
     rollupOptions: {
       output: {

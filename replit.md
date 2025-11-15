@@ -25,6 +25,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Technical Implementations:**
 - **Frontend**: React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client.
+- **Build Configuration**: Vite builds to `dist/` directory (separate from `public/` to avoid publicDir/outDir conflict). Express serves both unbundled public assets (logo, favicon, robots.txt) and built SPA bundle. Production branding uses "RANK." logo (Nov 2025).
 - **Backend**: Node.js and Express.js, employing a repository pattern.
 - **Data Layer**: Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration.
 - **Real-time Communication**: Socket.IO for achievement notifications with multi-device support.
