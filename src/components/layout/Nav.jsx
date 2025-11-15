@@ -87,9 +87,9 @@ function Nav() {
           </svg>
         </button>
 
-        <a href="https://jerky.com" className="logo" target="_blank" rel="noopener noreferrer">
-          <img src="https://www.jerky.com/cdn/shop/files/jerky_logo_aeed54c0-3f7f-462d-93c3-785b3c97af9d_150x.png?v=1678208718" alt="Jerky.com Logo" className="logo-img" loading="eager" />
-        </a>
+        <Link to="/" className="logo">
+          <img src="/rank-logo.png" alt="RANK. Logo" className="logo-img" loading="eager" />
+        </Link>
 
         <div className="nav-links">
           <Link to="/" className={`nav-link ${isActive('/')}`}>
