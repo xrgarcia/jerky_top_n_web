@@ -8,14 +8,17 @@ function RankableProductsPageAdmin() {
   const [productSearchQuery, setProductSearchQuery] = useState('');
   const [showUserResults, setShowUserResults] = useState(false);
   const searchRef = useRef(null);
+  const inputRef = useRef(null);
 
   // Search users by email/username (only when actively searching, not when user is selected)
   const shouldSearch = userSearchQuery.length >= 2 && !selectedUserId;
   const { data: userSearchData, isLoading: isSearching } = useQuery({
     queryKey: ['admin', 'userSearch', userSearchQuery],
     queryFn: async () => {
-      if (!userSearchQuery || userSearchQuery.length < 2) return { users: [] };
-      const response = await api.get(`/api/admin/users?search=${encodeURIComponent(userSearchQuery)}&limit=20`);
+      // Get the actual input value (in case browser autofilled it)
+      const actualValue = inputRef.current?.value || userSearchQuery;
+      if (!actualValue || actualValue.length < 2) return { users: [] };
+      const response = await api.get(`/api/admin/users?search=${encodeURIComponent(actualValue)}&limit=20`);
       return response.data;
     },
     enabled: shouldSearch,
@@ -109,10 +112,16 @@ function RankableProductsPageAdmin() {
             </label>
             <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
               <input
+                ref={inputRef}
                 type="text"
                 placeholder="Type email or username (min 2 characters)..."
                 value={userSearchQuery}
                 onChange={(e) => {
+                  setUserSearchQuery(e.target.value);
+                  setShowUserResults(true);
+                }}
+                onInput={(e) => {
+                  // Catch browser autofill which doesn't trigger onChange
                   setUserSearchQuery(e.target.value);
                   setShowUserResults(true);
                 }}
