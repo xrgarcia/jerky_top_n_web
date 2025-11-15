@@ -321,7 +321,7 @@ function RankableProductsPageAdmin() {
                               <span style={{ fontSize: '18px', marginRight: '5px' }}>{product.flavorIcon}</span>
                               {product.flavorDisplay}
                             </td>
-                            <td>${product.price?.toFixed(2) || '0.00'}</td>
+                            <td>${product.price ? parseFloat(product.price).toFixed(2) : '0.00'}</td>
                             <td>{getReasonBadge(product.rankableReasons)}</td>
                           </tr>
                         ))}
