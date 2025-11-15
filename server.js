@@ -3775,7 +3775,8 @@ if (databaseAvailable && storage) {
       await metadataService.cleanupOrphanedProducts(products);
     },
     metadataCache,
-    rankingStatsCache
+    rankingStatsCache,
+    purchaseHistoryService  // Shared singleton for purchase filtering
   );
   
   // Wait for rate limiters to be ready before initializing gamification
