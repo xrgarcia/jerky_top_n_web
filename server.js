@@ -2199,6 +2199,121 @@ app.get('/api/products/:productId', async (req, res) => {
   }
 });
 
+// GET /api/products/:productId/detail - Get enhanced product details with user context
+app.get('/api/products/:productId/detail', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    console.log(`📦 GET /api/products/${productId}/detail - Fetching enhanced product details`);
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const ProductsService = require('./server/services/ProductsService');
+    const ProductsMetadataService = require('./server/services/ProductsMetadataService');
+    
+    const metadataService = new ProductsMetadataService(db, metadataCache);
+    
+    const productsService = new ProductsService(
+      db,
+      fetchAllShopifyProducts,
+      async (products) => {
+        await metadataService.syncProductsMetadata(products);
+        await metadataService.cleanupOrphanedProducts(products);
+      },
+      metadataCache,
+      rankingStatsCache
+    );
+    
+    // Get product details (works with cached data even without Shopify credentials)
+    const allProducts = await productsService.getAllProducts({});
+    const product = allProducts.find(p => p.id === productId);
+    
+    if (!product) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+    
+    // Initialize response with product data
+    const response = {
+      ...product,
+      userRank: null,
+      hasPurchased: false,
+      rankingDistribution: [],
+      shopifyUrl: product.handle ? `https://www.jerky.com/products/${product.handle}` : null
+    };
+    
+    // Get session if available (optional for this endpoint)
+    const sessionId = req.cookies.session_id;
+    let userId = null;
+    
+    if (sessionId && storage) {
+      const session = await storage.getSession(sessionId);
+      if (session) {
+        userId = session.userId;
+      }
+    }
+    
+    // If user is authenticated, get their rank and purchase status
+    if (userId) {
+      // Get user's rank for this product
+      try {
+        const userRankings = await storage.getUserProductRankings(userId, 'default');
+        const userRanking = userRankings.find(r => r.shopifyProductId === productId);
+        if (userRanking) {
+          response.userRank = userRanking.ranking;
+        }
+      } catch (error) {
+        console.error('Error fetching user ranking:', error);
+        // Continue without user ranking
+      }
+      
+      // Check if user has purchased this product
+      if (purchaseHistoryService) {
+        try {
+          const purchasedProductIds = await purchaseHistoryService.getPurchasedProductIds(userId);
+          response.hasPurchased = purchasedProductIds.includes(productId);
+        } catch (error) {
+          console.error('Error checking purchase status:', error);
+          // Continue without purchase status
+        }
+      }
+    }
+    
+    // Get ranking distribution for this product (all users)
+    try {
+      const distributionResults = await db.execute(sql`
+        SELECT 
+          ranking,
+          COUNT(*) as count
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+        GROUP BY ranking
+        ORDER BY ranking ASC
+      `);
+      
+      response.rankingDistribution = distributionResults.rows.map(row => ({
+        rank: parseInt(row.ranking),
+        count: parseInt(row.count)
+      }));
+    } catch (error) {
+      console.error('Error fetching ranking distribution:', error);
+      // Continue with empty distribution
+    }
+    
+    console.log(`✅ Enhanced product details: ${product.title} (userRank: ${response.userRank}, purchased: ${response.hasPurchased}, distribution: ${response.rankingDistribution.length} ranks)`);
+    res.json(response);
+  } catch (error) {
+    console.error('Error fetching enhanced product details:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/detail' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ 
+      error: 'Failed to fetch enhanced product details',
+      message: error.message
+    });
+  }
+});
+
 // Get total count of products user can rank (including already ranked)
 app.get('/api/products/rankable/count', async (req, res) => {
   try {

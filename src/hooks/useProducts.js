@@ -32,6 +32,18 @@ export function useProductDetail(productId) {
   });
 }
 
+export function useProductDetailEnhanced(productId) {
+  return useQuery({
+    queryKey: ['productDetail', productId],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/detail`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000, // 5 minutes (shorter since it includes user-specific data)
+  });
+}
+
 export function useRankableProducts({ excludeRanked = false } = {}) {
   return useQuery({
     queryKey: ['products', 'rankable', { excludeRanked }],

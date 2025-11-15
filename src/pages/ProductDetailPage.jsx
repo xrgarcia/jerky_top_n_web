@@ -1,21 +1,59 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useProductDetail } from '../hooks/useProducts';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useProductDetailEnhanced } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
+import { useAuthStore } from '../store/authStore';
 import './ProductDetailPage.css';
+
+function RankingDistributionChart({ distribution, avgRank }) {
+  if (!distribution || distribution.length === 0) {
+    return (
+      <div className="distribution-empty">
+        <p>No rankings yet. Be the first to rank this flavor!</p>
+      </div>
+    );
+  }
+
+  const maxCount = Math.max(...distribution.map(d => d.count));
+
+  return (
+    <div className="distribution-chart">
+      <div className="chart-bars">
+        {distribution.map(({ rank, count }) => {
+          const percentage = (count / maxCount) * 100;
+          const isAverage = avgRank && Math.abs(rank - avgRank) < 0.5;
+          
+          return (
+            <div key={rank} className="chart-bar-container">
+              <div 
+                className={`chart-bar ${isAverage ? 'is-average' : ''}`}
+                style={{ height: `${percentage}%` }}
+              >
+                <span className="bar-count">{count}</span>
+              </div>
+              <div className="chart-label">#{rank}</div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
 
 function ProductDetailPage() {
   const { id: productId } = useParams();
-  const { data: product, isLoading, error } = useProductDetail(productId);
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuthStore();
+  const { data: product, isLoading, error } = useProductDetailEnhanced(productId);
   
-  // Track product view
   usePageView('product_detail', { productId, productTitle: product?.title });
 
   if (isLoading) {
     return (
       <div className="product-detail-page">
-        <div className="product-detail-container">
-          <div className="loading">Loading product details...</div>
+        <div className="product-detail-loading">
+          <div className="loading-spinner"></div>
+          <p>Loading flavor details...</p>
         </div>
       </div>
     );
@@ -24,123 +62,146 @@ function ProductDetailPage() {
   if (error || !product) {
     return (
       <div className="product-detail-page">
-        <div className="product-detail-container">
-          <div className="error">Failed to load product details</div>
-          <Link to="/products" className="back-link">← Back to Flavors</Link>
+        <div className="product-detail-error">
+          <h2>Flavor Not Found</h2>
+          <p>The flavor you're looking for doesn't exist or couldn't be loaded.</p>
+          <Link to="/flavors" className="back-button">← Back to Flavors</Link>
         </div>
       </div>
     );
   }
 
+  const handleRankClick = () => {
+    navigate('/rank');
+  };
+
+  const handleShopifyClick = () => {
+    if (product.shopifyUrl) {
+      window.open(product.shopifyUrl, '_blank', 'noopener,noreferrer');
+    }
+  };
+
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
-        <Link to="/products" className="back-link">← Back to Flavors</Link>
+        <Link to="/flavors" className="back-link">← Back to Flavors</Link>
         
-        <div className="product-detail-header">
-          <div className="product-detail-image-wrapper">
-            {product.image && (
-              <img 
-                src={product.image} 
-                alt={product.title} 
-                className="product-detail-image"
-              />
-            )}
-          </div>
-          
-          <div className="product-detail-info">
-            <h1 className="product-detail-title">{product.title}</h1>
+        {/* Hero Section */}
+        <section className="product-hero">
+          <div className="hero-content">
+            <div className="product-image-wrapper">
+              {product.image && (
+                <img 
+                  src={product.image} 
+                  alt={product.title} 
+                  className="product-image"
+                />
+              )}
+            </div>
             
-            {product.vendor && (
-              <div className="product-detail-vendor">
-                <span className="label">Brand:</span> {product.vendor}
-              </div>
-            )}
-            
-            {product.animalType && (
-              <div className="product-detail-animal">
-                <span className="label">Animal Type:</span> 
-                <span className="animal-badge">
-                  {product.animalIcon} {product.animalDisplay || product.animalType}
-                </span>
-              </div>
-            )}
-            
-            {product.primaryFlavor && (
-              <div className="product-detail-flavor">
-                <span className="label">Primary Flavor:</span>
-                <Link 
-                  to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
-                  className="flavor-link"
-                >
-                  {product.flavorIcon} {product.flavorDisplay || product.primaryFlavor}
-                </Link>
-              </div>
-            )}
-            
-            {product.secondaryFlavors && product.secondaryFlavors.length > 0 && (
-              <div className="product-detail-secondary-flavors">
-                <span className="label">Secondary Flavors:</span>
-                <div className="secondary-flavors-list">
-                  {product.secondaryFlavors.map((flavor, index) => (
-                    <span key={index} className="secondary-flavor-tag">
+            <div className="product-info">
+              <h1 className="product-title">{product.title}</h1>
+              
+              {product.vendor && (
+                <p className="product-brand">{product.vendor}</p>
+              )}
+              
+              <div className="flavor-tags">
+                {product.primaryFlavor && (
+                  <Link 
+                    to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
+                    className="flavor-tag primary"
+                  >
+                    {product.flavorIcon && `${product.flavorIcon} `}
+                    {product.flavorDisplay || product.primaryFlavor}
+                  </Link>
+                )}
+                
+                {product.secondaryFlavors && product.secondaryFlavors.length > 0 && (
+                  product.secondaryFlavors.map((flavor, index) => (
+                    <span key={index} className="flavor-tag secondary">
                       {flavor}
                     </span>
-                  ))}
-                </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Stats Section */}
+        <section className="stats-section">
+          <div className="stats-grid">
+            {product.userRank !== null && (
+              <div className="stat-card user-rank">
+                <div className="stat-icon">🏆</div>
+                <div className="stat-value">#{product.userRank}</div>
+                <div className="stat-label">Your Rank</div>
               </div>
             )}
             
-            {product.price && (
-              <div className="product-detail-price">
-                <span className="current-price">${parseFloat(product.price).toFixed(2)}</span>
-                {product.compareAtPrice && parseFloat(product.compareAtPrice) > parseFloat(product.price) && (
-                  <span className="compare-price">${parseFloat(product.compareAtPrice).toFixed(2)}</span>
-                )}
+            <div className="stat-card community-rank">
+              <div className="stat-icon">⭐</div>
+              <div className="stat-value">
+                {product.avgRank ? `#${parseFloat(product.avgRank).toFixed(1)}` : 'N/A'}
               </div>
-            )}
-          </div>
-        </div>
-        
-        <div className="product-detail-stats">
-          <h2>Ranking Statistics</h2>
-          <div className="stats-grid">
-            <div className="stat-card">
+              <div className="stat-label">Community Average</div>
+            </div>
+            
+            <div className="stat-card rankings-count">
+              <div className="stat-icon">📊</div>
               <div className="stat-value">{product.rankingCount || 0}</div>
               <div className="stat-label">Total Rankings</div>
             </div>
-            <div className="stat-card">
-              <div className="stat-value">{product.uniqueRankers || 0}</div>
-              <div className="stat-label">Unique Rankers</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">#{product.avgRank?.toFixed(1) || 'N/A'}</div>
-              <div className="stat-label">Average Position</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">#{product.bestRank || 'N/A'}</div>
-              <div className="stat-label">Best Position</div>
-            </div>
           </div>
-        </div>
-        
-        {product.tags && (
-          <div className="product-detail-tags">
-            <h3>Tags</h3>
-            <div className="tags-list">
-              {product.tags.split(',').map((tag, i) => (
-                <span key={i} className="tag">{tag.trim()}</span>
-              ))}
-            </div>
-          </div>
-        )}
-        
-        {product.bodyHtml && (
-          <div className="product-detail-description">
-            <h3>Description</h3>
-            <div dangerouslySetInnerHTML={{ __html: product.bodyHtml }} />
-          </div>
-        )}
+        </section>
+
+        {/* Distribution Section */}
+        <section className="distribution-section">
+          <h2 className="section-title">Community Rankings</h2>
+          <p className="section-subtitle">See how the community ranks this flavor</p>
+          <RankingDistributionChart 
+            distribution={product.rankingDistribution} 
+            avgRank={product.avgRank}
+          />
+        </section>
+
+        {/* CTA Section */}
+        <section className="cta-section">
+          {isAuthenticated ? (
+            <>
+              {product.hasPurchased && product.userRank === null ? (
+                <button 
+                  onClick={handleRankClick}
+                  className="cta-button primary"
+                >
+                  Rank It
+                </button>
+              ) : product.hasPurchased ? (
+                <button 
+                  onClick={handleShopifyClick}
+                  className="cta-button secondary"
+                >
+                  Try It Again
+                </button>
+              ) : (
+                <button 
+                  onClick={handleShopifyClick}
+                  className="cta-button primary"
+                >
+                  Discover Your New Favorite
+                </button>
+              )}
+            </>
+          ) : (
+            <button 
+              onClick={handleShopifyClick}
+              className="cta-button primary"
+            >
+              Discover Your New Favorite
+            </button>
+          )}
+        </section>
       </div>
     </div>
   );
