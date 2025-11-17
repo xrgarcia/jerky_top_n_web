@@ -1,0 +1,200 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-2T
+Title: Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-11T14:49:17.607000Z
+Last Seen: 2025-11-17T15:06:21Z
+Event Count: 818
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_stat...
+
+--- CULPRIT ---
+WebhookOrderService.findOrCreateUser(server.services:WebhookOrderService)
+
+--- STACK TRACE ---
+Error: Failed query: select "id", "shopify_customer_id", "email", "first_name", "last_name", "display_name", "role", "active", "access_token", "refresh_token", "token_expiry", "full_history_imported", "history_imported_at", "last_order_synced_at", "import_status", "profile_image_url", "handle", "hide_name_privacy", "shopify_created_at", "created_at", "updated_at" from "users" where "users"."shopify_customer_id" = $1 limit $2
+params: 9577229680954,1
+  at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:?:?)
+  at process.processTicksAndRejections (node:internal/process/task_queues:?:?)
+  at NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:?:?)
+  at WebhookOrderService.findOrCreateUser (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.handleOrderCreateOrUpdate (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:?:?) [in app]
+  at WebhookWorker.processOrderWebhook (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at WebhookWorker.processJob (/home/runner/workspace/server/services/WebhookWorker.js:?:?) [in app]
+  at anonymous (/home/runner/workspace/node_modules/bullmq/dist/cjs/classes/worker.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-17T15:05:19.782000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763391919671)
+[2025-11-17T15:05:19.782000Z] console (info): 📦 Processing orders/updated webhook for order JK3825344723
+[2025-11-17T15:05:19.782000Z] console (info): 📦 Processing order JK3825344723: 1 line items
+[2025-11-17T15:05:19.786000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:05:19.786000Z] console (error): [Filtered]
+[2025-11-17T15:05:19.787000Z] console (error): [Filtered]
+[2025-11-17T15:05:19.787000Z] console (error): [Filtered]
+[2025-11-17T15:05:19.788000Z] console (error): [Filtered]
+[2025-11-17T15:05:19.825000Z] console (error): [Filtered]
+[2025-11-17T15:05:23.806000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391923731)
+[2025-11-17T15:05:23.806000Z] console (info): 🏷️ Processing products/update webhook for product 9796706959674 (Jerky.com's Steakhouse Beef Jerky Combo)
+[2025-11-17T15:05:23.807000Z] console (info): ⏭️ Skipping product 9796706959674 (Jerky.com's Steakhouse Beef Jerky Combo) - does not have 'rankable' tag
+[2025-11-17T15:05:23.809000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 9796706959674
+[2025-11-17T15:05:23.809000Z] console (info): ✅ Webhook processed: products/products/update (3ms)
+[2025-11-17T15:05:23.882000Z] console (info): ✅ Webhook job completed: products/products/update (151ms)
+[2025-11-17T15:05:28.761000Z] console (info): 🔄 Processing webhook: orders/orders/cancelled (job: orders:orders/cancelled:1763391928684)
+[2025-11-17T15:05:28.762000Z] console (info): 📦 Processing orders/cancelled webhook for order JK3825344723
+[2025-11-17T15:05:28.762000Z] console (info): 🗑️ Deleting customer_orders records for cancelled order: JK3825344723
+[2025-11-17T15:05:28.765000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:05:28.766000Z] console (error): ❌ Error processing order webhook: Failed query: delete from "customer_order_items" where "customer_order_items"."order_number" = $1 returning "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at"
+params: JK3825344723 | Cause: getaddrinfo ENOTFOUND helium
+[2025-11-17T15:05:28.766000Z] console (error): Full error: {
+  "stack": "Error: Failed query: delete from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1 returning \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\"\nparams: JK3825344723\n    at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:66:15)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:131:20)\n    at async WebhookOrderService.handleOrderCancelled (/home/runner/workspace/server/services/WebhookOrderService.js:257:21)\n    at async WebhookOrderService.processOrderWebhook (/home/runner/workspace/server/services/WebhookOrderService.js:27:16)\n    at async WebhookWorker.processOrderWebhook (/home/runner/workspace/server/services/WebhookWorker.js:268:20)\n    at async WebhookWorker.processJob (/home/runner/workspace/server/services/WebhookWorker.js:219:20)\n    at async /home/runner/workspace/node_modules/bullmq/dist/cjs/classes/worker.js:512:32",
+  "message": "Failed query: delete from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1 returning \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\"\nparams: JK3825344723",
+  "query": "delete from \"customer_order_items\" where \"customer_order_items\".\"order_number\" = $1 returning \"id\", \"order_number\", \"order_date\", \"shopify_product_id\", \"sku\", \"quantity\", \"fulfillment_status\", \"user_id\", \"customer_email\", \"line_item_data\", \"created_at\", \"updated_at\"",
+  "params": [
+    "JK3825344723"
+  ],
+  "cause": {
+    "stack": "Error: getaddrinfo ENOTFOUND helium\n    at /home/runner/workspace/node_...
+[2025-11-17T15:05:28.766000Z] console (error): ❌ Error processing webhook orders/orders/cancelled: Error: Failed query: delete from "customer_order_items" where "customer_order_items"."order_number" = $1 returning "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at"
+params: JK3825344723
+[2025-11-17T15:05:28.803000Z] console (error): ❌ Webhook job failed: orders/orders/cancelled: Failed query: delete from "customer_order_items" where "customer_order_items"."order_number" = $1 returning "id", "order_number", "order_date", "shopify_product_id", "sku", "quantity", "fulfillment_status", "user_id", "customer_email", "line_item_data", "created_at", "updated_at"
+params: JK3825344723
+[2025-11-17T15:05:31.016000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763391930939)
+[2025-11-17T15:05:31.016000Z] console (info): 📦 Processing orders/updated webhook for order JK3825344723
+[2025-11-17T15:05:31.016000Z] console (info): 📦 Processing order JK3825344723: 1 line items
+[2025-11-17T15:05:31.019000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:05:31.019000Z] console (error): [Filtered]
+[2025-11-17T15:05:31.020000Z] console (error): [Filtered]
+[2025-11-17T15:05:31.020000Z] console (error): [Filtered]
+[2025-11-17T15:05:31.020000Z] console (error): [Filtered]
+[2025-11-17T15:05:31.057000Z] console (error): [Filtered]
+[2025-11-17T15:05:58.213000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391958102)
+[2025-11-17T15:05:58.213000Z] console (info): 🏷️ Processing products/update webhook for product 1384880799832 (Jerky Lover's Combo)
+[2025-11-17T15:05:58.213000Z] console (info): ⏭️ Skipping product 1384880799832 (Jerky Lover's Combo) - does not have 'rankable' tag
+[2025-11-17T15:05:58.214000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 1384880799832
+[2025-11-17T15:05:58.214000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:05:58.251000Z] console (info): ✅ Webhook job completed: products/products/update (149ms)
+[2025-11-17T15:05:58.951000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391958841)
+[2025-11-17T15:05:58.952000Z] console (info): 🏷️ Processing products/update webhook for product 11821174159 (All-Natural Beef Jerky - Black Pepper - 1 Pound Bag)
+[2025-11-17T15:05:58.952000Z] console (info): ⏭️ Skipping product 11821174159 (All-Natural Beef Jerky - Black Pepper - 1 Pound Bag) - does not have 'rankable' tag
+[2025-11-17T15:05:58.952000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 11821174159
+[2025-11-17T15:05:58.952000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:05:58.989000Z] console (info): ✅ Webhook job completed: products/products/update (148ms)
+[2025-11-17T15:05:59.149000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391959076)
+[2025-11-17T15:05:59.149000Z] console (info): 🏷️ Processing products/update webhook for product 7017323528280 (Bold Flavor Pairing Bundle)
+[2025-11-17T15:05:59.149000Z] console (info): ⏭️ Skipping product 7017323528280 (Bold Flavor Pairing Bundle) - does not have 'rankable' tag
+[2025-11-17T15:05:59.149000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 7017323528280
+[2025-11-17T15:05:59.150000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:05:59.186000Z] console (info): ✅ Webhook job completed: products/products/update (110ms)
+[2025-11-17T15:05:59.876000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391959803)
+[2025-11-17T15:05:59.876000Z] console (info): 🏷️ Processing products/update webhook for product 25602097167 (Jerky Assortment)
+[2025-11-17T15:05:59.876000Z] console (info): ⏭️ Skipping product 25602097167 (Jerky Assortment) - does not have 'rankable' tag
+[2025-11-17T15:05:59.877000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 25602097167
+[2025-11-17T15:05:59.877000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:05:59.913000Z] console (info): ✅ Webhook job completed: products/products/update (110ms)
+[2025-11-17T15:06:00.982000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391960909)
+[2025-11-17T15:06:00.982000Z] console (info): 🏷️ Processing products/update webhook for product 6842337820760 (24 Hour Offer - Buy 3 Get 1 FREE Black Pepper Beef Jerky Bundle)
+[2025-11-17T15:06:00.982000Z] console (info): ⏭️ Skipping product 6842337820760 (24 Hour Offer - Buy 3 Get 1 FREE Black Pepper Beef Jerky Bundle) - does not have 'rankable' tag
+[2025-11-17T15:06:00.982000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 6842337820760
+[2025-11-17T15:06:00.983000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:06:01.019000Z] console (info): ✅ Webhook job completed: products/products/update (110ms)
+[2025-11-17T15:06:05.078000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391965005)
+[2025-11-17T15:06:05.079000Z] console (info): 🏷️ Processing products/update webhook for product 11821180943 (All-Natural Beef Jerky - Hot)
+[2025-11-17T15:06:05.082000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:06:05.082000Z] console (error): ⚠️ Error analyzing product changes: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "force_rankable", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821180943,1
+[2025-11-17T15:06:05.082000Z] console (info): ✅ Processing product 11821180943 - important fields changed: error_analyzing
+[2025-11-17T15:06:05.086000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:06:05.086000Z] console (error): ❌ Error processing product webhook: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "force_rankable", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821180943,1
+[2025-11-17T15:06:05.088000Z] console (error): ❌ Error processing webhook products/products/update: Error: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "force_rankable", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821180943,1
+[2025-11-17T15:06:05.124000Z] console (error): ❌ Webhook job failed: products/products/update: Failed query: select "id", "shopify_product_id", "animal_type", "animal_display", "animal_icon", "vendor", "primary_flavor", "secondary_flavors", "flavor_display", "flavor_icon", "title", "force_rankable", "created_at", "updated_at" from "products_metadata" where "products_metadata"."shopify_product_id" = $1 limit $2
+params: 11821180943,1
+[2025-11-17T15:06:05.469000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391965395)
+[2025-11-17T15:06:05.469000Z] console (info): 🏷️ Processing products/update webhook for product 11821174991 (All-Natural Beef Jerky - Sweet & Spicy - 1 Pound Bag)
+[2025-11-17T15:06:05.469000Z] console (info): ⏭️ Skipping product 11821174991 (All-Natural Beef Jerky - Sweet & Spicy - 1 Pound Bag) - does not have 'rankable' tag
+[2025-11-17T15:06:05.469000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 11821174991
+[2025-11-17T15:06:05.470000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:06:05.506000Z] console (info): ✅ Webhook job completed: products/products/update (111ms)
+[2025-11-17T15:06:06.122000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391966012)
+[2025-11-17T15:06:06.122000Z] console (info): 🏷️ Processing products/update webhook for product 9432202445114 (Sweet & Spicy Flavored Beef Jerky 3-Pack)
+[2025-11-17T15:06:06.122000Z] console (info): ⏭️ Skipping product 9432202445114 (Sweet & Spicy Flavored Beef Jerky 3-Pack) - does not have 'rankable' tag
+[2025-11-17T15:06:06.123000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 9432202445114
+[2025-11-17T15:06:06.123000Z] console (info): ✅ Webhook processed: products/products/update (1ms)
+[2025-11-17T15:06:06.160000Z] console (info): ✅ Webhook job completed: products/products/update (148ms)
+[2025-11-17T15:06:09.792000Z] console (info): 🔄 Processing webhook: products/products/update (job: products:products/update:1763391969653)
+[2025-11-17T15:06:09.793000Z] console (info): 🏷️ Processing products/update webhook for product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime))
+[2025-11-17T15:06:09.793000Z] console (info): ⏭️ Skipping product 10051192881466 (26 pc. Extra Mile Jerky Gift Bag (Buy with Prime)) - does not have 'rankable' tag
+[2025-11-17T15:06:09.793000Z] console (info): 📦 Broadcasting product webhook update to admin room (dev:admin:product-webhooks): skipped - 10051192881466
+[2025-11-17T15:06:09.794000Z] console (info): ✅ Webhook processed: products/products/update (2ms)
+[2025-11-17T15:06:09.830000Z] console (info): ✅ Webhook job completed: products/products/update (177ms)
+[2025-11-17T15:06:19.924000Z] console (info): 🔄 Processing webhook: customers/customers/update (job: customers:customers/update:1763391979814)
+[2025-11-17T15:06:19.925000Z] console (info): 📥 Shopify customer data received: [object Object]
+[2025-11-17T15:06:19.928000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:06:19.928000Z] console (error): [Filtered]
+[2025-11-17T15:06:19.930000Z] console (error): [Filtered]
+[2025-11-17T15:06:19.966000Z] console (error): [Filtered]
+[2025-11-17T15:06:21.692000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763391981618)
+[2025-11-17T15:06:21.692000Z] console (info): 📦 Processing orders/updated webhook for order JK3825344785
+[2025-11-17T15:06:21.692000Z] console (info): 📦 Processing order JK3825344785: 2 line items
+[2025-11-17T15:06:21.696000Z] http (info): {"http.method":"GET","url":"https://helium/v2"}
+[2025-11-17T15:06:21.696000Z] console (error): [Filtered]
+
+--- TAGS ---
+  action: undefined
+  app_url: undefined
+  environment: undefined
+  handled: undefined
+  has_recovery: undefined
+  has_retry: undefined
+  is_business_logic: undefined
+  is_infrastructure: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+  user_impact: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "city": "The Dalles",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
