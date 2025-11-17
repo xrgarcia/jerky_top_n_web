@@ -1,0 +1,404 @@
+=== SENTRY ERROR ANALYSIS REQUEST ===
+
+Issue: JERKY-RANK-UI-3S
+Title: Error: write EPIPE
+Status: unresolved
+Level: error
+Environment: PRODUCTION
+
+First Seen: 2025-11-16T21:34:24.271000Z
+Last Seen: 2025-11-17T12:32:18Z
+Event Count: 8
+Users Affected: 0
+
+--- ERROR MESSAGE ---
+Error: write EPIPE
+
+--- CULPRIT ---
+WriteWrap.onWriteComplete [as oncomplete](stream_base_commons)
+
+--- STACK TRACE ---
+Error: write EPIPE
+  at WriteWrap.onWriteComplete [as oncomplete] (node:internal/stream_base_commons:?:?)
+  at WriteWrap.callbackTrampoline (node:internal/async_hooks:?:?)
+  at handleWriteReq (node:internal/stream_base_commons:?:?)
+  at writeGeneric (node:internal/stream_base_commons:?:?)
+  at Socket._writeGeneric (node:net:?:?)
+  at Socket._write (node:net:?:?)
+  at writeOrBuffer (node:internal/streams/writable:?:?)
+  at _write (node:internal/streams/writable:?:?)
+  at Writable.write (node:internal/streams/writable:?:?)
+  at EventEmitter.sendCommand (/home/runner/workspace/node_modules/ioredis/built/Redis.js:?:?)
+
+--- BREADCRUMBS (Recent Activity) ---
+[2025-11-17T12:31:48.950000Z] console (info): ✅ Found existing user by Shopify ID: 2080 (mkdrewsub590@gmail.com)
+[2025-11-17T12:31:49.971000Z] console (info): ✅ Processed 5 line items for order JK3825343013 (user: 2080)
+[2025-11-17T12:31:49.971000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825343013
+[2025-11-17T12:31:49.971000Z] console (info): 🔄 Invalidating purchase history cache for user 2080
+[2025-11-17T12:31:49.971000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:50.173000Z] console (info): 🗑️ Purchase cache invalidated for user 2080
+[2025-11-17T12:31:50.173000Z] console (info): 🔄 Recalculating ranking stats for 5 product(s)
+[2025-11-17T12:31:50.174000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:50.174000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:50.174000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:50.572000Z] console (info): 📊 Recalculated ranking stats for 2 product(s)
+[2025-11-17T12:31:51.171000Z] console (info): ✅ RankingStatsCache: Updated 2 product(s): 9902440087866, 9902446739770 - timestamp reset
+[2025-11-17T12:31:51.171000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:51.271000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:51.371000Z] console (info): 📋 Enqueued classification job for user 2080 (reason: purchase)
+[2025-11-17T12:31:51.371000Z] console (info): 📋 Enqueued classification job for user 2080 (reason: purchase)
+[2025-11-17T12:31:51.371000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-17T12:31:51.371000Z] console (info): ✅ Webhook processed: orders/orders/updated (2627ms)
+[2025-11-17T12:31:51.571000Z] console (info): ✅ Webhook job completed: orders/orders/updated (2844ms)
+[2025-11-17T12:31:51.771000Z] console (info): 🔄 Processing classification for user 2080 (reason: purchase)...
+[2025-11-17T12:31:51.871000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 2080
+[2025-11-17T12:31:52.073000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 2080
+[2025-11-17T12:31:52.571000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 2080
+[2025-11-17T12:31:52.571000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-17T12:31:52.707000Z] console (info): 🔄 Processing webhook: orders/orders/updated (job: orders:orders/updated:1763382712689)
+[2025-11-17T12:31:52.707000Z] console (info): 📦 Processing orders/updated webhook for order JK3825342642
+[2025-11-17T12:31:52.707000Z] console (info): 📦 Processing order JK3825342642: 2 line items
+[2025-11-17T12:31:52.755000Z] console (info): ✅ Found existing user by Shopify ID: 1746 (johnbh13@yahoo.com)
+[2025-11-17T12:31:52.906000Z] console (info): ✅ Processed 2 line items for order JK3825342642 (user: 1746)
+[2025-11-17T12:31:52.906000Z] console (info): 📦 Broadcasting customer orders update to admin room (prod:admin:customer-orders): upserted - JK3825342642
+[2025-11-17T12:31:52.906000Z] console (info): 🔄 Invalidating purchase history cache for user 1746
+[2025-11-17T12:31:52.909000Z] console (info): 🗑️ Purchase cache invalidated for user 1746
+[2025-11-17T12:31:52.909000Z] console (info): 🔄 Recalculating ranking stats for 2 product(s)
+[2025-11-17T12:31:52.958000Z] console (info): 📊 Recalculated ranking stats for 0 product(s)
+[2025-11-17T12:31:52.958000Z] console (warning): ⚠️ No ranking stats found for 2 product(s) - products may not have been ranked yet
+[2025-11-17T12:31:52.965000Z] console (info): 📋 Enqueued classification job for user 1746 (reason: purchase)
+[2025-11-17T12:31:52.965000Z] console (info): 📋 Enqueued classification job for user 1746 (reason: purchase)
+[2025-11-17T12:31:52.965000Z] console (info): ✅ Order webhook side effects completed
+[2025-11-17T12:31:52.965000Z] console (info): ✅ Webhook processed: orders/orders/updated (258ms)
+[2025-11-17T12:31:52.968000Z] console (info): ✅ Webhook job completed: orders/orders/updated (279ms)
+[2025-11-17T12:31:52.969000Z] console (info): 🔄 Processing classification for user 1746 (reason: purchase)...
+[2025-11-17T12:31:52.971000Z] console (info): 🗑️ UserClassificationCache INVALIDATE: user 1746
+[2025-11-17T12:31:52.974000Z] console (info): 🗑️ ProgressCache INVALIDATE: user 1746
+[2025-11-17T12:31:52.988000Z] console (info): 🗑️ GuidanceCache INVALIDATE: user 1746
+[2025-11-17T12:31:52.988000Z] console (info):   ✓ Invalidated stale classification, progress, and guidance caches
+[2025-11-17T12:31:54.970000Z] console (info): 🔌 Database client removed from pool [object Object]
+[2025-11-17T12:31:57.671000Z] console (info): ✅ UserClassificationCache SET: user 1746
+[2025-11-17T12:31:57.671000Z] console (info):   ✓ User classified: dormant/none
+[2025-11-17T12:32:00.372000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-17T12:32:01.872000Z] console (info): ✅ UserClassificationCache SET: user 2080
+[2025-11-17T12:32:02.971000Z] console (info):   ✓ User classified: dormant/none
+[2025-11-17T12:32:06.072000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-17T12:32:06.371000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-17T12:32:06.371000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-17T12:32:06.372000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:06.572000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 1746
+[2025-11-17T12:32:07.371000Z] console (info): 🔄 Redis reconnecting in 239ms (attempt 1/10)...
+[2025-11-17T12:32:07.671000Z] console (info): 🔄 Redis reconnecting in 215ms (attempt 1/10)...
+[2025-11-17T12:32:07.671000Z] console (info): 🔄 Redis reconnecting in 269ms (attempt 1/10)...
+[2025-11-17T12:32:07.671000Z] console (info): 🔄 Redis reconnecting in 202ms (attempt 1/10)...
+[2025-11-17T12:32:07.671000Z] console (info): 🔄 Redis reconnecting in 285ms (attempt 1/10)...
+[2025-11-17T12:32:11.272000Z] console (error): ❌ StreakRepository.getAllUserStreaks error: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:11.471000Z] console (error): User ID: 1746
+[2025-11-17T12:32:11.471000Z] console (error): Error details: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746 Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+    at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:66:15)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:127:14)
+    at async StreakRepository.getAllUserStreaks (/home/runner/workspace/server/repositories/StreakRepository.js:61:22)
+    at async StreakManager.getUserStreaks (/home/runner/workspace/server/services/StreakManager.js:121:12)
+    at async Promise.all (index 2)
+    at async UserStatsAggregator.getAggregatedUserStats (/home/runner/workspace/server/services/UserStatsAggregator.js:27:44)
+    at async UserStatsAggregator.getStatsForAchievements (/home/runner/workspace/server/services/UserStatsAggregator.js:70:29)
+[2025-11-17T12:32:11.471000Z] console (error): ❌ Error caching guidance for user 1746 / rank: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:11.472000Z] console (error): ❌ StreakRepository.getAllUserStreaks error: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:11.671000Z] console (error): User ID: 1746
+[2025-11-17T12:32:11.671000Z] console (error): Error details: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746 Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+    at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:66:15)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:127:14)
+    at async StreakRepository.getAllUserStreaks (/home/runner/workspace/server/repositories/StreakRepository.js:61:22)
+    at async StreakManager.getUserStreaks (/home/runner/workspace/server/services/StreakManager.js:121:12)
+    at async Promise.all (index 2)
+    at async UserStatsAggregator.getAggregatedUserStats (/home/runner/workspace/server/services/UserStatsAggregator.js:27:44)
+    at async UserStatsAggregator.getStatsForAchievements (/home/runner/workspace/server/services/UserStatsAggregator.js:70:29)
+[2025-11-17T12:32:11.671000Z] console (error): ❌ Error caching guidance for user 1746 / community: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:11.672000Z] console (error): ❌ StreakRepository.getAllUserStreaks error: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:11.672000Z] console (error): User ID: 1746
+[2025-11-17T12:32:11.672000Z] console (error): Error details: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746 Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+    at NeonPreparedQuery.queryWithCache (/home/runner/workspace/node_modules/drizzle-orm/pg-core/session.cjs:66:15)
+    at runNextTicks (node:internal/process/task_queues:60:5)
+    at listOnTimeout (node:internal/timers:545:9)
+    at process.processTimers (node:internal/timers:519:7)
+    at async NeonPreparedQuery.execute (/home/runner/workspace/node_modules/drizzle-orm/neon-serverless/session.cjs:127:14)
+    at async StreakRepository.getAllUserStreaks (/home/runner/workspace/server/repositories/StreakRepository.js:61:22)
+    at async StreakManager.getUserStreaks (/home/runner/workspace/server/services/StreakManager.js:121:12)
+    at async Promise.all (index 2)
+    at async UserStatsAggregator.getAggregatedUserStats (/home/runner/workspace/server/services/UserStatsAggregator.js:27:44)
+    at async UserStatsAggregator.getStatsForAchievements (/home/runner/workspace/server/services/UserStatsAggregator.js:70:29)
+[2025-11-17T12:32:11.672000Z] console (error): ❌ Error caching guidance for user 1746 / coinbook: Error: Failed query: 
+        SELECT DISTINCT ON (streak_type)
+          id,
+          user_id AS "userId",
+          streak_type AS "streakType",
+          current_streak AS "currentStreak",
+          longest_streak AS "longestStreak",
+          last_activity_date AS "lastActivityDate",
+          created_at AS "createdAt",
+          updated_at AS "updatedAt"
+        FROM streaks
+        WHERE user_id = $1
+          AND streak_type IN ('daily_rank', 'daily_login')
+        ORDER BY streak_type, updated_at DESC
+        LIMIT 10
+      
+params: 1746
+[2025-11-17T12:32:13.571000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:13.571000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:13.572000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:13.572000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:13.971000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:13.972000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:14.371000Z] console (info): 🔌 Database client connected to pool [object Object]
+[2025-11-17T12:32:14.971000Z] console (info): 🔍 getAllUserStreaks: Found 0 valid streak(s) for user 1746
+[2025-11-17T12:32:15.171000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-17T12:32:15.171000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-17T12:32:15.671000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-17T12:32:15.871000Z] console (error): ❌ Error caching guidance for user 2080 / coinbook: Error: Failed query: select "id", "user_id", "journey_stage", "engagement_level", "exploration_breadth", "focus_areas", "classification_data", "last_calculated", "updated_at" from "user_classifications" where "user_classifications"."user_id" = $1 limit $2
+params: 2080,1
+[2025-11-17T12:32:15.872000Z] console (error): ❌ Error caching guidance for user 2080 / general: Error: Failed query: select "id", "user_id", "journey_stage", "engagement_level", "exploration_breadth", "focus_areas", "classification_data", "last_calculated", "updated_at" from "user_classifications" where "user_classifications"."user_id" = $1 limit $2
+params: 2080,1
+[2025-11-17T12:32:16.871000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-17T12:32:17.271000Z] http (info): {"http.method":"GET","url":"https://ep-spring-sunset-af52bwtq-pooler.c-2.us-west-2.aws.neon.tech/v2"}
+[2025-11-17T12:32:17.471000Z] console (info): ⏱️ getUserPosition() rollup table query: 15599ms (total: 17900ms)
+[2025-11-17T12:32:17.471000Z] console (info): ⏱️ getUserPosition() rollup table query: 15800ms (total: 18700ms)
+[2025-11-17T12:32:17.671000Z] console (info): ⏱️ getUserPosition() rollup table query: 15799ms (total: 17600ms)
+[2025-11-17T12:32:17.672000Z] console (info): ⏱️ Batch 1 completed in 17601ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-17T12:32:17.672000Z] console (info): 💾 Cache HIT: Returning 164 products from cache (age: 2 minutes)
+[2025-11-17T12:32:17.971000Z] console (info): ⏱️ getUserPosition() rollup table query: 16099ms (total: 18999ms)
+[2025-11-17T12:32:18.271000Z] console (info): ⏱️ getUserPosition() rollup table query: 3500ms (total: 10391ms)
+[2025-11-17T12:32:18.271000Z] console (info): ⏱️ Batch 1 completed in 10391ms (getUserStats + getUserPosition + getUserStreaks)
+[2025-11-17T12:32:18.271000Z] console (info): 💾 Cache HIT: Returning 164 products from cache (age: 2 minutes)
+[2025-11-17T12:32:18.272000Z] console (info): 🔌 Worker pool client removed [object Object]
+[2025-11-17T12:32:18.344000Z] console (info): 🔄 Redis reconnecting in 436ms (attempt 2/10)...
+[2025-11-17T12:32:18.350000Z] console (error): ❌ Coin recalculation worker error: Error: write EPIPE
+
+--- TAGS ---
+  app_url: undefined
+  component: undefined
+  context: undefined
+  environment: undefined
+  handled: undefined
+  level: undefined
+  mechanism: undefined
+  os: undefined
+  os.name: undefined
+  runtime: undefined
+  runtime.name: undefined
+  server_name: undefined
+  service: undefined
+
+--- CONTEXT ---
+No context available
+
+--- REQUEST (if applicable) ---
+No request data
+
+--- USER (if available) ---
+{
+  "id": null,
+  "email": null,
+  "username": null,
+  "ip_address": null,
+  "name": null,
+  "geo": {
+    "country_code": "US",
+    "region": "United States"
+  },
+  "data": null
+}
+
+--- SDK INFO ---
+Platform: node
+SDK: sentry.javascript.node 10.19.0
+
+=== END ANALYSIS REQUEST ===
+
+Please analyze this error and suggest:
+1. Root cause
+2. Potential fixes
+3. Why this error occurred
+4. How to prevent it in the future
