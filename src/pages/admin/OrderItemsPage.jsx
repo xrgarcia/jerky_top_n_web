@@ -9,17 +9,6 @@ function OrderItemsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { showToast } = useToast();
   
-  // Initialize filters from URL or defaults
-  const getDefaultDateFrom = () => {
-    const date = new Date();
-    date.setHours(date.getHours() - 24); // Last 24 hours
-    return date.toISOString().split('T')[0];
-  };
-
-  const getDefaultDateTo = () => {
-    return new Date().toISOString().split('T')[0];
-  };
-
   // Read pagination from URL first to calculate offset
   const initialPage = parseInt(searchParams.get('page') || '1');
   const initialLimit = parseInt(searchParams.get('limit') || '50');
@@ -32,8 +21,8 @@ function OrderItemsPage() {
     productId: searchParams.get('productId') || '',
     sku: searchParams.get('sku') || '',
     fulfillmentStatus: searchParams.get('fulfillmentStatus') || '',
-    dateFrom: searchParams.get('dateFrom') || getDefaultDateFrom(),
-    dateTo: searchParams.get('dateTo') || getDefaultDateTo(),
+    dateFrom: searchParams.get('dateFrom') || '',
+    dateTo: searchParams.get('dateTo') || '',
     limit: initialLimit,
     offset: initialOffset,
     sortBy: searchParams.get('sortBy') || 'orderDate',
@@ -135,8 +124,8 @@ function OrderItemsPage() {
       productId: '',
       sku: '',
       fulfillmentStatus: '',
-      dateFrom: getDefaultDateFrom(),
-      dateTo: getDefaultDateTo(),
+      dateFrom: '',
+      dateTo: '',
       limit: 50,
       offset: 0,
       sortBy: 'orderDate',
