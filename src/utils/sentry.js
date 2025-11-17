@@ -31,6 +31,46 @@ export async function initializeSentry() {
       tracesSampleRate: 1.0,
       replaysSessionSampleRate: 0.1,
       replaysOnErrorSampleRate: 1.0,
+      
+      beforeSend(event, hint) {
+        const error = hint?.originalException;
+        const errorMessage = error?.message || event.message || '';
+        
+        const ignorePatterns = [
+          /Network request failed/i,
+          /Failed to fetch/i,
+          /Load failed/i,
+          /cancelled/i,
+          /^null$/,
+          /^undefined$/,
+          /ResizeObserver loop/i,
+          /Non-Error promise rejection/i,
+        ];
+        
+        if (ignorePatterns.some(pattern => pattern.test(errorMessage))) {
+          console.log('🔇 Sentry: Filtered out benign frontend error:', errorMessage);
+          return null;
+        }
+        
+        const warningPatterns = [
+          /Request timeout/i,
+          /Slow network/i,
+        ];
+        
+        if (warningPatterns.some(pattern => pattern.test(errorMessage))) {
+          event.level = 'warning';
+        }
+        
+        if (!event.tags) event.tags = {};
+        event.tags.is_frontend = true;
+        
+        const isUserAction = event.breadcrumbs?.some(bc => 
+          bc.category === 'ui.click' || bc.category === 'ui.input'
+        );
+        event.tags.user_triggered = isUserAction;
+        
+        return event;
+      },
     });
 
     sentryInitialized = true;
