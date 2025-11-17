@@ -193,6 +193,31 @@ function SentryPage() {
                       {issue.culprit && (
                         <div className="issue-culprit">{issue.culprit}</div>
                       )}
+                      {issue.enrichmentTags && Object.keys(issue.enrichmentTags).length > 0 && (
+                        <div className="enrichment-tags">
+                          {issue.enrichmentTags.user_impact && ['none', 'low', 'medium', 'high', 'critical'].includes(issue.enrichmentTags.user_impact) && (
+                            <span className={`tag-badge tag-user-impact-${issue.enrichmentTags.user_impact}`}>
+                              {issue.enrichmentTags.user_impact === 'none' && '👥 No Users'}
+                              {issue.enrichmentTags.user_impact === 'low' && '👥 Low Impact'}
+                              {issue.enrichmentTags.user_impact === 'medium' && '👥 Medium Impact'}
+                              {issue.enrichmentTags.user_impact === 'high' && '👥 High Impact'}
+                              {issue.enrichmentTags.user_impact === 'critical' && '👥 Critical Impact'}
+                            </span>
+                          )}
+                          {issue.enrichmentTags.is_infrastructure && (
+                            <span className="tag-badge tag-infrastructure">🔧 Infrastructure</span>
+                          )}
+                          {issue.enrichmentTags.is_business_logic && (
+                            <span className="tag-badge tag-business-logic">💼 Business Logic</span>
+                          )}
+                          {issue.enrichmentTags.has_retry && (
+                            <span className="tag-badge tag-retry">🔄 Auto-Retry</span>
+                          )}
+                          {issue.enrichmentTags.has_recovery && (
+                            <span className="tag-badge tag-recovery">✅ Auto-Recovered</span>
+                          )}
+                        </div>
+                      )}
                       <div className="issue-type">Error</div>
                     </td>
                     <td>

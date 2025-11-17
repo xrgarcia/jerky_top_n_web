@@ -13,6 +13,76 @@ module.exports = function createSentryRoutes(storage) {
   const SENTRY_AUTH_TOKEN = process.env.SENTRY_AUTH_TOKEN;
   const PROJECT_SLUG = 'jerky-rank-ui';
 
+  const tagCache = new Map();
+  const TAG_CACHE_TTL = 5 * 60 * 1000;
+  const MAX_CONCURRENT_TAG_FETCHES = 5;
+
+  async function fetchLatestEventTags(issueId) {
+    const cacheKey = `tags:${issueId}`;
+    const cached = tagCache.get(cacheKey);
+    
+    if (cached && Date.now() - cached.timestamp < TAG_CACHE_TTL) {
+      return cached.tags;
+    }
+
+    try {
+      const url = `${SENTRY_API_BASE}/organizations/${SENTRY_ORG_SLUG}/issues/${issueId}/events/latest/`;
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${SENTRY_AUTH_TOKEN}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        console.warn(`⚠️ Failed to fetch tags for issue ${issueId}: ${response.status}`);
+        return {};
+      }
+
+      const event = await response.json();
+      const tags = event.tags || [];
+      
+      const enrichmentTags = {
+        user_impact: tags.find(t => t.key === 'user_impact')?.value || 'unknown',
+        has_retry: tags.find(t => t.key === 'has_retry')?.value === 'yes',
+        has_recovery: tags.find(t => t.key === 'has_recovery')?.value === 'yes',
+        is_infrastructure: tags.find(t => t.key === 'is_infrastructure')?.value === 'yes',
+        is_business_logic: tags.find(t => t.key === 'is_business_logic')?.value === 'yes'
+      };
+
+      tagCache.set(cacheKey, {
+        tags: enrichmentTags,
+        timestamp: Date.now()
+      });
+
+      return enrichmentTags;
+    } catch (error) {
+      console.error(`❌ Error fetching tags for issue ${issueId}:`, error.message);
+      return {};
+    }
+  }
+
+  async function fetchTagsWithConcurrency(issueIds) {
+    const results = {};
+    const batches = [];
+    
+    for (let i = 0; i < issueIds.length; i += MAX_CONCURRENT_TAG_FETCHES) {
+      batches.push(issueIds.slice(i, i + MAX_CONCURRENT_TAG_FETCHES));
+    }
+
+    for (const batch of batches) {
+      const promises = batch.map(async (issueId) => {
+        const tags = await fetchLatestEventTags(issueId);
+        results[issueId] = tags;
+      });
+      
+      await Promise.all(promises);
+    }
+
+    return results;
+  }
+
   /**
    * Middleware: Require employee/admin authentication
    */
@@ -138,11 +208,14 @@ module.exports = function createSentryRoutes(storage) {
       }
 
       const issues = await response.json();
+      const limitedIssues = issues.slice(0, limit);
       
-      // Transform issues for frontend consumption
-      // Note: Sentry /issues/ endpoint doesn't include tags by default,
-      // so we use the environment filter parameter as the source of truth
-      const transformedIssues = issues.slice(0, limit).map(issue => ({
+      console.log(`📊 Fetching enrichment tags for ${limitedIssues.length} issues...`);
+      const issueIds = limitedIssues.map(issue => issue.id);
+      const tagsMap = await fetchTagsWithConcurrency(issueIds);
+      console.log(`✅ Fetched tags for ${Object.keys(tagsMap).length}/${limitedIssues.length} issues`);
+      
+      const transformedIssues = limitedIssues.map(issue => ({
         id: issue.id,
         shortId: issue.shortId,
         title: issue.title || issue.metadata?.title || 'Untitled Issue',
@@ -164,12 +237,11 @@ module.exports = function createSentryRoutes(storage) {
           filename: issue.metadata?.filename || '',
           function: issue.metadata?.function || ''
         },
-        // Use the filter environment if specified, otherwise check issue properties
-        // Sentry /issues/ endpoint doesn't include tags by default
-        environment: environment || issue.environment || getEnvironmentFromTags(issue.tags || [])
+        environment: environment || issue.environment || getEnvironmentFromTags(issue.tags || []),
+        enrichmentTags: tagsMap[issue.id] || {}
       }));
 
-      console.log(`✅ Fetched ${transformedIssues.length} Sentry issues (filtered by: ${query || 'none'})`);
+      console.log(`✅ Fetched ${transformedIssues.length} Sentry issues with enrichment tags (filtered by: ${query || 'none'})`);
 
       res.json({
         success: true,

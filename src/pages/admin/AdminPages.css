@@ -1066,6 +1066,77 @@
   white-space: nowrap;
 }
 
+.enrichment-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.tag-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.tag-user-impact-none {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+}
+
+.tag-user-impact-low {
+  background: #fff9c4;
+  color: #f57f17;
+  border: 1px solid #fff176;
+}
+
+.tag-user-impact-medium {
+  background: #ffe0b2;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+
+.tag-user-impact-high {
+  background: #ffccbc;
+  color: #d84315;
+  border: 1px solid #ff8a65;
+}
+
+.tag-user-impact-critical {
+  background: #ffcdd2;
+  color: #c62828;
+  border: 1px solid #ef5350;
+}
+
+.tag-infrastructure {
+  background: #e3f2fd;
+  color: #1565c0;
+  border: 1px solid #90caf9;
+}
+
+.tag-business-logic {
+  background: #f3e5f5;
+  color: #6a1b9a;
+  border: 1px solid #ce93d8;
+}
+
+.tag-retry {
+  background: #fff3e0;
+  color: #ef6c00;
+  border: 1px solid #ffb74d;
+}
+
+.tag-recovery {
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #81c784;
+}
+
 .issue-type {
   font-size: 11px;
   color: #999;
