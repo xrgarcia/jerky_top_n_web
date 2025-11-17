@@ -91,6 +91,14 @@ function shouldDowngradeToWarning(event, hint) {
   const error = hint?.originalException;
   const errorMessage = error?.message || event.message || '';
   
+  const isCriticalError = SENTRY_FILTERS.requireUserImpact.errorMessages.some(
+    pattern => pattern.test(errorMessage)
+  );
+  
+  if (isCriticalError) {
+    return false;
+  }
+  
   if (SENTRY_FILTERS.downgradeToWarning.errorMessages.some(pattern => pattern.test(errorMessage))) {
     return true;
   }
@@ -117,20 +125,6 @@ function assessUserImpact(event, hint) {
   const breadcrumbs = event.breadcrumbs || [];
   const recentBreadcrumbs = breadcrumbs.slice(-10);
   
-  const hasCriticalPattern = SENTRY_FILTERS.requireUserImpact.errorMessages.some(
-    pattern => pattern.test(errorMessage)
-  );
-  
-  const hasUserImpactBreadcrumb = recentBreadcrumbs.some(bc => 
-    SENTRY_FILTERS.requireUserImpact.breadcrumbPatterns.some(pattern => 
-      pattern.test(bc.message || '')
-    )
-  );
-  
-  if (!hasCriticalPattern) {
-    return 'unknown';
-  }
-  
   const hasRetryBreadcrumb = recentBreadcrumbs.some(bc => 
     /retry|retrying|attempt \d+/i.test(bc.message || '')
   );
@@ -143,11 +137,24 @@ function assessUserImpact(event, hint) {
     return 'recovered';
   }
   
-  if (hasUserImpactBreadcrumb) {
+  const hasCriticalPattern = SENTRY_FILTERS.requireUserImpact.errorMessages.some(
+    pattern => pattern.test(errorMessage)
+  );
+  
+  const hasUserImpactBreadcrumb = recentBreadcrumbs.some(bc => 
+    SENTRY_FILTERS.requireUserImpact.breadcrumbPatterns.some(pattern => 
+      pattern.test(bc.message || '')
+    )
+  );
+  
+  if (hasCriticalPattern) {
+    if (hasUserImpactBreadcrumb) {
+      return 'critical';
+    }
     return 'critical';
   }
   
-  return 'moderate';
+  return 'unknown';
 }
 
 function enrichErrorContext(event, hint) {
@@ -172,13 +179,15 @@ function enrichErrorContext(event, hint) {
   const userImpact = assessUserImpact(event, hint);
   event.tags.user_impact = userImpact;
   
+  const shouldAlert = userImpact === 'critical' || userImpact === 'recovered';
+  
   event.contexts.error_classification = {
     has_retry: hasRetry,
     has_recovery: hasRecovery,
     is_infrastructure: isInfrastructure,
     is_business_logic: isBusinessLogic,
     user_impact: userImpact,
-    should_alert: userImpact === 'critical' || (userImpact === 'moderate' && isBusinessLogic),
+    should_alert: shouldAlert,
   };
   
   return event;
@@ -197,10 +206,10 @@ function filterError(event, hint) {
     console.log(`⚠️  Sentry: Downgraded error to warning: ${event.message || event.exception?.values?.[0]?.value}`);
   }
   
-  const shouldAlert = event.contexts?.error_classification?.should_alert;
-  if (shouldAlert === false && event.level === 'error') {
+  const userImpact = event.contexts?.error_classification?.user_impact;
+  if (userImpact === 'recovered' && event.level === 'error') {
     event.level = 'info';
-    console.log(`ℹ️  Sentry: Downgraded non-critical error to info: ${event.message || event.exception?.values?.[0]?.value}`);
+    console.log(`ℹ️  Sentry: Downgraded recovered error to info: ${event.message || event.exception?.values?.[0]?.value}`);
   }
   
   return event;
