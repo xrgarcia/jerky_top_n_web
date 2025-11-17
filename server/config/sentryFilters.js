@@ -10,6 +10,7 @@ const SENTRY_FILTERS = {
       /socket hang up/i,
       /ETIMEDOUT/i,
       /ECONNREFUSED.*redis/i,
+      /terminating connection due to administrator command/i,
     ],
     
     errorTypes: [
