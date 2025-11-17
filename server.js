@@ -84,6 +84,8 @@ if (!process.env.NODE_ENV) {
 
 // Initialize Sentry for error monitoring and performance tracking
 if (process.env.SENTRY_DSN) {
+  const { filterError } = require('./server/config/sentryFilters.js');
+  
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     environment: ENVIRONMENT,
@@ -100,7 +102,11 @@ if (process.env.SENTRY_DSN) {
     },
     // beforeSend runs ONLY when an error is being sent to Sentry (not on every request)
     beforeSend: async (event, hint) => {
-      // Get session ID from event context (will be set by middleware)
+      // Step 1: Apply intelligent error filtering (ignore benign errors, downgrade warnings)
+      event = filterError(event, hint);
+      if (!event) return null; // Error was filtered out
+      
+      // Step 2: Get session ID from event context (will be set by middleware)
       const sessionId = event.contexts?.session?.session_id;
       
       if (sessionId) {
@@ -130,7 +136,7 @@ if (process.env.SENTRY_DSN) {
       return event;
     },
   });
-  console.log(`✅ Sentry error monitoring initialized (${ENVIRONMENT} @ ${APP_URL})`);
+  console.log(`✅ Sentry error monitoring initialized with smart filtering (${ENVIRONMENT} @ ${APP_URL})`);
 } else {
   console.warn('⚠️  Sentry DSN not configured - error monitoring disabled');
 }
