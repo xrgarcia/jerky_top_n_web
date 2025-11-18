@@ -56,3 +56,105 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Real-time:** Socket.IO.
 - **Email:** Custom SMTP service using nodemailer.
 - **Object Storage:** Replit Object Storage (Google Cloud Storage).
+
+## Design System Migration (2025)
+
+### Overview
+Comprehensive transformation from earth-tone aesthetic to dark, premium gaming-inspired "RANK Identity System" emphasizing progression, mastery, and status.
+
+### Architecture Principles
+- **Centralized Theming:** All colors, typography, and design tokens defined once in `src/styles/theme.css` using CSS custom properties as single source of truth
+- **No Duplication:** Zero inline styles, no tactical color/font hardcoding - all components consume CSS variables
+- **Responsive by Default:** All typography tokens include mobile breakpoints for optimal cross-device experience
+- **Phase-Based Migration:** Incremental updates to maintain functionality while transforming the visual identity
+
+### Migration Phases
+
+#### Phase 1: Foundation (COMPLETE ✅)
+**Status:** Architect-reviewed and approved - November 18, 2025
+**Deliverables:**
+- ✅ Google Fonts integration (Manrope, Inter, IBM Plex Mono) in `index.html`
+- ✅ Centralized `theme.css` with 90+ color tokens (backgrounds, accents, tiers, button states, link colors, card states, borders, loading, toasts, inputs, glows, overlays, shadows, gradients)
+- ✅ Centralized `theme.css` with 70+ typography tokens (hero, headlines, body, stats, labels, eyebrow, section subtitles, button text, caption)
+- ✅ Complete responsive coverage for ALL typography variants (mobile breakpoints)
+- ✅ Updated `global.css` to consume theme variables for base styles
+- ✅ Body background set to dark charcoal (#0F0F0F)
+**Outcome:** Robust, production-ready design token system as single source of truth
+
+#### Phase 2: Navigation & Core Layout (PENDING)
+**Goal:** Apply RANK theme to nav, header, footer while preserving structure
+**Approach:** Colors + fonts only - no layout changes
+**Components:** Nav.css, Header.css, Footer.css (if exists)
+
+#### Phase 3: Feature Pages (PENDING)
+**Goal:** Transform Rank, Flavors, Community, Leaderboard, Profile, Coinbook pages
+**Approach:** Theme application without structural changes
+**Components:** All page-level CSS files
+
+#### Phase 4: Shared Components (PENDING)
+**Goal:** Update cards, buttons, forms, modals, loading states
+**Approach:** Consume theme tokens, maintain existing patterns
+**Components:** All component CSS files
+
+#### Phase 5: Homepage Redesign (PENDING)
+**Goal:** Implement complete gaming-inspired homepage with new layout
+**Scope:** User profile hero, Top 3 Flavors, action cards, Next Unlock widget, Featured Drop
+**Approach:** Full redesign with new structure, narrative transitions, and gamification visuals
+
+### Design Token Inventory
+
+**Color Palette (90+ tokens):**
+- Backgrounds: charcoal (#0F0F0F), obsidian (#1A1A1A), slate (#2A2A2A), smoke (#3D3D3D), ash (#5c5c5c)
+- Text: primary (#E5E5E5), secondary (#C0C0C0), tertiary (#A3A3A3), muted (#777777), subtle (#555555), disabled (#3D3D3D), inverted (#0F0F0F)
+- Accents: gold (#FFD873), amber (#FF8A2B), ember (#FF4D2E)
+- Tier badges: bronze (#CD7F32), silver (#C0C0C0), gold (#FFD700), platinum (#E5E4E2), diamond (#B9F2FF)
+- Neutral ramp: 50-900 grayscale spectrum
+- Button states: primary/secondary/danger with hover/active variants
+- Link colors: default/hover/visited/active
+- Card states: hover/selected with borders
+- Border colors: default/hover/focus/error/success
+- Loading states: skeleton backgrounds and shimmer effects
+- Toast backgrounds: success/error/warning/info with transparency
+- Input states: background/border variants
+- Glow effects: amber/gold/ember with opacity
+- Opacity overlays: hover/loading/disabled
+- Shadow system: subtle/medium/strong
+
+**Typography Scale (70+ tokens):**
+- Hero display: 72px/48px (desktop/mobile), ExtraBold, -1px tracking
+- Headlines: H1 (48px/40px), H2 (36px/32px), H3 (28px/24px), H4 (20px/18px), H5 (16px/14px)
+- Body text: Default (16px/15px), Medium (18px), Small (14px/13px)
+- Monospace: 16px/14px, IBM Plex Mono for stats/data
+- Labels: Default (14px/12px), Small (12px/11px) with 0.3px tracking, UPPERCASE
+- Eyebrow: 14px/12px, SemiBold, 1.5px tracking, UPPERCASE
+- Section subtitle: 18px/16px, Regular, 1.6 line height
+- Stat variants: Large (32px/24px), Medium (24px/20px), Small (16px/14px)
+- Button: 14px/13px, SemiBold, 0.5px tracking, UPPERCASE
+- Caption: 12px/11px, Regular
+
+**Gradients:**
+- Ember: 135deg, #FF4D2E → #FF8A2B
+- Amber: 135deg, #FF8A2B → #FFD873
+- Gold: 135deg, #FFD873 → #FFA500
+- Dark: 180deg, #0a0a0a → #1a1a1a → #2d2d2d
+
+### File Structure
+```
+src/styles/
+├── theme.css          # Single source of truth - 90+ colors, 70+ typography tokens
+├── global.css         # Base styles consuming theme variables
+└── [component].css    # Component styles (consume theme tokens only)
+```
+
+### Next Session Goals
+**Phase 2 Tasks:**
+1. Update Nav.css to use RANK theme tokens
+2. Update Header.css to use RANK theme tokens
+3. Verify dark theme consistency across navigation
+4. Architect review before proceeding to Phase 3
+
+**Key Principles for Phase 2:**
+- Change colors/fonts ONLY - preserve existing layout and structure
+- All changes must reference theme.css variables (no hardcoded values)
+- Test on mobile and desktop to ensure responsive coverage works
+- Maintain existing functionality while transforming visual identity
