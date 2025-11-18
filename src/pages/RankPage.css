@@ -5,12 +5,12 @@
 .rank-page {
   padding: 0;
   min-height: 100vh;
-  background: #fafafa;
+  background: var(--rank-neutral-900);
 }
 
 .rank-hero {
   position: relative;
-  background: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+  background: var(--rank-gradient-dark);
   padding: 60px 0 80px;
   overflow: visible;
 }
@@ -33,7 +33,7 @@
   transform: translate(-50%, -50%);
   width: 1200px;
   height: 1200px;
-  background: radial-gradient(circle, rgba(218, 165, 32, 0.2) 0%, rgba(139, 111, 61, 0.1) 30%, transparent 70%);
+  background: radial-gradient(circle, var(--rank-glow-podium) 0%, var(--rank-glow-gold) 30%, transparent 70%);
   border-radius: 50%;
   animation: pulse-glow 8s ease-in-out infinite;
 }
@@ -70,20 +70,20 @@
 .hero-title {
   font-size: 3.5rem;
   font-weight: 600;
-  color: white;
+  color: var(--rank-text-white);
   margin: 0 0 20px;
   letter-spacing: -0.5px;
-  text-shadow: 0 4px 30px rgba(218, 165, 32, 0.4);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  text-shadow: var(--rank-shadow-glow);
+  font-family: var(--font-headline);
 }
 
 .hero-subtitle {
   font-size: 1.25rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--rank-text-soft-white);
   margin: 0 auto;
   max-width: 800px;
   line-height: 1.7;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -92,7 +92,7 @@
    ======================================== */
 
 .rank-introduction {
-  background: white;
+  background: var(--rank-bg-card);
   padding: 80px 0;
 }
 
@@ -105,18 +105,18 @@
 .intro-title {
   font-size: 2.75rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin: 0 0 32px;
   letter-spacing: -0.5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
 }
 
 .intro-text {
   font-size: 1.125rem;
-  color: #6e6e73;
+  color: var(--rank-neutral-300);
   line-height: 1.75;
   margin: 0 0 24px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -129,7 +129,7 @@
    ======================================== */
 
 .rank-widget-section {
-  background: #fafafa;
+  background: var(--rank-neutral-900);
   padding: 60px 0 80px;
 }
 
@@ -147,10 +147,10 @@
 }
 
 .rank-column {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 1.5rem 0 0 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
   height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
@@ -168,7 +168,7 @@
 .rank-column h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   font-weight: 600;
   padding: 0 1.5rem;
   margin-bottom: 0.5rem;
@@ -185,15 +185,15 @@
 
 .sub-header {
   font-size: 0.9rem;
-  color: #7f8c8d;
+  color: var(--rank-neutral-400);
   margin-bottom: 1.5rem;
   padding: 0 1.5rem 1rem 1.5rem;
-  border-bottom: 2px solid #f0f0f0;
+  border-bottom: 2px solid var(--rank-border-default);
 }
 
 .sub-header .ranking-progress {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--rank-text-white);
 }
 
 .ranking-commentary {
@@ -201,7 +201,7 @@
   align-items: center;
   gap: 0.5rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--rank-text-white);
 }
 
 .commentary-icon {
@@ -214,9 +214,9 @@
 
 .milestone-hint {
   font-size: 0.85rem;
-  color: #c4a962;
+  color: var(--rank-gold);
   padding: 0.25rem 0.5rem;
-  background: #fef9ec;
+  background: var(--rank-neutral-50);
   border-radius: 4px;
   white-space: nowrap;
 }
@@ -225,9 +225,9 @@
 .collection-progress-bar {
   margin: 0 1.5rem 1.5rem 1.5rem;
   padding: 1rem;
-  background: #f8f9fa;
+  background: var(--rank-bg-card-elevated);
   border-radius: 8px;
-  border: 1px solid #e9ecef;
+  border: 1px solid var(--rank-border-default);
 }
 
 .progress-header {
@@ -245,7 +245,7 @@
 .progress-message {
   font-size: 0.9rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   flex: 1;
 }
 
@@ -257,7 +257,7 @@
 
 .collection-progress-track {
   height: 8px;
-  background: #e9ecef;
+  background: var(--rank-border-default);
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -280,9 +280,9 @@
   right: 0;
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.3) 50%,
-    rgba(255, 255, 255, 0) 100%
+    transparent 0%,
+    var(--rank-glow-gold) 50%,
+    transparent 100%
   );
   animation: shimmer 2s infinite;
 }
@@ -298,27 +298,27 @@
 
 /* Progress color themes - scoped to collection progress bar for higher specificity */
 .collection-progress-bar .progress-blue {
-  background: linear-gradient(90deg, #3498db, #5dade2);
+  background: var(--rank-gradient-gold);
 }
 
 .collection-progress-bar .progress-green {
-  background: linear-gradient(90deg, #27ae60, #52be80);
+  background: var(--rank-gradient-amber);
 }
 
 .collection-progress-bar .progress-orange {
-  background: linear-gradient(90deg, #e67e22, #f39c12);
+  background: var(--rank-gradient-amber);
 }
 
 .collection-progress-bar .progress-purple {
-  background: linear-gradient(90deg, #8e44ad, #a569bd);
+  background: var(--rank-gradient-gold);
 }
 
 .collection-progress-bar .progress-gold {
-  background: linear-gradient(90deg, #c4a962, #d4af37);
+  background: var(--rank-gradient-gold);
 }
 
 .collection-progress-bar .progress-rainbow {
-  background: linear-gradient(90deg, #e74c3c, #f39c12, #f1c40f, #2ecc71, #3498db, #9b59b6);
+  background: var(--rank-gradient-gold);
   background-size: 200% 100%;
   animation: rainbow 3s linear infinite;
 }
@@ -333,18 +333,18 @@
 }
 
 .collection-progress-bar .progress-gray {
-  background: #95a5a6;
+  background: var(--rank-neutral-400);
 }
 
 .progress-text {
   font-size: 0.8rem;
-  color: #7f8c8d;
+  color: var(--rank-neutral-400);
   font-weight: 500;
   text-align: right;
 }
 
 .placeholder-content {
-  color: #95a5a6;
+  color: var(--rank-neutral-400);
   font-size: 1.1rem;
   text-align: center;
   padding: 3rem 1rem;
@@ -365,22 +365,22 @@
 }
 
 .slots-container::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: var(--rank-neutral-100);
   border-radius: 4px;
 }
 
 .slots-container::-webkit-scrollbar-thumb {
-  background: #8B6F3D;
+  background: var(--rank-button-primary-bg);
   border-radius: 4px;
 }
 
 .slots-container::-webkit-scrollbar-thumb:hover {
-  background: #7A6032;
+  background: var(--rank-button-primary-hover);
 }
 
 .ranking-progress {
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--rank-text-white);
 }
 
 .save-status {
@@ -392,18 +392,18 @@
 }
 
 .save-status-inline.save-status-saving {
-  background-color: #fff3cd;
-  color: #856404;
+  background-color: var(--rank-toast-warning-bg);
+  color: var(--rank-warning);
 }
 
 .save-status-inline.save-status-saved {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: var(--rank-toast-success-bg);
+  color: var(--rank-success);
 }
 
 .save-status-inline.save-status-error {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: var(--rank-toast-error-bg);
+  color: var(--rank-error);
 }
 
 @keyframes fadeIn {
@@ -430,23 +430,23 @@
 .rank-search-input {
   flex: 1;
   padding: 0.75rem 1rem;
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--rank-border-default);
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s;
-  background: white;
-  color: #2c3e50;
+  background: var(--rank-bg-card);
+  color: var(--rank-text-white);
 }
 
 .rank-search-input:focus {
   outline: none;
-  border-color: #8B6F3D;
+  border-color: var(--rank-button-primary-bg);
 }
 
 .search-button {
   padding: 0.75rem 2rem;
-  background-color: #8B6F3D;
-  color: white;
+  background-color: var(--rank-button-primary-bg);
+  color: var(--rank-text-white);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -457,7 +457,7 @@
 }
 
 .search-button:hover:not(:disabled) {
-  background-color: #7A6032;
+  background-color: var(--rank-button-primary-hover);
 }
 
 .search-button:disabled {
@@ -470,8 +470,8 @@
   width: 14px;
   height: 14px;
   margin-right: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-top-color: white;
+  border: 2px solid var(--rank-glow-gold);
+  border-top-color: var(--rank-text-white);
   border-radius: 50%;
   animation: spin 0.6s linear infinite;
   vertical-align: middle;
@@ -497,11 +497,11 @@
 .initial-state {
   text-align: center;
   padding: 3rem 1rem;
-  color: #7f8c8d;
+  color: var(--rank-neutral-400);
 }
 
 .error-state {
-  color: #e74c3c;
+  color: var(--rank-error);
 }
 
 .error-state p {
@@ -510,8 +510,8 @@
 
 .retry-button {
   padding: 0.5rem 1.5rem;
-  background-color: #8B6F3D;
-  color: white;
+  background-color: var(--rank-button-primary-bg);
+  color: var(--rank-text-white);
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -519,7 +519,7 @@
 }
 
 .retry-button:hover {
-  background-color: #7A6032;
+  background-color: var(--rank-button-primary-hover);
 }
 
 /* Products grid - responsive */
@@ -531,8 +531,8 @@
 }
 
 .product-card {
-  background: white;
-  border: 2px solid #f0f0f0;
+  background: var(--rank-bg-card);
+  border: 2px solid var(--rank-border-default);
   border-radius: 10px;
   overflow: hidden;
   transition: all 0.2s;
@@ -543,15 +543,15 @@
 
 .product-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  border-color: #8B6F3D;
+  box-shadow: var(--rank-shadow-card);
+  border-color: var(--rank-button-primary-bg);
 }
 
 .product-image {
   width: 100%;
   aspect-ratio: 1 / 1;
   overflow: hidden;
-  background-color: #f8f8f8;
+  background-color: var(--rank-bg-card-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -564,7 +564,7 @@
 }
 
 .no-image {
-  color: #bdc3c7;
+  color: var(--rank-neutral-300);
   font-size: 0.9rem;
   text-align: center;
 }
@@ -581,9 +581,9 @@
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 5px;
-  color: #333;
+  color: var(--rank-text-white);
   line-height: 1.3;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+  font-family: var(--font-body);
   white-space: normal !important;
   overflow: visible !important;
   text-overflow: clip !important;
@@ -591,7 +591,7 @@
 }
 
 .product-vendor {
-  color: #666;
+  color: var(--rank-neutral-300);
   font-size: 12px;
   margin-bottom: 5px;
   text-align: center;
@@ -599,7 +599,7 @@
 
 .product-price {
   font-size: 1rem;
-  color: #8B6F3D;
+  color: var(--rank-button-primary-bg);
   font-weight: 600;
   margin: 0;
   text-align: center;
@@ -607,15 +607,15 @@
 
 /* Mobile Toggle Button */
 .mobile-collapse-toggle {
-  background: linear-gradient(135deg, #8B6F3D, #7A6032);
-  color: white;
+  background: var(--rank-gradient-gold);
+  color: var(--rank-text-white);
   border: none;
   border-radius: 6px;
   padding: 0.5rem 0.75rem;
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
   min-height: 44px;
   min-width: 44px;
   display: flex;
@@ -624,14 +624,14 @@
 }
 
 .mobile-collapse-toggle:hover {
-  background: linear-gradient(135deg, #6b7a45, #5b6a35);
+  background: var(--rank-gradient-amber);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .mobile-collapse-toggle:active {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 /* Collapsible Rankings Content */
@@ -752,26 +752,26 @@
 /* Force Sync Button */
 .force-sync-button {
   padding: 0.5rem 1rem;
-  background: linear-gradient(135deg, #8B6F3D, #7A6032);
-  color: white;
+  background: var(--rank-gradient-gold);
+  color: var(--rank-text-white);
   border: none;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .force-sync-button:hover:not(:disabled) {
-  background: linear-gradient(135deg, #6b7a45, #5b6a35);
+  background: var(--rank-gradient-amber);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .force-sync-button:active:not(:disabled) {
   transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .force-sync-button:disabled {

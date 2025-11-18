@@ -1,14 +1,14 @@
 /* Admin Tools Layout Styles */
 
 .tools-page {
-  background: #f5f3ed;
+  background: var(--rank-bg-charcoal);
   min-height: 100vh;
   padding-bottom: 40px;
 }
 
 .tools-header {
-  background: white;
-  border-bottom: 2px solid #e0e0e0;
+  background: var(--rank-bg-card);
+  border-bottom: 2px solid var(--rank-border-default);
   padding: 30px 20px;
   margin-bottom: 30px;
 }
@@ -28,23 +28,23 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: #666;
+  color: var(--rank-text-body);
   margin-bottom: 10px;
 }
 
 .tools-breadcrumbs a {
-  color: #7b8b52;
+  color: var(--rank-link-default);
   text-decoration: none;
   transition: color 0.2s;
 }
 
 .tools-breadcrumbs a:hover {
-  color: #5d6b3d;
+  color: var(--rank-link-hover);
   text-decoration: underline;
 }
 
 .tools-breadcrumbs span {
-  color: #999;
+  color: var(--rank-text-muted);
 }
 
 .tools-title {
@@ -52,9 +52,9 @@
   align-items: center;
   gap: 12px;
   font-size: 2em;
-  color: #2c2c2c;
+  color: var(--rank-text-white);
   margin: 0 0 8px 0;
-  font-family: Georgia, 'Times New Roman', serif;
+  font-family: var(--font-headline);
 }
 
 .tools-icon {
@@ -62,7 +62,7 @@
 }
 
 .tools-subtitle {
-  color: #666;
+  color: var(--rank-text-body);
   font-size: 1.1em;
   margin: 0;
 }
@@ -76,21 +76,21 @@
   align-items: center;
   gap: 8px;
   padding: 12px 24px;
-  background: #7b8b52;
-  color: white;
+  background: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
   border: none;
   border-radius: 8px;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .refresh-btn:hover {
-  background: #5d6b3d;
+  background: var(--rank-button-primary-hover);
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .refresh-btn:active {
@@ -109,7 +109,7 @@
   margin-bottom: 30px;
   flex-wrap: wrap;
   padding: 0;
-  border-bottom: 2px solid #e0e0e0;
+  border-bottom: 2px solid var(--rank-border-default);
 }
 
 .tools-nav-btn {
@@ -117,11 +117,11 @@
   align-items: center;
   gap: 8px;
   padding: 12px 20px;
-  background: white;
+  background: var(--rank-bg-card);
   border: 2px solid transparent;
   border-bottom: none;
   border-radius: 8px 8px 0 0;
-  color: #666;
+  color: var(--rank-text-body);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
@@ -132,15 +132,15 @@
 }
 
 .tools-nav-btn:hover {
-  background: rgba(123, 139, 82, 0.05);
-  color: #2c2c2c;
+  background: var(--rank-bg-card-elevated);
+  color: var(--rank-text-white);
 }
 
 .tools-nav-btn.active {
-  background: white;
-  color: #7b8b52;
-  border-color: #e0e0e0;
-  border-bottom: 2px solid white;
+  background: var(--rank-bg-card);
+  color: var(--rank-gold);
+  border-color: var(--rank-border-default);
+  border-bottom: 2px solid var(--rank-bg-card);
   font-weight: 700;
 }
 
@@ -149,10 +149,10 @@
 }
 
 .tools-content {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 30px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--rank-shadow-card);
   min-height: 500px;
 }
 

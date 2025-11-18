@@ -8,27 +8,28 @@
 
 .coin-types-admin .page-header h2 {
   font-size: 1.75rem;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   margin-bottom: 0.5rem;
+  font-family: var(--font-headline);
 }
 
 .coin-types-admin .page-header p {
-  color: #7f8c8d;
+  color: var(--rank-text-body);
   font-size: 1rem;
 }
 
 .coin-types-admin.loading {
   padding: 3rem;
   text-align: center;
-  color: #7f8c8d;
+  color: var(--rank-text-muted);
 }
 
 /* Table Styles */
 .coins-table-container {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .coins-table {
@@ -37,15 +38,15 @@
 }
 
 .coins-table thead {
-  background: #f8f9fa;
+  background: var(--rank-neutral-800);
 }
 
 .coins-table th {
   padding: 1rem;
   text-align: left;
   font-weight: 600;
-  color: #2c3e50;
-  border-bottom: 2px solid #e9ecef;
+  color: var(--rank-text-white);
+  border-bottom: 2px solid var(--rank-border-default);
   font-size: 0.9rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -53,11 +54,12 @@
 
 .coins-table td {
   padding: 1rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--rank-border-default);
+  color: var(--rank-text-body);
 }
 
 .coins-table tbody tr:hover {
-  background: #f8f9fa;
+  background: var(--rank-bg-card-elevated);
 }
 
 .coins-table tbody tr:last-child td {
@@ -65,16 +67,16 @@
 }
 
 .type-cell code {
-  background: #e9ecef;
+  background: var(--rank-neutral-700);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.85rem;
-  color: #495057;
+  color: var(--rank-text-soft-white);
 }
 
 .tagline-cell {
   max-width: 300px;
-  color: #666;
+  color: var(--rank-text-body);
   font-size: 0.9rem;
 }
 
@@ -92,17 +94,17 @@
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  border: 2px solid #dee2e6;
+  border: 2px solid var(--rank-border-default);
 }
 
 .color-preview code {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 .edit-btn {
-  background: #7b8b52;
-  color: white;
+  background: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 6px;
@@ -112,7 +114,7 @@
 }
 
 .edit-btn:hover {
-  background: #6a7a45;
+  background: var(--rank-button-primary-hover);
 }
 
 /* Modal Styles */
@@ -122,7 +124,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--rank-overlay-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -131,13 +133,13 @@
 }
 
 .modal-content {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   width: 100%;
   max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .modal-header {
@@ -145,17 +147,18 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--rank-border-default);
 }
 
 .modal-header h3 {
   margin: 0;
   font-size: 1.25rem;
-  color: #2c3e50;
+  color: var(--rank-text-white);
+  font-family: var(--font-headline);
 }
 
 .modal-header code {
-  background: #e9ecef;
+  background: var(--rank-neutral-700);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 0.9rem;
@@ -166,7 +169,7 @@
   border: none;
   font-size: 2rem;
   cursor: pointer;
-  color: #adb5bd;
+  color: var(--rank-text-muted);
   width: 32px;
   height: 32px;
   display: flex;
@@ -177,7 +180,7 @@
 }
 
 .close-btn:hover {
-  color: #495057;
+  color: var(--rank-text-white);
 }
 
 .modal-body {
@@ -192,7 +195,7 @@
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   font-size: 0.9rem;
 }
 
@@ -200,16 +203,18 @@
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--rank-border-default);
   border-radius: 6px;
   font-size: 0.95rem;
   transition: border-color 0.2s;
+  background: var(--rank-bg-input);
+  color: var(--rank-text-white);
 }
 
 .form-group input[type="text"]:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #7b8b52;
+  border-color: var(--rank-border-focus);
 }
 
 .form-group textarea {
@@ -231,7 +236,7 @@
 .color-input-group input[type="color"] {
   width: 60px;
   height: 40px;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--rank-border-default);
   border-radius: 6px;
   cursor: pointer;
 }
@@ -242,7 +247,7 @@
 
 .modal-footer {
   padding: 1rem 1.5rem;
-  border-top: 1px solid #e9ecef;
+  border-top: 1px solid var(--rank-border-default);
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
@@ -259,21 +264,23 @@
 }
 
 .cancel-btn {
-  background: #e9ecef;
-  color: #495057;
+  background: var(--rank-button-secondary-bg);
+  color: var(--rank-button-secondary-text);
+  border: 2px solid var(--rank-border-default);
 }
 
 .cancel-btn:hover {
-  background: #dee2e6;
+  background: var(--rank-button-secondary-hover);
+  border-color: var(--rank-border-hover);
 }
 
 .save-btn {
-  background: #7b8b52;
-  color: white;
+  background: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
 }
 
 .save-btn:hover:not(:disabled) {
-  background: #6a7a45;
+  background: var(--rank-button-primary-hover);
 }
 
 .save-btn:disabled {
@@ -283,17 +290,18 @@
 
 /* Flavor Communities Config Card */
 .config-info-card {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
   margin-bottom: 2rem;
 }
 
 .config-info-card h3 {
   font-size: 1.5rem;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   margin-bottom: 1.5rem;
+  font-family: var(--font-headline);
 }
 
 .config-section {
@@ -306,10 +314,10 @@
 
 .config-section h4 {
   font-size: 1.1rem;
-  color: #495057;
+  color: var(--rank-text-soft-white);
   margin-bottom: 1rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #e9ecef;
+  border-bottom: 2px solid var(--rank-border-default);
 }
 
 .config-grid {
@@ -320,9 +328,9 @@
 
 .config-item {
   padding: 1rem;
-  background: #f8f9fa;
+  background: var(--rank-neutral-800);
   border-radius: 8px;
-  border-left: 4px solid #7b8b52;
+  border-left: 4px solid var(--rank-gold);
 }
 
 .config-item label {
@@ -330,7 +338,7 @@
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: #6c757d;
+  color: var(--rank-text-muted);
   margin-bottom: 0.5rem;
   font-weight: 600;
 }
@@ -338,22 +346,22 @@
 .config-value {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #2c3e50;
+  color: var(--rank-text-white);
   margin-bottom: 0.25rem;
 }
 
 .config-value code {
-  background: #e9ecef;
+  background: var(--rank-neutral-700);
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
   font-size: 1rem;
-  color: #495057;
+  color: var(--rank-text-soft-white);
 }
 
 .config-help {
   display: block;
   font-size: 0.8rem;
-  color: #6c757d;
+  color: var(--rank-text-muted);
   margin-top: 0.5rem;
   font-weight: 400;
 }
@@ -366,16 +374,16 @@
 
 .lifecycle-states li {
   padding: 0.75rem 1rem;
-  background: #f8f9fa;
+  background: var(--rank-neutral-800);
   border-radius: 6px;
   margin-bottom: 0.5rem;
-  border-left: 4px solid #7b8b52;
+  border-left: 4px solid var(--rank-gold);
   font-size: 0.95rem;
-  color: #495057;
+  color: var(--rank-text-body);
 }
 
 .lifecycle-states li strong {
-  color: #2c3e50;
+  color: var(--rank-text-white);
   display: inline-block;
   min-width: 140px;
 }
@@ -383,7 +391,7 @@
 .config-actions {
   margin-top: 2rem;
   padding-top: 1.5rem;
-  border-top: 2px solid #e9ecef;
+  border-top: 2px solid var(--rank-border-default);
   display: flex;
   justify-content: flex-end;
 }
@@ -391,26 +399,29 @@
 .form-group input[type="number"] {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--rank-border-default);
   border-radius: 6px;
   font-size: 0.95rem;
   transition: border-color 0.2s;
+  background: var(--rank-bg-input);
+  color: var(--rank-text-white);
 }
 
 .form-group input[type="number"]:focus {
   outline: none;
-  border-color: #7b8b52;
+  border-color: var(--rank-border-focus);
 }
 
 .form-group input[type="number"]:disabled {
-  background: #e9ecef;
+  background: var(--rank-disabled-bg);
+  color: var(--rank-disabled-text);
   cursor: not-allowed;
 }
 
 .form-group small {
   display: block;
   margin-top: 0.5rem;
-  color: #6c757d;
+  color: var(--rank-text-muted);
   font-size: 0.85rem;
 }
 

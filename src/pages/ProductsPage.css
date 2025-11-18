@@ -1,6 +1,6 @@
-/* Products Page - Apple-inspired design */
+/* Products Page - RANK themed design */
 .products-page {
-  background: #fafafa;
+  background: var(--rank-neutral-900);
   min-height: 100vh;
   padding: 60px 20px 80px;
 }
@@ -15,15 +15,15 @@
   text-align: center;
   margin-bottom: 48px;
   padding-bottom: 40px;
-  border-bottom: 1px solid rgba(17, 17, 17, 0.06);
+  border-bottom: 1px solid var(--rank-border-default);
 }
 
 .products-hero h1 {
   font-size: 44px;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin: 0 0 16px 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
   letter-spacing: -0.8px;
   line-height: 1.1;
 }
@@ -31,9 +31,9 @@
 .products-hero .hero-subtitle {
   font-size: 21px;
   font-weight: 400;
-  color: #6e6e73;
+  color: var(--rank-neutral-300);
   margin: 0 0 20px 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   letter-spacing: -0.2px;
   text-align: center;
 }
@@ -47,12 +47,12 @@
 
 .products-hero .hero-stat {
   font-size: 15px;
-  color: #6e6e73;
+  color: var(--rank-neutral-300);
   font-weight: 400;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
 }
 
-/* Filters Section - Apple refined inputs */
+/* Filters Section - RANK themed inputs */
 .products-filters {
   display: flex;
   gap: 12px;
@@ -68,13 +68,13 @@
 .sort-select,
 .filter-select {
   padding: 12px 18px;
-  border: 1px solid rgba(17, 17, 17, 0.12);
+  border: 1px solid var(--rank-border-default);
   border-radius: 12px;
   font-size: 15px;
-  background: #ffffff;
+  background: var(--rank-bg-card);
   transition: all 0.2s ease;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  color: #1d1d1f;
+  font-family: var(--font-body);
+  color: var(--rank-text-white);
   font-weight: 400;
 }
 
@@ -84,18 +84,18 @@
 }
 
 .page-search-input::placeholder {
-  color: #86868b;
+  color: var(--rank-neutral-400);
 }
 
 .page-search-input:focus,
 .sort-select:focus,
 .filter-select:focus {
   outline: none;
-  border-color: #d4b972;
-  box-shadow: 0 0 0 3px rgba(212, 185, 114, 0.1);
+  border-color: var(--rank-gold);
+  box-shadow: 0 0 0 3px var(--rank-glow-gold);
 }
 
-/* Products Grid - Apple card design */
+/* Products Grid - RANK card design */
 .products-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -103,19 +103,19 @@
 }
 
 .product-card {
-  background: #ffffff;
-  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: var(--rank-bg-card);
+  border: 1px solid var(--rank-border-default);
   border-top: 2px solid transparent;
   border-radius: 20px;
   padding: 24px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--rank-shadow-card);
   transition: all 0.3s ease;
   position: relative;
 }
 
 .product-card:hover {
-  border-top-color: #d4b972;
-  box-shadow: 0 12px 32px rgba(17, 17, 17, 0.08);
+  border-top-color: var(--rank-gold);
+  box-shadow: var(--rank-shadow-elevated);
   transform: translateY(-2px);
 }
 
@@ -129,12 +129,12 @@
 .product-brand {
   text-align: center;
   font-size: 13px;
-  color: #6e6e73;
+  color: var(--rank-neutral-300);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-bottom: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
 }
 
 .product-image {
@@ -144,14 +144,14 @@
   border-radius: 12px;
   margin: 0 auto 16px;
   display: block;
-  background: #fafafa;
+  background: var(--rank-neutral-900);
 }
 
 .product-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-size: 14px;
   font-weight: 500;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin-bottom: 14px;
   line-height: 1.4;
   text-align: center;
@@ -161,13 +161,13 @@
 .product-price {
   text-align: center;
   font-size: 20px;
-  color: #8B6F3D;
+  color: var(--rank-gold);
   font-weight: 600;
   margin-bottom: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
 }
 
-/* Badges - Clean earth-tone styling */
+/* Badges - RANK themed styling */
 .product-badges {
   display: flex;
   gap: 8px;
@@ -179,42 +179,42 @@
 .flavor-badge {
   display: inline-block;
   padding: 6px 14px;
-  background: #F5EDD8;
-  color: #3b2f25;
+  background: var(--rank-neutral-700);
+  color: var(--rank-text-white);
   border-radius: 16px;
   font-size: 13px;
   font-weight: 500;
   text-decoration: none;
   transition: all 0.2s ease;
-  border: 1px solid #d4b972;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  border: 1px solid var(--rank-gold);
+  font-family: var(--font-body);
   letter-spacing: -0.1px;
 }
 
 .flavor-badge:hover {
-  background: #EDE2C8;
+  background: var(--rank-neutral-600);
   transform: translateY(-1px);
-  box-shadow: 0 4px 10px rgba(212, 185, 114, 0.2);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .animal-badge {
   display: inline-block;
   padding: 6px 14px;
-  background: #f5f5f5;
-  color: #6e6e73;
+  background: var(--rank-neutral-700);
+  color: var(--rank-neutral-300);
   border-radius: 16px;
   font-size: 13px;
   font-weight: 500;
-  border: 1px solid rgba(17, 17, 17, 0.08);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  border: 1px solid var(--rank-border-default);
+  font-family: var(--font-body);
   letter-spacing: -0.1px;
 }
 
-/* Product Stats - Clean, emoji-free */
+/* Product Stats - RANK themed */
 .product-stats-row {
   margin-top: 14px;
   padding-top: 14px;
-  border-top: 1px solid rgba(17, 17, 17, 0.06);
+  border-top: 1px solid var(--rank-border-default);
   display: flex;
   gap: 8px;
   justify-content: center;
@@ -228,36 +228,36 @@
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   letter-spacing: -0.1px;
 }
 
 .stat-badge.stat-rank {
-  background: #fafafa;
-  color: #6e6e73;
-  border: 1px solid rgba(17, 17, 17, 0.08);
+  background: var(--rank-neutral-900);
+  color: var(--rank-neutral-300);
+  border: 1px solid var(--rank-border-default);
 }
 
 .stat-badge.stat-count {
-  background: #F5EDD8;
-  color: #3b2f25;
-  border: 1px solid #d4b972;
+  background: var(--rank-neutral-700);
+  color: var(--rank-text-white);
+  border: 1px solid var(--rank-gold);
 }
 
-/* Empty States - Clean typography */
+/* Empty States - RANK themed typography */
 .loading,
 .error,
 .no-results {
   text-align: center;
   padding: 80px 20px;
   font-size: 17px;
-  color: #6e6e73;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  color: var(--rank-neutral-300);
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
 .error {
-  color: #d32f2f;
+  color: var(--rank-error);
 }
 
 /* Responsive Design */

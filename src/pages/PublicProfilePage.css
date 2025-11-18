@@ -2,7 +2,7 @@
 
 .public-profile-page {
   min-height: 100vh;
-  background: #faf8f3;
+  background: var(--rank-bg-charcoal);
 }
 
 .profile-hero {
@@ -24,9 +24,9 @@
 .public-profile-loading .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #7b8b52;
-  border-radius: 50%;
+  border: 4px solid var(--rank-neutral-600);
+  border-top-color: var(--rank-loading-spinner);
+  border-radius: var(--radius-full);
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
 }
@@ -38,42 +38,47 @@
 }
 
 .public-profile-loading p {
-  color: #666;
-  font-size: 1.125rem;
+  color: var(--rank-text-muted);
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
 }
 
 .public-profile-error h2 {
   margin: 0 0 12px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: var(--font-h2-size);
+  font-weight: var(--font-h2-weight);
+  font-family: var(--font-headline);
+  color: var(--rank-text-white);
 }
 
 .public-profile-error p {
   margin: 0;
-  color: #666;
-  font-size: 1.125rem;
+  color: var(--rank-text-muted);
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
 }
 
 .public-profile-empty {
-  background: white;
-  border-radius: 16px;
-  border: 2px solid #e8e4d9;
+  background: var(--rank-bg-card);
+  border-radius: var(--radius-xl);
+  border: 2px solid var(--rank-border-default);
   margin: 60px auto;
   max-width: 600px;
 }
 
 .public-profile-empty h2 {
   margin: 0 0 12px;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: var(--font-h3-size);
+  font-weight: var(--font-h3-weight);
+  font-family: var(--font-headline);
+  color: var(--rank-text-white);
 }
 
 .public-profile-empty p {
   margin: 0;
-  color: #666;
-  font-size: 1rem;
+  color: var(--rank-text-muted);
+  font-size: var(--font-body-size);
+  font-family: var(--font-body);
   font-style: italic;
 }
 
@@ -89,7 +94,7 @@
 }
 
 .section-achievements {
-  background: white;
+  background: var(--rank-bg-card);
   margin-top: 100px;
 }
 
@@ -106,7 +111,7 @@
 }
 
 .section-rankings {
-  background: #faf8f3;
+  background: var(--rank-bg-charcoal);
   opacity: 1;
   transform: translateY(0);
 }
@@ -131,17 +136,18 @@
 .rankings-loading .loading-spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid #e8e4d9;
-  border-top-color: #7b8b52;
-  border-radius: 50%;
+  border: 3px solid var(--rank-neutral-600);
+  border-top-color: var(--rank-loading-spinner);
+  border-radius: var(--radius-full);
   animation: spin 1s linear infinite;
   margin-bottom: 16px;
 }
 
 .rankings-loading p,
 .rankings-error p {
-  color: #666;
-  font-size: 1.125rem;
+  color: var(--rank-text-muted);
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
   margin: 0;
 }
 
@@ -163,9 +169,10 @@
 
 .coin-book-intro p {
   margin: 0 0 1rem;
-  font-size: 1.125rem;
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
   line-height: 1.7;
-  color: #5a4a3a;
+  color: var(--rank-text-body);
 }
 
 .coin-book-intro .intro-line-2 {
@@ -173,7 +180,7 @@
 }
 
 .coin-book-intro strong {
-  font-weight: 700;
+  font-weight: var(--font-h3-weight);
   letter-spacing: 0.5px;
 }
 
@@ -192,9 +199,10 @@
 
 .section-header {
   margin: 0 0 40px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: var(--font-h2-size);
+  font-weight: var(--font-h2-weight);
+  font-family: var(--font-headline);
+  color: var(--rank-text-white);
   text-align: center;
   letter-spacing: -0.02em;
 }
@@ -209,7 +217,7 @@
 
   .public-profile-error h2,
   .public-profile-empty h2 {
-    font-size: 1.5rem;
+    font-size: var(--font-h3-size);
   }
 
   .profile-section {
@@ -226,7 +234,7 @@
   }
 
   .section-header {
-    font-size: 1.5rem;
+    font-size: var(--font-h3-size);
     margin-bottom: 32px;
   }
 
@@ -235,13 +243,13 @@
   }
 
   .coin-book-intro p {
-    font-size: 1.05rem;
+    font-size: var(--font-section-subtitle-size);
   }
 }
 
 @media (max-width: 480px) {
   .coin-book-intro p {
-    font-size: 1rem;
+    font-size: var(--font-body-size);
   }
 }
 
@@ -266,7 +274,7 @@
 .journey-error {
   padding: 80px 40px;
   text-align: center;
-  background: #faf8f3;
+  background: var(--rank-bg-charcoal);
   min-height: 300px;
   display: flex;
   flex-direction: column;
@@ -278,19 +286,21 @@
   width: 40px;
   height: 40px;
   border-width: 3px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #7b8b52;
+  border: 4px solid var(--rank-neutral-600);
+  border-top-color: var(--rank-loading-spinner);
 }
 
 .journey-loading p {
-  font-size: 0.9375rem;
-  color: #888;
+  font-size: var(--font-small-size);
+  font-family: var(--font-body);
+  color: var(--rank-text-muted);
   margin-top: 16px;
 }
 
 .journey-error p {
-  font-size: 1.0625rem;
-  color: #666;
+  font-size: var(--font-body-size);
+  font-family: var(--font-body);
+  color: var(--rank-text-muted);
   line-height: 1.6;
   max-width: 500px;
 }

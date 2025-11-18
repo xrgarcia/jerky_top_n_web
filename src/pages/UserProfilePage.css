@@ -1,5 +1,5 @@
 .user-profile-page {
-  background: #f5f3ed;
+  background: var(--rank-bg-charcoal);
   min-height: 80vh;
   padding: 40px 20px;
 }
@@ -12,10 +12,10 @@
 .user-profile-header {
   text-align: center;
   margin-bottom: 40px;
-  background: white;
+  background: var(--rank-bg-card);
   padding: 40px;
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .user-profile-header .avatar {
@@ -23,21 +23,24 @@
 }
 
 .user-profile-name {
+  font-family: var(--font-headline);
   font-size: 2.5em;
-  color: #333;
+  color: var(--rank-text-white);
   margin-bottom: 10px;
 }
 
 .user-profile-real-name {
-  color: #555;
+  font-family: var(--font-body);
+  color: var(--rank-text-soft-white);
   font-size: 1.3em;
   font-weight: 500;
   margin: 8px 0 15px 0;
 }
 
 .user-profile-member-since {
+  font-family: var(--font-body);
   font-size: 1em;
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 .user-stats-grid {
@@ -48,17 +51,17 @@
 }
 
 .user-stat-card {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 30px;
   text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .user-stat-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .user-stat-icon {
@@ -67,31 +70,34 @@
 }
 
 .user-stat-value {
+  font-family: var(--font-headline);
   font-size: 2em;
   font-weight: 700;
-  color: #7b8b52;
+  color: var(--rank-gold);
   margin-bottom: 5px;
 }
 
 .user-stat-label {
+  font-family: var(--font-body);
   font-size: 0.9em;
-  color: #666;
+  color: var(--rank-text-body);
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
 /* All Rankings Section */
 .user-all-rankings {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 30px;
   margin-bottom: 40px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .rankings-header h2 {
+  font-family: var(--font-headline);
   font-size: 1.8em;
-  color: #333;
+  color: var(--rank-text-white);
   margin-bottom: 20px;
 }
 
@@ -109,10 +115,11 @@
 }
 
 .filter-btn {
+  font-family: var(--font-body);
   padding: 8px 16px;
-  border: 2px solid #e0ddd0;
-  background: white;
-  color: #666;
+  border: 2px solid var(--rank-border-default);
+  background: var(--rank-bg-card);
+  color: var(--rank-text-body);
   border-radius: 20px;
   font-size: 0.9em;
   font-weight: 500;
@@ -121,27 +128,34 @@
 }
 
 .filter-btn:hover {
-  border-color: #7b8b52;
-  color: #7b8b52;
+  border-color: var(--rank-gold);
+  color: var(--rank-gold);
 }
 
 .filter-btn.active {
-  background: #7b8b52;
-  border-color: #7b8b52;
-  color: white;
+  background: var(--rank-gold);
+  border-color: var(--rank-gold);
+  color: var(--rank-bg-charcoal);
 }
 
 .rankings-search {
+  font-family: var(--font-body);
   padding: 12px 16px;
-  border: 2px solid #e0ddd0;
+  border: 2px solid var(--rank-border-default);
+  background: var(--rank-input-bg);
+  color: var(--rank-input-text);
   border-radius: 8px;
   font-size: 1em;
   outline: none;
   transition: border-color 0.2s;
 }
 
+.rankings-search::placeholder {
+  color: var(--rank-input-placeholder);
+}
+
 .rankings-search:focus {
-  border-color: #7b8b52;
+  border-color: var(--rank-border-focus);
 }
 
 .rankings-list {
@@ -159,17 +173,17 @@
 }
 
 .rankings-list::-webkit-scrollbar-track {
-  background: #f5f3ed;
+  background: var(--rank-bg-charcoal);
   border-radius: 10px;
 }
 
 .rankings-list::-webkit-scrollbar-thumb {
-  background: #c4a962;
+  background: var(--rank-gold);
   border-radius: 10px;
 }
 
 .rankings-list::-webkit-scrollbar-thumb:hover {
-  background: #7b8b52;
+  background: var(--rank-amber);
 }
 
 .ranking-item {
@@ -177,20 +191,21 @@
   align-items: center;
   gap: 15px;
   padding: 15px;
-  background: #f5f3ed;
+  background: var(--rank-bg-charcoal);
   border-radius: 8px;
   transition: all 0.2s;
 }
 
 .ranking-item:hover {
-  background: #ebe9dd;
+  background: var(--rank-bg-card-elevated);
   transform: translateX(5px);
 }
 
 .ranking-number {
+  font-family: var(--font-headline);
   font-size: 1.5em;
   font-weight: 700;
-  color: #c4a962;
+  color: var(--rank-gold);
   min-width: 50px;
   text-align: center;
 }
@@ -209,9 +224,10 @@
 }
 
 .ranking-title {
+  font-family: var(--font-body);
   font-size: 1.1em;
   font-weight: 600;
-  color: #333;
+  color: var(--rank-text-white);
   margin-bottom: 5px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -219,8 +235,9 @@
 }
 
 .ranking-meta {
+  font-family: var(--font-body);
   font-size: 0.85em;
-  color: #666;
+  color: var(--rank-text-body);
   display: flex;
   align-items: center;
   gap: 5px;
@@ -228,44 +245,46 @@
 }
 
 .ranking-vendor {
-  color: #7b8b52;
+  color: var(--rank-gold);
   font-weight: 500;
 }
 
 .ranking-animal,
 .ranking-flavor {
-  color: #888;
+  color: var(--rank-neutral-300);
 }
 
 .flavor-link {
-  color: #7b8b52;
+  color: var(--rank-link-default);
   text-decoration: none;
   font-weight: 500;
   transition: color 0.2s;
 }
 
 .flavor-link:hover {
-  color: #c4a962;
+  color: var(--rank-link-hover);
   text-decoration: underline;
 }
 
 .no-results {
+  font-family: var(--font-body);
   text-align: center;
   padding: 40px;
-  color: #999;
+  color: var(--rank-text-muted);
   font-style: italic;
 }
 
 .user-achievements {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 30px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .user-achievements h2 {
+  font-family: var(--font-headline);
   font-size: 1.8em;
-  color: #333;
+  color: var(--rank-text-white);
   margin-bottom: 20px;
 }
 
@@ -276,7 +295,7 @@
 }
 
 .user-achievement-card {
-  background: #f5f3ed;
+  background: var(--rank-bg-charcoal);
   border-radius: 12px;
   padding: 20px;
   text-align: center;
@@ -289,7 +308,7 @@
 
 .user-achievement-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .user-achievement-icon {
@@ -308,43 +327,48 @@
 }
 
 .user-achievement-name {
+  font-family: var(--font-body);
   font-size: 0.95em;
   font-weight: 600;
-  color: #333;
+  color: var(--rank-text-white);
   margin-bottom: 5px;
 }
 
 .user-achievement-tier {
+  font-family: var(--font-body);
   font-size: 0.8em;
-  color: #7b8b52;
+  color: var(--rank-gold);
   margin-bottom: 5px;
   text-transform: uppercase;
 }
 
 .user-achievement-points {
+  font-family: var(--font-body);
   font-size: 0.8em;
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 .user-no-achievements {
+  font-family: var(--font-body);
   text-align: center;
   padding: 40px;
-  color: #666;
-  background: white;
+  color: var(--rank-text-body);
+  background: var(--rank-bg-card);
   border-radius: 12px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .loading,
 .error {
+  font-family: var(--font-body);
   text-align: center;
   padding: 60px 20px;
   font-size: 1.2em;
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 .error {
-  color: #e74c3c;
+  color: var(--rank-error);
 }
 
 @media (max-width: 768px) {

@@ -1,7 +1,7 @@
 /* Leaderboard Page - Three-Act Structure with Empty States */
 
 .leaderboard-page {
-  background: #fafafa;
+  background: var(--rank-bg-charcoal);
   min-height: 100vh;
 }
 
@@ -21,8 +21,8 @@
 .leaderboard-loading .loading-spinner {
   width: 50px;
   height: 50px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #8B6F3D;
+  border: 4px solid var(--rank-neutral-600);
+  border-top-color: var(--rank-bronze);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -36,11 +36,12 @@
 .leaderboard-error p,
 .leaderboard-empty p {
   font-size: 1.25rem;
-  color: #666;
+  color: var(--rank-text-muted);
+  font-family: var(--font-body);
 }
 
 .leaderboard-error p {
-  color: #e74c3c;
+  color: var(--rank-error);
 }
 
 /* Section Intros - Shared Styling */
@@ -52,29 +53,31 @@
 /* Empty State Shared Styling */
 .empty-message {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--rank-text-soft-white);
   margin: 24px auto;
   max-width: 600px;
   line-height: 1.6;
   text-align: center;
+  font-family: var(--font-body);
 }
 
 .empty-cta {
   display: inline-block;
   padding: 14px 32px;
-  background: linear-gradient(135deg, #8B6F3D 0%, #7A6032 100%);
-  color: white;
+  background: var(--rank-gradient-amber);
+  color: var(--rank-text-white);
   text-decoration: none;
   border-radius: 8px;
   font-weight: 600;
   font-size: 1rem;
+  font-family: var(--font-body);
   transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.3);
+  box-shadow: 0 4px 12px var(--rank-glow-amber);
 }
 
 .empty-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 111, 61, 0.4);
+  box-shadow: 0 6px 20px var(--rank-glow-amber);
 }
 
 /* ========================================
@@ -83,7 +86,7 @@
    ======================================== */
 
 .champions-section {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+  background: var(--rank-gradient-dark);
   padding: 80px 40px 100px;
   position: relative;
   overflow: hidden;
@@ -97,8 +100,8 @@
   right: 0;
   bottom: 0;
   background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+    linear-gradient(var(--rank-overlay-card) 1px, transparent 1px),
+    linear-gradient(90deg, var(--rank-overlay-card) 1px, transparent 1px);
   background-size: 50px 50px;
   pointer-events: none;
 }
@@ -113,17 +116,17 @@
 .champions-title {
   font-size: 3rem;
   font-weight: 600;
-  color: white;
+  color: var(--rank-text-white);
   margin: 0 0 12px;
   letter-spacing: -0.5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
 }
 
 .champions-subtitle {
   font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--rank-text-body);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -186,8 +189,8 @@
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: var(--rank-overlay-card);
+  border: 2px solid var(--rank-neutral-600);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -195,19 +198,20 @@
 
 .empty-icon {
   font-size: 3rem;
-  color: rgba(255, 255, 255, 0.3);
+  color: var(--rank-neutral-500);
 }
 
 .empty-label {
   font-size: 0.875rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
+  color: var(--rank-text-label);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  font-family: var(--font-body);
 }
 
 .empty-podium .empty-message {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--rank-text-soft-white);
 }
 
 /* ========================================
@@ -216,7 +220,7 @@
    ======================================== */
 
 .rising-section {
-  background: white;
+  background: var(--rank-bg-card);
   padding: 80px 40px;
 }
 
@@ -228,17 +232,17 @@
 .rising-title {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin: 0 0 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
   letter-spacing: -0.5px;
 }
 
 .rising-subtitle {
   font-size: 1.125rem;
-  color: #6e6e73;
+  color: var(--rank-text-body);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -250,7 +254,7 @@
 }
 
 .rising-item {
-  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
+  background: var(--rank-bg-card-elevated);
   border-radius: 14px;
   padding: 28px 32px;
   display: flex;
@@ -258,7 +262,7 @@
   gap: 24px;
   text-decoration: none;
   transition: all 0.3s ease;
-  border: 2px solid #e8e4d9;
+  border: 2px solid var(--rank-line-steel);
   position: relative;
   overflow: hidden;
 }
@@ -270,15 +274,15 @@
   left: 0;
   right: 0;
   height: 4px;
-  background: linear-gradient(90deg, #8B6F3D, #7A6032);
+  background: var(--rank-gradient-amber);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
 
 .rising-item:hover {
   transform: translateX(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: #8B6F3D;
+  box-shadow: var(--rank-shadow-card);
+  border-color: var(--rank-bronze);
 }
 
 .rising-item:hover::before {
@@ -290,7 +294,8 @@
   text-align: center;
   font-size: 1.75rem;
   font-weight: 600;
-  color: #8B6F3D;
+  color: var(--rank-bronze);
+  font-family: var(--font-headline);
 }
 
 .rising-item .rising-info {
@@ -300,9 +305,9 @@
 .rising-item .rising-name {
   font-size: 1.375rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin-bottom: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
   letter-spacing: -0.5px;
 }
 
@@ -310,11 +315,12 @@
   display: flex;
   gap: 20px;
   font-size: 1rem;
-  color: #666;
+  color: var(--rank-text-muted);
+  font-family: var(--font-body);
 }
 
 .rising-item .gap-to-podium {
-  color: #e67e22;
+  color: var(--rank-amber);
   font-weight: 600;
 }
 
@@ -326,16 +332,18 @@
 .rising-item .rising-score .score-value {
   font-size: 2rem;
   font-weight: 700;
-  color: #8B6F3D;
+  color: var(--rank-gold-metal);
   line-height: 1;
+  font-family: var(--font-headline);
 }
 
 .rising-item .rising-score .score-label {
   font-size: 0.8125rem;
-  color: #666;
+  color: var(--rank-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 4px;
+  font-family: var(--font-body);
 }
 
 .rising-item .rising-badges {
@@ -365,13 +373,13 @@
 }
 
 .empty-rising-slot {
-  background: rgba(139, 111, 61, 0.05);
+  background: var(--rank-overlay-card);
   border-radius: 12px;
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  border: 2px dashed #e8e4d9;
+  border: 2px dashed var(--rank-line-steel);
   opacity: 0;
   animation: fadeInUp 0.5s ease forwards;
 }
@@ -386,8 +394,9 @@
   min-width: 60px;
   font-size: 1.5rem;
   font-weight: 700;
-  color: #8B6F3D;
+  color: var(--rank-bronze);
   opacity: 0.5;
+  font-family: var(--font-headline);
 }
 
 .empty-rising-slot .empty-icon {
@@ -400,12 +409,13 @@
   text-align: left;
   font-size: 1rem;
   font-weight: 600;
-  color: #666;
+  color: var(--rank-text-muted);
   opacity: 0.7;
+  font-family: var(--font-body);
 }
 
 .empty-rising .empty-message {
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 /* ========================================
@@ -414,7 +424,7 @@
    ======================================== */
 
 .community-section {
-  background: #fafafa;
+  background: var(--rank-bg-charcoal);
   padding: 80px 40px 100px;
 }
 
@@ -426,17 +436,17 @@
 .community-title {
   font-size: 2.5rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin: 0 0 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
   letter-spacing: -0.5px;
 }
 
 .community-subtitle {
   font-size: 1.125rem;
-  color: #6e6e73;
+  color: var(--rank-text-body);
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-body);
   font-weight: 400;
 }
 
@@ -447,7 +457,7 @@
 }
 
 .community-item {
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 12px;
   padding: 20px 24px;
   display: flex;
@@ -455,13 +465,13 @@
   gap: 20px;
   text-decoration: none;
   transition: all 0.2s ease;
-  border: 1px solid #e8e4d9;
+  border: 1px solid var(--rank-line-steel);
 }
 
 .community-item:hover {
   transform: translateX(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-color: #8B6F3D;
+  box-shadow: var(--rank-shadow-card);
+  border-color: var(--rank-bronze);
 }
 
 .community-rank {
@@ -469,7 +479,8 @@
   text-align: center;
   font-size: 1.25rem;
   font-weight: 700;
-  color: #8B6F3D;
+  color: var(--rank-silver);
+  font-family: var(--font-headline);
 }
 
 .community-info {
@@ -479,9 +490,9 @@
 .community-name {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1d1d1f;
+  color: var(--rank-text-white);
   margin-bottom: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  font-family: var(--font-headline);
   letter-spacing: -0.5px;
 }
 
@@ -489,7 +500,8 @@
   display: flex;
   gap: 20px;
   font-size: 0.875rem;
-  color: #666;
+  color: var(--rank-text-muted);
+  font-family: var(--font-body);
 }
 
 .stat {
@@ -506,16 +518,18 @@
 .community-score .score-value {
   font-size: 1.75rem;
   font-weight: 700;
-  color: #8B6F3D;
+  color: var(--rank-gold);
   line-height: 1;
+  font-family: var(--font-headline);
 }
 
 .community-score .score-label {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--rank-text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 4px;
+  font-family: var(--font-body);
 }
 
 .community-badges {
@@ -545,13 +559,13 @@
 }
 
 .empty-community-slot {
-  background: rgba(139, 111, 61, 0.03);
+  background: var(--rank-overlay-card);
   border-radius: 10px;
   padding: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
-  border: 1px dashed #e8e4d9;
+  border: 1px dashed var(--rank-line-steel);
   opacity: 0;
   animation: fadeInUp 0.5s ease forwards;
 }
@@ -564,8 +578,9 @@
   min-width: 50px;
   font-size: 1.125rem;
   font-weight: 700;
-  color: #8B6F3D;
+  color: var(--rank-silver);
   opacity: 0.4;
+  font-family: var(--font-headline);
 }
 
 .empty-community-slot .empty-icon {
@@ -578,12 +593,13 @@
   text-align: left;
   font-size: 0.9375rem;
   font-weight: 600;
-  color: #666;
+  color: var(--rank-text-muted);
   opacity: 0.6;
+  font-family: var(--font-body);
 }
 
 .empty-community .empty-message {
-  color: #666;
+  color: var(--rank-text-body);
 }
 
 /* Responsive */
@@ -631,7 +647,7 @@
     width: 100%;
     justify-content: center;
     padding-top: 12px;
-    border-top: 1px solid #e8e4d9;
+    border-top: 1px solid var(--rank-line-steel);
   }
 
   .empty-podium-stage {

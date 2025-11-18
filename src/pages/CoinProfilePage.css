@@ -1,7 +1,7 @@
 .coin-profile-page {
   min-height: calc(100vh - 200px);
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f3ed 0%, #e8e6dd 100%);
+  background: var(--rank-bg-charcoal);
 }
 
 .coin-profile-container {
@@ -22,8 +22,8 @@
 .loading-spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #e9ecef;
-  border-top-color: #7b8b52;
+  border: 4px solid var(--rank-neutral-600);
+  border-top-color: var(--rank-amber);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -38,29 +38,30 @@
 }
 
 .back-btn {
-  background: white;
-  border: 1px solid #dee2e6;
+  background: var(--rank-bg-card);
+  border: 1px solid var(--rank-border-default);
   padding: 0.75rem 1.5rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  color: #495057;
+  font-size: var(--font-small-size);
+  font-family: var(--font-body);
+  transition: all var(--transition-fast);
+  color: var(--rank-text-body);
 }
 
 .back-btn:hover {
-  background: #f8f9fa;
-  border-color: #adb5bd;
+  background: var(--rank-bg-card-elevated);
+  border-color: var(--rank-border-hover);
 }
 
 /* Hero Section */
 .coin-hero {
-  background: white;
-  border-radius: 16px;
+  background: var(--rank-bg-card);
+  border-radius: var(--radius-xl);
   padding: 3rem 2rem;
   text-align: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  border-top: 4px solid #7b8b52;
+  box-shadow: var(--rank-shadow-card);
+  border-top: 4px solid var(--rank-amber);
   margin-bottom: 2rem;
 }
 
@@ -70,9 +71,10 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   border-radius: 20px;
-  color: white;
-  font-weight: 600;
-  font-size: 0.9rem;
+  color: var(--rank-text-white);
+  font-weight: var(--font-button-weight);
+  font-size: var(--font-small-size);
+  font-family: var(--font-body);
   margin-bottom: 2rem;
 }
 
@@ -102,10 +104,10 @@
   bottom: -10px;
   right: -10px;
   font-size: 2rem;
-  background: white;
+  background: var(--rank-bg-card);
   border-radius: 50%;
   padding: 0.25rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .locked-badge {
@@ -118,56 +120,63 @@
 }
 
 .coin-name {
-  font-size: 2.5rem;
-  color: #2c3e50;
+  font-size: var(--font-h2-size);
+  font-family: var(--font-headline);
+  font-weight: var(--font-h2-weight);
+  color: var(--rank-text-white);
   margin-bottom: 0.5rem;
 }
 
 .coin-tagline {
-  font-size: 1.1rem;
-  color: #7f8c8d;
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
+  color: var(--rank-text-muted);
   margin-bottom: 1rem;
 }
 
 .earned-date {
   display: inline-block;
-  background: #d4edda;
-  color: #155724;
+  background: var(--rank-toast-success-bg);
+  color: var(--rank-success);
   padding: 0.5rem 1rem;
-  border-radius: 8px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  border-radius: var(--radius-md);
+  font-size: var(--font-small-size);
+  font-family: var(--font-body);
+  font-weight: var(--font-body-medium-weight);
   margin-top: 1rem;
 }
 
 /* Sections */
 .coin-section {
-  background: white;
-  border-radius: 12px;
+  background: var(--rank-bg-card);
+  border-radius: var(--radius-lg);
   padding: 2rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .coin-section h2 {
-  font-size: 1.5rem;
-  color: #2c3e50;
+  font-size: var(--font-h3-size);
+  font-family: var(--font-headline);
+  font-weight: var(--font-h3-weight);
+  color: var(--rank-text-white);
   margin-bottom: 1rem;
 }
 
 .coin-description,
 .coin-section p {
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #495057;
+  font-size: var(--font-body-size);
+  font-family: var(--font-body);
+  line-height: var(--font-body-line-height);
+  color: var(--rank-text-body);
 }
 
 /* Progress */
 .progress-bar-container {
   width: 100%;
   height: 32px;
-  background: #e9ecef;
-  border-radius: 16px;
+  background: var(--rank-neutral-700);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   margin-bottom: 1rem;
   position: relative;
@@ -175,33 +184,34 @@
 
 .progress-bar-fill {
   height: 100%;
-  background: #7b8b52;
-  transition: width 0.3s ease;
-  border-radius: 16px;
+  background: var(--rank-amber);
+  transition: width var(--transition-base) ease;
+  border-radius: var(--radius-xl);
 }
 
 .progress-stats {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.95rem;
-  color: #666;
+  font-size: var(--font-small-size);
+  font-family: var(--font-body);
+  color: var(--rank-text-muted);
 }
 
 .current-tier {
-  font-weight: 600;
-  color: #2c3e50;
+  font-weight: var(--font-button-weight);
+  color: var(--rank-text-white);
 }
 
 /* How to Earn */
 .how-to-earn {
-  border-left: 4px solid #7b8b52;
-  background: #f8f9fa;
+  border-left: 4px solid var(--rank-amber);
+  background: var(--rank-bg-card-elevated);
 }
 
 /* Coin Type Info */
 .coin-type-info {
-  background: linear-gradient(135deg, #fef9ec 0%, #f8f5e9 100%);
+  background: var(--rank-bg-card-elevated);
 }
 
 /* CTA */
@@ -211,21 +221,23 @@
 }
 
 .cta-btn {
-  background: #7b8b52;
-  color: white;
+  background: var(--rank-amber);
+  color: var(--rank-button-primary-text);
   border: none;
   padding: 1rem 2.5rem;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 600;
+  border-radius: var(--radius-lg);
+  font-size: var(--font-section-subtitle-size);
+  font-family: var(--font-body);
+  font-weight: var(--font-button-weight);
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  box-shadow: 0 4px 12px rgba(123, 139, 82, 0.3);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .cta-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(123, 139, 82, 0.4);
+  box-shadow: var(--rank-shadow-elevated);
+  background: var(--rank-button-primary-hover);
 }
 
 .cta-btn:active {
@@ -234,7 +246,7 @@
 
 @media (max-width: 768px) {
   .coin-profile-page {
-    padding: 1rem;
+    padding: var(--space-md);
   }
 
   .coin-hero {
