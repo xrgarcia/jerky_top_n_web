@@ -69,33 +69,18 @@
 
 .collection-bar-background {
   height: 20px;
-  background: var(--rank-bg-card);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   position: relative;
   overflow: hidden;
 }
 
-.collection-bar-purchased {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background: rgba(255, 138, 43, 0.3);
-  border-radius: 8px;
-  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 1;
-}
-
-.collection-bar-ranked {
-  position: absolute;
-  top: 0;
-  left: 0;
+.collection-bar-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--rank-gold) 0%, var(--rank-amber) 100%);
   border-radius: 8px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2;
   box-shadow: 0 0 10px rgba(255, 216, 115, 0.4);
 }
 

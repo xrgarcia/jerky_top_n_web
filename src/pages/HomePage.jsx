@@ -27,9 +27,10 @@ function HomePage() {
   const purchasedProductCount = progress?.progress?.purchasedProductCount || 0;
   const totalCatalog = progress?.progress?.totalCatalog || 164;
   
-  // Calculate collection progress percentages for 3-layer visualization
-  const rankedPercent = totalCatalog > 0 ? (uniqueProducts / totalCatalog) * 100 : 0;
-  const purchasedPercent = totalCatalog > 0 ? (purchasedProductCount / totalCatalog) * 100 : 0;
+  // Calculate progress: ranked out of rankable (what they own)
+  const rankedPercent = purchasedProductCount > 0 
+    ? Math.min(100, (uniqueProducts / purchasedProductCount) * 100) 
+    : 0;
   
   // Get user title from achievements
   const userTitle = achievementsEarned >= 10 ? 'Taste Expert' : achievementsEarned >= 5 ? 'Flavor Enthusiast' : 'Taste Explorer';
@@ -55,19 +56,13 @@ function HomePage() {
                 <div className="hero-collection-progress">
                   <div className="collection-bar-container">
                     <div className="collection-bar-background">
-                      <div className="collection-bar-purchased" style={{ width: `${purchasedPercent}%` }}></div>
-                      <div className="collection-bar-ranked" style={{ width: `${rankedPercent}%` }}></div>
+                      <div className="collection-bar-fill" style={{ width: `${rankedPercent}%` }}></div>
                     </div>
                   </div>
                   <div className="collection-stats">
                     <div className="collection-stat-item">
                       <span className="collection-stat-number">{uniqueProducts}</span>
                       <span className="collection-stat-label">Ranked</span>
-                    </div>
-                    <div className="collection-stat-divider">|</div>
-                    <div className="collection-stat-item">
-                      <span className="collection-stat-number">{purchasedProductCount}</span>
-                      <span className="collection-stat-label">Owned</span>
                     </div>
                     <div className="collection-stat-divider">|</div>
                     <div className="collection-stat-item">
