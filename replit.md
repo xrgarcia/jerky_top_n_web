@@ -61,31 +61,37 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 ### Collection Progress Visualization (November 18, 2025)
 **Status:** Production-ready and architect-approved
 
-**Problem:** Homepage hero section initially showed arbitrary "level" progression (every 10 rankings = 1 level), then was updated to a 3-layer visualization that included "Owned" products, which felt sales-oriented rather than game-focused.
+**Problem:** Homepage hero section initially showed arbitrary "level" progression (every 10 rankings = 1 level), then was updated to a 3-layer visualization that included "Owned" products, which felt sales-oriented rather than game-focused. Finally, the progress bar only showed ranked products, missing visual indication of rankable (purchasable) products.
 
-**Solution:** Redesigned to show simple, game-focused progress: ranked flavors out of rankable (purchased) flavors.
+**Solution:** Redesigned to show two-layer progress bar displaying both rankable and ranked products as percentages of the total catalog (164 products).
 
 **Progress Bar Logic:**
-- Shows ranked products as percentage of what user can currently rank (their purchases)
-- Example: User owns 20 flavors, ranked 5 → progress bar shows 25% filled (5/20)
-- The full 164 catalog doesn't affect this bar - only what they own/can rank matters
-- Clamped to 100% to handle data anomalies
+- **Two visible layers relative to total catalog:**
+  - Light amber layer: rankable products (what user can rank) as % of catalog
+  - Gold gradient layer: ranked products (what user has ranked) as % of catalog
+- Example: User owns 5 flavors, ranked 0 → progress bar shows ~3% light amber (5/164), 0% gold (0/164)
+- Example: Employee owns 164 flavors (all), ranked 42 → progress bar shows 100% light amber (164/164), ~25.6% gold (42/164)
+- Both layers clamped to 100% to handle data anomalies
 
 **Backend Changes (server/routes/gamification.js):**
 - Added `purchasedProductCount` to track rankable products (what user can currently rank)
-- For **employees**: `purchasedProductCount` = total catalog (164) - unrestricted access
+- For **employees**: `purchasedProductCount` = total catalog (164) - unrestricted access via role/email detection
 - For **regular users**: `purchasedProductCount` = purchased products only
 - Renamed `totalRankableProducts` to `totalCatalog` for clarity
 - Enriched `/api/gamification/progress` response with both new fields
+- Requires database fetch to detect employee status: `user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com')`
 
 **Frontend Changes (src/pages/HomePage.jsx, src/pages/HomePage.css):**
 - Removed arbitrary level/XP calculations
-- Changed progress calculation from `uniqueProducts / totalCatalog` to `uniqueProducts / purchasedProductCount`
+- Changed progress calculations to show both layers relative to catalog:
+  - `rankablePercent = (purchasedProductCount / totalCatalog) * 100`
+  - `rankedPercent = (uniqueProducts / totalCatalog) * 100`
 - Simplified stats display: "Ranked | Catalog" (removed "Owned" to avoid sales-y feel)
-- Single-layer progress bar: gold gradient fill (ranked) against light background (rankable space)
+- Two-layer progress bar: light amber base (rankable space) with gold gradient overlay (ranked progress)
+- CSS uses absolute positioning with z-index to layer ranked on top of rankable
 - Added Math.min clamping to prevent progress exceeding 100%
 
-**Outcome:** Users see their personal ranking journey (ranked vs rankable), not store inventory. The progress bar reflects game completion, not sales metrics.
+**Outcome:** Users see their ranking journey in context of the full catalog. The light amber layer shows collection potential (what they can rank), while the gold layer shows ranking progress (what they've ranked). This makes the ranking journey visible and meaningful, not sales-focused.
 
 ### Navigation Responsiveness Enhancement (November 18, 2025)
 **Status:** Production-ready and architect-approved
