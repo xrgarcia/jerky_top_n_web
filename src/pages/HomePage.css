@@ -147,6 +147,8 @@
   align-items: center;
   justify-content: center;
   position: relative;
+  padding: 20px;
+  box-sizing: border-box;
   box-shadow: 
     0 0 20px rgba(255, 216, 115, 0.3),
     inset 0 0 30px rgba(0, 0, 0, 0.5);
@@ -182,9 +184,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 10px;
   position: relative;
   z-index: 1;
+  text-align: center;
 }
 
 .medallion-label {
@@ -193,11 +196,17 @@
   color: var(--rank-gold);
   text-transform: uppercase;
   letter-spacing: 1px;
+  line-height: 1.4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
 }
 
 .medallion-year {
   font-size: 12px;
   color: var(--rank-text-body);
+  line-height: 1.4;
 }
 
 /* ========================================
