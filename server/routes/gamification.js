@@ -136,11 +136,20 @@ function createGamificationRoutes(services) {
       const { products } = await services.fetchAllShopifyProducts();
       const totalCatalog = products.length;
 
-      // Get purchased products count for collection progress
+      // Determine rankable product count based on user type
+      // Employees can rank all products, regular users can only rank purchased products
       let purchasedProductCount = 0;
-      if (services.purchaseHistoryService) {
+      const isEmployee = session.user?.email?.endsWith('@jerky.com') || session.user?.role?.includes('employee');
+      
+      if (isEmployee) {
+        // Employees can rank all products
+        purchasedProductCount = totalCatalog;
+        console.log(`📊 Employee ${userId} can rank ${purchasedProductCount} products (all products)`);
+      } else if (services.purchaseHistoryService) {
+        // Regular users can only rank purchased products
         const purchasedProductIds = await services.purchaseHistoryService.getPurchasedProductIds(userId);
         purchasedProductCount = purchasedProductIds.length;
+        console.log(`📊 User ${userId} can rank ${purchasedProductCount} purchased products`);
       }
 
       const progress = await progressTracker.getUserProgress(userId, totalCatalog);

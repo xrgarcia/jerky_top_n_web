@@ -72,10 +72,11 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - Clamped to 100% to handle data anomalies
 
 **Backend Changes (server/routes/gamification.js):**
-- Added `purchasedProductCount` from purchase history service
+- Added `purchasedProductCount` to track rankable products (what user can currently rank)
+- For **employees**: `purchasedProductCount` = total catalog (164) - unrestricted access
+- For **regular users**: `purchasedProductCount` = purchased products only
 - Renamed `totalRankableProducts` to `totalCatalog` for clarity
 - Enriched `/api/gamification/progress` response with both new fields
-- Safe fallback when purchaseHistoryService unavailable
 
 **Frontend Changes (src/pages/HomePage.jsx, src/pages/HomePage.css):**
 - Removed arbitrary level/XP calculations
