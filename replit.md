@@ -58,6 +58,30 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 ## Recent Updates
 
+### Collection Progress Visualization (November 18, 2025)
+**Status:** Production-ready and architect-approved
+
+**Problem:** Homepage hero section displayed arbitrary "level" progression based on ranking count (every 10 rankings = 1 level), which didn't reflect the meaningful user journey or collection completion story.
+
+**Solution:** Redesigned progress tracking to show 3-layer collection completion visualization:
+- **Background layer (dark):** Total catalog (164 products) - 100% width
+- **Middle layer (amber):** Purchased/owned products - percentage of catalog
+- **Top layer (gold gradient):** Ranked products - percentage of catalog
+
+**Backend Changes (server/routes/gamification.js):**
+- Added `purchasedProductCount` from purchase history service
+- Renamed `totalRankableProducts` to `totalCatalog` for clarity
+- Enriched `/api/gamification/progress` response with both new fields
+- Safe fallback when purchaseHistoryService unavailable
+
+**Frontend Changes (src/pages/HomePage.jsx, src/pages/HomePage.css):**
+- Removed arbitrary level/XP calculations
+- Replaced XP bar with 3-layer collection progress bar
+- Updated stats display: "Ranked | Owned | Catalog" with counts
+- Created distinct visual layers with gold gradient (ranked), amber translucent (owned), and dark backdrop (catalog)
+
+**Outcome:** Users now see meaningful collection progress narrative showing what they've ranked vs what they own vs total catalog, replacing arbitrary level milestones with actual accomplishment tracking.
+
 ### Navigation Responsiveness Enhancement (November 18, 2025)
 **Status:** Production-ready and architect-approved
 
