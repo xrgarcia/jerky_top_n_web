@@ -1,298 +1,361 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHeroStats, useHomeStats } from '../hooks/useGamification';
+import { useHeroStats, useHomeStats, useProgress } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
-import HeroCarousel from '../components/home/HeroCarousel';
-import { renderAchievementIcon } from '../utils/iconUtils';
-import { formatTimeAgo } from '../utils/dateUtils';
 import './HomePage.css';
 
 function HomePage() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuthStore();
+  const { isAuthenticated, user } = useAuthStore();
   const { data: heroStats, isLoading: heroLoading } = useHeroStats();
   const { data: homeStats, isLoading: homeLoading } = useHomeStats();
+  const { data: progress, isLoading: progressLoading } = useProgress();
   
   // Track page view for user guidance and classification
   usePageView('general');
 
+  const isLoading = heroLoading || homeLoading || progressLoading;
+
+  // Get user's level and XP
+  const userLevel = progress?.level || 1;
+  const currentXP = progress?.currentXP || 0;
+  const nextLevelXP = progress?.nextLevelXP || 100;
+  const xpProgress = nextLevelXP > 0 ? (currentXP / nextLevelXP) * 100 : 0;
+
+  // Get user's ranking count from progress
+  const rankingCount = progress?.stats?.productsRanked || 0;
+
+  // Get top 3 community favorites
+  const top3Products = homeStats?.topProducts?.slice(0, 3) || [];
+
+  // Get recent achievements
+  const recentAchievements = heroStats?.recentAchievements?.slice(0, 3) || [];
+
+  // Get next unlock
+  const nextUnlock = progress?.nextUnlock || null;
+
   return (
-    <div className="home-page">
-      {/* Hero Carousel - Metric-driven storytelling */}
-      <HeroCarousel 
-        heroStats={heroStats}
-        homeStats={homeStats}
-        isLoading={heroLoading || homeLoading}
-      />
+    <div className="home-page-v2">
+      {/* Profile Hero Section */}
+      <section className="profile-hero">
+        <div className="hero-container">
+          <div className="hero-left">
+            <div className="welcome-badge">Welcome Back</div>
+            <h1 className="hero-title">
+              {isAuthenticated ? `${user?.displayName || 'Ranker'}` : 'Jerky Ranker'}
+            </h1>
+            <p className="hero-subtitle">
+              {isAuthenticated 
+                ? `Level ${userLevel} • ${rankingCount} Products Ranked`
+                : 'Join thousands of jerky enthusiasts ranking their favorite flavors'
+              }
+            </p>
 
-      {/* Narrative Transition - Chapter Break */}
-      <section className="narrative-transition">
-        <div className="transition-content">
-          <p className="transition-text">Your flavor journey begins here</p>
-        </div>
-      </section>
+            {isAuthenticated && (
+              <div className="xp-progress-container">
+                <div className="xp-label">
+                  <span>Level {userLevel}</span>
+                  <span>{currentXP} / {nextLevelXP} XP</span>
+                </div>
+                <div className="xp-bar">
+                  <div className="xp-fill" style={{ width: `${xpProgress}%` }}></div>
+                </div>
+              </div>
+            )}
 
-      {/* Welcome Section with Community Stats */}
-      <section className="welcome-section">
-        <h2>Discover Your Perfect Jerky</h2>
-        <p>Explore what thousands of jerky enthusiasts are ranking right now</p>
-        
-        {/* Community Stats Overview */}
-        <div className="community-stats-overview">
-          <div className="stats-grid">
-            <div className="stat-card">
-              <div className="stat-value">
-                {homeLoading ? '...' : (homeStats?.communityStats?.totalRankings?.toLocaleString() || 0)}
-              </div>
-              <div className="stat-label">Total Rankings</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">
-                {homeLoading ? '...' : (homeStats?.communityStats?.totalRankers || 0)}
-              </div>
-              <div className="stat-label">Rankers</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">
-                {homeLoading ? '...' : (homeStats?.communityStats?.totalProducts || 0)}
-              </div>
-              <div className="stat-label">Products Ranked</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">
-                {homeLoading ? '...' : (homeStats?.communityStats?.activeToday || 0)}
-              </div>
-              <div className="stat-label">Active Today</div>
-            </div>
-            <div className="stat-card">
-              <div className="stat-value">
-                {homeLoading ? '...' : (homeStats?.communityStats?.avgRankingsPerUser || 0)}
-              </div>
-              <div className="stat-label">Avg Rankings/User</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Dashboard Transition */}
-      <section className="dashboard-transition">
-        <div className="transition-content">
-          <p className="transition-text">What the community is ranking</p>
-        </div>
-      </section>
-
-      {/* Dashboard Widgets Grid */}
-      <div className="home-container">
-        <div className="home-dashboard">
-          {/* Community Favorites */}
-          <div className="dashboard-section" id="topProductsSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Community Favorites</h3>
-                <p className="section-subtitle">The crowd has spoken! See what's winning hearts.</p>
-              </div>
-              <button className="widget-action-btn" onClick={() => navigate('/rank')}>Rank This Too!</button>
-            </div>
-            <div className="dashboard-list">
-              {homeStats?.topProducts && homeStats.topProducts.length > 0 ? (
-                homeStats.topProducts.slice(0, 5).map((product, index) => (
-                  <div key={product.productId} className="dashboard-item product-item" onClick={() => navigate(`/products?id=${product.productId}`)}>
-                    <div className={`rank-badge rank-${index + 1}`}>#{index + 1}</div>
-                    <img src={product.productData.image} alt={product.productData.title} className="product-thumb" />
-                    <div className="product-info">
-                      <div className="product-name">{product.productData.title}</div>
-                      <div className="product-stats">Avg rank: {product.avgRank} • {product.rankCount} ranking{product.rankCount !== 1 ? 's' : ''}</div>
-                    </div>
-                    <button className="quick-action-btn" onClick={(e) => { e.stopPropagation(); navigate('/rank'); }}>
-                      <span>📝</span>
-                    </button>
-                  </div>
-                ))
+            <div className="hero-actions">
+              {isAuthenticated ? (
+                <>
+                  <button className="hero-cta-primary" onClick={() => navigate('/rank')}>
+                    <span>Start Ranking</span>
+                    <span className="cta-icon">🎯</span>
+                  </button>
+                  <button className="hero-cta-secondary" onClick={() => navigate('/profile')}>
+                    View Profile
+                  </button>
+                </>
               ) : (
-                <p className="empty-state">⭐ No products ranked yet. Be the first to share your favorites!</p>
+                <>
+                  <button className="hero-cta-primary" onClick={() => navigate('/rank')}>
+                    <span>Explore Rankings</span>
+                    <span className="cta-icon">→</span>
+                  </button>
+                  <button className="hero-cta-secondary" onClick={() => navigate('/community')}>
+                    Join Community
+                  </button>
+                </>
               )}
             </div>
           </div>
 
-          {/* Top Rankers */}
-          <div className="dashboard-section" id="topRankersSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Top Rankers</h3>
-                <p className="section-subtitle">Think you can top them? Start ranking to compete!</p>
+          <div className="hero-right">
+            <div className="stats-grid-hero">
+              <div className="stat-card-hero">
+                <div className="stat-icon">🏆</div>
+                <div className="stat-value">
+                  {isLoading ? '...' : (homeStats?.communityStats?.totalRankers?.toLocaleString() || 0)}
+                </div>
+                <div className="stat-label">Active Rankers</div>
               </div>
-              <button className="widget-action-btn" onClick={() => navigate('/rank')}>Join the Race</button>
+              <div className="stat-card-hero">
+                <div className="stat-icon">⭐</div>
+                <div className="stat-value">
+                  {isLoading ? '...' : (homeStats?.communityStats?.totalRankings?.toLocaleString() || 0)}
+                </div>
+                <div className="stat-label">Total Rankings</div>
+              </div>
+              <div className="stat-card-hero">
+                <div className="stat-icon">🔥</div>
+                <div className="stat-value">
+                  {isLoading ? '...' : (homeStats?.communityStats?.activeToday || 0)}
+                </div>
+                <div className="stat-label">Active Today</div>
+              </div>
             </div>
-            <div className="dashboard-list">
-              {homeStats?.topRankers && homeStats.topRankers.length > 0 ? (
-                homeStats.topRankers.slice(0, 5).map((ranker, index) => (
-                  <div key={ranker.userId} className="dashboard-item ranker-item">
-                    <div className={`rank-badge rank-${index + 1}`}>#{index + 1}</div>
-                    <div className="avatar avatar-medium">
-                      {ranker.avatarUrl ? (
-                        <img src={ranker.avatarUrl} alt={ranker.displayName} className="avatar-image" />
+          </div>
+        </div>
+      </section>
+
+      {/* Transition */}
+      <div className="section-transition">
+        <div className="transition-line"></div>
+      </div>
+
+      {/* Top 3 Flavors Showcase */}
+      <section className="top-flavors-section">
+        <div className="section-header">
+          <h2 className="section-title">Community Favorites</h2>
+          <p className="section-subtitle">The top-ranked jerky according to our community</p>
+        </div>
+
+        <div className="podium-display">
+          {top3Products.length > 0 ? (
+            <>
+              {/* 2nd Place - Left */}
+              {top3Products[1] && (
+                <div className="podium-card rank-2" onClick={() => navigate(`/products?id=${top3Products[1].productId}`)}>
+                  <div className="podium-rank">
+                    <span className="rank-number">2</span>
+                    <span className="rank-medal">🥈</span>
+                  </div>
+                  <div className="podium-image-container">
+                    <img src={top3Products[1].productData?.image} alt={top3Products[1].productData?.title} className="podium-image" />
+                  </div>
+                  <div className="podium-info">
+                    <h3 className="product-name">{top3Products[1].productData?.title}</h3>
+                    <div className="product-stats-row">
+                      <span className="avg-rank">Avg Rank: {top3Products[1].avgRank}</span>
+                      <span className="rank-count">{top3Products[1].rankCount} rankings</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* 1st Place - Center (Elevated) */}
+              {top3Products[0] && (
+                <div className="podium-card rank-1" onClick={() => navigate(`/products?id=${top3Products[0].productId}`)}>
+                  <div className="podium-rank">
+                    <span className="rank-number">1</span>
+                    <span className="rank-medal">🥇</span>
+                  </div>
+                  <div className="podium-image-container">
+                    <img src={top3Products[0].productData?.image} alt={top3Products[0].productData?.title} className="podium-image" />
+                  </div>
+                  <div className="podium-info">
+                    <h3 className="product-name">{top3Products[0].productData?.title}</h3>
+                    <div className="product-stats-row">
+                      <span className="avg-rank">Avg Rank: {top3Products[0].avgRank}</span>
+                      <span className="rank-count">{top3Products[0].rankCount} rankings</span>
+                    </div>
+                  </div>
+                  <div className="champion-badge">Champion</div>
+                </div>
+              )}
+
+              {/* 3rd Place - Right */}
+              {top3Products[2] && (
+                <div className="podium-card rank-3" onClick={() => navigate(`/products?id=${top3Products[2].productId}`)}>
+                  <div className="podium-rank">
+                    <span className="rank-number">3</span>
+                    <span className="rank-medal">🥉</span>
+                  </div>
+                  <div className="podium-image-container">
+                    <img src={top3Products[2].productData?.image} alt={top3Products[2].productData?.title} className="podium-image" />
+                  </div>
+                  <div className="podium-info">
+                    <h3 className="product-name">{top3Products[2].productData?.title}</h3>
+                    <div className="product-stats-row">
+                      <span className="avg-rank">Avg Rank: {top3Products[2].avgRank}</span>
+                      <span className="rank-count">{top3Products[2].rankCount} rankings</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="empty-podium">
+              <p>🏆 No rankings yet. Be the first to set the standard!</p>
+            </div>
+          )}
+        </div>
+
+        <button className="section-cta" onClick={() => navigate('/products')}>
+          View All Products
+        </button>
+      </section>
+
+      {/* Transition */}
+      <div className="section-transition">
+        <div className="transition-line"></div>
+      </div>
+
+      {/* Action Cards Grid */}
+      <section className="action-cards-section">
+        <div className="action-cards-grid">
+          {/* Rank Now Card */}
+          <div className="action-card rank-card" onClick={() => navigate('/rank')}>
+            <div className="card-icon">🎯</div>
+            <h3 className="card-title">Rank Flavors</h3>
+            <p className="card-description">
+              Share your taste preferences and help the community discover the best jerky
+            </p>
+            <div className="card-footer">
+              <span className="card-cta">Start Ranking →</span>
+            </div>
+          </div>
+
+          {/* Leaderboard Card */}
+          <div className="action-card leaderboard-card" onClick={() => navigate('/leaderboard')}>
+            <div className="card-icon">🏆</div>
+            <h3 className="card-title">Climb the Ranks</h3>
+            <p className="card-description">
+              Compete with fellow rankers and earn your place on the leaderboard
+            </p>
+            <div className="card-footer">
+              <span className="card-cta">View Leaderboard →</span>
+            </div>
+          </div>
+
+          {/* Coin Book Card */}
+          <div className="action-card coinbook-card" onClick={() => navigate('/coin-book')}>
+            <div className="card-icon">🪙</div>
+            <h3 className="card-title">Collect Coins</h3>
+            <p className="card-description">
+              Earn achievements and unlock exclusive flavor coins as you rank
+            </p>
+            <div className="card-footer">
+              <span className="card-cta">View Coin Book →</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Transition */}
+      <div className="section-transition">
+        <div className="transition-line"></div>
+      </div>
+
+      {/* Next Unlock Widget */}
+      {isAuthenticated && nextUnlock && (
+        <section className="next-unlock-section">
+          <div className="unlock-container">
+            <div className="unlock-header">
+              <h2 className="unlock-title">Next Unlock</h2>
+              <p className="unlock-subtitle">Keep ranking to unlock your next achievement</p>
+            </div>
+            <div className="unlock-card">
+              <div className="unlock-icon">{nextUnlock.icon || '🔒'}</div>
+              <div className="unlock-info">
+                <h3 className="unlock-name">{nextUnlock.name}</h3>
+                <p className="unlock-description">{nextUnlock.description}</p>
+                <div className="unlock-progress">
+                  <div className="progress-bar">
+                    <div 
+                      className="progress-fill" 
+                      style={{ width: `${(nextUnlock.current / nextUnlock.required) * 100}%` }}
+                    ></div>
+                  </div>
+                  <span className="progress-text">
+                    {nextUnlock.current} / {nextUnlock.required}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Recent Achievements */}
+      {isAuthenticated && recentAchievements.length > 0 && (
+        <>
+          <div className="section-transition">
+            <div className="transition-line"></div>
+          </div>
+
+          <section className="recent-achievements-section">
+            <div className="section-header">
+              <h2 className="section-title">Recent Achievements</h2>
+              <p className="section-subtitle">Latest coins earned by the community</p>
+            </div>
+
+            <div className="achievements-grid">
+              {recentAchievements.map((achievement, index) => {
+                const isImageIcon = achievement.achievementIcon?.startsWith('/') || achievement.achievementIcon?.startsWith('http');
+                return (
+                  <div key={`${achievement.userId}-${achievement.achievementName}-${index}`} className="achievement-card">
+                    <div className={`achievement-icon ${achievement.achievementTier || 'bronze'}`}>
+                      {isImageIcon ? (
+                        <img src={achievement.achievementIcon} alt="Achievement" className="achievement-icon-img" />
                       ) : (
-                        <div className="avatar-initials">{ranker.initials}</div>
+                        achievement.achievementIcon || '🏅'
                       )}
                     </div>
-                    <div className="ranker-info">
-                      <div className="ranker-name">{ranker.displayName}</div>
-                      <div className="ranker-stats">{ranker.engagementScore} engagement{ranker.engagementScore !== 1 ? 's' : ''}</div>
+                    <div className="achievement-details">
+                      <h4 className="achievement-name">{achievement.achievementName}</h4>
+                      <p className="achievement-earned-by">
+                        Earned by <span className="user-name">{achievement.userName}</span>
+                      </p>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p className="empty-state">🏆 No rankers yet. Start ranking to claim the top spot!</p>
-              )}
+                );
+              })}
             </div>
-          </div>
+          </section>
+        </>
+      )}
 
-          {/* Recently Ranked */}
-          <div className="dashboard-section" id="recentlyRankedSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Recently Ranked</h3>
-                <p className="section-subtitle">Fresh off the grill! See what's being ranked right now.</p>
-              </div>
-              <button className="widget-action-btn secondary" onClick={() => navigate('/products')}>Explore All</button>
-            </div>
-            <div className="dashboard-list">
-              {homeStats?.recentlyRanked && homeStats.recentlyRanked.length > 0 ? (
-                homeStats.recentlyRanked.map((item) => (
-                  <div key={`${item.productId}-${item.rankedAt}`} className="dashboard-item product-item" onClick={() => navigate(`/products?id=${item.productId}`)}>
-                    <img src={item.productData.image} alt={item.productData.title} className="product-thumb" />
-                    <div className="product-info">
-                      <div className="product-name">{item.productData.title}</div>
-                      <div className="product-stats">
-                        Ranked #{item.ranking} by {item.rankedBy} • {formatTimeAgo(item.rankedAt)}
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="empty-state">🆕 Nothing ranked yet. Fresh rankings coming soon!</p>
-              )}
-            </div>
+      {/* Featured Drop / CTA Section */}
+      <section className="featured-drop-section">
+        <div className="featured-container">
+          <div className="featured-content">
+            <span className="featured-label">New to Ranking?</span>
+            <h2 className="featured-title">Join the Flavor Revolution</h2>
+            <p className="featured-text">
+              Share your rankings, discover new flavors, and compete for the top spot. 
+              Every ranking helps the community find their perfect jerky.
+            </p>
+            <button className="featured-cta" onClick={() => navigate('/rank')}>
+              <span>Start Your Journey</span>
+              <span className="cta-arrow">→</span>
+            </button>
           </div>
-
-          {/* Trending This Week */}
-          <div className="dashboard-section" id="trendingSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Trending This Week</h3>
-                <p className="section-subtitle">Don't miss out on what's hot in the community!</p>
-              </div>
-              <button className="widget-action-btn secondary" onClick={() => navigate('/rank')}>Jump In!</button>
+          <div className="featured-visual">
+            <div className="visual-card card-1">
+              <span className="visual-icon">🥇</span>
+              <span className="visual-text">Top Rankings</span>
             </div>
-            <div className="dashboard-list">
-              {homeStats?.trending && homeStats.trending.length > 0 ? (
-                homeStats.trending.map((product) => (
-                  <div key={product.productId} className="dashboard-item product-item" onClick={() => navigate(`/products?id=${product.productId}`)}>
-                    <div className="trending-badge">🔥 {product.recentRankCount}</div>
-                    <img src={product.productData.image} alt={product.productData.title} className="product-thumb" />
-                    <div className="product-info">
-                      <div className="product-name">{product.productData.title}</div>
-                      <div className="product-stats">Avg rank: {product.avgRank} • Hot this week!</div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <p className="empty-state">📈 No trends yet. Start ranking to create some buzz!</p>
-              )}
+            <div className="visual-card card-2">
+              <span className="visual-icon">🪙</span>
+              <span className="visual-text">Collect Coins</span>
             </div>
-          </div>
-
-          {/* Most Debated */}
-          <div className="dashboard-section" id="debatedSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Most Debated</h3>
-                <p className="section-subtitle">The community can't agree - you decide!</p>
-              </div>
-              <button className="widget-action-btn" onClick={() => navigate('/rank')}>Settle It!</button>
-            </div>
-            <div className="dashboard-list">
-              {homeStats?.debated && homeStats.debated.length > 0 ? (
-                homeStats.debated.map((product) => (
-                  <div key={product.productId} className="dashboard-item product-item" onClick={() => navigate(`/products?id=${product.productId}`)}>
-                    <img src={product.productData.image} alt={product.productData.title} className="product-thumb" />
-                    <div className="product-info">
-                      <div className="product-name">{product.productData.title}</div>
-                      <div className="product-stats">
-                        Ranks from #{product.bestRank} to #{product.worstRank} • ±{product.variance}
-                      </div>
-                    </div>
-                    <button className="quick-action-btn secondary" onClick={(e) => { e.stopPropagation(); navigate('/rank'); }}>
-                      <span>⚔️</span>
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <p className="empty-state">🎯 Everyone agrees so far! Rank some products to shake things up.</p>
-              )}
-            </div>
-          </div>
-
-          {/* Recent Achievements */}
-          <div className="dashboard-section" id="achievementsSection">
-            <div className="widget-header">
-              <div className="widget-title-group">
-                <h3>Recent Achievements</h3>
-                <p className="section-subtitle">Unlock your next badge! Start ranking to earn.</p>
-              </div>
-              <button className="widget-action-btn" onClick={() => navigate('/rank')}>Earn Badges</button>
-            </div>
-            <div className="dashboard-list">
-              {homeStats?.recentAchievements && homeStats.recentAchievements.length > 0 ? (
-                homeStats.recentAchievements.map((achievement, index) => {
-                  const isImageIcon = achievement.achievementIcon?.startsWith('/') || achievement.achievementIcon?.startsWith('http');
-                  return (
-                    <div key={`${achievement.userId}-${achievement.achievementName}-${index}`} className="dashboard-item achievement-item">
-                      <div className={`achievement-icon ${achievement.achievementTier}`}>
-                        {isImageIcon ? (
-                          <img src={achievement.achievementIcon} alt="Achievement" style={{width: '48px', height: '48px', objectFit: 'contain'}} />
-                        ) : (
-                          achievement.achievementIcon
-                        )}
-                      </div>
-                      <div className="achievement-info">
-                        <div className="achievement-name">{achievement.achievementName}</div>
-                        <div className="achievement-earned">
-                          {achievement.userName} • {formatTimeAgo(achievement.earnedAt)}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })
-              ) : (
-                <p className="empty-state">🏅 No badges earned yet. Start ranking to unlock yours!</p>
-              )}
-            </div>
-          </div>
-
-          {/* Call to Action Section */}
-          <div className="home-cta-section">
-            <div className="home-cta-content">
-              <h2 className="home-cta-title">Join the Flavor Revolution</h2>
-              <div className="home-cta-body">
-                <img 
-                  src="https://www.jerky.com/cdn/shop/files/browse_best_sellers.png?v=1704231147&width=240" 
-                  alt="Customer holding jerky to heart" 
-                  className="home-cta-image"
-                />
-                <p className="home-cta-text">
-                  Share your rankings, discover new flavors, and compete for the top spot on our leaderboard.
-                </p>
-              </div>
-              <button className="home-cta-button" onClick={() => navigate('/rank')}>
-                <span>Start Ranking Now</span>
-                <span className="cta-arrow">→</span>
-              </button>
+            <div className="visual-card card-3">
+              <span className="visual-icon">🏆</span>
+              <span className="visual-text">Climb Leaderboard</span>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }
