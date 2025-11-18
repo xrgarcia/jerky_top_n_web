@@ -64,6 +64,7 @@ function createProfileRoutes(services) {
           handle: users.handle,
           hide_name_privacy: users.hideNamePrivacy,
           created_at: users.createdAt,
+          shopify_created_at: users.shopifyCreatedAt,
         })
         .from(users)
         .where(eq(users.id, session.userId))

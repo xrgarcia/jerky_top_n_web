@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useHeroStats, useHomeStats, useProgress } from '../hooks/useGamification';
+import { useHeroStats, useHomeStats, useProgress, useUserGuidance } from '../hooks/useGamification';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import { useRanking } from '../hooks/useRanking';
+import { useProfile } from '../hooks/useProfile';
 import './HomePage.css';
 
 function HomePage() {
@@ -12,12 +13,14 @@ function HomePage() {
   const { data: heroStats, isLoading: heroLoading } = useHeroStats();
   const { data: homeStats, isLoading: homeLoading } = useHomeStats();
   const { data: progress, isLoading: progressLoading } = useProgress();
+  const { data: guidance, isLoading: guidanceLoading } = useUserGuidance('general');
+  const { data: profile, isLoading: profileLoading } = useProfile();
   const { rankedProducts, isLoading: rankingsLoading } = useRanking();
   
   // Track page view for user guidance and classification
   usePageView('general');
 
-  const isLoading = heroLoading || homeLoading || progressLoading;
+  const isLoading = heroLoading || homeLoading || progressLoading || guidanceLoading || profileLoading;
 
   // Get user's progress data
   const totalRankings = progress?.progress?.totalRankings || 0;
@@ -37,8 +40,27 @@ function HomePage() {
     ? Math.min(100, (uniqueProducts / totalCatalog) * 100) 
     : 0;
   
-  // Get user title from achievements
-  const userTitle = achievementsEarned >= 10 ? 'Taste Expert' : achievementsEarned >= 5 ? 'Flavor Enthusiast' : 'Taste Explorer';
+  // Get journey stage from personalized guidance system
+  const journeyStage = guidance?.classification?.journeyStage || 'new_user';
+  
+  // Map journey stages to display titles for badge
+  const journeyTitleMap = {
+    'new_user': 'TASTE EXPLORER',
+    'active_user': 'FLAVOR ENTHUSIAST',
+    'power_user': 'FLAVOR MASTER',
+    'dormant': 'RETURNING RANKER'
+  };
+  const userTitle = journeyTitleMap[journeyStage] || 'TASTE EXPLORER';
+  
+  // Get flavor community from guidance stats (classification data)
+  const flavorCommunities = guidance?.stats?.flavorCommunities || [];
+  const primaryCommunity = flavorCommunities.length > 0 ? flavorCommunities[0] : null;
+  
+  // Get Shopify account creation year
+  const shopifyCreatedAt = profile?.shopify_created_at;
+  const memberSinceYear = shopifyCreatedAt 
+    ? new Date(shopifyCreatedAt).getFullYear() 
+    : (profile?.created_at ? new Date(profile.created_at).getFullYear() : 2023);
 
   // Get user's top 3 personal ranked products
   const myTop3 = isAuthenticated && rankedProducts ? rankedProducts.slice(0, 3) : [];
@@ -91,8 +113,10 @@ function HomePage() {
               <div className="hero-medallion">
                 <div className="medallion-ring"></div>
                 <div className="medallion-content">
-                  <span className="medallion-label">Taste Tester</span>
-                  <span className="medallion-year">Since 2023</span>
+                  <span className="medallion-label">
+                    {primaryCommunity ? `${primaryCommunity.icon} ${primaryCommunity.name}` : 'Taste Tester'}
+                  </span>
+                  <span className="medallion-year">Since {memberSinceYear}</span>
                 </div>
               </div>
             )}
