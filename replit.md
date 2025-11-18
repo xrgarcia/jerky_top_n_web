@@ -61,12 +61,15 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 ### Collection Progress Visualization (November 18, 2025)
 **Status:** Production-ready and architect-approved
 
-**Problem:** Homepage hero section displayed arbitrary "level" progression based on ranking count (every 10 rankings = 1 level), which didn't reflect the meaningful user journey or collection completion story.
+**Problem:** Homepage hero section initially showed arbitrary "level" progression (every 10 rankings = 1 level), then was updated to a 3-layer visualization that included "Owned" products, which felt sales-oriented rather than game-focused.
 
-**Solution:** Redesigned progress tracking to show 3-layer collection completion visualization:
-- **Background layer (dark):** Total catalog (164 products) - 100% width
-- **Middle layer (amber):** Purchased/owned products - percentage of catalog
-- **Top layer (gold gradient):** Ranked products - percentage of catalog
+**Solution:** Redesigned to show simple, game-focused progress: ranked flavors out of rankable (purchased) flavors.
+
+**Progress Bar Logic:**
+- Shows ranked products as percentage of what user can currently rank (their purchases)
+- Example: User owns 20 flavors, ranked 5 → progress bar shows 25% filled (5/20)
+- The full 164 catalog doesn't affect this bar - only what they own/can rank matters
+- Clamped to 100% to handle data anomalies
 
 **Backend Changes (server/routes/gamification.js):**
 - Added `purchasedProductCount` from purchase history service
@@ -76,11 +79,12 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Frontend Changes (src/pages/HomePage.jsx, src/pages/HomePage.css):**
 - Removed arbitrary level/XP calculations
-- Replaced XP bar with 3-layer collection progress bar
-- Updated stats display: "Ranked | Owned | Catalog" with counts
-- Created distinct visual layers with gold gradient (ranked), amber translucent (owned), and dark backdrop (catalog)
+- Changed progress calculation from `uniqueProducts / totalCatalog` to `uniqueProducts / purchasedProductCount`
+- Simplified stats display: "Ranked | Catalog" (removed "Owned" to avoid sales-y feel)
+- Single-layer progress bar: gold gradient fill (ranked) against light background (rankable space)
+- Added Math.min clamping to prevent progress exceeding 100%
 
-**Outcome:** Users now see meaningful collection progress narrative showing what they've ranked vs what they own vs total catalog, replacing arbitrary level milestones with actual accomplishment tracking.
+**Outcome:** Users see their personal ranking journey (ranked vs rankable), not store inventory. The progress bar reflects game completion, not sales metrics.
 
 ### Navigation Responsiveness Enhancement (November 18, 2025)
 **Status:** Production-ready and architect-approved
