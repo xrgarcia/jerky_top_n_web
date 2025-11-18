@@ -12,6 +12,7 @@ function Nav() {
   const [searchResults, setSearchResults] = useState({ products: [], users: [] });
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const searchRef = useRef(null);
 
   const isActive = (path) => {
@@ -22,6 +23,15 @@ function Nav() {
     if (!user?.firstName) return 'U';
     return user.firstName.charAt(0).toUpperCase();
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -75,7 +85,8 @@ function Nav() {
     <nav className="main-nav">
       <div className="nav-container">
         <button 
-          className="hamburger-btn" 
+          className="hamburger-btn"
+          style={{ display: windowWidth < 1000 ? 'flex' : 'none' }}
           onClick={() => setMobileMenuOpen(true)}
           aria-label="Open navigation menu"
           aria-expanded={mobileMenuOpen}
@@ -91,7 +102,7 @@ function Nav() {
           <img src="/rank-logo.png" alt="RANK. Logo" className="logo-img" loading="eager" />
         </Link>
 
-        <div className="nav-links">
+        <div className="nav-links" style={{ display: windowWidth < 1000 ? 'none' : 'flex' }}>
           <Link to="/" className={`nav-link ${isActive('/')}`}>
             Home
           </Link>

@@ -306,7 +306,7 @@
   }
 
   .hamburger-btn {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     order: 1;
@@ -328,7 +328,7 @@
     margin-left: auto;
   }
 
-  .main-nav .nav-links {
+  nav.main-nav .nav-container .nav-links {
     display: none !important;
   }
 
