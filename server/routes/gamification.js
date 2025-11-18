@@ -136,10 +136,13 @@ function createGamificationRoutes(services) {
       const { products } = await services.fetchAllShopifyProducts();
       const totalCatalog = products.length;
 
+      // Get user info to determine if employee
+      const user = await services.storage.getUserById(userId);
+      const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
+
       // Determine rankable product count based on user type
       // Employees can rank all products, regular users can only rank purchased products
       let purchasedProductCount = 0;
-      const isEmployee = session.user?.email?.endsWith('@jerky.com') || session.user?.role?.includes('employee');
       
       if (isEmployee) {
         // Employees can rank all products
