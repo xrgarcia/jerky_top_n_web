@@ -55,3 +55,24 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Real-time:** Socket.IO.
 - **Email:** Custom SMTP service using nodemailer.
 - **Object Storage:** Replit Object Storage (Google Cloud Storage).
+
+## Recent Updates
+
+### Navigation Responsiveness Enhancement (November 18, 2025)
+**Status:** Production-ready and architect-approved
+
+**Problem:** Navigation bar was getting cut off at medium viewport sizes (tablets and smaller laptops), causing search bar and user controls to overflow off-screen.
+
+**Solution:** Implemented cascading responsive breakpoint system:
+- **>1000px:** Full desktop layout with all navigation links visible
+- **768px-999px:** Hamburger menu displayed, search bar min-width 220px (stable for tablets)
+- **480px-767px:** Hamburger menu, search bar max-width 160px with flex-shrink (mobile)
+- **<480px:** Hamburger menu, search bar max-width 120px with flex-shrink (small mobile)
+
+**Key Changes:**
+- Main breakpoint changed from 767px to 999px to show hamburger menu earlier
+- Properly reset min-width to 0 and enabled flex-shrink at mobile breakpoints to prevent horizontal overflow
+- Removed redundant tablet-specific media query (768px-1024px)
+- Ensured search bar and user controls (profile, logout) remain accessible across all screen sizes
+
+**Outcome:** Navigation links never overflow at medium viewports, all controls remain visible and accessible without horizontal scrolling on any device.
