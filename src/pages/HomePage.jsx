@@ -24,14 +24,12 @@ function HomePage() {
   const totalPoints = progress?.progress?.totalPoints || 0;
   const achievementsEarned = progress?.progress?.achievementsEarned || 0;
   const uniqueProducts = progress?.progress?.uniqueProducts || 0;
+  const purchasedProductCount = progress?.progress?.purchasedProductCount || 0;
+  const totalCatalog = progress?.progress?.totalCatalog || 164;
   
-  // Calculate level from total rankings (every 10 rankings = 1 level)
-  const userLevel = Math.floor(totalRankings / 10) + 1;
-  
-  // Calculate XP progress to next level
-  // At level boundaries (divisible by 10), show 100% if user has rankings, 0% otherwise
-  const currentLevelRankings = totalRankings % 10;
-  const xpProgress = currentLevelRankings === 0 && totalRankings > 0 ? 100 : (currentLevelRankings / 10) * 100;
+  // Calculate collection progress percentages for 3-layer visualization
+  const rankedPercent = totalCatalog > 0 ? (uniqueProducts / totalCatalog) * 100 : 0;
+  const purchasedPercent = totalCatalog > 0 ? (purchasedProductCount / totalCatalog) * 100 : 0;
   
   // Get user title from achievements
   const userTitle = achievementsEarned >= 10 ? 'Taste Expert' : achievementsEarned >= 5 ? 'Flavor Enthusiast' : 'Taste Explorer';
@@ -54,13 +52,28 @@ function HomePage() {
                   {user?.displayName || 'Customer'}
                   <span className="hero-title-badge">{userTitle}</span>
                 </h1>
-                <div className="hero-xp-display">
-                  <div className="xp-bar-hero">
-                    <div className="xp-fill-hero" style={{ width: `${xpProgress}%` }}></div>
+                <div className="hero-collection-progress">
+                  <div className="collection-bar-container">
+                    <div className="collection-bar-background">
+                      <div className="collection-bar-purchased" style={{ width: `${purchasedPercent}%` }}></div>
+                      <div className="collection-bar-ranked" style={{ width: `${rankedPercent}%` }}></div>
+                    </div>
                   </div>
-                  <div className="xp-stats">
-                    <span className="xp-amount">{totalRankings.toLocaleString()} Rankings</span>
-                    <span className="xp-status">Level {userLevel}</span>
+                  <div className="collection-stats">
+                    <div className="collection-stat-item">
+                      <span className="collection-stat-number">{uniqueProducts}</span>
+                      <span className="collection-stat-label">Ranked</span>
+                    </div>
+                    <div className="collection-stat-divider">|</div>
+                    <div className="collection-stat-item">
+                      <span className="collection-stat-number">{purchasedProductCount}</span>
+                      <span className="collection-stat-label">Owned</span>
+                    </div>
+                    <div className="collection-stat-divider">|</div>
+                    <div className="collection-stat-item">
+                      <span className="collection-stat-number">{totalCatalog}</span>
+                      <span className="collection-stat-label">Catalog</span>
+                    </div>
                   </div>
                 </div>
               </>

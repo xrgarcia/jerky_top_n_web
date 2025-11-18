@@ -59,45 +59,79 @@
   margin: 0 0 24px 0;
 }
 
-.hero-xp-display {
+.hero-collection-progress {
   margin-top: 24px;
 }
 
-.xp-bar-hero {
-  height: 16px;
-  background: var(--rank-bg-card);
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+.collection-bar-container {
+  margin-bottom: 16px;
 }
 
-.xp-fill-hero {
+.collection-bar-background {
+  height: 20px;
+  background: var(--rank-bg-card);
+  border-radius: 10px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.collection-bar-purchased {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 138, 43, 0.3);
+  border-radius: 8px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1;
+}
+
+.collection-bar-ranked {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--rank-gold) 0%, var(--rank-amber) 100%);
   border-radius: 8px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  box-shadow: 0 0 10px rgba(255, 216, 115, 0.4);
 }
 
-.xp-stats {
+.collection-stats {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
+  gap: 16px;
 }
 
-.xp-amount {
+.collection-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.collection-stat-number {
   font-size: var(--font-size-stat-small);
-  font-weight: 600;
+  font-weight: 700;
   font-family: var(--font-mono);
   color: var(--rank-gold);
 }
 
-.xp-status {
-  font-size: var(--font-size-body-small);
+.collection-stat-label {
+  font-size: var(--font-size-label-small);
   font-weight: 500;
-  color: var(--rank-text-body);
+  color: var(--rank-text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+}
+
+.collection-stat-divider {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 20px;
+  line-height: 1;
 }
 
 .hero-right {

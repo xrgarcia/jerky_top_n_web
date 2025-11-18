@@ -134,12 +134,26 @@ function createGamificationRoutes(services) {
 
       // Get total rankable products count for dynamic milestones
       const { products } = await services.fetchAllShopifyProducts();
-      const totalRankableProducts = products.length;
+      const totalCatalog = products.length;
 
-      const progress = await progressTracker.getUserProgress(userId, totalRankableProducts);
+      // Get purchased products count for collection progress
+      let purchasedProductCount = 0;
+      if (services.purchaseHistoryService) {
+        const purchasedProductIds = await services.purchaseHistoryService.getPurchasedProductIds(userId);
+        purchasedProductCount = purchasedProductIds.length;
+      }
+
+      const progress = await progressTracker.getUserProgress(userId, totalCatalog);
       const insights = await progressTracker.getUserInsights(userId);
 
-      res.json({ progress, insights });
+      // Add collection metadata to progress response
+      const enrichedProgress = {
+        ...progress,
+        purchasedProductCount,
+        totalCatalog
+      };
+
+      res.json({ progress: enrichedProgress, insights });
     } catch (error) {
       console.error('Error fetching progress:', error);
       res.status(500).json({ error: 'Failed to fetch progress' });
