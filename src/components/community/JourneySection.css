@@ -20,7 +20,7 @@
 .journey-title {
   font-size: 32px;
   font-weight: 800;
-  color: #2c2c2c;
+  color: var(--rank-text-white);
   text-align: left;
   margin: 0 0 20px 0;
   text-transform: uppercase;
@@ -29,18 +29,18 @@
 }
 
 .journey-start {
-  color: #8b4513;
+  color: var(--rank-amber);
 }
 
 .journey-end {
-  color: #daa520;
-  text-shadow: 0 0 20px rgba(218, 165, 32, 0.3);
+  color: var(--rank-gold);
+  text-shadow: 0 0 20px var(--rank-glow-gold);
 }
 
 .journey-description {
   text-align: left;
   font-size: 18px;
-  color: #555;
+  color: var(--rank-neutral-500);
   margin: 0 0 24px 0;
   line-height: 1.7;
 }
@@ -48,12 +48,12 @@
 .journey-cta-text {
   text-align: left;
   font-size: 16px;
-  color: #666;
+  color: var(--rank-text-label);
   margin: 0;
   line-height: 1.6;
   font-style: italic;
   padding-left: 20px;
-  border-left: 3px solid rgba(218, 165, 32, 0.4);
+  border-left: 3px solid var(--rank-glow-gold);
 }
 
 .journey-steps {
@@ -67,24 +67,24 @@
   align-items: center;
   gap: 20px;
   padding: 24px 28px;
-  background: white;
+  background: var(--rank-text-white);
   border-radius: 16px;
-  border: 1px solid rgba(139, 69, 19, 0.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--rank-border-default);
+  box-shadow: var(--rank-shadow-card);
   transition: all 0.3s ease;
 }
 
 .journey-step:hover {
   transform: translateX(8px);
-  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.15);
-  border-color: rgba(139, 69, 19, 0.25);
+  box-shadow: var(--rank-shadow-elevated);
+  border-color: var(--rank-border-hover);
 }
 
 .step-icon {
   font-size: 40px;
   line-height: 1;
   flex-shrink: 0;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 4px var(--rank-overlay-dark));
 }
 
 .step-content {
@@ -94,13 +94,13 @@
 .step-title {
   font-size: 18px;
   font-weight: 700;
-  color: #8b4513;
+  color: var(--rank-amber);
   margin: 0 0 6px 0;
 }
 
 .step-description {
   font-size: 14px;
-  color: #666;
+  color: var(--rank-text-label);
   margin: 0;
   line-height: 1.5;
 }
@@ -127,7 +127,7 @@
 
   .journey-cta-text {
     border-left: none;
-    border-top: 3px solid rgba(218, 165, 32, 0.4);
+    border-top: 3px solid var(--rank-glow-gold);
     padding-left: 0;
     padding-top: 16px;
   }

@@ -23,9 +23,9 @@
 .film-nav-btn {
   width: 48px;
   height: 48px;
-  border: 2px solid #6d5300;
-  background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
-  color: #2a2520;
+  border: 2px solid var(--rank-gold);
+  background: var(--rank-gradient-gold);
+  color: var(--rank-text-label);
   border-radius: 50%;
   cursor: pointer;
   font-size: 1.5rem;
@@ -34,31 +34,31 @@
   justify-content: center;
   transition: all 0.2s ease;
   box-shadow: 
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    var(--rank-shadow-card),
+    inset 0 1px 0 var(--rank-overlay-glass);
 }
 
 .film-nav-btn:hover {
-  background: linear-gradient(135deg, #f5e5b8 0%, #d4af37 100%);
-  color: #1a1410;
+  background: var(--rank-gradient-gold);
+  color: var(--rank-bg-charcoal);
   transform: translateY(-2px);
   box-shadow: 
-    0 6px 12px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    var(--rank-shadow-elevated),
+    inset 0 1px 0 var(--rank-overlay-glass);
 }
 
 .film-nav-btn:active {
   transform: scale(0.95);
   box-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.7),
-    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    var(--rank-shadow-card),
+    inset 0 2px 4px var(--rank-shadow-card);
 }
 
 .film-scroll-container {
   overflow-x: auto;
   overflow-y: visible;
   scrollbar-width: thin;
-  scrollbar-color: #8b7355 #2a2520;
+  scrollbar-color: var(--rank-text-label) var(--rank-text-label);
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   padding: 0;
@@ -70,17 +70,17 @@
 }
 
 .film-scroll-container::-webkit-scrollbar-track {
-  background: #2a2520;
+  background: var(--rank-text-label);
   border-radius: 4px;
 }
 
 .film-scroll-container::-webkit-scrollbar-thumb {
-  background: #8b7355;
+  background: var(--rank-text-label);
   border-radius: 4px;
 }
 
 .film-scroll-container::-webkit-scrollbar-thumb:hover {
-  background: #6d5844;
+  background: var(--rank-gold);
 }
 
 .film-reel {
@@ -88,18 +88,18 @@
   gap: 0;
   padding: 0 1.5rem 0 0;
   position: relative;
-  background: #1a1410;
-  border: 3px solid #1a1410;
+  background: var(--rank-bg-charcoal);
+  border: 3px solid var(--rank-bg-charcoal);
   border-radius: 0;
   overflow: visible;
   min-width: 100%;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .sprocket-holes {
   display: flex;
   gap: 6px;
-  background: #1a1410;
+  background: var(--rank-bg-charcoal);
   padding: 6px 3px;
   border-radius: 0;
   overflow-x: auto;
@@ -123,7 +123,7 @@
 .sprocket-hole {
   width: 6px;
   height: 12px;
-  background: #f5f1e8;
+  background: var(--rank-bg-card-elevated);
   flex-shrink: 0;
   border-radius: 1px;
 }
@@ -139,9 +139,9 @@
   justify-content: center;
   transition: transform 0.3s ease, filter 0.3s ease;
   animation: fadeIn 0.5s ease;
-  background: linear-gradient(135deg, #d4c4a8 0%, #c4b49a 50%, #b8a88c 100%);
-  border-right: 8px solid #1a1410;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  background: var(--rank-gradient-gold);
+  border-right: 8px solid var(--rank-bg-charcoal);
+  box-shadow: inset 0 0 20px var(--rank-shadow-card);
   padding: 20px 0.75rem;
 }
 
@@ -170,10 +170,10 @@
   height: 120px;
   border-radius: 8px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f5f1e8 0%, #e8dcc8 100%);
+  background: linear-gradient(135deg, var(--rank-bg-card-elevated) 0%, var(--rank-bg-card-elevated) 100%);
   box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    inset 0 0 15px rgba(0, 0, 0, 0.15);
+    var(--rank-shadow-elevated),
+    inset 0 0 15px var(--rank-shadow-card);
   position: relative;
   margin-bottom: 0.5rem;
 }
@@ -191,7 +191,7 @@
 .reel-image-placeholder {
   width: 100%;
   height: 100%;
-  background: #e8dcc8;
+  background: var(--rank-bg-card-elevated);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -201,7 +201,7 @@
 
 .reel-badge {
   font-size: 3.5rem;
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 2px 6px var(--rank-shadow-card));
 }
 
 .vintage-label {
@@ -212,7 +212,7 @@
 .label-title {
   font-size: 0.75rem;
   font-weight: 700;
-  color: #2a2520;
+  color: var(--rank-text-label);
   margin: 0 0 0.25rem 0;
   line-height: 1.2;
   overflow: hidden;
@@ -223,12 +223,12 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-family: 'Georgia', serif;
-  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 1px var(--rank-overlay-glass);
 }
 
 .label-date {
   font-size: 0.65rem;
-  color: #5a4a3a;
+  color: var(--rank-text-label);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -238,13 +238,13 @@
 .film-strip-empty {
   padding: 3rem;
   text-align: center;
-  color: #d4af37;
-  background: linear-gradient(to bottom, #1a1410 0%, #2a2520 100%);
+  color: var(--rank-accent-gold);
+  background: linear-gradient(to bottom, var(--rank-bg-charcoal) 0%, var(--rank-text-label) 100%);
   border-radius: 0 0 12px 12px;
   margin: 0;
   box-shadow: 
-    inset 0 4px 8px rgba(0, 0, 0, 0.6),
-    0 8px 24px rgba(0, 0, 0, 0.5);
+    inset 0 4px 8px var(--rank-shadow-elevated),
+    var(--rank-shadow-elevated);
 }
 
 .film-strip-empty p {

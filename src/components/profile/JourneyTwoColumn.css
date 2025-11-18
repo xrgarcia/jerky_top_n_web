@@ -31,7 +31,7 @@
   margin: 0 0 20px;
   font-size: 2.5rem;
   font-weight: 700;
-  color: #2d2d2d;
+  color: var(--rank-text-primary);
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -40,7 +40,7 @@
   margin: 0;
   font-size: 1.25rem;
   line-height: 1.7;
-  color: #5a5a5a;
+  color: var(--rank-text-secondary);
   font-weight: 400;
 }
 
@@ -52,8 +52,8 @@
   background: linear-gradient(
     to bottom,
     transparent 0%,
-    #d4c4a8 20%,
-    #d4c4a8 80%,
+    var(--rank-accent-gold-soft) 20%,
+    var(--rank-accent-gold-soft) 80%,
     transparent 100%
   );
   opacity: 0.4;

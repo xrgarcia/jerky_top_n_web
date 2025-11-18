@@ -12,8 +12,8 @@
 .guidance-spinner {
   width: 24px;
   height: 24px;
-  border: 3px solid rgba(123, 139, 82, 0.3);
-  border-top-color: #7b8b52;
+  border: 3px solid var(--rank-shadow-focus);
+  border-top-color: var(--rank-button-primary-bg);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -30,7 +30,7 @@
 
 .guidance-title {
   display: inline;
-  color: #4a4a4a;
+  color: var(--rank-text-primary);
   font-weight: 700;
   font-size: 20px;
   line-height: 1.6;
@@ -42,7 +42,7 @@
 }
 
 .guidance-label {
-  color: #4a4a4a;
+  color: var(--rank-text-primary);
 }
 
 .guidance-content {
@@ -50,7 +50,7 @@
 }
 
 .guidance-message {
-  color: #4a4a4a;
+  color: var(--rank-text-primary);
   font-size: 18px;
   line-height: 1.6;
   margin: 0;
@@ -63,7 +63,7 @@
 }
 
 .action-label {
-  color: #7b8b52;
+  color: var(--rank-button-primary-bg);
   font-size: 16px;
   font-weight: 600;
 }
