@@ -76,12 +76,26 @@
   overflow: hidden;
 }
 
-.collection-bar-fill {
+.collection-bar-rankable {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background: rgba(255, 199, 95, 0.25); /* Light amber showing rankable space */
+  border-radius: 8px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.collection-bar-ranked {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
   background: linear-gradient(90deg, var(--rank-gold) 0%, var(--rank-amber) 100%);
   border-radius: 8px;
   transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 0 10px rgba(255, 216, 115, 0.4);
+  z-index: 1; /* Ranked layer on top of rankable layer */
 }
 
 .collection-stats {

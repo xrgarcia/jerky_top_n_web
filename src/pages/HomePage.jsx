@@ -27,9 +27,14 @@ function HomePage() {
   const purchasedProductCount = progress?.progress?.purchasedProductCount || 0;
   const totalCatalog = progress?.progress?.totalCatalog || 164;
   
-  // Calculate progress: ranked out of rankable (what they own)
-  const rankedPercent = purchasedProductCount > 0 
-    ? Math.min(100, (uniqueProducts / purchasedProductCount) * 100) 
+  // Calculate progress percentages relative to total catalog
+  // - rankablePercent: shows what user CAN rank (their purchases) as % of catalog
+  // - rankedPercent: shows what user HAS ranked as % of catalog
+  const rankablePercent = totalCatalog > 0 
+    ? Math.min(100, (purchasedProductCount / totalCatalog) * 100)
+    : 0;
+  const rankedPercent = totalCatalog > 0 
+    ? Math.min(100, (uniqueProducts / totalCatalog) * 100) 
     : 0;
   
   // Get user title from achievements
@@ -56,7 +61,8 @@ function HomePage() {
                 <div className="hero-collection-progress">
                   <div className="collection-bar-container">
                     <div className="collection-bar-background">
-                      <div className="collection-bar-fill" style={{ width: `${rankedPercent}%` }}></div>
+                      <div className="collection-bar-rankable" style={{ width: `${rankablePercent}%` }}></div>
+                      <div className="collection-bar-ranked" style={{ width: `${rankedPercent}%` }}></div>
                     </div>
                   </div>
                   <div className="collection-stats">
