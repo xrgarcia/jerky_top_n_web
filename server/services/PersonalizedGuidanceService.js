@@ -66,7 +66,8 @@ class PersonalizedGuidanceService {
         explorationBreadth: classification.explorationBreadth,
         focusAreas: classification.focusAreas || []
       },
-      stats: classification.classificationData
+      stats: classification.classificationData,
+      dominantCommunity: dominantCommunity // Include formatted community for UI display
     };
   }
 

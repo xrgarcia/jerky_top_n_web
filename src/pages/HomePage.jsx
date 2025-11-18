@@ -52,9 +52,8 @@ function HomePage() {
   };
   const userTitle = journeyTitleMap[journeyStage] || 'TASTE EXPLORER';
   
-  // Get flavor community from guidance stats (classification data)
-  const flavorCommunities = guidance?.stats?.flavorCommunities || [];
-  const primaryCommunity = flavorCommunities.length > 0 ? flavorCommunities[0] : null;
+  // Get flavor community from guidance (now includes formatted dominantCommunity)
+  const primaryCommunity = guidance?.dominantCommunity || null;
   
   // Get Shopify account creation year
   const shopifyCreatedAt = profile?.shopify_created_at;
