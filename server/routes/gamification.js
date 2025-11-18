@@ -1116,6 +1116,7 @@ function createGamificationRoutes(services) {
             icon: guidanceData.icon
           },
           stats: guidanceData.stats,
+          dominantCommunity: guidanceData.dominantCommunity,
           cached: true,
           calculatedAt: cacheEntry.calculatedAt
         });
@@ -1135,6 +1136,7 @@ function createGamificationRoutes(services) {
           icon: guidance.icon
         },
         stats: guidance.stats,
+        dominantCommunity: guidance.dominantCommunity,
         cached: false
       });
     } catch (error) {
