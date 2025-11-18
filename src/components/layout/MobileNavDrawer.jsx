@@ -61,14 +61,9 @@ export default function MobileNavDrawer({ isOpen, onClose }) {
             Coin Book
           </Link>
           {isAuthenticated && (
-            <>
-              <Link to="/community" className="mobile-nav-link" onClick={onClose}>
-                Community
-              </Link>
-              <Link to="/leaderboard" className="mobile-nav-link" onClick={onClose}>
-                Leaderboard
-              </Link>
-            </>
+            <Link to="/community" className="mobile-nav-link" onClick={onClose}>
+              Community
+            </Link>
           )}
           {isEmployee && (
             <Link to="/admin/tools" className="mobile-nav-link" onClick={onClose}>
