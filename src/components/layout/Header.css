@@ -1,38 +1,43 @@
 .announcement-banner {
-  background: linear-gradient(135deg, #6B8E23, #8FBC8F);
-  color: white;
+  background: var(--rank-gradient-amber);
+  color: var(--rank-bg-charcoal);
   padding: 12px 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
-  font-weight: 600;
-  font-size: 14px;
-  text-transform: uppercase;
+  font-family: var(--font-body);
+  font-weight: var(--font-label-weight);
+  font-size: var(--font-label-size);
+  text-transform: var(--font-label-transform);
+  letter-spacing: var(--font-label-letter-spacing);
 }
 
 .announcement-icon {
-  font-size: 16px;
+  font-size: var(--font-body-size);
 }
 
 .announcement-text {
-  letter-spacing: 0.5px;
+  letter-spacing: var(--font-label-letter-spacing);
 }
 
 .announcement-btn {
-  background: rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: white;
+  background: var(--rank-overlay-card);
+  border: 1px solid var(--rank-border-default);
+  color: var(--rank-text-white);
   padding: 6px 12px;
   border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
+  font-family: var(--font-body);
+  font-size: var(--font-label-small-size);
+  font-weight: var(--font-label-weight);
   cursor: pointer;
   transition: all 0.3s ease;
   text-decoration: none;
   text-transform: uppercase;
+  letter-spacing: var(--font-label-letter-spacing);
 }
 
 .announcement-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: var(--rank-overlay-glass);
+  box-shadow: 0 0 8px var(--rank-glow-amber);
 }

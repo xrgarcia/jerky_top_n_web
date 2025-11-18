@@ -1,11 +1,11 @@
 /* Site Footer Styles */
 
 .site-footer {
-  background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-  color: #ffffff;
+  background: var(--rank-gradient-dark);
+  color: var(--rank-text-white);
   padding: 60px 0 0 0;
   margin-top: 80px;
-  border-top: 4px solid #7b8b52;
+  border-top: 4px solid var(--rank-gold);
 }
 
 .footer-content {
@@ -24,14 +24,15 @@
 }
 
 .footer-section h4 {
-  color: #FFD700;
-  font-size: 16px;
+  color: var(--rank-gold);
+  font-family: var(--font-body);
+  font-size: var(--font-body-size);
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   margin: 0 0 10px 0;
   padding-bottom: 10px;
-  border-bottom: 2px solid rgba(123, 139, 82, 0.5);
+  border-bottom: 2px solid var(--rank-border-default);
 }
 
 .footer-links {
@@ -48,9 +49,10 @@
 }
 
 .footer-links a {
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--rank-neutral-200);
   text-decoration: none;
-  font-size: 14px;
+  font-family: var(--font-body);
+  font-size: var(--font-small-size);
   transition: all 0.3s ease;
   display: inline-block;
   position: relative;
@@ -62,11 +64,11 @@
   left: -15px;
   opacity: 0;
   transition: all 0.3s ease;
-  color: #FFD700;
+  color: var(--rank-gold);
 }
 
 .footer-links a:hover {
-  color: #ffffff;
+  color: var(--rank-text-white);
   transform: translateX(10px);
   text-decoration: none;
 }
@@ -77,16 +79,17 @@
 }
 
 .footer-bottom {
-  background: rgba(0, 0, 0, 0.3);
+  background: var(--rank-overlay-dark);
   padding: 20px;
   text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--rank-border-default);
 }
 
 .footer-bottom p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 13px;
+  color: var(--rank-neutral-300);
+  font-family: var(--font-body);
+  font-size: var(--font-small-size);
 }
 
 /* Desktop: Reduced spacing for rank page */
@@ -111,11 +114,11 @@
   }
   
   .footer-section h4 {
-    font-size: 14px;
+    font-size: var(--font-small-size);
   }
   
   .footer-links a {
-    font-size: 13px;
+    font-size: var(--font-small-size);
   }
 }
 
