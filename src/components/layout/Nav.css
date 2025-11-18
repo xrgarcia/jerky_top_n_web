@@ -294,7 +294,7 @@
   display: block;
 }
 
-/* Tablet and Mobile Responsiveness (<1000px) */
+/* Tablet and Mobile Responsiveness - Show hamburger menu below 1000px */
 @media (max-width: 999px) {
   .main-nav {
     padding: 8px 0;
@@ -328,8 +328,8 @@
     margin-left: auto;
   }
 
-  .nav-links {
-    display: none;
+  .main-nav .nav-links {
+    display: none !important;
   }
 
   .user-actions {
