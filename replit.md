@@ -58,6 +58,41 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 ## Recent Updates
 
+### Personalized Hero Identity System (November 18, 2025)
+**Status:** Production-ready and architect-approved
+
+**Problem:** Homepage hero section used hardcoded badges ("Taste Explorer" based on achievement count) and static medallion text ("Taste Tester" / "Since 2023"), disconnected from the existing personalized guidance system that already tracks journey classification and flavor communities.
+
+**Solution:** Connected the hero section to the personalized guidance and profile APIs to display dynamic, meaningful user identity based on their actual journey stage, flavor community, and Shopify account creation date.
+
+**Journey Badge Mapping:**
+- Badge now reflects user's journey stage from personalized guidance system:
+  - `new_user` → "TASTE EXPLORER"
+  - `active_user` → "FLAVOR ENTHUSIAST"
+  - `power_user` → "FLAVOR MASTER"
+  - `dormant` → "RETURNING RANKER"
+- Replaces hardcoded achievement-count logic (0-4 = Explorer, 5-9 = Enthusiast, 10+ = Expert)
+
+**Medallion Display:**
+- **Primary flavor community**: Shows icon + name from guidance system (e.g., "🌶️ Spicy Seekers", "🍖 BBQ Lovers")
+- **Fallback**: "Taste Tester" when no community assigned yet
+- **Member year**: Displays actual Shopify account creation year from `shopifyCreatedAt` field
+- **Fallback**: Uses app `createdAt` if Shopify date unavailable, defaults to 2023 if neither exists
+
+**Backend Changes (server/routes/profile.js):**
+- Added `shopify_created_at` to `/api/profile` endpoint response
+- Profile now returns Shopify account creation date for displaying member year
+
+**Frontend Changes (src/pages/HomePage.jsx, src/hooks/):**
+- Created `useUserGuidance` hook for fetching personalized guidance data (journey stage, flavor communities)
+- Created `useProfile` hook for fetching user profile data (Shopify created date)
+- Journey badge sources from `guidance.classification.journeyStage` with title mapping
+- Medallion displays `guidance.stats.flavorCommunities[0]` (primary community)
+- Member year extracted from `profile.shopify_created_at` or `profile.created_at`
+- Both hooks use React Query with 5-minute cache, following existing patterns
+
+**Outcome:** Homepage hero now reflects each user's personalized journey and flavor identity from the guidance system. Journey badges show meaningful progression stages, medallion displays actual flavor community affiliation (not generic text), and member year shows real account creation date. The hero section is now part of the integrated personalized guidance experience.
+
 ### Collection Progress Visualization (November 18, 2025)
 **Status:** Production-ready and architect-approved
 
