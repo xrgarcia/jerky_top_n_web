@@ -146,3 +146,32 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - Ensured search bar and user controls (profile, logout) remain accessible across all screen sizes
 
 **Outcome:** Navigation links never overflow at medium viewports, all controls remain visible and accessible without horizontal scrolling on any device.
+
+### Flavor Community Medallion Bug Fix (November 18, 2025)
+**Status:** Production-ready and architect-approved
+
+**Problem:** Homepage hero medallion was always showing "TASTE TESTER" fallback instead of displaying user's actual flavor community. PersonalizedGuidanceService was accessing non-existent `tier` field instead of correct `state` field from classification data. Additionally, medallion text was cramped due to missing padding and tight spacing.
+
+**Solution:** Fixed field name mismatch in dominantCommunity extraction and improved medallion CSS for better readability.
+
+**Backend Changes (server/services/PersonalizedGuidanceService.js):**
+- Fixed `_extractDominantFlavorCommunity` to access `current.state` instead of `current.tier` (matches classification data format)
+- Added lowercase flavor emoji mappings for all flavor types: sweet, spicy, savory, teriyaki, bbq, exotic, peppery
+- Added capitalization logic for flavor profile display names
+- Tier priority system correctly extracts highest-tier community: enthusiast (6) > explorer (5) > moderate (4) > taster (3) > seeker (2) > curious (1)
+- Returns formatted dominantCommunity object: `{name: "Sweet Enthusiast", icon: "🍯", flavorProfile: "sweet", tier: "enthusiast"}`
+
+**Frontend Changes (src/pages/HomePage.css):**
+- Added 20px padding and `box-sizing: border-box` to `.hero-medallion` for breathing room
+- Increased gap from 4px to 10px in `.medallion-content` for better text spacing
+- Added `line-height: 1.4` to both `.medallion-label` and `.medallion-year` for comfortable reading
+- Made `.medallion-label` a flex column with 4px gap to properly stack emoji and text
+- Added `text-align: center` to `.medallion-content` for centered display
+
+**Year Display Logic (already correct):**
+- Homepage uses `shopify_created_at` from profile API as primary source
+- Falls back to `created_at` if Shopify date unavailable
+- Only defaults to 2023 if both fields are missing
+- Profile API correctly returns `shopify_created_at` field from database
+
+**Outcome:** Medallion now correctly displays user's dominant flavor community ("🍯 SWEET ENTHUSIAST" instead of "TASTE TESTER") with improved spacing and readability. Member year displays actual Shopify account creation year (e.g., "Since 2017") instead of hardcoded fallback. The personalized hero section is now fully integrated with the guidance system's flavor community classification.
