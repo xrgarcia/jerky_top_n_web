@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 import { useProducts } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import PersonalizedGuidance from '../components/personalized/PersonalizedGuidance';
-import './ProductsPage.css';
+import './FlavorIndexPage.css';
 
-function ProductsPage() {
+function FlavorIndexPage() {
   const [search, setSearch] = useState('');
   const [sort, setSort] = useState('name');
   const [animal, setAnimal] = useState('');
@@ -115,4 +115,4 @@ function ProductsPage() {
   );
 }
 
-export default ProductsPage;
+export default FlavorIndexPage;

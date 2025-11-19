@@ -50,7 +50,7 @@ export default function MobileNavDrawer({ isOpen, onClose }) {
             Home
           </Link>
           <Link to="/flavors" className="mobile-nav-link" onClick={onClose}>
-            Flavors
+            Flavor Index
           </Link>
           {isAuthenticated && (
             <Link to="/rank" className="mobile-nav-link" onClick={onClose}>

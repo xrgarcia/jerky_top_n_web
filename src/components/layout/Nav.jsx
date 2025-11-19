@@ -107,7 +107,7 @@ function Nav() {
             Home
           </Link>
           <Link to="/flavors" className={`nav-link ${isActive('/flavors')}`}>
-            Flavors
+            Flavor Index
           </Link>
           {isAuthenticated && (
             <Link to="/rank" className={`nav-link ${isActive('/rank')}`}>

@@ -15,7 +15,7 @@ import './AppLayout.css';
 import '../../styles/toast.admin.css';
 
 const HomePage = lazy(() => import('../../pages/HomePage'));
-const ProductsPage = lazy(() => import('../../pages/ProductsPage'));
+const FlavorIndexPage = lazy(() => import('../../pages/FlavorIndexPage'));
 const ProductDetailPage = lazy(() => import('../../pages/ProductDetailPage'));
 const FlavorProfilePage = lazy(() => import('../../pages/FlavorProfilePage'));
 const CoinBookPage = lazy(() => import('../../pages/CoinBookPage'));
@@ -88,8 +88,8 @@ function AppLayout() {
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/flavors" element={<ProductsPage />} />
-            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/flavors" element={<FlavorIndexPage />} />
+            <Route path="/products" element={<FlavorIndexPage />} />
             <Route path="/products/:productId" element={<RedirectToFlavor />} />
             <Route path="/flavors/:id" element={<FlavorRouter />} />
             <Route path="/login" element={<LoginPage />} />
