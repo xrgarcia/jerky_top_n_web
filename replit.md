@@ -88,3 +88,25 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - All elements gracefully degrade when data is unavailable
 
 **Outcome:** Player card displays all four personalized elements from a single unified API call, eliminating the failing profile API dependency. The flavor journey description provides narrative context for the user's flavor community membership.
+
+### Flavor Index Renaming (November 19, 2025)
+**Status:** Production-ready
+
+**Problem:** The main catalog page was labeled "FLAVORS" in navigation, but this created ambiguity with individual flavor profile pages (e.g., "/flavors/sweet", "/flavors/spicy"). Clear disambiguation was needed.
+
+**Solution:** Renamed "FLAVORS" to "Flavor Index" throughout the application to clarify that it's the main browsable catalog of all flavors.
+
+**Changes:**
+- **Navigation:** Updated Nav.jsx and MobileNavDrawer.jsx to display "Flavor Index" instead of "Flavors"
+- **Files Renamed:**
+  - `src/pages/ProductsPage.jsx` → `src/pages/FlavorIndexPage.jsx`
+  - `src/pages/ProductsPage.css` → `src/pages/FlavorIndexPage.css`
+- **Component Updates:** Updated component name from `ProductsPage` to `FlavorIndexPage`
+- **Routes:** Updated AppLayout.jsx imports and routes (kept `/flavors` and `/products` URLs for backward compatibility)
+
+**Terminology:**
+- **"Flavor Index"** = Main catalog page listing all available flavors at `/flavors`
+- **"Flavor Profile Pages"** = Individual flavor type pages at `/flavors/{flavor-name}` (e.g., sweet, spicy)
+- **"Product Detail Pages"** = Individual product pages at `/flavors/{product-id}`
+
+**Outcome:** Clear, unambiguous naming convention that distinguishes the main catalog from individual flavor pages, improving communication and reducing confusion during development and planning.
