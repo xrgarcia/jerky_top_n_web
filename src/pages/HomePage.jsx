@@ -46,7 +46,8 @@ function HomePage() {
   // Map journey stages to display titles for badge
   const journeyTitleMap = {
     'new_user': 'TASTE EXPLORER',
-    'active_user': 'FLAVOR ENTHUSIAST',
+    'exploring': 'TASTE EXPLORER',
+    'engaged': 'FLAVOR ENTHUSIAST',
     'power_user': 'FLAVOR MASTER',
     'dormant': 'RETURNING RANKER'
   };
