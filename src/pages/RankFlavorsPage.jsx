@@ -13,7 +13,6 @@ import { renderAchievementIcon } from '../utils/iconUtils';
 import { RankSlot } from '../components/rankflavors/RankSlot';
 import { DraggableProduct } from '../components/rankflavors/DraggableProduct';
 import { RankingModal } from '../components/rankflavors/RankingModal';
-import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './RankFlavorsPage.css';
 
 /**
@@ -605,7 +604,7 @@ Continue?`;
       }}
     >
       <div className="rank-page">
-        {/* Hero Section - Dark background with collapsed Coin Book */}
+        {/* Hero Section */}
         <section className="rank-hero">
           <div className="hero-background">
             <div className="hero-glow"></div>
@@ -615,22 +614,6 @@ Continue?`;
               <h1 className="hero-title">Your Flavor Rankings</h1>
               <p className="hero-subtitle">
                 Rank the jerky you've tasted. Unlock achievements. Discover your taste profile.
-              </p>
-            </div>
-            <CoinBookWidget defaultCollapsed={true} />
-          </div>
-        </section>
-
-        {/* Introduction Section - Explains ranking */}
-        <section className="rank-introduction">
-          <div className="rank-container">
-            <div className="intro-content">
-              <h2 className="intro-title">START RANKING</h2>
-              <p className="intro-text">
-                Every jerky has a story. Every ranking reveals your taste. Drag flavors from your purchased products into your personal top list and watch your collection grow—each choice earns coins, unlocks achievements, and helps you discover what makes your palate unique.
-              </p>
-              <p className="intro-text">
-                Your rankings are yours alone. Reorder anytime. The more you rank, the more you unlock—from Flavor Coins to Master Collection achievements. Start with your favorites, then explore the rest.
               </p>
             </div>
           </div>
