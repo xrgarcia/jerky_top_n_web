@@ -611,7 +611,7 @@ Continue?`;
           </div>
           <div className="rank-hero-container">
             <div className="hero-intro">
-              <h1 className="hero-title">Your Flavor Rankings</h1>
+              <h1 className="hero-title">Rank Your Flavors</h1>
               <p className="hero-subtitle">
                 Drag to reorder. Your rankings fuel the Flavor Index.
               </p>
