@@ -75,9 +75,16 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **Data Flow:**
 1. Frontend requests `/api/gamification/user-guidance?page=general`
-2. Backend returns:
+2. Backend returns complete player card data:
    - `classification.journeyStage` → Journey stage badge (e.g., "TASTE EXPLORER")
-   - `dominantCommunity` → Flavor community medallion (e.g., "🍯 SWEET ENTHUSIAST")
+   - `dominantCommunity.name` + `dominantCommunity.icon` → Flavor community medallion (e.g., "🌎 EXOTIC ENTHUSIAST")
+   - `dominantCommunity.description` → Flavor journey text (e.g., "You're on the Exotic flavor journey!")
    - `shopify_created_at` → Member year (e.g., "Since 2017")
 
-**Outcome:** Player card gets all data from guidance API in one unified response, eliminating failing profile API dependency.
+**UI Elements:**
+- Journey stage badge appears next to username
+- Flavor journey description appears below username (when available)
+- Flavor community medallion shows icon + name with member year
+- All elements gracefully degrade when data is unavailable
+
+**Outcome:** Player card displays all four personalized elements from a single unified API call, eliminating the failing profile API dependency. The flavor journey description provides narrative context for the user's flavor community membership.

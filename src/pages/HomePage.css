@@ -52,6 +52,15 @@
   letter-spacing: 1px;
 }
 
+.hero-flavor-journey {
+  font-size: var(--font-size-body-small);
+  font-weight: 500;
+  color: var(--rank-text-body);
+  line-height: 1.5;
+  margin: 8px 0 0 0;
+  opacity: 0.9;
+}
+
 .hero-subtitle {
   font-size: var(--font-size-body-default);
   color: var(--rank-text-body);

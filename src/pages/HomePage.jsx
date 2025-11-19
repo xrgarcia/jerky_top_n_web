@@ -54,6 +54,7 @@ function HomePage() {
   
   // Get flavor community from guidance (now includes formatted dominantCommunity)
   const primaryCommunity = guidance?.dominantCommunity || null;
+  const flavorJourney = primaryCommunity?.description || null;
   
   // Get Shopify account creation year from guidance (includes user data)
   const shopifyCreatedAt = guidance?.shopify_created_at;
@@ -79,6 +80,9 @@ function HomePage() {
                   {user?.displayName || 'Customer'}
                   <span className="hero-title-badge">{userTitle}</span>
                 </h1>
+                {flavorJourney && (
+                  <p className="hero-flavor-journey">{flavorJourney}</p>
+                )}
                 <div className="hero-collection-progress">
                   <div className="collection-bar-container">
                     <div className="collection-bar-background">
