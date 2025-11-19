@@ -55,11 +55,11 @@ function HomePage() {
   // Get flavor community from guidance (now includes formatted dominantCommunity)
   const primaryCommunity = guidance?.dominantCommunity || null;
   
-  // Get Shopify account creation year
-  const shopifyCreatedAt = profile?.shopify_created_at;
+  // Get Shopify account creation year from guidance (includes user data)
+  const shopifyCreatedAt = guidance?.shopify_created_at;
   const memberSinceYear = shopifyCreatedAt 
     ? new Date(shopifyCreatedAt).getFullYear() 
-    : (profile?.created_at ? new Date(profile.created_at).getFullYear() : 2023);
+    : 2023;
 
   // Get user's top 3 personal ranked products
   const myTop3 = isAuthenticated && rankedProducts ? rankedProducts.slice(0, 3) : [];

@@ -1084,11 +1084,21 @@ function createGamificationRoutes(services) {
       // Get page context from query parameter (rank, products, community, coinbook, general)
       const pageContext = req.query.page || 'general';
       
-      // CACHE-FIRST ARCHITECTURE: Try to read from cache
+      // Fetch user data for player card (shopify_created_at)
       const { primaryDb } = require('../db-primary');
-      const { userGuidanceCache } = require('../../shared/schema');
+      const { users, userGuidanceCache } = require('../../shared/schema');
       const { eq, and } = require('drizzle-orm');
       
+      const [user] = await primaryDb
+        .select({
+          shopify_created_at: users.shopifyCreatedAt,
+          created_at: users.createdAt
+        })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+      
+      // CACHE-FIRST ARCHITECTURE: Try to read from cache
       const cached = await primaryDb
         .select()
         .from(userGuidanceCache)
@@ -1117,6 +1127,7 @@ function createGamificationRoutes(services) {
           },
           stats: guidanceData.stats,
           dominantCommunity: guidanceData.dominantCommunity,
+          shopify_created_at: user?.shopify_created_at || user?.created_at || null,
           cached: true,
           calculatedAt: cacheEntry.calculatedAt
         });
@@ -1137,6 +1148,7 @@ function createGamificationRoutes(services) {
         },
         stats: guidance.stats,
         dominantCommunity: guidance.dominantCommunity,
+        shopify_created_at: user?.shopify_created_at || user?.created_at || null,
         cached: false
       });
     } catch (error) {

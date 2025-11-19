@@ -54,3 +54,30 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Real-time:** Socket.IO.
 - **Email:** Custom SMTP service using nodemailer.
 - **Object Storage:** Replit Object Storage (Google Cloud Storage).
+## Recent Changes
+
+### Player Card Unified Data Source (November 19, 2025)
+**Status:** Production-ready
+
+**Problem:** Homepage player card displayed three pieces of data from different API endpoints - journey stage and flavor community from guidance API, but member year from profile API (which was failing and returning undefined).
+
+**Solution:** Consolidated all player card data into the guidance API as the single source of truth.
+
+**Backend Changes (server/routes/gamification.js):**
+- Added `shopify_created_at` field to `/api/gamification/user-guidance` response
+- Fetches user data (shopify_created_at, created_at) from users table
+- Returns `shopify_created_at` in both cache hit and cache miss code paths
+- Falls back to `created_at` if shopify_created_at is null
+
+**Frontend Changes (src/pages/HomePage.jsx):**
+- Changed member year calculation to use `guidance?.shopify_created_at` instead of `profile?.shopify_created_at`
+- Removed dependency on profile API for player card data
+
+**Data Flow:**
+1. Frontend requests `/api/gamification/user-guidance?page=general`
+2. Backend returns:
+   - `classification.journeyStage` → Journey stage badge (e.g., "TASTE EXPLORER")
+   - `dominantCommunity` → Flavor community medallion (e.g., "🍯 SWEET ENTHUSIAST")
+   - `shopify_created_at` → Member year (e.g., "Since 2017")
+
+**Outcome:** Player card gets all data from guidance API in one unified response, eliminating failing profile API dependency.
