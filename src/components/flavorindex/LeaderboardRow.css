@@ -1,0 +1,148 @@
+.leaderboard-row {
+  background: var(--rank-neutral-850);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 12px;
+  padding: 20px 24px;
+  display: grid;
+  grid-template-columns: 300px 1fr 100px;
+  align-items: center;
+  gap: 32px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.leaderboard-row:hover {
+  background: var(--rank-neutral-900);
+  border-color: rgba(255, 138, 43, 0.3);
+  box-shadow: 0 4px 20px rgba(255, 138, 43, 0.1);
+  transform: translateX(4px);
+}
+
+.leaderboard-row::after {
+  content: 'View full breakdown →';
+  position: absolute;
+  right: 24px;
+  bottom: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  color: var(--rank-gold);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  text-transform: uppercase;
+  font-family: var(--rank-font-mono);
+}
+
+.leaderboard-row:hover::after {
+  opacity: 1;
+}
+
+.mini-flavor-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.flavor-coin {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.15) 0%, rgba(255, 196, 106, 0.15) 100%);
+  border: 2px solid rgba(255, 138, 43, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.flavor-coin-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flavor-coin-placeholder {
+  font-size: 28px;
+}
+
+.flavor-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.flavor-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--rank-text-white);
+  letter-spacing: 0.3px;
+}
+
+.meat-type {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--rank-gold);
+  font-family: var(--rank-font-mono);
+}
+
+.distribution-zone {
+  display: flex;
+  align-items: center;
+}
+
+.no-rankings-message {
+  font-size: 13px;
+  color: var(--rank-neutral-400);
+  font-style: italic;
+}
+
+.rank-number {
+  text-align: right;
+  font-size: 32px;
+  font-weight: 900;
+  font-family: var(--rank-font-mono);
+  color: var(--rank-text-white);
+  letter-spacing: -1px;
+}
+
+.rank-number.top-3 {
+  background: linear-gradient(135deg, var(--rank-amber) 0%, var(--rank-gold) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@media (max-width: 1024px) {
+  .leaderboard-row {
+    grid-template-columns: 1fr 80px;
+    gap: 16px;
+  }
+
+  .distribution-zone {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .leaderboard-row {
+    padding: 16px;
+  }
+
+  .mini-flavor-card {
+    gap: 12px;
+  }
+
+  .flavor-coin {
+    width: 48px;
+    height: 48px;
+  }
+
+  .rank-number {
+    font-size: 24px;
+  }
+}

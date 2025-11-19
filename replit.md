@@ -110,3 +110,58 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **"Product Detail Pages"** = Individual product pages at `/flavors/{product-id}`
 
 **Outcome:** Clear, unambiguous naming convention that distinguishes the main catalog from individual flavor pages, improving communication and reducing confusion during development and planning.
+
+### Flavor Index Leaderboard Redesign (November 19, 2025)
+**Status:** Production-ready
+
+**Objective:** Transform Flavor Index from traditional product grid to dark, gaming-inspired leaderboard layout showing community rankings with distribution bars.
+
+**Backend Changes (server/services/ProductsService.js):**
+- **_getRankingStats()**: Extended to calculate ranking distribution percentages (% ranked 1st/2nd/3rd place) alongside existing count/avg_rank stats
+- **_calculateCommunityRanks()**: New method assigns community rank positions (#1, #2, #3, etc.) by sorting products by avgRank ascending
+- **_getTopByCategory()**: New method identifies the top-ranked product for each animal category (beef, turkey, pork, etc.)
+- All calculations use existing RankingStatsCache with lazy loading pattern
+
+**API Changes (server.js /api/products):**
+- Enriches all products with `communityRank` field (null for unranked products)
+- Returns `topByCategory` object mapping animal types to their top products
+- Response structure: `{ products: [], topByCategory: {}, total, page, limit }`
+
+**Frontend Components:**
+- **LeaderboardRow** (src/components/flavorindex/): Product row with flavor coin image, product name, animal type, distribution bar, and rank badge (#1, #2, #3 with gold gradient for top 3)
+- **DistributionBar** (src/components/flavorindex/): Horizontal stacked bar chart showing % of users who ranked product 1st/2nd/3rd with legend; gold gradient for 1st, lighter for 2nd/3rd
+- **CategorySummaryGrid** (src/components/flavorindex/): Grid of cards showing top product per category with animal icon and name
+
+**Page Redesign (src/pages/FlavorIndexPage.jsx):**
+- Hero section: "FLAVOR INDEX" title with gold gradient + "Every flavor, ranked by the community" subtitle
+- Filter bar: Category dropdown, Sort dropdown (Community Rank default, Title option), search field
+- Client-side sorting: Rank sort places unranked products (communityRank=null) at bottom, not filtered out
+- Leaderboard section: Vertical stack of LeaderboardRow components
+- Category summaries section: CategorySummaryGrid below leaderboard
+
+**Styling (src/pages/FlavorIndexPage.css):**
+- Dark theme: #0F0F0F backgrounds, #1A1A1A cards
+- Gold gradient accents: --rank-gold (#FFD873) to --rank-amber (#FF8A2B)
+- Typography: RANK Identity System fonts (Manrope, Inter, IBM Plex Mono)
+- Responsive breakpoints: Desktop (3-column filter bar) → Tablet (stacked filters) → Mobile (single column)
+- Interactive states: Hover glows on cards, translateY transforms, border color transitions
+
+**Data Flow:**
+1. Frontend requests `/api/products?sort=rank&animal=&search=`
+2. Backend fetches products, calculates community ranks & top-by-category
+3. Products enriched with communityRank field, topByCategory attached to response
+4. Frontend client-side sorts (nulls last for rank sort), maps to LeaderboardRow components
+5. Distribution bars show ranking percentages from distribution stats
+
+**Edge Cases Handled:**
+- Products with no rankings: Show "No rankings yet" placeholder in distribution zone
+- Unranked products: Displayed at bottom when sorted by Community Rank (not filtered out)
+- Empty categories: topByCategory gracefully handles missing data
+- Loading/error states: Consistent messaging matching RANK design system
+
+**Performance:**
+- RankingStatsCache: 30-minute TTL, lazy-loaded on first request
+- Community ranks & top-by-category: Calculated on-demand per API request (no separate cache yet)
+- Client-side sorting: useMemo ensures efficient re-renders
+
+**Outcome:** Flavor Index transformed into engaging leaderboard experience highlighting community consensus. Distribution bars provide transparency into ranking spread. Top-by-category summaries surface category winners. Dark, premium aesthetic matches RANK Identity System. All flavors remain visible (unranked at bottom), fulfilling "Every flavor" promise.

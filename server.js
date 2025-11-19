@@ -1569,10 +1569,16 @@ app.get('/api/products/all', async (req, res) => {
       includeRankingStats: true
     });
     
+    // Calculate community ranks (#1, #2, #3, etc.) for Flavor Index leaderboard
+    const rankedProducts = productsService._calculateCommunityRanks(enrichedProducts);
+    
+    // Get top products by category for Flavor Index category summaries
+    const topByCategory = productsService._getTopByCategory(rankedProducts);
+    
     // Log search asynchronously (non-blocking)
     if (query && query.trim()) {
       const searchTerm = query.trim();
-      const resultCount = enrichedProducts.length;
+      const resultCount = rankedProducts.length;
       
       // Try to get userId from session
       let userId = null;
@@ -1595,8 +1601,9 @@ app.get('/api/products/all', async (req, res) => {
     }
     
     res.json({ 
-      products: enrichedProducts,
-      total: enrichedProducts.length
+      products: rankedProducts,
+      total: rankedProducts.length,
+      topByCategory
     });
     
   } catch (error) {
@@ -2043,6 +2050,12 @@ app.get('/api/products', async (req, res) => {
       products.sort((a, b) => a.title.localeCompare(b.title));
     }
     
+    // Calculate community ranks (returns products array with communityRank field set)
+    products = await productsService._calculateCommunityRanks(products);
+    
+    // Calculate top products by category (uses products with communityRank already set)
+    const topByCategory = await productsService._getTopByCategory(products);
+    
     // Calculate pagination
     const pageNum = parseInt(page, 10);
     const limitNum = parseInt(limit, 10);
@@ -2132,6 +2145,7 @@ app.get('/api/products', async (req, res) => {
     
     res.json({
       products: paginatedProducts,
+      topByCategory,
       total,
       page: pageNum,
       limit: limitNum

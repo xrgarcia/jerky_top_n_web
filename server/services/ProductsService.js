@@ -142,20 +142,37 @@ class ProductsService {
           AVG(ranking) as avg_rank,
           MIN(ranking) as best_rank,
           MAX(ranking) as worst_rank,
-          MAX(created_at) as last_ranked_at
+          MAX(created_at) as last_ranked_at,
+          COUNT(CASE WHEN ranking = 1 THEN 1 END) as count_1st,
+          COUNT(CASE WHEN ranking = 2 THEN 1 END) as count_2nd,
+          COUNT(CASE WHEN ranking = 3 THEN 1 END) as count_3rd
         FROM product_rankings
         GROUP BY shopify_product_id
       `);
       
       const rankingStats = {};
       results.rows.forEach(row => {
+        const totalCount = parseInt(row.count);
+        const count1st = parseInt(row.count_1st) || 0;
+        const count2nd = parseInt(row.count_2nd) || 0;
+        const count3rd = parseInt(row.count_3rd) || 0;
+        
         rankingStats[row.shopify_product_id] = {
-          count: parseInt(row.count),
+          count: totalCount,
           uniqueRankers: parseInt(row.unique_rankers),
           avgRank: row.avg_rank ? parseFloat(row.avg_rank) : null,
           bestRank: row.best_rank ? parseInt(row.best_rank) : null,
           worstRank: row.worst_rank ? parseInt(row.worst_rank) : null,
-          lastRankedAt: row.last_ranked_at
+          lastRankedAt: row.last_ranked_at,
+          // Ranking distribution for Flavor Index leaderboard
+          distribution: {
+            count1st,
+            count2nd,
+            count3rd,
+            pct1st: totalCount > 0 ? (count1st / totalCount) * 100 : 0,
+            pct2nd: totalCount > 0 ? (count2nd / totalCount) * 100 : 0,
+            pct3rd: totalCount > 0 ? (count3rd / totalCount) * 100 : 0
+          }
         };
       });
       
@@ -249,7 +266,15 @@ class ProductsService {
       avgRank: null,
       bestRank: null,
       worstRank: null,
-      lastRankedAt: null 
+      lastRankedAt: null,
+      distribution: {
+        count1st: 0,
+        count2nd: 0,
+        count3rd: 0,
+        pct1st: 0,
+        pct2nd: 0,
+        pct3rd: 0
+      }
     };
     
     // Get metadata or default values
@@ -280,6 +305,7 @@ class ProductsService {
       bestRank: stats.bestRank,
       worstRank: stats.worstRank,
       lastRankedAt: stats.lastRankedAt,
+      distribution: stats.distribution,
       animalType: metadata.animalType,
       animalDisplay: metadata.animalDisplay,
       animalIcon: metadata.animalIcon,
@@ -343,6 +369,60 @@ class ProductsService {
       console.log(`🎯 User ${userId}: ${allProducts.length} total, ${rankedProductIds.length} ranked, ${unrankedProducts.length} available to rank ${reason}`);
       return unrankedProducts;
     }
+  }
+  
+  /**
+   * Calculate community rank positions for products (#1, #2, #3, etc.)
+   * Sorted by avgRank (lower is better), with products that have no rankings at the end
+   * @param {Array} products - Products to rank
+   * @returns {Array} Products with communityRank field added
+   */
+  _calculateCommunityRanks(products) {
+    // Separate products with rankings from products without rankings
+    const productsWithRankings = products.filter(p => p.avgRank !== null && p.rankingCount > 0);
+    const productsWithoutRankings = products.filter(p => p.avgRank === null || p.rankingCount === 0);
+    
+    // Sort products with rankings by avgRank (lower is better)
+    const sorted = productsWithRankings.sort((a, b) => {
+      if (a.avgRank === null) return 1;
+      if (b.avgRank === null) return -1;
+      return a.avgRank - b.avgRank;
+    });
+    
+    // Assign community rank positions
+    const rankedProducts = sorted.map((product, index) => ({
+      ...product,
+      communityRank: index + 1
+    }));
+    
+    // Add unranked products at the end without a community rank
+    const allProducts = [...rankedProducts, ...productsWithoutRankings.map(p => ({ ...p, communityRank: null }))];
+    
+    console.log(`🏆 Assigned community ranks to ${rankedProducts.length} products with rankings`);
+    return allProducts;
+  }
+  
+  /**
+   * Get top-ranked product for each animal category
+   * @param {Array} products - Products with community ranks
+   * @returns {Object} Map of animalType -> top product
+   */
+  _getTopByCategory(products) {
+    const topByCategory = {};
+    
+    // Only consider products with rankings
+    const rankedProducts = products.filter(p => p.avgRank !== null && p.rankingCount > 0 && p.animalType);
+    
+    // Group by animalType and find the product with lowest avgRank (best)
+    rankedProducts.forEach(product => {
+      const category = product.animalType;
+      if (!topByCategory[category] || product.avgRank < topByCategory[category].avgRank) {
+        topByCategory[category] = product;
+      }
+    });
+    
+    console.log(`📊 Found top products for ${Object.keys(topByCategory).length} categories:`, Object.keys(topByCategory).join(', '));
+    return topByCategory;
   }
   
   /**
