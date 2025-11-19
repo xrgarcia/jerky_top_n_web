@@ -689,7 +689,7 @@ Continue?`;
           
             <div className="rank-column products-column">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <h2>Rankable Flavors</h2>
+            <h2>UNRANKED FLAVORS</h2>
             {role === 'employee_admin' && rankedProducts.length > 0 && (
               <button 
                 onClick={handleForceSync}
