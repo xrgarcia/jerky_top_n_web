@@ -61,7 +61,7 @@ function HomePage() {
   const shopifyCreatedAt = guidance?.shopify_created_at;
   const memberSinceYear = shopifyCreatedAt 
     ? new Date(shopifyCreatedAt).getFullYear() 
-    : 2023;
+    : null;
 
   // Get user's top 3 personal ranked products
   const myTop3 = isAuthenticated && rankedProducts ? rankedProducts.slice(0, 3) : [];
@@ -113,14 +113,16 @@ function HomePage() {
           </div>
 
           <div className="hero-right">
-            {isAuthenticated && (
+            {isAuthenticated && primaryCommunity && (
               <div className="hero-medallion">
                 <div className="medallion-ring"></div>
                 <div className="medallion-content">
                   <span className="medallion-label">
-                    {primaryCommunity ? `${primaryCommunity.icon} ${primaryCommunity.name}` : 'Taste Tester'}
+                    {primaryCommunity.icon} {primaryCommunity.name}
                   </span>
-                  <span className="medallion-year">Since {memberSinceYear}</span>
+                  {memberSinceYear && (
+                    <span className="medallion-year">Since {memberSinceYear}</span>
+                  )}
                 </div>
               </div>
             )}
