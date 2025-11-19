@@ -613,7 +613,7 @@ Continue?`;
             <div className="hero-intro">
               <h1 className="hero-title">Your Flavor Rankings</h1>
               <p className="hero-subtitle">
-                Rank the jerky you've tasted. Unlock achievements. Discover your taste profile.
+                Drag to reorder. Your rankings fuel the Flavor Index.
               </p>
             </div>
           </div>
