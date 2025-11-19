@@ -113,12 +113,12 @@ function HomePage() {
           </div>
 
           <div className="hero-right">
-            {isAuthenticated && primaryCommunity && (
+            {isAuthenticated && (
               <div className="hero-medallion">
                 <div className="medallion-ring"></div>
                 <div className="medallion-content">
                   <span className="medallion-label">
-                    {primaryCommunity.icon} {primaryCommunity.name}
+                    {primaryCommunity ? `${primaryCommunity.icon} ${primaryCommunity.name}` : 'Taste Tester'}
                   </span>
                   {memberSinceYear && (
                     <span className="medallion-year">Since {memberSinceYear}</span>
@@ -203,7 +203,7 @@ function HomePage() {
             </div>
 
             {/* Coin Book */}
-            <div className="action-card-v2 coinbook-card" onClick={() => navigate('/coin-book')}>
+            <div className="action-card-v2 coinbook-card" onClick={() => navigate('/coinbook')}>
               <div className="coin-indicator"></div>
               <h3 className="action-card-title">Coin<br />Book</h3>
               <button className="action-card-btn">View Coins</button>
