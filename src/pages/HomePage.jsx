@@ -216,16 +216,30 @@ function HomePage() {
         <section className="bottom-widgets-section">
           <div className="bottom-widgets-grid">
             {/* Next Unlock */}
-            <div className="next-unlock-widget">
-              <h3 className="widget-heading">Next Unlock</h3>
-              <div className="unlock-card-v2">
-                <div className="unlock-icon-circle"></div>
-                <div className="unlock-details">
-                  <h4 className="unlock-name">Flavor Architect</h4>
-                  <p className="unlock-xp-remaining">5,000 XP remaining</p>
+            {nextMilestone ? (
+              <div className="next-unlock-widget">
+                <h3 className="widget-heading">Next Unlock</h3>
+                <div className="unlock-card-v2">
+                  <div className="unlock-icon-circle">
+                    {nextMilestone.achievementIconType === 'image' ? (
+                      <img 
+                        src={nextMilestone.achievementIcon} 
+                        alt={nextMilestone.achievementName}
+                        className="unlock-icon-img"
+                      />
+                    ) : (
+                      <span className="unlock-icon-emoji">{nextMilestone.achievementIcon || '🎯'}</span>
+                    )}
+                  </div>
+                  <div className="unlock-details">
+                    <h4 className="unlock-name">{nextMilestone.achievementName}</h4>
+                    <p className="unlock-xp-remaining">
+                      {nextMilestone.actionText || `${nextMilestone.remaining} more needed`}
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
+            ) : null}
 
             {/* Featured Drop */}
             <div className="featured-drop-widget">

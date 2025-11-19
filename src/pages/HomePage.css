@@ -483,6 +483,17 @@
   border: 2px solid var(--rank-tier-bronze);
 }
 
+.unlock-icon-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.unlock-icon-emoji {
+  font-size: 28px;
+  line-height: 1;
+}
+
 .featured-icon-circle {
   background: linear-gradient(135deg, rgba(255, 138, 43, 0.2) 0%, rgba(255, 138, 43, 0.05) 100%);
   border: 2px solid var(--rank-amber);
