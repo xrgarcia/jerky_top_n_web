@@ -527,17 +527,20 @@ Continue?`;
       const toPos = parseInt(overId.replace('slot-', ''));
       
       if (fromPos !== toPos && Array.isArray(rankedProducts)) {
+        // Sort rankings to get correct array indices
+        const sortedRankings = [...rankedProducts].sort((a, b) => a.ranking - b.ranking);
+        
         // Find the product at the source position
-        const fromProduct = rankedProducts.find(r => r && r.ranking === fromPos);
+        const fromProduct = sortedRankings.find(r => r && r.ranking === fromPos);
         
         if (fromProduct) {
           // Check if target position is occupied
-          const toProduct = rankedProducts.find(r => r && r.ranking === toPos);
+          const toProduct = sortedRankings.find(r => r && r.ranking === toPos);
           
           if (toProduct) {
-            // Both positions have products - swap them using reorderRankings
-            const fromIndex = rankedProducts.findIndex(r => r && r.ranking === fromPos);
-            const toIndex = rankedProducts.findIndex(r => r && r.ranking === toPos);
+            // Both positions have products - use reorderRankings for swap
+            const fromIndex = sortedRankings.findIndex(r => r && r.ranking === fromPos);
+            const toIndex = sortedRankings.findIndex(r => r && r.ranking === toPos);
             reorderRankings(fromIndex, toIndex);
           } else {
             // Target is empty - move product to that position
