@@ -54,7 +54,7 @@ export default function MobileNavDrawer({ isOpen, onClose }) {
           </Link>
           {isAuthenticated && (
             <Link to="/rank" className="mobile-nav-link" onClick={onClose}>
-              Rank
+              Rank Flavors
             </Link>
           )}
           <Link to="/coinbook" className="mobile-nav-link" onClick={onClose}>

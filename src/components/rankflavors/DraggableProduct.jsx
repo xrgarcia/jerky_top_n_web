@@ -1,0 +1,55 @@
+import { useDraggable } from '@dnd-kit/core';
+import './DraggableProduct.css';
+import './DragStyles.css';
+
+export function DraggableProduct({ product, isDragging: isBeingDragged, onRankClick }) {
+  const { attributes, listeners, setNodeRef } = useDraggable({
+    id: `product-${product.id}`,
+  });
+
+  // Keep product in place - just apply opacity via CSS when dragging
+  const style = {};
+
+  const handleRankClick = (e) => {
+    e.stopPropagation();
+    if (onRankClick) {
+      onRankClick(product);
+    }
+  };
+
+  return (
+    <div
+      ref={setNodeRef}
+      style={style}
+      className={`product-card ${isBeingDragged ? 'dragging' : ''}`}
+      {...listeners}
+      {...attributes}
+    >
+      <div className="product-image">
+        {product.image ? (
+          <img src={product.image} alt={product.title} />
+        ) : (
+          <div className="no-image">No Image</div>
+        )}
+      </div>
+      <div className="product-info">
+        <h3 className="product-name">{product.title}</h3>
+        {product.vendor && (
+          <p className="product-vendor">{product.vendor}</p>
+        )}
+        {product.price && (
+          <p className="product-price">${product.price}</p>
+        )}
+      </div>
+      {onRankClick && (
+        <button 
+          className="rank-button"
+          onClick={handleRankClick}
+          aria-label={`Rank ${product.title}`}
+        >
+          Rank This Product
+        </button>
+      )}
+    </div>
+  );
+}
