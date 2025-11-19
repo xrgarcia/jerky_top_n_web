@@ -9,6 +9,7 @@ const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
 const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
+const { ObjectStorageService, DEFAULT_COIN_ICON_PATH } = require('./server/objectStorage');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -4172,6 +4173,15 @@ const server = httpServer.listen(PORT, '0.0.0.0', async () => {
   } catch (error) {
     console.error('⚠️ Cache initialization error (continuing with fallback):', error.message);
     // Continue server startup - caches will use in-memory fallback
+  }
+  
+  // Bootstrap default coin icon
+  try {
+    const objectStorage = new ObjectStorageService();
+    await objectStorage.bootstrapDefaultCoinIcon();
+  } catch (error) {
+    console.error('⚠️ Default coin icon bootstrap error (continuing):', error.message);
+    // Continue server startup even if bootstrap fails
   }
   
   console.log('');

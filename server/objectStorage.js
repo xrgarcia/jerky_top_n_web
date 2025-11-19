@@ -4,8 +4,14 @@ const { Storage } = require('@google-cloud/storage');
 const { Client } = require('@replit/object-storage');
 const crypto = require('crypto');
 const Sentry = require('@sentry/node');
+const fs = require('fs').promises;
+const path = require('path');
 
 const REPLIT_SIDECAR_ENDPOINT = 'http://127.0.0.1:1106';
+
+// Default coin icon configuration
+const DEFAULT_COIN_ICON_PATH = '/objects/achievement-icons/default-beta-coin.png';
+const DEFAULT_COIN_ICON_SOURCE = 'attached_assets/beta_coin_default_1763580646326.png';
 
 // Lazy initialization for Replit Object Storage client
 // This prevents cold-start fetch failures during module load
@@ -182,6 +188,65 @@ class ObjectStorageService {
     return `/objects/${objectPath}`;
   }
 
+  async bootstrapDefaultCoinIcon() {
+    try {
+      console.log('🪙 Bootstrapping default coin icon...');
+      
+      // Get initialized client with retry logic
+      const client = await getReplitStorageClient();
+      
+      // Extract object path from normalized path
+      const objectPath = DEFAULT_COIN_ICON_PATH.slice('/objects/'.length);
+      
+      // Check if default icon already exists
+      try {
+        const { ok, value: files } = await client.list({ prefix: objectPath });
+        if (ok && files && files.length > 0) {
+          console.log('✅ Default coin icon already exists in storage');
+          return DEFAULT_COIN_ICON_PATH;
+        }
+      } catch (error) {
+        // Icon doesn't exist or error checking, continue with upload
+        console.log('📦 Default coin icon not found, uploading...');
+      }
+      
+      // Read the source image file
+      const sourceFilePath = path.join(process.cwd(), DEFAULT_COIN_ICON_SOURCE);
+      const imageBuffer = await fs.readFile(sourceFilePath);
+      
+      console.log(`📁 Read source image: ${sourceFilePath} (${(imageBuffer.length / 1024).toFixed(2)}KB)`);
+      
+      // Upload to fixed path (no UUID, using fixed filename)
+      const { ok, error } = await client.uploadFromBytes(objectPath, imageBuffer);
+      
+      if (!ok) {
+        throw new Error(`Failed to upload default coin icon: ${error}`);
+      }
+      
+      console.log(`✅ Default coin icon uploaded successfully: ${DEFAULT_COIN_ICON_PATH}`);
+      return DEFAULT_COIN_ICON_PATH;
+      
+    } catch (error) {
+      console.error('❌ Error bootstrapping default coin icon:', error);
+      Sentry.captureException(error, {
+        level: 'error',
+        tags: {
+          service: 'object_storage',
+          operation: 'bootstrap_default_coin_icon'
+        },
+        extra: {
+          errorMessage: error.message,
+          defaultIconPath: DEFAULT_COIN_ICON_PATH,
+          sourceFile: DEFAULT_COIN_ICON_SOURCE
+        }
+      });
+      
+      // Don't throw - allow server to start even if bootstrap fails
+      console.warn('⚠️ Server will continue without default coin icon');
+      return null;
+    }
+  }
+
   async getObjectEntityFile(objectPath) {
     if (!objectPath.startsWith('/objects/')) {
       throw new ObjectNotFoundError();
@@ -330,4 +395,6 @@ async function signObjectURL({ bucketName, objectName, method, ttlSec }) {
 module.exports = {
   ObjectStorageService,
   ObjectNotFoundError,
+  DEFAULT_COIN_ICON_PATH,
+  DEFAULT_COIN_ICON_SOURCE,
 };

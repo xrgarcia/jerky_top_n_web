@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import toast from 'react-hot-toast';
 import { renderAchievementIcon } from '../../utils/iconUtils';
+import { DEFAULT_COIN_ICON_PATH } from '../../constants/coinDefaults';
 import './EditCoinModal.css';
 
 function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProducts = [], allUsers = [] }) {
@@ -158,10 +159,11 @@ function EditCoinModal({ coin, isOpen, onClose, onSave, allCoins = [], allProduc
     setDescription('');
     setPoints(100);
     setIsActive(1);
-    setIconType('emoji');
-    setIcon('🏆');
+    // Set default beta coin image for new coins
+    setIconType('image');
+    setIcon(DEFAULT_COIN_ICON_PATH);
     setIconFile(null);
-    setIconPreview(null);
+    setIconPreview(DEFAULT_COIN_ICON_PATH);
     setCollectionType('engagement_collection');
     setCategory('');
     setIsHidden(0);
