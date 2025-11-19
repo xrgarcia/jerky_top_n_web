@@ -176,7 +176,13 @@ class ProductsService {
         };
       });
       
-      console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products`);
+      console.log(`📊 Found ranking stats for ${Object.keys(rankingStats).length} products WITH distribution data`);
+      
+      // Log sample distribution to verify it exists
+      const sampleId = Object.keys(rankingStats)[0];
+      if (sampleId) {
+        console.log(`📊 Sample distribution for product ${sampleId}:`, rankingStats[sampleId].distribution);
+      }
       
       // Store in cache
       await this.rankingStatsCache.set(rankingStats);
