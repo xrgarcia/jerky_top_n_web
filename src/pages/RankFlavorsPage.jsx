@@ -6,6 +6,7 @@ import { useRanking } from '../hooks/useRanking';
 import { useRankingCommentary } from '../hooks/useRankingCommentary';
 import { useCollectionProgress } from '../hooks/useCollectionProgress';
 import { useSocket } from '../hooks/useSocket';
+import { useCoinBookWebSocket } from '../hooks/useCoinBookWebSocket';
 import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
 import { addBreadcrumb, captureError } from '../utils/sentry';
@@ -63,6 +64,7 @@ function pointerClosestCenter(args) {
 export default function RankFlavorsPage() {
   const queryClient = useQueryClient();
   const { socket } = useSocket();
+  useCoinBookWebSocket(); // Listen for achievement notifications
   const { role } = useAuthStore();
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
