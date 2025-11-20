@@ -10,6 +10,7 @@ const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
 const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
 const { ObjectStorageService, DEFAULT_COIN_ICON_PATH } = require('./server/objectStorage');
+const { debounce } = require('./server/utils/debounce');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -2813,13 +2814,10 @@ app.post('/api/rankings/products', async (req, res) => {
           }
           
           // Broadcast progress update via WebSocket to refresh "Your Progress" section
-          if (gamificationServices?.wsGateway) {
-            const { getRoomName } = require('./server/websocket/gateway');
-            io.to(getRoomName(`user:${userId}`)).emit('gamification:progress:updated', {
-              userId,
-              timestamp: new Date().toISOString()
-            });
-            console.log(`📊 Progress update emitted for user ${userId}`);
+          // Uses debounced emitter to prevent race conditions during rapid ranking
+          const emitProgressUpdate = app.get('emitProgressUpdate');
+          if (emitProgressUpdate) {
+            emitProgressUpdate(userId);
           }
         } catch (gamificationError) {
           console.error('Error processing gamification:', gamificationError);
@@ -4317,6 +4315,20 @@ if (databaseAvailable && storage) {
     gamificationServices = services;
     app.set('gamificationServices', services);
     console.log('✅ Gamification services available for achievements');
+    
+    // Create debounced progress update emitter (500ms debounce per user)
+    // This prevents race conditions when users rank multiple products rapidly
+    const { getRoomName } = require('./server/websocket/gateway');
+    const emitProgressUpdate = debounce((userId) => {
+      io.to(getRoomName(`user:${userId}`)).emit('gamification:progress:updated', {
+        userId,
+        timestamp: new Date().toISOString()
+      });
+      console.log(`📊 Debounced progress update emitted for user ${userId}`);
+    }, 500);
+    
+    // Store debounced emitter on app for use in ranking handlers
+    app.set('emitProgressUpdate', emitProgressUpdate);
     
     // Mount profile routes
     const createProfileRoutes = require('./server/routes/profile');

@@ -70,13 +70,15 @@ class ProgressCache {
    * Set progress data in cache for a user
    * @param {number} userId - User ID
    * @param {Object} progress - Progress object with milestone data
+   * @param {number} ttlSeconds - Optional TTL in seconds (defaults to 5 minutes)
    */
-  async set(userId, progress) {
+  async set(userId, progress, ttlSeconds = null) {
     try {
       const key = this.getCacheKey(userId);
       const serialized = JSON.stringify(progress);
-      await this.cache.set(key, serialized, this.TTL);
-      console.log(`✅ ProgressCache SET: user ${userId}`);
+      const ttl = ttlSeconds !== null ? ttlSeconds : this.TTL;
+      await this.cache.set(key, serialized, ttl);
+      console.log(`✅ ProgressCache SET: user ${userId} (TTL: ${ttl}s)`);
     } catch (error) {
       console.error('❌ ProgressCache SET error:', error.message);
     }

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ProductRankingRepository = require('../repositories/ProductRankingRepository');
 const { formatAchievementPayload } = require('../utils/achievementIconFormatter');
+const ProgressCache = require('../cache/ProgressCache');
 
 /**
  * Gamification API Routes
@@ -21,6 +22,9 @@ function createGamificationRoutes(services) {
     userStatsAggregator,
     commentaryService
   } = services;
+  
+  // Initialize short-lived progress cache for race condition prevention
+  const progressCache = ProgressCache.getInstance();
 
   router.get('/achievements', async (req, res) => {
     let userId = null;
@@ -132,6 +136,16 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
 
+      // Check cache first (prevents race condition during rapid ranking)
+      const cached = await progressCache.get(userId);
+      if (cached) {
+        console.log(`💾 Progress cache HIT for user ${userId} (prevents race condition)`);
+        return res.json(cached);
+      }
+
+      // Cache miss - fetch fresh data
+      console.log(`🔄 Progress cache MISS for user ${userId}, fetching from DB...`);
+
       // Get total rankable products count for dynamic milestones
       const { products } = await services.fetchAllShopifyProducts();
       const totalCatalog = products.length;
@@ -165,7 +179,12 @@ function createGamificationRoutes(services) {
         totalCatalog
       };
 
-      res.json({ progress: enrichedProgress, insights });
+      const response = { progress: enrichedProgress, insights };
+
+      // Cache for 3 seconds (short TTL prevents race condition without stale data)
+      await progressCache.set(userId, response, 3);
+
+      res.json(response);
     } catch (error) {
       console.error('Error fetching progress:', error);
       res.status(500).json({ error: 'Failed to fetch progress' });
