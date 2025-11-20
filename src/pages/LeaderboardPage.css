@@ -23,10 +23,10 @@
 }
 
 .page-title {
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  font-family: var(--font-headline);
+  font-size: var(--font-h1-size);
+  font-weight: var(--font-h1-weight);
+  letter-spacing: var(--font-h1-letter-spacing);
   text-transform: uppercase;
   background: linear-gradient(135deg, #f4e4b0 0%, #c4a962 50%, #f4e4b0 100%);
   -webkit-background-clip: text;
@@ -86,16 +86,16 @@
 }
 
 .vault-title {
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 1.75rem;
-  font-weight: 800;
+  font-family: var(--font-headline);
+  font-size: var(--font-h2-size);
+  font-weight: var(--font-h2-weight); /* Option A: 600 */
   background: linear-gradient(135deg, #c9a86a, #ffc46a);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
   margin-bottom: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.1em; /* Intentional override for stylistic effect */
 }
 
 .vault-subtitle {
@@ -197,7 +197,7 @@
 .rank-badge {
   font-family: 'Courier New', monospace;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: var(--font-stat-large-weight); /* Option A: 700 for stats */
   margin-bottom: 1rem;
   text-shadow: 0 0 16px currentColor;
 }
@@ -296,7 +296,7 @@
 }
 
 .vault-slot .avatar-initials {
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
   font-weight: 700;
   font-size: 2.5rem;
   color: #fff;
@@ -310,7 +310,7 @@
 .vault-xp {
   font-family: 'Courier New', monospace;
   font-size: 1.125rem;
-  font-weight: 700;
+  font-weight: var(--font-stat-medium-weight); /* Option A: 600 for stats */
   color: #f5f5f5;
   margin-bottom: 0.625rem;
 }
@@ -361,15 +361,15 @@
   background: none;
   border: none;
   color: rgba(255, 255, 255, 0.4);
-  font-size: 0.9375rem;
-  font-weight: 700;
+  font-size: var(--font-tab-size); /* Option A: 15px */
+  font-weight: var(--font-tab-weight); /* Option A: 500 */
   padding: 1rem 0;
   cursor: pointer;
   position: relative;
   transition: color 0.2s;
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.05em; /* Intentional override for uppercase badge look */
 }
 
 .leaderboard-tabs .tab:hover {
@@ -439,9 +439,9 @@
 /* Rank Number */
 .lb-rank {
   font-family: 'Courier New', monospace;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #ff8a2b;
+  font-size: var(--font-rank-number-size); /* Option A: 20px (18-22px range) */
+  font-weight: var(--font-rank-number-weight); /* Option A: 700 */
+  color: var(--font-rank-number-color); /* Option A: #FFC46A */
   min-width: 60px;
   text-align: center;
 }
@@ -471,7 +471,7 @@
 }
 
 .lb-avatar .avatar-initials {
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
   font-weight: 700;
   font-size: 1.25rem;
   color: #fff;
@@ -485,10 +485,10 @@
 
 .lb-username {
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--font-body-medium-weight); /* Option A: 500 for medium body text */
   color: #f5f5f5;
   margin-bottom: 0.25rem;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-body);
 }
 
 .lb-role {
