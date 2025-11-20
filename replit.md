@@ -22,10 +22,10 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Frontend:** React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client, with route-based lazy loading and manual vendor chunking.
 - **Backend:** Node.js and Express.js, employing a repository pattern.
 - **Data Layer:** Centralized API client with httpOnly cookie-based session management, React Query hooks, and WebSocket integration.
-- **Real-time Communication:** Socket.IO for achievement notifications.
+- **Real-time Communication:** Socket.IO for achievement notifications with debounced progress updates (500ms per user) to prevent race conditions.
 - **Security:** Production-grade authentication using httpOnly cookies and Redis-backed rate limiting.
 - **Database Interaction:** Drizzle ORM for schema management, retry logic, and safe deployments with Neon PostgreSQL multi-pool architecture.
-- **Caching:** Redis-backed distributed caching system with event-driven invalidation.
+- **Caching:** Redis-backed distributed caching system with event-driven invalidation. Progress endpoint uses 3-second cache TTL with targeted invalidation on ranking saves to prevent race conditions during rapid ranking.
 - **Background Jobs:** BullMQ for asynchronous processing (Shopify sync, classification, coin recalculation, bulk import).
 - **Shopify Integration:** Automatic product, metadata, and customer profile synchronization via webhooks.
 - **Gamification System:** Dual-manager pattern (`EngagementManager`, `CollectionManager`) with an event-driven system for achievements, streaks, and leaderboards.
