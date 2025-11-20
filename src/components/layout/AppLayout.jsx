@@ -24,7 +24,7 @@ const CommunityPage = lazy(() => import('../../pages/CommunityPage'));
 const PublicProfilePage = lazy(() => import('../../pages/PublicProfilePage'));
 const LeaderboardPage = lazy(() => import('../../pages/LeaderboardPage'));
 const ProfilePage = lazy(() => import('../../pages/ProfilePage'));
-const RankFlavorsPage = lazy(() => import('../../pages/RankFlavorsPage'));
+const RankPage = lazy(() => import('../../pages/RankPage'));
 const LoginPage = lazy(() => import('../../pages/LoginPage'));
 const ToolsLayout = lazy(() => import('../../pages/admin/ToolsLayout'));
 const ManageCoinsPageAdmin = lazy(() => import('../../pages/admin/ManageCoinsPageAdmin'));
@@ -106,7 +106,7 @@ function AppLayout() {
             } />
             <Route path="/rank" element={
               <ProtectedRoute>
-                <RankFlavorsPage />
+                <RankPage />
               </ProtectedRoute>
             } />
             <Route path="/community" element={
