@@ -2813,6 +2813,12 @@ app.post('/api/rankings/products', async (req, res) => {
               achievementsToEmit.map(a => a.name).join(', '));
           }
           
+          // Invalidate progress cache to ensure fresh data on next API call
+          // This prevents stale cached data while maintaining the race condition fix
+          const ProgressCache = require('./server/cache/ProgressCache');
+          const progressCache = ProgressCache.getInstance();
+          await progressCache.invalidateUser(userId);
+          
           // Broadcast progress update via WebSocket to refresh "Your Progress" section
           // Uses debounced emitter to prevent race conditions during rapid ranking
           const emitProgressUpdate = app.get('emitProgressUpdate');
