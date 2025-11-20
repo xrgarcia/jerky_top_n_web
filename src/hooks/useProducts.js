@@ -57,3 +57,63 @@ export function useRankableProducts({ excludeRanked = false } = {}) {
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 }
+
+export function useProductDistribution(productId) {
+  return useQuery({
+    queryKey: ['productDistribution', productId],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/distribution`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+export function useProductTopFans(productId, limit = 9) {
+  return useQuery({
+    queryKey: ['productTopFans', productId, limit],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/top-fans?limit=${limit}`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+export function useProductOppositeProfiles(productId, limit = 9) {
+  return useQuery({
+    queryKey: ['productOppositeProfiles', productId, limit],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/opposite-profiles?limit=${limit}`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
+
+export function useProductRelated(productId, limit = 4) {
+  return useQuery({
+    queryKey: ['productRelated', productId, limit],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/related?limit=${limit}`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 10 * 60 * 1000, // 10 minutes
+  });
+}
+
+export function useProductInsights(productId) {
+  return useQuery({
+    queryKey: ['productInsights', productId],
+    queryFn: async () => {
+      const data = await api.get(`/products/${productId}/insights`);
+      return data;
+    },
+    enabled: !!productId,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+}
