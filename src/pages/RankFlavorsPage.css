@@ -210,7 +210,6 @@
   color: var(--rank-neutral-400);
   margin-bottom: 1.5rem;
   padding: 0 1.5rem 1rem 1.5rem;
-  border-bottom: 2px solid var(--rank-border-default);
 }
 
 .sub-header .ranking-progress {
