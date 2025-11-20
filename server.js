@@ -3415,6 +3415,384 @@ app.get('/api/products/:productId/stats', async (req, res) => {
   }
 });
 
+// GET /api/products/:productId/distribution - Get ranking distribution buckets
+app.get('/api/products/:productId/distribution', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const distributionData = await db.execute(sql`
+      WITH rank_buckets AS (
+        SELECT 
+          CASE 
+            WHEN ranking BETWEEN 1 AND 3 THEN '#1-3'
+            WHEN ranking BETWEEN 4 AND 6 THEN '#4-6'
+            WHEN ranking BETWEEN 7 AND 9 THEN '#7-9'
+            WHEN ranking BETWEEN 10 AND 12 THEN '#10-12'
+            WHEN ranking BETWEEN 13 AND 15 THEN '#13-15'
+            WHEN ranking BETWEEN 16 AND 20 THEN '#16-20'
+            WHEN ranking BETWEEN 21 AND 30 THEN '#21-30'
+            WHEN ranking BETWEEN 31 AND 40 THEN '#31-40'
+            WHEN ranking BETWEEN 41 AND 50 THEN '#41-50'
+            WHEN ranking BETWEEN 51 AND 75 THEN '#51-75'
+            WHEN ranking BETWEEN 76 AND 100 THEN '#76-100'
+            ELSE '#100+'
+          END as bucket,
+          CASE 
+            WHEN ranking BETWEEN 1 AND 3 THEN 1
+            WHEN ranking BETWEEN 4 AND 6 THEN 2
+            WHEN ranking BETWEEN 7 AND 9 THEN 3
+            WHEN ranking BETWEEN 10 AND 12 THEN 4
+            WHEN ranking BETWEEN 13 AND 15 THEN 5
+            WHEN ranking BETWEEN 16 AND 20 THEN 6
+            WHEN ranking BETWEEN 21 AND 30 THEN 7
+            WHEN ranking BETWEEN 31 AND 40 THEN 8
+            WHEN ranking BETWEEN 41 AND 50 THEN 9
+            WHEN ranking BETWEEN 51 AND 75 THEN 10
+            WHEN ranking BETWEEN 76 AND 100 THEN 11
+            ELSE 12
+          END as bucket_order,
+          ranking
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      ),
+      stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ranking) as median_rank,
+          STDDEV(ranking) as std_deviation,
+          COUNT(*) as total_count
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      )
+      SELECT 
+        rb.bucket,
+        rb.bucket_order,
+        COUNT(*) as count,
+        s.avg_rank,
+        s.best_rank,
+        s.worst_rank,
+        s.median_rank,
+        s.std_deviation,
+        s.total_count
+      FROM rank_buckets rb
+      CROSS JOIN stats s
+      GROUP BY rb.bucket, rb.bucket_order, s.avg_rank, s.best_rank, s.worst_rank, s.median_rank, s.std_deviation, s.total_count
+      ORDER BY rb.bucket_order
+    `);
+    
+    const stats = distributionData.rows.length > 0 ? distributionData.rows[0] : null;
+    
+    const buckets = distributionData.rows.map(row => ({
+      range: row.bucket,
+      count: parseInt(row.count),
+      order: parseInt(row.bucket_order)
+    }));
+    
+    res.json({
+      productId,
+      buckets,
+      stats: stats ? {
+        avgRank: parseFloat(stats.avg_rank).toFixed(1),
+        bestRank: parseInt(stats.best_rank),
+        worstRank: parseInt(stats.worst_rank),
+        medianRank: parseFloat(stats.median_rank).toFixed(1),
+        stdDeviation: parseFloat(stats.std_deviation).toFixed(1),
+        totalRankings: parseInt(stats.total_count)
+      } : null
+    });
+  } catch (error) {
+    console.error('Distribution fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/distribution' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load distribution data' });
+  }
+});
+
+// GET /api/products/:productId/top-fans - Get users who ranked this product highest
+app.get('/api/products/:productId/top-fans', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 9;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const CommunityService = require('./server/services/CommunityService');
+    const communityService = new CommunityService(db);
+    
+    const topFans = await db.execute(sql`
+      SELECT 
+        pr.user_id,
+        pr.ranking as user_rank,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.profile_image_url,
+        u.hide_name_privacy
+      FROM product_rankings pr
+      INNER JOIN users u ON u.id = pr.user_id
+      WHERE pr.shopify_product_id = ${productId}
+        AND u.active = true
+      ORDER BY pr.ranking ASC
+      LIMIT ${limit}
+    `);
+    
+    const fans = topFans.rows.map(row => ({
+      userId: row.user_id,
+      userRank: parseInt(row.user_rank),
+      displayName: communityService.formatDisplayName(row),
+      avatarUrl: communityService.getAvatarUrl(row),
+      initials: communityService.getUserInitials(row)
+    }));
+    
+    res.json({ fans });
+  } catch (error) {
+    console.error('Top fans fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/top-fans' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load top fans' });
+  }
+});
+
+// GET /api/products/:productId/opposite-profiles - Get users who ranked this product lowest
+app.get('/api/products/:productId/opposite-profiles', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 9;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const CommunityService = require('./server/services/CommunityService');
+    const communityService = new CommunityService(db);
+    
+    const oppositeProfiles = await db.execute(sql`
+      SELECT 
+        pr.user_id,
+        pr.ranking as user_rank,
+        u.first_name,
+        u.last_name,
+        u.display_name,
+        u.profile_image_url,
+        u.hide_name_privacy
+      FROM product_rankings pr
+      INNER JOIN users u ON u.id = pr.user_id
+      WHERE pr.shopify_product_id = ${productId}
+        AND u.active = true
+      ORDER BY pr.ranking DESC
+      LIMIT ${limit}
+    `);
+    
+    const profiles = oppositeProfiles.rows.map(row => ({
+      userId: row.user_id,
+      userRank: parseInt(row.user_rank),
+      displayName: communityService.formatDisplayName(row),
+      avatarUrl: communityService.getAvatarUrl(row),
+      initials: communityService.getUserInitials(row)
+    }));
+    
+    res.json({ profiles });
+  } catch (error) {
+    console.error('Opposite profiles fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/opposite-profiles' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load opposite profiles' });
+  }
+});
+
+// GET /api/products/:productId/related - Get related products based on co-ranking patterns
+app.get('/api/products/:productId/related', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 4;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const relatedProducts = await db.execute(sql`
+      WITH product_rankers AS (
+        SELECT DISTINCT user_id
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      )
+      SELECT 
+        pr.shopify_product_id,
+        MAX(pr.product_data) as product_data,
+        COUNT(DISTINCT pr.user_id) as co_ranker_count,
+        AVG(pr.ranking) as avg_rank
+      FROM product_rankings pr
+      INNER JOIN product_rankers rankers ON rankers.user_id = pr.user_id
+      WHERE pr.shopify_product_id != ${productId}
+        AND pr.product_data IS NOT NULL
+      GROUP BY pr.shopify_product_id
+      ORDER BY co_ranker_count DESC, avg_rank ASC
+      LIMIT ${limit}
+    `);
+    
+    const products = relatedProducts.rows.map(row => {
+      const productData = row.product_data;
+      return {
+        productId: row.shopify_product_id,
+        title: productData.title,
+        image: productData.image,
+        vendor: productData.vendor,
+        primaryFlavor: productData.primaryFlavor,
+        flavorDisplay: productData.flavorDisplay,
+        coRankerCount: parseInt(row.co_ranker_count),
+        avgRank: parseFloat(row.avg_rank).toFixed(1)
+      };
+    });
+    
+    res.json({ products });
+  } catch (error) {
+    console.error('Related products fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/related' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load related products' });
+  }
+});
+
+// GET /api/products/:productId/insights - Get product ranking insights
+app.get('/api/products/:productId/insights', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const insights = await db.execute(sql`
+      WITH current_stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank,
+          STDDEV(ranking) as std_deviation,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ranking) as median_rank,
+          COUNT(*) as total_count,
+          COUNT(CASE WHEN ranking <= 15 THEN 1 END) as top_15_count
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      ),
+      week_ago_stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank_week_ago
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+          AND created_at <= NOW() - INTERVAL '7 days'
+      )
+      SELECT 
+        cs.avg_rank,
+        cs.std_deviation,
+        cs.best_rank,
+        cs.worst_rank,
+        cs.median_rank,
+        cs.total_count,
+        cs.top_15_count,
+        COALESCE(was.avg_rank_week_ago, cs.avg_rank) as avg_rank_week_ago
+      FROM current_stats cs
+      LEFT JOIN week_ago_stats was ON true
+    `);
+    
+    if (insights.rows.length === 0) {
+      return res.json({
+        consensus: 'No data',
+        rankRange: { min: null, max: null, span: null },
+        trend: { direction: 'stable', change: 0 },
+        stdDeviation: null,
+        medianRank: null
+      });
+    }
+    
+    const data = insights.rows[0];
+    const stdDev = parseFloat(data.std_deviation);
+    const totalCount = parseInt(data.total_count);
+    const top15Pct = (parseInt(data.top_15_count) / totalCount) * 100;
+    const avgRank = parseFloat(data.avg_rank);
+    const avgRankWeekAgo = parseFloat(data.avg_rank_week_ago);
+    const rankChange = avgRankWeekAgo - avgRank;
+    
+    let consensus;
+    if (stdDev < 15 && top15Pct > 70) {
+      consensus = 'Tight';
+    } else if (stdDev < 25) {
+      consensus = 'Moderate';
+    } else {
+      consensus = 'Divided';
+    }
+    
+    let trend;
+    if (Math.abs(rankChange) < 0.5) {
+      trend = { direction: 'Stable', change: 0 };
+    } else if (rankChange > 0) {
+      trend = { direction: 'Rising', change: Math.abs(rankChange).toFixed(1) };
+    } else {
+      trend = { direction: 'Falling', change: Math.abs(rankChange).toFixed(1) };
+    }
+    
+    res.json({
+      consensus,
+      consensusDescription: consensus === 'Tight' 
+        ? `Most rankers agree this flavor belongs in the top tier. Low variation across rankings.`
+        : consensus === 'Moderate'
+        ? `Moderate agreement on this flavor's placement. Some variation across rankers.`
+        : `Rankers have diverse opinions on this flavor. Wide variation in rankings.`,
+      consensusStats: `σ = ${stdDev.toFixed(1)} • ${top15Pct.toFixed(0)}% in top 15`,
+      rankRange: {
+        min: parseInt(data.best_rank),
+        max: parseInt(data.worst_rank),
+        span: parseInt(data.worst_rank) - parseInt(data.best_rank),
+        median: parseFloat(data.median_rank).toFixed(1)
+      },
+      trend,
+      trendDescription: trend.direction === 'Stable'
+        ? `No significant movement in the past 7 days. Consistent community sentiment.`
+        : trend.direction === 'Rising'
+        ? `Improving ${trend.change} ranks over the past 7 days. Growing popularity.`
+        : `Declining ${trend.change} ranks over the past 7 days. Losing favor.`,
+      stdDeviation: stdDev.toFixed(1),
+      medianRank: parseFloat(data.median_rank).toFixed(1)
+    });
+  } catch (error) {
+    console.error('Insights fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/insights' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load insights' });
+  }
+});
+
 // Coin Types Routes - Public API for coin type configurations
 const { coinTypeConfig } = require('./shared/schema');
 const { eq: eqCoinType } = require('drizzle-orm');
