@@ -607,20 +607,15 @@ Continue?`;
       }}
     >
       <div className="rank-page">
-        {/* Hero Section */}
-        <section className="rank-hero">
-          <div className="hero-background">
-            <div className="hero-glow"></div>
+        <div className="rank-hero-container">
+          {/* Hero Section */}
+          <div className="rank-hero">
+            <h1 className="hero-title">Rank Your Flavors</h1>
+            <p className="hero-subtitle">
+              Drag to reorder. Your rankings fuel the Flavor Index.
+            </p>
           </div>
-          <div className="rank-hero-container">
-            <div className="hero-intro">
-              <h1 className="hero-title">Rank Your Flavors</h1>
-              <p className="hero-subtitle">
-                Drag to reorder. Your rankings fuel the Flavor Index.
-              </p>
-            </div>
-          </div>
-        </section>
+        </div>
 
         {/* Ranking Widget Section */}
         <div className="rank-widget-section">
