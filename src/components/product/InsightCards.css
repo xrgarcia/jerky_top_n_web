@@ -1,0 +1,56 @@
+/* ========================================
+   INSIGHT CARDS
+   ======================================== */
+
+.insights-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.insight-card.card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid #232323;
+}
+
+.insight-value {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffc46a;
+  margin-bottom: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.insight-description {
+  font-size: 0.75rem;
+  color: #a0a0a0;
+  line-height: 1.5;
+}
+
+.insight-metric {
+  font-size: 0.625rem;
+  color: #777777;
+  margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .insights-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .insight-card.card {
+    padding: 1rem;
+  }
+
+  .insight-value {
+    font-size: 1.25rem;
+  }
+}
