@@ -63,7 +63,7 @@
 }
 
 .action-label {
-  color: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
   font-size: 16px;
   font-weight: 600;
 }

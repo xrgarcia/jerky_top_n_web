@@ -13,6 +13,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **UI/UX Decisions:**
 - **Design System:** "RANK Identity System" with dark backgrounds, premium accents (gold, amber, ember), and custom typography (Space Grotesk for headings/stats, Inter for body/UI text).
+- **Button Theming:** Primary buttons use orange/amber theme (rgba(255, 138, 43, 0.1) background, #FF8A2B text, rgba(255, 138, 43, 0.2) border). Legacy gold theme (--rank-button-gold-*) available for specific use cases. Loading spinners and focus rings remain gold (#FFD873) for visual consistency. IMPORTANT: Always use --rank-button-primary-text for button/label text colors, never --rank-button-primary-bg (which is semi-transparent).
 - **Gamification Visuals:** Features collection progress bars, tier-based colors, animated gradients, XP systems, rank progression, exclusive unlocks, tier emoji system, narrative-driven Journey Film Reel, and community badges.
 - **Narrative Transitions:** Storytelling-driven section transitions with specific padding, margin, and staggered reveal animations.
 - **Component Styling:** Consistent styling for product cards, loading states, error handling, admin tools, including hover glows, shimmer effects, and glow pulses.

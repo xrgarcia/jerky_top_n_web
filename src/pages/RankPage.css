@@ -746,7 +746,7 @@
 
 .product-price {
   font-size: 1rem;
-  color: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
   font-weight: 600;
   margin: 0;
   text-align: center;
