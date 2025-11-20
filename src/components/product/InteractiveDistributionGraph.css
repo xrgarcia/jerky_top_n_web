@@ -78,6 +78,10 @@
   position: relative;
 }
 
+.graph-row.empty .rank-label {
+  color: #3a3a3a;
+}
+
 .rank-label {
   font-family: 'Courier New', monospace;
   font-size: 0.625rem;
@@ -85,6 +89,7 @@
   width: 60px;
   text-align: right;
   flex-shrink: 0;
+  transition: color 0.2s ease;
 }
 
 .bar-track {
@@ -106,6 +111,13 @@
   min-width: 24px;
 }
 
+.bar-fill.empty {
+  background: rgba(42, 42, 42, 0.4);
+  border: 1px dashed rgba(92, 92, 92, 0.2);
+  min-width: 100%;
+  padding: 0;
+}
+
 .bar-fill.highlight {
   background: linear-gradient(to right, #ff8a2b, #ffc46a);
   box-shadow: 0 0 16px rgba(255, 138, 43, 0.3);
@@ -114,6 +126,13 @@
 .bar-fill.hovered {
   filter: brightness(1.2);
   transform: scaleY(1.1);
+}
+
+.bar-fill.empty.hovered {
+  background: rgba(42, 42, 42, 0.6);
+  border-color: rgba(92, 92, 92, 0.4);
+  filter: brightness(1);
+  transform: scaleY(1);
 }
 
 .bar-count {
@@ -139,6 +158,11 @@
   z-index: 10;
   pointer-events: none;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.graph-row.empty .bar-tooltip {
+  border-color: #5c5c5c;
+  color: #a0a0a0;
 }
 
 .graph-footer {

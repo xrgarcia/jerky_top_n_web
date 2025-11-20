@@ -4,21 +4,35 @@ import './InteractiveDistributionGraph.css';
 function InteractiveDistributionGraph({ distribution, currentAvgRank }) {
   const [hoveredBucket, setHoveredBucket] = useState(null);
   
-  if (!distribution || !distribution.buckets || distribution.buckets.length === 0) {
-    return (
-      <div className="distribution-graph-card">
-        <div className="graph-header">
-          <div className="card-title">Full Ranking Distribution — All Users</div>
-        </div>
-        <div className="distribution-empty">
-          <p>No ranking data available yet.</p>
-        </div>
-      </div>
-    );
-  }
-
-  const { buckets, stats } = distribution;
-  const maxCount = Math.max(...buckets.map(b => b.count));
+  // Define all possible rank buckets
+  const allBuckets = [
+    { range: '#1-3', order: 1 },
+    { range: '#4-6', order: 2 },
+    { range: '#7-9', order: 3 },
+    { range: '#10-12', order: 4 },
+    { range: '#13-15', order: 5 },
+    { range: '#16-20', order: 6 },
+    { range: '#21-30', order: 7 },
+    { range: '#31-40', order: 8 },
+    { range: '#41-50', order: 9 },
+    { range: '#51-75', order: 10 },
+    { range: '#76-100', order: 11 },
+    { range: '#100+', order: 12 }
+  ];
+  
+  // Merge backend data with all possible buckets
+  const stats = distribution?.stats || null;
+  const dataBuckets = distribution?.buckets || [];
+  
+  const mergedBuckets = allBuckets.map(bucket => {
+    const dataMatch = dataBuckets.find(d => d.range === bucket.range);
+    return {
+      ...bucket,
+      count: dataMatch?.count || 0
+    };
+  });
+  
+  const maxCount = Math.max(...mergedBuckets.map(b => b.count), 1);
 
   const isHighlighted = (range) => {
     if (!currentAvgRank || !stats) return false;
@@ -61,30 +75,36 @@ function InteractiveDistributionGraph({ distribution, currentAvgRank }) {
 
       <div className="distribution-graph">
         <div className="graph-bars">
-          {buckets.map((bucket) => {
+          {mergedBuckets.map((bucket) => {
             const percentage = maxCount > 0 ? (bucket.count / maxCount) * 100 : 0;
             const highlighted = isHighlighted(bucket.range);
             const isHovered = hoveredBucket === bucket.range;
+            const isEmpty = bucket.count === 0;
 
             return (
               <div
                 key={bucket.range}
-                className="graph-row"
+                className={`graph-row ${isEmpty ? 'empty' : ''}`}
                 onMouseEnter={() => setHoveredBucket(bucket.range)}
                 onMouseLeave={() => setHoveredBucket(null)}
               >
                 <span className="rank-label">{bucket.range}</span>
                 <div className="bar-track">
                   <div
-                    className={`bar-fill ${highlighted ? 'highlight' : ''} ${isHovered ? 'hovered' : ''}`}
-                    style={{ width: `${percentage}%` }}
+                    className={`bar-fill ${highlighted ? 'highlight' : ''} ${isHovered ? 'hovered' : ''} ${isEmpty ? 'empty' : ''}`}
+                    style={{ width: isEmpty ? '100%' : `${percentage}%` }}
                   >
-                    <span className="bar-count">{bucket.count.toLocaleString()}</span>
+                    {!isEmpty && <span className="bar-count">{bucket.count.toLocaleString()}</span>}
                   </div>
                 </div>
-                {isHovered && (
+                {isHovered && !isEmpty && (
                   <div className="bar-tooltip">
                     {bucket.count} ranker{bucket.count !== 1 ? 's' : ''} placed this {bucket.range}
+                  </div>
+                )}
+                {isHovered && isEmpty && (
+                  <div className="bar-tooltip">
+                    No rankings in this range yet
                   </div>
                 )}
               </div>
