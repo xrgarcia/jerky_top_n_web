@@ -12,11 +12,12 @@ A web application for ranking jerky flavors, aiming to be a comprehensive and en
 The application utilizes a modern web architecture for responsiveness, scalability, and real-time interaction, built upon React. The system is undergoing a comprehensive visual transformation to a dark, premium gaming-inspired identity system emphasizing progression, mastery, and status.
 
 **UI/UX Decisions:**
-- **Design System:** "RANK Identity System" with dark backgrounds, premium accents (gold, amber, ember), and custom typography (Manrope, Inter, IBM Plex Mono).
+- **Design System:** "RANK Identity System" with dark backgrounds, premium accents (gold, amber, ember), and custom typography (Space Grotesk for headings/stats, Inter for body/UI text).
 - **Gamification Visuals:** Features collection progress bars, tier-based colors, animated gradients, XP systems, rank progression, exclusive unlocks, tier emoji system, narrative-driven Journey Film Reel, and community badges.
 - **Narrative Transitions:** Storytelling-driven section transitions with specific padding, margin, and staggered reveal animations.
 - **Component Styling:** Consistent styling for product cards, loading states, error handling, admin tools, including hover glows, shimmer effects, and glow pulses.
 - **Toast Notifications:** Sequential queue-based display for user feedback.
+- **Rank Page Layout:** Two-column mockup-inspired design with "Unranked Flavors" (left) and "Your Rankings" (right), scrollable lists, FlavorCard components with drag handles and emoji icons, rank numbers outside cards, collapsible utility panel for search/commentary/progress, and sticky save bar.
 
 **Technical Implementations:**
 - **Frontend:** React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client, with route-based lazy loading and manual vendor chunking.
@@ -35,7 +36,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Type Safety:** Multi-layered type safety, including String conversions for Shopify IDs.
 
 **Feature Specifications:**
-- **Rank Page:** Drag-and-drop interface for ranking purchased products with persistent rankings and optimistic UI.
+- **Rank Page:** Two-column drag-and-drop interface matching mockup design. Left column shows unranked flavors (FlavorCard components with drag handles, emoji icons from flavorIcon/animalIcon metadata, meat type chips). Right column displays ranked items with rank numbers (#1, #2, etc.) outside cards. Includes collapsible utility panel (search, commentary, collection progress) and sticky save bar that appears during save operations. Preserves all ranking functionality with persistent rankings and optimistic UI.
 - **Flavor Index Page:** Advanced sorting, filtering, client-side instant search, server-side pagination, and community leaderboard displaying ranking distribution bars and top products per category.
 - **Product Detail Page:** Redesigned with product image, metadata, user rank, community average, ranking distribution chart, and conditional CTAs.
 - **Flavor Profile Pages:** Dynamic pages for each flavor type.
