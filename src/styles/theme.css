@@ -104,11 +104,19 @@
   --rank-warning: #FFA500;            /* Warning states, alerts */
   --rank-info: #2196F3;               /* Info states, tooltips */
 
-  /* Button State Colors */
-  --rank-button-primary-bg: #FFD873;
-  --rank-button-primary-hover: #FFA500;
-  --rank-button-primary-active: #FF8A00;
-  --rank-button-primary-text: #0F0F0F;
+  /* Button State Colors - Orange/Amber Theme (Primary) */
+  --rank-button-primary-bg: rgba(255, 138, 43, 0.1);
+  --rank-button-primary-hover: rgba(255, 138, 43, 0.15);
+  --rank-button-primary-active: rgba(255, 138, 43, 0.2);
+  --rank-button-primary-text: #FF8A2B;
+  --rank-button-primary-border: rgba(255, 138, 43, 0.2);
+  --rank-button-primary-border-hover: rgba(255, 138, 43, 0.3);
+
+  /* Button State Colors - Gold Theme (Legacy) */
+  --rank-button-gold-bg: #FFD873;
+  --rank-button-gold-hover: #FFA500;
+  --rank-button-gold-active: #FF8A00;
+  --rank-button-gold-text: #0F0F0F;
 
   --rank-button-secondary-bg: rgba(255, 255, 255, 0.1);
   --rank-button-secondary-hover: rgba(255, 255, 255, 0.15);

@@ -5,10 +5,10 @@
   width: 100%;
   padding: 10px 16px;
   margin-top: 8px;
-  border: none;
+  border: 1px solid var(--rank-button-primary-border);
   border-radius: 6px;
   background-color: var(--rank-button-primary-bg);
-  color: var(--rank-text-primary);
+  color: var(--rank-button-primary-text);
   font-weight: bold;
   font-size: 0.9rem;
   cursor: pointer;
@@ -21,6 +21,7 @@
 
 .rank-button:hover {
   background-color: var(--rank-button-primary-hover);
+  border-color: var(--rank-button-primary-border-hover);
   transform: translateY(-2px);
   box-shadow: 0 4px 8px var(--rank-shadow-card);
 }
