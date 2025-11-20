@@ -1,3 +1,8 @@
+/* ========================================
+   TOAST NOTIFICATION SYSTEM
+   Dark Gaming-Inspired Theme
+   ======================================== */
+
 .toast-container {
   position: fixed;
   top: 50%;
@@ -10,101 +15,313 @@
   pointer-events: none;
 }
 
+/* ========================================
+   BASE TOAST CARD
+   Glass-morphic with shimmer overlay
+   ======================================== */
+
 .toast {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-  padding: 16px 20px;
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 20, 25, 0.95) 0%, rgba(15, 15, 20, 0.98) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 18px 22px;
   display: flex;
   align-items: center;
-  gap: 14px;
-  min-width: 320px;
-  max-width: 450px;
+  gap: 16px;
+  min-width: 340px;
+  max-width: 420px;
   opacity: 0;
-  transform: translateX(400px);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateX(450px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   pointer-events: auto;
   cursor: pointer;
-  border-left: 4px solid #ccc;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+}
+
+/* Shimmer overlay animation */
+.toast::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  animation: shimmer 3s infinite;
+  pointer-events: none;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
 }
 
 .toast.show {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) scale(1);
 }
 
+/* ========================================
+   ICON CONTAINER
+   Glowing accent with pulse
+   ======================================== */
+
 .toast-icon {
-  font-size: 28px;
+  position: relative;
+  font-size: 32px;
   flex-shrink: 0;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+  0%, 100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
 }
 
 .toast-icon-emoji {
   font-size: 28px;
   line-height: 1;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
 .toast-icon-img {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
-  border-radius: 4px;
+  border-radius: 6px;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.4));
 }
+
+/* ========================================
+   CONTENT AREA
+   Typography hierarchy
+   ======================================== */
 
 .toast-content {
   flex: 1;
+  min-width: 0;
 }
 
 .toast-title {
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-weight: 700;
   font-size: 15px;
-  color: #2c2c2c;
+  color: #ffffff;
   margin-bottom: 4px;
+  letter-spacing: 0.3px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .toast-message {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.4;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.5;
+  letter-spacing: 0.2px;
 }
 
+/* ========================================
+   TYPE VARIANTS
+   Tier-based glow effects
+   ======================================== */
+
+/* Success - Emerald Glow */
 .toast-success {
-  border-left-color: #27ae60;
-  background: #ffffff;
+  border-left: 3px solid #10b981;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(16, 185, 129, 0.2);
 }
 
+.toast-success .toast-icon {
+  background: rgba(16, 185, 129, 0.15);
+  border-color: rgba(16, 185, 129, 0.3);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+}
+
+/* Error - Crimson Glow */
 .toast-error {
-  border-left-color: #e74c3c;
-  background: #ffffff;
+  border-left: 3px solid #ef4444;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(239, 68, 68, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(239, 68, 68, 0.2);
 }
 
+.toast-error .toast-icon {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Warning - Amber Glow */
 .toast-warning {
-  border-left-color: #f39c12;
-  background: #ffffff;
+  border-left: 3px solid #f59e0b;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(245, 158, 11, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(245, 158, 11, 0.2);
 }
 
+.toast-warning .toast-icon {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.3);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+}
+
+/* Info - Azure Glow */
 .toast-info {
-  border-left-color: #3498db;
-  background: #ffffff;
+  border-left: 3px solid #3b82f6;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(59, 130, 246, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 0 20px rgba(59, 130, 246, 0.2);
 }
 
-.toast-achievement {
-  border-left-color: #c4a962;
-  background: #ffffff;
+.toast-info .toast-icon {
+  background: rgba(59, 130, 246, 0.15);
+  border-color: rgba(59, 130, 246, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
 }
+
+/* Achievement - Gold Premium Glow */
+.toast-achievement {
+  border-left: 3px solid #c4a962;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(196, 169, 98, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 24px rgba(196, 169, 98, 0.3);
+  background: linear-gradient(135deg, rgba(25, 20, 15, 0.95) 0%, rgba(20, 18, 15, 0.98) 100%);
+}
+
+.toast-achievement .toast-icon {
+  background: linear-gradient(135deg, rgba(196, 169, 98, 0.2) 0%, rgba(196, 169, 98, 0.1) 100%);
+  border-color: rgba(196, 169, 98, 0.4);
+  box-shadow: 
+    0 0 24px rgba(196, 169, 98, 0.5),
+    inset 0 1px 12px rgba(196, 169, 98, 0.2);
+  animation: achievementIconPulse 2s ease-in-out infinite;
+}
+
+@keyframes achievementIconPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 
+      0 0 24px rgba(196, 169, 98, 0.5),
+      inset 0 1px 12px rgba(196, 169, 98, 0.2);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 
+      0 0 32px rgba(196, 169, 98, 0.7),
+      inset 0 1px 16px rgba(196, 169, 98, 0.3);
+  }
+}
+
+.toast-achievement .toast-title {
+  background: linear-gradient(135deg, #f4e4b0 0%, #c4a962 50%, #f4e4b0 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* ========================================
+   HOVER EFFECTS
+   Enhanced interaction feedback
+   ======================================== */
 
 .toast:hover {
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(255, 255, 255, 0.2);
 }
+
+.toast-success:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(16, 185, 129, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 32px rgba(16, 185, 129, 0.3);
+}
+
+.toast-error:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(239, 68, 68, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 32px rgba(239, 68, 68, 0.3);
+}
+
+.toast-warning:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(245, 158, 11, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 32px rgba(245, 158, 11, 0.3);
+}
+
+.toast-info:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(59, 130, 246, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15),
+    0 0 32px rgba(59, 130, 246, 0.3);
+}
+
+.toast-achievement:hover {
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.5),
+    0 4px 16px rgba(196, 169, 98, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 40px rgba(196, 169, 98, 0.4);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   Mobile optimization
+   ======================================== */
 
 @media (max-width: 768px) {
   .toast-container {
-    left: 20px;
-    right: 20px;
+    left: 16px;
+    right: 16px;
     top: 50%;
     transform: translateY(-50%);
   }
@@ -112,5 +329,52 @@
   .toast {
     min-width: auto;
     max-width: 100%;
+    padding: 16px 18px;
+    gap: 14px;
+  }
+
+  .toast-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .toast-icon-emoji {
+    font-size: 26px;
+  }
+
+  .toast-icon-img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .toast-title {
+    font-size: 14px;
+  }
+
+  .toast-message {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toast {
+    padding: 14px 16px;
+    gap: 12px;
+    border-radius: 12px;
+  }
+
+  .toast-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+  }
+
+  .toast-icon-emoji {
+    font-size: 24px;
+  }
+
+  .toast-icon-img {
+    width: 28px;
+    height: 28px;
   }
 }
