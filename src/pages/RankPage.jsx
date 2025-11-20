@@ -12,6 +12,8 @@ import { addBreadcrumb, captureError } from '../utils/sentry';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import { RankSlot } from '../components/rank/RankSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
+import { FlavorCard } from '../components/rank/FlavorCard';
+import { RankedFlavorItem } from '../components/rank/RankedFlavorItem';
 import { RankingModal } from '../components/rank/RankingModal';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './RankPage.css';
@@ -86,6 +88,7 @@ export default function RankPage() {
   const [isRankingsCollapsed, setIsRankingsCollapsed] = useState(() => 
     typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
   );
+  const [isUtilityCollapsed, setIsUtilityCollapsed] = useState(true); // Separate state for utility panel
   
   // Detect mobile screen size changes
   useEffect(() => {
@@ -605,66 +608,63 @@ Continue?`;
       }}
     >
       <div className="rank-page">
-        {/* Hero Section - Dark background with collapsed Coin Book */}
+        {/* Hero Section - Keep the same header */}
         <section className="rank-hero">
           <div className="hero-background">
             <div className="hero-glow"></div>
           </div>
           <div className="rank-hero-container">
             <div className="hero-intro">
-              <h1 className="hero-title">Your Flavor Rankings</h1>
+              <h1 className="hero-title">Rank Your Flavors</h1>
               <p className="hero-subtitle">
-                Rank the jerky you've tasted. Unlock achievements. Discover your taste profile.
+                Drag to reorder. Your rankings fuel the Flavor Index.
               </p>
             </div>
             <CoinBookWidget defaultCollapsed={true} />
           </div>
         </section>
 
-        {/* Introduction Section - Explains ranking */}
-        <section className="rank-introduction">
-          <div className="rank-container">
-            <div className="intro-content">
-              <h2 className="intro-title">START RANKING</h2>
-              <p className="intro-text">
-                Every jerky has a story. Every ranking reveals your taste. Drag flavors from your purchased products into your personal top list and watch your collection grow—each choice earns coins, unlocks achievements, and helps you discover what makes your palate unique.
-              </p>
-              <p className="intro-text">
-                Your rankings are yours alone. Reorder anytime. The more you rank, the more you unlock—from Flavor Coins to Master Collection achievements. Start with your favorites, then explore the rest.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Ranking Widget Section */}
+        {/* Two Column Layout - Matches Mockup */}
         <div className="rank-widget-section">
           <div className="rank-container">
-          <div className="rank-columns-grid">
-            <div className="rank-column ranks-column">
-              <div className="header-with-status">
-                <h2>
-                  Your Rankings
-                  {isMobile && ` (${rankedProducts.length} ranked)`}
-                </h2>
-                {isMobile && (
-                  <button 
-                    className="mobile-collapse-toggle"
-                    onClick={() => setIsRankingsCollapsed(!isRankingsCollapsed)}
-                    aria-label={isRankingsCollapsed ? "Expand rankings" : "Collapse rankings"}
-                  >
-                    {isRankingsCollapsed ? '▼' : '▲'}
-                  </button>
-                )}
-                {saveStatus.state !== 'idle' && (
-                  <div className={`save-status-inline save-status-${saveStatus.state}`}>
-                    {getCelebratoryMessage(saveStatus.state, saveStatus.position)}
-                  </div>
-                )}
-              </div>
+            
+            {/* Collapsible Utility Panel - Search, Commentary, Progress */}
+            <div className="utility-panel">
+              <button 
+                className="utility-toggle"
+                onClick={() => setIsUtilityCollapsed(!isUtilityCollapsed)}
+              >
+                {isUtilityCollapsed ? '▼ Show Search & Progress' : '▲ Hide Search & Progress'}
+              </button>
               
-              <div className={`rankings-content ${isRankingsCollapsed ? 'collapsed' : ''}`}>
-                <div className="sub-header">
-                  {commentary ? (
+              {!isUtilityCollapsed && (
+                <div className="utility-content">
+                  {/* Search Box */}
+                  <div className="search-box">
+                    <input
+                      type="text"
+                      placeholder="Search products..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onKeyPress={handleKeyPress}
+                      className="rank-search-input"
+                    />
+                    <button 
+                      onClick={handleSearch}
+                      className="search-button"
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <>
+                          <span className="button-spinner"></span>
+                          Search
+                        </>
+                      ) : 'Search'}
+                    </button>
+                  </div>
+
+                  {/* Commentary and Progress */}
+                  {commentary && (
                     <div className="ranking-commentary">
                       <span className="commentary-icon">{commentary.icon}</span>
                       <span className="commentary-message">{commentary.message}</span>
@@ -678,138 +678,129 @@ Continue?`;
                         </div>
                       )}
                     </div>
-                  ) : (
-                    <div className="ranking-progress">
-                      {rankedProducts.length} product{rankedProducts.length !== 1 ? 's' : ''} ranked
+                  )}
+
+                  {collectionProgress && (
+                    <div className="collection-progress-bar">
+                      <div className="progress-header">
+                        <span className="progress-icon">{collectionProgress.icon}</span>
+                        <span className="progress-message">{collectionProgress.message}</span>
+                      </div>
+                      <div className="collection-progress-stats">
+                        <div className="collection-progress-track">
+                          <div 
+                            className={`collection-progress-fill progress-${collectionProgress.progressColor}`}
+                            style={{ width: `${collectionProgress.percentage}%` }}
+                          ></div>
+                        </div>
+                        <span className="progress-text">
+                          {collectionProgress.rankedCount}/{collectionProgress.totalProducts} ranked ({collectionProgress.percentage}%)
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
-                
-                <div className="slots-container">
-                  {rankingsLoading ? (
-                    <div className="loading-state">Loading rankings...</div>
-                  ) : (
-                    <>
-                      {slots.map(slot => (
-                        <RankSlot
-                          key={slot.position}
-                          position={slot.position}
-                          product={slot.product}
-                          isDragging={activeId === `draggable-slot-${slot.position}`}
-                        />
-                      ))}
-                    </>
-                  )}
+              )}
+            </div>
+
+            {/* Two Column Grid - Mockup Design */}
+            <div className="rank-grid">
+              
+              {/* LEFT COLUMN: Unranked Flavors */}
+              <div className="rank-column">
+                <h2 className="column-header">Unranked Flavors</h2>
+                <div className="scrollable">
+                  <div className="flavor-list">
+                    {loading && (
+                      <div className="loading-state">Loading products...</div>
+                    )}
+
+                    {error && (
+                      <div className="error-state">
+                        <p>{error}</p>
+                        <button onClick={handleSearch} className="retry-button">
+                          Try Again
+                        </button>
+                      </div>
+                    )}
+
+                    {!loading && !error && hasSearched && products.length === 0 && (
+                      <div className="empty-state">
+                        <div className="empty-state-icon">🔍</div>
+                        <div className="empty-state-text">
+                          No products found. Try a different search.
+                        </div>
+                      </div>
+                    )}
+
+                    {!loading && !error && availableProducts.length > 0 && availableProducts.map(product => (
+                      <FlavorCard 
+                        key={product.id} 
+                        product={product}
+                        isDragging={activeId === `product-${product.id}`}
+                        variant="unranked"
+                        onRankClick={handleOpenModal}
+                      />
+                    ))}
+                    
+                    {!loading && !error && hasSearched && availableProducts.length === 0 && products.length > 0 && (
+                      <div className="empty-state">
+                        <div className="empty-state-icon">✓</div>
+                        <div className="empty-state-text">
+                          All matching products have been ranked!
+                        </div>
+                      </div>
+                    )}
+
+                    {!hasSearched && (
+                      <div className="empty-state">
+                        <div className="empty-state-icon">👆</div>
+                        <div className="empty-state-text">
+                          Search for products to start ranking
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          
-            <div className="rank-column products-column">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-            <h2>Rankable Flavors</h2>
-            {role === 'employee_admin' && rankedProducts.length > 0 && (
-              <button 
-                onClick={handleForceSync}
-                className="force-sync-button"
-                disabled={isSyncing}
-                title="Force sync all rankings from browser to backend"
-              >
-                {isSyncing ? '⏳ Syncing...' : '🔄 Force Sync'}
-              </button>
-            )}
-          </div>
-          {collectionProgress && (
-            <div className="collection-progress-bar">
-              <div className="progress-header">
-                <span className="progress-icon">{collectionProgress.icon}</span>
-                <span className="progress-message">{collectionProgress.message}</span>
-              </div>
-              <div className="collection-progress-stats">
-                <div className="collection-progress-track">
-                  <div 
-                    className={`collection-progress-fill progress-${collectionProgress.progressColor}`}
-                    style={{ width: `${collectionProgress.percentage}%` }}
-                  ></div>
+
+              {/* RIGHT COLUMN: Your Rankings */}
+              <div className="rank-column">
+                <h2 className="column-header">Your Rankings</h2>
+                <div className="scrollable">
+                  <div className="flavor-list">
+                    {rankingsLoading ? (
+                      <div className="loading-state">Loading rankings...</div>
+                    ) : (
+                      <>
+                        {slots.map(slot => (
+                          <RankedFlavorItem
+                            key={slot.position}
+                            position={slot.position}
+                            product={slot.product}
+                            isDragging={activeId === `draggable-slot-${slot.position}`}
+                          />
+                        ))}
+                      </>
+                    )}
+                  </div>
                 </div>
-                <span className="progress-text">
-                  {collectionProgress.rankedCount}/{collectionProgress.totalProducts} ranked ({collectionProgress.percentage}%)
-                </span>
               </div>
-            </div>
-          )}
-          
-          <div className="search-box">
-            <input
-              type="text"
-              placeholder="Search products..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="rank-search-input"
-            />
-            <button 
-              onClick={handleSearch}
-              className="search-button"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <span className="button-spinner"></span>
-                  Search
-                </>
-              ) : 'Search'}
-            </button>
-          </div>
 
-          <div className="products-display">
-            {loading && (
-              <div className="loading-state">Loading products...</div>
-            )}
-
-            {error && (
-              <div className="error-state">
-                <p>{error}</p>
-                <button onClick={handleSearch} className="retry-button">
-                  Try Again
-                </button>
-              </div>
-            )}
-
-            {!loading && !error && hasSearched && products.length === 0 && (
-              <div className="empty-state">
-                No products found. Try a different search term or click Search to see all purchased products.
-              </div>
-            )}
-
-            {!loading && !error && availableProducts.length > 0 && (
-              <div className="products-grid">
-                {availableProducts.map(product => (
-                  <DraggableProduct 
-                    key={product.id} 
-                    product={product}
-                    isDragging={activeId === `product-${product.id}`}
-                    onRankClick={handleOpenModal}
-                  />
-                ))}
-              </div>
-            )}
-            
-            {!loading && !error && hasSearched && availableProducts.length === 0 && products.length > 0 && (
-              <div className="empty-state">
-                All matching products have been ranked!
-              </div>
-            )}
-
-            {!hasSearched && (
-              <div className="initial-state">
-                <p>Search for products or click "Search" to see all purchased products you can rank.</p>
-              </div>
-            )}
             </div>
           </div>
         </div>
+
+        {/* Sticky Save Bar */}
+        {saveStatus.state !== 'idle' && (
+          <div className="save-bar">
+            <div className="save-bar-content">
+              <div className={`save-status save-status-${saveStatus.state}`}>
+                {getCelebratoryMessage(saveStatus.state, saveStatus.position)}
+              </div>
+            </div>
           </div>
-        </div>
+        )}
       </div>
       
       <RankingModal

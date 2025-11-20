@@ -1,0 +1,83 @@
+/* Ranked Item Container - matches mockup design */
+.ranked-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.ranked-item.empty {
+  opacity: 0.5;
+}
+
+.ranked-item.drag-over {
+  opacity: 1;
+}
+
+.ranked-item.drag-over .flavor-card {
+  border-color: #FF8A2B;
+  background: rgba(255, 138, 43, 0.1);
+}
+
+/* Rank Number - shown outside card */
+.rank-number {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--font-rank-number-color, #FFC46A);
+  width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* The flavor card itself - inherits from FlavorCard.css */
+.ranked-item .flavor-card {
+  flex: 1;
+}
+
+/* Empty slot styling */
+.flavor-card.empty-slot {
+  background: #141414;
+  border: 2px dashed #2A2A2A;
+  cursor: default;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flavor-card.empty-slot:hover {
+  background: #141414;
+  border-color: #2A2A2A;
+  box-shadow: none;
+  transform: none;
+}
+
+.empty-slot-content {
+  color: #5C5C5C;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ranked-item.drag-over .flavor-card.empty-slot {
+  border-color: #FF8A2B;
+  border-style: solid;
+  background: rgba(255, 138, 43, 0.05);
+}
+
+.ranked-item.drag-over .empty-slot-content {
+  color: #FF8A2B;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .ranked-item {
+    gap: 0.75rem;
+  }
+
+  .rank-number {
+    font-size: 1.25rem;
+    width: 40px;
+  }
+}

@@ -125,53 +125,111 @@
 }
 
 /* ========================================
-   RANKING WIDGET SECTION
+   RANKING WIDGET SECTION - Mockup Design
    ======================================== */
 
 .rank-widget-section {
   background: var(--rank-neutral-900);
-  padding: 60px 0 80px;
+  padding: 60px 0 100px; /* Extra bottom padding for save bar */
 }
 
 .rank-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 1.5rem;
 }
 
-.rank-columns-grid {
+/* Utility Panel - Collapsible Search/Progress */
+.utility-panel {
+  margin-bottom: 2rem;
+}
+
+.utility-toggle {
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.3);
+  color: #FF8A2B;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+.utility-toggle:hover {
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
+}
+
+.utility-content {
+  margin-top: 1rem;
+  padding: 1.5rem;
+  background: #1A1A1A;
+  border: 1px solid #2A2A2A;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Two Column Grid - Mockup Design */
+.rank-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  align-items: start;
+  min-height: 600px;
 }
 
 .rank-column {
-  background: var(--rank-bg-card);
-  border-radius: 12px;
-  padding: 1.5rem 0 0 0;
-  box-shadow: var(--rank-shadow-card);
-  height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
 }
 
-.header-with-status {
+/* Column Headers - Mockup Style */
+.column-header {
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #5C5C5C;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-left: 0.25rem;
+}
+
+/* Flavor List Container */
+.flavor-list {
   display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 0.5rem;
-  padding: 0 1.5rem;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.rank-column h2 {
-  margin: 0;
-  font-size: 1.5rem;
-  color: var(--rank-text-white);
-  font-weight: 600;
-  padding: 0 1.5rem;
-  margin-bottom: 0.5rem;
+/* Scrollable Container - Mockup Style */
+.scrollable {
+  max-height: calc(100vh - 300px);
+  overflow-y: auto;
+  padding-right: 0.5rem;
+}
+
+.scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollable::-webkit-scrollbar-track {
+  background: #141414;
+  border-radius: 3px;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+  background: #2A2A2A;
+  border-radius: 3px;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+  background: #3A3A3A;
 }
 
 .save-status-inline {
@@ -493,7 +551,27 @@
 
 .loading-state,
 .error-state,
-.empty-state,
+/* Empty States - Mockup Style */
+.empty-state {
+  background: #141414;
+  border: 2px dashed #2A2A2A;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  color: #5C5C5C;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.3;
+}
+
+.empty-state-text {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
 .initial-state {
   text-align: center;
   padding: 3rem 1rem;
@@ -502,6 +580,70 @@
 
 .error-state {
   color: var(--rank-error);
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Sticky Save Bar - Mockup Design */
+.save-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(15, 15, 15, 0.95);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid #2A2A2A;
+  padding: 1.25rem 0;
+  z-index: 100;
+}
+
+.save-bar-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.save-status {
+  padding: 0.875rem 2.5rem;
+  background: linear-gradient(135deg, #FF8A2B, #FFC46A);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #0F0F0F;
+  box-shadow: 0 4px 16px rgba(255, 138, 43, 0.3);
+}
+
+.save-status-saving {
+  background: linear-gradient(135deg, #FF8A2B, #FFC46A);
+  animation: pulse-save 1.5s ease-in-out infinite;
+}
+
+.save-status-saved {
+  background: linear-gradient(135deg, #4CAF50, #81C784);
+  box-shadow: 0 4px 16px rgba(76, 175, 80, 0.3);
+}
+
+.save-status-error {
+  background: linear-gradient(135deg, #F44336, #E57373);
+  box-shadow: 0 4px 16px rgba(244, 67, 54, 0.3);
+}
+
+@keyframes pulse-save {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 16px rgba(255, 138, 43, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 24px rgba(255, 138, 43, 0.5);
+  }
 }
 
 .error-state p {
