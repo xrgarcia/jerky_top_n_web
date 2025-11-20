@@ -118,6 +118,11 @@ function Nav() {
             Coin Book
           </Link>
           {isAuthenticated && (
+            <Link to="/leaderboard" className={`nav-link ${isActive('/leaderboard')}`}>
+              Leaderboard
+            </Link>
+          )}
+          {isAuthenticated && (
             <Link to="/community" className={`nav-link ${isActive('/community')}`}>
               Community
             </Link>
