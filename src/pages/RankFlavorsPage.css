@@ -423,19 +423,20 @@
 
 .search-button {
   padding: 0.75rem 2rem;
-  background-color: var(--rank-button-primary-bg);
-  color: var(--rank-text-white);
-  border: none;
+  background-color: rgba(255, 138, 43, 0.1);
+  color: #FF8A2B;
+  border: 1px solid rgba(255, 138, 43, 0.2);
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.2s;
   white-space: nowrap;
 }
 
 .search-button:hover:not(:disabled) {
-  background-color: var(--rank-button-primary-hover);
+  background-color: rgba(255, 138, 43, 0.15);
+  border-color: rgba(255, 138, 43, 0.3);
 }
 
 .search-button:disabled {
@@ -488,16 +489,18 @@
 
 .retry-button {
   padding: 0.5rem 1.5rem;
-  background-color: var(--rank-button-primary-bg);
-  color: var(--rank-text-white);
-  border: none;
+  background-color: rgba(255, 138, 43, 0.1);
+  color: #FF8A2B;
+  border: 1px solid rgba(255, 138, 43, 0.2);
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: all 0.2s;
 }
 
 .retry-button:hover {
-  background-color: var(--rank-button-primary-hover);
+  background-color: rgba(255, 138, 43, 0.15);
+  border-color: rgba(255, 138, 43, 0.3);
 }
 
 /* Products grid - responsive */
