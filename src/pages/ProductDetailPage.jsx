@@ -90,7 +90,6 @@ function ProductDetailPage() {
   const categoryTag = categoryTags[primaryFlavor] || { icon: '🥩', label: 'FLAVOR' };
   const coinIcon = flavorIcons[primaryFlavor] || '🥩';
   
-  const globalRank = distributionData?.stats ? Math.round(parseFloat(distributionData.stats.avgRank)) : null;
   const avgRankDisplay = distributionData?.stats?.avgRank || product.avgRank;
   const totalRankers = distributionData?.stats?.totalRankings || product.rankingCount || 0;
 
@@ -107,20 +106,20 @@ function ProductDetailPage() {
               {categoryTag.icon} {categoryTag.label}
             </div>
             <div className="header-meta">
-              {globalRank && (
-                <div className="meta-item">
-                  <span className="meta-label">Global Rank</span>
-                  <span className="meta-value">#{globalRank}</span>
-                </div>
-              )}
               <div className="meta-item">
-                <span className="meta-label">Average Rank</span>
+                <span className="meta-label">Community Average</span>
                 <span className="meta-value">#{avgRankDisplay ? parseFloat(avgRankDisplay).toFixed(1) : 'N/A'}</span>
               </div>
               <div className="meta-item">
                 <span className="meta-label">Total Rankers</span>
                 <span className="meta-value">{totalRankers.toLocaleString()}</span>
               </div>
+              {product.userRank && (
+                <div className="meta-item">
+                  <span className="meta-label">Your Rank</span>
+                  <span className="meta-value">#{product.userRank}</span>
+                </div>
+              )}
             </div>
           </div>
           
