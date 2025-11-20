@@ -24,10 +24,14 @@
   --rank-text-white: #FFFFFF;         /* Pure white for headlines */
   --rank-text-soft-white: #E5E5E5;    /* Soft white for subheadings */
   --rank-text-warm-white: #F2F2F2;    /* Warm white for primary readability */
+  --rank-text-headline: #F5F5F5;      /* Headline text (H1-H4) - Option A spec */
   --rank-text-body: #CCCCCC;          /* Body text, paragraphs */
+  --rank-text-p1: #A0A0A0;            /* P1 paragraph text - Option A spec */
+  --rank-text-p2: #6C6C6C;            /* P2/P3 paragraph text - Option A spec */
   --rank-text-muted: #999999;         /* Muted secondary text */
   --rank-text-label: #777777;         /* Low-emphasis labels, metadata */
   --rank-text-soft-gray: #5C5C5C;     /* Disabled states, very low emphasis */
+  --rank-text-rank-number: #FFC46A;   /* Rank numbers - Option A spec */
 
   /* Accent Colors - Primary */
   --rank-gold: #FFD873;               /* Coins, highlights, rarity signals */
@@ -145,13 +149,16 @@
   --rank-toast-warning-bg: rgba(255, 165, 0, 0.15);
   --rank-toast-info-bg: rgba(33, 150, 243, 0.15);
 
-  /* Input States */
+  /* Input States - Inter (Option A Spec) */
   --rank-input-bg: #2A2A2A;
   --rank-input-border: #3D3D3D;
   --rank-input-border-hover: #5c5c5c;
   --rank-input-border-focus: #FFD873;
-  --rank-input-text: #E5E5E5;
-  --rank-input-placeholder: #777777;
+  --rank-input-text: #F5F5F5;         /* Option A spec */
+  --rank-input-placeholder: #6C6C6C;  /* Option A spec */
+  --rank-input-size: 1rem;            /* 16px */
+  --rank-input-weight: 400;
+  --rank-input-line-height: 1.5;
 
   /* Glow & Lighting Effects */
   --rank-glow-amber: rgba(255, 138, 43, 0.4);     /* XP bar shimmer */
@@ -172,33 +179,34 @@
      TYPOGRAPHY SYSTEM
      ============================================ */
 
-  /* Font Families */
-  --font-headline: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* Font Families - Option A Spec */
+  --font-headline: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-stats: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 
-  /* Headline Scale - Manrope Bold/ExtraBold */
-  --font-h1-size: 3.5rem;          /* 56px */
-  --font-h1-weight: 800;           /* ExtraBold */
+  /* Headline Scale - Space Grotesk (Option A Spec) */
+  --font-h1-size: 3.5rem;          /* 56px (48-56px range) */
+  --font-h1-weight: 700;           /* Bold - Option A */
   --font-h1-line-height: 1.2;
-  --font-h1-letter-spacing: -0.5px;
+  --font-h1-letter-spacing: -1%;   /* -1% tracking - Option A */
 
-  --font-h2-size: 2.75rem;         /* 44px */
-  --font-h2-weight: 700;           /* Bold */
+  --font-h2-size: 2.125rem;        /* 34px (32-36px range) - Option A */
+  --font-h2-weight: 600;           /* SemiBold - Option A */
   --font-h2-line-height: 1.3;
-  --font-h2-letter-spacing: -0.5px;
+  --font-h2-letter-spacing: 0;
 
-  --font-h3-size: 1.75rem;         /* 28px */
-  --font-h3-weight: 700;           /* Bold */
+  --font-h3-size: 1.75rem;         /* 28px (24-28px range) */
+  --font-h3-weight: 600;           /* SemiBold - Option A */
   --font-h3-line-height: 1.4;
-  --font-h3-letter-spacing: -0.3px;
+  --font-h3-letter-spacing: 0;
 
-  --font-h4-size: 1.25rem;         /* 20px */
-  --font-h4-weight: 700;           /* Bold */
+  --font-h4-size: 1.25rem;         /* 20px (20-22px range) */
+  --font-h4-weight: 500;           /* Medium - Option A */
   --font-h4-line-height: 1.5;
   --font-h4-letter-spacing: 0;
 
-  /* Body Text Scale - Inter Regular/Medium */
+  /* Body Text Scale - Inter Regular/Medium (Option A Spec) */
   --font-body-size: 1rem;          /* 16px */
   --font-body-weight: 400;         /* Regular */
   --font-body-line-height: 1.6;
@@ -210,6 +218,22 @@
   --font-small-size: 0.875rem;     /* 14px */
   --font-small-weight: 400;        /* Regular */
   --font-small-line-height: 1.5;
+
+  /* Paragraph Variants - Option A Spec */
+  --font-p1-size: 1.125rem;        /* 18px (16-18px range) */
+  --font-p1-weight: 400;           /* Regular */
+  --font-p1-line-height: 1.6;
+  --font-p1-color: var(--rank-text-p1);
+
+  --font-p2-size: 0.9375rem;       /* 15px (14-15px range) */
+  --font-p2-weight: 400;           /* Regular */
+  --font-p2-line-height: 1.6;
+  --font-p2-color: var(--rank-text-p2);
+
+  --font-p3-size: 0.8125rem;       /* 13px (12-13px range) */
+  --font-p3-weight: 500;           /* Medium */
+  --font-p3-line-height: 1.5;
+  --font-p3-color: var(--rank-text-p2);
 
   /* Stats/Mono Text - IBM Plex Mono Medium */
   --font-mono-size: 1rem;          /* 16px */
@@ -245,25 +269,38 @@
   --font-section-subtitle-weight: 400;     /* Regular */
   --font-section-subtitle-line-height: 1.6;
 
-  /* Stat Display Variants */
-  --font-stat-large-size: 2rem;     /* 32px */
+  /* Stat Display Variants - Space Grotesk (Option A Spec) */
+  --font-stat-large-size: 1.75rem;  /* 28px (20-28px range) */
   --font-stat-large-weight: 700;    /* Bold */
   --font-stat-large-line-height: 1.2;
 
-  --font-stat-medium-size: 1.5rem;  /* 24px */
+  --font-stat-medium-size: 1.5rem;  /* 24px (20-28px range) */
   --font-stat-medium-weight: 600;   /* SemiBold */
   --font-stat-medium-line-height: 1.3;
 
-  --font-stat-small-size: 1rem;     /* 16px */
-  --font-stat-small-weight: 500;    /* Medium */
+  --font-stat-small-size: 1.25rem;  /* 20px (20-28px range) */
+  --font-stat-small-weight: 600;    /* SemiBold */
   --font-stat-small-line-height: 1.4;
 
-  /* Button Text */
-  --font-button-size: 0.875rem;     /* 14px */
+  /* Rank Numbers - Space Grotesk (Option A Spec) */
+  --font-rank-number-size: 1.25rem; /* 20px (18-22px range) */
+  --font-rank-number-weight: 700;   /* Bold */
+  --font-rank-number-line-height: 1.2;
+  --font-rank-number-color: var(--rank-text-rank-number);
+
+  /* Button Text - Inter (Option A Spec) */
+  --font-button-size: 0.9375rem;    /* 15px (15-16px range) */
   --font-button-weight: 600;        /* SemiBold */
   --font-button-line-height: 1;
   --font-button-letter-spacing: 0.5px;
   --font-button-transform: uppercase;
+
+  /* Tabs - Inter (Option A Spec) */
+  --font-tab-size: 0.9375rem;       /* 15px (14-15px range) */
+  --font-tab-weight: 500;           /* Medium */
+  --font-tab-line-height: 1.4;
+  --font-tab-active-color: var(--rank-amber);
+  --font-tab-inactive-color: var(--rank-text-p1);
 
   /* Caption Text - Very small supporting text */
   --font-caption-size: 0.75rem;     /* 12px */
