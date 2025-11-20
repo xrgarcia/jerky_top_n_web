@@ -1,58 +1,55 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useProductDetailEnhanced } from '../hooks/useProducts';
+import { 
+  useProductDetailEnhanced,
+  useProductDistribution,
+  useProductTopFans,
+  useProductOppositeProfiles,
+  useProductRelated,
+  useProductInsights
+} from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import { useAuthStore } from '../store/authStore';
+import InteractiveDistributionGraph from '../components/product/InteractiveDistributionGraph';
+import InsightCards from '../components/product/InsightCards';
+import TopFlavorFans from '../components/product/TopFlavorFans';
+import OppositeTasteProfiles from '../components/product/OppositeTasteProfiles';
+import RelatedFlavors from '../components/product/RelatedFlavors';
 import './ProductDetailPage.css';
 
-function RankingDistributionChart({ distribution, avgRank }) {
-  if (!distribution || distribution.length === 0) {
-    return (
-      <div className="distribution-empty">
-        <p>No rankings yet. Be the first to rank this flavor!</p>
-      </div>
-    );
-  }
+const flavorIcons = {
+  'sweet': '🍬',
+  'spicy': '🌶️',
+  'savory': '🥩',
+  'smoky': '🔥',
+  'peppery': '🌿',
+  'garlic': '🧄',
+  'tangy': '🍋',
+  'exotic': '🌏'
+};
 
-  const maxCount = Math.max(...distribution.map(d => d.count));
-
-  return (
-    <div className="distribution-chart">
-      <div className="chart-bars">
-        {distribution.map(({ rank, count }) => {
-          const percentage = (count / maxCount) * 100;
-          const isAverage = avgRank && Math.abs(rank - avgRank) < 0.5;
-          
-          return (
-            <div key={rank} className="chart-bar-container">
-              <div 
-                className={`chart-bar ${isAverage ? 'is-average' : ''}`}
-                style={{ height: `${percentage}%` }}
-              >
-                <span className="bar-count">{count}</span>
-              </div>
-              <div className="chart-label">#{rank}</div>
-            </div>
-          );
-        })}
-      </div>
-      {avgRank && (
-        <div className="chart-legend">
-          <span className="legend-item">
-            <span className="legend-dot highlight"></span>
-            Community Average
-          </span>
-        </div>
-      )}
-    </div>
-  );
-}
+const categoryTags = {
+  'spicy': { icon: '🔥', label: 'HEAT' },
+  'smoky': { icon: '🔥', label: 'SMOKY HEAT' },
+  'sweet': { icon: '🍬', label: 'SWEET' },
+  'tangy': { icon: '🍋', label: 'TANGY' },
+  'savory': { icon: '🥩', label: 'SAVORY' },
+  'peppery': { icon: '🌿', label: 'PEPPERY' },
+  'garlic': { icon: '🧄', label: 'GARLIC' },
+  'exotic': { icon: '🌏', label: 'EXOTIC' }
+};
 
 function ProductDetailPage() {
   const { id: productId } = useParams();
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthStore();
+  
   const { data: product, isLoading, error } = useProductDetailEnhanced(productId);
+  const { data: distributionData } = useProductDistribution(productId);
+  const { data: topFansData } = useProductTopFans(productId, 9);
+  const { data: oppositeData } = useProductOppositeProfiles(productId, 9);
+  const { data: relatedData } = useProductRelated(productId, 4);
+  const { data: insightsData } = useProductInsights(productId);
   
   usePageView('product_detail', { productId, productTitle: product?.title });
 
@@ -89,123 +86,104 @@ function ProductDetailPage() {
     }
   };
 
+  const primaryFlavor = product.primaryFlavor?.toLowerCase() || 'savory';
+  const categoryTag = categoryTags[primaryFlavor] || { icon: '🥩', label: 'FLAVOR' };
+  const coinIcon = flavorIcons[primaryFlavor] || '🥩';
+  
+  const globalRank = distributionData?.stats ? Math.round(parseFloat(distributionData.stats.avgRank)) : null;
+  const avgRankDisplay = distributionData?.stats?.avgRank || product.avgRank;
+  const totalRankers = distributionData?.stats?.totalRankings || product.rankingCount || 0;
+
   return (
     <div className="product-detail-page">
       <div className="product-detail-container">
-        <Link to="/flavors" className="back-link">← Back to Flavors</Link>
         
-        {/* Hero Section */}
-        <section className="product-hero">
-          <div className="hero-content">
-            <div className="product-image-wrapper">
-              {product.image && (
-                <img 
-                  src={product.image} 
-                  alt={product.title} 
-                  className="product-image"
-                />
-              )}
+        {/* Page Header Card */}
+        <div className="page-header-card card">
+          <div className="header-info">
+            <div className="page-title-small">Flavor Ranking Distribution</div>
+            <h1 className="flavor-name-large">{product.title}</h1>
+            <div className="category-tag-badge">
+              {categoryTag.icon} {categoryTag.label}
             </div>
-            
-            <div className="product-info">
-              <h1 className="product-title">{product.title}</h1>
-              
-              {product.vendor && (
-                <p className="product-brand">{product.vendor}</p>
+            <div className="header-meta">
+              {globalRank && (
+                <div className="meta-item">
+                  <span className="meta-label">Global Rank</span>
+                  <span className="meta-value">#{globalRank}</span>
+                </div>
               )}
-              
-              <div className="flavor-tags">
-                {product.primaryFlavor && (
-                  <Link 
-                    to={`/flavors/${encodeURIComponent(product.primaryFlavor.toLowerCase())}`}
-                    className="flavor-tag primary"
-                  >
-                    {product.flavorDisplay || product.primaryFlavor}
-                  </Link>
-                )}
-                
-                {product.secondaryFlavors && product.secondaryFlavors.length > 0 && (
-                  product.secondaryFlavors.map((flavor, index) => (
-                    <span key={index} className="flavor-tag secondary">
-                      {flavor}
-                    </span>
-                  ))
-                )}
+              <div className="meta-item">
+                <span className="meta-label">Average Rank</span>
+                <span className="meta-value">#{avgRankDisplay ? parseFloat(avgRankDisplay).toFixed(1) : 'N/A'}</span>
+              </div>
+              <div className="meta-item">
+                <span className="meta-label">Total Rankers</span>
+                <span className="meta-value">{totalRankers.toLocaleString()}</span>
               </div>
             </div>
           </div>
-        </section>
-
-        {/* Stats Section */}
-        <section className="stats-section">
-          <div className="stats-grid">
-            {product.userRank !== null && (
-              <div className="stat-card user-rank">
-                <div className="stat-label">Your Rank</div>
-                <div className="stat-value">#{product.userRank}</div>
-              </div>
+          
+          <div className="header-actions">
+            <div className="header-coin">
+              <div className="header-coin-inner">{coinIcon}</div>
+            </div>
+            {product.shopifyUrl && (
+              <button 
+                onClick={handleShopifyClick}
+                className="btn btn-secondary"
+              >
+                View on Shopify
+              </button>
             )}
-            
-            <div className="stat-card community-rank">
-              <div className="stat-label">Community Average</div>
-              <div className="stat-value">
-                {product.avgRank ? `#${parseFloat(product.avgRank).toFixed(1)}` : 'N/A'}
-              </div>
-            </div>
-            
-            <div className="stat-card rankings-count">
-              <div className="stat-label">Total Rankings</div>
-              <div className="stat-value">{product.rankingCount || 0}</div>
-            </div>
+            {isAuthenticated && (
+              <button 
+                onClick={handleRankClick}
+                className="btn btn-primary"
+              >
+                Rank This Flavor
+              </button>
+            )}
           </div>
-        </section>
+        </div>
 
-        {/* Distribution Section */}
-        <section className="distribution-section">
-          <h2 className="section-title">Community Rankings</h2>
-          <p className="section-subtitle">See how the community ranks this flavor</p>
-          <RankingDistributionChart 
-            distribution={product.rankingDistribution} 
-            avgRank={product.avgRank}
-          />
-        </section>
+        {/* Distribution Graph */}
+        <InteractiveDistributionGraph 
+          distribution={distributionData}
+          currentAvgRank={avgRankDisplay}
+        />
 
-        {/* CTA Section */}
-        <section className="cta-section">
-          {isAuthenticated ? (
-            <>
-              {product.hasPurchased && product.userRank === null ? (
-                <button 
-                  onClick={handleRankClick}
-                  className="cta-button primary"
-                >
-                  Rank It
-                </button>
-              ) : product.hasPurchased ? (
-                <button 
-                  onClick={handleShopifyClick}
-                  className="cta-button secondary"
-                >
-                  Try It Again
-                </button>
-              ) : (
-                <button 
-                  onClick={handleShopifyClick}
-                  className="cta-button primary"
-                >
-                  Discover Your New Favorite
-                </button>
-              )}
-            </>
-          ) : (
+        {/* Insight Cards */}
+        <InsightCards insights={insightsData} />
+
+        {/* Top Flavor Fans */}
+        <TopFlavorFans fans={topFansData?.fans} />
+
+        {/* Opposite Taste Profiles */}
+        <OppositeTasteProfiles profiles={oppositeData?.profiles} />
+
+        {/* Related Flavors */}
+        <RelatedFlavors products={relatedData?.products} />
+
+        {/* Bottom CTA */}
+        <div className="bottom-cta">
+          {isAuthenticated && (
             <button 
-              onClick={handleShopifyClick}
-              className="cta-button primary"
+              onClick={handleRankClick}
+              className="btn btn-primary"
             >
-              Discover Your New Favorite
+              Rank This Flavor
             </button>
           )}
-        </section>
+          {product.shopifyUrl && (
+            <button 
+              onClick={handleShopifyClick}
+              className="btn btn-secondary"
+            >
+              Go to Product Page
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
