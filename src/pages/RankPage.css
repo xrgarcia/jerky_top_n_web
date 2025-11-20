@@ -145,9 +145,9 @@
 }
 
 .utility-toggle {
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
-  color: #D4A574;
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
+  color: #FF8A2B;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -161,9 +161,8 @@
 }
 
 .utility-toggle:hover {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 .utility-content {
@@ -504,9 +503,9 @@
 
 .search-button {
   padding: 0.75rem 2rem;
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
-  color: #D4A574;
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
+  color: #FF8A2B;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
@@ -517,9 +516,8 @@
 }
 
 .search-button:hover:not(:disabled) {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 .search-button:disabled {
@@ -656,9 +654,9 @@
 
 .retry-button {
   padding: 0.5rem 1.5rem;
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
-  color: #D4A574;
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
+  color: #FF8A2B;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.95rem;
@@ -667,9 +665,8 @@
 }
 
 .retry-button:hover {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 /* Products grid - responsive */
@@ -902,9 +899,9 @@
 /* Force Sync Button */
 .force-sync-button {
   padding: 0.5rem 1rem;
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
-  color: #D4A574;
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
+  color: #FF8A2B;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
@@ -913,13 +910,12 @@
 }
 
 .force-sync-button:hover:not(:disabled) {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 .force-sync-button:active:not(:disabled) {
-  background: rgba(139, 111, 71, 0.5);
+  background: rgba(255, 138, 43, 0.15);
 }
 
 .force-sync-button:disabled {

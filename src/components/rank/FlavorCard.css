@@ -109,17 +109,17 @@
   width: fit-content;
 }
 
-/* View Icon - Mockup Style (Dark Brown/Bronze) */
+/* View Icon - Mockup Style (Orange) */
 .view-icon {
   width: 32px;
   height: 32px;
   border-radius: 6px;
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #D4A574;
+  color: #FF8A2B;
   font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
@@ -129,19 +129,18 @@
 }
 
 .view-icon:hover {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 /* Mobile Rank Button - hidden on desktop, shown on mobile */
 .rank-button-mobile {
   display: none;
   padding: 0.5rem 1rem;
-  background: rgba(139, 111, 71, 0.4);
-  border: 1px solid rgba(139, 111, 71, 0.6);
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
   border-radius: 6px;
-  color: #D4A574;
+  color: #FF8A2B;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -152,9 +151,8 @@
 }
 
 .rank-button-mobile:hover {
-  background: rgba(139, 111, 71, 0.6);
-  border-color: rgba(139, 111, 71, 0.8);
-  color: #E5C9A0;
+  background: rgba(255, 138, 43, 0.2);
+  border-color: rgba(255, 138, 43, 0.4);
 }
 
 /* Mobile styles */
