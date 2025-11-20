@@ -145,9 +145,9 @@
 }
 
 .utility-toggle {
-  background: #FFC46A;
-  border: none;
-  color: #1A1A1A;
+  background: rgba(139, 111, 71, 0.4);
+  border: 1px solid rgba(139, 111, 71, 0.6);
+  color: #D4A574;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.875rem;
@@ -158,13 +158,12 @@
   transition: all 0.2s;
   width: 100%;
   max-width: 300px;
-  box-shadow: 0 2px 8px rgba(255, 196, 106, 0.2);
 }
 
 .utility-toggle:hover {
-  background: #FFD07A;
-  box-shadow: 0 4px 12px rgba(255, 196, 106, 0.3);
-  transform: translateY(-1px);
+  background: rgba(139, 111, 71, 0.6);
+  border-color: rgba(139, 111, 71, 0.8);
+  color: #E5C9A0;
 }
 
 .utility-content {
@@ -505,29 +504,27 @@
 
 .search-button {
   padding: 0.75rem 2rem;
-  background: #FFC46A;
-  color: #1A1A1A;
-  border: none;
+  background: rgba(139, 111, 71, 0.4);
+  border: 1px solid rgba(139, 111, 71, 0.6);
+  color: #D4A574;
   border-radius: 8px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
-  box-shadow: 0 2px 8px rgba(255, 196, 106, 0.2);
   font-family: var(--font-body);
 }
 
 .search-button:hover:not(:disabled) {
-  background: #FFD07A;
-  box-shadow: 0 4px 12px rgba(255, 196, 106, 0.3);
-  transform: translateY(-1px);
+  background: rgba(139, 111, 71, 0.6);
+  border-color: rgba(139, 111, 71, 0.8);
+  color: #E5C9A0;
 }
 
 .search-button:disabled {
-  opacity: 0.6;
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none;
 }
 
 .button-spinner {
@@ -659,21 +656,20 @@
 
 .retry-button {
   padding: 0.5rem 1.5rem;
-  background: #FFC46A;
-  color: #1A1A1A;
-  border: none;
+  background: rgba(139, 111, 71, 0.4);
+  border: 1px solid rgba(139, 111, 71, 0.6);
+  color: #D4A574;
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.95rem;
   font-weight: 600;
   transition: all 0.2s;
-  box-shadow: 0 2px 8px rgba(255, 196, 106, 0.2);
 }
 
 .retry-button:hover {
-  background: #FFD07A;
-  box-shadow: 0 4px 12px rgba(255, 196, 106, 0.3);
-  transform: translateY(-1px);
+  background: rgba(139, 111, 71, 0.6);
+  border-color: rgba(139, 111, 71, 0.8);
+  color: #E5C9A0;
 }
 
 /* Products grid - responsive */
@@ -906,30 +902,27 @@
 /* Force Sync Button */
 .force-sync-button {
   padding: 0.5rem 1rem;
-  background: #FFC46A;
-  color: #1A1A1A;
-  border: none;
+  background: rgba(139, 111, 71, 0.4);
+  border: 1px solid rgba(139, 111, 71, 0.6);
+  color: #D4A574;
   border-radius: 6px;
   font-size: 0.9rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(255, 196, 106, 0.2);
 }
 
 .force-sync-button:hover:not(:disabled) {
-  background: #FFD07A;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(255, 196, 106, 0.3);
+  background: rgba(139, 111, 71, 0.6);
+  border-color: rgba(139, 111, 71, 0.8);
+  color: #E5C9A0;
 }
 
 .force-sync-button:active:not(:disabled) {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(255, 196, 106, 0.2);
+  background: rgba(139, 111, 71, 0.5);
 }
 
 .force-sync-button:disabled {
-  opacity: 0.6;
+  opacity: 0.4;
   cursor: not-allowed;
-  transform: none;
 }

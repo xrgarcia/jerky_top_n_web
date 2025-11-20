@@ -138,10 +138,10 @@
 .rank-button-mobile {
   display: none;
   padding: 0.5rem 1rem;
-  background: #FFC46A;
-  border: none;
+  background: rgba(139, 111, 71, 0.4);
+  border: 1px solid rgba(139, 111, 71, 0.6);
   border-radius: 6px;
-  color: #1A1A1A;
+  color: #D4A574;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -149,13 +149,12 @@
   cursor: pointer;
   transition: all 0.2s;
   white-space: nowrap;
-  box-shadow: 0 2px 6px rgba(255, 196, 106, 0.2);
 }
 
 .rank-button-mobile:hover {
-  background: #FFD07A;
-  box-shadow: 0 3px 8px rgba(255, 196, 106, 0.3);
-  transform: translateY(-1px);
+  background: rgba(139, 111, 71, 0.6);
+  border-color: rgba(139, 111, 71, 0.8);
+  color: #E5C9A0;
 }
 
 /* Mobile styles */
