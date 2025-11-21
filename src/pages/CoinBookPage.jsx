@@ -9,9 +9,6 @@ function CoinBookPage() {
     <div className="coinbook-page">
       {/* Hero: The Coin Book */}
       <section className="coinbook-hero">
-        <div className="hero-background">
-          <div className="hero-glow"></div>
-        </div>
         <div className="coinbook-container">
           <div className="hero-intro">
             <h1 className="hero-title">Your Coin Book</h1>

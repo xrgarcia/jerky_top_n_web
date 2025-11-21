@@ -1,66 +1,30 @@
 /* Coin Book Page - Elegant Three-Act Narrative */
 
 .coinbook-page {
-  background: var(--rank-neutral-50);
+  background: var(--rank-neutral-900);
   min-height: 100vh;
-  padding: 0;
+  padding: 80px 24px 80px;
 }
 
 .coinbook-container {
-  max-width: 1400px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 40px;
 }
 
 /* ========================================
    HERO: YOUR COIN BOOK
+   Matches Rank/Flavor Index/Leaderboard
    ======================================== */
 
 .coinbook-hero {
-  position: relative;
-  background: var(--rank-gradient-dark);
-  padding: 60px 0 100px;
-  overflow: visible;
+  margin-bottom: 64px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-.hero-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.hero-glow {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 1200px;
-  height: 1200px;
-  background: radial-gradient(circle, var(--rank-glow-podium) 0%, var(--rank-glow-gold) 30%, transparent 70%);
-  border-radius: 50%;
-  animation: pulse-glow 8s ease-in-out infinite;
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-}
-
-/* Fix tooltip visibility - remove 3D transform that creates stacking context */
 .coinbook-hero .coinbook-widget {
-  transform: none;
-  transform-style: flat;
+  margin-top: 64px;
 }
 
 /* ========================================

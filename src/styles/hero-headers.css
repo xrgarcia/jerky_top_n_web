@@ -11,6 +11,21 @@
   margin-bottom: 0;
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 138, 43, 0.3);
+  position: relative;
+}
+
+.rank-hero .hero-intro::after,
+.coinbook-hero .hero-intro::after,
+.flavor-index-hero::after,
+.leaderboard-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translate(-50%);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--rank-gold) 50%, transparent 100%);
 }
 
 .rank-hero .hero-title,
