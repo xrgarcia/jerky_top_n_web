@@ -122,11 +122,6 @@ function Nav() {
               Leaderboard
             </Link>
           )}
-          {isAuthenticated && (
-            <Link to="/community" className={`nav-link ${isActive('/community')}`}>
-              Community
-            </Link>
-          )}
           {isEmployee && (
             <Link to="/admin/tools" className={`nav-link ${isActive('/admin/tools')}`}>
               Tools
