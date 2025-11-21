@@ -15,34 +15,16 @@
   text-align: center;
   margin-bottom: 64px;
   padding-bottom: 48px;
-  border-bottom: 2px solid rgba(255, 138, 43, 0.15);
+  border-bottom: 1px solid rgba(255, 138, 43, 0.3);
   position: relative;
-}
-
-.flavor-index-hero::after {
-  content: '';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 200px;
-  height: 2px;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    var(--rank-gold) 50%, 
-    transparent 100%
-  );
 }
 
 .hero-title {
   font-size: 56px;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   margin: 0 0 16px 0;
-  background: linear-gradient(135deg, var(--rank-amber) 0%, var(--rank-gold) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #FF8A2B;
   text-transform: uppercase;
   font-family: var(--rank-font-display);
   line-height: 1;
