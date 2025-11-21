@@ -57,7 +57,7 @@
   }
 }
 
-.hero-intro {
+.coinbook-hero .hero-intro {
   text-align: center;
   margin-bottom: 0;
   padding-bottom: 48px;
@@ -71,7 +71,7 @@
   transform-style: flat;
 }
 
-.hero-title {
+.coinbook-hero .hero-title {
   font-size: 3.5rem;
   font-weight: 600;
   color: #FF8A2B;
@@ -82,7 +82,7 @@
   text-transform: uppercase;
 }
 
-.hero-subtitle {
+.coinbook-hero .hero-subtitle {
   font-size: 1.25rem;
   color: var(--rank-text-soft-white);
   margin: 0 auto;

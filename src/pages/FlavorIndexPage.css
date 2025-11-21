@@ -19,7 +19,7 @@
   position: relative;
 }
 
-.hero-title {
+.flavor-index-hero .hero-title {
   font-size: 56px;
   font-weight: 900;
   letter-spacing: 1px;
@@ -30,7 +30,7 @@
   line-height: 1;
 }
 
-.hero-subtitle {
+.flavor-index-hero .hero-subtitle {
   font-size: 18px;
   font-weight: 400;
   color: var(--rank-neutral-300);
