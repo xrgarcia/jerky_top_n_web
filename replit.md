@@ -13,12 +13,13 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 
 **UI/UX Decisions:**
 - **Design System:** "RANK Identity System" with dark backgrounds, premium accents (gold, amber, ember), and custom typography (Space Grotesk for headings/stats, Inter for body/UI text).
+- **Hero Headers:** Unified styling across all pages via `hero-headers.css` - orange (#FF8A2B) uppercase titles, subtle subtitles, 1px orange divider with centered 2px gold gradient accent (::after pseudo-element). Prevents CSS cascade conflicts by centralizing hero header definitions.
 - **Button Theming:** Primary buttons use orange/amber theme (rgba(255, 138, 43, 0.1) background, #FF8A2B text, rgba(255, 138, 43, 0.2) border). Legacy gold theme (--rank-button-gold-*) available for specific use cases. Loading spinners and focus rings remain gold (#FFD873) for visual consistency. IMPORTANT: Always use --rank-button-primary-text for button/label text colors, never --rank-button-primary-bg (which is semi-transparent).
 - **Gamification Visuals:** Features collection progress bars, tier-based colors, animated gradients, XP systems, rank progression, exclusive unlocks, tier emoji system, narrative-driven Journey Film Reel, and community badges.
 - **Narrative Transitions:** Storytelling-driven section transitions with specific padding, margin, and staggered reveal animations.
 - **Component Styling:** Consistent styling for product cards, loading states, error handling, admin tools, including hover glows, shimmer effects, and glow pulses.
 - **Toast Notifications:** Sequential queue-based display for user feedback.
-- **Rank Page Layout:** Two-column mockup-inspired design with "Unranked Flavors" (left) and "Your Rankings" (right), scrollable lists, FlavorCard components with drag handles and emoji icons, rank numbers outside cards, collapsible utility panel for search/commentary/progress, and sticky save bar.
+- **Rank Page Layout:** Two-column mockup-inspired design with "Unranked Flavors" (left) and "Your Rankings" (right), scrollable lists, FlavorCard components with drag handles and emoji icons, rank numbers outside cards, collapsible utility panel for search/commentary/progress, and sticky save bar. Hero header matches Flavor Index style with simplified DOM structure.
 
 **Technical Implementations:**
 - **Frontend:** React 19, React Router v7, TanStack Query, Zustand, Vite, Socket.IO Client, with route-based lazy loading and manual vendor chunking.
