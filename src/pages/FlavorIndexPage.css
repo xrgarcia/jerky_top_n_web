@@ -19,6 +19,21 @@
   position: relative;
 }
 
+.flavor-index-hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--rank-gold) 50%, 
+    transparent 100%
+  );
+}
+
 /* Filter Bar */
 .flavor-index-filters {
   display: grid;
