@@ -88,8 +88,6 @@ export default function RankPage() {
   const [isRankingsCollapsed, setIsRankingsCollapsed] = useState(() => 
     typeof window !== 'undefined' && window.matchMedia('(max-width: 768px)').matches
   );
-  const [isUtilityCollapsed, setIsUtilityCollapsed] = useState(true); // Separate state for utility panel
-  
   // Detect mobile screen size changes
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -628,79 +626,70 @@ Continue?`;
         <div className="rank-widget-section">
           <div className="rank-container">
             
-            {/* Collapsible Utility Panel - Search, Commentary, Progress */}
+            {/* Utility Panel - Search, Commentary, Progress */}
             <div className="utility-panel">
-              <button 
-                className="utility-toggle"
-                onClick={() => setIsUtilityCollapsed(!isUtilityCollapsed)}
-              >
-                {isUtilityCollapsed ? '▼ Show Search & Progress' : '▲ Hide Search & Progress'}
-              </button>
-              
-              {!isUtilityCollapsed && (
-                <div className="utility-content">
-                  {/* Search Box */}
-                  <div className="search-box">
-                    <input
-                      type="text"
-                      placeholder="Search products..."
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      onKeyPress={handleKeyPress}
-                      className="rank-search-input"
-                    />
-                    <button 
-                      onClick={handleSearch}
-                      className="search-button"
-                      disabled={loading}
-                    >
-                      {loading ? (
-                        <>
-                          <span className="button-spinner"></span>
-                          Search
-                        </>
-                      ) : 'Search'}
-                    </button>
-                  </div>
-
-                  {/* Commentary and Progress */}
-                  {commentary && (
-                    <div className="ranking-commentary">
-                      <span className="commentary-icon">{commentary.icon}</span>
-                      <span className="commentary-message">{commentary.message}</span>
-                      {commentary.nextMilestone && (
-                        <div className="milestone-hint">
-                          <span style={{ marginRight: '4px', cursor: 'help' }} title={commentary.nextMilestone.name}>
-                            {renderAchievementIcon(commentary.nextMilestone, 20)}
-                          </span>
-                          {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
-                          {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
-                        </div>
-                      )}
-                    </div>
-                  )}
-
-                  {collectionProgress && (
-                    <div className="collection-progress-bar">
-                      <div className="progress-header">
-                        <span className="progress-icon">{collectionProgress.icon}</span>
-                        <span className="progress-message">{collectionProgress.message}</span>
-                      </div>
-                      <div className="collection-progress-stats">
-                        <div className="collection-progress-track">
-                          <div 
-                            className={`collection-progress-fill progress-${collectionProgress.progressColor}`}
-                            style={{ width: `${collectionProgress.percentage}%` }}
-                          ></div>
-                        </div>
-                        <span className="progress-text">
-                          {collectionProgress.rankedCount}/{collectionProgress.totalProducts} ranked ({collectionProgress.percentage}%)
-                        </span>
-                      </div>
-                    </div>
-                  )}
+              <div className="utility-content">
+                {/* Search Box */}
+                <div className="search-box">
+                  <input
+                    type="text"
+                    placeholder="Search products..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    onKeyPress={handleKeyPress}
+                    className="rank-search-input"
+                  />
+                  <button 
+                    onClick={handleSearch}
+                    className="search-button"
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <>
+                        <span className="button-spinner"></span>
+                        Search
+                      </>
+                    ) : 'Search'}
+                  </button>
                 </div>
-              )}
+
+                {/* Commentary and Progress */}
+                {commentary && (
+                  <div className="ranking-commentary">
+                    <span className="commentary-icon">{commentary.icon}</span>
+                    <span className="commentary-message">{commentary.message}</span>
+                    {commentary.nextMilestone && (
+                      <div className="milestone-hint">
+                        <span style={{ marginRight: '4px', cursor: 'help' }} title={commentary.nextMilestone.name}>
+                          {renderAchievementIcon(commentary.nextMilestone, 20)}
+                        </span>
+                        {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
+                        {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
+                      </div>
+                    )}
+                  </div>
+                )}
+
+                {collectionProgress && (
+                  <div className="collection-progress-bar">
+                    <div className="progress-header">
+                      <span className="progress-icon">{collectionProgress.icon}</span>
+                      <span className="progress-message">{collectionProgress.message}</span>
+                    </div>
+                    <div className="collection-progress-stats">
+                      <div className="collection-progress-track">
+                        <div 
+                          className={`collection-progress-fill progress-${collectionProgress.progressColor}`}
+                          style={{ width: `${collectionProgress.percentage}%` }}
+                        ></div>
+                      </div>
+                      <span className="progress-text">
+                        {collectionProgress.rankedCount}/{collectionProgress.totalProducts} ranked ({collectionProgress.percentage}%)
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Two Column Grid - Mockup Design */}
