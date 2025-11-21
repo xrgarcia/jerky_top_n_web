@@ -608,8 +608,10 @@ Continue?`;
       <div className="rank-page">
         {/* Hero Section */}
         <div className="rank-hero">
-          <h1 className="hero-title">Rank Your Flavors</h1>
-          <p className="hero-subtitle">Drag to reorder. Your rankings fuel the Flavor Index.</p>
+          <div className="hero-intro">
+            <h1 className="hero-title">Rank Your Flavors</h1>
+            <p className="hero-subtitle">Drag to reorder. Your rankings fuel the Flavor Index.</p>
+          </div>
         </div>
 
         {/* Two Column Layout - Matches Mockup */}
