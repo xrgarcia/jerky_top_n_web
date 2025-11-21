@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLeaderboard } from '../hooks/useCommunity';
+import '../styles/hero-headers.css';
 import './LeaderboardPage.css';
 
 function LeaderboardPage() {
@@ -48,10 +49,9 @@ function LeaderboardPage() {
   return (
     <div className="leaderboard-page">
       {/* Page Header - Matching Rank Flavors/Flavor Index Style */}
-      <div className="page-header-container">
-        <h1 className="page-title">LEADERBOARD</h1>
-        <div className="title-accent-line"></div>
-        <p className="page-subtitle">Top rankers across the RANK community</p>
+      <div className="leaderboard-hero">
+        <h1 className="hero-title">Leaderboard</h1>
+        <p className="hero-subtitle">Top rankers across the RANK community</p>
       </div>
 
       {/* Hall of Fame Vault */}
