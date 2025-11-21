@@ -59,7 +59,9 @@
 
 .hero-intro {
   text-align: center;
-  margin-bottom: 48px;
+  margin-bottom: 0;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 138, 43, 0.3);
   position: relative;
 }
 
@@ -72,11 +74,12 @@
 .hero-title {
   font-size: 3.5rem;
   font-weight: 600;
-  color: var(--rank-text-white);
+  color: #FF8A2B;
   margin: 0 0 20px;
-  letter-spacing: -0.5px;
+  letter-spacing: 1px;
   text-shadow: var(--rank-shadow-glow);
   font-family: var(--font-headline);
+  text-transform: uppercase;
 }
 
 .hero-subtitle {
