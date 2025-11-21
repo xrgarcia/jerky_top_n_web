@@ -15,7 +15,6 @@ import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { FlavorCard } from '../components/rank/FlavorCard';
 import { RankedFlavorItem } from '../components/rank/RankedFlavorItem';
 import { RankingModal } from '../components/rank/RankingModal';
-import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import './RankPage.css';
 
 /**
@@ -618,7 +617,6 @@ Continue?`;
                 Drag to reorder. Your rankings fuel the Flavor Index.
               </p>
             </div>
-            <CoinBookWidget defaultCollapsed={true} />
           </div>
         </section>
 
