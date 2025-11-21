@@ -3,7 +3,7 @@
    ======================================== */
 
 .rank-page {
-  padding: 0;
+  padding: 80px 24px 120px;
   min-height: 100vh;
   background: var(--rank-neutral-900);
 }
@@ -15,6 +15,9 @@
   padding-bottom: 48px;
   border-bottom: 1px solid rgba(255, 138, 43, 0.3);
   position: relative;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .rank-hero::after {
@@ -71,13 +74,13 @@
 
 .rank-widget-section {
   background: var(--rank-neutral-900);
-  padding: 60px 0 100px; /* Extra bottom padding for save bar */
+  padding: 0;
 }
 
 .rank-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0;
 }
 
 /* Utility Panel - Collapsible Search/Progress */
@@ -423,23 +426,28 @@
   display: flex;
   gap: 0.75rem;
   margin-bottom: 1.5rem;
-  padding: 0 1.5rem;
 }
 
 .rank-search-input {
   flex: 1;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--rank-border-default);
+  padding: 12px 20px;
+  background: var(--rank-neutral-900);
+  border: 1px solid var(--rank-border-default);
   border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-  background: var(--rank-bg-card);
   color: var(--rank-text-white);
+  font-size: 14px;
+  font-family: var(--rank-font-body);
+  transition: all 0.2s ease;
+}
+
+.rank-search-input::placeholder {
+  color: var(--rank-neutral-400);
 }
 
 .rank-search-input:focus {
   outline: none;
-  border-color: var(--rank-button-primary-bg);
+  border-color: var(--rank-gold);
+  box-shadow: 0 0 0 3px rgba(255, 138, 43, 0.1);
 }
 
 .search-button {
@@ -489,7 +497,7 @@
   overflow-x: hidden;
   min-height: 0;
   touch-action: pan-y;
-  padding: 0 1.5rem 1.5rem 1.5rem;
+  padding: 0 0 1.5rem 0;
 }
 
 .loading-state,
