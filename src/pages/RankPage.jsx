@@ -648,15 +648,6 @@ Continue?`;
                   <div className="ranking-commentary">
                     <span className="commentary-icon">{commentary.icon}</span>
                     <span className="commentary-message">{commentary.message}</span>
-                    {commentary.nextMilestone && (
-                      <div className="milestone-hint">
-                        <span style={{ marginRight: '4px', cursor: 'help' }} title={commentary.nextMilestone.name}>
-                          {renderAchievementIcon(commentary.nextMilestone, 20)}
-                        </span>
-                        {commentary.nextMilestone.current}/{commentary.nextMilestone.target}
-                        {commentary.nextMilestone.metricLabel && ` ${commentary.nextMilestone.metricLabel}`}
-                      </div>
-                    )}
                   </div>
                 )}
 
