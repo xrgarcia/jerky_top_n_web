@@ -643,13 +643,7 @@ Continue?`;
                   </button>
                 </div>
 
-                {/* Commentary and Progress */}
-                {commentary && (
-                  <div className="ranking-commentary">
-                    <span className="commentary-icon">{commentary.icon}</span>
-                    <span className="commentary-message">{commentary.message}</span>
-                  </div>
-                )}
+                {/* Commentary removed - progress shown in collection bar below */}
 
                 {collectionProgress && (
                   <div className="collection-progress-bar">
