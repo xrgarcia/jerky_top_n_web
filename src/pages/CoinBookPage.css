@@ -57,39 +57,10 @@
   }
 }
 
-.coinbook-hero .hero-intro {
-  text-align: center;
-  margin-bottom: 0;
-  padding-bottom: 48px;
-  border-bottom: 1px solid rgba(255, 138, 43, 0.3);
-  position: relative;
-}
-
 /* Fix tooltip visibility - remove 3D transform that creates stacking context */
 .coinbook-hero .coinbook-widget {
   transform: none;
   transform-style: flat;
-}
-
-.coinbook-hero .hero-title {
-  font-size: 3.5rem;
-  font-weight: 600;
-  color: #FF8A2B;
-  margin: 0 0 20px;
-  letter-spacing: 1px;
-  text-shadow: var(--rank-shadow-glow);
-  font-family: var(--font-headline);
-  text-transform: uppercase;
-}
-
-.coinbook-hero .hero-subtitle {
-  font-size: 1.25rem;
-  color: var(--rank-text-soft-white);
-  margin: 0 auto;
-  max-width: 800px;
-  line-height: 1.7;
-  font-family: var(--font-body);
-  font-weight: 400;
 }
 
 /* ========================================

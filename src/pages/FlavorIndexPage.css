@@ -19,26 +19,6 @@
   position: relative;
 }
 
-.flavor-index-hero .hero-title {
-  font-size: 56px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  margin: 0 0 16px 0;
-  color: #FF8A2B;
-  text-transform: uppercase;
-  font-family: var(--rank-font-display);
-  line-height: 1;
-}
-
-.flavor-index-hero .hero-subtitle {
-  font-size: 18px;
-  font-weight: 400;
-  color: var(--rank-neutral-300);
-  margin: 0;
-  letter-spacing: 0.5px;
-  font-family: var(--rank-font-body);
-}
-
 /* Filter Bar */
 .flavor-index-filters {
   display: grid;

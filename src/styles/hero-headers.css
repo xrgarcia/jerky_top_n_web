@@ -1,0 +1,53 @@
+/* ========================================
+   UNIFIED HERO HEADER STYLES
+   All pages share the same hero styling
+   ======================================== */
+
+.rank-hero .hero-intro,
+.coinbook-hero .hero-intro,
+.flavor-index-hero {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 138, 43, 0.3);
+}
+
+.rank-hero .hero-title,
+.coinbook-hero .hero-title,
+.flavor-index-hero .hero-title {
+  font-size: 3.5rem;
+  font-weight: 600;
+  color: #FF8A2B;
+  margin: 0 0 20px;
+  letter-spacing: 1px;
+  text-shadow: var(--rank-shadow-glow);
+  font-family: var(--font-headline);
+  text-transform: uppercase;
+}
+
+.rank-hero .hero-subtitle,
+.coinbook-hero .hero-subtitle,
+.flavor-index-hero .hero-subtitle {
+  font-size: 1.25rem;
+  color: var(--rank-text-soft-white);
+  margin: 0 auto;
+  max-width: 800px;
+  line-height: 1.7;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* Media query overrides for smaller screens */
+@media (max-width: 1024px) {
+  .rank-hero .hero-title,
+  .coinbook-hero .hero-title,
+  .flavor-index-hero .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .rank-hero .hero-subtitle,
+  .coinbook-hero .hero-subtitle,
+  .flavor-index-hero .hero-subtitle {
+    font-size: 1.0625rem;
+  }
+}

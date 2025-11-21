@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
+import '../styles/hero-headers.css';
 import './CoinBookPage.css';
 
 function CoinBookPage() {

@@ -4,6 +4,7 @@ import { useProducts } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import LeaderboardRow from '../components/flavorindex/LeaderboardRow';
 import CategorySummaryGrid from '../components/flavorindex/CategorySummaryGrid';
+import '../styles/hero-headers.css';
 import './FlavorIndexPage.css';
 
 function FlavorIndexPage() {
