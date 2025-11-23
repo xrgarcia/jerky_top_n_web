@@ -3,6 +3,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
+import Container from '../components/common/Container';
 import './FullRankingsPage.css';
 
 function FullRankingsPage() {
@@ -109,7 +110,7 @@ function FullRankingsPage() {
 
   return (
     <div className="full-rankings-page">
-      <div className="rankings-container">
+      <Container size="standard">
         <div className="page-header">
           <h1 className="page-title">{user.firstName || user.displayName}'S FULL RANKINGS</h1>
           <p className="page-subtitle">{rankings.length} Flavors Ranked</p>
@@ -181,7 +182,7 @@ function FullRankingsPage() {
             </div>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

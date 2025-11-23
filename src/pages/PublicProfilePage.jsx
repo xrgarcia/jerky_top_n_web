@@ -3,6 +3,7 @@ import { useParams, Navigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
+import Container from '../components/common/Container';
 import TopFlavorsPodium from '../components/profile/TopFlavorsPodium';
 import FlavorProfileProgress from '../components/profile/FlavorProfileProgress';
 import ActivityFeed from '../components/profile/ActivityFeed';
@@ -100,7 +101,7 @@ function PublicProfilePage() {
 
   return (
     <div className="public-profile-page-new">
-      <div className="profile-container">
+      <Container size="standard">
         <div className="hero-row">
           <div className="profile-card">
             <div className="profile-content">
@@ -181,7 +182,7 @@ function PublicProfilePage() {
             View {user.firstName || user.displayName}'s Full Rankings →
           </Link>
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
