@@ -265,6 +265,12 @@
   --font-hero-line-height: 1.1;
   --font-hero-letter-spacing: -1px;
 
+  /* Dashboard Hero - Profile/Dashboard pages */
+  --font-dashboard-hero-size: 2.5rem;     /* 40px - Dashboard mockup spec */
+  --font-dashboard-hero-weight: 700;      /* Bold */
+  --font-dashboard-hero-line-height: 1.1;
+  --font-dashboard-hero-letter-spacing: -0.02em;
+
   /* Eyebrow Text - Small caps labels above headlines */
   --font-eyebrow-size: 0.875rem;    /* 14px */
   --font-eyebrow-weight: 600;       /* SemiBold */
