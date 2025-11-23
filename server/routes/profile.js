@@ -142,6 +142,87 @@ function createProfileRoutes(services) {
       // Get engagement score
       const position = await leaderboardManager.getUserPosition(userId, 'all_time');
 
+      // Get flavor profile progress
+      const { productsMetadata, productRankings } = require('../../shared/schema');
+      
+      // Get total products per flavor profile
+      const flavorTotalsResult = await db
+        .select({
+          profile: productsMetadata.primaryFlavor,
+          total: sql`COUNT(DISTINCT ${productsMetadata.shopifyProductId})::int`
+        })
+        .from(productsMetadata)
+        .where(sql`${productsMetadata.primaryFlavor} IS NOT NULL`)
+        .groupBy(productsMetadata.primaryFlavor);
+
+      // Get user's ranked products per flavor profile
+      const userFlavorRankingsResult = await db
+        .select({
+          profile: productsMetadata.primaryFlavor,
+          ranked: sql`COUNT(DISTINCT ${productRankings.shopifyProductId})::int`
+        })
+        .from(productRankings)
+        .innerJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
+        .where(sql`${productRankings.userId} = ${userId} AND ${productsMetadata.primaryFlavor} IS NOT NULL`)
+        .groupBy(productsMetadata.primaryFlavor);
+
+      // Combine into flavor profile progress array
+      const flavorProfileProgress = flavorTotalsResult.map(total => {
+        const userRanked = userFlavorRankingsResult.find(r => r.profile === total.profile);
+        return {
+          profile: total.profile,
+          total: total.total,
+          ranked: userRanked?.ranked || 0
+        };
+      }).filter(p => p.total > 0); // Only show profiles with products
+
+      // Get current streak from engagement tracking
+      const { engagementTracking } = require('../../shared/schema');
+      const streakResult = await db
+        .select({
+          currentStreak: engagementTracking.currentStreak
+        })
+        .from(engagementTracking)
+        .where(eq(engagementTracking.userId, userId))
+        .limit(1);
+      
+      const currentStreak = streakResult[0]?.currentStreak || 0;
+
+      // Get recent activity (last 10 activities)
+      const recentActivity = [];
+      
+      // Add recent achievements
+      const recentAchievements = achievements
+        .filter(a => a.earnedAt)
+        .sort((a, b) => new Date(b.earnedAt) - new Date(a.earnedAt))
+        .slice(0, 5)
+        .map(a => ({
+          type: 'coin_earned',
+          text: `Earned Coin: ${a.name}`,
+          timestamp: a.earnedAt
+        }));
+      
+      recentActivity.push(...recentAchievements);
+
+      // Add ranking changes (most recent rankings)
+      if (topProducts.length > 0) {
+        const recentRankings = topProducts
+          .filter(p => p.rankedAt)
+          .sort((a, b) => new Date(b.rankedAt) - new Date(a.rankedAt))
+          .slice(0, 3)
+          .map(p => ({
+            type: 'ranking_change',
+            text: `Ranked ${p.title} #${p.rankPosition}`,
+            timestamp: p.rankedAt
+          }));
+        
+        recentActivity.push(...recentRankings);
+      }
+
+      // Sort all activities by timestamp and take top 10
+      recentActivity.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      const limitedActivity = recentActivity.slice(0, 10);
+
       res.json({
         user: {
           id: profileData.id,
@@ -157,16 +238,22 @@ function createProfileRoutes(services) {
           engagementLevel: classification?.engagementLevel || 'none',
           explorationBreadth: classification?.explorationBreadth || 'narrow',
           focusAreas: classification?.focusAreas || [],
-          engagementScore: position?.engagementScore || 0
+          engagementScore: position?.engagementScore || 0,
+          createdAt: profileData.createdAt,
+          memberSince: profileData.createdAt
         },
         topProducts: topProducts.map(p => ({
           shopifyProductId: p.id,
           rankPosition: p.rankPosition,
           title: p.title,
           imageUrl: p.image,
+          image: p.image,
           vendor: p.vendor,
           primaryFlavor: p.primaryFlavor,
-          animalType: p.animalType
+          animalType: p.animalType,
+          flavorIcon: p.flavorIcon,
+          animalIcon: p.animalIcon,
+          rankedAt: p.rankedAt
         })),
         timeline: timelineMoments,
         achievements: achievements.map(a => ({
@@ -177,8 +264,16 @@ function createProfileRoutes(services) {
           iconType: a.iconType,
           tier: a.tier,
           coinType: a.coinType,
-          earnedAt: a.earnedAt
-        }))
+          earnedAt: a.earnedAt,
+          currentTier: a.currentTier,
+          progress: a.progress
+        })),
+        flavorProfileProgress: flavorProfileProgress,
+        recentActivity: limitedActivity,
+        stats: {
+          productsRanked: profileData.rankingCount,
+          currentStreak: currentStreak
+        }
       });
     } catch (error) {
       console.error('Error fetching user profile page:', error);

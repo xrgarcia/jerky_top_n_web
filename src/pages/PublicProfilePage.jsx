@@ -1,40 +1,20 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import React from 'react';
+import { useParams, Navigate, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
-import ProfileHero from '../components/profile/ProfileHero';
-import JourneyTwoColumn from '../components/profile/JourneyTwoColumn';
-import RankingsList from '../components/profile/RankingsList';
+import TopFlavorsPodium from '../components/profile/TopFlavorsPodium';
+import FlavorProfileProgress from '../components/profile/FlavorProfileProgress';
+import ActivityFeed from '../components/profile/ActivityFeed';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
-import EmptyRankingsState from '../components/profile/EmptyRankingsState';
 import './PublicProfilePage.css';
 
-/**
- * PublicProfilePage - View another user's public profile
- * Route: /profile/:userId
- * Three-act narrative: Hero spotlight, Journey timeline, Rankings list, Achievement showcase
- */
 function PublicProfilePage() {
   const { userId } = useParams();
   const { user: currentUser } = useAuthStore();
-  
-  const journeyRef = useRef(null);
-  const achievementsRef = useRef(null);
-  const rankingsRef = useRef(null);
 
-  // Track which sections are visible (React state for declarative className)
-  const [visibleSections, setVisibleSections] = useState(new Set());
-
-  // Reset visibility state only when navigating to a different profile
-  useEffect(() => {
-    setVisibleSections(new Set());
-  }, [userId]);
-
-  // Track page view
   usePageView('public_profile', { profileId: userId });
 
-  // If viewing own profile, redirect to edit mode at /profile
   if (currentUser && String(currentUser.id) === String(userId)) {
     return <Navigate to="/profile" replace />;
   }
@@ -54,103 +34,9 @@ function PublicProfilePage() {
       return response.json();
     },
     enabled: !!userId,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    refetchOnMount: 'always', // Always refetch when navigating to different profiles
+    staleTime: 1000 * 60 * 5,
+    refetchOnMount: 'always',
   });
-
-  const { data: journeyData, isLoading: journeyLoading, error: journeyError } = useQuery({
-    queryKey: ['profileJourney', userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/profile/${userId}/journey`, {
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        console.error(`Journey API failed with status ${response.status}`);
-        throw new Error('Failed to fetch journey');
-      }
-      return response.json();
-    },
-    enabled: !!userId,
-    staleTime: 1000 * 60 * 10, // 10 minutes (matches cache TTL)
-    refetchOnMount: 'always', // Always refetch when navigating to different profiles
-    retry: 3, // Retry up to 3 times on failure
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
-  });
-
-  const { data: rankingsData, isLoading: rankingsLoading, error: rankingsError } = useQuery({
-    queryKey: ['profileRankings', userId],
-    queryFn: async () => {
-      const response = await fetch(`/api/profile/${userId}/rankings`, {
-        credentials: 'include',
-      });
-      if (!response.ok) {
-        console.error(`Rankings API failed with status ${response.status}`);
-        throw new Error('Failed to fetch rankings');
-      }
-      return response.json();
-    },
-    enabled: !!userId,
-    staleTime: 1000 * 60 * 5, // 5 minutes
-    refetchOnMount: 'always', // Always refetch when navigating to different profiles
-    retry: 3, // Retry up to 3 times on failure
-    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000), // Exponential backoff
-  });
-
-  // Scroll-triggered animations (React state-driven, not imperative DOM manipulation)
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.05,
-      rootMargin: '50px 0px 800px 0px' // Trigger rankings section very early
-    };
-
-    const markSectionVisible = (sectionName) => {
-      setVisibleSections(prev => new Set([...prev, sectionName]));
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          // Determine which section this is and update state
-          if (entry.target === journeyRef.current) {
-            markSectionVisible('journey');
-          } else if (entry.target === achievementsRef.current) {
-            markSectionVisible('achievements');
-          } else if (entry.target === rankingsRef.current) {
-            markSectionVisible('rankings');
-          }
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Helper to check if element is already visible in viewport
-    const isElementVisible = (element) => {
-      const rect = element.getBoundingClientRect();
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      return rect.top < windowHeight && rect.bottom > 0;
-    };
-
-    // Check and observe each section
-    const sections = [
-      { ref: journeyRef, name: 'journey' },
-      { ref: achievementsRef, name: 'achievements' },
-      { ref: rankingsRef, name: 'rankings' }
-    ];
-
-    sections.forEach(({ ref, name }) => {
-      if (ref.current) {
-        // If element is already in viewport, immediately mark as visible
-        if (isElementVisible(ref.current)) {
-          markSectionVisible(name);
-        }
-        // Still observe for future scroll events
-        observer.observe(ref.current);
-      }
-    });
-
-    return () => observer.disconnect();
-  }, [userId, data, journeyData, rankingsData]);
 
   if (isLoading) {
     return (
@@ -174,99 +60,128 @@ function PublicProfilePage() {
     return null;
   }
 
-  const { user, topProducts, timeline, achievements } = data;
-  const milestones = journeyData?.milestones || [];
-  const rankings = rankingsData?.rankings || [];
+  const { user, topProducts = [], flavorProfileProgress = [], recentActivity = [], stats = {}, achievements = [] } = data;
+
+  const getUserInitial = () => {
+    if (user.firstName) return user.firstName.charAt(0).toUpperCase();
+    if (user.displayName) return user.displayName.charAt(0).toUpperCase();
+    return '?';
+  };
+
+  const formatMemberSince = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.getFullYear();
+  };
+
+  const getSpecialtyBadges = () => {
+    if (!user.focusAreas || user.focusAreas.length === 0) {
+      return [];
+    }
+    
+    const badges = [];
+    user.focusAreas.forEach(area => {
+      if (area.includes('spicy') || area.includes('heat')) {
+        badges.push({ emoji: '🔥', label: 'Heat Lover' });
+      } else if (area.includes('sweet')) {
+        badges.push({ emoji: '🍯', label: 'Sweet Tooth' });
+      } else if (area.includes('smoky')) {
+        badges.push({ emoji: '💨', label: 'Smoke Master' });
+      } else if (area.includes('classic')) {
+        badges.push({ emoji: '🥩', label: 'Classic Carnivore' });
+      }
+    });
+    
+    return badges.slice(0, 3);
+  };
+
+  const specialtyBadges = getSpecialtyBadges();
+  const favoriteFlavor = user.focusAreas?.[0] || 'Exploring';
 
   return (
-    <div className="public-profile-page">
-      {/* Act 1: Hero - Who I am */}
-      <ProfileHero user={user} topProducts={topProducts} />
-
-      {/* Act 2: Journey Film Strip - How I got here */}
-      {journeyLoading ? (
-        <section className="profile-section section-journey">
-          <div className="journey-loading">
-            <div className="loading-spinner"></div>
-            <p>Loading flavor journey...</p>
-          </div>
-        </section>
-      ) : journeyError ? (
-        <section className="profile-section section-journey">
-          <div className="journey-error">
-            <p>😕 Journey timeline temporarily unavailable. Check back soon!</p>
-          </div>
-        </section>
-      ) : milestones.length > 0 ? (
-        <section 
-          className={`profile-section section-journey ${visibleSections.has('journey') ? 'section-visible' : ''}`}
-          ref={journeyRef}
-        >
-          <JourneyTwoColumn
-            userHandle={user.handle}
-            milestones={milestones}
-            journeyStage={user.journeyStage}
-            explorationBreadth={user.explorationBreadth}
-            userCreatedAt={user.createdAt}
-          />
-        </section>
-      ) : null}
-
-      {/* Act 3: Achievement Showcase - What I've earned */}
-      {achievements && achievements.length > 0 && (
-        <section 
-          className={`profile-section section-achievements ${visibleSections.has('achievements') ? 'section-visible' : ''}`}
-          ref={achievementsRef}
-        >
-          <div className="achievements-container">
-            <h2 className="section-header">Achievements Unlocked</h2>
-            
-            {/* Transition intro text */}
-            {milestones.length > 0 && (
-              <div className="coin-book-intro">
-                <p className="intro-line-1">
-                  The journey reel captured the bites; now your <strong>COIN BOOK</strong> captures the legend.
-                </p>
-                <p className="intro-line-2">
-                  Pop each capsule to celebrate the hunts, streaks, and discoveries that keep you on top.
-                </p>
+    <div className="public-profile-page-new">
+      <div className="profile-container">
+        <div className="hero-row">
+          <div className="profile-card">
+            <div className="profile-content">
+              <div className="avatar-ring">
+                <div className="avatar-inner">
+                  {user.avatarUrl ? (
+                    <img src={user.avatarUrl} alt={user.displayName} className="avatar-image" />
+                  ) : (
+                    <span className="avatar-initial">{getUserInitial()}</span>
+                  )}
+                </div>
               </div>
-            )}
-            
-            <CoinBookWidget 
-              achievements={achievements}
-              collapsible={false}
-            />
+              
+              <div className="profile-info">
+                <h1 className="profile-name">{user.displayName || user.firstName}</h1>
+                <div className="profile-status">{user.journeyStage || 'Taste Explorer'}</div>
+                <div className="tester-badge">
+                  ⭐ Taste Tester Since {formatMemberSince(user.createdAt || user.memberSince)}
+                </div>
+                
+                {specialtyBadges.length > 0 && (
+                  <div className="specialty-badges">
+                    {specialtyBadges.map((badge, index) => (
+                      <span key={index} className="badge-chip">
+                        {badge.emoji} {badge.label}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                
+                <div className="stats-grid">
+                  <div className="stat-item">
+                    <span className="stat-value">{stats.productsRanked || user.rankingCount || 0}</span>
+                    <span className="stat-label">Flavors Ranked</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-value">{stats.currentStreak || 0}</span>
+                    <span className="stat-label">Day Streak</span>
+                  </div>
+                  <div className="stat-item">
+                    <span className="stat-value">{favoriteFlavor}</span>
+                    <span className="stat-label">Favorite</span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </section>
-      )}
 
-      {/* Act 4: Current Rankings - What I'm doing next */}
-      <section 
-        className={`profile-section section-rankings ${visibleSections.has('rankings') ? 'section-visible' : ''}`}
-        ref={rankingsRef}
-      >
-        <div className="rankings-container">
-          <h2 className="section-header">Current Rankings</h2>
-          
-          {rankingsLoading ? (
-            <div className="rankings-loading">
-              <div className="loading-spinner"></div>
-              <p>Fetching {user.firstName || user.displayName}'s flavor list! Hold tight...</p>
-            </div>
-          ) : rankingsError ? (
-            <div className="rankings-error">
-              <p>😕 Rankings temporarily unavailable. Check back soon!</p>
-            </div>
-          ) : rankings && rankings.length > 0 ? (
-            <RankingsList rankings={rankings} />
-          ) : (
-            <EmptyRankingsState 
-              hasAchievements={achievements && achievements.length > 0}
-            />
-          )}
+          <div className="profile-card">
+            <div className="card-title">Top Flavors</div>
+            <TopFlavorsPodium topProducts={topProducts.slice(0, 3)} />
+          </div>
         </div>
-      </section>
+
+        {flavorProfileProgress && flavorProfileProgress.length > 0 && (
+          <div className="profile-card">
+            <div className="card-title">Taste Profile DNA</div>
+            <FlavorProfileProgress flavorProfileData={flavorProfileProgress} />
+          </div>
+        )}
+
+        {achievements && achievements.length > 0 && (
+          <div className="profile-card">
+            <div className="card-title">Coin Book</div>
+            <CoinBookWidget achievements={achievements} collapsible={false} />
+          </div>
+        )}
+
+        {recentActivity && recentActivity.length > 0 && (
+          <div className="profile-card">
+            <div className="card-title">Recent Activity</div>
+            <ActivityFeed activities={recentActivity} />
+          </div>
+        )}
+
+        <div className="cta-card">
+          <Link to={`/community/${userId}/rankings`} className="cta-text">
+            View {user.firstName || user.displayName}'s Full Rankings →
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
