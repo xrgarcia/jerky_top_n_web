@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { imageSize } = require('image-size');
-const { users, engagementTracking, productsMetadata, productRankings } = require('../../shared/schema');
+const { users, streaks, productsMetadata, productRankings } = require('../../shared/schema');
 const { eq, sql, and } = require('drizzle-orm');
 const { 
   generateUniqueHandle, 
@@ -179,10 +179,10 @@ function createProfileRoutes(services) {
       // Get current streak from engagement tracking
       const streakResult = await db
         .select({
-          currentStreak: engagementTracking.currentStreak
+          currentStreak: streaks.currentStreak
         })
-        .from(engagementTracking)
-        .where(eq(engagementTracking.userId, userId))
+        .from(streaks)
+        .where(and(eq(streaks.userId, userId), eq(streaks.streakType, 'daily_rank')))
         .limit(1);
       
       const currentStreak = streakResult[0]?.currentStreak || 0;
