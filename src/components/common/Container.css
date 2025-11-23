@@ -1,0 +1,29 @@
+.app-container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.app-container--narrow {
+  max-width: 1000px;
+}
+
+.app-container--standard {
+  max-width: 1200px;
+}
+
+.app-container--wide {
+  max-width: 1400px;
+}
+
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .app-container {
+    padding: 0 16px;
+  }
+}
