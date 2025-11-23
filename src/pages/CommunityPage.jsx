@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useCommunityUsers, useLeaderboard } from '../hooks/useCommunity';
 import { useHomeStats } from '../hooks/useGamification';
+import Container from '../components/common/Container';
 import PodiumWidget from '../components/community/PodiumWidget';
 import CommunityStatsBar from '../components/community/CommunityStatsBar';
 import JourneySection from '../components/community/JourneySection';
@@ -86,20 +87,20 @@ function CommunityPage() {
         <div className="hero-background">
           <div className="hero-glow"></div>
         </div>
-        <div className="community-container">
+        <Container size="wide">
           <div className="community-header">
             <h1>Community</h1>
           </div>
           <PodiumWidget rankers={top5} isLoading={loadingTop} />
-        </div>
+        </Container>
         
         <div className="stats-bridge">
-          <div className="community-container">
+          <Container size="wide">
             <CommunityStatsBar 
               stats={homeStats?.communityStats} 
               isLoading={statsLoading} 
             />
-          </div>
+          </Container>
         </div>
       </section>
 
@@ -107,28 +108,28 @@ function CommunityPage() {
         className={`section-journey ${visibleSections.has('journey') ? 'section-visible' : ''}`}
         ref={journeyRef}
       >
-        <div className="community-container">
+        <Container size="wide">
           <JourneySection />
-        </div>
+        </Container>
       </section>
 
       <section 
         className={`section-pulse ${visibleSections.has('pulse') ? 'section-visible' : ''}`}
         ref={pulseRef}
       >
-        <div className="community-container">
+        <Container size="wide">
           <CommunityPulse 
             activityStats={homeStats?.activityStats}
             isLoading={statsLoading}
           />
-        </div>
+        </Container>
       </section>
 
       <section 
         className={`section-discover ${visibleSections.has('discover') ? 'section-visible' : ''}`}
         ref={discoverRef}
       >
-        <div className="community-container">
+        <Container size="wide">
           <div className="discover-split">
             <div className="discover-left">
               <h2 className="search-title">Discover Flavor Fanatics</h2>
@@ -163,7 +164,7 @@ function CommunityPage() {
               )}
             </div>
           </div>
-        </div>
+        </Container>
       </section>
     </div>
   );

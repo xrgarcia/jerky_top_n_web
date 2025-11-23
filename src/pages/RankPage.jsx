@@ -10,6 +10,7 @@ import { useAuthStore } from '../store/authStore';
 import { api } from '../utils/api';
 import { addBreadcrumb, captureError } from '../utils/sentry';
 import { renderAchievementIcon } from '../utils/iconUtils';
+import Container from '../components/common/Container';
 import { RankSlot } from '../components/rank/RankSlot';
 import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { FlavorCard } from '../components/rank/FlavorCard';
@@ -616,7 +617,7 @@ Continue?`;
 
         {/* Two Column Layout - Matches Mockup */}
         <div className="rank-widget-section">
-          <div className="rank-container">
+          <Container size="wide">
             
             {/* Utility Panel - Search, Commentary, Progress */}
             <div className="utility-panel">
@@ -754,7 +755,7 @@ Continue?`;
               </div>
 
             </div>
-          </div>
+          </Container>
         </div>
 
         {/* Sticky Save Bar */}
