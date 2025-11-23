@@ -44,6 +44,7 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Flavor Profile Pages:** Dynamic pages for each flavor type.
 - **Purchase History:** Automatic background synchronization of Shopify orders.
 - **Community:** User discovery, profiles with ranking stats, top rankers widget, and privacy-aware displays.
+- **Full Rankings Page:** Dedicated page at `/community/:userId/rankings` displaying complete ranking list for any user with sticky filter bar (All, Heat, Sweet, Smoky, Umami, Wild, Classic, Recently Updated), ranked items with flavor icons and category pills, top-tier badges (Top 1%, Top 5%, Top 10%), and responsive design matching brand identity. Automatically redirects to `/rank` if viewing own rankings.
 - **Leaderboard:** Three-act storytelling structure with distinct visual treatments.
 - **User Profile:** Private dashboard with handle management and privacy controls; public profile pages.
 - **Gamification:** Tracks engagement, collections, and flavor coin achievements with progress, streaks, and notifications.
