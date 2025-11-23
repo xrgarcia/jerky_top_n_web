@@ -5,6 +5,7 @@ import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
 import { useRanking } from '../hooks/useRanking';
 import { useProfile } from '../hooks/useProfile';
+import Container from '../components/common/Container';
 import './HomePage.css';
 
 function HomePage() {
@@ -73,7 +74,7 @@ function HomePage() {
     <div className="home-page-v2">
       {/* Profile Hero Section */}
       <section className="profile-hero">
-        <div className="hero-container">
+        <Container size="narrow">
           <div className="hero-left">
             {isAuthenticated ? (
               <>
@@ -127,7 +128,7 @@ function HomePage() {
               </div>
             )}
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Top 3 Flavors */}
