@@ -785,20 +785,24 @@ function createProfileRoutes(services) {
       // Fetch all user's rankings with full product details
       const userRankings = await db
         .select({
-          productId: productRankings.productId,
-          rank: productRankings.rankPosition,
-          rankedAt: productRankings.rankedAt,
+          productId: productRankings.shopifyProductId,
+          rank: productRankings.ranking,
+          rankedAt: productRankings.createdAt,
           updatedAt: productRankings.updatedAt,
-          product: {
-            id: productsMetadata.id,
-            title: productsMetadata.title,
-            metadata: productsMetadata.metadata,
-          }
+          productTitle: productsMetadata.title,
+          animalType: productsMetadata.animalType,
+          animalDisplay: productsMetadata.animalDisplay,
+          animalIcon: productsMetadata.animalIcon,
+          vendor: productsMetadata.vendor,
+          primaryFlavor: productsMetadata.primaryFlavor,
+          secondaryFlavors: productsMetadata.secondaryFlavors,
+          flavorDisplay: productsMetadata.flavorDisplay,
+          flavorIcon: productsMetadata.flavorIcon,
         })
         .from(productRankings)
-        .innerJoin(productsMetadata, eq(productRankings.productId, productsMetadata.id))
+        .innerJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
         .where(eq(productRankings.userId, userId))
-        .orderBy(productRankings.rankPosition);
+        .orderBy(productRankings.ranking);
 
       res.json({
         user: {
@@ -813,8 +817,18 @@ function createProfileRoutes(services) {
           rankedAt: r.rankedAt,
           updatedAt: r.updatedAt,
           product: {
-            title: r.product.title,
-            metadata: r.product.metadata
+            title: r.productTitle,
+            metadata: {
+              animalType: r.animalType,
+              animalDisplay: r.animalDisplay,
+              animalIcon: r.animalIcon,
+              vendor: r.vendor,
+              primaryFlavor: r.primaryFlavor,
+              flavorProfile: r.primaryFlavor, // Add flavorProfile as alias for filtering
+              secondaryFlavors: r.secondaryFlavors,
+              flavorDisplay: r.flavorDisplay,
+              flavorIcon: r.flavorIcon,
+            }
           }
         }))
       });
