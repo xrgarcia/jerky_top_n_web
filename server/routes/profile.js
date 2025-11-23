@@ -755,8 +755,8 @@ function createProfileRoutes(services) {
 
   /**
    * GET /api/profile/:userId/rankings
-   * Get all rankings for a user (for separate loading)
-   * Returns: All product rankings with purchase data
+   * Get full rankings list for a user (public profile full rankings page)
+   * Returns: User info + all ranked products with metadata
    */
   router.get('/:userId/rankings', async (req, res) => {
     try {
@@ -766,24 +766,60 @@ function createProfileRoutes(services) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
-      // Fetch rankings (this is the slow query we're isolating)
-      const allRankings = await profileRepository.getAllRankingsWithPurchases(userId);
+      // Fetch user basic info
+      const [userInfo] = await db
+        .select({
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          displayName: users.displayName,
+        })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+
+      if (!userInfo) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Fetch all user's rankings with full product details
+      const userRankings = await db
+        .select({
+          productId: productRankings.productId,
+          rank: productRankings.rankPosition,
+          rankedAt: productRankings.rankedAt,
+          updatedAt: productRankings.updatedAt,
+          product: {
+            id: productsMetadata.id,
+            title: productsMetadata.title,
+            metadata: productsMetadata.metadata,
+          }
+        })
+        .from(productRankings)
+        .innerJoin(productsMetadata, eq(productRankings.productId, productsMetadata.id))
+        .where(eq(productRankings.userId, userId))
+        .orderBy(productRankings.rankPosition);
 
       res.json({
-        rankings: allRankings.map(r => ({
-          shopifyProductId: r.id,
-          rankPosition: r.rankPosition,
+        user: {
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          displayName: userInfo.displayName,
+        },
+        rankings: userRankings.map(r => ({
+          productId: r.productId,
+          rank: r.rank,
           rankedAt: r.rankedAt,
-          purchaseDate: r.purchaseDate,
-          title: r.title,
-          imageUrl: r.image,
-          vendor: r.vendor,
-          primaryFlavor: r.primaryFlavor,
-          animalType: r.animalType
+          updatedAt: r.updatedAt,
+          product: {
+            title: r.product.title,
+            metadata: r.product.metadata
+          }
         }))
       });
     } catch (error) {
-      console.error('Error fetching user rankings:', error);
+      console.error('Error fetching user full rankings:', error);
       res.status(500).json({ error: 'Failed to fetch rankings' });
     }
   });

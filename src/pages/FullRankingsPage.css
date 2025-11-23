@@ -1,0 +1,265 @@
+/* FullRankingsPage - Clean ranked list display */
+
+.full-rankings-page {
+  min-height: 100vh;
+  background: var(--rank-bg-charcoal);
+  padding: 2rem 0;
+}
+
+.rankings-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.full-rankings-loading,
+.full-rankings-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+}
+
+.full-rankings-error h2 {
+  font-size: 1.5rem;
+  color: var(--rank-text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.full-rankings-error p {
+  color: var(--rank-text-secondary);
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  padding: 2rem 1.5rem;
+  background: var(--rank-bg-card);
+  border-radius: 12px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+  color: var(--rank-text-soft-white);
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: var(--rank-text-secondary);
+  font-weight: 500;
+}
+
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--rank-bg-charcoal);
+  padding: 1rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--rank-border-default);
+}
+
+.filters {
+  display: flex;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: 1px solid var(--rank-border-subtle);
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rank-text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.filter-pill:hover {
+  border-color: var(--rank-amber);
+  color: var(--rank-amber);
+}
+
+.filter-pill.active {
+  background: rgba(255, 138, 43, 0.15);
+  border-color: var(--rank-amber);
+  color: var(--rank-amber);
+  box-shadow: 0 0 12px rgba(255, 138, 43, 0.2);
+}
+
+.ranking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.rank-row {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1rem 1.25rem;
+  background: var(--rank-bg-card);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.rank-row:hover {
+  border-color: var(--rank-amber);
+  box-shadow: 0 0 16px rgba(255, 138, 43, 0.15);
+}
+
+.rank-row:nth-child(even) {
+  background: rgba(26, 26, 26, 0.8);
+}
+
+.rank-number {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--rank-text-subtle);
+  width: 60px;
+  flex-shrink: 0;
+}
+
+.rank-row.top-10 .rank-number {
+  color: var(--rank-gold);
+  text-shadow: 0 0 8px rgba(255, 216, 115, 0.3);
+}
+
+.flavor-identity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.flavor-coin-small {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
+  border: 1px solid rgba(255, 138, 43, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.flavor-info {
+  flex: 1;
+}
+
+.flavor-name {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--rank-text-primary);
+}
+
+.category-pill {
+  display: inline-flex;
+  padding: 0.125rem 0.5rem;
+  background: rgba(255, 138, 43, 0.1);
+  border: 1px solid rgba(255, 138, 43, 0.2);
+  border-radius: 4px;
+  font-size: 0.625rem;
+  color: var(--rank-amber);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.meta-indicators {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.movement-indicator {
+  font-size: 0.875rem;
+}
+
+.movement-up {
+  color: #4CAF50;
+}
+
+.movement-down {
+  color: #F44336;
+}
+
+.badge {
+  padding: 0.25rem 0.5rem;
+  background: var(--rank-bg-elevated);
+  border-radius: 4px;
+  font-size: 0.625rem;
+  color: var(--rank-text-secondary);
+  font-weight: 600;
+}
+
+.end-card {
+  text-align: center;
+  padding: 2rem;
+  background: var(--rank-bg-card);
+  border-radius: 12px;
+  border: 1px solid var(--rank-border-default);
+  margin-bottom: 1.5rem;
+}
+
+.end-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--rank-text-subtle);
+}
+
+.end-text {
+  font-size: 0.75rem;
+  color: var(--rank-text-muted);
+}
+
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .rank-row {
+    padding: 0.875rem 1rem;
+    gap: 1rem;
+  }
+
+  .rank-number {
+    font-size: 1.25rem;
+    width: 50px;
+  }
+
+  .flavor-coin-small {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .flavor-name {
+    font-size: 0.8125rem;
+  }
+
+  .filters {
+    gap: 0.5rem;
+  }
+
+  .filter-pill {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem;
+  }
+}
