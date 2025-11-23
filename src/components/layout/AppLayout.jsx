@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { broadcastAuthChange } from '../../context/AuthContext';
 import { useSocket } from '../../hooks/useSocket';
-import Header from './Header';
 import Nav from './Nav';
 import Footer from './Footer';
 import ProtectedRoute from '../auth/ProtectedRoute';
@@ -83,7 +82,6 @@ function AppLayout() {
   return (
     <div className="app-layout">
       <ScrollToTop />
-      <Header />
       <Nav />
       <main className="main-content fade-in">
         <Suspense fallback={<PageLoader />}>
