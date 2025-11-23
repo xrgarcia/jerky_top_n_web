@@ -30,11 +30,11 @@
 }
 
 .hero-username {
-  font-size: var(--font-size-hero);
-  font-weight: 800;
+  font-size: 2.5rem;
+  font-weight: 700;
   color: var(--rank-text-white);
   line-height: 1.1;
-  letter-spacing: -1px;
+  letter-spacing: -0.02em;
   margin: 0 0 8px 0;
   display: flex;
   align-items: center;
@@ -394,11 +394,12 @@
 }
 
 .action-card-title {
-  font-size: var(--font-size-h4);
+  font-size: 1.5rem;
   font-weight: 700;
   color: var(--rank-text-white);
   margin: 0 0 auto 0;
   line-height: 1.2;
+  letter-spacing: -0.01em;
 }
 
 .action-card-btn {
@@ -530,7 +531,7 @@
 .featured-badge {
   font-size: var(--font-size-body-small);
   font-weight: 500;
-  color: var(--rank-gold);
+  color: var(--rank-amber);
   margin: 0;
 }
 
