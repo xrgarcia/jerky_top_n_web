@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const { imageSize } = require('image-size');
-const { users } = require('../../shared/schema');
-const { eq, sql } = require('drizzle-orm');
+const { users, engagementTracking, productsMetadata, productRankings } = require('../../shared/schema');
+const { eq, sql, and } = require('drizzle-orm');
 const { 
   generateUniqueHandle, 
   isHandleAvailable, 
@@ -177,7 +177,6 @@ function createProfileRoutes(services) {
       }).filter(p => p.total > 0); // Only show profiles with products
 
       // Get current streak from engagement tracking
-      const { engagementTracking } = require('../../shared/schema');
       const streakResult = await db
         .select({
           currentStreak: engagementTracking.currentStreak
