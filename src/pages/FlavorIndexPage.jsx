@@ -4,6 +4,7 @@ import { useProducts } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import LeaderboardRow from '../components/flavorindex/LeaderboardRow';
 import CategorySummaryGrid from '../components/flavorindex/CategorySummaryGrid';
+import Container from '../components/common/Container';
 import '../styles/hero-headers.css';
 import './FlavorIndexPage.css';
 
@@ -43,7 +44,7 @@ function FlavorIndexPage() {
 
   return (
     <div className="flavor-index-page">
-      <div className="flavor-index-container">
+      <Container size="standard">
         {/* Hero Header */}
         <div className="flavor-index-hero">
           <h1 className="hero-title">Flavor Index</h1>
@@ -103,7 +104,7 @@ function FlavorIndexPage() {
             )}
           </>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

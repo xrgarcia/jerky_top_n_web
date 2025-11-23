@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLeaderboard } from '../hooks/useCommunity';
+import Container from '../components/common/Container';
 import '../styles/hero-headers.css';
 import './LeaderboardPage.css';
 
@@ -47,7 +48,7 @@ function LeaderboardPage() {
   };
 
   return (
-    <div className="leaderboard-page">
+    <Container size="standard" className="leaderboard-page">
       {/* Page Header - Matching Rank Flavors/Flavor Index Style */}
       <div className="leaderboard-hero">
         <h1 className="hero-title">Leaderboard</h1>
@@ -163,7 +164,7 @@ function LeaderboardPage() {
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 }
 

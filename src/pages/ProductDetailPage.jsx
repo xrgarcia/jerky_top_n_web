@@ -10,6 +10,7 @@ import {
 } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import { useAuthStore } from '../store/authStore';
+import Container from '../components/common/Container';
 import InteractiveDistributionGraph from '../components/product/InteractiveDistributionGraph';
 import InsightCards from '../components/product/InsightCards';
 import TopFlavorFans from '../components/product/TopFlavorFans';
@@ -95,7 +96,7 @@ function ProductDetailPage() {
 
   return (
     <div className="product-detail-page">
-      <div className="product-detail-container">
+      <Container size="standard">
         
         {/* Page Header Card */}
         <div className="page-header-card card">
@@ -183,7 +184,7 @@ function ProductDetailPage() {
             </button>
           )}
         </div>
-      </div>
+      </Container>
     </div>
   );
 }
