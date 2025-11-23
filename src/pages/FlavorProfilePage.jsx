@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../utils/api';
+import Container from '../components/common/Container';
 import './FlavorProfilePage.css';
 
 const flavorInfo = {
@@ -53,9 +54,9 @@ function FlavorProfilePage() {
   if (isLoading) {
     return (
       <div className="flavor-profile-page">
-        <div className="flavor-profile-container">
+        <Container size="standard">
           <div className="loading">Loading flavor profile...</div>
-        </div>
+        </Container>
       </div>
     );
   }
@@ -63,16 +64,16 @@ function FlavorProfilePage() {
   if (error || !flavorId) {
     return (
       <div className="flavor-profile-page">
-        <div className="flavor-profile-container">
+        <Container size="standard">
           <div className="error">Failed to load flavor profile</div>
-        </div>
+        </Container>
       </div>
     );
   }
 
   return (
     <div className="flavor-profile-page">
-      <div className="flavor-profile-container">
+      <Container size="standard">
         <div className="flavor-header">
           <div className="flavor-icon">{flavor.icon}</div>
           <h1 className="flavor-title">{flavor.display} Flavors</h1>
@@ -168,7 +169,7 @@ function FlavorProfilePage() {
             </div>
           )}
         </div>
-      </div>
+      </Container>
     </div>
   );
 }

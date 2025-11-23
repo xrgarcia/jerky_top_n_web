@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useAuthStore } from '../store/authStore';
 import { usePageView } from '../hooks/usePageView';
+import Container from '../components/common/Container';
 import toast from 'react-hot-toast';
 import ImageCropModal from '../components/ImageCropModal';
 import './ProfilePage.css';
@@ -364,7 +365,7 @@ function ProfilePage() {
 
   return (
     <div className="profile-page">
-      <div className="profile-container">
+      <Container size="standard">
         <div className="profile-header">
           {/* Profile Avatar/Image */}
           <div className="profile-avatar-wrapper">
@@ -484,7 +485,7 @@ function ProfilePage() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
 
       {/* Image Crop Modal */}
       {showCropModal && imageToCrop && (

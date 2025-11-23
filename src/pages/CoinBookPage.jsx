@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Container from '../components/common/Container';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
 import '../styles/hero-headers.css';
 import './CoinBookPage.css';
@@ -9,7 +10,7 @@ function CoinBookPage() {
     <div className="coinbook-page">
       {/* Hero: The Coin Book */}
       <section className="coinbook-hero">
-        <div className="coinbook-container">
+        <Container size="standard">
           <div className="hero-intro">
             <h1 className="hero-title">Your Coin Book</h1>
             <p className="hero-subtitle">
@@ -18,12 +19,12 @@ function CoinBookPage() {
             </p>
           </div>
           <CoinBookWidget defaultCollapsed={false} />
-        </div>
+        </Container>
       </section>
 
       {/* Act 1: First Bite - Starting Your Collection */}
       <section className="act-one">
-        <div className="coinbook-container">
+        <Container size="standard">
           <div className="act-header">
             <span className="act-label">Act I</span>
             <h2 className="act-title">First Bite</h2>
@@ -66,12 +67,12 @@ function CoinBookPage() {
               Explore All Flavors
             </Link>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Act 2: Building Mastery - The Collections */}
       <section className="act-two">
-        <div className="coinbook-container">
+        <Container size="standard">
           <div className="act-header">
             <span className="act-label">Act II</span>
             <h2 className="act-title">Building Mastery</h2>
@@ -151,12 +152,12 @@ function CoinBookPage() {
               Start a Collection
             </Link>
           </div>
-        </div>
+        </Container>
       </section>
 
       {/* Act 3: The Masters - Elite Status */}
       <section className="act-three">
-        <div className="coinbook-container">
+        <Container size="standard">
           <div className="act-header">
             <span className="act-label">Act III</span>
             <h2 className="act-title">The Masters</h2>
@@ -231,7 +232,7 @@ function CoinBookPage() {
               Continue Your Journey
             </Link>
           </div>
-        </div>
+        </Container>
       </section>
     </div>
   );
