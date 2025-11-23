@@ -43,11 +43,11 @@
 
 .hero-title-badge {
   display: inline-block;
-  font-size: var(--font-size-label-default);
+  font-size: var(--font-label-size);
   font-weight: 600;
-  color: var(--rank-gold);
+  color: var(--rank-amber);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.1em;
 }
 
 .hero-flavor-journey {
