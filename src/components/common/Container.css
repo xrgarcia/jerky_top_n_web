@@ -5,15 +5,15 @@
 }
 
 .app-container--narrow {
-  max-width: 1000px;
+  max-width: var(--container-narrow);
 }
 
 .app-container--standard {
-  max-width: 1200px;
+  max-width: var(--container-xl);
 }
 
 .app-container--wide {
-  max-width: 1400px;
+  max-width: var(--container-max);
 }
 
 @media (max-width: 768px) {

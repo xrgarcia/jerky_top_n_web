@@ -333,8 +333,9 @@
   --container-sm: 640px;
   --container-md: 768px;
   --container-lg: 1024px;
-  --container-xl: 1200px;
-  --container-max: 1400px;
+  --container-narrow: 1000px;     /* Text-heavy pages (HomePage) */
+  --container-xl: 1200px;         /* Standard content pages */
+  --container-max: 1400px;        /* Data-dense pages (Rank, Community) */
 
   /* Grid System */
   --grid-columns: 12;
