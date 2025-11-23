@@ -108,9 +108,9 @@ function PublicProfilePage() {
               <div className="avatar-ring">
                 <div className="avatar-inner">
                   {user.avatarUrl ? (
-                    <img src={user.avatarUrl} alt={user.displayName} className="avatar-image" />
+                    <img src={user.avatarUrl} alt={user.displayName} className="profile-avatar-img" />
                   ) : (
-                    <span className="avatar-initial">{getUserInitial()}</span>
+                    <span className="profile-avatar-initial">{getUserInitial()}</span>
                   )}
                 </div>
               </div>
