@@ -47,8 +47,10 @@ function FlavorIndexPage() {
       <Container size="standard">
         {/* Hero Header */}
         <div className="flavor-index-hero">
-          <h1 className="hero-title">Flavor Index</h1>
-          <p className="hero-subtitle">Every flavor, ranked by the community.</p>
+          <div className="hero-intro">
+            <h1 className="hero-title">Flavor Index</h1>
+            <p className="hero-subtitle">Every flavor, ranked by the community.</p>
+          </div>
         </div>
 
         {/* Filter Bar */}
