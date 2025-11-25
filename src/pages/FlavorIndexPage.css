@@ -11,9 +11,7 @@
 }
 
 /* Hero Header - Uses centralized hero-headers.css */
-.flavor-index-hero {
-  margin-bottom: 64px;
-}
+/* margin-bottom handled by hero-headers.css */
 
 /* Filter Bar */
 .flavor-index-filters {

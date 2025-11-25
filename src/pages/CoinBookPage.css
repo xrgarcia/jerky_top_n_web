@@ -16,8 +16,8 @@
    Matches Rank/Flavor Index/Leaderboard
    ======================================== */
 
+/* margin-bottom handled by hero-headers.css */
 .coinbook-hero {
-  margin-bottom: 64px;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;

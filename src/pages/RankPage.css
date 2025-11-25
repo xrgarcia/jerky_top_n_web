@@ -8,12 +8,12 @@
   background: var(--rank-neutral-900);
 }
 
-/* Hero Header - Matches Flavor Index */
+/* Hero Header - Uses centralized hero-headers.css */
+/* margin-bottom handled by hero-headers.css */
 .rank-hero {
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: 64px;
 }
 
 /* ========================================

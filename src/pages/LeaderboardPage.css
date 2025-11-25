@@ -13,11 +13,8 @@
 
 /* ========================================
    PAGE HEADER - Uses centralized hero-headers.css
+   margin-bottom handled by hero-headers.css
    ======================================== */
-
-.leaderboard-hero {
-  margin-bottom: 64px;
-}
 
 /* ========================================
    HALL OF FAME VAULT
