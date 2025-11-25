@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLeaderboard } from '../hooks/useCommunity';
 import Container from '../components/common/Container';
+import '../styles/layout.css';
 import '../styles/hero-headers.css';
 import './LeaderboardPage.css';
 
@@ -11,7 +12,7 @@ function LeaderboardPage() {
 
   if (isLoading) {
     return (
-      <div className="leaderboard-page">
+      <div className="page-shell leaderboard-page">
         <div className="leaderboard-loading">
           <div className="loading-spinner"></div>
           <p>Loading leaderboard...</p>
@@ -22,7 +23,7 @@ function LeaderboardPage() {
 
   if (error) {
     return (
-      <div className="leaderboard-page">
+      <div className="page-shell leaderboard-page">
         <div className="leaderboard-error">
           <p>Failed to load leaderboard</p>
         </div>
@@ -48,9 +49,10 @@ function LeaderboardPage() {
   };
 
   return (
-    <Container size="standard" className="leaderboard-page">
-      {/* Page Header - Matching Rank Flavors/Flavor Index Style */}
-      <div className="leaderboard-hero">
+    <div className="page-shell leaderboard-page">
+      <Container size="standard">
+        {/* Page Header - Matching Rank Flavors/Flavor Index Style */}
+        <div className="leaderboard-hero">
         <div className="hero-intro">
           <h1 className="hero-title">Leaderboard</h1>
           <p className="hero-subtitle">Top rankers across the RANK community</p>
@@ -166,7 +168,8 @@ function LeaderboardPage() {
           );
         })}
       </div>
-    </Container>
+      </Container>
+    </div>
   );
 }
 

@@ -3,13 +3,7 @@
    Dark Gaming-Inspired Design
    ======================================== */
 
-.leaderboard-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 80px 24px 120px;
-  min-height: 100vh;
-  background: var(--rank-neutral-900);
-}
+/* Page shell padding handled by layout.css */
 
 /* ========================================
    PAGE HEADER - Uses centralized hero-headers.css

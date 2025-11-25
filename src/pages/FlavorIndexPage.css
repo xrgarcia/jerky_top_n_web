@@ -1,9 +1,5 @@
 /* Flavor Index Page - RANK Identity System Leaderboard Design */
-.flavor-index-page {
-  background: var(--rank-bg-primary);
-  min-height: 100vh;
-  padding: 80px 24px 120px;
-}
+/* Page shell padding handled by layout.css */
 
 .flavor-index-container {
   max-width: 1200px;
@@ -139,10 +135,6 @@
 }
 
 @media (max-width: 768px) {
-  .flavor-index-page {
-    padding: 60px 16px 80px;
-  }
-
   .flavor-index-filters {
     padding: 16px;
   }

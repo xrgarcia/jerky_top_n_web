@@ -5,6 +5,7 @@ import { usePageView } from '../hooks/usePageView';
 import LeaderboardRow from '../components/flavorindex/LeaderboardRow';
 import CategorySummaryGrid from '../components/flavorindex/CategorySummaryGrid';
 import Container from '../components/common/Container';
+import '../styles/layout.css';
 import '../styles/hero-headers.css';
 import './FlavorIndexPage.css';
 
@@ -43,7 +44,7 @@ function FlavorIndexPage() {
   }, [products, sort]);
 
   return (
-    <div className="flavor-index-page">
+    <div className="page-shell flavor-index-page">
       <Container size="standard">
         {/* Hero Header */}
         <div className="flavor-index-hero">

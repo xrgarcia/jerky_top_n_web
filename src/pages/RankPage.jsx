@@ -16,6 +16,7 @@ import { DraggableProduct } from '../components/rank/DraggableProduct';
 import { FlavorCard } from '../components/rank/FlavorCard';
 import { RankedFlavorItem } from '../components/rank/RankedFlavorItem';
 import { RankingModal } from '../components/rank/RankingModal';
+import '../styles/layout.css';
 import '../styles/hero-headers.css';
 import './RankPage.css';
 
@@ -606,7 +607,7 @@ Continue?`;
         }
       }}
     >
-      <div className="rank-page">
+      <div className="page-shell rank-page">
         {/* Hero Section */}
         <div className="rank-hero">
           <div className="hero-intro">

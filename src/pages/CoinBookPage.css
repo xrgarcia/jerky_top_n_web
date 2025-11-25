@@ -1,22 +1,7 @@
 /* Coin Book Page */
-
-.coinbook-page {
-  background: var(--rank-neutral-900);
-  min-height: 100vh;
-  padding: 80px 24px 80px;
-}
+/* Page shell padding handled by layout.css */
 
 /* Widget spacing below hero - margin-bottom on hero handled by hero-headers.css */
 .coinbook-page .coinbook-widget {
   margin-top: 0;
-}
-
-/* ========================================
-   RESPONSIVE DESIGN
-   ======================================== */
-
-@media (max-width: 768px) {
-  .coinbook-page {
-    padding: 24px 16px 60px;
-  }
 }

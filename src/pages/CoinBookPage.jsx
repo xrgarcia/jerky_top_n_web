@@ -1,12 +1,13 @@
 import React from 'react';
 import Container from '../components/common/Container';
 import CoinBookWidget from '../components/coinbook/CoinBookWidget';
+import '../styles/layout.css';
 import '../styles/hero-headers.css';
 import './CoinBookPage.css';
 
 function CoinBookPage() {
   return (
-    <div className="coinbook-page">
+    <div className="page-shell coinbook-page">
       <Container size="standard">
         <div className="coinbook-hero">
           <div className="hero-intro">
