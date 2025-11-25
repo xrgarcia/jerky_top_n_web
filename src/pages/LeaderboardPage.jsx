@@ -51,8 +51,10 @@ function LeaderboardPage() {
     <Container size="standard" className="leaderboard-page">
       {/* Page Header - Matching Rank Flavors/Flavor Index Style */}
       <div className="leaderboard-hero">
-        <h1 className="hero-title">Leaderboard</h1>
-        <p className="hero-subtitle">Top rankers across the RANK community</p>
+        <div className="hero-intro">
+          <h1 className="hero-title">Leaderboard</h1>
+          <p className="hero-subtitle">Top rankers across the RANK community</p>
+        </div>
       </div>
 
       {/* Hall of Fame Vault */}
