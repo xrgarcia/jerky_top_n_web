@@ -102,12 +102,17 @@ function ProductDetailPage() {
                 </div>
                 {communityRank && (
                   <div className="rank-badge">
-                    #{communityRank} Community Ranked • Top {Math.min(communityRank, 5)} of {totalFlavors} Flavors
+                    #{communityRank} Community Ranked
                   </div>
                 )}
               </div>
               <div className="flavor-info">
                 <h1 className="flavor-name">{product.title}</h1>
+                {communityRank && (
+                  <div className="top-flavors-badge">
+                    Top {Math.min(communityRank, 5)} of {totalFlavors} Flavors
+                  </div>
+                )}
                 <div className="category-tag">
                   {categoryTag.icon} {categoryTag.label}
                 </div>
