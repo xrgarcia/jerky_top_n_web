@@ -3,133 +3,51 @@
    Dark Gaming-Inspired Design - RANK Identity System
    ======================================== */
 
-.product-detail-page {
-  background: #0f0f0f;
-  min-height: 100vh;
-  padding: 2rem 1.5rem;
-}
-
-.product-detail-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
+/* Page shell padding handled by layout.css */
 
 /* Base Card Styling */
-.card {
+.product-detail-page .card {
   background: #1a1a1a;
   border-radius: 12px;
-  padding: 1.25rem;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   border: 1px solid #232323;
 }
 
-.card-title {
-  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #5c5c5c;
-  text-transform: uppercase;
-  margin-bottom: 0.75rem;
-}
-
 /* ========================================
-   PAGE HEADER CARD
+   HERO ROW - Two Column Layout
    ======================================== */
 
-.page-header-card {
+.hero-row {
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 2rem;
-  align-items: center;
-  margin-bottom: 1.5rem;
-}
-
-.header-info {
-}
-
-.page-title-small {
-  font-size: 0.625rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  color: #5c5c5c;
-  text-transform: uppercase;
-  margin-bottom: 0.5rem;
-}
-
-.flavor-name-large {
-  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: #f5f5f5;
-  background: linear-gradient(135deg, #c9a86a, #ffc46a, #c9a86a);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.category-tag-badge {
-  display: inline-flex;
-  padding: 0.25rem 0.625rem;
-  background: rgba(255, 138, 43, 0.15);
-  border: 1px solid rgba(255, 138, 43, 0.3);
-  border-radius: 6px;
-  font-size: 0.625rem;
-  color: #ff8a2b;
-  font-weight: 600;
-  text-transform: uppercase;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
   margin-bottom: 0.75rem;
 }
 
-.header-meta {
+/* Flavor Identity Card */
+.flavor-identity-card {
+  padding: 1.25rem;
+}
+
+.flavor-content {
   display: flex;
-  gap: 1.5rem;
-  align-items: center;
-  margin-top: 0.75rem;
-  flex-wrap: wrap;
+  gap: 1.25rem;
 }
 
-.meta-item {
-  display: flex;
-  flex-direction: column;
-}
-
-.meta-label {
-  font-size: 0.625rem;
-  color: #5c5c5c;
-  text-transform: uppercase;
-}
-
-.meta-value {
-  font-size: 1rem;
-  font-weight: 700;
-  color: #ffc46a;
-  font-family: 'Courier New', monospace;
-  margin-top: 0.25rem;
-}
-
-.header-actions {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  align-items: center;
-}
-
-.header-coin {
-  width: 80px;
-  height: 80px;
+.flavor-icon-large {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   background: linear-gradient(135deg, rgba(255, 138, 43, 0.3), rgba(255, 196, 106, 0.2));
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.5rem;
+  flex-shrink: 0;
   position: relative;
   animation: coinPulse 3s ease-in-out infinite;
 }
 
-.header-coin::before {
+.flavor-icon-large::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -137,15 +55,15 @@
   background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
 }
 
-.header-coin-inner {
-  width: 72px;
-  height: 72px;
+.flavor-icon-inner {
+  width: 110px;
+  height: 110px;
   border-radius: 50%;
   background: #0f0f0f;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
+  font-size: 3rem;
   position: relative;
   z-index: 1;
 }
@@ -159,61 +77,120 @@
   }
 }
 
+.flavor-info {
+  flex: 1;
+}
+
+.flavor-name {
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #f5f5f5;
+}
+
+.rank-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
+  border: 1px solid rgba(255, 138, 43, 0.4);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  color: #ffc46a;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  font-family: 'Courier New', monospace;
+}
+
+.category-tag {
+  display: inline-flex;
+  padding: 0.25rem 0.625rem;
+  background: rgba(255, 138, 43, 0.15);
+  border: 1px solid rgba(255, 138, 43, 0.3);
+  border-radius: 6px;
+  font-size: 0.625rem;
+  color: #ff8a2b;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.your-rank {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffd873;
+  margin-bottom: 0.5rem;
+}
+
+.metadata {
+  font-size: 0.625rem;
+  color: #777777;
+}
+
 /* ========================================
-   BUTTONS
+   BUY CTA
    ======================================== */
 
-.btn {
+.buy-cta {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.15), rgba(255, 196, 106, 0.1));
+  border: 2px solid rgba(255, 138, 43, 0.4);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  text-align: left;
+}
+
+.buy-cta:hover {
+  border-color: rgba(255, 138, 43, 0.6);
+  box-shadow: 0 4px 20px rgba(255, 138, 43, 0.2);
+  transform: translateY(-2px);
+}
+
+.buy-cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.buy-cta-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #5c5c5c;
+  text-transform: uppercase;
+}
+
+.buy-cta-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffc46a;
+}
+
+.buy-cta-button {
   padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
   border-radius: 8px;
   font-size: 0.75rem;
   font-weight: 700;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-  transition: all 0.2s;
-  cursor: pointer;
-  border: none;
-  font-family: var(--font-body, 'Inter', sans-serif);
-  width: 100%;
-}
-
-.btn-primary {
-  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
   color: #0f0f0f;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 138, 43, 0.4);
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid #ff8a2b;
-  color: #ff8a2b;
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 138, 43, 0.1);
-}
-
-/* ========================================
-   BOTTOM CTA
-   ======================================== */
-
-.bottom-cta {
-  text-align: center;
-  padding: 1.5rem;
   display: flex;
-  gap: 1rem;
-  justify-content: center;
-  margin-top: 2rem;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
-.bottom-cta .btn {
-  width: auto;
-  min-width: 180px;
+.buy-cta:hover .buy-cta-button {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 138, 43, 0.4);
 }
 
 /* ========================================
@@ -257,7 +234,6 @@
   margin-bottom: 1.5rem;
 }
 
-.back-button,
 .back-link {
   color: #ff8a2b;
   text-decoration: none;
@@ -266,7 +242,6 @@
   transition: all 0.2s;
 }
 
-.back-button:hover,
 .back-link:hover {
   color: #ffc46a;
   text-decoration: underline;
@@ -277,80 +252,55 @@
    ======================================== */
 
 @media (max-width: 1024px) {
-  .page-header-card {
+  .hero-row {
     grid-template-columns: 1fr;
-  }
-
-  .header-actions {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .header-coin {
-    margin-bottom: 0;
-  }
-
-  .header-actions .btn {
-    width: auto;
-    min-width: 150px;
   }
 }
 
 @media (max-width: 768px) {
-  .product-detail-page {
-    padding: 1rem;
+  .flavor-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .page-header-card {
-    padding: 1rem;
+  .flavor-icon-large {
+    width: 100px;
+    height: 100px;
   }
 
-  .flavor-name-large {
+  .flavor-icon-inner {
+    width: 92px;
+    height: 92px;
+    font-size: 2.5rem;
+  }
+
+  .flavor-name {
     font-size: 1.5rem;
   }
 
-  .header-meta {
-    gap: 1rem;
-  }
-
-  .meta-value {
-    font-size: 0.875rem;
-  }
-
-  .header-coin {
-    width: 64px;
-    height: 64px;
-  }
-
-  .header-coin-inner {
-    width: 56px;
-    height: 56px;
-    font-size: 2rem;
-  }
-
-  .bottom-cta {
+  .buy-cta {
     flex-direction: column;
+    gap: 1rem;
+    text-align: center;
   }
 
-  .bottom-cta .btn {
-    width: 100%;
+  .buy-cta-content {
+    align-items: center;
   }
 }
 
 @media (max-width: 640px) {
-  .flavor-name-large {
+  .flavor-name {
     font-size: 1.25rem;
   }
 
-  .header-meta {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
+  .your-rank {
+    font-size: 1rem;
   }
 
-  .btn {
-    font-size: 0.6875rem;
-    padding: 0.5rem 1rem;
+  .rank-badge {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
   }
 }

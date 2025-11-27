@@ -1,0 +1,64 @@
+.tier-distribution {
+  padding: 1.25rem;
+}
+
+.tier-distribution .card-title {
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #5c5c5c;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.distribution-bars {
+  display: grid;
+  gap: 0.375rem;
+}
+
+.dist-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.dist-label {
+  font-family: 'Courier New', monospace;
+  font-size: 0.625rem;
+  color: #5c5c5c;
+  width: 24px;
+  font-weight: 700;
+}
+
+.dist-track {
+  flex: 1;
+  height: 16px;
+  background: #2a2a2a;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.dist-fill {
+  height: 100%;
+  background: linear-gradient(to right, #ff8a2b, #ffc46a);
+  display: flex;
+  align-items: center;
+  padding: 0 0.375rem;
+  min-width: 0;
+  transition: width 0.3s ease;
+}
+
+.dist-count {
+  font-family: 'Courier New', monospace;
+  font-size: 0.625rem;
+  color: #0f0f0f;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.dist-meta {
+  font-size: 0.625rem;
+  color: #777777;
+  margin-top: 0.5rem;
+}

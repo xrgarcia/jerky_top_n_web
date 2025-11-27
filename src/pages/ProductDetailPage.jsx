@@ -4,18 +4,14 @@ import {
   useProductDetailEnhanced,
   useProductDistribution,
   useProductTopFans,
-  useProductOppositeProfiles,
-  useProductRelated,
-  useProductInsights
+  useProductOppositeProfiles
 } from '../hooks/useProducts';
 import { usePageView } from '../hooks/usePageView';
 import { useAuthStore } from '../store/authStore';
 import Container from '../components/common/Container';
-import InteractiveDistributionGraph from '../components/product/InteractiveDistributionGraph';
-import InsightCards from '../components/product/InsightCards';
+import TierDistribution from '../components/product/TierDistribution';
 import TopFlavorFans from '../components/product/TopFlavorFans';
 import OppositeTasteProfiles from '../components/product/OppositeTasteProfiles';
-import RelatedFlavors from '../components/product/RelatedFlavors';
 import './ProductDetailPage.css';
 
 const flavorIcons = {
@@ -47,39 +43,37 @@ function ProductDetailPage() {
   
   const { data: product, isLoading, error } = useProductDetailEnhanced(productId);
   const { data: distributionData } = useProductDistribution(productId);
-  const { data: topFansData } = useProductTopFans(productId, 9);
-  const { data: oppositeData } = useProductOppositeProfiles(productId, 9);
-  const { data: relatedData } = useProductRelated(productId, 4);
-  const { data: insightsData } = useProductInsights(productId);
+  const { data: topFansData } = useProductTopFans(productId, 8);
+  const { data: oppositeData } = useProductOppositeProfiles(productId, 8);
   
   usePageView('product_detail', { productId, productTitle: product?.title });
 
   if (isLoading) {
     return (
-      <div className="product-detail-page">
-        <div className="product-detail-loading">
-          <div className="loading-spinner"></div>
-          <p>Loading flavor details...</p>
-        </div>
+      <div className="product-detail-page page-shell">
+        <Container size="standard">
+          <div className="product-detail-loading">
+            <div className="loading-spinner"></div>
+            <p>Loading flavor details...</p>
+          </div>
+        </Container>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="product-detail-page">
-        <div className="product-detail-error">
-          <h2>Flavor Not Found</h2>
-          <p>The flavor you're looking for doesn't exist or couldn't be loaded.</p>
-          <Link to="/flavors" className="back-button">← Back to Flavors</Link>
-        </div>
+      <div className="product-detail-page page-shell">
+        <Container size="standard">
+          <div className="product-detail-error">
+            <h2>Flavor Not Found</h2>
+            <p>The flavor you're looking for doesn't exist or couldn't be loaded.</p>
+            <Link to="/flavors" className="back-link">← Back to Flavor Index</Link>
+          </div>
+        </Container>
       </div>
     );
   }
-
-  const handleRankClick = () => {
-    navigate('/rank');
-  };
 
   const handleShopifyClick = () => {
     if (product.shopifyUrl) {
@@ -91,99 +85,62 @@ function ProductDetailPage() {
   const categoryTag = categoryTags[primaryFlavor] || { icon: '🥩', label: 'FLAVOR' };
   const coinIcon = flavorIcons[primaryFlavor] || '🥩';
   
-  const avgRankDisplay = distributionData?.stats?.avgRank || product.avgRank;
-  const totalRankers = distributionData?.stats?.totalRankings || product.rankingCount || 0;
+  const totalRankers = distributionData?.totalRankings || product.rankingCount || 0;
+  const totalFlavors = 147;
+  const communityRank = distributionData?.stats?.avgRank ? Math.round(parseFloat(distributionData.stats.avgRank)) : null;
 
   return (
-    <div className="product-detail-page">
+    <div className="product-detail-page page-shell">
       <Container size="standard">
         
-        {/* Page Header Card */}
-        <div className="page-header-card card">
-          <div className="header-info">
-            <div className="page-title-small">Flavor Ranking Distribution</div>
-            <h1 className="flavor-name-large">{product.title}</h1>
-            <div className="category-tag-badge">
-              {categoryTag.icon} {categoryTag.label}
-            </div>
-            <div className="header-meta">
-              <div className="meta-item">
-                <span className="meta-label">Community Average</span>
-                <span className="meta-value">#{avgRankDisplay ? parseFloat(avgRankDisplay).toFixed(1) : 'N/A'}</span>
+        <div className="hero-row">
+          <div className="card flavor-identity-card">
+            <div className="flavor-content">
+              <div className="flavor-icon-large">
+                <div className="flavor-icon-inner">{coinIcon}</div>
               </div>
-              <div className="meta-item">
-                <span className="meta-label">Total Rankers</span>
-                <span className="meta-value">{totalRankers.toLocaleString()}</span>
-              </div>
-              {product.userRank && (
-                <div className="meta-item">
-                  <span className="meta-label">Your Rank</span>
-                  <span className="meta-value">#{product.userRank}</span>
+              <div className="flavor-info">
+                <h1 className="flavor-name">{product.title}</h1>
+                {communityRank && (
+                  <div className="rank-badge">
+                    #{communityRank} Community Ranked • Top {Math.min(communityRank, 5)} of {totalFlavors} Flavors
+                  </div>
+                )}
+                <div className="category-tag">
+                  {categoryTag.icon} {categoryTag.label}
                 </div>
-              )}
+                {product.userRank && (
+                  <div className="your-rank">YOUR RANK: #{product.userRank}</div>
+                )}
+                <div className="metadata">
+                  {product.vendor && <span>{product.vendor}</span>}
+                  {product.animalType && <span> • {product.animalType}</span>}
+                </div>
+              </div>
             </div>
           </div>
-          
-          <div className="header-actions">
-            <div className="header-coin">
-              <div className="header-coin-inner">{coinIcon}</div>
-            </div>
-            {product.shopifyUrl && (
-              <button 
-                onClick={handleShopifyClick}
-                className="btn btn-secondary"
-              >
-                View on Shopify
-              </button>
-            )}
-            {isAuthenticated && (
-              <button 
-                onClick={handleRankClick}
-                className="btn btn-primary"
-              >
-                Rank This Flavor
-              </button>
-            )}
+
+          <div className="card">
+            <TierDistribution distribution={distributionData} />
           </div>
         </div>
 
-        {/* Distribution Graph */}
-        <InteractiveDistributionGraph 
-          distribution={distributionData}
-          currentAvgRank={avgRankDisplay}
-        />
+        {product.shopifyUrl && (
+          <button onClick={handleShopifyClick} className="buy-cta">
+            <div className="buy-cta-content">
+              <div className="buy-cta-label">Want to rank this flavor?</div>
+              <div className="buy-cta-title">Try {product.title} on Jerky.com</div>
+            </div>
+            <div className="buy-cta-button">
+              Shop This Flavor <span>→</span>
+            </div>
+          </button>
+        )}
 
-        {/* Insight Cards */}
-        <InsightCards insights={insightsData} />
-
-        {/* Top Flavor Fans */}
         <TopFlavorFans fans={topFansData?.fans} />
 
-        {/* Opposite Taste Profiles */}
         <OppositeTasteProfiles profiles={oppositeData?.profiles} />
 
-        {/* Related Flavors */}
-        <RelatedFlavors products={relatedData?.products} />
-
-        {/* Bottom CTA */}
-        <div className="bottom-cta">
-          {isAuthenticated && (
-            <button 
-              onClick={handleRankClick}
-              className="btn btn-primary"
-            >
-              Rank This Flavor
-            </button>
-          )}
-          {product.shopifyUrl && (
-            <button 
-              onClick={handleShopifyClick}
-              className="btn btn-secondary"
-            >
-              Go to Product Page
-            </button>
-          )}
-        </div>
       </Container>
     </div>
   );

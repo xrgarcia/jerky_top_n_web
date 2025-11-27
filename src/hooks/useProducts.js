@@ -70,7 +70,7 @@ export function useProductDistribution(productId) {
   });
 }
 
-export function useProductTopFans(productId, limit = 9) {
+export function useProductTopFans(productId, limit = 8) {
   return useQuery({
     queryKey: ['productTopFans', productId, limit],
     queryFn: async () => {
@@ -82,7 +82,7 @@ export function useProductTopFans(productId, limit = 9) {
   });
 }
 
-export function useProductOppositeProfiles(productId, limit = 9) {
+export function useProductOppositeProfiles(productId, limit = 8) {
   return useQuery({
     queryKey: ['productOppositeProfiles', productId, limit],
     queryFn: async () => {
