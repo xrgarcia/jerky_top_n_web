@@ -36,6 +36,44 @@ const categoryTags = {
   'exotic': { icon: '🌏', label: 'EXOTIC' }
 };
 
+function getRankingBadgeText(rank, totalFlavors) {
+  if (!rank || !totalFlavors) return null;
+  
+  const p = rank / totalFlavors;
+  
+  if (p <= 0.05) {
+    return {
+      label: 'One of the Most Loved Flavors',
+      sub: `Top ${rank} of ${totalFlavors} Flavors`
+    };
+  } else if (p <= 0.10) {
+    return {
+      label: 'A Fan Favorite',
+      sub: `Top ${rank} of ${totalFlavors} Flavors`
+    };
+  } else if (p <= 0.25) {
+    return {
+      label: 'A Top Choice Among Rankers',
+      sub: `Top ${rank} of ${totalFlavors} Flavors`
+    };
+  } else if (p <= 0.50) {
+    return {
+      label: 'Well-Liked by the Community',
+      sub: 'Mid-Tier Favorite'
+    };
+  } else if (p <= 0.75) {
+    return {
+      label: 'A Flavor With a Loyal Following',
+      sub: 'For Specific Taste Profiles'
+    };
+  } else {
+    return {
+      label: 'A Bold Pick for Adventurous Taste Buds',
+      sub: 'Community Reaction: Mixed'
+    };
+  }
+}
+
 function ProductDetailPage() {
   const { id: productId } = useParams();
   const navigate = useNavigate();
@@ -88,6 +126,7 @@ function ProductDetailPage() {
   const totalRankers = distributionData?.totalRankings || product.rankingCount || 0;
   const totalFlavors = 147;
   const communityRank = distributionData?.stats?.avgRank ? Math.round(parseFloat(distributionData.stats.avgRank)) : null;
+  const rankingBadge = getRankingBadgeText(communityRank, totalFlavors);
 
   return (
     <div className="product-detail-page page-shell">
@@ -108,9 +147,10 @@ function ProductDetailPage() {
               </div>
               <div className="flavor-info">
                 <h1 className="flavor-name">{product.title}</h1>
-                {communityRank && (
+                {rankingBadge && (
                   <div className="top-flavors-badge">
-                    Top {Math.min(communityRank, 5)} of {totalFlavors} Flavors
+                    <span className="badge-label">{rankingBadge.label}</span>
+                    <span className="badge-sub">{rankingBadge.sub}</span>
                   </div>
                 )}
                 <div className="category-tag">
