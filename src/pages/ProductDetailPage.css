@@ -115,8 +115,9 @@
 
 .top-flavors-badge {
   display: inline-flex;
-  flex-direction: column;
-  gap: 0.125rem;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem 0.75rem;
   background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
   border: 1px solid rgba(255, 138, 43, 0.4);
@@ -131,8 +132,13 @@
   font-family: 'Courier New', monospace;
 }
 
+.top-flavors-badge .badge-dot {
+  font-size: 0.75rem;
+  color: #777777;
+}
+
 .top-flavors-badge .badge-sub {
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   color: #777777;
 }
 

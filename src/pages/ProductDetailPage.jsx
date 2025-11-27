@@ -150,6 +150,7 @@ function ProductDetailPage() {
                 {rankingBadge && (
                   <div className="top-flavors-badge">
                     <span className="badge-label">{rankingBadge.label}</span>
+                    <span className="badge-dot">•</span>
                     <span className="badge-sub">{rankingBadge.sub}</span>
                   </div>
                 )}
