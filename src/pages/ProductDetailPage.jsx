@@ -161,7 +161,13 @@ function ProductDetailPage() {
                   <div className="your-rank">YOUR RANK: #{product.userRank}</div>
                 )}
                 <div className="metadata">
-                  {product.vendor && <span>{product.vendor}</span>}
+                  {product.shopifyCreatedAt ? (
+                    <span>
+                      Released {new Date(product.shopifyCreatedAt).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                    </span>
+                  ) : product.vendor && (
+                    <span>{product.vendor}</span>
+                  )}
                   {product.animalType && <span> • {product.animalType}</span>}
                 </div>
               </div>

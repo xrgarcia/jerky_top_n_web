@@ -219,7 +219,8 @@ class ProductsService {
           secondaryFlavors: meta.secondaryFlavors ? JSON.parse(meta.secondaryFlavors) : [],
           flavorDisplay: meta.flavorDisplay,
           flavorIcon: meta.flavorIcon,
-          forceRankable: meta.forceRankable || false
+          forceRankable: meta.forceRankable || false,
+          shopifyCreatedAt: meta.shopifyCreatedAt
         };
       });
       
@@ -291,7 +292,8 @@ class ProductsService {
       primaryFlavor: null,
       secondaryFlavors: [],
       flavorDisplay: null,
-      flavorIcon: null
+      flavorIcon: null,
+      shopifyCreatedAt: null
     };
     
     return {
@@ -318,7 +320,8 @@ class ProductsService {
       primaryFlavor: metadata.primaryFlavor,
       secondaryFlavors: metadata.secondaryFlavors,
       flavorDisplay: metadata.flavorDisplay,
-      flavorIcon: metadata.flavorIcon
+      flavorIcon: metadata.flavorIcon,
+      shopifyCreatedAt: metadata.shopifyCreatedAt
     };
   }
   
