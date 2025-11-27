@@ -17,7 +17,8 @@ const HomePage = lazy(() => import('../../pages/HomePage'));
 const FlavorIndexPage = lazy(() => import('../../pages/FlavorIndexPage'));
 const ProductDetailPage = lazy(() => import('../../pages/ProductDetailPage'));
 const FlavorProfilePage = lazy(() => import('../../pages/FlavorProfilePage'));
-const CoinBookPage = lazy(() => import('../../pages/CoinBookPage'));
+const CoinBookPage = lazy(() => import('../../pages/CoinBookPageV2'));
+const CoinBookPageLegacy = lazy(() => import('../../pages/CoinBookPage'));
 const CoinProfilePage = lazy(() => import('../../pages/CoinProfilePage'));
 const CommunityPage = lazy(() => import('../../pages/CommunityPage'));
 const PublicProfilePage = lazy(() => import('../../pages/PublicProfilePage'));
@@ -96,6 +97,11 @@ function AppLayout() {
             <Route path="/coinbook" element={
               <ProtectedRoute>
                 <CoinBookPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/coinbook/legacy" element={
+              <ProtectedRoute>
+                <CoinBookPageLegacy />
               </ProtectedRoute>
             } />
             <Route path="/coinbook/:coinId" element={

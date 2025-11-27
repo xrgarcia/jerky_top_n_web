@@ -1,0 +1,998 @@
+/* CoinBook Page V2 - Complete Redesign */
+
+/* ============================================
+   MAIN CONTAINER & SHELL
+   ============================================ */
+
+.coinbook-v2 {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+}
+
+.coinbook-shell {
+  background: linear-gradient(135deg, #1A1A1A 0%, #151515 100%);
+  border: 1px solid rgba(255, 153, 0, 0.1);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================
+   TAB NAVIGATION
+   ============================================ */
+
+.coinbook-tabs {
+  display: flex;
+  background: rgba(10, 10, 10, 0.5);
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+}
+
+.coinbook-tab {
+  flex: 1;
+  padding: 1.25rem;
+  text-align: center;
+  color: #666;
+  background: transparent;
+  border: none;
+  font-weight: 500;
+  font-size: 1rem;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.coinbook-tab:hover {
+  color: #999;
+  background: rgba(255, 153, 0, 0.05);
+}
+
+.coinbook-tab.active {
+  color: var(--rank-amber, #FF8A2B);
+  background: rgba(255, 153, 0, 0.1);
+}
+
+.coinbook-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--rank-amber, #FF8A2B), transparent);
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+
+.coinbook-tab-content {
+  padding: 3rem;
+}
+
+.chapter-header {
+  margin-bottom: 2rem;
+}
+
+.chapter-header h2 {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--rank-text-white, #FFFFFF);
+  margin: 0 0 0.5rem;
+  font-family: var(--font-headline);
+}
+
+.chapter-header p {
+  color: #999;
+  font-size: 1.125rem;
+  margin: 0;
+  font-family: var(--font-body);
+}
+
+/* ============================================
+   FILTER BAR
+   ============================================ */
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  background: rgba(255, 153, 0, 0.05);
+  border: 1px solid rgba(255, 153, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 0.25rem;
+  margin-bottom: 2rem;
+}
+
+.filter-btn {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  border-radius: 0.375rem;
+  transition: all 0.3s;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: var(--font-body);
+}
+
+.filter-btn:hover {
+  color: #E8E8E8;
+  background: rgba(255, 153, 0, 0.1);
+}
+
+.filter-btn.active {
+  background: rgba(255, 153, 0, 0.2);
+  color: var(--rank-amber, #FF8A2B);
+}
+
+/* ============================================
+   STATS SUMMARY CARDS
+   ============================================ */
+
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  background: rgba(255, 153, 0, 0.03);
+  border: 1px solid rgba(255, 153, 0, 0.1);
+  border-radius: 1rem;
+}
+
+.stats-summary.secrets {
+  background: rgba(138, 43, 226, 0.03);
+  border-color: rgba(138, 43, 226, 0.1);
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--rank-amber, #FF8A2B);
+  font-family: var(--font-stats);
+}
+
+.stats-summary.secrets .stat-number {
+  color: #A335EE;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #999;
+  margin-top: 0.25rem;
+  font-family: var(--font-body);
+}
+
+/* ============================================
+   SECTION HEADERS
+   ============================================ */
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  margin-top: 2.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+}
+
+.section-header.secrets {
+  border-bottom-color: rgba(138, 43, 226, 0.1);
+}
+
+.section-header:first-of-type {
+  margin-top: 0;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--rank-text-white, #FFFFFF);
+  margin: 0;
+  font-family: var(--font-headline);
+}
+
+.section-count {
+  font-size: 0.875rem;
+  color: #999;
+  background: rgba(255, 153, 0, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-family: var(--font-body);
+}
+
+.section-count.secrets {
+  background: rgba(138, 43, 226, 0.1);
+}
+
+.section-progress {
+  font-size: 0.875rem;
+  color: #999;
+  background: rgba(255, 153, 0, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-family: var(--font-body);
+}
+
+/* ============================================
+   FLAVOR COINS GRID (Tab 1)
+   ============================================ */
+
+.flavors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 1rem;
+}
+
+.flavor-coin {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 0.5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.flavor-coin:hover {
+  transform: translateY(-4px);
+}
+
+.flavor-coin-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  border: 3px solid;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.flavor-coin-circle.not-started {
+  background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+  border-color: #444;
+  opacity: 0.6;
+}
+
+.flavor-coin-circle.bronze {
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  border-color: #CD7F32;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+}
+
+.flavor-coin-circle.silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  border-color: #C0C0C0;
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+}
+
+.flavor-coin-circle.gold {
+  background: linear-gradient(135deg, #FFD700, #FFC000);
+  border-color: #FFD700;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+
+.flavor-coin-name {
+  font-size: 0.75rem;
+  color: #999;
+  text-align: center;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-body);
+}
+
+/* ============================================
+   MASTERY COINS GRID (Tab 2)
+   ============================================ */
+
+.mastery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.mastery-coin {
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.05) 0%, rgba(255, 153, 0, 0.02) 100%);
+  border: 1px solid rgba(255, 153, 0, 0.2);
+  border-radius: 1rem;
+  padding: 2rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.mastery-coin:hover {
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.1) 0%, rgba(255, 153, 0, 0.05) 100%);
+  border-color: rgba(255, 153, 0, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(255, 153, 0, 0.1);
+}
+
+.mastery-coin.locked {
+  opacity: 0.5;
+  background: linear-gradient(135deg, rgba(50, 50, 50, 0.05) 0%, rgba(30, 30, 30, 0.02) 100%);
+  border-color: rgba(100, 100, 100, 0.2);
+}
+
+.mastery-coin.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.mastery-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+}
+
+.mastery-icon.bronze {
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+}
+
+.mastery-icon.silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+}
+
+.mastery-icon.gold {
+  background: linear-gradient(135deg, #FFD700, #FFC000);
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+}
+
+.mastery-icon.platinum {
+  background: linear-gradient(135deg, #E5E4E2, #BCC6CC);
+  box-shadow: 0 4px 20px rgba(229, 228, 226, 0.4);
+}
+
+.mastery-icon.locked {
+  background: linear-gradient(135deg, #333, #222);
+  box-shadow: none;
+}
+
+.mastery-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--rank-text-white, #FFFFFF);
+  font-family: var(--font-headline);
+}
+
+.mastery-subtitle {
+  font-size: 0.875rem;
+  color: #999;
+  margin-bottom: 1rem;
+  font-family: var(--font-body);
+}
+
+.mastery-progress {
+  font-size: 0.875rem;
+  color: var(--rank-amber, #FF8A2B);
+  font-family: var(--font-body);
+}
+
+.mastery-progress.locked {
+  color: #666;
+}
+
+/* ============================================
+   SECRETS GRID (Tab 3)
+   ============================================ */
+
+.secrets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+.secret-card {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.05) 0%, rgba(75, 0, 130, 0.02) 100%);
+  border: 1px solid rgba(138, 43, 226, 0.2);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+
+.secret-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(138, 43, 226, 0.5), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.secret-card:hover {
+  background: linear-gradient(135deg, rgba(138, 43, 226, 0.1) 0%, rgba(75, 0, 130, 0.05) 100%);
+  border-color: rgba(138, 43, 226, 0.4);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgba(138, 43, 226, 0.2);
+}
+
+.secret-card.locked {
+  background: linear-gradient(135deg, rgba(50, 50, 50, 0.05) 0%, rgba(30, 30, 30, 0.02) 100%);
+  border-color: rgba(100, 100, 100, 0.2);
+  opacity: 0.7;
+}
+
+.secret-card.locked::before {
+  display: none;
+}
+
+.secret-card.locked:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.secret-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.secret-coin {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  border: 3px solid;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.secret-coin.unlocked {
+  background: linear-gradient(135deg, #8A2BE2, #4B0082);
+  border-color: #8A2BE2;
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4),
+              inset 0 0 10px rgba(255, 255, 255, 0.2);
+  animation: mysticalGlow 3s ease-in-out infinite;
+}
+
+.secret-coin.unlocked.legendary {
+  background: linear-gradient(135deg, #FF8000, #FF4500, #FFD700);
+  border-color: #FF8000;
+  box-shadow: 0 0 30px rgba(255, 128, 0, 0.6),
+              inset 0 0 15px rgba(255, 255, 255, 0.3);
+}
+
+.secret-coin.unlocked.epic {
+  background: linear-gradient(135deg, #A335EE, #8A2BE2);
+  border-color: #A335EE;
+  box-shadow: 0 0 25px rgba(163, 53, 238, 0.5),
+              inset 0 0 12px rgba(255, 255, 255, 0.25);
+}
+
+.secret-coin.unlocked.rare {
+  background: linear-gradient(135deg, #0070DD, #0056B3);
+  border-color: #0070DD;
+  box-shadow: 0 0 20px rgba(0, 112, 221, 0.4),
+              inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.secret-coin.unlocked.common {
+  background: linear-gradient(135deg, #999, #666);
+  border-color: #999;
+  box-shadow: 0 0 15px rgba(150, 150, 150, 0.3),
+              inset 0 0 8px rgba(255, 255, 255, 0.15);
+}
+
+.secret-coin.locked {
+  background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+  border-color: #333;
+  opacity: 0.6;
+}
+
+@keyframes mysticalGlow {
+  0%, 100% { 
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: scale(1.05);
+    filter: brightness(1.2);
+  }
+}
+
+.secret-rarity {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.rarity-common {
+  background: rgba(150, 150, 150, 0.2);
+  color: #999;
+}
+
+.rarity-rare {
+  background: rgba(0, 112, 221, 0.2);
+  color: #0070DD;
+}
+
+.rarity-epic {
+  background: rgba(163, 53, 238, 0.2);
+  color: #A335EE;
+}
+
+.rarity-legendary {
+  background: rgba(255, 128, 0, 0.2);
+  color: #FF8000;
+}
+
+.secret-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--rank-text-white, #FFFFFF);
+  font-family: var(--font-headline);
+}
+
+.secret-description {
+  font-size: 0.875rem;
+  color: #999;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+  font-family: var(--font-body);
+}
+
+.secret-card.locked .secret-description {
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.secret-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.875rem;
+}
+
+.secret-status.unlocked {
+  color: #A335EE;
+  font-weight: 500;
+}
+
+.secret-status.locked {
+  color: #666;
+}
+
+.secret-date {
+  color: #666;
+  font-size: 0.75rem;
+}
+
+/* ============================================
+   ACHIEVEMENTS GRID (Tab 4)
+   ============================================ */
+
+.achievements-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.achievement-card {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.achievement-card:hover {
+  background: rgba(255, 153, 0, 0.05);
+  border-color: rgba(255, 153, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.achievement-card.unlocked {
+  background: linear-gradient(135deg, rgba(255, 153, 0, 0.05) 0%, rgba(255, 153, 0, 0.02) 100%);
+  border-color: rgba(255, 153, 0, 0.2);
+}
+
+.achievement-card.locked {
+  opacity: 0.6;
+}
+
+.achievement-header {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+
+.achievement-coin {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+  border: 3px solid;
+  flex-shrink: 0;
+  transition: all 0.3s;
+}
+
+.achievement-coin.unlocked.bronze {
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+  border-color: #CD7F32;
+  box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+}
+
+.achievement-coin.unlocked.silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  border-color: #C0C0C0;
+  box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+}
+
+.achievement-coin.unlocked.gold {
+  background: linear-gradient(135deg, #FFD700, #FFC000);
+  border-color: #FFD700;
+  box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+  animation: goldShine 3s ease-in-out infinite;
+}
+
+.achievement-coin.locked {
+  background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+  border-color: #333;
+  opacity: 0.6;
+}
+
+@keyframes goldShine {
+  0%, 100% { 
+    transform: rotate(0deg) scale(1);
+    filter: brightness(1);
+  }
+  50% { 
+    transform: rotate(5deg) scale(1.05);
+    filter: brightness(1.2);
+  }
+}
+
+.achievement-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.achievement-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: var(--rank-text-white, #FFFFFF);
+  font-family: var(--font-headline);
+}
+
+.achievement-description {
+  font-size: 0.875rem;
+  color: #999;
+  line-height: 1.4;
+  font-family: var(--font-body);
+}
+
+.achievement-progress-bar {
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.achievement-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rank-amber, #FF8A2B), var(--rank-gold, #FFD873));
+  transition: width 0.5s ease;
+}
+
+.achievement-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
+}
+
+.achievement-xp {
+  color: var(--rank-amber, #FF8A2B);
+  font-weight: 600;
+}
+
+.achievement-completion {
+  color: #666;
+}
+
+.tier-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: white;
+}
+
+.tier-badge.tier-bronze {
+  background: linear-gradient(135deg, #CD7F32, #B87333);
+}
+
+.tier-badge.tier-silver {
+  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+}
+
+.tier-badge.tier-gold {
+  background: linear-gradient(135deg, #FFD700, #FFC000);
+}
+
+/* ============================================
+   STATUS LEGEND
+   ============================================ */
+
+.status-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+
+.legend-dot.not-started {
+  background: #2A2A2A;
+  border-color: #444;
+}
+
+.legend-dot.ranked {
+  background: var(--rank-amber, #FF8A2B);
+  border-color: var(--rank-amber, #FF8A2B);
+}
+
+.legend-dot.rated {
+  background: #C0C0C0;
+  border-color: #C0C0C0;
+}
+
+.legend-dot.reviewed {
+  background: #FFD700;
+  border-color: #FFD700;
+}
+
+/* ============================================
+   COMPLETION BAR
+   ============================================ */
+
+.completion-bar-container {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.75rem;
+}
+
+.completion-bar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.completion-label {
+  font-size: 1rem;
+  color: var(--rank-text-white, #FFFFFF);
+  font-weight: 500;
+}
+
+.completion-percentage {
+  font-size: 0.875rem;
+  color: #999;
+}
+
+.completion-bar {
+  height: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.completion-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--rank-amber, #FF8A2B), var(--rank-gold, #FFD873));
+  transition: width 0.5s ease;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.coinbook-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  color: #999;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 153, 0, 0.2);
+  border-top-color: var(--rank-amber, #FF8A2B);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: #666;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 1.125rem;
+  color: #999;
+}
+
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 768px) {
+  .coinbook-v2 {
+    padding: 0 1rem 3rem;
+  }
+  
+  .coinbook-tab-content {
+    padding: 1.5rem;
+  }
+  
+  .coinbook-tabs {
+    flex-wrap: wrap;
+  }
+  
+  .coinbook-tab {
+    flex: 1 1 50%;
+    padding: 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .chapter-header h2 {
+    font-size: 1.5rem;
+  }
+  
+  .chapter-header p {
+    font-size: 1rem;
+  }
+  
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+  }
+  
+  .filter-bar {
+    flex-wrap: wrap;
+  }
+  
+  .filter-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.8rem;
+  }
+  
+  .section-header {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .section-title {
+    font-size: 1.25rem;
+  }
+  
+  .flavors-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .mastery-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 1rem;
+  }
+  
+  .mastery-coin {
+    padding: 1.5rem 1rem;
+  }
+  
+  .mastery-icon {
+    width: 60px;
+    height: 60px;
+    font-size: 2rem;
+  }
+  
+  .secrets-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .achievements-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .status-legend {
+    gap: 1rem;
+  }
+}
