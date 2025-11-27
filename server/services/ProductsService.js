@@ -24,17 +24,25 @@ class ProductsService {
     
     // Repository for metadata operations
     this.metadataRepo = new ProductsMetadataRepository(db);
+    
+    // Guard flag: prevents infinite refresh loop for missing metadata dates
+    // Only triggers ONE force refresh per server lifecycle
+    this._hasRefreshedForMissingDates = false;
   }
   
   /**
    * Get all products with complete data (Shopify + metadata + rankings)
    * This is the single source of truth for product data
+   * 
+   * Includes conditional cache invalidation: If products came from cache but
+   * metadata is missing shopifyCreatedAt dates, triggers ONE force refresh
+   * per server lifecycle to populate those dates.
    */
   async getAllProducts(options = {}) {
     const { query = '', includeMetadata = true, includeRankingStats = true } = options;
     
     // 1. Fetch Shopify products (returns { products, fromCache })
-    const { products, fromCache } = await this.fetchShopifyProducts();
+    let { products, fromCache } = await this.fetchShopifyProducts();
     
     // 2. Sync metadata if products are fresh (not from cache)
     if (!fromCache && products.length > 0 && includeMetadata) {
@@ -44,6 +52,9 @@ class ProductsService {
         
         // Invalidate metadata cache to force refresh
         await this.metadataCache.invalidate();
+        
+        // Mark that we've refreshed, so we don't trigger again
+        this._hasRefreshedForMissingDates = true;
       } catch (error) {
         console.error('Error syncing metadata:', error);
         // Continue without metadata - non-critical
@@ -56,10 +67,50 @@ class ProductsService {
       rankingStats = await this._getRankingStats();
     }
     
-    // 4. Get metadata (with 30-min cache)
+    // 4. Get metadata (check completeness if we might need to force refresh)
     let metadataMap = {};
     if (includeMetadata) {
-      metadataMap = await this._getMetadata();
+      // Check for missing dates if: (a) products came from cache, (b) we haven't already refreshed
+      const shouldCheckCompleteness = fromCache && !this._hasRefreshedForMissingDates;
+      
+      if (shouldCheckCompleteness) {
+        const result = await this._getMetadata({ checkCompleteness: true });
+        
+        // If missing dates detected, force a Shopify refresh (ONE TIME ONLY)
+        if (result.hasMissingDates && result.missingCount > 0) {
+          console.log(`🔄 Detected ${result.missingCount} products missing shopifyCreatedAt - forcing Shopify refresh`);
+          
+          // Set guard flag BEFORE refresh to prevent infinite loop
+          this._hasRefreshedForMissingDates = true;
+          
+          // Force refresh from Shopify
+          const refreshResult = await this.fetchShopifyProducts({ forceRefresh: true });
+          products = refreshResult.products;
+          fromCache = refreshResult.fromCache;
+          
+          // Sync metadata with fresh products
+          if (products.length > 0) {
+            try {
+              await this.fetchProductsMetadata(products);
+              console.log(`🏷️ Synced metadata for ${products.length} products after force refresh`);
+              
+              // Invalidate metadata cache to pick up new dates
+              await this.metadataCache.invalidate();
+            } catch (error) {
+              console.error('Error syncing metadata after force refresh:', error);
+            }
+          }
+          
+          // Re-fetch metadata after sync
+          metadataMap = await this._getMetadata();
+        } else {
+          // No missing dates, use the cached metadata
+          metadataMap = result.metadataMap;
+        }
+      } else {
+        // Normal path: just get metadata without completeness check
+        metadataMap = await this._getMetadata();
+      }
     }
     
     // 5. Transform products with all data merged FIRST (so we can search on metadata)
@@ -197,11 +248,21 @@ class ProductsService {
   /**
    * Get metadata for all products
    * Uses 30-minute cache for performance
+   * @param {Object} options - Options for metadata retrieval
+   * @param {boolean} options.checkCompleteness - If true, returns { metadataMap, hasMissingDates } 
+   * @returns {Object|{metadataMap: Object, hasMissingDates: boolean}} Metadata map or object with completeness info
    */
-  async _getMetadata() {
+  async _getMetadata(options = {}) {
+    const { checkCompleteness = false } = options;
+    
     // Check cache first
     const cached = await this.metadataCache.get();
     if (cached) {
+      if (checkCompleteness) {
+        // Count products with missing shopifyCreatedAt
+        const missingCount = Object.values(cached).filter(m => !m.shopifyCreatedAt).length;
+        return { metadataMap: cached, hasMissingDates: missingCount > 0, missingCount };
+      }
       return cached;
     }
     
@@ -210,7 +271,12 @@ class ProductsService {
       const allMetadata = await this.metadataRepo.getAllMetadata();
       
       const metadataMap = {};
+      let missingCount = 0;
+      
       allMetadata.forEach(meta => {
+        const hasDate = !!meta.shopifyCreatedAt;
+        if (!hasDate) missingCount++;
+        
         metadataMap[meta.shopifyProductId] = {
           animalType: meta.animalType,
           animalDisplay: meta.animalDisplay,
@@ -227,9 +293,15 @@ class ProductsService {
       // Store in cache
       await this.metadataCache.set(metadataMap);
       
+      if (checkCompleteness) {
+        return { metadataMap, hasMissingDates: missingCount > 0, missingCount };
+      }
       return metadataMap;
     } catch (error) {
       console.error('Error fetching metadata:', error);
+      if (checkCompleteness) {
+        return { metadataMap: {}, hasMissingDates: false, missingCount: 0 };
+      }
       return {};
     }
   }

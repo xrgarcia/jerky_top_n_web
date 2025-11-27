@@ -1282,7 +1282,7 @@ async function fetchProductsFromShopify() {
   while (true) {
     const searchParams = new URLSearchParams({
       limit: limit,
-      fields: 'id,title,handle,images,variants,vendor,product_type,tags'
+      fields: 'id,title,handle,images,variants,vendor,product_type,tags,created_at'
     });
     
     // Add cursor for pagination (if we have one from previous page)
@@ -1345,12 +1345,21 @@ async function fetchProductsFromShopify() {
 }
 
 // Main function to get products (checks cache first, then fetches if needed)
-async function fetchAllShopifyProducts() {
-  // Check if cache is valid and return cached data
-  if (isCacheValid()) {
+// Options:
+//   forceRefresh: boolean - Bypass cache and fetch fresh data from Shopify
+async function fetchAllShopifyProducts(options = {}) {
+  const { forceRefresh = false } = options;
+  
+  // Check if cache is valid and return cached data (unless forceRefresh is true)
+  if (!forceRefresh && isCacheValid()) {
     const cacheAge = getCacheAgeMinutes();
     console.log(`💾 Cache HIT: Returning ${productCache.data.length} products from cache (age: ${cacheAge} minutes)`);
     return { products: productCache.data, fromCache: true };
+  }
+  
+  // Log why we're bypassing cache
+  if (forceRefresh) {
+    console.log(`🔄 Force refresh requested - bypassing cache`);
   }
   
   // Cache miss or expired - need to fetch fresh data
