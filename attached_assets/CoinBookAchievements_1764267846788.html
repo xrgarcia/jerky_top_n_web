@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coin Book - Achievements | RANK.</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A0A0A;
+            color: #E8E8E8;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Global Header */
+        .global-header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: #FF9900;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 153, 0, 0.1);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-xp {
+            font-size: 0.75rem;
+            color: #FF9900;
+        }
+
+        /* Book Cover Section */
+        .coinbook-cover {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 153, 0, 0.03) 0%, transparent 100%);
+        }
+
+        .coinbook-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .coinbook-subtitle {
+            font-size: 1.25rem;
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        .coinbook-divider {
+            max-width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF9900, transparent);
+            margin: 0 auto;
+        }
+
+        /* Book Shell */
+        .coinbook-shell {
+            max-width: 1400px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #1A1A1A 0%, #151515 100%);
+            border: 1px solid rgba(255, 153, 0, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Chapter Tabs */
+        .coinbook-tabs {
+            display: flex;
+            background: rgba(10, 10, 10, 0.5);
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+        }
+
+        .coinbook-tab {
+            flex: 1;
+            padding: 1.25rem;
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .coinbook-tab:hover {
+            color: #999;
+            background: rgba(255, 153, 0, 0.05);
+        }
+
+        .coinbook-tab.active {
+            color: #FF9900;
+            background: rgba(255, 153, 0, 0.1);
+        }
+
+        .coinbook-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FF9900, transparent);
+        }
+
+        /* Content Area */
+        .coinbook-content {
+            padding: 3rem;
+        }
+
+        .chapter-header {
+            margin-bottom: 3rem;
+        }
+
+        .chapter-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-header p {
+            color: #999;
+            font-size: 1.125rem;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 153, 0, 0.05);
+            border: 1px solid rgba(255, 153, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            color: #E8E8E8;
+            background: rgba(255, 153, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            background: rgba(255, 153, 0, 0.2);
+            color: #FF9900;
+        }
+
+        /* Achievement Summary */
+        .achievement-summary {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 153, 0, 0.03);
+            border: 1px solid rgba(255, 153, 0, 0.1);
+            border-radius: 1rem;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF9900;
+        }
+
+        .summary-label {
+            font-size: 0.875rem;
+            color: #999;
+            margin-top: 0.25rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            margin-top: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-progress {
+            font-size: 0.875rem;
+            color: #999;
+            background: rgba(255, 153, 0, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+        }
+
+        /* Achievements Grid */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .achievement-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .achievement-card:hover {
+            background: rgba(255, 153, 0, 0.05);
+            border-color: rgba(255, 153, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .achievement-card.unlocked {
+            background: linear-gradient(135deg, rgba(255, 153, 0, 0.05) 0%, rgba(255, 153, 0, 0.02) 100%);
+            border-color: rgba(255, 153, 0, 0.2);
+        }
+
+        .achievement-card.locked {
+            opacity: 0.6;
+        }
+
+        .achievement-header {
+            display: flex;
+            gap: 1rem;
+            align-items: start;
+            margin-bottom: 1rem;
+        }
+
+        .achievement-coin {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            position: relative;
+            border: 3px solid;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .achievement-coin.unlocked.bronze {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+            border-color: #CD7F32;
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+        }
+
+        .achievement-coin.unlocked.silver {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+            border-color: #C0C0C0;
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .achievement-coin.unlocked.gold {
+            background: linear-gradient(135deg, #FFD700, #FFC000);
+            border-color: #FFD700;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+            animation: goldShine 3s ease-in-out infinite;
+        }
+
+        .achievement-coin.locked {
+            background: linear-gradient(135deg, #2A2A2A, #1A1A1A);
+            border-color: #333;
+            opacity: 0.6;
+        }
+
+        .achievement-coin-symbol {
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .achievement-coin.locked .achievement-coin-symbol {
+            color: #555;
+            text-shadow: none;
+        }
+
+        @keyframes goldShine {
+            0%, 100% { 
+                transform: rotate(0deg) scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                transform: rotate(5deg) scale(1.05);
+                filter: brightness(1.2);
+            }
+        }
+
+        .achievement-info {
+            flex: 1;
+        }
+
+        .achievement-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .achievement-description {
+            font-size: 0.875rem;
+            color: #999;
+            line-height: 1.4;
+        }
+
+        .achievement-progress-bar {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .achievement-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #FF9900, #FFB347);
+            transition: width 0.5s ease;
+        }
+
+        .achievement-stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+        }
+
+        .achievement-xp {
+            color: #FF9900;
+            font-weight: 600;
+        }
+
+        .achievement-completion {
+            color: #666;
+        }
+
+        /* Tier Badges */
+        .tier-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .tier-bronze {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+            color: white;
+        }
+
+        .tier-silver {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+            color: white;
+        }
+
+        .tier-gold {
+            background: linear-gradient(135deg, #FFD700, #FFC000);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header -->
+    <header class="global-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="/" class="logo">RANK.</a>
+                <nav class="main-nav">
+                    <a href="/rank">Rank Flavors</a>
+                    <a href="/flavor-index">Flavor Index</a>
+                    <a href="/coinbook" class="active">Coin Book</a>
+                    <a href="/leaderboard">Leaderboard</a>
+                    <a href="/profile">Profile</a>
+                </nav>
+            </div>
+            <div class="user-pill">
+                <div class="user-info">
+                    <span class="user-name">JerkyMaster42</span>
+                    <span class="user-xp">12,450 XP</span>
+                </div>
+                <div class="user-avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Book Cover -->
+    <section class="coinbook-cover">
+        <h1 class="coinbook-title">The Coin Book</h1>
+        <p class="coinbook-subtitle">Your complete flavor collection.</p>
+        <div class="coinbook-divider"></div>
+    </section>
+
+    <!-- Book Shell -->
+    <div class="coinbook-shell">
+        <!-- Chapter Tabs -->
+        <nav class="coinbook-tabs">
+            <a class="coinbook-tab" href="rank-coinbook-flavors-updated.html">Flavors</a>
+            <a class="coinbook-tab" href="rank-mastery.html">Mastery</a>
+            <a class="coinbook-tab" href="rank-secrets.html">Secrets</a>
+            <a class="coinbook-tab active" href="rank-achievements.html">Achievements</a>
+        </nav>
+
+        <!-- Content -->
+        <div class="coinbook-content">
+            <!-- Chapter Header -->
+            <header class="chapter-header">
+                <h2>Achievements</h2>
+                <p>Milestones earned through ranking, rating, reviewing, and community actions.</p>
+            </header>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Unlocked</button>
+                <button class="filter-btn">Locked</button>
+                <button class="filter-btn">Ranking</button>
+                <button class="filter-btn">Rating</button>
+                <button class="filter-btn">Reviewing</button>
+                <button class="filter-btn">XP Milestones</button>
+                <button class="filter-btn">Streaks</button>
+                <button class="filter-btn">Community</button>
+            </div>
+
+            <!-- Achievement Summary -->
+            <div class="achievement-summary">
+                <div class="summary-item">
+                    <div class="summary-number">24</div>
+                    <div class="summary-label">Unlocked</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">76</div>
+                    <div class="summary-label">Locked</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">24%</div>
+                    <div class="summary-label">Completion</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">8,400</div>
+                    <div class="summary-label">Total XP</div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-number">15</div>
+                    <div class="summary-label">Day Streak</div>
+                </div>
+            </div>
+
+            <!-- Ranking Achievements -->
+            <div class="section-header">
+                <h3 class="section-title">Ranking Achievements</h3>
+                <span class="section-progress">8/20 unlocked</span>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-bronze">1</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked bronze">
+                            <span class="achievement-coin-symbol">🏃</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">First Steps</h4>
+                            <p class="achievement-description">Rank your first 5 flavors</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+100 XP</span>
+                        <span class="achievement-completion">5/5 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-silver">2</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked silver">
+                            <span class="achievement-coin-symbol">⚡</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Speed Ranker</h4>
+                            <p class="achievement-description">Rank 25 flavors in under 5 minutes</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+250 XP</span>
+                        <span class="achievement-completion">25/25 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-gold">3</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked gold">
+                            <span class="achievement-coin-symbol">🌟</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Ranking Master</h4>
+                            <p class="achievement-description">Rank 100 flavors total</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+500 XP</span>
+                        <span class="achievement-completion">100/100 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Ranking Legend</h4>
+                            <p class="achievement-description">Rank all 270 flavors</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 47%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+1000 XP</span>
+                        <span class="achievement-completion">127/270 Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rating Achievements -->
+            <div class="section-header">
+                <h3 class="section-title">Rating Achievements</h3>
+                <span class="section-progress">6/15 unlocked</span>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-bronze">1</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked bronze">
+                            <span class="achievement-coin-symbol">⭐</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Star Gazer</h4>
+                            <p class="achievement-description">Rate your first 10 flavors</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+150 XP</span>
+                        <span class="achievement-completion">10/10 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-silver">2</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked silver">
+                            <span class="achievement-coin-symbol">📊</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Flavor Analyst</h4>
+                            <p class="achievement-description">Rate 50 flavors with detailed scores</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+300 XP</span>
+                        <span class="achievement-completion">50/50 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Perfect Palate</h4>
+                            <p class="achievement-description">Give 10 perfect 5-star ratings</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 30%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+200 XP</span>
+                        <span class="achievement-completion">3/10 Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Achievements -->
+            <div class="section-header">
+                <h3 class="section-title">Review Achievements</h3>
+                <span class="section-progress">4/12 unlocked</span>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-bronze">1</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked bronze">
+                            <span class="achievement-coin-symbol">✍️</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">First Review</h4>
+                            <p class="achievement-description">Write your first flavor review</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+100 XP</span>
+                        <span class="achievement-completion">1/1 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-gold">3</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked gold">
+                            <span class="achievement-coin-symbol">📖</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Jerky Journalist</h4>
+                            <p class="achievement-description">Write 25 detailed reviews</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+500 XP</span>
+                        <span class="achievement-completion">25/25 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Epic Reviewer</h4>
+                            <p class="achievement-description">Write a review over 1000 characters</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 0%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+300 XP</span>
+                        <span class="achievement-completion">0/1 Locked</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Streak Achievements -->
+            <div class="section-header">
+                <h3 class="section-title">Streak Achievements</h3>
+                <span class="section-progress">3/10 unlocked</span>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-bronze">1</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked bronze">
+                            <span class="achievement-coin-symbol">🔥</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Getting Warm</h4>
+                            <p class="achievement-description">Maintain a 7-day streak</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+200 XP</span>
+                        <span class="achievement-completion">7/7 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-silver">2</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked silver">
+                            <span class="achievement-coin-symbol">🔥</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">On Fire</h4>
+                            <p class="achievement-description">Maintain a 14-day streak</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+400 XP</span>
+                        <span class="achievement-completion">14/14 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Unstoppable</h4>
+                            <p class="achievement-description">Maintain a 30-day streak</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 50%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+800 XP</span>
+                        <span class="achievement-completion">15/30 Progress</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Community Achievements -->
+            <div class="section-header">
+                <h3 class="section-title">Community Achievements</h3>
+                <span class="section-progress">3/15 unlocked</span>
+            </div>
+            <div class="achievements-grid">
+                <div class="achievement-card unlocked">
+                    <div class="tier-badge tier-bronze">1</div>
+                    <div class="achievement-header">
+                        <div class="achievement-coin unlocked bronze">
+                            <span class="achievement-coin-symbol">👥</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Team Player</h4>
+                            <p class="achievement-description">Share your first flavor list</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 100%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+150 XP</span>
+                        <span class="achievement-completion">1/1 Complete</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Trendsetter</h4>
+                            <p class="achievement-description">Have 50 users follow your rankings</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 24%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+500 XP</span>
+                        <span class="achievement-completion">12/50 Progress</span>
+                    </div>
+                </div>
+                <div class="achievement-card locked">
+                    <div class="achievement-header">
+                        <div class="achievement-coin locked">
+                            <span class="achievement-coin-symbol">🔒</span>
+                        </div>
+                        <div class="achievement-info">
+                            <h4 class="achievement-title">Influencer</h4>
+                            <p class="achievement-description">Get 100 likes on your reviews</p>
+                        </div>
+                    </div>
+                    <div class="achievement-progress-bar">
+                        <div class="achievement-progress-fill" style="width: 35%"></div>
+                    </div>
+                    <div class="achievement-stats">
+                        <span class="achievement-xp">+750 XP</span>
+                        <span class="achievement-completion">35/100 Progress</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Containers -->
+    <div id="modal-rank"></div>
+    <div id="modal-rate"></div>
+    <div id="modal-review"></div>
+    <div id="modal-summary"></div>
+</body>
+</html>
