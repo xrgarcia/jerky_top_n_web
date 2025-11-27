@@ -168,7 +168,6 @@ function ProductDetailPage() {
                   ) : product.vendor && (
                     <span>{product.vendor}</span>
                   )}
-                  {product.animalType && <span> • {product.animalType}</span>}
                 </div>
               </div>
             </div>
