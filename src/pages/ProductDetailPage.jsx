@@ -96,16 +96,18 @@ function ProductDetailPage() {
         <div className="hero-row">
           <div className="card flavor-identity-card">
             <div className="flavor-content">
-              <div className="flavor-icon-large">
-                <div className="flavor-icon-inner">{coinIcon}</div>
-              </div>
-              <div className="flavor-info">
-                <h1 className="flavor-name">{product.title}</h1>
+              <div className="flavor-avatar-column">
+                <div className="flavor-icon-large">
+                  <div className="flavor-icon-inner">{coinIcon}</div>
+                </div>
                 {communityRank && (
                   <div className="rank-badge">
                     #{communityRank} Community Ranked • Top {Math.min(communityRank, 5)} of {totalFlavors} Flavors
                   </div>
                 )}
+              </div>
+              <div className="flavor-info">
+                <h1 className="flavor-name">{product.title}</h1>
                 <div className="category-tag">
                   {categoryTag.icon} {categoryTag.label}
                 </div>
