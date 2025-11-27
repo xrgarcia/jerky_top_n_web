@@ -161,11 +161,15 @@ export default function SecretsTab({ coins, progress }) {
                   >
                     <div className="secret-header">
                       <div className={`secret-coin ${isLocked ? 'locked' : `unlocked ${rarity}`}`}>
-                        {isLocked ? '🔒' : renderAchievementIcon(coin, 28)}
+                        <span className="secret-coin-symbol">
+                          {isLocked ? '?' : renderAchievementIcon(coin, 28)}
+                        </span>
                       </div>
-                      <span className={`secret-rarity ${rarityInfo.class}`}>
-                        {rarityInfo.label}
-                      </span>
+                      {!isLocked && (
+                        <span className={`secret-rarity ${rarityInfo.class}`}>
+                          {rarityInfo.label}
+                        </span>
+                      )}
                     </div>
                     <h4 className="secret-title">
                       {isLocked ? '???' : coin.name}
@@ -176,14 +180,14 @@ export default function SecretsTab({ coins, progress }) {
                         : coin.description
                       }
                     </p>
-                    <div className="secret-footer">
-                      <span className={`secret-status ${isLocked ? 'locked' : 'unlocked'}`}>
-                        {isLocked ? 'Locked' : '✓ Unlocked'}
-                      </span>
-                      {coin.earnedAt && (
-                        <span className="secret-date">{formatDate(coin.earnedAt)}</span>
-                      )}
-                    </div>
+                    {!isLocked && (
+                      <div className="secret-footer">
+                        <span className="secret-status unlocked">Unlocked</span>
+                        {coin.earnedAt && (
+                          <span className="secret-date">{formatDate(coin.earnedAt)}</span>
+                        )}
+                      </div>
+                    )}
                   </div>
                 );
               })}
