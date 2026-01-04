@@ -1,30 +1,126 @@
-// Reference: javascript_object_storage integration
-// Simplified object storage service for achievement icons
+// Object Storage Service - Platform-agnostic implementation
+// Supports: Google Cloud Storage (Railway/production) and Replit Object Storage (development)
 const { Storage } = require('@google-cloud/storage');
-const { Client } = require('@replit/object-storage');
 const crypto = require('crypto');
 const Sentry = require('@sentry/node');
 const fs = require('fs').promises;
 const path = require('path');
 
-const REPLIT_SIDECAR_ENDPOINT = 'http://127.0.0.1:1106';
-
 // Default coin icon configuration
 const DEFAULT_COIN_ICON_PATH = '/objects/achievement-icons/default-beta-coin.png';
 const DEFAULT_COIN_ICON_SOURCE = 'attached_assets/beta_coin_default_1763580646326.png';
 
-// Lazy initialization for Replit Object Storage client
-// This prevents cold-start fetch failures during module load
-let replitStorageClientInstance = null;
+// Storage provider detection
+const STORAGE_PROVIDER = process.env.STORAGE_PROVIDER || 'auto';
+
+// Lazy initialization for storage clients
+let gcsClientInstance = null;
+let replitClientInstance = null;
 let initializationPromise = null;
 
 /**
+ * Detect which storage provider to use
+ * Priority: explicit STORAGE_PROVIDER > GCS credentials > Replit environment
+ */
+function detectStorageProvider() {
+  if (STORAGE_PROVIDER === 'gcs' || STORAGE_PROVIDER === 'google') {
+    return 'gcs';
+  }
+  if (STORAGE_PROVIDER === 'replit') {
+    return 'replit';
+  }
+  
+  // Auto-detect: Check for GCS credentials first (Railway/production)
+  if (process.env.GCS_SERVICE_ACCOUNT || process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    return 'gcs';
+  }
+  
+  // Fall back to Replit if in Replit environment
+  if (process.env.REPL_ID || process.env.REPLIT) {
+    return 'replit';
+  }
+  
+  // Default to GCS for production environments
+  if (process.env.NODE_ENV === 'production') {
+    return 'gcs';
+  }
+  
+  // Default to Replit for development
+  return 'replit';
+}
+
+/**
+ * Initialize Google Cloud Storage client
+ */
+async function initializeGCSClient() {
+  try {
+    console.log('🔌 Initializing Google Cloud Storage client...');
+    
+    const bucketName = process.env.GCS_BUCKET_NAME;
+    if (!bucketName) {
+      throw new Error('GCS_BUCKET_NAME environment variable is required for Google Cloud Storage');
+    }
+    
+    let storage;
+    
+    // Check for service account JSON in environment variable
+    if (process.env.GCS_SERVICE_ACCOUNT) {
+      try {
+        const credentials = JSON.parse(process.env.GCS_SERVICE_ACCOUNT);
+        storage = new Storage({
+          credentials,
+          projectId: credentials.project_id
+        });
+        console.log(`✅ GCS initialized with service account for project: ${credentials.project_id}`);
+      } catch (parseError) {
+        throw new Error(`Failed to parse GCS_SERVICE_ACCOUNT JSON: ${parseError.message}`);
+      }
+    } 
+    // Fall back to GOOGLE_APPLICATION_CREDENTIALS file path
+    else if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+      storage = new Storage();
+      console.log('✅ GCS initialized with GOOGLE_APPLICATION_CREDENTIALS file');
+    }
+    // No credentials found
+    else {
+      throw new Error('No GCS credentials found. Set GCS_SERVICE_ACCOUNT (JSON) or GOOGLE_APPLICATION_CREDENTIALS (file path)');
+    }
+    
+    const bucket = storage.bucket(bucketName);
+    
+    // Test bucket access
+    const [exists] = await bucket.exists();
+    if (!exists) {
+      throw new Error(`Bucket "${bucketName}" does not exist or is not accessible`);
+    }
+    
+    console.log(`✅ GCS bucket "${bucketName}" verified`);
+    
+    return { storage, bucket, bucketName };
+  } catch (error) {
+    console.error('❌ Failed to initialize Google Cloud Storage:', error.message);
+    Sentry.captureException(error, {
+      level: 'error',
+      tags: { service: 'object_storage', provider: 'gcs' }
+    });
+    throw error;
+  }
+}
+
+/**
  * Initialize Replit Object Storage client with retry logic
- * Handles transient network failures during cold starts
  */
 async function initializeReplitStorageClient() {
   const maxRetries = 3;
-  const retryDelays = [500, 1000, 2000]; // Exponential backoff
+  const retryDelays = [500, 1000, 2000];
+  
+  // Lazy require to avoid loading in production
+  let Client;
+  try {
+    Client = require('@replit/object-storage').Client;
+  } catch (error) {
+    throw new Error('Replit Object Storage package not available. Install @replit/object-storage or use GCS.');
+  }
   
   for (let attempt = 0; attempt < maxRetries; attempt++) {
     try {
@@ -36,45 +132,14 @@ async function initializeReplitStorageClient() {
       const isLastAttempt = attempt === maxRetries - 1;
       
       if (isLastAttempt) {
-        // Final attempt failed - log as error
         console.error('❌ Failed to initialize Replit Object Storage client after all retries');
-        console.error(`   Error: ${error.message}`);
-        
         Sentry.captureException(error, {
           level: 'error',
-          tags: {
-            service: 'object_storage',
-            operation: 'client_initialization'
-          },
-          extra: {
-            errorMessage: error.message,
-            attempts: maxRetries,
-            context: 'Critical failure - object storage unavailable'
-          }
+          tags: { service: 'object_storage', provider: 'replit' }
         });
-        
-        throw new Error(`Object Storage initialization failed after ${maxRetries} attempts: ${error.message}`);
+        throw new Error(`Replit Object Storage initialization failed: ${error.message}`);
       } else {
-        // Retry attempt - log as warning
-        console.warn(`⚠️ Object Storage client initialization failed (attempt ${attempt + 1}/${maxRetries})`);
-        console.warn(`   Error: ${error.message}`);
-        console.warn(`   Retrying in ${retryDelays[attempt]}ms...`);
-        
-        Sentry.captureException(error, {
-          level: 'warning',
-          tags: {
-            service: 'object_storage',
-            operation: 'client_initialization_retry'
-          },
-          extra: {
-            errorMessage: error.message,
-            attempt: attempt + 1,
-            maxRetries,
-            nextRetryDelayMs: retryDelays[attempt]
-          }
-        });
-        
-        // Wait before retrying
+        console.warn(`⚠️ Replit client init failed (attempt ${attempt + 1}/${maxRetries}), retrying in ${retryDelays[attempt]}ms...`);
         await new Promise(resolve => setTimeout(resolve, retryDelays[attempt]));
       }
     }
@@ -82,50 +147,30 @@ async function initializeReplitStorageClient() {
 }
 
 /**
- * Get initialized Replit Object Storage client
- * Uses lazy initialization with caching and retry logic
+ * Get initialized storage client based on detected provider
  */
-async function getReplitStorageClient() {
-  // Return cached instance if available
-  if (replitStorageClientInstance) {
-    return replitStorageClientInstance;
-  }
+async function getStorageClient() {
+  const provider = detectStorageProvider();
   
-  // If initialization is already in progress, wait for it
-  if (initializationPromise) {
-    return initializationPromise;
-  }
-  
-  // Start new initialization
-  initializationPromise = initializeReplitStorageClient();
-  
-  try {
-    replitStorageClientInstance = await initializationPromise;
-    return replitStorageClientInstance;
-  } finally {
-    // Clear the promise so future calls can retry if this failed
-    initializationPromise = null;
+  if (provider === 'gcs') {
+    if (!gcsClientInstance) {
+      gcsClientInstance = await initializeGCSClient();
+    }
+    return { provider: 'gcs', client: gcsClientInstance };
+  } else {
+    if (!replitClientInstance) {
+      if (!initializationPromise) {
+        initializationPromise = initializeReplitStorageClient();
+      }
+      try {
+        replitClientInstance = await initializationPromise;
+      } finally {
+        initializationPromise = null;
+      }
+    }
+    return { provider: 'replit', client: replitClientInstance };
   }
 }
-
-// Google Cloud Storage client (for serving/downloads)
-const objectStorageClient = new Storage({
-  credentials: {
-    audience: 'replit',
-    subject_token_type: 'access_token',
-    token_url: `${REPLIT_SIDECAR_ENDPOINT}/token`,
-    type: 'external_account',
-    credential_source: {
-      url: `${REPLIT_SIDECAR_ENDPOINT}/credential`,
-      format: {
-        type: 'json',
-        subject_token_field_name: 'access_token',
-      },
-    },
-    universe_domain: 'googleapis.com',
-  },
-  projectId: '',
-});
 
 class ObjectNotFoundError extends Error {
   constructor() {
@@ -135,7 +180,17 @@ class ObjectNotFoundError extends Error {
 }
 
 class ObjectStorageService {
-  constructor() {}
+  constructor() {
+    this.provider = null;
+  }
+
+  async getProvider() {
+    if (!this.provider) {
+      const { provider } = await getStorageClient();
+      this.provider = provider;
+    }
+    return this.provider;
+  }
 
   getPrivateObjectDir() {
     const dir = process.env.PRIVATE_OBJECT_DIR || '';
@@ -149,42 +204,54 @@ class ObjectStorageService {
   }
 
   async uploadIconFromBuffer(buffer, filename) {
-    // Generate unique filename with extension preserved
     const objectId = crypto.randomUUID();
     const ext = filename.split('.').pop();
     const objectPath = `achievement-icons/${objectId}.${ext}`;
 
-    // Get initialized client with retry logic
-    const client = await getReplitStorageClient();
-    
-    // Upload using official Replit client
-    const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
+    const { provider, client } = await getStorageClient();
 
-    if (!ok) {
-      throw new Error(`Failed to upload icon: ${error}`);
+    if (provider === 'gcs') {
+      const file = client.bucket.file(objectPath);
+      await file.save(buffer, {
+        metadata: {
+          contentType: this._getMimeType(ext)
+        },
+        public: true
+      });
+      console.log(`✅ Uploaded icon to GCS: ${objectPath}`);
+    } else {
+      const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
+      if (!ok) {
+        throw new Error(`Failed to upload icon: ${error}`);
+      }
     }
 
-    // Return normalized path for database storage
     return `/objects/${objectPath}`;
   }
 
   async uploadProfileImageFromBuffer(buffer, filename) {
-    // Generate unique filename with extension preserved
     const objectId = crypto.randomUUID();
     const ext = filename.split('.').pop();
     const objectPath = `profile-images/${objectId}.${ext}`;
 
-    // Get initialized client with retry logic
-    const client = await getReplitStorageClient();
-    
-    // Upload using official Replit client
-    const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
+    const { provider, client } = await getStorageClient();
 
-    if (!ok) {
-      throw new Error(`Failed to upload profile image: ${error}`);
+    if (provider === 'gcs') {
+      const file = client.bucket.file(objectPath);
+      await file.save(buffer, {
+        metadata: {
+          contentType: this._getMimeType(ext)
+        },
+        public: true
+      });
+      console.log(`✅ Uploaded profile image to GCS: ${objectPath}`);
+    } else {
+      const { ok, error } = await client.uploadFromBytes(objectPath, buffer);
+      if (!ok) {
+        throw new Error(`Failed to upload profile image: ${error}`);
+      }
     }
 
-    // Return normalized path for database storage
     return `/objects/${objectPath}`;
   }
 
@@ -192,56 +259,56 @@ class ObjectStorageService {
     try {
       console.log('🪙 Bootstrapping default coin icon...');
       
-      // Get initialized client with retry logic
-      const client = await getReplitStorageClient();
-      
-      // Extract object path from normalized path
+      const { provider, client } = await getStorageClient();
       const objectPath = DEFAULT_COIN_ICON_PATH.slice('/objects/'.length);
       
-      // Check if default icon already exists
+      // Check if already exists
       try {
-        const { ok, value: files } = await client.list({ prefix: objectPath });
-        if (ok && files && files.length > 0) {
-          console.log('✅ Default coin icon already exists in storage');
-          return DEFAULT_COIN_ICON_PATH;
+        if (provider === 'gcs') {
+          const [exists] = await client.bucket.file(objectPath).exists();
+          if (exists) {
+            console.log('✅ Default coin icon already exists in GCS');
+            return DEFAULT_COIN_ICON_PATH;
+          }
+        } else {
+          const { ok, value: files } = await client.list({ prefix: objectPath });
+          if (ok && files && files.length > 0) {
+            console.log('✅ Default coin icon already exists in Replit storage');
+            return DEFAULT_COIN_ICON_PATH;
+          }
         }
       } catch (error) {
-        // Icon doesn't exist or error checking, continue with upload
         console.log('📦 Default coin icon not found, uploading...');
       }
       
-      // Read the source image file
+      // Read source file
       const sourceFilePath = path.join(process.cwd(), DEFAULT_COIN_ICON_SOURCE);
       const imageBuffer = await fs.readFile(sourceFilePath);
-      
       console.log(`📁 Read source image: ${sourceFilePath} (${(imageBuffer.length / 1024).toFixed(2)}KB)`);
       
-      // Upload to fixed path (no UUID, using fixed filename)
-      const { ok, error } = await client.uploadFromBytes(objectPath, imageBuffer);
-      
-      if (!ok) {
-        throw new Error(`Failed to upload default coin icon: ${error}`);
+      // Upload
+      if (provider === 'gcs') {
+        const file = client.bucket.file(objectPath);
+        await file.save(imageBuffer, {
+          metadata: { contentType: 'image/png' },
+          public: true
+        });
+      } else {
+        const { ok, error } = await client.uploadFromBytes(objectPath, imageBuffer);
+        if (!ok) {
+          throw new Error(`Failed to upload default coin icon: ${error}`);
+        }
       }
       
-      console.log(`✅ Default coin icon uploaded successfully: ${DEFAULT_COIN_ICON_PATH}`);
+      console.log(`✅ Default coin icon uploaded: ${DEFAULT_COIN_ICON_PATH}`);
       return DEFAULT_COIN_ICON_PATH;
       
     } catch (error) {
       console.error('❌ Error bootstrapping default coin icon:', error);
       Sentry.captureException(error, {
         level: 'error',
-        tags: {
-          service: 'object_storage',
-          operation: 'bootstrap_default_coin_icon'
-        },
-        extra: {
-          errorMessage: error.message,
-          defaultIconPath: DEFAULT_COIN_ICON_PATH,
-          sourceFile: DEFAULT_COIN_ICON_SOURCE
-        }
+        tags: { service: 'object_storage', operation: 'bootstrap_default_coin_icon' }
       });
-      
-      // Don't throw - allow server to start even if bootstrap fails
       console.warn('⚠️ Server will continue without default coin icon');
       return null;
     }
@@ -251,12 +318,7 @@ class ObjectStorageService {
     if (!objectPath.startsWith('/objects/')) {
       throw new ObjectNotFoundError();
     }
-
-    // Extract the path without '/objects/' prefix
-    const objectName = objectPath.slice('/objects/'.length);
-    
-    // Return the object name for use with Replit client
-    return objectName;
+    return objectPath.slice('/objects/'.length);
   }
 
   normalizeObjectEntityPath(rawPath) {
@@ -281,8 +343,6 @@ class ObjectStorageService {
   }
 
   async setObjectPublic(rawPath) {
-    // With Replit client, files are accessible through our Express route
-    // No need to explicitly make them public
     return rawPath;
   }
 
@@ -291,20 +351,19 @@ class ObjectStorageService {
       throw new Error('Invalid icon path');
     }
 
+    const entityId = iconPath.slice('/objects/'.length);
+    const { provider, client } = await getStorageClient();
+
     try {
-      // Extract the file path from the normalized path
-      const entityId = iconPath.slice('/objects/'.length);
-      
-      // Get initialized client with retry logic
-      const client = await getReplitStorageClient();
-      
-      // Delete using official Replit client
-      const { ok, error } = await client.delete(entityId);
-      
-      if (!ok) {
-        throw new Error(`Failed to delete icon: ${error}`);
+      if (provider === 'gcs') {
+        await client.bucket.file(entityId).delete();
+        console.log(`✅ Deleted icon from GCS: ${entityId}`);
+      } else {
+        const { ok, error } = await client.delete(entityId);
+        if (!ok) {
+          throw new Error(`Failed to delete icon: ${error}`);
+        }
       }
-      
       return true;
     } catch (error) {
       console.error('Error deleting icon from storage:', error);
@@ -314,29 +373,37 @@ class ObjectStorageService {
 
   async downloadObject(objectName, res, cacheTtlSec = 3600) {
     try {
-      // Get initialized client with retry logic
-      const client = await getReplitStorageClient();
-      
-      // Use Replit client to download as stream
-      // Note: downloadAsStream returns a Readable stream directly, not a Result type
-      const stream = client.downloadAsStream(objectName);
+      const { provider, client } = await getStorageClient();
 
-      // Set response headers
       res.set({
-        'Content-Type': 'image/png', // Default for achievement icons
+        'Content-Type': this._getMimeType(objectName.split('.').pop()),
         'Cache-Control': `public, max-age=${cacheTtlSec}`,
       });
 
-      // Handle stream errors (file not found, etc.)
-      stream.on('error', (err) => {
-        console.error('Stream error:', err);
-        if (!res.headersSent) {
-          res.status(404).json({ error: 'Object not found' });
-        }
-      });
-
-      // Pipe the stream to response
-      stream.pipe(res);
+      if (provider === 'gcs') {
+        const file = client.bucket.file(objectName);
+        const stream = file.createReadStream();
+        
+        stream.on('error', (err) => {
+          console.error('GCS stream error:', err);
+          if (!res.headersSent) {
+            res.status(404).json({ error: 'Object not found' });
+          }
+        });
+        
+        stream.pipe(res);
+      } else {
+        const stream = client.downloadAsStream(objectName);
+        
+        stream.on('error', (err) => {
+          console.error('Replit stream error:', err);
+          if (!res.headersSent) {
+            res.status(404).json({ error: 'Object not found' });
+          }
+        });
+        
+        stream.pipe(res);
+      }
     } catch (error) {
       console.error('Error downloading file:', error);
       if (!res.headersSent) {
@@ -344,52 +411,35 @@ class ObjectStorageService {
       }
     }
   }
-}
 
-function parseObjectPath(path) {
-  if (!path.startsWith('/')) {
-    path = `/${path}`;
+  _getMimeType(ext) {
+    const mimeTypes = {
+      'png': 'image/png',
+      'jpg': 'image/jpeg',
+      'jpeg': 'image/jpeg',
+      'gif': 'image/gif',
+      'webp': 'image/webp',
+      'svg': 'image/svg+xml'
+    };
+    return mimeTypes[ext?.toLowerCase()] || 'application/octet-stream';
   }
-  const pathParts = path.split('/');
-  if (pathParts.length < 3) {
-    throw new Error('Invalid path: must contain at least a bucket name');
-  }
 
-  const bucketName = pathParts[1];
-  const objectName = pathParts.slice(2).join('/');
+  /**
+   * Get public URL for an object (for GCS, returns signed URL or public URL)
+   */
+  async getPublicUrl(objectPath) {
+    const { provider, client } = await getStorageClient();
+    const entityPath = objectPath.startsWith('/objects/') 
+      ? objectPath.slice('/objects/'.length) 
+      : objectPath;
 
-  return {
-    bucketName,
-    objectName,
-  };
-}
-
-async function signObjectURL({ bucketName, objectName, method, ttlSec }) {
-  const request = {
-    bucket_name: bucketName,
-    object_name: objectName,
-    method,
-    expires_at: new Date(Date.now() + ttlSec * 1000).toISOString(),
-  };
-  const response = await fetch(
-    `${REPLIT_SIDECAR_ENDPOINT}/object-storage/signed-object-url`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(request),
+    if (provider === 'gcs') {
+      return `https://storage.googleapis.com/${client.bucketName}/${entityPath}`;
+    } else {
+      // For Replit, serve through Express route
+      return `/objects/${entityPath}`;
     }
-  );
-  if (!response.ok) {
-    throw new Error(
-      `Failed to sign object URL, errorcode: ${response.status}, ` +
-      `make sure you're running on Replit`
-    );
   }
-
-  const { signed_url: signedURL } = await response.json();
-  return signedURL;
 }
 
 module.exports = {
@@ -397,4 +447,5 @@ module.exports = {
   ObjectNotFoundError,
   DEFAULT_COIN_ICON_PATH,
   DEFAULT_COIN_ICON_SOURCE,
+  detectStorageProvider,
 };
