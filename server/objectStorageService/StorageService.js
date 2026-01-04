@@ -19,41 +19,23 @@ class StorageService {
   async initialize() {
     if (this.initialized) return;
 
+    // Firebase only - Replit Object Storage disabled
     const firebaseProvider = new FirebaseStorageProvider();
-    const replitProvider = new ReplitStorageProvider();
-
-    const isRailway = !!process.env.RAILWAY_ENVIRONMENT;
-    const useFirebasePrimary = isRailway || process.env.STORAGE_PROVIDER === 'firebase';
-
-    if (useFirebasePrimary) {
-      const firebaseReady = await firebaseProvider.initialize();
-      if (firebaseReady) {
-        this.primaryProvider = firebaseProvider;
-        console.log('🔥 StorageService: Firebase is PRIMARY provider');
-      }
-
-      if (!isRailway) {
-        const replitReady = await replitProvider.initialize();
-        if (replitReady) {
-          this.fallbackProvider = replitProvider;
-          this.dualWrite = true;
-          console.log('📦 StorageService: Replit is FALLBACK provider (dual-write enabled)');
-        }
-      }
-    } else {
-      const replitReady = await replitProvider.initialize();
-      if (replitReady) {
-        this.primaryProvider = replitProvider;
-        console.log('📦 StorageService: Replit is PRIMARY provider');
-      }
-
-      const firebaseReady = await firebaseProvider.initialize();
-      if (firebaseReady) {
-        this.fallbackProvider = firebaseProvider;
-        this.dualWrite = true;
-        console.log('🔥 StorageService: Firebase is FALLBACK provider (dual-write enabled)');
-      }
+    const firebaseReady = await firebaseProvider.initialize();
+    
+    if (firebaseReady) {
+      this.primaryProvider = firebaseProvider;
+      console.log('🔥 StorageService: Firebase is PRIMARY provider (Replit storage disabled)');
     }
+
+    // Replit Object Storage is commented out - uncomment to re-enable dual-write
+    // const replitProvider = new ReplitStorageProvider();
+    // const replitReady = await replitProvider.initialize();
+    // if (replitReady) {
+    //   this.fallbackProvider = replitProvider;
+    //   this.dualWrite = true;
+    //   console.log('📦 StorageService: Replit is FALLBACK provider (dual-write enabled)');
+    // }
 
     if (!this.primaryProvider) {
       console.error('❌ StorageService: No storage provider available!');
