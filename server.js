@@ -4616,6 +4616,18 @@ const server = httpServer.listen(PORT, '0.0.0.0', async () => {
     // Continue server startup even if bootstrap fails
   }
   
+  // Sync Replit Object Storage to Firebase Storage
+  try {
+    const { syncObjectsToFirebase } = require('./server/firebaseStorageSync');
+    const syncResult = await syncObjectsToFirebase();
+    if (!syncResult.disabled) {
+      console.log(`🔥 Firebase sync: ${syncResult.synced} uploaded, ${syncResult.skipped} already exist, ${syncResult.errors} errors`);
+    }
+  } catch (error) {
+    console.error('⚠️ Firebase Storage sync error (continuing):', error.message);
+    // Continue server startup even if sync fails
+  }
+  
   console.log('');
   if (!shopifyAvailable) {
     console.log('⚠️  To enable full functionality, configure these secrets in Deployment settings:');
