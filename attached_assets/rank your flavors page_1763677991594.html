@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RANK — Rank Your Flavors</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: #0F0F0F;
+      color: #F2F2F2;
+      min-height: 100vh;
+      padding-bottom: 100px;
+    }
+
+    /* Navigation */
+    nav {
+      background: #0F0F0F;
+      border-bottom: 1px solid #2A2A2A;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #F2F2F2;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: #5C5C5C;
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #FF8A2B;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Page Header */
+    .page-header {
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #F2F2F2;
+      margin-bottom: 0.5rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.875rem;
+      color: #5C5C5C;
+      font-weight: 500;
+    }
+
+    /* Two Column Layout */
+    .rank-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      min-height: 600px;
+    }
+
+    /* Column Headers */
+    .column-header {
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: #5C5C5C;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      padding-left: 0.25rem;
+    }
+
+    /* Flavor Cards List */
+    .flavor-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    /* Flavor Card */
+    .flavor-card {
+      background: #1A1A1A;
+      border: 1px solid #2A2A2A;
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      cursor: grab;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .flavor-card:hover {
+      background: #1F1F1F;
+      border-color: rgba(255, 138, 43, 0.3);
+      box-shadow: 0 4px 16px rgba(255, 138, 43, 0.1);
+    }
+
+    .flavor-card:active {
+      cursor: grabbing;
+      transform: scale(1.02);
+      box-shadow: 0 8px 24px rgba(255, 138, 43, 0.2);
+    }
+
+    /* Drag Handle */
+    .drag-handle {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 3px;
+      cursor: grab;
+      flex-shrink: 0;
+    }
+
+    .drag-handle span {
+      width: 100%;
+      height: 2px;
+      background: #5C5C5C;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+
+    .flavor-card:hover .drag-handle span {
+      background: #FF8A2B;
+    }
+
+    /* Flavor Coin */
+    .flavor-coin {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
+      border: 1px solid rgba(255, 138, 43, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    /* Flavor Info */
+    .flavor-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .flavor-name {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #F2F2F2;
+    }
+
+    .meat-chip {
+      display: inline-flex;
+      padding: 0.125rem 0.5rem;
+      background: rgba(255, 138, 43, 0.15);
+      border: 1px solid rgba(255, 138, 43, 0.3);
+      border-radius: 4px;
+      font-size: 0.625rem;
+      color: #FF8A2B;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      width: fit-content;
+    }
+
+    /* View Icon */
+    .view-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      background: rgba(255, 138, 43, 0.1);
+      border: 1px solid rgba(255, 138, 43, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FF8A2B;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+
+    .view-icon:hover {
+      background: rgba(255, 138, 43, 0.2);
+      border-color: rgba(255, 138, 43, 0.4);
+    }
+
+    /* Ranked List Specific */
+    .ranked-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .rank-number {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #FF8A2B;
+      width: 48px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .ranked-item .flavor-card {
+      flex: 1;
+    }
+
+    /* Empty State */
+    .empty-state {
+      background: #141414;
+      border: 2px dashed #2A2A2A;
+      border-radius: 12px;
+      padding: 3rem 2rem;
+      text-align: center;
+      color: #5C5C5C;
+    }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      opacity: 0.3;
+    }
+
+    .empty-state-text {
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    /* Sticky Save Bar */
+    .save-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 15, 15, 0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid #2A2A2A;
+      padding: 1.25rem 0;
+      z-index: 100;
+    }
+
+    .save-bar-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .save-button {
+      padding: 0.875rem 2.5rem;
+      background: linear-gradient(135deg, #FF8A2B, #FFC46A);
+      border: none;
+      border-radius: 8px;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #0F0F0F;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 16px rgba(255, 138, 43, 0.3);
+    }
+
+    .save-button:hover {
+      box-shadow: 0 6px 24px rgba(255, 138, 43, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .save-button:active {
+      transform: translateY(0);
+    }
+
+    .save-button:disabled {
+      background: #2A2A2A;
+      color: rgba(255, 138, 43, 0.4);
+      cursor: not-allowed;
+      box-shadow: none;
+      transform: none;
+    }
+
+    /* Dragging State */
+    .flavor-card.dragging {
+      opacity: 0.5;
+      transform: rotate(2deg);
+    }
+
+    .flavor-card.drag-over {
+      border-color: #FF8A2B;
+      background: rgba(255, 138, 43, 0.1);
+    }
+
+    /* Scrollable Container */
+    .scrollable {
+      max-height: calc(100vh - 300px);
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .scrollable::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .scrollable::-webkit-scrollbar-track {
+      background: #141414;
+      border-radius: 3px;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb {
+      background: #2A2A2A;
+      border-radius: 3px;
+    }
+
+    .scrollable::-webkit-scrollbar-thumb:hover {
+      background: #3A3A3A;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">RANK.</div>
+      <div class="nav-links">
+        <a href="#">DASHBOARD</a>
+        <a href="#">FLAVOR INDEX</a>
+        <a href="#">DISCOVER</a>
+        <a href="#">LEADERBOARD</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">Rank Your Flavors</h1>
+      <p class="page-subtitle">Drag to reorder. Your rankings fuel the Flavor Index.</p>
+    </div>
+
+    <!-- Two Column Layout -->
+    <div class="rank-grid">
+      
+      <!-- LEFT COLUMN: Unranked Flavors -->
+      <div>
+        <h2 class="column-header">Unranked Flavors</h2>
+        <div class="scrollable">
+          <div class="flavor-list">
+            
+            <!-- Flavor Card 1 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🍁</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Maple Venison</div>
+                <div class="meat-chip">Venison</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 2 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🍯</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Honey BBQ Pork</div>
+                <div class="meat-chip">Pork</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 3 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🫐</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Blueberry Venison</div>
+                <div class="meat-chip">Venison</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 4 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🦃</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Carolina Reaper Turkey</div>
+                <div class="meat-chip">Turkey</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 5 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🍎</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Apple Butter Pork Bacon</div>
+                <div class="meat-chip">Pork</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 6 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🌮</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Chipotle Beef</div>
+                <div class="meat-chip">Beef</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+            <!-- Flavor Card 7 -->
+            <div class="flavor-card">
+              <div class="drag-handle">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              <div class="flavor-coin">🍒</div>
+              <div class="flavor-info">
+                <div class="flavor-name">Cherry Venison</div>
+                <div class="meat-chip">Venison</div>
+              </div>
+              <div class="view-icon">→</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN: Your Rankings -->
+      <div>
+        <h2 class="column-header">Your Rankings</h2>
+        <div class="scrollable">
+          <div class="flavor-list">
+            
+            <!-- Rank #1 -->
+            <div class="ranked-item">
+              <div class="rank-number">#1</div>
+              <div class="flavor-card">
+                <div class="drag-handle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="flavor-coin">🥓</div>
+                <div class="flavor-info">
+                  <div class="flavor-name">Bacon Jam Beef Bacon</div>
+                  <div class="meat-chip">Beef</div>
+                </div>
+                <div class="view-icon">→</div>
+              </div>
+            </div>
+
+            <!-- Rank #2 -->
+            <div class="ranked-item">
+              <div class="rank-number">#2</div>
+              <div class="flavor-card">
+                <div class="drag-handle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="flavor-coin">🔥</div>
+                <div class="flavor-info">
+                  <div class="flavor-name">Ghost Pepper Beef</div>
+                  <div class="meat-chip">Beef</div>
+                </div>
+                <div class="view-icon">→</div>
+              </div>
+            </div>
+
+            <!-- Rank #3 -->
+            <div class="ranked-item">
+              <div class="rank-number">#3</div>
+              <div class="flavor-card">
+                <div class="drag-handle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="flavor-coin">🌶️</div>
+                <div class="flavor-info">
+                  <div class="flavor-name">Sriracha Beef</div>
+                  <div class="meat-chip">Beef</div>
+                </div>
+                <div class="view-icon">→</div>
+              </div>
+            </div>
+
+            <!-- Rank #4 -->
+            <div class="ranked-item">
+              <div class="rank-number">#4</div>
+              <div class="flavor-card">
+                <div class="drag-handle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="flavor-coin">🌶️</div>
+                <div class="flavor-info">
+                  <div class="flavor-name">Jalapeño Pork</div>
+                  <div class="meat-chip">Pork</div>
+                </div>
+                <div class="view-icon">→</div>
+              </div>
+            </div>
+
+            <!-- Rank #5 -->
+            <div class="ranked-item">
+              <div class="rank-number">#5</div>
+              <div class="flavor-card">
+                <div class="drag-handle">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+                <div class="flavor-coin">🥩</div>
+                <div class="flavor-info">
+                  <div class="flavor-name">Korean BBQ Beef</div>
+                  <div class="meat-chip">Beef</div>
+                </div>
+                <div class="view-icon">→</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Sticky Save Bar -->
+  <div class="save-bar">
+    <div class="save-bar-content">
+      <button class="save-button">Save Rankings</button>
+    </div>
+  </div>
+
+</body>
+</html>

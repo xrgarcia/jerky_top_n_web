@@ -1,0 +1,410 @@
+/**
+ * RANK Design System - Theme Variables
+ * Centralized theme tokens for the dark, gaming-inspired identity system
+ * 
+ * IMPORTANT: This is the single source of truth for all design tokens.
+ * All components must reference these variables, never hardcoded values.
+ * 
+ * Last Updated: January 17, 2025
+ */
+
+:root {
+  /* ============================================
+     COLOR SYSTEM
+     ============================================ */
+
+  /* Primary Backgrounds */
+  --rank-bg-charcoal: #0F0F0F;        /* Page backgrounds */
+  --rank-bg-card: #1A1A1A;            /* Card/module backgrounds */
+  --rank-bg-card-elevated: #2A2A2A;   /* Elevated cards, hover states */
+  --rank-line-steel: #3D3D3D;         /* Dividers, borders, separators */
+  --rank-bg-input: #2A2A2A;           /* Form inputs, search bars */
+
+  /* Text Colors */
+  --rank-text-white: #FFFFFF;         /* Pure white for headlines */
+  --rank-text-soft-white: #E5E5E5;    /* Soft white for subheadings */
+  --rank-text-warm-white: #F2F2F2;    /* Warm white for primary readability */
+  --rank-text-headline: #F5F5F5;      /* Headline text (H1-H4) - Option A spec */
+  --rank-text-body: #CCCCCC;          /* Body text, paragraphs */
+  --rank-text-p1: #A0A0A0;            /* P1 paragraph text - Option A spec */
+  --rank-text-p2: #6C6C6C;            /* P2/P3 paragraph text - Option A spec */
+  --rank-text-muted: #999999;         /* Muted secondary text */
+  --rank-text-label: #777777;         /* Low-emphasis labels, metadata */
+  --rank-text-soft-gray: #5C5C5C;     /* Disabled states, very low emphasis */
+  --rank-text-rank-number: #FFC46A;   /* Rank numbers - Option A spec */
+
+  /* Accent Colors - Primary */
+  --rank-gold: #FFD873;               /* Coins, highlights, rarity signals */
+  --rank-amber: #FF8A2B;              /* XP fill, progression, warmth */
+  --rank-ember: #FF4D2E;              /* Heat, spice, danger cues */
+
+  /* Tier/Badge Colors (Achievement System) */
+  --rank-bronze: #CD7F32;             /* Bronze tier, entry achievements */
+  --rank-silver: #C0C0C0;             /* Silver tier, intermediate */
+  --rank-gold-metal: #FFD700;         /* Gold tier, advanced */
+  --rank-platinum: #E5E4E2;           /* Platinum tier, expert */
+  --rank-diamond: #B9F2FF;            /* Diamond tier, master */
+
+  /* Neutral Ramp (Extended) */
+  --rank-neutral-900: #0a0a0a;        /* Darkest backgrounds */
+  --rank-neutral-800: #1a1a1a;        /* Card backgrounds */
+  --rank-neutral-700: #2a2a2a;        /* Elevated cards */
+  --rank-neutral-600: #3d3d3d;        /* Borders, dividers */
+  --rank-neutral-500: #5c5c5c;        /* Disabled text */
+  --rank-neutral-400: #777777;        /* Label text */
+  --rank-neutral-300: #999999;        /* Muted text */
+  --rank-neutral-200: #cccccc;        /* Body text */
+  --rank-neutral-100: #e5e5e5;        /* Soft white */
+  --rank-neutral-50: #f2f2f2;         /* Warm white */
+
+  /* UI State Colors */
+  --rank-disabled-bg: #2a2a2a;        /* Disabled button backgrounds */
+  --rank-disabled-text: #5c5c5c;      /* Disabled text */
+  --rank-disabled-border: #3d3d3d;    /* Disabled borders */
+
+  /* Semantic Aliases for Component Consistency */
+  --rank-text-primary: var(--rank-text-soft-white);   /* Primary text (E5E5E5) */
+  --rank-text-secondary: var(--rank-text-body);       /* Secondary text (CCCCCC) */
+  --rank-text-tertiary: var(--rank-text-muted);       /* Tertiary text (999999) */
+  --rank-text-subtle: var(--rank-text-label);         /* Subtle text (777777) */
+  --rank-text-inverted: var(--rank-button-primary-text); /* Inverted text for buttons */
+  
+  --rank-bg-obsidian: var(--rank-neutral-800);        /* Obsidian background (1A1A1A) */
+  --rank-bg-slate: var(--rank-neutral-700);           /* Slate background (2A2A2A) */
+  --rank-bg-smoke: var(--rank-neutral-600);           /* Smoke background (3D3D3D) */
+  --rank-bg-ash: var(--rank-neutral-500);             /* Ash background (5C5C5C) */
+  --rank-bg-neutral: var(--rank-bg-card-elevated);    /* Neutral background alias */
+  
+  --rank-accent-gold: var(--rank-gold);               /* Gold accent alias */
+  --rank-accent-amber: var(--rank-amber);             /* Amber accent alias */
+  --rank-accent-ember: var(--rank-ember);             /* Ember accent alias */
+  
+  --rank-tier-bronze: var(--rank-bronze);             /* Bronze tier alias */
+  --rank-tier-silver: var(--rank-silver);             /* Silver tier alias */
+  --rank-tier-gold: var(--rank-gold-metal);           /* Gold tier alias */
+  --rank-tier-platinum: var(--rank-platinum);         /* Platinum tier alias */
+  --rank-tier-diamond: var(--rank-diamond);           /* Diamond tier alias */
+  
+  --rank-border-light: var(--rank-border-hover);      /* Light border alias */
+  
+  --rank-overlay-success: var(--rank-toast-success-bg); /* Success overlay */
+  
+  --rank-shadow-dark-soft: var(--rank-shadow-card);   /* Dark soft shadow alias */
+  --rank-shadow-button-primary: var(--rank-shadow-glow); /* Button primary shadow */
+
+  /* Gradients */
+  --rank-gradient-amber: linear-gradient(135deg, #FF8A2B 0%, #FFD873 100%);
+  --rank-gradient-gold: linear-gradient(135deg, #FFD873 0%, #FFA500 100%);
+  --rank-gradient-dark: linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 60%, #2d2d2d 100%);
+
+  /* Interactive States */
+  --rank-focus-ring: #FFD873;         /* Focus outline color */
+  --rank-error: #FF4D2E;              /* Error states, validation */
+  --rank-success: #4CAF50;            /* Success states, confirmations */
+  --rank-warning: #FFA500;            /* Warning states, alerts */
+  --rank-info: #2196F3;               /* Info states, tooltips */
+
+  /* Button State Colors - Orange/Amber Theme (Primary) */
+  --rank-button-primary-bg: rgba(255, 138, 43, 0.1);
+  --rank-button-primary-hover: rgba(255, 138, 43, 0.15);
+  --rank-button-primary-active: rgba(255, 138, 43, 0.2);
+  --rank-button-primary-text: #FF8A2B;
+  --rank-button-primary-border: rgba(255, 138, 43, 0.2);
+  --rank-button-primary-border-hover: rgba(255, 138, 43, 0.3);
+
+  /* Button State Colors - Gold Theme (Legacy) */
+  --rank-button-gold-bg: #FFD873;
+  --rank-button-gold-hover: #FFA500;
+  --rank-button-gold-active: #FF8A00;
+  --rank-button-gold-text: #0F0F0F;
+
+  --rank-button-secondary-bg: rgba(255, 255, 255, 0.1);
+  --rank-button-secondary-hover: rgba(255, 255, 255, 0.15);
+  --rank-button-secondary-active: rgba(255, 255, 255, 0.2);
+  --rank-button-secondary-text: #E5E5E5;
+
+  --rank-button-danger-bg: #FF4D2E;
+  --rank-button-danger-hover: #E6442A;
+  --rank-button-danger-active: #CC3B25;
+  --rank-button-danger-text: #FFFFFF;
+
+  /* Link Colors */
+  --rank-link-default: #FFD873;
+  --rank-link-hover: #FFA500;
+  --rank-link-visited: #C0C0C0;
+  --rank-link-active: #FF8A00;
+
+  /* Card State Colors */
+  --rank-card-hover-bg: #2A2A2A;
+  --rank-card-selected-bg: #2d2d2d;
+  --rank-card-selected-border: #FFD873;
+
+  /* Border Colors */
+  --rank-border-default: #3D3D3D;
+  --rank-border-hover: #5c5c5c;
+  --rank-border-focus: #FFD873;
+  --rank-border-error: #FF4D2E;
+  --rank-border-success: #4CAF50;
+
+  /* Loading & Skeleton States */
+  --rank-skeleton-bg: #1A1A1A;
+  --rank-skeleton-shimmer: rgba(255, 255, 255, 0.1);
+  --rank-loading-spinner: #FFD873;
+
+  /* Toast/Notification Backgrounds */
+  --rank-toast-success-bg: rgba(76, 175, 80, 0.15);
+  --rank-toast-error-bg: rgba(255, 77, 46, 0.15);
+  --rank-toast-warning-bg: rgba(255, 165, 0, 0.15);
+  --rank-toast-info-bg: rgba(33, 150, 243, 0.15);
+
+  /* Input States - Inter (Option A Spec) */
+  --rank-input-bg: #2A2A2A;
+  --rank-input-border: #3D3D3D;
+  --rank-input-border-hover: #5c5c5c;
+  --rank-input-border-focus: #FFD873;
+  --rank-input-text: #F5F5F5;         /* Option A spec */
+  --rank-input-placeholder: #6C6C6C;  /* Option A spec */
+  --rank-input-size: 1rem;            /* 16px */
+  --rank-input-weight: 400;
+  --rank-input-line-height: 1.5;
+
+  /* Glow & Lighting Effects */
+  --rank-glow-amber: rgba(255, 138, 43, 0.4);     /* XP bar shimmer */
+  --rank-glow-gold: rgba(255, 216, 115, 0.3);     /* Badge/coin glow */
+  --rank-glow-podium: rgba(218, 165, 32, 0.2);    /* Leaderboard podium */
+
+  /* Opacity Overlays */
+  --rank-overlay-dark: rgba(0, 0, 0, 0.7);        /* Modal overlays */
+  --rank-overlay-card: rgba(255, 255, 255, 0.05); /* Card hover overlay */
+  --rank-overlay-glass: rgba(255, 255, 255, 0.15); /* Glassmorphism effect */
+
+  /* Shadow System */
+  --rank-shadow-card: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --rank-shadow-elevated: 0 12px 48px rgba(0, 0, 0, 0.4);
+  --rank-shadow-glow: 0 4px 30px rgba(255, 216, 115, 0.3);
+
+  /* ============================================
+     TYPOGRAPHY SYSTEM
+     ============================================ */
+
+  /* Font Families - Option A Spec */
+  --font-headline: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+  --font-stats: 'Space Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Headline Scale - Space Grotesk (Option A Spec) */
+  --font-h1-size: 3.5rem;          /* 56px (48-56px range) */
+  --font-h1-weight: 700;           /* Bold - Option A */
+  --font-h1-line-height: 1.2;
+  --font-h1-letter-spacing: -1%;   /* -1% tracking - Option A */
+
+  --font-h2-size: 2.125rem;        /* 34px (32-36px range) - Option A */
+  --font-h2-weight: 600;           /* SemiBold - Option A */
+  --font-h2-line-height: 1.3;
+  --font-h2-letter-spacing: 0;
+
+  --font-h3-size: 1.75rem;         /* 28px (24-28px range) */
+  --font-h3-weight: 600;           /* SemiBold - Option A */
+  --font-h3-line-height: 1.4;
+  --font-h3-letter-spacing: 0;
+
+  --font-h4-size: 1.25rem;         /* 20px (20-22px range) */
+  --font-h4-weight: 500;           /* Medium - Option A */
+  --font-h4-line-height: 1.5;
+  --font-h4-letter-spacing: 0;
+
+  /* Body Text Scale - Inter Regular/Medium (Option A Spec) */
+  --font-body-size: 1rem;          /* 16px */
+  --font-body-weight: 400;         /* Regular */
+  --font-body-line-height: 1.6;
+
+  --font-body-medium-size: 1rem;   /* 16px */
+  --font-body-medium-weight: 500;  /* Medium */
+  --font-body-medium-line-height: 1.6;
+
+  --font-small-size: 0.875rem;     /* 14px */
+  --font-small-weight: 400;        /* Regular */
+  --font-small-line-height: 1.5;
+
+  /* Paragraph Variants - Option A Spec */
+  --font-p1-size: 1.125rem;        /* 18px (16-18px range) */
+  --font-p1-weight: 400;           /* Regular */
+  --font-p1-line-height: 1.6;
+  --font-p1-color: var(--rank-text-p1);
+
+  --font-p2-size: 0.9375rem;       /* 15px (14-15px range) */
+  --font-p2-weight: 400;           /* Regular */
+  --font-p2-line-height: 1.6;
+  --font-p2-color: var(--rank-text-p2);
+
+  --font-p3-size: 0.8125rem;       /* 13px (12-13px range) */
+  --font-p3-weight: 500;           /* Medium */
+  --font-p3-line-height: 1.5;
+  --font-p3-color: var(--rank-text-p2);
+
+  /* Stats/Mono Text - IBM Plex Mono Medium */
+  --font-mono-size: 1rem;          /* 16px */
+  --font-mono-weight: 500;         /* Medium */
+  --font-mono-line-height: 1.4;
+
+  /* UI Labels - Inter Medium */
+  --font-label-size: 0.875rem;     /* 14px */
+  --font-label-weight: 500;        /* Medium */
+  --font-label-line-height: 1.4;
+  --font-label-letter-spacing: 0.3px;
+  --font-label-transform: uppercase;
+
+  --font-label-small-size: 0.75rem; /* 12px */
+  --font-label-small-weight: 500;   /* Medium */
+  --font-label-small-line-height: 1.3;
+
+  /* Hero Display Text - Extra Large Headlines */
+  --font-hero-size: 4.5rem;         /* 72px */
+  --font-hero-weight: 800;          /* ExtraBold */
+  --font-hero-line-height: 1.1;
+  --font-hero-letter-spacing: -1px;
+
+  /* Dashboard Hero - Profile/Dashboard pages */
+  --font-dashboard-hero-size: 2.5rem;     /* 40px - Dashboard mockup spec */
+  --font-dashboard-hero-weight: 700;      /* Bold */
+  --font-dashboard-hero-line-height: 1.1;
+  --font-dashboard-hero-letter-spacing: -0.02em;
+
+  /* Eyebrow Text - Small caps labels above headlines */
+  --font-eyebrow-size: 0.875rem;    /* 14px */
+  --font-eyebrow-weight: 600;       /* SemiBold */
+  --font-eyebrow-line-height: 1.4;
+  --font-eyebrow-letter-spacing: 1.5px;
+  --font-eyebrow-transform: uppercase;
+
+  /* Section Subtitle - Supporting text under section headings */
+  --font-section-subtitle-size: 1.125rem;  /* 18px */
+  --font-section-subtitle-weight: 400;     /* Regular */
+  --font-section-subtitle-line-height: 1.6;
+
+  /* Stat Display Variants - Space Grotesk (Option A Spec) */
+  --font-stat-large-size: 1.75rem;  /* 28px (20-28px range) */
+  --font-stat-large-weight: 700;    /* Bold */
+  --font-stat-large-line-height: 1.2;
+
+  --font-stat-medium-size: 1.5rem;  /* 24px (20-28px range) */
+  --font-stat-medium-weight: 600;   /* SemiBold */
+  --font-stat-medium-line-height: 1.3;
+
+  --font-stat-small-size: 1.25rem;  /* 20px (20-28px range) */
+  --font-stat-small-weight: 600;    /* SemiBold */
+  --font-stat-small-line-height: 1.4;
+
+  /* Rank Numbers - Space Grotesk (Option A Spec) */
+  --font-rank-number-size: 1.25rem; /* 20px (18-22px range) */
+  --font-rank-number-weight: 700;   /* Bold */
+  --font-rank-number-line-height: 1.2;
+  --font-rank-number-color: var(--rank-text-rank-number);
+
+  /* Button Text - Inter (Option A Spec) */
+  --font-button-size: 0.9375rem;    /* 15px (15-16px range) */
+  --font-button-weight: 600;        /* SemiBold */
+  --font-button-line-height: 1;
+  --font-button-letter-spacing: 0.5px;
+  --font-button-transform: uppercase;
+
+  /* Tabs - Inter (Option A Spec) */
+  --font-tab-size: 0.9375rem;       /* 15px (14-15px range) */
+  --font-tab-weight: 500;           /* Medium */
+  --font-tab-line-height: 1.4;
+  --font-tab-active-color: var(--rank-amber);
+  --font-tab-inactive-color: var(--rank-text-p1);
+
+  /* Caption Text - Very small supporting text */
+  --font-caption-size: 0.75rem;     /* 12px */
+  --font-caption-weight: 400;       /* Regular */
+  --font-caption-line-height: 1.4;
+
+  /* ============================================
+     SPACING SYSTEM
+     ============================================ */
+
+  /* Spacing Scale - 8px base unit */
+  --space-xxs: 0.25rem;   /* 4px - tight inline spacing */
+  --space-xs: 0.5rem;     /* 8px - minimal spacing, compact UI */
+  --space-sm: 0.75rem;    /* 12px - small gaps */
+  --space-md: 1rem;       /* 16px - default spacing between elements */
+  --space-lg: 1.5rem;     /* 24px - section spacing */
+  --space-xl: 2.5rem;     /* 40px - major section breaks */
+  --space-xxl: 4rem;      /* 64px - page-level spacing */
+  --space-xxxl: 6rem;     /* 96px - hero/feature spacing */
+
+  /* Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-narrow: 1000px;     /* Text-heavy pages (HomePage) */
+  --container-xl: 1200px;         /* Standard content pages */
+  --container-max: 1400px;        /* Data-dense pages (Rank, Community) */
+
+  /* Grid System */
+  --grid-columns: 12;
+  --grid-gap: var(--space-lg);
+
+  /* ============================================
+     BORDER RADIUS SYSTEM
+     ============================================ */
+
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* ============================================
+     TRANSITIONS
+     ============================================ */
+
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 350ms ease;
+  --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ============================================
+   RESPONSIVE BREAKPOINTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  :root {
+    /* Hero & Headlines */
+    --font-hero-size: 3rem;        /* 48px on mobile */
+    --font-h1-size: 2.5rem;        /* 40px on mobile */
+    --font-h2-size: 2rem;          /* 32px on mobile */
+    --font-h3-size: 1.5rem;        /* 24px on mobile */
+    --font-h4-size: 1.125rem;      /* 18px on mobile */
+    
+    /* Body Text */
+    --font-body-size: 0.9375rem;   /* 15px on mobile */
+    --font-body-medium-size: 0.9375rem; /* 15px on mobile */
+    --font-small-size: 0.8125rem;  /* 13px on mobile */
+    
+    /* Stats */
+    --font-mono-size: 0.875rem;    /* 14px on mobile */
+    --font-stat-large-size: 1.5rem;   /* 24px on mobile */
+    --font-stat-medium-size: 1.25rem; /* 20px on mobile */
+    --font-stat-small-size: 0.875rem; /* 14px on mobile */
+    
+    /* Labels & UI */
+    --font-label-size: 0.75rem;    /* 12px on mobile */
+    --font-label-small-size: 0.6875rem; /* 11px on mobile */
+    
+    /* Eyebrow */
+    --font-eyebrow-size: 0.75rem;  /* 12px on mobile */
+    
+    /* Section Subtitle */
+    --font-section-subtitle-size: 1rem; /* 16px on mobile */
+    
+    /* Button */
+    --font-button-size: 0.8125rem; /* 13px on mobile */
+    
+    /* Caption */
+    --font-caption-size: 0.6875rem; /* 11px on mobile */
+  }
+}

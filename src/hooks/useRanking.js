@@ -324,33 +324,48 @@ export function useRanking(options = {}) {
   
   /**
    * Reorder rankings (drag and drop within rankings column)
-   * Delegates to addRanking to leverage push-down logic
+   * Uses splice-based reordering for true swap/shift behavior
    */
   const reorderRankings = useCallback((fromIndex, toIndex) => {
     setRankedProducts(prev => {
-      // Get the product being moved and its target position
-      const movedProduct = prev[fromIndex];
+      // Validate indices
+      if (fromIndex < 0 || toIndex < 0 || fromIndex >= prev.length || toIndex >= prev.length) {
+        console.warn(`⚠️ Invalid reorder indices: from=${fromIndex}, to=${toIndex}, length=${prev.length}`);
+        return prev;
+      }
+      
+      // No-op if same position
+      if (fromIndex === toIndex) return prev;
+      
+      // Create a working copy sorted by ranking
+      const workingCopy = [...prev].sort((a, b) => a.ranking - b.ranking);
+      
+      // Get the product being moved
+      const movedProduct = workingCopy[fromIndex];
       if (!movedProduct) return prev;
       
-      // Calculate target ranking position (toIndex is array index, need ranking number)
-      const targetPosition = prev[toIndex]?.ranking;
-      if (!targetPosition) return prev;
+      console.log(`🔄 Reordering: Moving "${movedProduct.productData.title}" from index ${fromIndex} to ${toIndex}`);
       
-      console.log(`🔄 Reordering: Moving "${movedProduct.productData.title}" to position ${targetPosition}`);
+      // Remove from old position
+      const [removed] = workingCopy.splice(fromIndex, 1);
       
-      // Use addRanking which handles push-down logic automatically
-      // This will remove the product from its current position and insert at target
-      // No need to manually splice or renumber - addRanking handles it all
-      return prev; // Return current state, addRanking will update via its own setRankedProducts
+      // Insert at new position
+      workingCopy.splice(toIndex, 0, removed);
+      
+      // Renumber sequentially (1, 2, 3, ...) to ensure no gaps
+      const renumbered = workingCopy.map((item, index) => ({
+        ...item,
+        ranking: index + 1
+      }));
+      
+      console.log(`✅ Reordered: Rankings now sequential from 1 to ${renumbered.length}`);
+      
+      // Trigger auto-save with the new target position
+      scheduleAutoSave(renumbered, toIndex + 1);
+      
+      return renumbered;
     });
-    
-    // Actually trigger the move via addRanking (outside setRankedProducts to avoid nesting)
-    const movedProduct = rankedProducts[fromIndex];
-    const targetPosition = rankedProducts[toIndex]?.ranking;
-    if (movedProduct && targetPosition) {
-      addRanking(movedProduct.productData, targetPosition);
-    }
-  }, [rankedProducts, addRanking]);
+  }, []);
   
   /**
    * Schedule auto-save with 800ms debounce

@@ -5,10 +5,10 @@
   width: 100%;
   padding: 10px 16px;
   margin-top: 8px;
-  border: none;
+  border: 1px solid var(--rank-button-primary-border);
   border-radius: 6px;
-  background-color: #4a7c59;
-  color: white;
+  background-color: var(--rank-button-primary-bg);
+  color: var(--rank-button-primary-text);
   font-weight: bold;
   font-size: 0.9rem;
   cursor: pointer;
@@ -20,9 +20,10 @@
 }
 
 .rank-button:hover {
-  background-color: #3d6649;
+  background-color: var(--rank-button-primary-hover);
+  border-color: var(--rank-button-primary-border-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px var(--rank-shadow-card);
 }
 
 .rank-button:active {
@@ -30,7 +31,7 @@
 }
 
 .rank-button:focus {
-  outline: 3px solid #2c3e50;
+  outline: 3px solid var(--rank-accent-gold);
   outline-offset: 2px;
 }
 

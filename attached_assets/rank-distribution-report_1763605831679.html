@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RANK. - Flavor Ranking Distribution</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    @page {
+      size: A4 landscape;
+      margin: 0;
+    }
+    
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif; background: #0F0F0F; color: #F5F5F5; }
+    
+    /* Navigation */
+    nav { background: #0F0F0F; border-bottom: 1px solid #232323; }
+    .nav-container { max-width: 1100px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #F5F5F5; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: #5C5C5C; text-decoration: none; font-size: 0.75rem; font-weight: 600; }
+    
+    /* Container */
+    .container { max-width: 1100px; margin: 0 auto; padding: 1rem 1.5rem; }
+    
+    /* Card Base */
+    .card { background: #1A1A1A; border-radius: 12px; padding: 1.25rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); border: 1px solid #232323; }
+    .card-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; color: #5C5C5C; text-transform: uppercase; margin-bottom: 0.75rem; }
+    
+    /* Page Header */
+    .page-header { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; margin-bottom: 1rem; }
+    .header-info { }
+    .page-title { font-size: 0.625rem; font-weight: 700; letter-spacing: 0.1em; color: #5C5C5C; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .flavor-name-large { font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .header-meta { display: flex; gap: 1.5rem; align-items: center; margin-top: 0.75rem; }
+    .meta-item { display: flex; flex-direction: column; }
+    .meta-label { font-size: 0.625rem; color: #5C5C5C; text-transform: uppercase; }
+    .meta-value { font-size: 1rem; font-weight: 700; color: #FFC46A; font-family: 'Courier New', monospace; }
+    
+    .header-actions { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; }
+    .header-coin { width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 138, 43, 0.3), rgba(255, 196, 106, 0.2)); display: flex; align-items: center; justify-content: center; margin-bottom: 0.5rem; position: relative; }
+    .header-coin::before { content: ''; position: absolute; inset: 0; border-radius: 50%; background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent); }
+    .header-coin-inner { width: 72px; height: 72px; border-radius: 50%; background: #0F0F0F; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; position: relative; z-index: 1; }
+    
+    .btn { padding: 0.625rem 1.25rem; border-radius: 8px; font-size: 0.75rem; font-weight: 700; text-decoration: none; display: inline-block; text-align: center; transition: all 0.2s; cursor: pointer; border: none; }
+    .btn-primary { background: linear-gradient(135deg, #FF8A2B, #FFC46A); color: #0F0F0F; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(255, 138, 43, 0.4); }
+    .btn-secondary { background: transparent; border: 1px solid #FF8A2B; color: #FF8A2B; }
+    .btn-secondary:hover { background: rgba(255, 138, 43, 0.1); }
+    
+    .category-tag { display: inline-flex; padding: 0.25rem 0.625rem; background: rgba(255, 138, 43, 0.15); border: 1px solid rgba(255, 138, 43, 0.3); border-radius: 6px; font-size: 0.625rem; color: #FF8A2B; font-weight: 600; text-transform: uppercase; margin-bottom: 0.5rem; }
+    
+    /* Distribution Graph */
+    .graph-section { margin-bottom: 1rem; }
+    .graph-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .graph-legend { display: flex; gap: 1.5rem; font-size: 0.625rem; }
+    .legend-item { display: flex; align-items: center; gap: 0.375rem; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .legend-dot.amber { background: #FF8A2B; box-shadow: 0 0 8px rgba(255, 138, 43, 0.4); }
+    .legend-dot.gray { background: #5C5C5C; }
+    
+    .distribution-graph { background: #0F0F0F; border-radius: 12px; padding: 1.5rem; min-height: 300px; }
+    .graph-bars { display: flex; flex-direction: column; gap: 0.5rem; }
+    .graph-row { display: flex; align-items: center; gap: 0.75rem; }
+    .rank-label { font-family: 'Courier New', monospace; font-size: 0.625rem; color: #5C5C5C; width: 60px; text-align: right; }
+    .bar-track { flex: 1; height: 20px; background: #2A2A2A; border-radius: 4px; overflow: hidden; position: relative; }
+    .bar-fill { height: 100%; background: #5C5C5C; display: flex; align-items: center; padding: 0 0.5rem; transition: all 0.2s; }
+    .bar-fill.highlight { background: linear-gradient(to right, #FF8A2B, #FFC46A); box-shadow: 0 0 16px rgba(255, 138, 43, 0.3); }
+    .bar-count { font-family: 'Courier New', monospace; font-size: 0.625rem; font-weight: 700; color: #F5F5F5; }
+    
+    .graph-footer { margin-top: 1rem; font-size: 0.625rem; color: #777777; }
+    .graph-annotations { display: flex; gap: 2rem; margin-top: 0.75rem; }
+    .annotation-item { display: flex; flex-direction: column; }
+    .annotation-label { color: #5C5C5C; text-transform: uppercase; font-size: 0.5625rem; }
+    .annotation-value { color: #FFC46A; font-weight: 700; font-family: 'Courier New', monospace; }
+    
+    /* Insight Cards */
+    .insights-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 1rem; }
+    .insight-card { }
+    .insight-value { font-size: 1.5rem; font-weight: 700; color: #FFC46A; font-family: 'Courier New', monospace; margin-bottom: 0.5rem; }
+    .insight-description { font-size: 0.75rem; color: #A0A0A0; line-height: 1.5; }
+    .insight-metric { font-size: 0.625rem; color: #777777; margin-top: 0.5rem; }
+    
+    /* Top Flavor Fans */
+    .fans-section { margin-bottom: 1rem; }
+    .section-subtext { font-size: 0.625rem; color: #777777; margin-bottom: 0.75rem; line-height: 1.5; }
+    .fans-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); gap: 0.75rem; }
+    .fan-card { background: #2A2A2A; border-radius: 8px; padding: 0.875rem; display: flex; flex-direction: column; align-items: center; text-align: center; position: relative; }
+    .fan-card::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at center, rgba(255, 196, 106, 0.08), transparent); pointer-events: none; border-radius: 8px; }
+    .fan-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3A3A3A, #2A2A2A); border: 2px solid rgba(255, 196, 106, 0.3); display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; color: #A0A0A0; margin-bottom: 0.5rem; position: relative; box-shadow: 0 0 16px rgba(255, 196, 106, 0.15); }
+    .fan-username { font-size: 0.6875rem; font-weight: 700; margin-bottom: 0.25rem; color: #F5F5F5; }
+    .fan-rank { font-size: 0.5625rem; color: #FFC46A; font-weight: 600; }
+    
+    /* Opposite Taste Profiles */
+    .opposite-section { margin-bottom: 1rem; }
+    .opposite-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(85px, 1fr)); gap: 0.75rem; }
+    .opposite-card { background: #2A2A2A; border-radius: 8px; padding: 0.875rem; display: flex; flex-direction: column; align-items: center; text-align: center; }
+    .opposite-avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3A3A3A, #2A2A2A); border: 2px solid #3A3A3A; display: flex; align-items: center; justify-content: center; font-size: 0.875rem; font-weight: 700; color: #5C5C5C; margin-bottom: 0.5rem; }
+    .opposite-username { font-size: 0.6875rem; font-weight: 700; margin-bottom: 0.25rem; color: #F5F5F5; }
+    .opposite-rank { font-size: 0.5625rem; color: #A0A0A0; font-weight: 600; }
+    
+    /* Timeline Placeholder */
+    .timeline-placeholder { opacity: 0.4; text-align: center; padding: 2rem; }
+    .timeline-title { font-size: 0.875rem; font-weight: 700; color: #5C5C5C; margin-bottom: 0.375rem; }
+    .timeline-subtitle { font-size: 0.625rem; color: #777777; }
+    
+    /* Related Flavors */
+    .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; }
+    .related-item { text-align: center; }
+    .related-coin { width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1)); border: 1px solid rgba(255, 138, 43, 0.3); display: flex; align-items: center; justify-content: center; margin: 0 auto 0.375rem; font-size: 1.25rem; }
+    .related-name { font-size: 0.625rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .related-tag { font-size: 0.5rem; color: #5C5C5C; text-transform: uppercase; }
+    
+    /* Bottom CTA */
+    .bottom-cta { text-align: center; padding: 1.5rem; display: flex; gap: 1rem; justify-content: center; }
+    
+    /* Footer */
+    .footer { text-align: center; padding: 0.75rem; border-top: 1px solid #232323; margin-top: 1rem; }
+    .footer-logo { font-size: 0.75rem; font-weight: 700; color: #5C5C5C; }
+    .footer-version { font-size: 0.5rem; color: #777777; }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-container">
+      <div class="logo">RANK.</div>
+      <div class="nav-links">
+        <a href="#">HOME</a>
+        <a href="#">RANK FLAVORS</a>
+        <a href="#" style="color: #FF8A2B;">FLAVOR INDEX</a>
+        <a href="#">LEADERBOARD</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <!-- Page Header -->
+    <div class="card page-header">
+      <div class="header-info">
+        <div class="page-title">Flavor Ranking Distribution</div>
+        <h1 class="flavor-name-large">Sriracha Beef</h1>
+        <div class="category-tag">🔥 HEAT</div>
+        <div class="header-meta">
+          <div class="meta-item">
+            <span class="meta-label">Global Rank</span>
+            <span class="meta-value">#3</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Average Rank</span>
+            <span class="meta-value">#8.4</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Total Rankers</span>
+            <span class="meta-value">2,606</span>
+          </div>
+        </div>
+      </div>
+      <div class="header-actions">
+        <div class="header-coin">
+          <div class="header-coin-inner">🌶️</div>
+        </div>
+        <a href="#" class="btn btn-secondary">View Flavor Profile</a>
+        <a href="#" class="btn btn-primary">Rank This Flavor</a>
+      </div>
+    </div>
+    
+    <!-- Distribution Graph -->
+    <div class="card graph-section">
+      <div class="graph-header">
+        <div class="card-title">Full Ranking Distribution — All Users</div>
+        <div class="graph-legend">
+          <div class="legend-item">
+            <div class="legend-dot amber"></div>
+            <span>Current Global Rank Region</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-dot gray"></div>
+            <span>Other Ranks</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="distribution-graph">
+        <div class="graph-bars">
+          <div class="graph-row">
+            <span class="rank-label">#1–3</span>
+            <div class="bar-track">
+              <div class="bar-fill highlight" style="width: 38%;">
+                <span class="bar-count">702</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#4–6</span>
+            <div class="bar-track">
+              <div class="bar-fill highlight" style="width: 52%;">
+                <span class="bar-count">961</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#7–9</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 45%;">
+                <span class="bar-count">830</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#10–12</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 38%;">
+                <span class="bar-count">701</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#13–15</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 28%;">
+                <span class="bar-count">518</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#16–20</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 22%;">
+                <span class="bar-count">406</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#21–30</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 18%;">
+                <span class="bar-count">332</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#31–40</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 15%;">
+                <span class="bar-count">277</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#41–50</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 12%;">
+                <span class="bar-count">221</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#51–75</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 8%;">
+                <span class="bar-count">148</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#76–100</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 5%;">
+                <span class="bar-count">92</span>
+              </div>
+            </div>
+          </div>
+          <div class="graph-row">
+            <span class="rank-label">#100+</span>
+            <div class="bar-track">
+              <div class="bar-fill" style="width: 3%;">
+                <span class="bar-count">55</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="graph-footer">
+        <div>Based on 2,606 total rankings across all users</div>
+        <div class="graph-annotations">
+          <div class="annotation-item">
+            <span class="annotation-label">Highest Rank</span>
+            <span class="annotation-value">#1</span>
+          </div>
+          <div class="annotation-item">
+            <span class="annotation-label">Lowest Rank</span>
+            <span class="annotation-value">#147</span>
+          </div>
+          <div class="annotation-item">
+            <span class="annotation-label">Median Rank</span>
+            <span class="annotation-value">#7</span>
+          </div>
+          <div class="annotation-item">
+            <span class="annotation-label">Std Deviation</span>
+            <span class="annotation-value">12.4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Insight Cards -->
+    <div class="insights-row">
+      <div class="card insight-card">
+        <div class="card-title">Rank Consensus</div>
+        <div class="insight-value">Tight</div>
+        <div class="insight-description">Most rankers agree this flavor belongs in the top tier. Low variation across rankings.</div>
+        <div class="insight-metric">σ = 12.4 • 78% in top 15</div>
+      </div>
+      
+      <div class="card insight-card">
+        <div class="card-title">Rank Range</div>
+        <div class="insight-value">#1 – #147</div>
+        <div class="insight-description">Highest: #1 | Current: #3 | Median: #7 | Lowest: #147</div>
+        <div class="insight-metric">Span: 146 ranks</div>
+      </div>
+      
+      <div class="card insight-card">
+        <div class="card-title">Rank Trend</div>
+        <div class="insight-value">Stable</div>
+        <div class="insight-description">No significant movement in the past 7 days. Consistent community sentiment.</div>
+        <div class="insight-metric">7-day change: ±0</div>
+      </div>
+    </div>
+    
+    <!-- Top Flavor Fans -->
+    <div class="card fans-section">
+      <div class="card-title">Top Flavor Fans</div>
+      <div class="section-subtext">Rankers who consistently place this flavor at the very top of their list.</div>
+      <div class="fans-grid">
+        <div class="fan-card">
+          <div class="fan-avatar">HM</div>
+          <div class="fan-username">HeatMaster</div>
+          <div class="fan-rank">Ranked #1</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">FK</div>
+          <div class="fan-username">FireKing</div>
+          <div class="fan-rank">Ranked #1</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">SB</div>
+          <div class="fan-username">SpiceBeast</div>
+          <div class="fan-rank">Ranked #2</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">CC</div>
+          <div class="fan-username">ChiliChamp</div>
+          <div class="fan-rank">Ranked #2</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">PL</div>
+          <div class="fan-username">PepperLord</div>
+          <div class="fan-rank">Ranked #3</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">BF</div>
+          <div class="fan-username">BlazeFan</div>
+          <div class="fan-rank">Ranked #3</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">HS</div>
+          <div class="fan-username">HotSeeker</div>
+          <div class="fan-rank">Ranked #4</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">SR</div>
+          <div class="fan-username">SpiceRuler</div>
+          <div class="fan-rank">Ranked #5</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">FH</div>
+          <div class="fan-username">FireHead</div>
+          <div class="fan-rank">Ranked #5</div>
+        </div>
+        <div class="fan-card">
+          <div class="fan-avatar">HW</div>
+          <div class="fan-username">HeatWave</div>
+          <div class="fan-rank">Ranked #6</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Opposite Taste Profiles -->
+    <div class="card opposite-section">
+      <div class="card-title">Opposite Taste Profiles</div>
+      <div class="section-subtext">These users placed this flavor much lower. Seeing their preferences may help you compare taste styles.</div>
+      <div class="opposite-grid">
+        <div class="opposite-card">
+          <div class="opposite-avatar">MS</div>
+          <div class="opposite-username">MildSoul</div>
+          <div class="opposite-rank">Ranked #67</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">ST</div>
+          <div class="opposite-username">SweetTooth</div>
+          <div class="opposite-rank">Ranked #58</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">TC</div>
+          <div class="opposite-username">TenderCritic</div>
+          <div class="opposite-rank">Ranked #52</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">GF</div>
+          <div class="opposite-username">GentleFlav</div>
+          <div class="opposite-rank">Ranked #71</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">SF</div>
+          <div class="opposite-username">SmoothFan</div>
+          <div class="opposite-rank">Ranked #64</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">CJ</div>
+          <div class="opposite-username">CalmJerky</div>
+          <div class="opposite-rank">Ranked #69</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">LT</div>
+          <div class="opposite-username">LightTaste</div>
+          <div class="opposite-rank">Ranked #75</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">EG</div>
+          <div class="opposite-username">EasyGoing</div>
+          <div class="opposite-rank">Ranked #81</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">MT</div>
+          <div class="opposite-username">MellowTaste</div>
+          <div class="opposite-rank">Ranked #94</div>
+        </div>
+        <div class="opposite-card">
+          <div class="opposite-avatar">QF</div>
+          <div class="opposite-username">QuietFlavor</div>
+          <div class="opposite-rank">Ranked #102</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Rank Movement Timeline Placeholder -->
+    <div class="card timeline-placeholder">
+      <div class="timeline-title">Historical Rank Movement</div>
+      <div class="timeline-subtitle">Coming Soon</div>
+    </div>
+    
+    <!-- Related Flavors -->
+    <div class="card">
+      <div class="card-title">Rankers of This Flavor Also Explore</div>
+      <div class="related-grid">
+        <div class="related-item">
+          <div class="related-coin">🌶️</div>
+          <div class="related-name">Jalapeño Beef</div>
+          <div class="related-tag">Heat</div>
+        </div>
+        <div class="related-item">
+          <div class="related-coin">🔥</div>
+          <div class="related-name">Ghost Pepper</div>
+          <div class="related-tag">Extreme Heat</div>
+        </div>
+        <div class="related-item">
+          <div class="related-coin">🌮</div>
+          <div class="related-name">Chipotle Beef</div>
+          <div class="related-tag">Smoky Heat</div>
+        </div>
+        <div class="related-item">
+          <div class="related-coin">🥩</div>
+          <div class="related-name">Korean BBQ</div>
+          <div class="related-tag">Savory</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Bottom CTA -->
+    <div class="bottom-cta">
+      <a href="#" class="btn btn-primary">Rank This Flavor</a>
+      <a href="#" class="btn btn-secondary">Go to Flavor Profile</a>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">RANK.</div>
+    <div class="footer-version">v1.0.0</div>
+  </div>
+</body>
+</html>

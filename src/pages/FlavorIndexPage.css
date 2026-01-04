@@ -1,0 +1,156 @@
+/* Flavor Index Page - RANK Identity System Leaderboard Design */
+/* Page shell padding handled by layout.css */
+
+.flavor-index-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Hero Header - Uses centralized hero-headers.css */
+/* margin-bottom handled by hero-headers.css */
+
+/* Filter Bar */
+.flavor-index-filters {
+  display: grid;
+  grid-template-columns: 200px 1px 200px 1fr;
+  gap: 24px;
+  align-items: center;
+  background: var(--rank-neutral-850);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 16px;
+  padding: 20px 24px;
+  margin-bottom: 48px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--rank-neutral-400);
+  font-family: var(--rank-font-mono);
+}
+
+.filter-dropdown {
+  padding: 10px 16px;
+  background: var(--rank-neutral-900);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 8px;
+  color: var(--rank-text-white);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: var(--rank-font-body);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filter-dropdown:hover {
+  border-color: rgba(255, 138, 43, 0.4);
+}
+
+.filter-dropdown:focus {
+  outline: none;
+  border-color: var(--rank-gold);
+  box-shadow: 0 0 0 3px rgba(255, 138, 43, 0.1);
+}
+
+.filter-divider {
+  width: 1px;
+  height: 48px;
+  background: var(--rank-border-default);
+}
+
+.search-field {
+  padding: 12px 20px;
+  background: var(--rank-neutral-900);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 8px;
+  color: var(--rank-text-white);
+  font-size: 14px;
+  font-family: var(--rank-font-body);
+  transition: all 0.2s ease;
+  margin-left: auto;
+  max-width: 320px;
+}
+
+.search-field::placeholder {
+  color: var(--rank-neutral-400);
+}
+
+.search-field:focus {
+  outline: none;
+  border-color: var(--rank-gold);
+  box-shadow: 0 0 0 3px rgba(255, 138, 43, 0.1);
+}
+
+/* Leaderboard */
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 80px;
+}
+
+/* Loading and Error States */
+.loading-message,
+.error-message,
+.no-results-message {
+  text-align: center;
+  padding: 80px 20px;
+  font-size: 16px;
+  color: var(--rank-neutral-400);
+  font-family: var(--rank-font-body);
+}
+
+.error-message {
+  color: var(--rank-error);
+}
+
+.loading-message {
+  font-style: italic;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .flavor-index-filters {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .filter-divider {
+    display: none;
+  }
+
+  .search-field {
+    max-width: 100%;
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .flavor-index-filters {
+    padding: 16px;
+  }
+
+  .filter-group {
+    width: 100%;
+  }
+
+  .filter-dropdown,
+  .search-field {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .flavor-index-filters {
+    padding: 12px;
+  }
+}

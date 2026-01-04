@@ -1,0 +1,21 @@
+/* ========================================
+   LAYOUT UTILITIES
+   Shared layout classes for page structure
+   ======================================== */
+
+/* Page Shell - Standard page wrapper with nav spacing */
+.page-shell {
+  background: var(--rank-neutral-900);
+  min-height: 100vh;
+  padding: 80px 24px 120px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .page-shell {
+    padding: 60px 16px 80px;
+  }
+}

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const ProductRankingRepository = require('../repositories/ProductRankingRepository');
 const { formatAchievementPayload } = require('../utils/achievementIconFormatter');
+const ProgressCache = require('../cache/ProgressCache');
 
 /**
  * Gamification API Routes
@@ -21,6 +22,9 @@ function createGamificationRoutes(services) {
     userStatsAggregator,
     commentaryService
   } = services;
+  
+  // Initialize short-lived progress cache for race condition prevention
+  const progressCache = ProgressCache.getInstance();
 
   router.get('/achievements', async (req, res) => {
     let userId = null;
@@ -132,14 +136,55 @@ function createGamificationRoutes(services) {
 
       const userId = session.userId;
 
+      // Check cache first (prevents race condition during rapid ranking)
+      const cached = await progressCache.get(userId);
+      if (cached) {
+        console.log(`💾 Progress cache HIT for user ${userId} (prevents race condition)`);
+        return res.json(cached);
+      }
+
+      // Cache miss - fetch fresh data
+      console.log(`🔄 Progress cache MISS for user ${userId}, fetching from DB...`);
+
       // Get total rankable products count for dynamic milestones
       const { products } = await services.fetchAllShopifyProducts();
-      const totalRankableProducts = products.length;
+      const totalCatalog = products.length;
 
-      const progress = await progressTracker.getUserProgress(userId, totalRankableProducts);
+      // Get user info to determine if employee
+      const user = await services.storage.getUserById(userId);
+      const isEmployee = user?.role === 'employee_admin' || user?.email?.endsWith('@jerky.com');
+
+      // Determine rankable product count based on user type
+      // Employees can rank all products, regular users can only rank purchased products
+      let purchasedProductCount = 0;
+      
+      if (isEmployee) {
+        // Employees can rank all products
+        purchasedProductCount = totalCatalog;
+        console.log(`📊 Employee ${userId} can rank ${purchasedProductCount} products (all products)`);
+      } else if (services.purchaseHistoryService) {
+        // Regular users can only rank purchased products
+        const purchasedProductIds = await services.purchaseHistoryService.getPurchasedProductIds(userId);
+        purchasedProductCount = purchasedProductIds.length;
+        console.log(`📊 User ${userId} can rank ${purchasedProductCount} purchased products`);
+      }
+
+      const progress = await progressTracker.getUserProgress(userId, totalCatalog);
       const insights = await progressTracker.getUserInsights(userId);
 
-      res.json({ progress, insights });
+      // Add collection metadata to progress response
+      const enrichedProgress = {
+        ...progress,
+        purchasedProductCount,
+        totalCatalog
+      };
+
+      const response = { progress: enrichedProgress, insights };
+
+      // Cache for 3 seconds (short TTL prevents race condition without stale data)
+      await progressCache.set(userId, response, 3);
+
+      res.json(response);
     } catch (error) {
       console.error('Error fetching progress:', error);
       res.status(500).json({ error: 'Failed to fetch progress' });
@@ -1058,11 +1103,21 @@ function createGamificationRoutes(services) {
       // Get page context from query parameter (rank, products, community, coinbook, general)
       const pageContext = req.query.page || 'general';
       
-      // CACHE-FIRST ARCHITECTURE: Try to read from cache
+      // Fetch user data for player card (shopify_created_at)
       const { primaryDb } = require('../db-primary');
-      const { userGuidanceCache } = require('../../shared/schema');
+      const { users, userGuidanceCache } = require('../../shared/schema');
       const { eq, and } = require('drizzle-orm');
       
+      const [user] = await primaryDb
+        .select({
+          shopify_created_at: users.shopifyCreatedAt,
+          created_at: users.createdAt
+        })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+      
+      // CACHE-FIRST ARCHITECTURE: Try to read from cache
       const cached = await primaryDb
         .select()
         .from(userGuidanceCache)
@@ -1090,6 +1145,8 @@ function createGamificationRoutes(services) {
             icon: guidanceData.icon
           },
           stats: guidanceData.stats,
+          dominantCommunity: guidanceData.dominantCommunity,
+          shopify_created_at: user?.shopify_created_at || user?.created_at || null,
           cached: true,
           calculatedAt: cacheEntry.calculatedAt
         });
@@ -1109,6 +1166,8 @@ function createGamificationRoutes(services) {
           icon: guidance.icon
         },
         stats: guidance.stats,
+        dominantCommunity: guidance.dominantCommunity,
+        shopify_created_at: user?.shopify_created_at || user?.created_at || null,
         cached: false
       });
     } catch (error) {

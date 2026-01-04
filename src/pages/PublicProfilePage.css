@@ -1,296 +1,240 @@
-/* PublicProfilePage - Public user profile viewing page */
+/* PublicProfilePage - Redesigned gaming-inspired profile page */
 
-.public-profile-page {
+.public-profile-page-new {
   min-height: 100vh;
-  background: #faf8f3;
+  background: var(--rank-bg-charcoal);
+  padding: 2rem 0;
 }
 
-.profile-hero {
-  margin-bottom: 0;
+.profile-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .public-profile-loading,
-.public-profile-error,
-.public-profile-empty {
-  min-height: 60vh;
+.public-profile-error {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 40px;
-  text-align: center;
-}
-
-.public-profile-loading .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #7b8b52;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.public-profile-loading p {
-  color: #666;
-  font-size: 1.125rem;
+  min-height: 60vh;
+  gap: 1rem;
 }
 
 .public-profile-error h2 {
-  margin: 0 0 12px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: 1.5rem;
+  color: var(--rank-text-primary);
+  margin-bottom: 0.5rem;
 }
 
 .public-profile-error p {
-  margin: 0;
-  color: #666;
-  font-size: 1.125rem;
+  color: var(--rank-text-secondary);
 }
 
-.public-profile-empty {
-  background: white;
-  border-radius: 16px;
-  border: 2px solid #e8e4d9;
-  margin: 60px auto;
-  max-width: 600px;
+.hero-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-.public-profile-empty h2 {
-  margin: 0 0 12px;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d2d2d;
+@media (max-width: 900px) {
+  .hero-row {
+    grid-template-columns: 1fr;
+  }
 }
 
-.public-profile-empty p {
-  margin: 0;
-  color: #666;
-  font-size: 1rem;
-  font-style: italic;
+.profile-card {
+  background: var(--rank-bg-card);
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.75rem;
 }
 
-.profile-section {
-  padding: 60px 40px;
-  margin: 0;
-}
-
-.section-journey {
-  margin-top: 60px;
-  padding: 0;
-  background: transparent;
-}
-
-.section-achievements {
-  background: white;
-  margin-top: 100px;
-}
-
-.section-achievements .section-header {
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.section-achievements.section-visible .section-header {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.5s;
-}
-
-.section-rankings {
-  background: #faf8f3;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.achievements-container,
-.rankings-container {
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.rankings-loading,
-.rankings-error {
-  text-align: center;
-  padding: 40px 20px;
-  min-height: 200px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.rankings-loading .loading-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid #e8e4d9;
-  border-top-color: #7b8b52;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-.rankings-loading p,
-.rankings-error p {
-  color: #666;
-  font-size: 1.125rem;
-  margin: 0;
-}
-
-/* Coin Book Intro - Transition text */
-.coin-book-intro {
-  max-width: 800px;
-  margin: 0 auto 40px;
-  text-align: center;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.section-visible .coin-book-intro {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.7s;
-}
-
-.coin-book-intro p {
-  margin: 0 0 1rem;
-  font-size: 1.125rem;
-  line-height: 1.7;
-  color: #5a4a3a;
-}
-
-.coin-book-intro .intro-line-2 {
+.hero-row .profile-card {
   margin-bottom: 0;
 }
 
-.coin-book-intro strong {
+.card-title {
+  font-size: 0.75rem;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.1em;
+  color: var(--rank-text-subtle);
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
 }
 
-/* Coin Book Widget - Staggered reveal */
-.section-achievements .coinbook-widget {
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-}
-
-.section-achievements.section-visible .coinbook-widget {
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.9s;
-}
-
-.section-header {
-  margin: 0 0 40px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  text-align: center;
-  letter-spacing: -0.02em;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .public-profile-loading,
-  .public-profile-error,
-  .public-profile-empty {
-    padding: 40px 20px;
-  }
-
-  .public-profile-error h2,
-  .public-profile-empty h2 {
-    font-size: 1.5rem;
-  }
-
-  .profile-section {
-    padding: 40px 20px;
-  }
-
-  .section-journey {
-    margin-top: 40px;
-    padding: 0;
-  }
-
-  .section-achievements {
-    margin-top: 60px;
-  }
-
-  .section-header {
-    font-size: 1.5rem;
-    margin-bottom: 32px;
-  }
-
-  .coin-book-intro {
-    margin-bottom: 32px;
-  }
-
-  .coin-book-intro p {
-    font-size: 1.05rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .coin-book-intro p {
-    font-size: 1rem;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .section-achievements .section-header,
-  .coin-book-intro,
-  .section-achievements .coinbook-widget {
-    transition: opacity 0.3s ease;
-    transform: none;
-  }
-  
-  .section-achievements.section-visible .section-header,
-  .section-visible .coin-book-intro,
-  .section-achievements.section-visible .coinbook-widget {
-    transform: none;
-  }
-}
-
-/* Journey section loading/error states */
-.journey-loading,
-.journey-error {
-  padding: 80px 40px;
-  text-align: center;
-  background: #faf8f3;
-  min-height: 300px;
+.profile-content {
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  gap: 1.25rem;
+  align-items: flex-start;
 }
 
-.journey-loading .loading-spinner {
+@media (max-width: 600px) {
+  .profile-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Avatar styles - scoped to override global avatar.css */
+.public-profile-page-new .avatar-ring {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 216, 115, 0.3), rgba(255, 138, 43, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.public-profile-page-new .avatar-inner {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: var(--rank-bg-charcoal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+.public-profile-page-new .profile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.public-profile-page-new .profile-avatar-initial {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--rank-text-primary);
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: var(--rank-text-soft-white);
+  font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.profile-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--rank-amber);
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.tester-badge {
+  display: inline-flex;
+  padding: 0.25rem 0.625rem;
+  background: rgba(255, 216, 115, 0.1);
+  border: 1px solid rgba(255, 216, 115, 0.2);
+  border-radius: 20px;
+  font-size: 0.625rem;
+  color: var(--rank-accent-gold);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.specialty-badges {
+  display: flex;
+  gap: 0.375rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 600px) {
+  .specialty-badges {
+    justify-content: center;
+  }
+}
+
+.badge-chip {
+  padding: 0.25rem 0.5rem;
+  background: var(--rank-bg-card-elevated);
+  border: 1px solid var(--rank-border-default);
+  border-radius: 6px;
+  font-size: 0.625rem;
+  color: var(--rank-text-body);
+  white-space: nowrap;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 600px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--rank-amber);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.stat-label {
+  font-size: 0.625rem;
+  color: var(--rank-text-label);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.cta-card {
+  background: var(--rank-bg-card);
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid var(--rank-border-default);
+  text-align: center;
+}
+
+.cta-text {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--rank-text-soft-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  display: inline-block;
+}
+
+.cta-text:hover {
+  color: var(--rank-amber);
+}
+
+.loading-spinner {
   width: 40px;
   height: 40px;
-  border-width: 3px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #7b8b52;
+  border: 3px solid var(--rank-bg-card-elevated);
+  border-top-color: var(--rank-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
 }
 
-.journey-loading p {
-  font-size: 0.9375rem;
-  color: #888;
-  margin-top: 16px;
-}
-
-.journey-error p {
-  font-size: 1.0625rem;
-  color: #666;
-  line-height: 1.6;
-  max-width: 500px;
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }

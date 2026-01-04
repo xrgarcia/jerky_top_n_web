@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { api } from '../utils/api';
+import Container from '../components/common/Container';
 import { TIER_EMOJIS } from '../../shared/constants/tierEmojis.mjs';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './CoinProfilePage.css';
@@ -62,7 +63,7 @@ function CoinProfilePage() {
 
   return (
     <div className="coin-profile-page">
-      <div className="coin-profile-container">
+      <Container size="standard">
         {/* Header with back button */}
         <div className="coin-header">
           <button className="back-btn" onClick={() => navigate('/coinbook')}>
@@ -147,7 +148,7 @@ function CoinProfilePage() {
             </button>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

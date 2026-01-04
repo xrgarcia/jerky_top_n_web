@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Coin Book - Mastery | RANK.</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0A0A0A;
+            color: #E8E8E8;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* Global Header */
+        .global-header {
+            background: rgba(15, 15, 15, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+        }
+
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .main-nav a {
+            color: #999;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .main-nav a:hover,
+        .main-nav a.active {
+            color: #FF9900;
+        }
+
+        .user-pill {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 153, 0, 0.1);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            border-radius: 2rem;
+            padding: 0.5rem 1rem;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .user-name {
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-xp {
+            font-size: 0.75rem;
+            color: #FF9900;
+        }
+
+        /* Book Cover Section */
+        .coinbook-cover {
+            padding: 4rem 2rem 2rem;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(255, 153, 0, 0.03) 0%, transparent 100%);
+        }
+
+        .coinbook-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #FF9900, #FFB347);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .coinbook-subtitle {
+            font-size: 1.25rem;
+            color: #999;
+            margin-bottom: 2rem;
+        }
+
+        .coinbook-divider {
+            max-width: 200px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF9900, transparent);
+            margin: 0 auto;
+        }
+
+        /* Book Shell */
+        .coinbook-shell {
+            max-width: 1400px;
+            margin: 2rem auto;
+            background: linear-gradient(135deg, #1A1A1A 0%, #151515 100%);
+            border: 1px solid rgba(255, 153, 0, 0.1);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Chapter Tabs */
+        .coinbook-tabs {
+            display: flex;
+            background: rgba(10, 10, 10, 0.5);
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+        }
+
+        .coinbook-tab {
+            flex: 1;
+            padding: 1.25rem;
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .coinbook-tab:hover {
+            color: #999;
+            background: rgba(255, 153, 0, 0.05);
+        }
+
+        .coinbook-tab.active {
+            color: #FF9900;
+            background: rgba(255, 153, 0, 0.1);
+        }
+
+        .coinbook-tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FF9900, transparent);
+        }
+
+        /* Content Area */
+        .coinbook-content {
+            padding: 3rem;
+        }
+
+        .chapter-header {
+            margin-bottom: 3rem;
+        }
+
+        .chapter-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .chapter-header p {
+            color: #999;
+            font-size: 1.125rem;
+        }
+
+        /* Filter Bar */
+        .filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(255, 153, 0, 0.05);
+            border: 1px solid rgba(255, 153, 0, 0.1);
+            border-radius: 0.5rem;
+            padding: 0.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            color: #E8E8E8;
+            background: rgba(255, 153, 0, 0.1);
+        }
+
+        .filter-btn.active {
+            background: rgba(255, 153, 0, 0.2);
+            color: #FF9900;
+        }
+
+        /* Mastery Grid */
+        .mastery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .mastery-coin {
+            background: linear-gradient(135deg, rgba(255, 153, 0, 0.05) 0%, rgba(255, 153, 0, 0.02) 100%);
+            border: 1px solid rgba(255, 153, 0, 0.2);
+            border-radius: 1rem;
+            padding: 2rem 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .mastery-coin:hover {
+            background: linear-gradient(135deg, rgba(255, 153, 0, 0.1) 0%, rgba(255, 153, 0, 0.05) 100%);
+            border-color: rgba(255, 153, 0, 0.4);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(255, 153, 0, 0.1);
+        }
+
+        .mastery-coin.locked {
+            opacity: 0.5;
+            background: linear-gradient(135deg, rgba(50, 50, 50, 0.05) 0%, rgba(30, 30, 30, 0.02) 100%);
+            border-color: rgba(100, 100, 100, 0.2);
+        }
+
+        .mastery-coin.locked:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .mastery-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .mastery-icon.bronze {
+            background: linear-gradient(135deg, #CD7F32, #B87333);
+            box-shadow: 0 4px 15px rgba(205, 127, 50, 0.3);
+        }
+
+        .mastery-icon.silver {
+            background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+            box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3);
+        }
+
+        .mastery-icon.gold {
+            background: linear-gradient(135deg, #FFD700, #FFC000);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .mastery-icon.platinum {
+            background: linear-gradient(135deg, #E5E4E2, #BCC6CC);
+            box-shadow: 0 4px 20px rgba(229, 228, 226, 0.4);
+        }
+
+        .mastery-icon.locked {
+            background: linear-gradient(135deg, #333, #222);
+            box-shadow: none;
+        }
+
+        .mastery-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .mastery-subtitle {
+            font-size: 0.875rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .mastery-progress {
+            font-size: 0.875rem;
+            color: #FF9900;
+        }
+
+        .mastery-progress.locked {
+            color: #666;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 153, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .section-count {
+            font-size: 0.875rem;
+            color: #999;
+            background: rgba(255, 153, 0, 0.1);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Global Header -->
+    <header class="global-header">
+        <div class="header-content">
+            <div class="header-left">
+                <a href="/" class="logo">RANK.</a>
+                <nav class="main-nav">
+                    <a href="/rank">Rank Flavors</a>
+                    <a href="/flavor-index">Flavor Index</a>
+                    <a href="/coinbook" class="active">Coin Book</a>
+                    <a href="/leaderboard">Leaderboard</a>
+                    <a href="/profile">Profile</a>
+                </nav>
+            </div>
+            <div class="user-pill">
+                <div class="user-info">
+                    <span class="user-name">JerkyMaster42</span>
+                    <span class="user-xp">12,450 XP</span>
+                </div>
+                <div class="user-avatar"></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Book Cover -->
+    <section class="coinbook-cover">
+        <h1 class="coinbook-title">The Coin Book</h1>
+        <p class="coinbook-subtitle">Your complete flavor collection.</p>
+        <div class="coinbook-divider"></div>
+    </section>
+
+    <!-- Book Shell -->
+    <div class="coinbook-shell">
+        <!-- Chapter Tabs -->
+        <nav class="coinbook-tabs">
+            <a class="coinbook-tab" href="rank-coinbook-flavors-updated.html">Flavors</a>
+            <a class="coinbook-tab active" href="rank-mastery.html">Mastery</a>
+            <a class="coinbook-tab" href="rank-secrets.html">Secrets</a>
+            <a class="coinbook-tab" href="rank-achievements.html">Achievements</a>
+        </nav>
+
+        <!-- Content -->
+        <div class="coinbook-content">
+            <!-- Chapter Header -->
+            <header class="chapter-header">
+                <h2>Trophy Room</h2>
+                <p>Master every family and playstyle to earn prestige coins.</p>
+            </header>
+
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <button class="filter-btn active">All Mastery</button>
+                <button class="filter-btn">Flavor Families</button>
+                <button class="filter-btn">Playstyles</button>
+                <button class="filter-btn">Prestige</button>
+            </div>
+
+            <!-- Flavor Family Mastery Section -->
+            <div class="section-header">
+                <h3 class="section-title">Flavor Family Mastery</h3>
+                <span class="section-count">12 families</span>
+            </div>
+            <div class="mastery-grid">
+                <div class="mastery-coin">
+                    <div class="mastery-icon gold">🥩</div>
+                    <h4 class="mastery-title">Beef Master</h4>
+                    <p class="mastery-subtitle">All beef flavors reviewed</p>
+                    <p class="mastery-progress">42/42 Complete</p>
+                </div>
+                <div class="mastery-coin">
+                    <div class="mastery-icon silver">🦃</div>
+                    <h4 class="mastery-title">Turkey Expert</h4>
+                    <p class="mastery-subtitle">All turkey flavors rated</p>
+                    <p class="mastery-progress">24/28 Progress</p>
+                </div>
+                <div class="mastery-coin">
+                    <div class="mastery-icon bronze">🐷</div>
+                    <h4 class="mastery-title">Pork Enthusiast</h4>
+                    <p class="mastery-subtitle">All pork flavors ranked</p>
+                    <p class="mastery-progress">20/35 Progress</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🦌</div>
+                    <h4 class="mastery-title">Exotic Explorer</h4>
+                    <p class="mastery-subtitle">All exotic flavors reviewed</p>
+                    <p class="mastery-progress locked">3/22 Locked</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🐟</div>
+                    <h4 class="mastery-title">Salmon Specialist</h4>
+                    <p class="mastery-subtitle">All salmon flavors reviewed</p>
+                    <p class="mastery-progress locked">0/18 Locked</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🌱</div>
+                    <h4 class="mastery-title">Plant Pioneer</h4>
+                    <p class="mastery-subtitle">All plant flavors reviewed</p>
+                    <p class="mastery-progress locked">0/15 Locked</p>
+                </div>
+            </div>
+
+            <!-- Playstyle Mastery Section -->
+            <div class="section-header">
+                <h3 class="section-title">Playstyle Mastery</h3>
+                <span class="section-count">8 playstyles</span>
+            </div>
+            <div class="mastery-grid">
+                <div class="mastery-coin">
+                    <div class="mastery-icon gold">🔥</div>
+                    <h4 class="mastery-title">Heat Seeker</h4>
+                    <p class="mastery-subtitle">Review 25 spicy flavors</p>
+                    <p class="mastery-progress">25/25 Complete</p>
+                </div>
+                <div class="mastery-coin">
+                    <div class="mastery-icon silver">🍯</div>
+                    <h4 class="mastery-title">Sweet Tooth</h4>
+                    <p class="mastery-subtitle">Review 20 sweet flavors</p>
+                    <p class="mastery-progress">18/20 Progress</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🌿</div>
+                    <h4 class="mastery-title">Herb Collector</h4>
+                    <p class="mastery-subtitle">Review 15 herb-infused</p>
+                    <p class="mastery-progress locked">5/15 Locked</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">💨</div>
+                    <h4 class="mastery-title">Smoke Signal</h4>
+                    <p class="mastery-subtitle">Review 20 smoked flavors</p>
+                    <p class="mastery-progress locked">8/20 Locked</p>
+                </div>
+            </div>
+
+            <!-- Prestige Mastery Section -->
+            <div class="section-header">
+                <h3 class="section-title">Prestige Collection</h3>
+                <span class="section-count">6 prestige</span>
+            </div>
+            <div class="mastery-grid">
+                <div class="mastery-coin">
+                    <div class="mastery-icon platinum">👑</div>
+                    <h4 class="mastery-title">Completionist</h4>
+                    <p class="mastery-subtitle">100% collection complete</p>
+                    <p class="mastery-progress">127/270 Progress</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🏆</div>
+                    <h4 class="mastery-title">Grand Master</h4>
+                    <p class="mastery-subtitle">All families mastered</p>
+                    <p class="mastery-progress locked">1/12 Locked</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">💎</div>
+                    <h4 class="mastery-title">Diamond Tier</h4>
+                    <p class="mastery-subtitle">500 gold coins earned</p>
+                    <p class="mastery-progress locked">12/500 Locked</p>
+                </div>
+                <div class="mastery-coin locked">
+                    <div class="mastery-icon locked">🌟</div>
+                    <h4 class="mastery-title">Legendary</h4>
+                    <p class="mastery-subtitle">All achievements unlocked</p>
+                    <p class="mastery-progress locked">24/100 Locked</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Containers -->
+    <div id="modal-rank"></div>
+    <div id="modal-rate"></div>
+    <div id="modal-review"></div>
+    <div id="modal-summary"></div>
+</body>
+</html>

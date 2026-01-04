@@ -31,6 +31,7 @@ class ProductsMetadataService {
         secondaryFlavors: flavors?.secondary ? JSON.stringify(flavors.secondary) : null,
         flavorDisplay: flavors?.display || null,
         flavorIcon: flavors?.icon || null,
+        shopifyCreatedAt: product.created_at ? new Date(product.created_at) : null,
       };
       
       const [result] = await this.repository.upsertProductMetadata(product.id, metadata);

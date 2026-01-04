@@ -1,0 +1,83 @@
+.distribution-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.distribution-visual {
+  display: flex;
+  height: 32px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--rank-neutral-900);
+  border: 1px solid var(--rank-border-default);
+}
+
+.distribution-segment {
+  height: 100%;
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: var(--rank-font-mono);
+}
+
+.distribution-segment:hover {
+  filter: brightness(1.2);
+}
+
+.seg-1st {
+  background: linear-gradient(135deg, var(--rank-gold) 0%, var(--rank-amber) 100%);
+  box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2);
+}
+
+.seg-2nd {
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.7) 0%, rgba(255, 196, 106, 0.7) 100%);
+}
+
+.seg-3rd {
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.5) 0%, rgba(255, 196, 106, 0.5) 100%);
+}
+
+.seg-other {
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.2) 0%, rgba(255, 196, 106, 0.2) 100%);
+}
+
+.segment-label {
+  pointer-events: none;
+}
+
+.distribution-legend {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--rank-neutral-400);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.dot-1st {
+  background: linear-gradient(135deg, var(--rank-gold) 0%, var(--rank-amber) 100%);
+}
+
+.dot-2nd {
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.7) 0%, rgba(255, 196, 106, 0.7) 100%);
+}
+
+.dot-3rd {
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.5) 0%, rgba(255, 196, 106, 0.5) 100%);
+}

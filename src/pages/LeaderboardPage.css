@@ -1,650 +1,691 @@
-/* Leaderboard Page - Three-Act Structure with Empty States */
-
-.leaderboard-page {
-  background: #fafafa;
-  min-height: 100vh;
-}
-
-/* Loading & Error States */
-.leaderboard-loading,
-.leaderboard-error,
-.leaderboard-empty {
-  text-align: center;
-  padding: 100px 20px;
-  min-height: 60vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.leaderboard-loading .loading-spinner {
-  width: 50px;
-  height: 50px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #8B6F3D;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 20px;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.leaderboard-loading p,
-.leaderboard-error p,
-.leaderboard-empty p {
-  font-size: 1.25rem;
-  color: #666;
-}
-
-.leaderboard-error p {
-  color: #e74c3c;
-}
-
-/* Section Intros - Shared Styling */
-.section-intro {
-  text-align: center;
-  margin-bottom: 48px;
-}
-
-/* Empty State Shared Styling */
-.empty-message {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 24px auto;
-  max-width: 600px;
-  line-height: 1.6;
-  text-align: center;
-}
-
-.empty-cta {
-  display: inline-block;
-  padding: 14px 32px;
-  background: linear-gradient(135deg, #8B6F3D 0%, #7A6032 100%);
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.3);
-}
-
-.empty-cta:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(139, 111, 61, 0.4);
-}
-
 /* ========================================
-   ACT 1: THE CHAMPIONS (Top 1-5)
-   Dark, dramatic, prestigious
+   LEADERBOARD PAGE
+   Dark Gaming-Inspired Design
    ======================================== */
 
-.champions-section {
-  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-  padding: 80px 40px 100px;
+/* Page shell padding handled by layout.css */
+
+/* ========================================
+   PAGE HEADER - Uses centralized hero-headers.css
+   margin-bottom handled by hero-headers.css
+   ======================================== */
+
+/* ========================================
+   HALL OF FAME VAULT
+   Top 5 Podium Layout
+   ======================================== */
+
+.hof-vault {
+  background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(26, 26, 26, 0.95) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 2.5rem 1.5rem;
+  margin-bottom: 2rem;
   position: relative;
   overflow: hidden;
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.8), 
+    inset 0 1px 0 rgba(196, 169, 98, 0.1);
 }
 
-.champions-section::before {
+.hof-vault::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: 
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 50px 50px;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(196, 169, 98, 0.08), transparent 60%);
   pointer-events: none;
 }
 
-.champions-container {
-  max-width: 1200px;
-  margin: 0 auto;
+.vault-header {
+  text-align: center;
+  margin-bottom: 2rem;
   position: relative;
   z-index: 1;
 }
 
-.champions-title {
-  font-size: 3rem;
-  font-weight: 600;
-  color: white;
-  margin: 0 0 12px;
-  letter-spacing: -0.5px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+.vault-title {
+  font-family: var(--font-headline);
+  font-size: var(--font-h2-size);
+  font-weight: var(--font-h2-weight); /* Option A: 600 */
+  background: linear-gradient(135deg, #c9a86a, #ffc46a);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em; /* Intentional override for stylistic effect */
 }
 
-.champions-subtitle {
-  font-size: 1.125rem;
-  color: rgba(255, 255, 255, 0.7);
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-weight: 400;
+.vault-subtitle {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.875rem;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: 0.05em;
 }
 
-/* Empty Champions Podium */
-.empty-podium {
-  text-align: center;
-  padding: 40px 20px;
-}
-
-.empty-podium-stage {
+/* Vault Slots Container */
+.vault-slots {
   display: flex;
-  align-items: flex-end;
   justify-content: center;
-  gap: 16px;
-  min-height: 320px;
-  margin-bottom: 32px;
+  align-items: flex-end;
+  gap: 1rem;
+  position: relative;
+  z-index: 1;
+  flex-wrap: wrap;
 }
 
-.empty-podium-slot {
+/* Vault Slot Base */
+.vault-slot {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(20, 20, 20, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
-  opacity: 0.4;
-  animation: fadeInUp 0.6s ease forwards;
+  text-align: center;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.6), 
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+  text-decoration: none;
+  color: inherit;
 }
 
-.empty-podium-slot.position-1 {
-  animation-delay: 0.2s;
+.vault-slot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(circle at 50% 100%, rgba(255, 138, 43, 0.08), transparent);
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.empty-podium-slot.position-2 {
-  animation-delay: 0.1s;
+.vault-slot:hover {
+  transform: translateY(-6px) scale(1.03);
+  border-color: rgba(196, 169, 98, 0.3);
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.8),
+    0 0 24px rgba(196, 169, 98, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-.empty-podium-slot.position-3 {
-  animation-delay: 0.3s;
+/* Rank-specific sizing and styling */
+.vault-slot.rank-1 {
+  width: 200px;
+  border-color: rgba(196, 169, 98, 0.4);
 }
 
-.empty-podium-slot.position-4 {
-  animation-delay: 0.4s;
+.vault-slot.rank-1::before {
+  background: radial-gradient(circle at 50% 100%, rgba(196, 169, 98, 0.15), transparent);
 }
 
-.empty-podium-slot.position-5 {
-  animation-delay: 0.5s;
+.vault-slot.rank-1::after {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #c9a86a, transparent);
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 0.4;
-    transform: translateY(0);
-  }
+.vault-slot.rank-2 {
+  width: 185px;
 }
 
-.empty-avatar {
+.vault-slot.rank-3 {
+  width: 170px;
+}
+
+.vault-slot.rank-4 {
+  width: 155px;
+  opacity: 0.95;
+}
+
+.vault-slot.rank-5 {
+  width: 140px;
+  opacity: 0.9;
+}
+
+/* Rank Badge */
+.rank-badge {
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  font-weight: var(--font-stat-large-weight); /* Option A: 700 for stats */
+  margin-bottom: 1rem;
+  text-shadow: 0 0 16px currentColor;
+}
+
+.rank-1 .rank-badge {
+  color: #c9a86a;
+  text-shadow: 0 0 20px rgba(201, 168, 106, 0.6), 0 0 40px rgba(201, 168, 106, 0.3);
+}
+
+.rank-2 .rank-badge,
+.rank-3 .rank-badge {
+  color: #ff8a2b;
+  text-shadow: 0 0 16px rgba(255, 138, 43, 0.5);
+}
+
+.rank-4 .rank-badge,
+.rank-5 .rank-badge {
+  color: #ff8a2b;
+  text-shadow: 0 0 12px rgba(255, 138, 43, 0.4);
+}
+
+/* Vault Avatar Container */
+.vault-avatar {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.avatar-ring {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  opacity: 0.6;
+}
+
+.rank-1 .avatar-ring {
+  background: linear-gradient(135deg, #c9a86a, #ffc46a);
+  box-shadow: 0 0 20px rgba(201, 168, 106, 0.4);
+}
+
+.rank-2 .avatar-ring,
+.rank-3 .avatar-ring {
+  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
+  box-shadow: 0 0 16px rgba(255, 138, 43, 0.3);
+}
+
+.rank-4 .avatar-ring,
+.rank-5 .avatar-ring {
+  background: linear-gradient(135deg, #ff8a2b, #ffa86a);
+  box-shadow: 0 0 12px rgba(255, 138, 43, 0.2);
+}
+
+/* Avatar Image */
+.vault-slot .avatar-image {
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(255, 255, 255, 0.2);
+  border: 3px solid rgba(15, 15, 15, 0.9);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
+}
+
+.rank-1 .avatar-image {
+  width: 120px;
+  height: 120px;
+}
+
+.rank-2 .avatar-image {
+  width: 110px;
+  height: 110px;
+}
+
+.rank-3 .avatar-image {
+  width: 100px;
+  height: 100px;
+}
+
+.rank-4 .avatar-image {
+  width: 90px;
+  height: 90px;
+}
+
+.rank-5 .avatar-image {
+  width: 80px;
+  height: 80px;
+}
+
+.vault-slot .avatar-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.vault-slot .avatar-initials {
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
+  font-weight: 700;
+  font-size: 2.5rem;
+  color: #fff;
+}
+
+.rank-1 .avatar-initials {
+  font-size: 3rem;
+}
+
+/* Vault XP */
+.vault-xp {
+  font-family: 'Courier New', monospace;
+  font-size: 1.125rem;
+  font-weight: var(--font-stat-medium-weight); /* Option A: 600 for stats */
+  color: #f5f5f5;
+  margin-bottom: 0.625rem;
+}
+
+.rank-1 .vault-xp {
+  font-size: 1.25rem;
+  color: #c9a86a;
+  text-shadow: 0 0 12px rgba(201, 168, 106, 0.4);
+}
+
+.rank-2 .vault-xp,
+.rank-3 .vault-xp {
+  font-size: 1.125rem;
+}
+
+/* Vault Title Text */
+.vault-title-text {
+  font-size: 0.8125rem;
+  color: #ff8a2b;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.rank-1 .vault-title-text {
+  color: #c9a86a;
+  font-size: 0.875rem;
+}
+
+.rank-4 .vault-title-text,
+.rank-5 .vault-title-text {
+  font-size: 0.75rem;
+}
+
+/* ========================================
+   TABS
+   ======================================== */
+
+.leaderboard-tabs {
+  display: flex;
+  gap: 2rem;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 1.5rem;
+}
+
+.leaderboard-tabs .tab {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: var(--font-tab-size); /* Option A: 15px */
+  font-weight: var(--font-tab-weight); /* Option A: 500 */
+  padding: 1rem 0;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.2s;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: 0.05em; /* Intentional override for uppercase badge look */
+}
+
+.leaderboard-tabs .tab:hover {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.leaderboard-tabs .tab.active {
+  color: #ff8a2b;
+}
+
+.leaderboard-tabs .tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(to right, #ff8a2b, #ffc46a);
+  box-shadow: 0 0 12px rgba(255, 138, 43, 0.6);
+}
+
+/* ========================================
+   LEADERBOARD LIST (Ranks 6+)
+   ======================================== */
+
+.leaderboard-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  background: rgba(26, 26, 26, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Leaderboard Card */
+.lb-card {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 1.125rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  transition: all 0.2s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.lb-card:last-child {
+  border-bottom: none;
+}
+
+.lb-card:hover {
+  background: rgba(255, 138, 43, 0.05);
+  border-bottom-color: rgba(255, 138, 43, 0.1);
+}
+
+.lb-card:nth-child(even) {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.lb-card:nth-child(even):hover {
+  background: rgba(255, 138, 43, 0.05);
+}
+
+/* Rank Number */
+.lb-rank {
+  font-family: 'Courier New', monospace;
+  font-size: var(--font-rank-number-size); /* Option A: 20px (18-22px range) */
+  font-weight: var(--font-rank-number-weight); /* Option A: 700 */
+  color: var(--font-rank-number-color); /* Option A: #FFC46A */
+  min-width: 60px;
+  text-align: center;
+}
+
+.lb-card.top-8 .lb-rank {
+  color: #c9a86a;
+}
+
+/* Avatar */
+.lb-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
+  border: 2px solid rgba(255, 138, 43, 0.3);
+  flex-shrink: 0;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.empty-icon {
-  font-size: 3rem;
-  color: rgba(255, 255, 255, 0.3);
+.lb-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.empty-label {
-  font-size: 0.875rem;
+.lb-avatar .avatar-initials {
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.empty-podium .empty-message {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-/* ========================================
-   ACT 2: RISING CONTENDERS (Places 6-10)
-   Clean, competitive, LIST format with emphasis
-   ======================================== */
-
-.rising-section {
-  background: white;
-  padding: 80px 40px;
-}
-
-.rising-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.rising-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin: 0 0 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.5px;
-}
-
-.rising-subtitle {
-  font-size: 1.125rem;
-  color: #6e6e73;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-weight: 400;
-}
-
-/* Rising Contenders List - Bigger and Bolder than Community */
-.rising-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.rising-item {
-  background: linear-gradient(135deg, #fafafa 0%, #f5f5f5 100%);
-  border-radius: 14px;
-  padding: 28px 32px;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border: 2px solid #e8e4d9;
-  position: relative;
-  overflow: hidden;
-}
-
-.rising-item::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #8B6F3D, #7A6032);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.rising-item:hover {
-  transform: translateX(12px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border-color: #8B6F3D;
-}
-
-.rising-item:hover::before {
-  opacity: 1;
-}
-
-.rising-item .rising-rank {
-  min-width: 70px;
-  text-align: center;
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: #8B6F3D;
-}
-
-.rising-item .rising-info {
-  flex: 1;
-}
-
-.rising-item .rising-name {
-  font-size: 1.375rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin-bottom: 8px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.5px;
-}
-
-.rising-item .rising-stats {
-  display: flex;
-  gap: 20px;
-  font-size: 1rem;
-  color: #666;
-}
-
-.rising-item .gap-to-podium {
-  color: #e67e22;
-  font-weight: 600;
-}
-
-.rising-item .rising-score {
-  text-align: center;
-  min-width: 90px;
-}
-
-.rising-item .rising-score .score-value {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #8B6F3D;
-  line-height: 1;
-}
-
-.rising-item .rising-score .score-label {
-  font-size: 0.8125rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-}
-
-.rising-item .rising-badges {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.rising-item .badge {
-  font-size: 1.5em;
-}
-
-/* Empty Rising Contenders */
-.empty-rising {
-  text-align: center;
-  padding: 20px;
-}
-
-.empty-rising-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-bottom: 32px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.empty-rising-slot {
-  background: rgba(139, 111, 61, 0.05);
-  border-radius: 12px;
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  border: 2px dashed #e8e4d9;
-  opacity: 0;
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-.empty-rising-slot:nth-child(1) { animation-delay: 0.1s; }
-.empty-rising-slot:nth-child(2) { animation-delay: 0.2s; }
-.empty-rising-slot:nth-child(3) { animation-delay: 0.3s; }
-.empty-rising-slot:nth-child(4) { animation-delay: 0.4s; }
-.empty-rising-slot:nth-child(5) { animation-delay: 0.5s; }
-
-.empty-rising-slot .empty-rank {
-  min-width: 60px;
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #8B6F3D;
-  opacity: 0.5;
-}
-
-.empty-rising-slot .empty-icon {
-  font-size: 2rem;
-  opacity: 0.6;
-}
-
-.empty-rising-slot .empty-label {
-  flex: 1;
-  text-align: left;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #666;
-  opacity: 0.7;
-}
-
-.empty-rising .empty-message {
-  color: #666;
-}
-
-/* ========================================
-   ACT 3: THE COMMUNITY (Places 11+)
-   Inclusive, list-based, accessible
-   ======================================== */
-
-.community-section {
-  background: #fafafa;
-  padding: 80px 40px 100px;
-}
-
-.community-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.community-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin: 0 0 12px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.5px;
-}
-
-.community-subtitle {
-  font-size: 1.125rem;
-  color: #6e6e73;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-weight: 400;
-}
-
-.community-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.community-item {
-  background: white;
-  border-radius: 12px;
-  padding: 20px 24px;
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid #e8e4d9;
-}
-
-.community-item:hover {
-  transform: translateX(8px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-color: #8B6F3D;
-}
-
-.community-rank {
-  min-width: 60px;
-  text-align: center;
   font-size: 1.25rem;
-  font-weight: 700;
-  color: #8B6F3D;
+  color: #fff;
 }
 
-.community-info {
+/* User Info */
+.lb-user-info {
   flex: 1;
+  min-width: 0;
 }
 
-.community-name {
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #1d1d1f;
-  margin-bottom: 6px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.5px;
+.lb-username {
+  font-size: 1rem;
+  font-weight: var(--font-body-medium-weight); /* Option A: 500 for medium body text */
+  color: #f5f5f5;
+  margin-bottom: 0.25rem;
+  font-family: var(--font-body);
 }
 
-.community-stats {
-  display: flex;
-  gap: 20px;
-  font-size: 0.875rem;
-  color: #666;
+.lb-role {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.5);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-.stat {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.community-score {
-  text-align: center;
-  min-width: 80px;
-}
-
-.community-score .score-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #8B6F3D;
-  line-height: 1;
-}
-
-.community-score .score-label {
-  font-size: 0.75rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-}
-
-.community-badges {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.badge {
-  font-size: 1.5em;
-}
-
-/* Empty Community */
-.empty-community {
-  text-align: center;
-  padding: 20px;
-}
-
-.empty-community-list {
+/* XP Progress */
+.lb-xp {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  margin-bottom: 32px;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
+  align-items: flex-end;
+  gap: 0.5rem;
+  min-width: 160px;
 }
 
-.empty-community-slot {
-  background: rgba(139, 111, 61, 0.03);
-  border-radius: 10px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border: 1px dashed #e8e4d9;
-  opacity: 0;
-  animation: fadeInUp 0.5s ease forwards;
+.xp-bar-container {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 3px;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.empty-community-slot:nth-child(1) { animation-delay: 0.1s; }
-.empty-community-slot:nth-child(2) { animation-delay: 0.2s; }
-.empty-community-slot:nth-child(3) { animation-delay: 0.3s; }
-
-.empty-community-slot .empty-rank {
-  min-width: 50px;
-  font-size: 1.125rem;
-  font-weight: 700;
-  color: #8B6F3D;
-  opacity: 0.4;
+.xp-bar-fill {
+  height: 100%;
+  background: linear-gradient(to right, #ff8a2b, #ffc46a);
+  border-radius: 3px;
+  box-shadow: 0 0 12px rgba(255, 138, 43, 0.4);
+  transition: width 0.3s ease;
 }
 
-.empty-community-slot .empty-icon {
-  font-size: 1.5rem;
-  opacity: 0.5;
-}
-
-.empty-community-slot .empty-label {
-  flex: 1;
-  text-align: left;
+.xp-text {
+  font-family: 'Courier New', monospace;
   font-size: 0.9375rem;
+  color: #ffc46a;
+  font-weight: 700;
+}
+
+/* View Profile Button */
+.view-profile {
+  background: none;
+  border: 1px solid rgba(255, 138, 43, 0.3);
+  color: #ff8a2b;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.8125rem;
   font-weight: 600;
-  color: #666;
-  opacity: 0.6;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
 }
 
-.empty-community .empty-message {
-  color: #666;
+.view-profile:hover {
+  background: rgba(255, 138, 43, 0.1);
+  border-color: rgba(255, 138, 43, 0.5);
 }
 
-/* Responsive */
+/* ========================================
+   LOADING & ERROR STATES
+   ======================================== */
+
+.leaderboard-loading,
+.leaderboard-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.loading-spinner {
+  width: 48px;
+  height: 48px;
+  border: 3px solid rgba(255, 138, 43, 0.2);
+  border-top-color: #ff8a2b;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
 @media (max-width: 1024px) {
-  .rising-container,
-  .community-container {
-    max-width: 600px;
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .vault-slots {
+    gap: 0.75rem;
+  }
+
+  .vault-slot.rank-1 {
+    width: 180px;
+  }
+
+  .vault-slot.rank-2 {
+    width: 165px;
+  }
+
+  .vault-slot.rank-3 {
+    width: 150px;
+  }
+
+  .vault-slot.rank-4 {
+    width: 135px;
+  }
+
+  .vault-slot.rank-5 {
+    width: 120px;
   }
 }
 
 @media (max-width: 768px) {
-  .champions-section,
-  .rising-section,
-  .community-section {
-    padding: 60px 20px;
+  .leaderboard-page {
+    padding: 1.5rem 1rem;
   }
 
-  .champions-title {
-    font-size: 2.25rem;
+  .page-title {
+    font-size: 1.75rem;
   }
 
-  .rising-title,
-  .community-title {
-    font-size: 2rem;
+  .hof-vault {
+    padding: 2rem 1rem;
   }
 
-  .rising-item,
-  .community-item {
-    flex-wrap: wrap;
-    gap: 16px;
+  .vault-slots {
+    gap: 0.5rem;
   }
 
-  .rising-item .rising-rank,
-  .community-rank {
-    min-width: 50px;
+  .vault-slot {
+    padding: 1.25rem 0.75rem;
   }
 
-  .rising-item .rising-score,
-  .community-score {
-    margin-left: auto;
+  .vault-slot.rank-1 {
+    width: 160px;
   }
 
-  .rising-item .rising-badges,
-  .community-badges {
-    width: 100%;
-    justify-content: center;
-    padding-top: 12px;
-    border-top: 1px solid #e8e4d9;
+  .vault-slot.rank-2 {
+    width: 145px;
   }
 
-  .empty-podium-stage {
-    flex-wrap: wrap;
-    gap: 12px;
+  .vault-slot.rank-3 {
+    width: 130px;
   }
 
-  .empty-avatar {
+  .vault-slot.rank-4 {
+    width: 115px;
+  }
+
+  .vault-slot.rank-5 {
+    width: 100px;
+  }
+
+  .rank-1 .avatar-image {
+    width: 100px;
+    height: 100px;
+  }
+
+  .rank-2 .avatar-image {
+    width: 90px;
+    height: 90px;
+  }
+
+  .rank-3 .avatar-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .rank-4 .avatar-image {
     width: 70px;
     height: 70px;
   }
 
-  .empty-icon {
-    font-size: 2rem;
+  .rank-5 .avatar-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .lb-card {
+    padding: 1rem;
+    gap: 0.875rem;
+    flex-wrap: wrap;
+  }
+
+  .lb-rank {
+    min-width: 50px;
+    font-size: 1.125rem;
+  }
+
+  .lb-avatar {
+    width: 44px;
+    height: 44px;
+  }
+
+  .lb-xp {
+    min-width: 140px;
+    order: 3;
+    margin-left: auto;
+  }
+
+  .view-profile {
+    order: 4;
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .vault-slots {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .vault-slot {
+    width: 100% !important;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .leaderboard-tabs {
+    gap: 1.5rem;
+  }
+
+  .leaderboard-tabs .tab {
+    font-size: 0.875rem;
+    padding: 0.875rem 0;
   }
 }

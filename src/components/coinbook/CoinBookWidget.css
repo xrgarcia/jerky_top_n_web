@@ -3,17 +3,11 @@
 
 /* WIDGET CONTAINER */
 .coinbook-widget {
-  background: #1a1a1a;
-  border: 3px solid #4a4a4a;
-  border-left: 8px solid #2a2a2a;
+  background: var(--rank-bg-card);
+  border: 3px solid var(--rank-neutral-600);
+  border-left: 8px solid var(--rank-bg-card-elevated);
   border-radius: 12px;
-  box-shadow: 
-    -4px 0 8px rgba(0, 0, 0, 0.3),
-    0 8px 20px rgba(0, 0, 0, 0.5),
-    0 15px 35px rgba(0, 0, 0, 0.4),
-    inset -2px 0 6px rgba(0, 0, 0, 0.4),
-    inset 1px 1px 0 rgba(192, 192, 192, 0.15),
-    inset 0 0 0 1px rgba(160, 160, 160, 0.1);
+  box-shadow: var(--rank-shadow-elevated);
   margin-bottom: 24px;
   overflow: visible;
   position: relative;
@@ -28,9 +22,9 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  background: #0d0d0d;
+  background: var(--rank-bg-obsidian);
   border: none;
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid var(--rank-border-default);
   border-radius: 12px 12px 0 0;
   padding: 16px 20px;
   cursor: pointer;
@@ -40,11 +34,11 @@
 }
 
 .coinbook-header:hover {
-  background: #1a1a1a;
+  background: var(--rank-bg-card);
 }
 
 .coinbook-header:focus {
-  outline: 2px solid #555;
+  outline: 2px solid var(--rank-neutral-500);
   outline-offset: -2px;
 }
 
@@ -57,15 +51,15 @@
 .coinbook-title {
   font-size: 18px;
   font-weight: 700;
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  color: var(--rank-text-white);
+  text-shadow: 0 1px 2px var(--rank-overlay-dark);
   letter-spacing: 0.5px;
 }
 
 .chevron {
-  color: #999;
+  color: var(--rank-text-muted);
   transition: transform 0.3s ease;
-  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.3));
+  filter: drop-shadow(0 1px 1px var(--rank-overlay-dark));
 }
 
 .coinbook-widget.collapsed .chevron {
@@ -86,14 +80,14 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--rank-overlay-glass);
   padding: 6px 12px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--rank-text-white);
   backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--rank-border-default);
 }
 
 .stat-achievement {
@@ -121,17 +115,17 @@
 /* Collapsed Milestone Preview */
 .collapsed-milestone-preview {
   padding: 20px;
-  background: #1a1a1a;
-  border-top: 1px solid #333;
+  background: var(--rank-bg-card);
+  border-top: 1px solid var(--rank-border-default);
   border-radius: 0 0 12px 12px;
 }
 
 .collapsed-milestone-content {
-  background: #2a2a2a;
-  border: 2px solid #444;
+  background: var(--rank-bg-card-elevated);
+  border: 2px solid var(--rank-neutral-600);
   border-radius: 12px;
   padding: 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .milestone-preview-label {
@@ -140,7 +134,7 @@
   gap: 8px;
   font-size: 13px;
   font-weight: 600;
-  color: #ddd;
+  color: var(--rank-text-soft-white);
   margin-bottom: 10px;
 }
 
@@ -163,7 +157,7 @@
 
 .milestone-preview-status {
   font-size: 12px;
-  color: #bbb;
+  color: var(--rank-text-secondary);
   margin-top: 8px;
   font-weight: 600;
 }
@@ -171,7 +165,7 @@
 /* Content */
 .coinbook-content {
   padding: 20px;
-  background: #1a1a1a;
+  background: var(--rank-bg-card);
   border-radius: 0 0 12px 12px;
   animation: expandContent 0.3s ease;
   overflow: visible;
@@ -225,7 +219,7 @@
 /* Only apply to emoji-based achievements - image badges have borders baked in */
 
 .coinbook-widget .achievement-coin.earned {
-  border: 2px dashed #000000 !important;
+  border: 2px dashed var(--rank-bg-obsidian) !important;
 }
 
 /* Remove CSS border from image-based badges (they have borders in the image) */
@@ -234,22 +228,14 @@
 }
 
 .coinbook-widget .achievement-coin.locked {
-  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 200, 200, 0.65) 65%, rgba(120, 120, 120, 0.4) 100%) !important;
-  border: 3px solid #555555 !important;
+  background: radial-gradient(circle at 50% 45%, var(--rank-neutral-100) 0%, var(--rank-neutral-300) 65%, var(--rank-neutral-600) 100%) !important;
+  border: 3px solid var(--rank-neutral-500) !important;
   opacity: 1;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 -2px 6px rgba(255, 255, 255, 0.4),
-    inset 0 0 0 1px rgba(80, 80, 80, 0.3);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .coinbook-widget .achievement-coin.locked:hover {
-  box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.45),
-    inset 0 2px 4px rgba(0, 0, 0, 0.4),
-    inset 0 -2px 6px rgba(255, 255, 255, 0.45),
-    inset 0 0 0 1px rgba(80, 80, 80, 0.35);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .coinbook-widget .achievement-coin.locked .coin-icon {
@@ -262,23 +248,14 @@
 /* FEATURE 3: 3D EFFECTS - Raised for earned, inset for locked */
 
 .coinbook-widget .achievement-coin.earned {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 245, 0.85) 50%, rgba(220, 220, 220, 0.7) 100%),
-              linear-gradient(135deg, #fffef8 0%, #ffffff 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 16px rgba(255, 255, 255, 0.3),
-    inset 0 2px 3px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 2px rgba(0, 0, 0, 0.1);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-neutral-200) 50%, var(--rank-neutral-300) 100%),
+              linear-gradient(135deg, var(--rank-neutral-100) 0%, var(--rank-text-white) 100%) !important;
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .coinbook-widget .achievement-coin.locked {
-  background: radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.95) 0%, rgba(200, 200, 200, 0.65) 65%, rgba(120, 120, 120, 0.4) 100%) !important;
-  box-shadow: 
-    0 2px 6px rgba(0, 0, 0, 0.4),
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 -2px 6px rgba(255, 255, 255, 0.4),
-    inset 0 0 0 1px rgba(80, 80, 80, 0.3);
+  background: radial-gradient(circle at 50% 45%, var(--rank-neutral-100) 0%, var(--rank-neutral-300) 65%, var(--rank-neutral-600) 100%) !important;
+  box-shadow: var(--rank-shadow-card);
 }
 
 /* END FEATURE 3 */
@@ -288,62 +265,37 @@
 
 /* Bronze tier - copper glow and metallic sheen */
 .coinbook-widget .achievement-coin.earned.tier-bronze {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 250, 245, 0.95) 0%, rgba(245, 230, 210, 0.85) 50%, rgba(225, 200, 180, 0.7) 100%),
-              linear-gradient(135deg, #fffef8 0%, #ffffff 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 20px rgba(205, 127, 50, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 2px rgba(205, 127, 50, 0.2);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-neutral-200) 50%, var(--rank-neutral-300) 100%),
+              linear-gradient(135deg, var(--rank-neutral-100) 0%, var(--rank-text-white) 100%) !important;
+  box-shadow: var(--rank-shadow-glow);
 }
 
 /* Silver tier - silver glow and metallic sheen */
 .coinbook-widget .achievement-coin.earned.tier-silver {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 245, 0.85) 50%, rgba(220, 220, 220, 0.7) 100%),
-              linear-gradient(135deg, #fffef8 0%, #ffffff 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 18px rgba(192, 192, 192, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 0.7),
-    inset 0 -1px 2px rgba(192, 192, 192, 0.2);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-neutral-200) 50%, var(--rank-neutral-300) 100%),
+              linear-gradient(135deg, var(--rank-neutral-100) 0%, var(--rank-text-white) 100%) !important;
+  box-shadow: var(--rank-shadow-card);
 }
 
 /* Gold tier - gold glow, background, and metallic sheen */
 .coinbook-widget .achievement-coin.earned.tier-gold {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 251, 240, 0.85) 50%, rgba(240, 220, 170, 0.7) 100%),
-              linear-gradient(135deg, #fffbf0 0%, #fff9e6 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 24px rgba(255, 215, 0, 0.6),
-    inset 0 2px 3px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 2px rgba(255, 215, 0, 0.3);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-neutral-200) 50%, var(--rank-neutral-300) 100%),
+              linear-gradient(135deg, var(--rank-neutral-100) 0%, var(--rank-neutral-100) 100%) !important;
+  box-shadow: var(--rank-shadow-glow);
 }
 
 /* Platinum tier - platinum glow, background, and metallic sheen */
 .coinbook-widget .achievement-coin.earned.tier-platinum {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.98) 0%, rgba(248, 248, 248, 0.9) 50%, rgba(230, 230, 230, 0.75) 100%),
-              linear-gradient(135deg, #f5f5f5 0%, #ffffff 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 22px rgba(229, 228, 226, 0.6),
-    inset 0 2px 3px rgba(255, 255, 255, 0.8),
-    inset 0 -1px 2px rgba(229, 228, 226, 0.25);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-neutral-100) 50%, var(--rank-neutral-200) 100%),
+              linear-gradient(135deg, var(--rank-neutral-200) 0%, var(--rank-text-white) 100%) !important;
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 /* Diamond tier - diamond glow, background, and metallic sheen */
 .coinbook-widget .achievement-coin.earned.tier-diamond {
-  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.98) 0%, rgba(240, 250, 255, 0.9) 50%, rgba(210, 240, 250, 0.75) 100%),
-              linear-gradient(135deg, #e6f7ff 0%, #f0fbff 100%) !important;
-  box-shadow: 
-    0 3px 2px rgba(0, 0, 0, 0.45),
-    0 10px 18px rgba(0, 0, 0, 0.35),
-    0 0 26px rgba(185, 242, 255, 0.7),
-    inset 0 2px 3px rgba(255, 255, 255, 0.9),
-    inset 0 -1px 2px rgba(185, 242, 255, 0.3);
+  background: radial-gradient(circle at 35% 35%, var(--rank-neutral-100) 0%, var(--rank-diamond) 50%, var(--rank-diamond) 100%),
+              linear-gradient(135deg, var(--rank-diamond) 0%, var(--rank-diamond) 100%) !important;
+  box-shadow: var(--rank-shadow-glow);
 }
 
 /* END FEATURE 4 */
@@ -353,62 +305,34 @@
 /* Hover effect for earned coins - enhance raised 3D effect */
 .coinbook-widget .achievement-coin.earned:hover {
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 18px rgba(0, 0, 0, 0.45),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 /* Hover for tier-specific earned coins - maintain tier glow */
 .coinbook-widget .achievement-coin.earned.tier-bronze:hover {
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(205, 127, 50, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .coinbook-widget .achievement-coin.earned.tier-silver:hover {
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 20px rgba(192, 192, 192, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .coinbook-widget .achievement-coin.earned.tier-gold:hover {
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 24px rgba(255, 215, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .coinbook-widget .achievement-coin.earned.tier-platinum:hover {
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 22px rgba(229, 228, 226, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .coinbook-widget .achievement-coin.earned.tier-diamond:hover {
-  box-shadow: 
-    0 5px 4px rgba(0, 0, 0, 0.5),
-    0 14px 24px rgba(0, 0, 0, 0.4),
-    0 0 26px rgba(185, 242, 255, 0.7),
-    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 /* Hover effect for locked coins - subtle lift */
 .coinbook-widget .achievement-coin.locked:hover {
   transform: translateY(-1px) scale(1.02);
-  box-shadow: 
-    0 3px 8px rgba(0, 0, 0, 0.45),
-    inset 0 2px 4px rgba(0, 0, 0, 0.35),
-    inset 0 -2px 6px rgba(255, 255, 255, 0.4),
-    inset 0 0 0 1px rgba(80, 80, 80, 0.3);
+  box-shadow: var(--rank-shadow-card);
 }
 
 /* Active/pressed state */
@@ -422,10 +346,10 @@
 
 /* Widget container - museum black background */
 .coinbook-widget {
-  background-color: #1a1a1a;
+  background-color: var(--rank-bg-card);
   border-radius: 8px;
   padding: 16px;
-  color: #ffffff;
+  color: var(--rank-text-white);
 }
 
 /* Header section */
@@ -441,7 +365,7 @@
 .coinbook-widget .widget-title {
   font-size: 18px;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--rank-text-white);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -472,27 +396,27 @@
 .coinbook-widget .progress-section {
   margin-bottom: 16px;
   padding: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--rank-overlay-card);
   border-radius: 6px;
 }
 
 .coinbook-widget .progress-label {
   font-size: 14px;
-  color: #cccccc;
+  color: var(--rank-text-secondary);
   margin-bottom: 8px;
 }
 
 .coinbook-widget .progress-stats {
   font-size: 16px;
   font-weight: bold;
-  color: #ffffff;
+  color: var(--rank-text-white);
   margin-bottom: 8px;
 }
 
 /* Milestone section */
 .coinbook-widget .milestone-section {
   padding: 12px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--rank-overlay-card);
   border-radius: 6px;
   margin-bottom: 16px;
 }
@@ -503,7 +427,7 @@
   gap: 8px;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #cccccc;
+  color: var(--rank-text-secondary);
 }
 
 .coinbook-widget .milestone-icon {
@@ -518,7 +442,7 @@
 }
 
 .coinbook-widget .milestone-name {
-  color: #ffffff;
+  color: var(--rank-text-white);
   font-weight: 500;
 }
 
@@ -526,7 +450,7 @@
 .coinbook-widget .progress-bar {
   width: 100%;
   height: 8px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: var(--rank-overlay-dark);
   border-radius: 4px;
   overflow: hidden;
   margin-bottom: 6px;
@@ -534,14 +458,14 @@
 
 .coinbook-widget .progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, #4a9eff 0%, #6cb8ff 100%);
+  background: linear-gradient(90deg, var(--rank-info) 0%, var(--rank-info) 100%);
   border-radius: 4px;
   transition: width 0.3s ease;
 }
 
 .coinbook-widget .milestone-status {
   font-size: 13px;
-  color: #aaaaaa;
+  color: var(--rank-text-label);
 }
 
 /* Achievements section */
@@ -551,7 +475,7 @@
 
 .coinbook-widget .achievements-label {
   font-size: 14px;
-  color: #cccccc;
+  color: var(--rank-text-secondary);
   margin-bottom: 12px;
   font-weight: 500;
 }
@@ -593,7 +517,7 @@
   transform: translateX(-50%);
   font-size: 18px;
   line-height: 1;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+  filter: drop-shadow(0 1px 2px var(--rank-overlay-dark));
   z-index: 2;
   pointer-events: none;
 }
@@ -604,8 +528,8 @@
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-8px);
-  background-color: rgba(0, 0, 0, 0.95);
-  color: #ffffff;
+  background-color: var(--rank-bg-obsidian);
+  color: var(--rank-text-white);
   padding: 12px;
   border-radius: 8px;
   font-size: 13px;
@@ -615,7 +539,7 @@
   visibility: hidden;
   transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
   z-index: 10000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--rank-shadow-elevated);
   min-width: 200px;
   white-space: normal;
   max-width: 300px;
@@ -635,33 +559,33 @@
   display: block;
   margin-bottom: 6px;
   font-size: 14px;
-  color: #ffffff;
+  color: var(--rank-text-white);
 }
 
 .coinbook-widget .tooltip-description {
   display: block;
-  color: #cccccc;
+  color: var(--rank-text-secondary);
   margin-bottom: 6px;
   font-size: 12px;
 }
 
 .coinbook-widget .tooltip-tier {
   display: block;
-  color: #4a9eff;
+  color: var(--rank-info);
   font-weight: 500;
   margin-top: 6px;
   font-size: 13px;
 }
 
 .coinbook-widget .tooltip-tier-progress {
-  color: #aaaaaa;
+  color: var(--rank-text-label);
   font-weight: normal;
   font-size: 12px;
 }
 
 .coinbook-widget .requirement-hint {
   display: block;
-  color: #ffaa44;
+  color: var(--rank-warning);
   font-style: italic;
   margin-top: 6px;
   font-size: 12px;
@@ -675,7 +599,7 @@
   left: 50%;
   transform: translateX(-50%);
   border: 6px solid transparent;
-  border-top-color: rgba(0, 0, 0, 0.95);
+  border-top-color: var(--rank-bg-obsidian);
 }
 
 /* END FEATURE 7 */

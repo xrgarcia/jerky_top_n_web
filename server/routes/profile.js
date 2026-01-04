@@ -1,8 +1,8 @@
 const express = require('express');
 const multer = require('multer');
 const { imageSize } = require('image-size');
-const { users } = require('../../shared/schema');
-const { eq, sql } = require('drizzle-orm');
+const { users, streaks, productsMetadata, productRankings } = require('../../shared/schema');
+const { eq, sql, and } = require('drizzle-orm');
 const { 
   generateUniqueHandle, 
   isHandleAvailable, 
@@ -64,6 +64,7 @@ function createProfileRoutes(services) {
           handle: users.handle,
           hide_name_privacy: users.hideNamePrivacy,
           created_at: users.createdAt,
+          shopify_created_at: users.shopifyCreatedAt,
         })
         .from(users)
         .where(eq(users.id, session.userId))
@@ -141,6 +142,86 @@ function createProfileRoutes(services) {
       // Get engagement score
       const position = await leaderboardManager.getUserPosition(userId, 'all_time');
 
+      // Get flavor profile progress
+      const { productsMetadata, productRankings } = require('../../shared/schema');
+      
+      // Get total products per flavor profile
+      const flavorTotalsResult = await db
+        .select({
+          profile: productsMetadata.primaryFlavor,
+          total: sql`COUNT(DISTINCT ${productsMetadata.shopifyProductId})::int`
+        })
+        .from(productsMetadata)
+        .where(sql`${productsMetadata.primaryFlavor} IS NOT NULL`)
+        .groupBy(productsMetadata.primaryFlavor);
+
+      // Get user's ranked products per flavor profile
+      const userFlavorRankingsResult = await db
+        .select({
+          profile: productsMetadata.primaryFlavor,
+          ranked: sql`COUNT(DISTINCT ${productRankings.shopifyProductId})::int`
+        })
+        .from(productRankings)
+        .innerJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
+        .where(sql`${productRankings.userId} = ${userId} AND ${productsMetadata.primaryFlavor} IS NOT NULL`)
+        .groupBy(productsMetadata.primaryFlavor);
+
+      // Combine into flavor profile progress array
+      const flavorProfileProgress = flavorTotalsResult.map(total => {
+        const userRanked = userFlavorRankingsResult.find(r => r.profile === total.profile);
+        return {
+          profile: total.profile,
+          total: total.total,
+          ranked: userRanked?.ranked || 0
+        };
+      }).filter(p => p.total > 0); // Only show profiles with products
+
+      // Get current streak from engagement tracking
+      const streakResult = await db
+        .select({
+          currentStreak: streaks.currentStreak
+        })
+        .from(streaks)
+        .where(and(eq(streaks.userId, userId), eq(streaks.streakType, 'daily_rank')))
+        .limit(1);
+      
+      const currentStreak = streakResult[0]?.currentStreak || 0;
+
+      // Get recent activity (last 10 activities)
+      const recentActivity = [];
+      
+      // Add recent achievements
+      const recentAchievements = achievements
+        .filter(a => a.earnedAt)
+        .sort((a, b) => new Date(b.earnedAt) - new Date(a.earnedAt))
+        .slice(0, 5)
+        .map(a => ({
+          type: 'coin_earned',
+          text: `Earned Coin: ${a.name}`,
+          timestamp: a.earnedAt
+        }));
+      
+      recentActivity.push(...recentAchievements);
+
+      // Add ranking changes (most recent rankings)
+      if (topProducts.length > 0) {
+        const recentRankings = topProducts
+          .filter(p => p.rankedAt)
+          .sort((a, b) => new Date(b.rankedAt) - new Date(a.rankedAt))
+          .slice(0, 3)
+          .map(p => ({
+            type: 'ranking_change',
+            text: `Ranked ${p.title} #${p.rankPosition}`,
+            timestamp: p.rankedAt
+          }));
+        
+        recentActivity.push(...recentRankings);
+      }
+
+      // Sort all activities by timestamp and take top 10
+      recentActivity.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+      const limitedActivity = recentActivity.slice(0, 10);
+
       res.json({
         user: {
           id: profileData.id,
@@ -156,16 +237,22 @@ function createProfileRoutes(services) {
           engagementLevel: classification?.engagementLevel || 'none',
           explorationBreadth: classification?.explorationBreadth || 'narrow',
           focusAreas: classification?.focusAreas || [],
-          engagementScore: position?.engagementScore || 0
+          engagementScore: position?.engagementScore || 0,
+          createdAt: profileData.createdAt,
+          memberSince: profileData.createdAt
         },
         topProducts: topProducts.map(p => ({
           shopifyProductId: p.id,
           rankPosition: p.rankPosition,
           title: p.title,
           imageUrl: p.image,
+          image: p.image,
           vendor: p.vendor,
           primaryFlavor: p.primaryFlavor,
-          animalType: p.animalType
+          animalType: p.animalType,
+          flavorIcon: p.flavorIcon,
+          animalIcon: p.animalIcon,
+          rankedAt: p.rankedAt
         })),
         timeline: timelineMoments,
         achievements: achievements.map(a => ({
@@ -176,8 +263,16 @@ function createProfileRoutes(services) {
           iconType: a.iconType,
           tier: a.tier,
           coinType: a.coinType,
-          earnedAt: a.earnedAt
-        }))
+          earnedAt: a.earnedAt,
+          currentTier: a.currentTier,
+          progress: a.progress
+        })),
+        flavorProfileProgress: flavorProfileProgress,
+        recentActivity: limitedActivity,
+        stats: {
+          productsRanked: profileData.rankingCount,
+          currentStreak: currentStreak
+        }
       });
     } catch (error) {
       console.error('Error fetching user profile page:', error);
@@ -660,8 +755,8 @@ function createProfileRoutes(services) {
 
   /**
    * GET /api/profile/:userId/rankings
-   * Get all rankings for a user (for separate loading)
-   * Returns: All product rankings with purchase data
+   * Get full rankings list for a user (public profile full rankings page)
+   * Returns: User info + all ranked products with metadata
    */
   router.get('/:userId/rankings', async (req, res) => {
     try {
@@ -671,24 +766,74 @@ function createProfileRoutes(services) {
         return res.status(400).json({ error: 'Invalid user ID' });
       }
 
-      // Fetch rankings (this is the slow query we're isolating)
-      const allRankings = await profileRepository.getAllRankingsWithPurchases(userId);
+      // Fetch user basic info
+      const [userInfo] = await db
+        .select({
+          id: users.id,
+          firstName: users.firstName,
+          lastName: users.lastName,
+          displayName: users.displayName,
+        })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+
+      if (!userInfo) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      // Fetch all user's rankings with full product details
+      const userRankings = await db
+        .select({
+          productId: productRankings.shopifyProductId,
+          rank: productRankings.ranking,
+          rankedAt: productRankings.createdAt,
+          updatedAt: productRankings.updatedAt,
+          productTitle: productsMetadata.title,
+          animalType: productsMetadata.animalType,
+          animalDisplay: productsMetadata.animalDisplay,
+          animalIcon: productsMetadata.animalIcon,
+          vendor: productsMetadata.vendor,
+          primaryFlavor: productsMetadata.primaryFlavor,
+          secondaryFlavors: productsMetadata.secondaryFlavors,
+          flavorDisplay: productsMetadata.flavorDisplay,
+          flavorIcon: productsMetadata.flavorIcon,
+        })
+        .from(productRankings)
+        .innerJoin(productsMetadata, eq(productRankings.shopifyProductId, productsMetadata.shopifyProductId))
+        .where(eq(productRankings.userId, userId))
+        .orderBy(productRankings.ranking);
 
       res.json({
-        rankings: allRankings.map(r => ({
-          shopifyProductId: r.id,
-          rankPosition: r.rankPosition,
+        user: {
+          id: userInfo.id,
+          firstName: userInfo.firstName,
+          lastName: userInfo.lastName,
+          displayName: userInfo.displayName,
+        },
+        rankings: userRankings.map(r => ({
+          productId: r.productId,
+          rank: r.rank,
           rankedAt: r.rankedAt,
-          purchaseDate: r.purchaseDate,
-          title: r.title,
-          imageUrl: r.image,
-          vendor: r.vendor,
-          primaryFlavor: r.primaryFlavor,
-          animalType: r.animalType
+          updatedAt: r.updatedAt,
+          product: {
+            title: r.productTitle,
+            metadata: {
+              animalType: r.animalType,
+              animalDisplay: r.animalDisplay,
+              animalIcon: r.animalIcon,
+              vendor: r.vendor,
+              primaryFlavor: r.primaryFlavor,
+              flavorProfile: r.primaryFlavor, // Add flavorProfile as alias for filtering
+              secondaryFlavors: r.secondaryFlavors,
+              flavorDisplay: r.flavorDisplay,
+              flavorIcon: r.flavorIcon,
+            }
+          }
         }))
       });
     } catch (error) {
-      console.error('Error fetching user rankings:', error);
+      console.error('Error fetching user full rankings:', error);
       res.status(500).json({ error: 'Failed to fetch rankings' });
     }
   });

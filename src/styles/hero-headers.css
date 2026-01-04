@@ -1,0 +1,85 @@
+/* ========================================
+   UNIFIED HERO HEADER STYLES
+   All pages share the same hero styling
+   Structure: .{page}-hero > .hero-intro > h1.hero-title + p.hero-subtitle
+   ======================================== */
+
+/* Outer wrapper - provides margin-bottom spacing from content below */
+.rank-hero,
+.coinbook-hero,
+.flavor-index-hero,
+.leaderboard-hero {
+  margin-bottom: 64px;
+}
+
+/* Inner intro container - border, padding, and decorative line */
+.rank-hero .hero-intro,
+.coinbook-hero .hero-intro,
+.flavor-index-hero .hero-intro,
+.leaderboard-hero .hero-intro {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 48px;
+  border-bottom: 1px solid rgba(255, 138, 43, 0.3);
+  position: relative;
+}
+
+.rank-hero .hero-intro::after,
+.coinbook-hero .hero-intro::after,
+.flavor-index-hero .hero-intro::after,
+.leaderboard-hero .hero-intro::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translate(-50%);
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--rank-gold) 50%, transparent 100%);
+}
+
+/* Hero title styling */
+.rank-hero .hero-title,
+.coinbook-hero .hero-title,
+.flavor-index-hero .hero-title,
+.leaderboard-hero .hero-title {
+  font-size: 3.5rem;
+  font-weight: 700;
+  color: #F5F5F5;
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+  text-shadow: var(--rank-shadow-glow);
+  font-family: var(--font-headline);
+  text-transform: uppercase;
+}
+
+/* Hero subtitle styling */
+.rank-hero .hero-subtitle,
+.coinbook-hero .hero-subtitle,
+.flavor-index-hero .hero-subtitle,
+.leaderboard-hero .hero-subtitle {
+  font-size: 1.125rem;
+  color: #A0A0A0;
+  margin: 0 auto;
+  max-width: 800px;
+  line-height: 1.7;
+  font-family: var(--font-body);
+  font-weight: 400;
+}
+
+/* Media query overrides for smaller screens */
+@media (max-width: 1024px) {
+  .rank-hero .hero-title,
+  .coinbook-hero .hero-title,
+  .flavor-index-hero .hero-title,
+  .leaderboard-hero .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .rank-hero .hero-subtitle,
+  .coinbook-hero .hero-subtitle,
+  .flavor-index-hero .hero-subtitle,
+  .leaderboard-hero .hero-subtitle {
+    font-size: 1rem;
+  }
+}

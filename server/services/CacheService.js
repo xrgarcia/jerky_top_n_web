@@ -133,15 +133,17 @@ class CacheService {
 
   // Ranking Stats Cache Methods
   async getRankingStats() {
-    return await this.rankingStats.get('data');
+    return await this.rankingStats.get('all_stats');
   }
 
   async setRankingStats(data, ttlSeconds = 1800) { // 30 minutes default
-    return await this.rankingStats.set('data', data, ttlSeconds);
+    return await this.rankingStats.set('all_stats', data, ttlSeconds);
   }
 
   async invalidateRankingStats() {
-    return await this.rankingStats.del('data');
+    await this.rankingStats.del('all_stats');
+    await this.rankingStats.del('timestamp');
+    console.log('🗑️ CacheService: RankingStats cache invalidated (all_stats + timestamp)');
   }
 
   // Product Cache Methods

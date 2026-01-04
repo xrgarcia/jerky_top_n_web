@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RANK — Flavor Index</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
+      background: #0F0F0F;
+      color: #EDEDED;
+      min-height: 100vh;
+      padding: 0;
+    }
+
+    /* Header */
+    .header {
+      background: #1A1A1A;
+      border-bottom: 1px solid #232323;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #FFFFFF;
+    }
+
+    .user-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FF8A2B 0%, #FFC46A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 18px;
+      color: #0F0F0F;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .user-name {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .user-xp {
+      font-size: 11px;
+      color: #A4A4A4;
+      font-family: 'Courier New', monospace;
+      font-weight: 600;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 48px 48px 80px;
+    }
+
+    /* Hero Header */
+    .hero-header {
+      margin-bottom: 40px;
+    }
+
+    .hero-title {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #EDEDED;
+      margin-bottom: 8px;
+      position: relative;
+      display: inline-block;
+    }
+
+    .hero-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #FF8A2B 0%, #FFC46A 100%);
+      box-shadow: 0 0 8px rgba(255, 138, 43, 0.4);
+    }
+
+    .hero-subtitle {
+      font-size: 15px;
+      color: #A4A4A4;
+      margin-top: 16px;
+      font-weight: 400;
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      background: #141414;
+      border: 1px solid #232323;
+      border-radius: 12px;
+      padding: 20px 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #A4A4A4;
+    }
+
+    .filter-dropdown {
+      background: #1A1A1A;
+      border: 1px solid #232323;
+      border-radius: 8px;
+      padding: 10px 16px;
+      color: #EDEDED;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      min-width: 160px;
+    }
+
+    .filter-dropdown:hover {
+      border-color: rgba(255, 138, 43, 0.4);
+      box-shadow: 0 0 12px rgba(255, 138, 43, 0.15);
+    }
+
+    .divider {
+      width: 1px;
+      height: 32px;
+      background: #232323;
+    }
+
+    .search-field {
+      margin-left: auto;
+      background: #1A1A1A;
+      border: 1px solid #232323;
+      border-radius: 8px;
+      padding: 10px 16px;
+      color: #EDEDED;
+      font-size: 13px;
+      width: 280px;
+      transition: all 0.2s;
+    }
+
+    .search-field:focus {
+      outline: none;
+      border-color: rgba(255, 138, 43, 0.4);
+      box-shadow: 0 0 12px rgba(255, 138, 43, 0.15);
+    }
+
+    .search-field::placeholder {
+      color: #A4A4A4;
+    }
+
+    /* Leaderboard */
+    .leaderboard {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 64px;
+    }
+
+    /* Leaderboard Row */
+    .leaderboard-row {
+      background: #141414;
+      border: 1px solid #232323;
+      border-radius: 12px;
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 300px 1fr 100px;
+      align-items: center;
+      gap: 32px;
+      transition: all 0.3s;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .leaderboard-row:hover {
+      background: #1A1A1A;
+      border-color: rgba(255, 138, 43, 0.3);
+      box-shadow: 0 4px 20px rgba(255, 138, 43, 0.1);
+      transform: translateX(4px);
+    }
+
+    .leaderboard-row::after {
+      content: 'View full breakdown →';
+      position: absolute;
+      right: 24px;
+      bottom: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      color: #FF8A2B;
+      opacity: 0;
+      transition: opacity 0.3s;
+      text-transform: uppercase;
+    }
+
+    .leaderboard-row:hover::after {
+      opacity: 1;
+    }
+
+    /* Mini Flavor Card (Left Zone) */
+    .mini-flavor-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .flavor-coin {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.15) 0%, rgba(255, 196, 106, 0.15) 100%);
+      border: 2px solid rgba(255, 138, 43, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      flex-shrink: 0;
+    }
+
+    .flavor-info {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .flavor-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #EDEDED;
+      letter-spacing: 0.3px;
+    }
+
+    .meat-type {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #FF8A2B;
+    }
+
+    /* Distribution Bar (Center Zone) */
+    .distribution-bar {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .distribution-visual {
+      display: flex;
+      height: 32px;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #1A1A1A;
+      border: 1px solid #232323;
+    }
+
+    .distribution-segment {
+      height: 100%;
+      transition: all 0.3s;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .distribution-segment:hover {
+      filter: brightness(1.2);
+    }
+
+    .seg-1st {
+      background: linear-gradient(135deg, #FF8A2B 0%, #FFC46A 100%);
+      box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.2);
+    }
+
+    .seg-2nd {
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.7) 0%, rgba(255, 196, 106, 0.7) 100%);
+    }
+
+    .seg-3rd {
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.5) 0%, rgba(255, 196, 106, 0.5) 100%);
+    }
+
+    .seg-other {
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.2) 0%, rgba(255, 196, 106, 0.2) 100%);
+    }
+
+    .distribution-legend {
+      display: flex;
+      gap: 16px;
+      font-size: 11px;
+      color: #A4A4A4;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Rank Number (Right Zone) */
+    .rank-number {
+      text-align: right;
+      font-size: 32px;
+      font-weight: 900;
+      font-family: 'Courier New', monospace;
+      color: #EDEDED;
+      letter-spacing: -1px;
+    }
+
+    .rank-number.top-3 {
+      background: linear-gradient(135deg, #FFC46A 0%, #FF8A2B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Category Summaries */
+    .category-summaries {
+      margin-bottom: 64px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: #EDEDED;
+      margin-bottom: 24px;
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .category-card {
+      background: #141414;
+      border: 1px solid #232323;
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .category-card:hover {
+      border-color: rgba(255, 138, 43, 0.4);
+      box-shadow: 0 4px 20px rgba(255, 138, 43, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .category-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #A4A4A4;
+      margin-bottom: 16px;
+    }
+
+    .category-flavor {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .category-coin {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, rgba(255, 138, 43, 0.15) 0%, rgba(255, 196, 106, 0.15) 100%);
+      border: 2px solid rgba(255, 138, 43, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .category-flavor-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #EDEDED;
+    }
+
+    /* Footer CTA */
+    .footer-cta {
+      text-align: center;
+      padding: 48px 0;
+      border-top: 1px solid #232323;
+    }
+
+    .cta-links {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .cta-link {
+      font-size: 14px;
+      font-weight: 600;
+      color: #FF8A2B;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .cta-link:hover {
+      color: #FFC46A;
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="logo">RANK.</div>
+    <div class="user-section">
+      <div class="user-info">
+        <div class="user-name">DOUG</div>
+        <div class="user-xp">50,000 XP • Taste Explorer</div>
+      </div>
+      <div class="user-avatar">D</div>
+    </div>
+  </div>
+
+  <!-- Container -->
+  <div class="container">
+    
+    <!-- Hero Header -->
+    <div class="hero-header">
+      <h1 class="hero-title">Flavor Index</h1>
+      <p class="hero-subtitle">Every flavor, ranked by the community.</p>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <div class="filter-group">
+        <div class="filter-label">Category</div>
+        <select class="filter-dropdown">
+          <option>All Flavors</option>
+          <option>Beef</option>
+          <option>Turkey</option>
+          <option>Pork</option>
+          <option>Venison</option>
+          <option>Exotic</option>
+        </select>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="filter-group">
+        <div class="filter-label">Sort By</div>
+        <select class="filter-dropdown">
+          <option>Community Rank</option>
+          <option>Most Popular</option>
+          <option>Newly Ranked</option>
+          <option>Alphabetical</option>
+        </select>
+      </div>
+
+      <input type="text" class="search-field" placeholder="Search flavors...">
+    </div>
+
+    <!-- Leaderboard -->
+    <div class="leaderboard">
+      
+      <!-- Rank #1 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🥓</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Bacon Jam Beef Bacon</div>
+            <div class="meat-type">Beef</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 65%;">65%</div>
+            <div class="distribution-segment seg-2nd" style="width: 20%;">20%</div>
+            <div class="distribution-segment seg-3rd" style="width: 10%;">10%</div>
+            <div class="distribution-segment seg-other" style="width: 5%;"></div>
+          </div>
+          <div class="distribution-legend">
+            <div class="legend-item">
+              <div class="legend-dot" style="background: #FF8A2B;"></div>
+              <span>1st Place</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: rgba(255, 138, 43, 0.7);"></div>
+              <span>2nd Place</span>
+            </div>
+            <div class="legend-item">
+              <div class="legend-dot" style="background: rgba(255, 138, 43, 0.5);"></div>
+              <span>3rd Place</span>
+            </div>
+          </div>
+        </div>
+        <div class="rank-number top-3">#1</div>
+      </div>
+
+      <!-- Rank #2 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🔥</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Ghost Pepper Beef</div>
+            <div class="meat-type">Beef</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 45%;">45%</div>
+            <div class="distribution-segment seg-2nd" style="width: 35%;">35%</div>
+            <div class="distribution-segment seg-3rd" style="width: 15%;">15%</div>
+            <div class="distribution-segment seg-other" style="width: 5%;"></div>
+          </div>
+        </div>
+        <div class="rank-number top-3">#2</div>
+      </div>
+
+      <!-- Rank #3 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🍁</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Maple Venison</div>
+            <div class="meat-type">Venison</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 42%;">42%</div>
+            <div class="distribution-segment seg-2nd" style="width: 30%;">30%</div>
+            <div class="distribution-segment seg-3rd" style="width: 18%;">18%</div>
+            <div class="distribution-segment seg-other" style="width: 10%;"></div>
+          </div>
+        </div>
+        <div class="rank-number top-3">#3</div>
+      </div>
+
+      <!-- Rank #4 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🍯</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Honey BBQ Pork</div>
+            <div class="meat-type">Pork</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 38%;">38%</div>
+            <div class="distribution-segment seg-2nd" style="width: 28%;">28%</div>
+            <div class="distribution-segment seg-3rd" style="width: 22%;">22%</div>
+            <div class="distribution-segment seg-other" style="width: 12%;"></div>
+          </div>
+        </div>
+        <div class="rank-number">#4</div>
+      </div>
+
+      <!-- Rank #5 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🌶️</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Jalapeño Pork</div>
+            <div class="meat-type">Pork</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 35%;">35%</div>
+            <div class="distribution-segment seg-2nd" style="width: 32%;">32%</div>
+            <div class="distribution-segment seg-3rd" style="width: 20%;">20%</div>
+            <div class="distribution-segment seg-other" style="width: 13%;"></div>
+          </div>
+        </div>
+        <div class="rank-number">#5</div>
+      </div>
+
+      <!-- Rank #6 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🫐</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Blueberry Venison</div>
+            <div class="meat-type">Venison</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 32%;">32%</div>
+            <div class="distribution-segment seg-2nd" style="width: 28%;">28%</div>
+            <div class="distribution-segment seg-3rd" style="width: 25%;">25%</div>
+            <div class="distribution-segment seg-other" style="width: 15%;"></div>
+          </div>
+        </div>
+        <div class="rank-number">#6</div>
+      </div>
+
+      <!-- Rank #7 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🦃</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Carolina Reaper Turkey</div>
+            <div class="meat-type">Turkey</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 30%;">30%</div>
+            <div class="distribution-segment seg-2nd" style="width: 26%;">26%</div>
+            <div class="distribution-segment seg-3rd" style="width: 24%;">24%</div>
+            <div class="distribution-segment seg-other" style="width: 20%;"></div>
+          </div>
+        </div>
+        <div class="rank-number">#7</div>
+      </div>
+
+      <!-- Rank #8 -->
+      <div class="leaderboard-row">
+        <div class="mini-flavor-card">
+          <div class="flavor-coin">🍎</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Apple Butter Pork Bacon</div>
+            <div class="meat-type">Pork</div>
+          </div>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-visual">
+            <div class="distribution-segment seg-1st" style="width: 28%;">28%</div>
+            <div class="distribution-segment seg-2nd" style="width: 30%;">30%</div>
+            <div class="distribution-segment seg-3rd" style="width: 22%;">22%</div>
+            <div class="distribution-segment seg-other" style="width: 20%;"></div>
+          </div>
+        </div>
+        <div class="rank-number">#8</div>
+      </div>
+
+    </div>
+
+    <!-- Category Summaries -->
+    <div class="category-summaries">
+      <h2 class="section-title">Top by Category</h2>
+      <div class="category-grid">
+        
+        <div class="category-card">
+          <div class="category-label">Top Beef</div>
+          <div class="category-flavor">
+            <div class="category-coin">🥓</div>
+            <div class="category-flavor-name">Bacon Jam Beef Bacon</div>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-label">Top Turkey</div>
+          <div class="category-flavor">
+            <div class="category-coin">🦃</div>
+            <div class="category-flavor-name">Carolina Reaper Turkey</div>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-label">Top Venison</div>
+          <div class="category-flavor">
+            <div class="category-coin">🍁</div>
+            <div class="category-flavor-name">Maple Venison</div>
+          </div>
+        </div>
+
+        <div class="category-card">
+          <div class="category-label">Top Pork</div>
+          <div class="category-flavor">
+            <div class="category-coin">🍯</div>
+            <div class="category-flavor-name">Honey BBQ Pork</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer CTA -->
+    <div class="footer-cta">
+      <div class="cta-links">
+        <a href="#" class="cta-link">
+          <span>See Flavor of the Day</span>
+          <span>→</span>
+        </a>
+        <a href="#" class="cta-link">
+          <span>Explore All Flavors</span>
+          <span>→</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

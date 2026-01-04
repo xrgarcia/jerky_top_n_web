@@ -1,52 +1,259 @@
-/* ProductDetailPage - Modern, Apple-inspired flavor detail page */
+/* ========================================
+   PRODUCT DETAIL PAGE
+   Dark Gaming-Inspired Design - RANK Identity System
+   ======================================== */
 
-.product-detail-page {
-  min-height: 100vh;
-  background: #faf8f3;
+/* Page shell padding handled by layout.css */
+
+/* Base Card Styling */
+.product-detail-page .card {
+  background: #1a1a1a;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  border: 1px solid #232323;
 }
 
-.product-detail-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 40px 40px 80px;
+/* ========================================
+   HERO ROW - Two Column Layout
+   ======================================== */
+
+.hero-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
 }
 
-/* Back Link */
-.back-link {
+/* Flavor Identity Card */
+.flavor-identity-card {
+  padding: 1.25rem;
+}
+
+.flavor-content {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.flavor-avatar-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.flavor-icon-large {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.3), rgba(255, 196, 106, 0.2));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  animation: coinPulse 3s ease-in-out infinite;
+}
+
+.flavor-icon-large::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent);
+}
+
+.flavor-icon-inner {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #0f0f0f;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes coinPulse {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 138, 43, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(255, 138, 43, 0.5);
+  }
+}
+
+.flavor-info {
+  flex: 1;
+}
+
+.flavor-name {
+  font-family: var(--font-headline, 'Space Grotesk', sans-serif);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  color: #f5f5f5;
+}
+
+.rank-badge {
   display: inline-flex;
   align-items: center;
-  color: #8B6F3D;
-  text-decoration: none;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
+  border: 1px solid rgba(255, 138, 43, 0.4);
+  border-radius: 8px;
+  font-size: 0.7rem;
+  color: #ffc46a;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+  text-align: center;
+}
+
+.top-flavors-badge {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1));
+  border: 1px solid rgba(255, 138, 43, 0.4);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.top-flavors-badge .badge-label {
+  font-size: 0.75rem;
+  color: #ffc46a;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.top-flavors-badge .badge-dot {
+  font-size: 0.75rem;
+  color: #ffc46a;
+}
+
+.top-flavors-badge .badge-sub {
+  font-size: 0.75rem;
+  color: #ffc46a;
+}
+
+.category-tag {
+  display: inline-flex;
+  padding: 0.25rem 0.625rem;
+  background: rgba(255, 138, 43, 0.15);
+  border: 1px solid rgba(255, 138, 43, 0.3);
+  border-radius: 6px;
+  font-size: 0.625rem;
+  color: #ff8a2b;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 0.75rem;
+}
+
+.your-rank {
+  font-family: 'Courier New', monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffd873;
+  margin-bottom: 0.5rem;
+}
+
+.metadata {
+  font-size: 0.625rem;
+  color: #777777;
+}
+
+/* ========================================
+   BUY CTA
+   ======================================== */
+
+.buy-cta {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255, 138, 43, 0.15), rgba(255, 196, 106, 0.1));
+  border: 2px solid rgba(255, 138, 43, 0.4);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  transition: all 0.3s;
+  cursor: pointer;
+  text-align: left;
+}
+
+.buy-cta:hover {
+  border-color: rgba(255, 138, 43, 0.6);
+  box-shadow: 0 4px 20px rgba(255, 138, 43, 0.2);
+  transform: translateY(-2px);
+}
+
+.buy-cta-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.buy-cta-label {
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #5c5c5c;
+  text-transform: uppercase;
+}
+
+.buy-cta-title {
   font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 32px;
-  transition: opacity 0.2s ease;
+  font-weight: 700;
+  color: #ffc46a;
 }
 
-.back-link:hover {
-  opacity: 0.7;
+.buy-cta-button {
+  padding: 0.625rem 1.25rem;
+  background: linear-gradient(135deg, #ff8a2b, #ffc46a);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f0f0f;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s;
 }
 
-/* Loading State */
+.buy-cta:hover .buy-cta-button {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 138, 43, 0.4);
+}
+
+/* ========================================
+   LOADING & ERROR STATES
+   ======================================== */
+
 .product-detail-loading,
 .product-detail-error {
-  min-height: 60vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  min-height: 60vh;
   text-align: center;
-  padding: 60px 40px;
+  color: #a0a0a0;
 }
 
-.product-detail-loading .loading-spinner {
-  width: 48px;
-  height: 48px;
-  border: 4px solid #e8e4d9;
-  border-top-color: #8B6F3D;
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #2a2a2a;
+  border-top-color: #ff8a2b;
   border-radius: 50%;
   animation: spin 1s linear infinite;
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
 }
 
 @keyframes spin {
@@ -55,428 +262,83 @@
   }
 }
 
-.product-detail-loading p {
-  color: #666;
-  font-size: 1.125rem;
-}
-
 .product-detail-error h2 {
-  margin: 0 0 12px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #2d2d2d;
+  font-size: 1.5rem;
+  color: #f5f5f5;
+  margin-bottom: 0.5rem;
 }
 
 .product-detail-error p {
-  margin: 0 0 24px;
-  color: #666;
-  font-size: 1.125rem;
+  margin-bottom: 1.5rem;
 }
 
-.product-detail-error .back-button {
-  display: inline-block;
-  padding: 12px 24px;
-  background: #8B6F3D;
-  color: white;
+.back-link {
+  color: #ff8a2b;
   text-decoration: none;
-  border-radius: 8px;
-  font-weight: 500;
-  transition: background 0.2s ease;
-}
-
-.product-detail-error .back-button:hover {
-  background: #7A6032;
-}
-
-/* Hero Section */
-.product-hero {
-  background: white;
-  border-radius: 16px;
-  padding: 60px 40px;
-  margin-bottom: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.hero-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 32px;
-}
-
-.product-image-wrapper {
-  width: 280px;
-  height: 280px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #faf8f3;
-  border-radius: 12px;
-  overflow: hidden;
-}
-
-.product-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-}
-
-.product-info {
-  max-width: 600px;
-}
-
-.product-title {
-  margin: 0 0 12px;
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  line-height: 1.2;
-}
-
-.product-brand {
-  margin: 0 0 24px;
-  font-size: 1.25rem;
-  color: #666;
-  font-weight: 400;
-}
-
-.flavor-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-}
-
-.flavor-tag {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border: 1px solid #e8e4d9;
-}
-
-.flavor-tag.primary {
-  background: #faf8f3;
-  color: #2d2d2d;
-  border-color: #8B6F3D;
-}
-
-.flavor-tag.primary:hover {
-  background: #f5f3ee;
-  border-color: #7A6032;
-  transform: translateY(-1px);
-}
-
-.flavor-tag.secondary {
-  background: #fafafa;
-  color: #666;
-}
-
-/* Stats Section */
-.stats-section {
-  margin-bottom: 40px;
-}
-
-.stats-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 20px;
-}
-
-.stat-card {
-  background: white;
-  border-radius: 16px;
-  padding: 32px 24px;
-  text-align: center;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.stat-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-.stat-label {
-  font-size: 0.8125rem;
-  color: #999;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  margin-bottom: 12px;
-}
-
-.stat-value {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  line-height: 1;
-}
-
-.stat-card.user-rank .stat-value {
-  color: #8B6F3D;
-}
-
-.stat-card.community-rank .stat-value {
-  color: #666;
-}
-
-.stat-card.rankings-count .stat-value {
-  color: #666;
-}
-
-/* Distribution Section */
-.distribution-section {
-  background: white;
-  border-radius: 16px;
-  padding: 40px;
-  margin-bottom: 40px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.section-title {
-  margin: 0 0 8px;
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: #2d2d2d;
-  text-align: center;
-}
-
-.section-subtitle {
-  margin: 0 0 32px;
-  font-size: 1rem;
-  color: #666;
-  text-align: center;
-}
-
-.distribution-chart {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.chart-bars {
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 12px;
-  min-height: 200px;
-  padding: 20px 0;
-}
-
-.chart-bar-container {
-  flex: 1;
-  max-width: 60px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.chart-bar {
-  width: 100%;
-  background: linear-gradient(to top, #d0d0d0, #e8e8e8);
-  border-radius: 8px 8px 0 0;
-  min-height: 40px;
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 8px;
-  transition: all 0.3s ease;
-}
-
-.chart-bar:hover {
-  background: linear-gradient(to top, #c0c0c0, #d8d8d8);
-  transform: scaleY(1.05);
-}
-
-.chart-bar.is-average {
-  background: linear-gradient(to top, #8B6F3D, #A88D5E);
-}
-
-.chart-bar.is-average:hover {
-  background: linear-gradient(to top, #7A6032, #977B4D);
-}
-
-.bar-count {
   font-size: 0.875rem;
-  font-weight: 700;
-  color: #666;
-}
-
-.chart-bar.is-average .bar-count {
-  color: white;
-}
-
-.chart-label {
-  font-size: 0.875rem;
-  font-weight: 500;
-  color: #666;
-}
-
-.chart-legend {
-  display: flex;
-  justify-content: center;
-  gap: 24px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1px solid #e8e4d9;
-}
-
-.legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
-  color: #666;
-}
-
-.legend-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-}
-
-.legend-dot.highlight {
-  background: linear-gradient(to bottom, #8B6F3D, #A88D5E);
-}
-
-.distribution-empty {
-  text-align: center;
-  padding: 60px 40px;
-  color: #999;
-  font-style: italic;
-}
-
-/* CTA Section */
-.cta-section {
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  flex-wrap: wrap;
-  padding: 20px 0;
-}
-
-.cta-button {
-  padding: 16px 32px;
-  font-size: 1.125rem;
   font-weight: 600;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 220px;
+  transition: all 0.2s;
 }
 
-.cta-button.primary {
-  background: #8B6F3D;
-  color: white;
-  box-shadow: 0 2px 8px rgba(139, 111, 61, 0.3);
-  border-radius: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.2px;
+.back-link:hover {
+  color: #ffc46a;
+  text-decoration: underline;
 }
 
-.cta-button.primary:hover {
-  background: #7A6032;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(139, 111, 61, 0.4);
-}
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
 
-.cta-button.primary:active {
-  transform: translateY(0);
-}
-
-.cta-button.secondary {
-  background: white;
-  color: #8B6F3D;
-  border: 2px solid #8B6F3D;
-  border-radius: 14px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  letter-spacing: -0.2px;
-}
-
-.cta-button.secondary:hover {
-  background: #faf8f3;
-  border-color: #7A6032;
-  color: #7A6032;
-  transform: translateY(-2px);
-}
-
-.cta-button.secondary:active {
-  transform: translateY(0);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .product-detail-container {
-    padding: 24px 20px 60px;
-  }
-
-  .product-hero {
-    padding: 40px 24px;
-  }
-
-  .product-title {
-    font-size: 2rem;
-  }
-
-  .product-brand {
-    font-size: 1.125rem;
-  }
-
-  .product-image-wrapper {
-    width: 220px;
-    height: 220px;
-  }
-
-  .stats-grid {
+@media (max-width: 1024px) {
+  .hero-row {
     grid-template-columns: 1fr;
-    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .flavor-content {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
-  .distribution-section {
-    padding: 32px 20px;
+  .flavor-icon-large {
+    width: 100px;
+    height: 100px;
   }
 
-  .section-title {
+  .flavor-icon-inner {
+    width: 92px;
+    height: 92px;
+    font-size: 2.5rem;
+  }
+
+  .flavor-name {
     font-size: 1.5rem;
   }
 
-  .chart-bars {
-    gap: 8px;
-    min-height: 160px;
-  }
-
-  .chart-bar-container {
-    max-width: 40px;
-  }
-
-  .cta-section {
+  .buy-cta {
     flex-direction: column;
-    gap: 12px;
+    gap: 1rem;
+    text-align: center;
   }
 
-  .cta-button {
-    width: 100%;
+  .buy-cta-content {
+    align-items: center;
   }
 }
 
-@media (min-width: 769px) {
-  .hero-content {
-    flex-direction: row;
-    text-align: left;
+@media (max-width: 640px) {
+  .flavor-name {
+    font-size: 1.25rem;
   }
 
-  .product-info {
-    text-align: left;
+  .your-rank {
+    font-size: 1rem;
   }
 
-  .flavor-tags {
-    justify-content: flex-start;
+  .rank-badge {
+    font-size: 0.625rem;
+    padding: 0.25rem 0.5rem;
   }
 }

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RANK. - Full Rankings</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif; background: #0F0F0F; color: #F2F2F2; }
+    
+    nav { background: #0F0F0F; border-bottom: 1px solid #2A2A2A; }
+    .nav-container { max-width: 1100px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-size: 1.5rem; font-weight: 700; color: #F2F2F2; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { color: #5C5C5C; text-decoration: none; font-size: 0.75rem; font-weight: 600; }
+    
+    .container { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    
+    /* Page Header */
+    .page-header { text-align: center; margin-bottom: 1.5rem; padding: 2rem 1.5rem; background: #1A1A1A; border-radius: 12px; }
+    .page-title { font-size: 2rem; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+    .page-subtitle { font-size: 0.875rem; color: #A0A0A0; font-weight: 500; }
+    
+    /* Filter Bar */
+    .filter-bar { position: sticky; top: 0; z-index: 10; background: #0F0F0F; padding: 1rem 0; margin-bottom: 1.5rem; border-bottom: 1px solid #2A2A2A; }
+    .filters { display: flex; gap: 0.625rem; flex-wrap: wrap; }
+    .filter-pill { padding: 0.5rem 1rem; background: transparent; border: 1px solid #3D3D3D; border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: #A0A0A0; cursor: pointer; transition: all 0.2s; }
+    .filter-pill:hover { border-color: #FF8A2B; color: #FF8A2B; }
+    .filter-pill.active { background: rgba(255, 138, 43, 0.15); border-color: #FF8A2B; color: #FF8A2B; box-shadow: 0 0 12px rgba(255, 138, 43, 0.2); }
+    
+    /* Ranking List */
+    .ranking-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem; }
+    
+    .rank-row { display: flex; align-items: center; gap: 1.5rem; padding: 1rem 1.25rem; background: #1A1A1A; border: 1px solid #2A2A2A; border-radius: 10px; transition: all 0.2s; cursor: pointer; }
+    .rank-row:hover { border-color: #FF8A2B; box-shadow: 0 0 16px rgba(255, 138, 43, 0.15); }
+    .rank-row:nth-child(even) { background: #191919; }
+    
+    /* Left: Rank Number */
+    .rank-number { font-family: 'Courier New', monospace; font-size: 1.5rem; font-weight: 700; color: #5C5C5C; width: 60px; flex-shrink: 0; }
+    .rank-row.top-10 .rank-number { color: #FFD873; text-shadow: 0 0 8px rgba(255, 216, 115, 0.3); }
+    
+    /* Middle: Flavor Identity */
+    .flavor-identity { display: flex; align-items: center; gap: 1rem; flex: 1; }
+    .flavor-coin-small { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, rgba(255, 138, 43, 0.2), rgba(255, 196, 106, 0.1)); border: 1px solid rgba(255, 138, 43, 0.25); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; }
+    .flavor-info { flex: 1; }
+    .flavor-name { font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .category-pill { display: inline-flex; padding: 0.125rem 0.5rem; background: rgba(255, 138, 43, 0.1); border: 1px solid rgba(255, 138, 43, 0.2); border-radius: 4px; font-size: 0.625rem; color: #FF8A2B; text-transform: uppercase; font-weight: 600; }
+    
+    /* Right: Meta Indicators */
+    .meta-indicators { display: flex; align-items: center; gap: 0.75rem; }
+    .movement-indicator { font-size: 0.875rem; }
+    .movement-up { color: #4CAF50; }
+    .movement-down { color: #F44336; }
+    .badge { padding: 0.25rem 0.5rem; background: #2A2A2A; border-radius: 4px; font-size: 0.625rem; color: #A0A0A0; font-weight: 600; }
+    
+    /* End State */
+    .end-card { text-align: center; padding: 2rem; background: #1A1A1A; border-radius: 12px; border: 1px solid #2A2A2A; margin-bottom: 1.5rem; }
+    .end-title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; color: #5C5C5C; }
+    .end-text { font-size: 0.75rem; color: #777777; }
+    
+    /* Footer */
+    .footer { text-align: center; padding: 1.5rem; border-top: 1px solid #2A2A2A; }
+    .footer-logo { font-size: 0.875rem; font-weight: 700; color: #5C5C5C; margin-bottom: 0.25rem; }
+    .footer-version { font-size: 0.625rem; color: #777777; }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="nav-container">
+      <div class="logo">RANK.</div>
+      <div class="nav-links">
+        <a href="#">DISCOVER</a>
+        <a href="#">LEADERBOARD</a>
+        <a href="#">COMMUNITY</a>
+      </div>
+    </div>
+  </nav>
+  
+  <div class="container">
+    <!-- Page Header -->
+    <div class="page-header">
+      <h1 class="page-title">DOUG'S FULL RANKINGS</h1>
+      <p class="page-subtitle">147 Flavors Ranked</p>
+    </div>
+    
+    <!-- Filter Bar (Sticky) -->
+    <div class="filter-bar">
+      <div class="filters">
+        <button class="filter-pill active">All</button>
+        <button class="filter-pill">Heat</button>
+        <button class="filter-pill">Sweet</button>
+        <button class="filter-pill">Smoky</button>
+        <button class="filter-pill">Umami</button>
+        <button class="filter-pill">Wild</button>
+        <button class="filter-pill">Classic</button>
+        <button class="filter-pill">Recently Updated</button>
+      </div>
+    </div>
+    
+    <!-- Ranking List -->
+    <div class="ranking-list">
+      <!-- #1 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#1</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🌶️</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Sriracha Beef</div>
+            <span class="category-pill">🔥 Heat</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-up">↑</span>
+          <span class="badge">Top 1%</span>
+        </div>
+      </div>
+      
+      <!-- #2 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#2</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🌮</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Teriyaki Pork</div>
+            <span class="category-pill">🍖 Savory</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Fan Favorite</span>
+        </div>
+      </div>
+      
+      <!-- #3 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#3</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🥩</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Peppered Turkey</div>
+            <span class="category-pill">⚡ Classic</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-down">↓</span>
+          <span class="badge">Underrated</span>
+        </div>
+      </div>
+      
+      <!-- #4 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#4</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🍯</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Honey Bourbon</div>
+            <span class="category-pill">🍬 Sweet</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Polarizing</span>
+        </div>
+      </div>
+      
+      <!-- #5 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#5</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🔥</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Ghost Pepper</div>
+            <span class="category-pill">🔥 Extreme Heat</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-up">↑↑</span>
+        </div>
+      </div>
+      
+      <!-- #6 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#6</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🥓</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Maple Bacon</div>
+            <span class="category-pill">🍬 Sweet</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Top 5%</span>
+        </div>
+      </div>
+      
+      <!-- #7 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#7</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🌿</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Herb & Garlic</div>
+            <span class="category-pill">🌱 Savory</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-down">↓</span>
+        </div>
+      </div>
+      
+      <!-- #8 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#8</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🍊</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Citrus Ginger</div>
+            <span class="category-pill">🍋 Tangy</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Experimental</span>
+        </div>
+      </div>
+      
+      <!-- #9 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#9</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🌶️</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Chipotle Beef</div>
+            <span class="category-pill">💨 Smoky Heat</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-up">↑</span>
+        </div>
+      </div>
+      
+      <!-- #10 -->
+      <div class="rank-row top-10">
+        <div class="rank-number">#10</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🍖</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Korean BBQ</div>
+            <span class="category-pill">🍖 Umami</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Top 10%</span>
+        </div>
+      </div>
+      
+      <!-- #11 - Non-top-10 styling -->
+      <div class="rank-row">
+        <div class="rank-number">#11</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🧂</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Sea Salt & Cracked Pepper</div>
+            <span class="category-pill">⚡ Classic</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Timeless</span>
+        </div>
+      </div>
+      
+      <!-- #12 -->
+      <div class="rank-row">
+        <div class="rank-number">#12</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🍅</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Tomato Basil</div>
+            <span class="category-pill">🌱 Savory</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-up">↑</span>
+        </div>
+      </div>
+      
+      <!-- #13 -->
+      <div class="rank-row">
+        <div class="rank-number">#13</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🥜</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Spicy Peanut</div>
+            <span class="category-pill">🌰 Wild</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Unique</span>
+        </div>
+      </div>
+      
+      <!-- #14 -->
+      <div class="rank-row">
+        <div class="rank-number">#14</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🍇</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Black Cherry BBQ</div>
+            <span class="category-pill">🍬 Sweet</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="movement-indicator movement-down">↓↓</span>
+        </div>
+      </div>
+      
+      <!-- #15 -->
+      <div class="rank-row">
+        <div class="rank-number">#15</div>
+        <div class="flavor-identity">
+          <div class="flavor-coin-small">🌶️</div>
+          <div class="flavor-info">
+            <div class="flavor-name">Jalapeño Cheddar</div>
+            <span class="category-pill">🔥 Heat</span>
+          </div>
+        </div>
+        <div class="meta-indicators">
+          <span class="badge">Rising</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- End State -->
+    <div class="end-card">
+      <div class="end-title">End of List</div>
+      <p class="end-text">You've reached all 147 rankings.</p>
+    </div>
+  </div>
+  
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-logo">RANK.</div>
+    <div class="footer-version">v1.0.0</div>
+  </div>
+</body>
+</html>

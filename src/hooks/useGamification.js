@@ -78,3 +78,14 @@ export function useHeroStats() {
     staleTime: 30 * 1000, // 30 seconds - frequently updated
   });
 }
+
+export function useUserGuidance(pageContext = 'general') {
+  return useQuery({
+    queryKey: ['userGuidance', pageContext],
+    queryFn: async () => {
+      const data = await api.get(`/gamification/user-guidance?page=${pageContext}`);
+      return data;
+    },
+    staleTime: 5 * 60 * 1000, // 5 minutes - cached on backend
+  });
+}

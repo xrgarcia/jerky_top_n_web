@@ -9,9 +9,9 @@
   justify-content: center;
   transition: transform 0.3s ease, filter 0.3s ease;
   animation: fadeIn 0.5s ease 0.3s backwards;
-  background: linear-gradient(135deg, #d4c4a8 0%, #c4b49a 50%, #b8a88c 100%);
+  background: var(--rank-gradient-gold);
   border-right: none;
-  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 20px var(--rank-shadow-card);
   padding: 20px 0.75rem;
 }
 
@@ -36,10 +36,10 @@
   height: 120px;
   border-radius: 8px;
   overflow: hidden;
-  background: #e8dcc8;
+  background: var(--rank-bg-card-elevated);
   box-shadow: 
-    0 4px 12px rgba(0, 0, 0, 0.6),
-    inset 0 0 15px rgba(0, 0, 0, 0.15);
+    var(--rank-shadow-elevated),
+    inset 0 0 15px var(--rank-shadow-card);
   position: relative;
   margin-bottom: 0.5rem;
   display: flex;
@@ -52,8 +52,8 @@
 
 .next-card-icon {
   font-size: 2rem;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
-  color: #2a2520;
+  filter: drop-shadow(0 2px 4px var(--rank-shadow-card));
+  color: var(--rank-text-label);
   position: relative;
   z-index: 2;
 }
@@ -67,17 +67,17 @@
 .next-card-headline {
   font-size: 0.7rem;
   font-weight: 700;
-  color: #2a2520;
+  color: var(--rank-text-label);
   margin: 0 0 0.15rem 0;
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 1px 2px var(--rank-overlay-glass);
 }
 
 .next-card-subtitle {
   font-size: 0.6rem;
-  color: #3d3020;
+  color: var(--rank-text-label);
   margin: 0;
   line-height: 1.1;
   font-weight: 600;
@@ -91,8 +91,8 @@
 .next-card-cta {
   display: inline-block;
   padding: 0.35rem 0.65rem;
-  background: #2a2520;
-  color: #d4af37;
+  background: var(--rank-text-label);
+  color: var(--rank-accent-gold);
   text-decoration: none;
   border-radius: 4px;
   font-size: 0.65rem;
@@ -101,25 +101,25 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  border: 1px solid #1a1510;
+    var(--rank-shadow-card),
+    inset 0 1px 0 var(--rank-overlay-glass);
+  border: 1px solid var(--rank-bg-charcoal);
 }
 
 .next-card-cta:hover {
-  background: #3a3530;
-  color: #f5f1e8;
+  background: var(--rank-bg-card-elevated);
+  color: var(--rank-bg-card-elevated);
   transform: translateY(-2px);
   box-shadow: 
-    0 5px 10px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    var(--rank-shadow-elevated),
+    inset 0 1px 0 var(--rank-overlay-glass);
 }
 
 .next-card-cta:active {
   transform: translateY(0);
   box-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.6),
-    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+    var(--rank-shadow-elevated),
+    inset 0 2px 4px var(--rank-shadow-card);
 }
 
 @media (max-width: 768px) {

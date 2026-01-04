@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: var(--rank-overlay-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,9 +23,9 @@
 }
 
 .ranking-modal {
-  background: #fff;
+  background: var(--rank-bg-obsidian);
   border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 10px 40px var(--rank-shadow-elevated);
   max-height: 90vh;
   width: 95%;
   max-width: 900px;
@@ -50,8 +50,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  border-bottom: 2px solid #d4a373;
-  background-color: #f5f5f5;
+  border-bottom: 2px solid var(--rank-accent-gold);
+  background-color: var(--rank-bg-slate);
   border-radius: 12px 12px 0 0;
   gap: 1rem;
 }
@@ -70,7 +70,7 @@
   flex-shrink: 0;
   border-radius: 8px;
   overflow: hidden;
-  border: 2px solid #d4a373;
+  border: 2px solid var(--rank-accent-gold);
 }
 
 .modal-product-thumbnail img {
@@ -85,9 +85,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
+  background-color: var(--rank-bg-slate);
   font-size: 0.7rem;
-  color: #666;
+  color: var(--rank-text-muted);
   text-align: center;
 }
 
@@ -95,7 +95,7 @@
   font-size: 1.25rem;
   font-weight: bold;
   margin: 0;
-  color: #2c3e50;
+  color: var(--rank-text-primary);
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -105,8 +105,8 @@
   height: 40px;
   flex-shrink: 0;
   border: none;
-  background-color: #d4a373;
-  color: white;
+  background-color: var(--rank-accent-gold);
+  color: var(--rank-text-inverted);
   font-size: 2rem;
   border-radius: 50%;
   cursor: pointer;
@@ -119,11 +119,11 @@
 }
 
 .modal-close-button:hover {
-  background-color: #b88a5c;
+  background-color: var(--rank-accent-amber);
 }
 
 .modal-close-button:focus {
-  outline: 2px solid #4a7c59;
+  outline: 2px solid var(--rank-accent-gold);
   outline-offset: 2px;
 }
 
@@ -134,11 +134,11 @@
 }
 
 .position-item {
-  border: 2px solid #e0e0e0;
+  border: 2px solid var(--rank-border-default);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 12px;
-  background-color: #fafafa;
+  background-color: var(--rank-bg-slate);
 }
 
 .position-item:last-child {
@@ -155,7 +155,7 @@
 .position-number {
   font-size: 1.1rem;
   font-weight: bold;
-  color: #4a7c59;
+  color: var(--rank-accent-gold);
 }
 
 .position-badge {
@@ -168,13 +168,13 @@
 }
 
 .position-badge.filled {
-  background-color: #d4edda;
-  color: #155724;
+  background-color: var(--rank-toast-success-bg);
+  color: var(--rank-text-primary);
 }
 
 .position-badge.empty {
-  background-color: #e2e3e5;
-  color: #6c757d;
+  background-color: var(--rank-bg-smoke);
+  color: var(--rank-text-secondary);
 }
 
 .position-current-product {
@@ -183,9 +183,9 @@
   gap: 12px;
   margin-bottom: 12px;
   padding: 8px;
-  background-color: white;
+  background-color: var(--rank-bg-obsidian);
   border-radius: 6px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid var(--rank-border-default);
 }
 
 .position-product-thumbnail {
@@ -194,7 +194,7 @@
   flex-shrink: 0;
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid #d4a373;
+  border: 1px solid var(--rank-accent-gold);
 }
 
 .position-product-thumbnail img {
@@ -209,14 +209,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #e0e0e0;
+  background-color: var(--rank-bg-slate);
   font-size: 0.6rem;
-  color: #666;
+  color: var(--rank-text-muted);
 }
 
 .position-product-name {
   font-size: 0.95rem;
-  color: #2c3e50;
+  color: var(--rank-text-primary);
   font-weight: 500;
   flex: 1;
   overflow: hidden;
@@ -244,36 +244,36 @@
 }
 
 .replace-button {
-  background-color: #d4a373;
-  color: white;
+  background-color: var(--rank-accent-gold);
+  color: var(--rank-text-inverted);
 }
 
 .replace-button:hover:not(:disabled) {
-  background-color: #b88a5c;
+  background-color: var(--rank-accent-amber);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px var(--rank-shadow-card);
 }
 
 .replace-button:disabled {
-  background-color: #e0e0e0;
-  color: #999;
+  background-color: var(--rank-bg-slate);
+  color: var(--rank-disabled-text);
   cursor: not-allowed;
   opacity: 0.6;
 }
 
 .insert-button {
-  background-color: #4a7c59;
-  color: white;
+  background-color: var(--rank-button-primary-bg);
+  color: var(--rank-text-primary);
 }
 
 .insert-button:hover {
-  background-color: #3d6649;
+  background-color: var(--rank-button-primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 8px var(--rank-shadow-card);
 }
 
 .action-button:focus {
-  outline: 3px solid #2c3e50;
+  outline: 3px solid var(--rank-accent-gold);
   outline-offset: 2px;
 }
 

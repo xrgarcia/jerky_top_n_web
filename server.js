@@ -9,6 +9,8 @@ const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
 const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
+const { ObjectStorageService, DEFAULT_COIN_ICON_PATH } = require('./server/objectStorage');
+const { debounce } = require('./server/utils/debounce');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -1280,7 +1282,7 @@ async function fetchProductsFromShopify() {
   while (true) {
     const searchParams = new URLSearchParams({
       limit: limit,
-      fields: 'id,title,handle,images,variants,vendor,product_type,tags'
+      fields: 'id,title,handle,images,variants,vendor,product_type,tags,created_at'
     });
     
     // Add cursor for pagination (if we have one from previous page)
@@ -1343,12 +1345,21 @@ async function fetchProductsFromShopify() {
 }
 
 // Main function to get products (checks cache first, then fetches if needed)
-async function fetchAllShopifyProducts() {
-  // Check if cache is valid and return cached data
-  if (isCacheValid()) {
+// Options:
+//   forceRefresh: boolean - Bypass cache and fetch fresh data from Shopify
+async function fetchAllShopifyProducts(options = {}) {
+  const { forceRefresh = false } = options;
+  
+  // Check if cache is valid and return cached data (unless forceRefresh is true)
+  if (!forceRefresh && isCacheValid()) {
     const cacheAge = getCacheAgeMinutes();
     console.log(`💾 Cache HIT: Returning ${productCache.data.length} products from cache (age: ${cacheAge} minutes)`);
     return { products: productCache.data, fromCache: true };
+  }
+  
+  // Log why we're bypassing cache
+  if (forceRefresh) {
+    console.log(`🔄 Force refresh requested - bypassing cache`);
   }
   
   // Cache miss or expired - need to fetch fresh data
@@ -1569,10 +1580,16 @@ app.get('/api/products/all', async (req, res) => {
       includeRankingStats: true
     });
     
+    // Calculate community ranks (#1, #2, #3, etc.) for Flavor Index leaderboard
+    const rankedProducts = productsService._calculateCommunityRanks(enrichedProducts);
+    
+    // Get top products by category for Flavor Index category summaries
+    const topByCategory = productsService._getTopByCategory(rankedProducts);
+    
     // Log search asynchronously (non-blocking)
     if (query && query.trim()) {
       const searchTerm = query.trim();
-      const resultCount = enrichedProducts.length;
+      const resultCount = rankedProducts.length;
       
       // Try to get userId from session
       let userId = null;
@@ -1595,8 +1612,9 @@ app.get('/api/products/all', async (req, res) => {
     }
     
     res.json({ 
-      products: enrichedProducts,
-      total: enrichedProducts.length
+      products: rankedProducts,
+      total: rankedProducts.length,
+      topByCategory
     });
     
   } catch (error) {
@@ -2043,6 +2061,12 @@ app.get('/api/products', async (req, res) => {
       products.sort((a, b) => a.title.localeCompare(b.title));
     }
     
+    // Calculate community ranks (returns products array with communityRank field set)
+    products = await productsService._calculateCommunityRanks(products);
+    
+    // Calculate top products by category (uses products with communityRank already set)
+    const topByCategory = await productsService._getTopByCategory(products);
+    
     // Calculate pagination
     const pageNum = parseInt(page, 10);
     const limitNum = parseInt(limit, 10);
@@ -2132,6 +2156,7 @@ app.get('/api/products', async (req, res) => {
     
     res.json({
       products: paginatedProducts,
+      topByCategory,
       total,
       page: pageNum,
       limit: limitNum
@@ -2797,14 +2822,17 @@ app.post('/api/rankings/products', async (req, res) => {
               achievementsToEmit.map(a => a.name).join(', '));
           }
           
+          // Invalidate progress cache to ensure fresh data on next API call
+          // This prevents stale cached data while maintaining the race condition fix
+          const ProgressCache = require('./server/cache/ProgressCache');
+          const progressCache = ProgressCache.getInstance();
+          await progressCache.invalidateUser(userId);
+          
           // Broadcast progress update via WebSocket to refresh "Your Progress" section
-          if (gamificationServices?.wsGateway) {
-            const { getRoomName } = require('./server/websocket/gateway');
-            io.to(getRoomName(`user:${userId}`)).emit('gamification:progress:updated', {
-              userId,
-              timestamp: new Date().toISOString()
-            });
-            console.log(`📊 Progress update emitted for user ${userId}`);
+          // Uses debounced emitter to prevent race conditions during rapid ranking
+          const emitProgressUpdate = app.get('emitProgressUpdate');
+          if (emitProgressUpdate) {
+            emitProgressUpdate(userId);
           }
         } catch (gamificationError) {
           console.error('Error processing gamification:', gamificationError);
@@ -3400,6 +3428,411 @@ app.get('/api/products/:productId/stats', async (req, res) => {
   }
 });
 
+// GET /api/products/:productId/distribution - Get tier-based distribution (S/A/B/C/D/F)
+// Tier calculation: p = rank / totalFlavorsRanked
+// S: p <= 0.10 (top 10%), A: 0.10 < p <= 0.25, B: 0.25 < p <= 0.50
+// C: 0.50 < p <= 0.75, D: 0.75 < p <= 0.90, F: p > 0.90 (bottom 10%)
+app.get('/api/products/:productId/distribution', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    // Get tier distribution based on percentile position in each user's ranking
+    const distributionData = await db.execute(sql`
+      WITH user_rankings AS (
+        -- Get each user's ranking of this product and their total ranked products
+        SELECT 
+          pr.user_id,
+          pr.ranking,
+          (SELECT COUNT(*) FROM product_rankings pr2 WHERE pr2.user_id = pr.user_id) as total_ranked
+        FROM product_rankings pr
+        WHERE pr.shopify_product_id = ${productId}
+      ),
+      tier_assignments AS (
+        -- Calculate percentile and assign tier
+        SELECT 
+          user_id,
+          ranking,
+          total_ranked,
+          CASE 
+            WHEN total_ranked = 0 THEN 'F'
+            ELSE 
+              CASE 
+                WHEN (ranking::float / total_ranked) <= 0.10 THEN 'S'
+                WHEN (ranking::float / total_ranked) <= 0.25 THEN 'A'
+                WHEN (ranking::float / total_ranked) <= 0.50 THEN 'B'
+                WHEN (ranking::float / total_ranked) <= 0.75 THEN 'C'
+                WHEN (ranking::float / total_ranked) <= 0.90 THEN 'D'
+                ELSE 'F'
+              END
+          END as tier
+        FROM user_rankings
+      ),
+      tier_counts AS (
+        SELECT tier, COUNT(*) as count
+        FROM tier_assignments
+        GROUP BY tier
+      ),
+      stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          COUNT(*) as total_count
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      )
+      SELECT 
+        tc.tier,
+        tc.count,
+        s.avg_rank,
+        s.best_rank,
+        s.worst_rank,
+        s.total_count
+      FROM tier_counts tc
+      CROSS JOIN stats s
+      ORDER BY 
+        CASE tc.tier 
+          WHEN 'S' THEN 1 
+          WHEN 'A' THEN 2 
+          WHEN 'B' THEN 3 
+          WHEN 'C' THEN 4 
+          WHEN 'D' THEN 5 
+          WHEN 'F' THEN 6 
+        END
+    `);
+    
+    const stats = distributionData.rows.length > 0 ? distributionData.rows[0] : null;
+    
+    // Build tiers object with all tiers (default to 0 if not present)
+    const tierOrder = ['S', 'A', 'B', 'C', 'D', 'F'];
+    const tiersMap = {};
+    distributionData.rows.forEach(row => {
+      tiersMap[row.tier] = parseInt(row.count);
+    });
+    
+    const tiers = tierOrder.map(tier => ({
+      tier,
+      count: tiersMap[tier] || 0
+    }));
+    
+    const totalRankings = stats ? parseInt(stats.total_count) : 0;
+    
+    res.json({
+      productId,
+      tiers,
+      totalRankings,
+      stats: stats ? {
+        avgRank: parseFloat(stats.avg_rank).toFixed(1),
+        bestRank: parseInt(stats.best_rank),
+        worstRank: parseInt(stats.worst_rank),
+        totalRankings
+      } : null
+    });
+  } catch (error) {
+    console.error('Distribution fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/distribution' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load distribution data' });
+  }
+});
+
+// GET /api/products/:productId/top-fans - Get random users from highest rankers
+app.get('/api/products/:productId/top-fans', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 8;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const CommunityService = require('./server/services/CommunityService');
+    const communityService = new CommunityService(db);
+    
+    // Get random users from the top 25% of rankers (those who ranked it highest)
+    const topFans = await db.execute(sql`
+      WITH ranked_users AS (
+        SELECT 
+          pr.user_id,
+          pr.ranking as user_rank,
+          u.first_name,
+          u.last_name,
+          u.display_name,
+          u.profile_image_url,
+          u.hide_name_privacy,
+          NTILE(4) OVER (ORDER BY pr.ranking ASC) as quartile
+        FROM product_rankings pr
+        INNER JOIN users u ON u.id = pr.user_id
+        WHERE pr.shopify_product_id = ${productId}
+          AND u.active = true
+      )
+      SELECT user_id, user_rank, first_name, last_name, display_name, profile_image_url, hide_name_privacy
+      FROM ranked_users
+      WHERE quartile = 1
+      ORDER BY RANDOM()
+      LIMIT ${limit}
+    `);
+    
+    const fans = topFans.rows.map(row => ({
+      userId: row.user_id,
+      userRank: parseInt(row.user_rank),
+      displayName: communityService.formatDisplayName(row),
+      avatarUrl: communityService.getAvatarUrl(row),
+      initials: communityService.getUserInitials(row)
+    }));
+    
+    res.json({ fans });
+  } catch (error) {
+    console.error('Top fans fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/top-fans' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load top fans' });
+  }
+});
+
+// GET /api/products/:productId/opposite-profiles - Get random users from lowest rankers
+app.get('/api/products/:productId/opposite-profiles', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 8;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    const CommunityService = require('./server/services/CommunityService');
+    const communityService = new CommunityService(db);
+    
+    // Get random users from the bottom 25% of rankers (those who ranked it lowest)
+    const oppositeProfiles = await db.execute(sql`
+      WITH ranked_users AS (
+        SELECT 
+          pr.user_id,
+          pr.ranking as user_rank,
+          u.first_name,
+          u.last_name,
+          u.display_name,
+          u.profile_image_url,
+          u.hide_name_privacy,
+          NTILE(4) OVER (ORDER BY pr.ranking ASC) as quartile
+        FROM product_rankings pr
+        INNER JOIN users u ON u.id = pr.user_id
+        WHERE pr.shopify_product_id = ${productId}
+          AND u.active = true
+      )
+      SELECT user_id, user_rank, first_name, last_name, display_name, profile_image_url, hide_name_privacy
+      FROM ranked_users
+      WHERE quartile = 4
+      ORDER BY RANDOM()
+      LIMIT ${limit}
+    `);
+    
+    const profiles = oppositeProfiles.rows.map(row => ({
+      userId: row.user_id,
+      userRank: parseInt(row.user_rank),
+      displayName: communityService.formatDisplayName(row),
+      avatarUrl: communityService.getAvatarUrl(row),
+      initials: communityService.getUserInitials(row)
+    }));
+    
+    res.json({ profiles });
+  } catch (error) {
+    console.error('Opposite profiles fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/opposite-profiles' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load opposite profiles' });
+  }
+});
+
+// GET /api/products/:productId/related - Get related products based on co-ranking patterns
+app.get('/api/products/:productId/related', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    const limit = parseInt(req.query.limit) || 4;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const relatedProducts = await db.execute(sql`
+      WITH product_rankers AS (
+        SELECT DISTINCT user_id
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      )
+      SELECT 
+        pr.shopify_product_id,
+        (array_agg(pr.product_data))[1] as product_data,
+        COUNT(DISTINCT pr.user_id) as co_ranker_count,
+        AVG(pr.ranking) as avg_rank
+      FROM product_rankings pr
+      INNER JOIN product_rankers rankers ON rankers.user_id = pr.user_id
+      WHERE pr.shopify_product_id != ${productId}
+        AND pr.product_data IS NOT NULL
+      GROUP BY pr.shopify_product_id
+      ORDER BY co_ranker_count DESC, avg_rank ASC
+      LIMIT ${limit}
+    `);
+    
+    const products = relatedProducts.rows.map(row => {
+      const productData = row.product_data;
+      return {
+        productId: row.shopify_product_id,
+        title: productData.title,
+        image: productData.image,
+        vendor: productData.vendor,
+        primaryFlavor: productData.primaryFlavor,
+        flavorDisplay: productData.flavorDisplay,
+        coRankerCount: parseInt(row.co_ranker_count),
+        avgRank: parseFloat(row.avg_rank).toFixed(1)
+      };
+    });
+    
+    res.json({ products });
+  } catch (error) {
+    console.error('Related products fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/related' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load related products' });
+  }
+});
+
+// GET /api/products/:productId/insights - Get product ranking insights
+app.get('/api/products/:productId/insights', async (req, res) => {
+  try {
+    const { productId } = req.params;
+    
+    if (!storage) {
+      return res.status(500).json({ error: 'Database not available' });
+    }
+    
+    const { db } = require('./server/db.js');
+    const { sql } = require('drizzle-orm');
+    
+    const insights = await db.execute(sql`
+      WITH current_stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank,
+          STDDEV(ranking) as std_deviation,
+          MIN(ranking) as best_rank,
+          MAX(ranking) as worst_rank,
+          PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY ranking) as median_rank,
+          COUNT(*) as total_count,
+          COUNT(CASE WHEN ranking <= 15 THEN 1 END) as top_15_count
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+      ),
+      week_ago_stats AS (
+        SELECT 
+          AVG(ranking) as avg_rank_week_ago
+        FROM product_rankings
+        WHERE shopify_product_id = ${productId}
+          AND created_at <= NOW() - INTERVAL '7 days'
+      )
+      SELECT 
+        cs.avg_rank,
+        cs.std_deviation,
+        cs.best_rank,
+        cs.worst_rank,
+        cs.median_rank,
+        cs.total_count,
+        cs.top_15_count,
+        COALESCE(was.avg_rank_week_ago, cs.avg_rank) as avg_rank_week_ago
+      FROM current_stats cs
+      LEFT JOIN week_ago_stats was ON true
+    `);
+    
+    if (insights.rows.length === 0) {
+      return res.json({
+        consensus: 'No data',
+        rankRange: { min: null, max: null, span: null },
+        trend: { direction: 'stable', change: 0 },
+        stdDeviation: null,
+        medianRank: null
+      });
+    }
+    
+    const data = insights.rows[0];
+    const stdDev = parseFloat(data.std_deviation);
+    const totalCount = parseInt(data.total_count);
+    const top15Pct = (parseInt(data.top_15_count) / totalCount) * 100;
+    const avgRank = parseFloat(data.avg_rank);
+    const avgRankWeekAgo = parseFloat(data.avg_rank_week_ago);
+    const rankChange = avgRankWeekAgo - avgRank;
+    
+    let consensus;
+    if (stdDev < 15 && top15Pct > 70) {
+      consensus = 'Tight';
+    } else if (stdDev < 25) {
+      consensus = 'Moderate';
+    } else {
+      consensus = 'Divided';
+    }
+    
+    let trend;
+    if (Math.abs(rankChange) < 0.5) {
+      trend = { direction: 'Stable', change: 0 };
+    } else if (rankChange > 0) {
+      trend = { direction: 'Rising', change: Math.abs(rankChange).toFixed(1) };
+    } else {
+      trend = { direction: 'Falling', change: Math.abs(rankChange).toFixed(1) };
+    }
+    
+    res.json({
+      consensus,
+      consensusDescription: consensus === 'Tight' 
+        ? `Most rankers agree this flavor belongs in the top tier. Low variation across rankings.`
+        : consensus === 'Moderate'
+        ? `Moderate agreement on this flavor's placement. Some variation across rankers.`
+        : `Rankers have diverse opinions on this flavor. Wide variation in rankings.`,
+      consensusStats: `σ = ${stdDev.toFixed(1)} • ${top15Pct.toFixed(0)}% in top 15`,
+      rankRange: {
+        min: parseInt(data.best_rank),
+        max: parseInt(data.worst_rank),
+        span: parseInt(data.worst_rank) - parseInt(data.best_rank),
+        median: parseFloat(data.median_rank).toFixed(1)
+      },
+      trend,
+      trendDescription: trend.direction === 'Stable'
+        ? `No significant movement in the past 7 days. Consistent community sentiment.`
+        : trend.direction === 'Rising'
+        ? `Improving ${trend.change} ranks over the past 7 days. Growing popularity.`
+        : `Declining ${trend.change} ranks over the past 7 days. Losing favor.`,
+      stdDeviation: stdDev.toFixed(1),
+      medianRank: parseFloat(data.median_rank).toFixed(1)
+    });
+  } catch (error) {
+    console.error('Insights fetch error:', error);
+    Sentry.captureException(error, {
+      tags: { endpoint: 'GET /api/products/:productId/insights' },
+      extra: { productId: req.params.productId }
+    });
+    res.status(500).json({ error: 'Failed to load insights' });
+  }
+});
+
 // Coin Types Routes - Public API for coin type configurations
 const { coinTypeConfig } = require('./shared/schema');
 const { eq: eqCoinType } = require('drizzle-orm');
@@ -3925,6 +4358,20 @@ if (databaseAvailable && storage) {
     app.set('gamificationServices', services);
     console.log('✅ Gamification services available for achievements');
     
+    // Create debounced progress update emitter (500ms debounce per user)
+    // This prevents race conditions when users rank multiple products rapidly
+    const { getRoomName } = require('./server/websocket/gateway');
+    const emitProgressUpdate = debounce((userId) => {
+      io.to(getRoomName(`user:${userId}`)).emit('gamification:progress:updated', {
+        userId,
+        timestamp: new Date().toISOString()
+      });
+      console.log(`📊 Debounced progress update emitted for user ${userId}`);
+    }, 500);
+    
+    // Store debounced emitter on app for use in ranking handlers
+    app.set('emitProgressUpdate', emitProgressUpdate);
+    
     // Mount profile routes
     const createProfileRoutes = require('./server/routes/profile');
     const profileRouter = createProfileRoutes(services);
@@ -4158,6 +4605,15 @@ const server = httpServer.listen(PORT, '0.0.0.0', async () => {
   } catch (error) {
     console.error('⚠️ Cache initialization error (continuing with fallback):', error.message);
     // Continue server startup - caches will use in-memory fallback
+  }
+  
+  // Bootstrap default coin icon
+  try {
+    const objectStorage = new ObjectStorageService();
+    await objectStorage.bootstrapDefaultCoinIcon();
+  } catch (error) {
+    console.error('⚠️ Default coin icon bootstrap error (continuing):', error.message);
+    // Continue server startup even if bootstrap fails
   }
   
   console.log('');

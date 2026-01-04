@@ -66,7 +66,8 @@ class PersonalizedGuidanceService {
         explorationBreadth: classification.explorationBreadth,
         focusAreas: classification.focusAreas || []
       },
-      stats: classification.classificationData
+      stats: classification.classificationData,
+      dominantCommunity: dominantCommunity // Include formatted community for UI display
     };
   }
 
@@ -93,8 +94,8 @@ class PersonalizedGuidanceService {
 
     // Find highest tier community
     const dominant = flavorCommunities.reduce((best, current) => {
-      const currentPriority = tierPriority[current.tier] || 0;
-      const bestPriority = tierPriority[best?.tier] || 0;
+      const currentPriority = tierPriority[current.state] || 0;
+      const bestPriority = tierPriority[best?.state] || 0;
       return currentPriority > bestPriority ? current : best;
     }, null);
 
@@ -102,11 +103,13 @@ class PersonalizedGuidanceService {
 
     // Map to community object format
     const flavorEmojis = {
-      'Teriyaki': '🍜',
-      'BBQ': '🍖',
-      'Sweet': '🍯',
-      'Spicy': '🌶️',
-      'Savory': '🧂'
+      'teriyaki': '🍜',
+      'bbq': '🍖',
+      'sweet': '🍯',
+      'spicy': '🌶️',
+      'savory': '🧂',
+      'exotic': '🌏',
+      'peppery': '🌶️'
     };
 
     const tierLabels = {
@@ -118,12 +121,15 @@ class PersonalizedGuidanceService {
       'enthusiast': 'Enthusiast'
     };
 
+    // Capitalize first letter of flavor profile for display
+    const capitalizedFlavor = dominant.flavorProfile.charAt(0).toUpperCase() + dominant.flavorProfile.slice(1);
+
     return {
-      name: `${dominant.flavorProfile} ${tierLabels[dominant.tier] || 'Member'}`,
-      icon: flavorEmojis[dominant.flavorProfile] || '🎯',
+      name: `${capitalizedFlavor} ${tierLabels[dominant.state] || 'Member'}`,
+      icon: flavorEmojis[dominant.flavorProfile.toLowerCase()] || '🎯',
       flavorProfile: dominant.flavorProfile,
-      tier: dominant.tier,
-      description: `You're on the ${dominant.flavorProfile} flavor journey!`
+      tier: dominant.state,
+      description: `You're on the ${capitalizedFlavor} flavor journey!`
     };
   }
 

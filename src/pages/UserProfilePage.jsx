@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useUserProfile } from '../hooks/useCommunity';
 import { usePageView } from '../hooks/usePageView';
+import Container from '../components/common/Container';
 import { renderAchievementIcon } from '../utils/iconUtils';
 import './UserProfilePage.css';
 
@@ -45,9 +46,9 @@ function UserProfilePage() {
   if (isLoading) {
     return (
       <div className="user-profile-page">
-        <div className="user-profile-container">
+        <Container size="standard">
           <div className="loading">Loading profile...</div>
-        </div>
+        </Container>
       </div>
     );
   }
@@ -55,9 +56,9 @@ function UserProfilePage() {
   if (error || !data) {
     return (
       <div className="user-profile-page">
-        <div className="user-profile-container">
+        <Container size="standard">
           <div className="error">Failed to load user profile</div>
-        </div>
+        </Container>
       </div>
     );
   }
@@ -71,7 +72,7 @@ function UserProfilePage() {
 
   return (
     <div className="user-profile-page">
-      <div className="user-profile-container">
+      <Container size="standard">
         <div className="user-profile-header">
           <div className="avatar avatar-large">
             {user.avatarUrl ? (
@@ -223,7 +224,7 @@ function UserProfilePage() {
             <p>This user hasn't earned any achievements yet!</p>
           </div>
         )}
-      </div>
+      </Container>
     </div>
   );
 }

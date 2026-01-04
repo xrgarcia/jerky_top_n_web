@@ -1,13 +1,13 @@
 .podium-widget {
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  background: linear-gradient(135deg, var(--rank-bg-card) 0%, var(--rank-bg-card-elevated) 100%);
   border-radius: 16px;
   padding: 40px 30px 50px;
   margin: 0 auto 40px;
   max-width: 1100px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--rank-shadow-card);
   position: relative;
   overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-body);
 }
 
 .podium-widget::before {
@@ -17,21 +17,21 @@
   left: 0;
   right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(196, 169, 98, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, var(--rank-glow-gold), transparent);
 }
 
 .podium-title {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-family: var(--font-headline);
   font-size: 2em;
   font-weight: 700;
-  color: #f5f3ed;
+  color: var(--rank-text-soft-white);
   margin-bottom: 50px;
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 2px;
   text-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(196, 169, 98, 0.4);
+    0 2px 4px var(--rank-overlay-dark),
+    0 0 20px var(--rank-glow-gold);
   position: relative;
 }
 
@@ -53,7 +53,7 @@
   left: 0;
   right: 0;
   height: 150px;
-  background: linear-gradient(to top, rgba(45, 45, 45, 0.4) 0%, transparent 100%);
+  background: linear-gradient(to top, var(--rank-bg-card-elevated) 0%, transparent 100%);
   pointer-events: none;
 }
 
@@ -95,20 +95,20 @@
 .avatar-podium {
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .position-badge {
   position: absolute;
   bottom: -12px;
   right: -12px;
-  color: #1a1a1a;
+  color: var(--rank-bg-card);
   font-weight: 700;
   font-size: 0.9em;
   padding: 5px 12px;
   border-radius: 14px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  border: 2px solid #1a1a1a;
+  box-shadow: var(--rank-shadow-card);
+  border: 2px solid var(--rank-bg-card);
   z-index: 2;
 }
 
@@ -119,13 +119,10 @@
   flex-direction: column;
   align-items: center;
   padding: 15px 25px 5px;
-  background: linear-gradient(180deg, #3a3a3a 0%, #2d2d2d 100%);
+  background: linear-gradient(180deg, var(--rank-neutral-600) 0%, var(--rank-bg-card-elevated) 100%);
   border-radius: 4px 4px 0 0;
   transform-style: preserve-3d;
-  box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.6),
-    0 4px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: var(--rank-shadow-elevated);
 }
 
 .podium-platform::before {
@@ -136,11 +133,11 @@
   right: 0;
   height: 3px;
   background: linear-gradient(90deg, 
-    rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 20%,
-    rgba(255, 255, 255, 0.6) 50%,
-    rgba(255, 255, 255, 0.4) 80%,
-    rgba(255, 255, 255, 0) 100%
+    transparent 0%,
+    var(--rank-overlay-glass) 20%,
+    var(--rank-overlay-glass) 50%,
+    var(--rank-overlay-glass) 80%,
+    transparent 100%
   );
   border-radius: 4px 4px 0 0;
   filter: blur(1px);
@@ -153,10 +150,8 @@
   left: 0;
   right: 0;
   height: 22px;
-  background: linear-gradient(180deg, #2d2d2d 0%, #1a1a1a 100%);
-  box-shadow: 
-    0 6px 16px rgba(0, 0, 0, 0.8),
-    inset 0 1px 2px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(180deg, var(--rank-bg-card-elevated) 0%, var(--rank-bg-card) 100%);
+  box-shadow: var(--rank-shadow-elevated);
   border-radius: 0 0 2px 2px;
 }
 
@@ -167,14 +162,14 @@
 .podium-widget .ranker-name {
   font-size: 1.1em;
   font-weight: 600;
-  color: #f5f3ed;
+  color: var(--rank-text-soft-white);
   margin-bottom: 5px;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 3px var(--rank-overlay-dark);
 }
 
 .podium-widget .ranker-score {
   font-size: 0.9em;
-  color: #c4a962;
+  color: var(--rank-gold);
   font-weight: 600;
 }
 
@@ -185,17 +180,13 @@
 .position-1 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(185, 242, 255, 0.5) 0%,
-    rgba(185, 242, 255, 0.35) 20%,
-    rgba(185, 242, 255, 0.2) 40%,
-    rgba(185, 242, 255, 0.1) 60%,
+    var(--rank-diamond) 0%,
+    var(--rank-diamond) 20%,
+    var(--rank-diamond) 40%,
+    var(--rank-bg-card-elevated) 60%,
     transparent 80%
   );
-  box-shadow: 
-    0 0 50px rgba(185, 242, 255, 0.6),
-    0 0 100px rgba(185, 242, 255, 0.4),
-    0 0 150px rgba(185, 242, 255, 0.3),
-    inset 0 0 50px rgba(185, 242, 255, 0.15);
+  box-shadow: var(--rank-shadow-glow);
   animation: lunar-pulse 3s ease-in-out infinite;
   width: 220px;
   height: 220px;
@@ -204,14 +195,12 @@
 .position-1 .avatar-podium {
   width: 130px;
   height: 130px;
-  border: 4px solid rgba(185, 242, 255, 0.7);
-  box-shadow: 
-    0 0 30px rgba(185, 242, 255, 0.5),
-    0 6px 20px rgba(0, 0, 0, 0.6);
+  border: 4px solid var(--rank-diamond);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .position-1 .position-badge {
-  background: linear-gradient(135deg, #b9f2ff, #7dd3fc);
+  background: linear-gradient(135deg, var(--rank-diamond), var(--rank-diamond));
   font-size: 1.05em;
   padding: 6px 14px;
   animation: badge-glow-diamond 2s ease-in-out infinite;
@@ -229,14 +218,12 @@
 .position-2 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(230, 230, 230, 0.35) 0%,
-    rgba(230, 230, 230, 0.25) 30%,
-    rgba(230, 230, 230, 0.12) 50%,
+    var(--rank-neutral-100) 0%,
+    var(--rank-neutral-100) 30%,
+    var(--rank-bg-card-elevated) 50%,
     transparent 70%
   );
-  box-shadow: 
-    0 0 40px rgba(230, 230, 230, 0.4),
-    0 0 80px rgba(230, 230, 230, 0.25);
+  box-shadow: var(--rank-shadow-card);
   width: 170px;
   height: 170px;
 }
@@ -244,14 +231,12 @@
 .position-2 .avatar-podium {
   width: 100px;
   height: 100px;
-  border: 3px solid rgba(230, 230, 230, 0.5);
-  box-shadow: 
-    0 0 20px rgba(230, 230, 230, 0.4),
-    0 5px 18px rgba(0, 0, 0, 0.6);
+  border: 3px solid var(--rank-silver);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .position-2 .position-badge {
-  background: linear-gradient(135deg, #e8e8e8, #d0d0d0);
+  background: linear-gradient(135deg, var(--rank-silver), var(--rank-silver));
 }
 
 .position-2 .podium-platform {
@@ -266,14 +251,12 @@
 .position-3 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(255, 215, 0, 0.3) 0%,
-    rgba(255, 215, 0, 0.2) 30%,
-    rgba(255, 215, 0, 0.1) 50%,
+    var(--rank-gold-metal) 0%,
+    var(--rank-gold) 30%,
+    var(--rank-bg-card-elevated) 50%,
     transparent 70%
   );
-  box-shadow: 
-    0 0 35px rgba(255, 215, 0, 0.35),
-    0 0 70px rgba(255, 215, 0, 0.2);
+  box-shadow: var(--rank-shadow-glow);
   width: 160px;
   height: 160px;
 }
@@ -281,14 +264,12 @@
 .position-3 .avatar-podium {
   width: 90px;
   height: 90px;
-  border: 3px solid rgba(255, 215, 0, 0.4);
-  box-shadow: 
-    0 0 18px rgba(255, 215, 0, 0.35),
-    0 5px 18px rgba(0, 0, 0, 0.6);
+  border: 3px solid var(--rank-gold-metal);
+  box-shadow: var(--rank-shadow-glow);
 }
 
 .position-3 .position-badge {
-  background: linear-gradient(135deg, #FFD700, #FFC107);
+  background: linear-gradient(135deg, var(--rank-gold-metal), var(--rank-gold));
 }
 
 .position-3 .podium-platform {
@@ -303,14 +284,12 @@
 .position-4 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(205, 127, 50, 0.25) 0%,
-    rgba(205, 127, 50, 0.15) 30%,
-    rgba(205, 127, 50, 0.08) 50%,
+    var(--rank-bronze) 0%,
+    var(--rank-bronze) 30%,
+    var(--rank-bg-card-elevated) 50%,
     transparent 70%
   );
-  box-shadow: 
-    0 0 25px rgba(205, 127, 50, 0.25),
-    0 0 50px rgba(205, 127, 50, 0.15);
+  box-shadow: var(--rank-shadow-card);
   width: 140px;
   height: 140px;
 }
@@ -318,14 +297,12 @@
 .position-4 .avatar-podium {
   width: 75px;
   height: 75px;
-  border: 2px solid rgba(205, 127, 50, 0.35);
-  box-shadow: 
-    0 0 15px rgba(205, 127, 50, 0.3),
-    0 4px 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--rank-bronze);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .position-4 .position-badge {
-  background: linear-gradient(135deg, #CD7F32, #B8732C);
+  background: linear-gradient(135deg, var(--rank-bronze), var(--rank-bronze));
   font-size: 0.8em;
   padding: 4px 10px;
 }
@@ -342,14 +319,12 @@
 .position-5 .lunar-eclipse {
   background: radial-gradient(
     circle at center,
-    rgba(192, 192, 192, 0.2) 0%,
-    rgba(192, 192, 192, 0.12) 30%,
-    rgba(192, 192, 192, 0.06) 50%,
+    var(--rank-silver) 0%,
+    var(--rank-silver) 30%,
+    var(--rank-bg-card-elevated) 50%,
     transparent 70%
   );
-  box-shadow: 
-    0 0 20px rgba(192, 192, 192, 0.2),
-    0 0 40px rgba(192, 192, 192, 0.12);
+  box-shadow: var(--rank-shadow-card);
   width: 130px;
   height: 130px;
 }
@@ -357,14 +332,12 @@
 .position-5 .avatar-podium {
   width: 68px;
   height: 68px;
-  border: 2px solid rgba(192, 192, 192, 0.3);
-  box-shadow: 
-    0 0 12px rgba(192, 192, 192, 0.25),
-    0 4px 16px rgba(0, 0, 0, 0.6);
+  border: 2px solid var(--rank-silver);
+  box-shadow: var(--rank-shadow-card);
 }
 
 .position-5 .position-badge {
-  background: linear-gradient(135deg, #C0C0C0, #A8A8A8);
+  background: linear-gradient(135deg, var(--rank-silver), var(--rank-silver));
   font-size: 0.8em;
   padding: 4px 10px;
 }
@@ -387,14 +360,10 @@
 
 @keyframes badge-glow-diamond {
   0%, 100% {
-    box-shadow: 
-      0 2px 10px rgba(185, 242, 255, 0.5),
-      0 0 20px rgba(185, 242, 255, 0.4);
+    box-shadow: var(--rank-shadow-glow);
   }
   50% {
-    box-shadow: 
-      0 2px 16px rgba(185, 242, 255, 0.7),
-      0 0 35px rgba(185, 242, 255, 0.6);
+    box-shadow: var(--rank-shadow-elevated);
   }
 }
 

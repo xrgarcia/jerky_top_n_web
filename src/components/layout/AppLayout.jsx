@@ -3,7 +3,6 @@ import { Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { broadcastAuthChange } from '../../context/AuthContext';
 import { useSocket } from '../../hooks/useSocket';
-import Header from './Header';
 import Nav from './Nav';
 import Footer from './Footer';
 import ProtectedRoute from '../auth/ProtectedRoute';
@@ -15,13 +14,15 @@ import './AppLayout.css';
 import '../../styles/toast.admin.css';
 
 const HomePage = lazy(() => import('../../pages/HomePage'));
-const ProductsPage = lazy(() => import('../../pages/ProductsPage'));
+const FlavorIndexPage = lazy(() => import('../../pages/FlavorIndexPage'));
 const ProductDetailPage = lazy(() => import('../../pages/ProductDetailPage'));
 const FlavorProfilePage = lazy(() => import('../../pages/FlavorProfilePage'));
-const CoinBookPage = lazy(() => import('../../pages/CoinBookPage'));
+const CoinBookPage = lazy(() => import('../../pages/CoinBookPageV2'));
+const CoinBookPageLegacy = lazy(() => import('../../pages/CoinBookPage'));
 const CoinProfilePage = lazy(() => import('../../pages/CoinProfilePage'));
 const CommunityPage = lazy(() => import('../../pages/CommunityPage'));
 const PublicProfilePage = lazy(() => import('../../pages/PublicProfilePage'));
+const FullRankingsPage = lazy(() => import('../../pages/FullRankingsPage'));
 const LeaderboardPage = lazy(() => import('../../pages/LeaderboardPage'));
 const ProfilePage = lazy(() => import('../../pages/ProfilePage'));
 const RankPage = lazy(() => import('../../pages/RankPage'));
@@ -82,14 +83,13 @@ function AppLayout() {
   return (
     <div className="app-layout">
       <ScrollToTop />
-      <Header />
       <Nav />
       <main className="main-content fade-in">
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/flavors" element={<ProductsPage />} />
-            <Route path="/products" element={<ProductsPage />} />
+            <Route path="/flavors" element={<FlavorIndexPage />} />
+            <Route path="/products" element={<FlavorIndexPage />} />
             <Route path="/products/:productId" element={<RedirectToFlavor />} />
             <Route path="/flavors/:id" element={<FlavorRouter />} />
             <Route path="/login" element={<LoginPage />} />
@@ -97,6 +97,11 @@ function AppLayout() {
             <Route path="/coinbook" element={
               <ProtectedRoute>
                 <CoinBookPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/coinbook/legacy" element={
+              <ProtectedRoute>
+                <CoinBookPageLegacy />
               </ProtectedRoute>
             } />
             <Route path="/coinbook/:coinId" element={
@@ -117,6 +122,11 @@ function AppLayout() {
             <Route path="/community/:userId" element={
               <ProtectedRoute>
                 <PublicProfilePage />
+              </ProtectedRoute>
+            } />
+            <Route path="/community/:userId/rankings" element={
+              <ProtectedRoute>
+                <FullRankingsPage />
               </ProtectedRoute>
             } />
             <Route path="/leaderboard" element={
