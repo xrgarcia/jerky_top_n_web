@@ -58,4 +58,8 @@ The application utilizes a modern web architecture for responsiveness, scalabili
 - **Error Tracking:** Sentry.io.
 - **Real-time:** Socket.IO.
 - **Email:** Custom SMTP service using nodemailer.
-- **Object Storage:** Replit Object Storage (Google Cloud Storage).
+- **Object Storage:** Abstracted storage service (`server/objectStorageService/`) supporting multiple providers:
+  - **Firebase Storage** (primary for Railway/production): Uses Firebase Admin SDK with configurable bucket and prefix (`FIREBASE_STORAGE_BUCKET`, `FIREBASE_STORAGE_PREFIX`)
+  - **Replit Object Storage** (primary for Replit/development): Native Replit integration
+  - **Dual-write mode**: When both providers are available, uploads go to both for migration/redundancy
+  - Environment detection: `RAILWAY_ENVIRONMENT` or `STORAGE_PROVIDER=firebase` switches to Firebase-primary mode

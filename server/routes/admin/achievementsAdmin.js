@@ -3,7 +3,7 @@ const Sentry = require('@sentry/node');
 const multer = require('multer');
 const AchievementAdminRepository = require('../../repositories/AchievementAdminRepository');
 const AchievementCache = require('../../cache/AchievementCache');
-const { ObjectStorageService } = require('../../objectStorage');
+const { getStorageService } = require('../../objectStorageService');
 
 // Configure multer for memory storage
 const upload = multer({
@@ -545,8 +545,8 @@ router.delete('/achievements/:id', requireEmployeeAuth, async (req, res) => {
         
         if (iconUsageCount === 0) {
           // No other achievements use this icon - safe to delete
-          const objectStorage = new ObjectStorageService();
-          await objectStorage.deleteIcon(achievement.icon);
+          const storageService = getStorageService();
+          await storageService.deleteIcon(achievement.icon);
           console.log('🗑️ Deleted orphaned icon from storage:', achievement.icon);
         } else {
           console.log(`ℹ️ Icon still in use by ${iconUsageCount} other achievement(s), keeping: ${achievement.icon}`);
@@ -615,8 +615,8 @@ router.post('/achievements/upload-icon', requireEmployeeAuth, upload.single('ico
       return res.status(400).json({ error: 'No file uploaded' });
     }
 
-    const objectStorageService = new ObjectStorageService();
-    const objectPath = await objectStorageService.uploadIconFromBuffer(
+    const storageService = getStorageService();
+    const objectPath = await storageService.uploadIconFromBuffer(
       req.file.buffer,
       req.file.originalname
     );
@@ -640,8 +640,8 @@ router.post('/achievements/confirm-icon-upload', requireEmployeeAuth, async (req
       return res.status(400).json({ error: 'Upload URL is required' });
     }
     
-    const objectStorageService = new ObjectStorageService();
-    const iconPath = await objectStorageService.setObjectPublic(uploadURL);
+    const storageService = getStorageService();
+    const iconPath = await storageService.setObjectPublic(uploadURL);
     
     res.json({ success: true, iconPath });
   } catch (error) {

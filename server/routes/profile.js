@@ -8,13 +8,13 @@ const {
   isHandleAvailable, 
   validateHandleFormat 
 } = require('../utils/handleGenerator');
-const { ObjectStorageService } = require('../objectStorage');
+const { getStorageService } = require('../objectStorageService');
 const ProfileRepository = require('../repositories/ProfileRepository');
 
 function createProfileRoutes(services) {
   const { db, storage, leaderboardManager, achievementRepo, productsService } = services;
   const router = express.Router();
-  const objectStorage = new ObjectStorageService();
+  const objectStorage = getStorageService();
   
   // Instantiate ProfileRepository with ProductsService (golden source for product data)
   const profileRepository = new ProfileRepository(productsService);

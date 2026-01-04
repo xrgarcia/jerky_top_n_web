@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const RankingStatsCache = require('./server/cache/RankingStatsCache');
 const MetadataCache = require('./server/cache/MetadataCache');
 const PurchaseHistoryService = require('./server/services/PurchaseHistoryService');
-const { ObjectStorageService, DEFAULT_COIN_ICON_PATH } = require('./server/objectStorage');
+const { getStorageService, DEFAULT_COIN_ICON_PATH } = require('./server/objectStorageService');
 const { debounce } = require('./server/utils/debounce');
 
 const app = express();
@@ -4421,18 +4421,14 @@ if (databaseAvailable && storage) {
       console.log('✅ Tools routes registered at /api/tools');
       
       // Route for serving uploaded achievement icons from object storage
-      const { ObjectStorageService, ObjectNotFoundError } = require('./server/objectStorage');
       app.get('/objects/:objectPath(*)', async (req, res) => {
-        const objectStorageService = new ObjectStorageService();
         try {
-          const objectFile = await objectStorageService.getObjectEntityFile(req.path);
-          await objectStorageService.downloadObject(objectFile, res);
+          const storageService = getStorageService();
+          const objectFile = storageService.getObjectEntityFile(req.path);
+          await storageService.downloadObject(objectFile, res);
         } catch (error) {
           console.error('Error serving object:', error);
-          if (error instanceof ObjectNotFoundError) {
-            return res.sendStatus(404);
-          }
-          return res.sendStatus(500);
+          return res.sendStatus(error.message === 'Object not found' ? 404 : 500);
         }
       });
       console.log('✅ Object storage route registered at /objects/*');
@@ -4607,25 +4603,14 @@ const server = httpServer.listen(PORT, '0.0.0.0', async () => {
     // Continue server startup - caches will use in-memory fallback
   }
   
-  // Bootstrap default coin icon
+  // Initialize storage service and bootstrap default assets
   try {
-    const objectStorage = new ObjectStorageService();
-    await objectStorage.bootstrapDefaultCoinIcon();
+    const storageService = getStorageService();
+    await storageService.initialize();
+    await storageService.bootstrapDefaultCoinIcon();
   } catch (error) {
-    console.error('⚠️ Default coin icon bootstrap error (continuing):', error.message);
-    // Continue server startup even if bootstrap fails
-  }
-  
-  // Sync Replit Object Storage to Firebase Storage
-  try {
-    const { syncObjectsToFirebase } = require('./server/firebaseStorageSync');
-    const syncResult = await syncObjectsToFirebase();
-    if (!syncResult.disabled) {
-      console.log(`🔥 Firebase sync: ${syncResult.synced} uploaded, ${syncResult.skipped} already exist, ${syncResult.errors} errors`);
-    }
-  } catch (error) {
-    console.error('⚠️ Firebase Storage sync error (continuing):', error.message);
-    // Continue server startup even if sync fails
+    console.error('⚠️ Storage initialization error (continuing):', error.message);
+    // Continue server startup even if storage fails
   }
   
   console.log('');
