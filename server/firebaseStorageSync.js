@@ -1,6 +1,7 @@
 const admin = require('firebase-admin');
 const { Client } = require('@replit/object-storage');
 const Sentry = require('@sentry/node');
+const { PassThrough } = require('stream');
 
 let firebaseApp = null;
 let firebaseBucket = null;
@@ -51,6 +52,57 @@ async function getReplitClient() {
   }
 }
 
+async function listAllObjects(client) {
+  const allFiles = [];
+  let startAfter = undefined;
+  
+  while (true) {
+    const options = startAfter ? { startAfter } : {};
+    const { ok, value: files, error } = await client.list(options);
+    
+    if (!ok) {
+      console.error('❌ Failed to list Replit objects:', error);
+      break;
+    }
+    
+    if (!files || files.length === 0) {
+      break;
+    }
+    
+    allFiles.push(...files);
+    
+    if (files.length < 100) {
+      break;
+    }
+    
+    const lastFile = files[files.length - 1];
+    startAfter = typeof lastFile === 'string' ? lastFile : lastFile.name;
+  }
+  
+  return allFiles;
+}
+
+async function streamUploadToFirebase(replitStream, firebaseFile, contentType) {
+  return new Promise((resolve, reject) => {
+    const writeStream = firebaseFile.createWriteStream({
+      metadata: {
+        contentType: contentType
+      },
+      resumable: false
+    });
+    
+    replitStream.on('error', (err) => {
+      writeStream.destroy(err);
+      reject(err);
+    });
+    
+    writeStream.on('error', reject);
+    writeStream.on('finish', resolve);
+    
+    replitStream.pipe(writeStream);
+  });
+}
+
 async function syncObjectsToFirebase() {
   const prefix = process.env.FIREBASE_STORAGE_PREFIX;
   
@@ -72,14 +124,9 @@ async function syncObjectsToFirebase() {
   try {
     const client = await getReplitClient();
     
-    const { ok, value: files, error } = await client.list();
-    
-    if (!ok) {
-      console.error('❌ Failed to list Replit objects:', error);
-      return { synced: 0, skipped: 0, errors: 1 };
-    }
+    const files = await listAllObjects(client);
 
-    if (!files || files.length === 0) {
+    if (files.length === 0) {
       console.log('📦 No objects found in Replit Object Storage');
       return { synced: 0, skipped: 0, errors: 0 };
     }
@@ -102,21 +149,9 @@ async function syncObjectsToFirebase() {
         console.log(`⬆️  Uploading: ${objectName} -> ${firebasePath}`);
         
         const stream = client.downloadAsStream(objectName);
+        const contentType = getContentType(objectName);
         
-        const chunks = [];
-        await new Promise((resolve, reject) => {
-          stream.on('data', chunk => chunks.push(chunk));
-          stream.on('end', resolve);
-          stream.on('error', reject);
-        });
-        
-        const buffer = Buffer.concat(chunks);
-        
-        await firebaseFile.save(buffer, {
-          metadata: {
-            contentType: getContentType(objectName)
-          }
-        });
+        await streamUploadToFirebase(stream, firebaseFile, contentType);
         
         synced++;
         console.log(`✅ Synced: ${firebasePath}`);
